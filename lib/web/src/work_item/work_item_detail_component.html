@@ -1,0 +1,107 @@
+<modal [visible]="true">
+    <material-dialog headered class="headered-dialog">
+        <div header>
+            <h3 *ngIf="workItem.id == null">{{label('Add Work Item')}}</h3>
+            <h3 *ngIf="workItem.id != null">{{label('Edit Work Item')}}</h3>
+        </div>
+        <div class="w3-row">
+            <div class="w3-col m8">
+              <material-input type="text" [(ngModel)]="workItem.name" style="width:100%" floatingLabel [label]="label('Name')" required [requiredErrorMsg]="requiredValueMsg()"></material-input>
+            </div>
+            <div class="w3-col m4">
+                <label class="input-container">
+                    <span class="label-text">{{label('Due Date')}}</span>
+                    <material-datepicker [(date)]="dueDate"
+                                         [minDate]="limitToDueDateRange.start"
+                                         [maxDate]="limitToDueDateRange.end"
+                                         [required]="false">
+                    </material-datepicker>
+                </label>
+            </div>
+        </div>
+        <div class="w3-row">
+           <material-input type="text" [(ngModel)]="workItem.description" style="width:100%;height:100%" floatingLabel multiline rows="5" [label]="label('Description')"></material-input>
+        </div>
+        <div class="w3-row" >
+            <div class="w3-col m5" >
+                <material-input type="number" style="width: 100%" [(ngModel)]="completed" trailingText="%" [rightAlign]="true"  floatingLabel [label]="label('Completed')" [error]="errorCompleted"></material-input>
+            </div>
+            <!--
+            <div class="w3-col m6" >
+                <material-slider style="width: 100%" [min]="0"
+                                 [max]="100"
+                                 [step]="1"
+                                 [(value)]="completed" >
+                </material-slider>
+            </div>
+            -->
+             <div class="w3-col m7" >
+                 <label class="input-container">
+                     <span class="label-text" >
+                         {{label('Stage')}}
+                     </span>
+                    <material-dropdown-select style="width: 100%" [buttonText]="stageSingleSelectLabel"
+                                              [(selection)]="stageSingleSelectModel"
+                                              [(options)]="stageOptions"
+                                              [itemRenderer]="stageItemRenderer">
+                    </material-dropdown-select>
+                </label>
+             </div>
+        </div>
+        <div class="w3-row ">
+            <material-auto-suggest-input style="width: 100%"
+                    [(inputText)]="memberInputText"
+                    [filterSuggestions]="true"
+                    [popupMatchInputWidth]="true"
+                    [leadingGlyph]="leadingGlyph"
+                    [shouldClearOnSelection]="true"
+                    [label]="label('Assigned To')"
+                    [emptyPlaceholder]="emptyPlaceholder"
+                    [selection]="memberSingleSelectModel"
+                    [selectionOptions]="memberOptions"
+                    [itemRenderer]="memberItemRenderer"
+                    [factoryRenderer]="factoryRenderer"
+                    [limit]="10">
+            </material-auto-suggest-input>
+        </div>
+        <div class="w3-row">
+            <material-chips [removeable]="true" *ngFor="let member of workItem?.assignedTo">
+                <material-chip [hasLeftIcon]="true" (remove)="removeMember(member)">
+                    <div left-icon class="avatar" [style.background-image]="'url(' +  userUrlImage(member)  + ')'"></div>
+                    {{member?.name}}
+                </material-chip>
+            </material-chips>
+        </div>
+        <div class="w3-row">
+            <div class="material-shadow-box-list" elevation="2">
+                <material-input [(ngModel)]="checkItemEntry" floatingLabel [label]="label('Check Item')"></material-input>
+                <span>
+                    <material-fab *ngIf="selectedCheckItem== null" mini raised (trigger)="addCheckItem()">
+                      <material-icon icon="add"></material-icon>
+                    </material-fab>
+                    <material-fab *ngIf="selectedCheckItem != null" mini raised (trigger)="updateCheckItem(selectedCheckItem)">
+                       <material-icon icon="done"></material-icon>
+                    </material-fab>
+                </span>
+                <material-list *ngFor="let iCheckItem of workItem.checkItems">
+                    <material-list-item class="material-list-item" (trigger)="selectCheckItem(iCheckItem)">
+                        <material-checkbox class="width-200" [(ngModel)]="iCheckItem.finished" [label]="iCheckItem.name"></material-checkbox>
+                        <span class="material-list-item-secondary">
+                            <material-fab mini (trigger)="removeCheckItem(iCheckItem)">
+                                <material-icon icon="clear"></material-icon>
+                            </material-fab>
+                        </span>
+                    </material-list-item>
+                </material-list>
+            </div>
+        </div>
+        <div footer>
+            <material-button (trigger)="save()">{{buttonLabel('Save')}}
+                <material-icon icon="save"></material-icon>
+            </material-button>
+            <material-button autoFocus (trigger)="goBack()">{{buttonLabel('Back')}}
+                <material-icon icon="arrow_back"></material-icon>
+            </material-button>
+        </div>
+    </material-dialog>
+</modal>

@@ -1,0 +1,85 @@
+<div class="w3-content" style="max-width:1200px">
+    <div class="center">
+        <h3>Objectives Overall</h3>
+    </div>
+    <levius-progress-circle [percent]="overallProgress" [size]="'big'" [align]="'center'">
+    </levius-progress-circle>
+    <h3>Objectives and Measures</h3>
+    <acx-scoreboard scrollable>
+        <acx-scorecard class="card" elevation="2"
+                       label="Objectives"
+                       [value]="objectivesNumber"
+                       description="Number total of objectives"
+                       changeType="POSITIVE">
+        </acx-scorecard>
+        <acx-scorecard class="card" elevation="2"
+                       label="Objectives Achieved"
+                       [value]="achievedObjectivesNumber"
+                       description="Objectives over 70% progress"
+                       changeType="POSITIVE">
+        </acx-scorecard>
+        <acx-scorecard class="card" elevation="2"
+                       label="Objectives Requiring Attention"
+                       [value]="requiringAttentionObjectivesNumber"
+                       description="Objectives below 30% progress"
+                       changeType="NEGATIVE">
+        </acx-scorecard>
+        <acx-scorecard class="card" elevation="2"
+                       label="Measures"
+                       [value]="measuresNumber"
+                       description="Number total of measures"
+                       changeType="POSITIVE">
+        </acx-scorecard>
+        <acx-scorecard class="card" elevation="2"
+                       label="Measures Achieved"
+                       [value]="achievedMeasuresNumber"
+                       description="Measures over 70% progress"
+                       changeType="POSITIVE">
+        </acx-scorecard>
+        <acx-scorecard class="card" elevation="2"
+                       label="Measures Requiring Attention"
+                       [value]="requiringAttentionMeasuresNumber"
+                       description="Measures below 30% progress"
+                       changeType="NEGATIVE">
+        </acx-scorecard>
+    </acx-scoreboard>
+    <h3>Initiatives and Work Items</h3>
+    <acx-scoreboard scrollable>
+        <acx-scorecard class="card" elevation="2"
+                       label="Initiatives"
+                       [value]="initiativesNumber"
+                       description="Number total of initiatives"
+                       changeType="POSITIVE">
+        </acx-scorecard>
+        <acx-scorecard class="card" elevation="2"
+                       label="Initiatives Completed"
+                       value="-1"
+                       description="Initiatives with 100% work items completed"
+                       changeType="POSITIVE">
+        </acx-scorecard>
+        <acx-scorecard class="card" elevation="2"
+                       label="Initiatives Requiring Attention"
+                       [value]="overDueInitiativesNumber"
+                       description="Initiatives with over due work items"
+                       changeType="NEGATIVE">
+        </acx-scorecard>
+        <acx-scorecard class="card" elevation="2"
+                       label="Work Items"
+                       [value]="workItemsNumber"
+                       description="Number total of work items"
+                       changeType="POSITIVE">
+        </acx-scorecard>
+        <acx-scorecard class="card" elevation="2"
+                       label="Work Items Completed"
+                       [value]="completedWorkItemsNumber"
+                       description="Work items with 100% progress"
+                       changeType="POSITIVE">
+        </acx-scorecard>
+        <acx-scorecard class="card" elevation="2"
+                       label="Work Items Requiring Attention"
+                       [value]="overDueWorkItemsNumber"
+                       description="Over due work items"
+                       changeType="NEGATIVE">
+        </acx-scorecard>
+    </acx-scoreboard>
+</div>

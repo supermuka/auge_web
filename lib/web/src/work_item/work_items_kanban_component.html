@@ -1,0 +1,72 @@
+<material-fab raised (click)="selectWorkItem(null);goToDetail(null)">
+    <material-icon icon="add"></material-icon>
+</material-fab>
+<div class="container">
+    <div *ngFor="let kanbanColumn of kanbanColumns">
+        <div  (drop)="drop($event, kanbanColumn)" (dragover)="allowDrop($event)">
+            <header [style.background-color]="'hsl(' + kanbanColumn?.stage?.state?.colorHue + ', ' + kanbanColumn?.stage?.state?.colorSaturation + '%, ' + kanbanColumn?.stage?.state?.colorLightness + '%)'">
+               <h5><strong>{{kanbanColumn.stage?.name}}</strong></h5>
+            </header>
+            <material-list class="shadow-box-material-list" elevation="2">
+                <div *ngFor="let iColumnWorkItem of kanbanColumn.columnWorkItems">
+                    <div draggable="true" (dragstart)="drag($event, kanbanColumn, iColumnWorkItem)" >
+                        <material-list-item>
+                            <div>
+                                <div class="width-flex">
+                                    <span class="width-240"><strong>{{iColumnWorkItem.name}}</strong></span>
+                                    <span *ngFor="let member of iColumnWorkItem.assignedTo">&nbsp;&nbsp;
+                                       <span class="avatar" [style.background-image]="'url(' +  userUrlImage(member) + ')'" [materialTooltip]="member.name"></span>
+                                    </span>
+                                </div>
+                                <!--
+                                <div class="width-240 material-progress-custom-theme">
+                                    <material-progress materialTooltip="{{label('Completed')}}" [activeProgress]="columnWorkItem.completed"></material-progress><span>&nbsp;{{columnWorkItem.completed}}%</span>
+                                </div>
+                                -->
+                                <div class="width-240">
+                                    <div class="width-flex">
+                                        <span>
+                                            {{iColumnWorkItem.completed}}%
+                                        </span>
+                                        <div class="row-spacer"></div>
+                                        <material-slider [(value)]="iColumnWorkItem.completed" style="width: 100%" [min]="0"
+                                                         [max]="100"
+                                                         [step]="1"
+                                                         materialTooltip="{{label('Completed')}}" (click)="updateWorkItem(iColumnWorkItem)">
+                                        </material-slider>
+                                    </div>
+                                    <div class="width-flex">
+                                        <!--
+                                        <span materialTooltip="{{label('Due Date')}}" [style.color]="dueDateColor(iColumnWorkItem)">{{iColumnWorkItem.dueDate | date:'dd/MM/y'}}</span>
+                                        -->
+                                        <span materialTooltip="{{label('Stage')}}" [style.color]="'hsl(' + iColumnWorkItem.stage.state.colorHue + ', ' + iColumnWorkItem.stage.state.colorSaturation + '%, ' + iColumnWorkItem.stage.state.colorLightness + '%)'">{{iColumnWorkItem.stage?.name}}</span>
+                                        <span materialTooltip="{{label('Due Date')}}" [style.color]="dueDateColor(iColumnWorkItem)">{{iColumnWorkItem.dueDate | date:'dd/MM/y'}}</span>
+
+                                    </div>
+                                    <material-expansionpanel *ngIf="iColumnWorkItem.checkItems.length > 0" name="{{label('Check Items')}}" autoDismissable [showSaveCancel]="false" class="expansionpanel-flat-on-collapse-theme-no-border">
+                                        <div *deferredContent>
+                                            <div *ngFor="let iCheckItem of iColumnWorkItem.checkItems">
+                                                <material-checkbox class="width-200" [(ngModel)]="iCheckItem.finished" [label]="iCheckItem.name" (click)="updateWorkItem(iColumnWorkItem)"></material-checkbox>
+                                            </div>
+                                        </div>
+                                    </material-expansionpanel>
+
+                                </div>
+                            </div>
+                            <div class="row-spacer"></div>
+                            <div class="row-spacer"></div>
+                            <div class="material-list-item-secondary">
+                                <div>
+                                    <material-menu [menu]="menuModel" (click)="selectWorkItem(iColumnWorkItem)">
+                                    </material-menu>
+                                </div>
+                            </div>
+                        </material-list-item>
+                        <hr>
+                    </div>
+                </div>
+            </material-list>
+        </div>
+    </div>
+</div>
+<router-outlet [routes]="routes"></router-outlet>

@@ -1,0 +1,29 @@
+<div class="container-list">
+    <material-fab raised (trigger)="selectObjective(null);goToDetail(null)">
+        <material-icon icon="add"></material-icon>
+    </material-fab>
+    <br/>
+    <material-list class="shadow-box-material-list" elevation="2">
+        <div *ngFor="let iObjective of objectives">
+            <material-list-item (trigger)="goToMeasure(iObjective)">
+                <div class="truncate-ellipsed-parent">
+                    <levius-progress-circle [percent]="iObjective.progress">
+                    </levius-progress-circle>
+                    <div >
+                        <h4 class="truncate-ellipsed">{{iObjective.name}}</h4>
+                        <p class="truncate-ellipsed">{{iObjective.description}}</p>
+                    </div>
+                </div>
+                <span class="row-spacer"></span>
+                <div class="material-list-item-secondary">
+                    <div>
+                        <material-menu [menu]="menuModel" (click)="stopPropagation($event);selectObjective(iObjective)">
+                        </material-menu>
+                    </div>
+                </div>
+            </material-list-item>
+            <hr>
+        </div>
+    </material-list>
+</div>
+<router-outlet [routes]="routes"></router-outlet>

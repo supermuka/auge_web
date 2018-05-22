@@ -1,0 +1,80 @@
+/*
+// Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
+// Author: Samuel C. Schwebel.
+*/
+
+body {
+ /* max-width: 800px; */
+  margin: 0 auto;
+  padding: 0vw;
+}
+
+* {
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+}
+
+.shadow-box {
+    @include material-shadow();
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+.avatar {
+
+    /* This image is 687 wide by 1024 tall, similar to your aspect ratio */
+    /* background-image: url(''); */
+    vertical-align: middle;
+
+    /* make a square container */
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+
+    /* fill the container, preserving aspect ratio, and cropping to fit */
+    background-size: cover;
+
+    /* center the image vertically and horizontally */
+    background-position: center;
+
+    /* baseado no left-icon no material_chip */
+    margin-left: -8px;
+    margin-right: 0px;
+    padding: 0px;
+
+    /* round the edges to a circle with border radius 1/2 container size */
+    border-radius: 50%;
+    display: inline-block;
+}
+
+
+.avatar-icon {
+
+    /* This image is 687 wide by 1024 tall, similar to your aspect ratio */
+    /* background-image: url(''); */
+     vertical-align: middle;
+
+    /* make a square container */
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+
+    /* fill the container, preserving aspect ratio, and cropping to fit */
+    background-size: cover;
+
+    /* center the image vertically and horizontally */
+    background-position: center;
+
+    /* baseado no left-icon no material_chip */
+    margin-left: -8px;
+    margin-right: 4px;
+    padding: 3px;
+
+    /* round the edges to a circle with border radius 1/2 container size */
+    border-radius: 50%;
+    display: inline-block;
+}

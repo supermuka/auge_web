@@ -1,0 +1,59 @@
+@import 'package:angular_components/css/material/material';
+@import 'package:angular_components/material_select/mixins';
+
+:host {
+  display: block;
+  height: 600px;
+  position: relative;
+}
+
+.button-look {
+   @include button-look();
+}
+
+.opcaoConteudo {
+  margin: 20px;
+}
+
+.centralized {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.spacer {
+  padding-left: 20px;
+}
+
+.menu-drawer {
+  overflow: auto;
+}
+
+material-content material-drawer {
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9999999;
+}
+
+material-content header {
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9999999;
+}
+
+.main {
+    overflow: hidden;
+    margin-top: 72px;
+}
+
+.hide-title-small-width-search-enabled-true {
+    @media (max-width: 800px) {
+       display:none;
+    }
+}
+

@@ -1,0 +1,26 @@
+<div class="container-list">
+    <material-fab raised (trigger)="goToDetail(null)">
+        <material-icon icon="add"></material-icon>
+    </material-fab>
+    <br/>
+    <material-list  class="shadow-box-material-list" elevation="2">
+        <div *ngFor="let user of users">
+            <material-list-item>
+                <div>
+
+                    <h5><span class="avatar" [style.background-image]="'url(' + userUrlImage(user) + ')'"></span><strong>{{user.name}}</strong></h5>
+                    <p>{{user.eMail}}</p>
+                </div>
+                <span class="row-spacer"></span>
+                <div class="material-list-item-secondary">
+                    <div>
+                        <material-menu [menu]="menuModel" (click)="selectUser(user)">
+                        </material-menu>
+                    </div>
+                </div>
+            </material-list-item>
+            <hr>
+        </div>
+    </material-list>
+</div>
+<router-outlet [routes]="rotas"></router-outlet>

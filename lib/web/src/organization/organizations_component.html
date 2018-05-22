@@ -1,0 +1,27 @@
+<div class="container-list">
+    <material-fab raised (trigger)="goToDetail(null)">
+        <material-icon icon="add"></material-icon>
+    </material-fab>
+    <br/>
+    <material-list  class="shadow-box-material-list" elevation="2">
+        <div *ngFor="let o of organizations">
+          <material-list-item>
+              <div>
+                  <h4 class="material-list-item-content"><strong>{{o.name}}</strong></h4>
+                  <p class="material-list-item-content">{{o.code}}</p>
+              </div>
+              <span class="row-spacer"></span>
+              <div class="material-list-item-secondary">
+                  <div>
+                      <material-menu [menu]="menuModel" (click)="selectOrganization(o)">
+                      </material-menu>
+                  </div>
+              </div>
+           </material-list-item>
+           <hr>
+       </div>
+    </material-list>
+</div>
+<div>
+   <router-outlet [routes]="routes"></router-outlet>
+</div>

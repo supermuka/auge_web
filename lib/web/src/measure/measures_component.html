@@ -1,0 +1,58 @@
+<div class="container-list">
+    <material-fab raised (trigger)="selectMeasure(null);goToDetail(null)">
+        <material-icon icon="add"></material-icon>
+    </material-fab>
+    <br/>
+
+    <div class="container">
+        <levius-progress-circle [percent]="objective?.progress">
+        </levius-progress-circle>
+        <div>
+            <h4 class="material-list-item-content"><strong>{{objective?.name}}</strong></h4>
+            <p class="material-list-item-content">{{objective?.description}}</p>
+        </div>
+    </div>
+    <div class="container">
+        <material-list class="shadow-box-material-list" elevation="2">
+            <div *ngFor="let iMeasure of measures">
+                <material-list-item>
+                    <div>
+                        <h4 class="material-list-item-content"><strong>{{iMeasure.name}}</strong></h4>
+                    </div>
+                    <span class="row-spacer"></span>
+                    <div class="material-list-item-secondary">
+                        <div class="horizontal">
+                            <div class="width-240">
+                                <!--
+                                <div class="material-progress-custom-theme">
+                                    <material-progress materialTooltip="Progresso" [activeProgress]="progress(measure)"></material-progress>
+                                </div>
+                                -->
+                                <material-slider [(value)]="iMeasure.currentValueInt" style="width: 100%" [min]="iMeasure.startValueInt"
+                                                 [max]="iMeasure.endValueInt"
+                                                 [step]="1"
+                                                 materialTooltip="{{label('Current Value')}}" (click)="updateMeasure(iMeasure)">
+                                </material-slider>
+                                <div class="width-240-flex">
+                                    <span materialTooltip="{{label('Start Value')}}">{{iMeasure.startValue}}</span>
+                                    <span materialTooltip="{{label('Current Value')}}">{{iMeasure.currentValue}}</span>
+                                    <span materialTooltip="{{label('End Value')}}">{{iMeasure.endValue}}</span>
+                                </div>
+                            </div>
+                            <div class="row-spacer"></div>
+                            <div class="row-spacer"></div>
+
+                            <div>
+                                <material-menu [menu]="menuModel" (click)="selectMeasure(iMeasure)">
+                                </material-menu>
+                            </div>
+                        </div>
+                    </div>
+                </material-list-item>
+                <hr>
+            </div>
+        </material-list>
+        <router-outlet [routes]="routes"></router-outlet>
+    </div>
+</div>
+

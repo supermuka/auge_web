@@ -1,0 +1,44 @@
+<modal [visible]="true">
+    <material-dialog headered class="headered-dialog">
+        <div header>
+            <h3 *ngIf="user.id == null">{{label('Add User')}}</h3>
+            <h3 *ngIf="user.id != null">{{label('Edit User')}}</h3>
+        </div>
+        <div>
+            <material-input [(ngModel)]="user.name" floatingLabel [label]="label('User')" required [requiredErrorMsg]="requiredValueMsg()"></material-input>
+            <br/>
+            <material-input [(ngModel)]="user.eMail" floatingLabel [label]="label('e-Mail')" required [requiredErrorMsg]="requiredValueMsg()"></material-input>
+            <br/>
+            <material-input type="password" [(ngModel)]="passwordSecure" floatingLabel [label]="label('Password')" required [requiredErrorMsg]="requiredValueMsg()"></material-input>
+            <br/>
+            <label>{{label('Authorization')}}</label>
+            <br/>
+            <material-radio-group [selectionModel]="selectionModelUserAuthorization">
+                <material-radio *ngFor="let option of userAuthorizationOptions"
+                                class="radio-per-line"
+                                [(checked)]="option.selected"
+                                [value]="option.label" no-ink>{{option.label}}
+                </material-radio><br>
+            </material-radio-group>
+            <div>
+                <div class="avatar" [style.background-image]="'url(' + userUrlImage(user) + ')'"></div>
+                <input type="file" id="upload_image" accept="image/*,capture=camera">
+                <br/>
+                <material-button icon (trigger)="uploadImage()">{{buttonLabel('Upload')}}
+                    <material-icon icon="done"></material-icon>
+                </material-button>
+                <material-button  icon [disabled]="true">{{buttonLabel('Clear')}}
+                    <material-icon icon="clear"></material-icon>
+                </material-button>
+            </div>
+        </div>
+        <div footer>
+            <material-button (trigger)="save()">{{buttonLabel('Save')}}
+                <material-icon icon="save"></material-icon>
+            </material-button>
+            <material-button autoFocus (trigger)="goBack()">{{buttonLabel('Back')}}
+                <material-icon icon="arrow_back"></material-icon>
+            </material-button>
+        </div>
+    </material-dialog>
+</modal>

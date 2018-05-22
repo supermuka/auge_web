@@ -1,0 +1,33 @@
+<div class="container">
+    <div class="child">
+        <material-dialog headered class="headered-dialog">
+            <div header>
+                <h3>{{headerTitleLabel}}</h3>
+                <h5>{{headerSubtitleLabel}}</h5>
+            </div>
+            <div>
+                <material-input [label]="eMailLabel"
+                            type="email"
+                            autoFocus floatingLabel
+                            required
+                            [requiredErrorMsg]="requiredValueMsg"
+                            [(ngModel)]="eMail">
+                </material-input>
+                <br/>
+                <material-input [label]="passwordLabel"
+                                type="password"
+                                floatingLabel
+                                required
+                                [requiredErrorMsg]="requiredValueMsg"
+                                [(ngModel)]="passwordStr">
+                </material-input>
+                <br/>
+                <p>{{error}}</p>
+            </div>
+            <div footer>
+                <br/>
+                <material-button raised class="red" (trigger)="authenticateAuthorizate(eMail, passwordStr)">{{loginButtonLabel}}</material-button>
+            </div>
+        </material-dialog>
+    </div>
+</div>

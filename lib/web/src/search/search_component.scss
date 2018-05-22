@@ -1,0 +1,25 @@
+@import 'package:angular_components/css/material/material';
+@import 'package:angular_components/material_input/mixins';
+
+div {
+  display: flex;
+  width: 100%;
+}
+
+material-icon {
+  margin: 2px;
+  padding: 2px;
+}
+
+input {
+  width: 300px;
+  min-width: 200px;
+  margin: auto;
+}
+
+.material-input-theme-search {
+   @include material-input-theme($mat-white);
+   @include input-label-color($mat-gray);
+   @include material-input-unfocused-underline-color($mat-gray);
+   z-index: 0;
+}

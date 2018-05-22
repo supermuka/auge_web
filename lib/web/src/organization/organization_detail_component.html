@@ -1,0 +1,20 @@
+<modal [visible]="true">
+    <material-dialog headered class="headered-dialog">
+        <div header>
+            <h3 *ngIf="organization.id == null">{{label('Add Organization')}}</h3>
+            <h3 *ngIf="organization.id != null">{{label('Edit Organization')}}</h3>
+        </div>
+        <material-content>
+            <material-input class="width-300" [(ngModel)]="organization.name" floatingLabel [label]="label('Name')" required [requiredErrorMsg]="requiredValueMsg()"></material-input>
+            <material-input [(ngModel)]="organization.code" floatingLabel [label]="label('Code')"></material-input>
+        </material-content>
+        <div footer>
+            <material-button  (trigger)="saveOrganization()">{{buttonLabel('Save')}}
+                <material-icon icon="save"></material-icon>
+            </material-button>
+            <material-button autoFocus (trigger)="goBack()">{{buttonLabel('Back')}}
+                <material-icon icon="arrow_back"></material-icon>
+            </material-button>
+        </div>
+    </material-dialog>
+</modal>

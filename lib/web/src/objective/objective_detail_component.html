@@ -1,0 +1,82 @@
+<modal [visible]="true">
+    <material-dialog headered class="headered-dialog">
+        <div header>
+            <h3 *ngIf="objective.id == null">{{label('Add Objective')}}</h3>
+            <h3 *ngIf="objective.id != null">{{label('Edit Objective')}}</h3>
+        </div>
+        <div class="w3-row">
+            <material-input class="width-240" [(ngModel)]="objective.name" floatingLabel [label]="label('Name')" required [requiredErrorMsg]="requiredValueMsg()"></material-input>
+        </div>
+        <div class="w3-row">
+            <material-input class="width-240" [(ngModel)]="objective.description" floatingLabel multiline rows="3" [label]="label('Description')"></material-input>
+        </div>
+        <div class="w3-row">
+            <div class="w3-col m6">
+                <label class="input-container">
+                    <span class="label-text">{{label('Start Date')}}</span>
+                    <material-datepicker [(date)]="startDate"
+                                         [minDate]="limitToDateRange.start"
+                                         [maxDate]="limitToDateRange.end"
+                                         [required]="false">
+                    </material-datepicker>
+                </label>
+            </div>
+            <div class="w3-col m6">
+                <label class="input-container">
+                    <span class="label-text">{{label('End Date')}}</span>
+                    <material-datepicker [(date)]="endDate"
+                                         [minDate]="limitToDateRange.start"
+                                         [maxDate]="limitToDateRange.end"
+                                         [required]="false">
+                    </material-datepicker>
+                </label>
+            </div>
+        </div>
+        <div class="w3-row">
+            <material-auto-suggest-input class="width-240"
+                                         [(inputText)]="alignedToInputText"
+                                         [filterSuggestions]="true"
+                                         [popupMatchInputWidth]="true"
+                                         [trailingGlyph]="leadingGlyph"
+                                         [rightAlign]="false"
+                                         [shouldClearOnSelection]="false"
+                                         [label]="label('Aligned To')"
+                                         [floatingLabel]="true"
+                                         [emptyPlaceholder]="emptyPlaceholder"
+                                         [selection]="alignedToSingleSelectModel"
+                                         [selectionOptions]="alignedToOptions"
+                                         [itemRenderer]="alignedToItemRenderer"
+                                         [limit]="10">
+            </material-auto-suggest-input>
+        </div>
+        <div class="w3-row">
+            <material-auto-suggest-input class="width-240"
+                                         [(inputText)]="leaderInputText"
+                                         [filterSuggestions]="true"
+                                         [popupMatchInputWidth]="true"
+                                         [trailingGlyph]="leadingGlyph"
+                                         [rightAlign]="false"
+                                         [shouldClearOnSelection]="false"
+                                         [label]="label('Leader')"
+                                         [floatingLabel]="true"
+                                         [emptyPlaceholder]="emptyPlaceholder"
+                                         [selection]="leaderSingleSelectModel"
+                                         [selectionOptions]="leaderOptions"
+                                         [itemRenderer]="leaderItemRenderer"
+                                         [factoryRenderer]="leaderFactoryRenderer"
+                                         [limit]="10">
+            </material-auto-suggest-input>
+        </div>
+        <div footer>
+            <material-button (trigger)="saveObjective()">{{buttonLabel('Save')}}
+                <material-icon icon="save"></material-icon>
+            </material-button>
+            <material-button autoFocus (trigger)="goBack()">{{buttonLabel('Back')}}
+                <material-icon icon="arrow_back"></material-icon>
+            </material-button>
+        </div>
+    </material-dialog>
+</modal>
+
+
+

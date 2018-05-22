@@ -1,0 +1,21 @@
+<div>
+   <!--
+   <material-icon icon="search" baseline></material-icon>
+   <input type="search" [(ngModel)]="termoBusca" placeholder="Buscar..."/>
+   -->
+   <material-auto-suggest-input class="material-input-theme-search" [(inputText)]="searchTerm"
+                                [filterSuggestions]="false"
+                                [popupMatchInputWidth]="false"
+                                [leadingGlyph]="searchLeadingGlyph"
+                                [shouldClearOnSelection]="true"
+                                [label]="searchLabel"
+                                [emptyPlaceholder]="searchEmptyPlaceholder">
+                                <!--
+                                [selection]="searchSingleSelectModel"
+                                [selectionOptions]="searchOptions"
+                                [itemRenderer]="searchItemRenderer"
+                                [factoryRenderer]="searchFactoryRenderer"
+                                [limit]="10">
+                                -->
+   </material-auto-suggest-input>
+</div>

@@ -1,0 +1,33 @@
+@import 'package:angular_components/css/material/material';
+@import 'package:angular_components/css/material/shadow';
+
+material-fab {
+    float: right;
+}
+
+.width-300 {
+   width: 300px;
+}
+
+.right {
+   float: right;
+}
+
+.content {
+   display: flex;
+   justify-content: center;
+}
+
+.form {
+   display: inline-block;
+   margin: 16px;
+   padding: 16px;
+}
+
+.shadow-box {
+   @include material-shadow();
+}
+
+.radio-per-line {
+  display: flex;
+}

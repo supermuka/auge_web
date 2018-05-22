@@ -1,0 +1,69 @@
+<modal [visible]="true">
+    <material-dialog headered class="headered-dialog">
+        <div header>
+            <h3 *ngIf="initiative.id == null">{{label('Add Initiative')}}</h3>
+            <h3 *ngIf="initiative.id == null">{{label('Edit Initiative')}}</h3>
+        </div>
+        <material-input class="width-240" [(ngModel)]="initiative.name" floatingLabel [label]="label('Name')" required [requiredErrorMsg]="requiredValueMsg()"></material-input>
+        <br/>
+        <material-input class="width-240" [(ngModel)]="initiative.description" floatingLabel multiline rows="3" [label]="label('Description')"></material-input>
+        <br/>
+        <material-auto-suggest-input class="width-480"
+                                     [(inputText)]="leaderInputText"
+                                     [filterSuggestions]="true"
+                                     [popupMatchInputWidth]="true"
+                                     [trailingGlyph]="leadingGlyph"
+                                     [rightAlign]="false"
+                                     [shouldClearOnSelection]="false"
+                                     [label]="label('Leader')"
+                                     [floatingLabel]="true"
+                                     [emptyPlaceholder]="emptyPlaceholder"
+                                     [selection]="leaderSingleSelectModel"
+                                     [selectionOptions]="leaderOptions"
+                                     [itemRenderer]="leaderItemRenderer"
+                                     [factoryRenderer]="leaderFactoryRenderer"
+                                     [limit]="10">
+        </material-auto-suggest-input>
+        <div class="material-shadow-box-list" elevation="2">
+            <material-input [(ngModel)]="stageEntry" floatingLabel [label]="label('Stage')"></material-input>
+            <material-dropdown-select [buttonText]="stateSingleSelectLabel"
+                                      [(selection)]="stateSingleSelectModel"
+                                      [(options)]="stateOptions"
+                                      [itemRenderer]="stateItemRenderer"
+                                      [factoryRenderer]="stateFactoryRenderer">
+            </material-dropdown-select>
+            <span>
+               <material-fab *ngIf="selectedStage == null" mini raised (trigger)="addStage()">
+                 <material-icon icon="add"></material-icon>
+               </material-fab>
+
+              <material-fab *ngIf="selectedStage != null" mini raised (trigger)="updateStage(selectedStage)">
+                 <material-icon icon="done"></material-icon>
+              </material-fab>
+            </span>
+            <material-list *ngFor="let stage of initiative.stages;let i = index">
+                <div *ngIf="i == 0 || initiative.stages[i-1]?.state?.id != initiative.stages[i]?.state?.id" group>
+                    <span><span *ngIf="stage?.state?.colorHue != null" [style.background-color]="'hsl(' + stage?.state?.colorHue + ', ' + stage?.state?.colorSaturation + '%,' + stage?.state?.colorLightness + '%)'">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;{{stage?.state?.name}}&nbsp;</span>
+                </div>
+                <material-list-item class="material-list-item" (trigger)="selectStage(stage)">
+                    <span class="width-200">{{stage.name}}</span>
+                    <span class="material-list-item-secondary">
+                        <material-fab mini (trigger)="removeStage(stage)">
+                            <material-icon icon="clear"></material-icon>
+                        </material-fab>
+                    </span>
+                </material-list-item>
+            </material-list>
+        </div>
+        <br/>
+        <div footer>
+            <material-button (trigger)="saveInitiative()">{{buttonLabel('Save')}}
+                <material-icon icon="save"></material-icon>
+            </material-button>
+
+            <material-button autoFocus (trigger)="goBack()">{{buttonLabel('Back')}}
+                <material-icon icon="arrow_back"></material-icon>
+            </material-button>
+        </div>
+    </material-dialog>
+</modal>

@@ -1,0 +1,89 @@
+<material-drawer temporary #drawer="drawer">
+    <material-list class="menu-drawer" *deferredContent>
+        <!--
+        <div group class="mat-drawer-spacer">
+        </div>
+        -->
+        <div group class="centralized">
+            <material-dropdown-select class="button-look"
+                                      slide="y"
+                                      [buttonText]="organizationSingleSelectLabel"
+                                      [(selection)]="organizationSingleSelectModel"
+                                      [(options)]="organizationOptions"
+                                      [itemRenderer]="itemRenderer">
+            </material-dropdown-select>
+        </div>
+        <div group>
+            <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(insightsRouteUrl)">
+                <material-icon icon="home"></material-icon>{{label('Insights')}}
+            </material-list-item>
+            <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(mapRouteUrl)">
+                <material-icon icon="toc"></material-icon>{{label('Objectives Map')}}
+            </material-list-item>
+            <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(objectivesRouteUrl)">
+                <material-icon icon="toc"></material-icon>{{label('Objectives')}}
+            </material-list-item>
+            <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(initiativesRouteUrl)">
+                <material-icon icon="toc"></material-icon>{{label('Initiatives')}}
+            </material-list-item>
+
+        </div>
+        <div group>
+            <div label>{{label('Admin')}}</div>
+            <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(organizationDetailRouteUrl)">
+                <material-icon icon="account_circle"></material-icon>{{label('Organization')}}
+            </material-list-item>
+            <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(usersRouteUrl)">
+                <material-icon icon="account_circle"></material-icon>{{label('Users')}}
+            </material-list-item>
+        </div>
+        <div *ngIf="isSuperAdmin" group>
+            <div label>{{label('Super Admin')}}</div>
+            <material-list-item [disabled]="hasSelectedOrganization" (click)="drawer.toggle();goTo(organizationsRouteUrl)">
+                <material-icon icon="account_circle"></material-icon>{{label('All Organizations')}}
+            </material-list-item>
+
+            <material-list-item [disabled]="hasSelectedOrganization" (click)="drawer.toggle();goTo(usersRouteUrl)">
+                <material-icon icon="account_circle"></material-icon>{{label('All Users')}}
+            </material-list-item>
+        </div>
+    </material-list>
+</material-drawer>
+<material-content>
+    <header class="material-header shadow">
+        <div class="material-header-row">
+            <material-button icon
+                             class="material-drawer-button" (trigger)="drawer.toggle()">
+                <material-icon icon="menu"></material-icon>
+            </material-button>
+            <div class="hide-title-small-width-search-enabled-{{searchEnabled}}">
+               <span class="material-header-title">{{headerTitle}}</span>
+            </div>
+            <div class="material-spacer"></div>
+
+            <auge-search *ngIf="searchEnabled == true">
+            </auge-search>
+
+            <div class="material-spacer"></div>
+
+            <nav class="material-navigation centralized">
+                <!--
+
+                -->
+                <span class="spacer"></span>
+
+                <span class="avatar" [style.background-image]="'url(' + userUrlImage() + ')'"></span>
+                <material-dropdown-select class="button-look"
+                                          slide="y"
+                                          [(selection)]="userProfileLogoutSingleSelectModel"
+                                          [(options)]="userProfileLogoutOptions"
+                                          [itemRenderer]="itemRenderer">
+                </material-dropdown-select>
+            </nav>
+        </div>
+    </header>
+    <div class="opcaoConteudo main">
+        <router-outlet [routes]="routes"></router-outlet>
+    </div>
+</material-content>
+
