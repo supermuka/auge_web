@@ -221,7 +221,7 @@ class ObjectiveAugeApi {
 
   // *** OBJECTIVES ***
   // alignedToRecursiveDeep: 0 not call; 1 call once; 2 call tow, etc...
-  Future<List<Objective>> _queryGetObjectives(String organizationId, {String id, int alignedToRecursive = 1, bool withMeasures = true, bool treeAlignedWithChildren = false, bool withProfile = false}) async {
+  Future<List<Objective>> _queryGetObjectives({String organizationId, String id, int alignedToRecursive = 1, bool withMeasures = true, bool treeAlignedWithChildren = false, bool withProfile = false}) async {
     List<List> results;
 
    // String queryStatementColumns = "objective.id::VARCHAR, objective.name, objective.description, objective.start_date, objective.end_date, objective.leader_user_id, objective.aligned_to_objective_id";
@@ -309,8 +309,7 @@ class ObjectiveAugeApi {
         leaderUser = await _augeApi.getUserById(row[5], withProfile: withProfile);
 
         if (row[6] != null && alignedToRecursive > 0) {
-          alignedToObjectives = await _queryGetObjectives(
-              organizationId, id: row[6],
+          alignedToObjectives = await _queryGetObjectives(id: row[6],
               alignedToRecursive: --alignedToRecursive);
           alignedToObjective = alignedToObjectives.first;
         }
@@ -353,17 +352,17 @@ class ObjectiveAugeApi {
   @ApiMethod( method: 'GET', path: 'organization/{organizationId}/objetives')
   Future<List<Objective>> getObjectives(String organizationId, {bool withMeasures, bool treeAlignedWithChildren, bool withProfile}) async {
     try {
-      return _queryGetObjectives(organizationId, withMeasures: withMeasures, treeAlignedWithChildren: treeAlignedWithChildren, withProfile: withProfile);
+      return _queryGetObjectives(organizationId: organizationId, withMeasures: withMeasures, treeAlignedWithChildren: treeAlignedWithChildren, withProfile: withProfile);
     } on PostgreSQLException catch (e) {
       throw new ApplicationError(e);
     }
   }
 
   /// Return an [Objective] from an organization by Id
-  @ApiMethod( method: 'GET', path: 'organization/{organizationId}/objectives/{id}')
-  Future<Objective> getObjectiveById(String organizationId, String id, {bool withMeasures}) async {
+  @ApiMethod( method: 'GET', path: 'objectives/{id}')
+  Future<Objective> getObjectiveById(String id, {bool withMeasures}) async {
     try {
-      List<Objective> objectives = await _queryGetObjectives(organizationId, id: id, withMeasures: withMeasures);
+      List<Objective> objectives = await _queryGetObjectives(id: id, withMeasures: withMeasures);
       return objectives.first;
     } on PostgreSQLException catch (e) {
       throw new ApplicationError(e);

@@ -39,3 +39,9 @@ cd bin
 dart --snapshot=augeapi.dart.snapshot augeapi.dart
 
 https://github.com/dart-lang/sdk/wiki/Snapshots
+
+
+SSL
+
+https://www.digitalocean.com/community/tutorials/how-to-create-a-ssl-certificate-on-apache-for-debian-8
+https://certbot.eff.org/lets-encrypt/debianstretch-apache

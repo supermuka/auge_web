@@ -369,6 +369,7 @@ class AugeApi {
   /// Return an [Organizations] authorizated by User Id
   @ApiMethod( method: 'GET', path: 'users_profile_organizations/{user_id}')
   Future<List<UserProfileOrganization>> getAuthorizatedOrganizationsByUserId(String user_id) async {
+
     try {
       List<UserProfileOrganization> usersOrganizations;
       usersOrganizations =
@@ -377,7 +378,8 @@ class AugeApi {
     } on PostgreSQLException catch (e) {
       throw new ApplicationError(e);
     }
+
   }
 
-
 }
+

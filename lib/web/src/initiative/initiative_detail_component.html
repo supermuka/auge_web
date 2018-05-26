@@ -2,7 +2,7 @@
     <material-dialog headered class="headered-dialog">
         <div header>
             <h3 *ngIf="initiative.id == null">{{label('Add Initiative')}}</h3>
-            <h3 *ngIf="initiative.id == null">{{label('Edit Initiative')}}</h3>
+            <h3 *ngIf="initiative.id != null">{{label('Edit Initiative')}}</h3>
         </div>
         <material-input class="width-240" [(ngModel)]="initiative.name" floatingLabel [label]="label('Name')" required [requiredErrorMsg]="requiredValueMsg()"></material-input>
         <br/>
@@ -12,7 +12,7 @@
                                      [(inputText)]="leaderInputText"
                                      [filterSuggestions]="true"
                                      [popupMatchInputWidth]="true"
-                                     [trailingGlyph]="leadingGlyph"
+                                     [trailingGlyph]="glyph"
                                      [rightAlign]="false"
                                      [shouldClearOnSelection]="false"
                                      [label]="label('Leader')"
@@ -55,6 +55,23 @@
                 </material-list-item>
             </material-list>
         </div>
+        <br/>
+
+        <material-auto-suggest-input class="width-480"
+                                     [(inputText)]="objectiveInputText"
+                                     [filterSuggestions]="true"
+                                     [popupMatchInputWidth]="true"
+                                     [trailingGlyph]="glyph"
+                                     [rightAlign]="false"
+                                     [shouldClearOnSelection]="false"
+                                     [label]="label('Objective')"
+                                     [floatingLabel]="true"
+                                     [emptyPlaceholder]="emptyPlaceholder"
+                                     [selection]="objectiveSingleSelectModel"
+                                     [selectionOptions]="objectiveOptions"
+                                     [itemRenderer]="objectiveItemRenderer"
+                                     [limit]="10">
+        </material-auto-suggest-input>
         <br/>
         <div footer>
             <material-button (trigger)="saveInitiative()">{{buttonLabel('Save')}}

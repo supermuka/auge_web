@@ -10,6 +10,7 @@ import 'package:postgres/postgres.dart';
 
 import 'package:auge/server/augeconnection.dart';
 import 'package:auge/server/augeapi.dart';
+import 'package:auge/server/objectiveaugeapi.dart';
 
 import 'package:auge/shared/model/initiative/initiative.dart';
 import 'package:auge/shared/model/initiative/state.dart';
@@ -18,15 +19,18 @@ import 'package:auge/shared/model/initiative/stage.dart';
 import 'package:auge/shared/model/initiative/work_item_check_item.dart';
 import 'package:auge/shared/model/organization.dart';
 import 'package:auge/shared/model/user.dart';
+import 'package:auge/shared/model/objective/objective.dart';
 
 /// Api for Initiative Domain
 @ApiClass(version: 'v1')
 class InitiativeAugeApi {
 
   AugeApi _augeApi;
+  ObjectiveAugeApi _objectiveAugeApi;
 
   InitiativeAugeApi() {
     _augeApi = new AugeApi();
+    _objectiveAugeApi = new ObjectiveAugeApi();
     AugeConnection.createConnection();
   }
 
@@ -37,7 +41,7 @@ class InitiativeAugeApi {
 
     String queryStatement;
 
-    queryStatement = "SELECT initiative.id::VARCHAR, initiative.name, initiative.description, initiative.organization_id, initiative.leader_user_id"
+    queryStatement = "SELECT initiative.id::VARCHAR, initiative.name, initiative.description, initiative.organization_id, initiative.leader_user_id, initiative.objective_id"
         " FROM auge_initiative.initiatives initiative";
 
     Map<String, dynamic> substitutionValues;
@@ -54,6 +58,7 @@ class InitiativeAugeApi {
 
     List<Initiative> initiatives = new List();
     List<WorkItem> workItems;
+    Objective objective;
     Organization organization;
     User user;
     List<Stage> stages;
@@ -62,11 +67,13 @@ class InitiativeAugeApi {
       // Work Items
       workItems = (withWorkItems) ? await _queryGetWorkItems(initiativeId: row[0]) : [];
 
+
       organization = await _augeApi.getOrganizationById(row[3]);
       user = await _augeApi.getUserById(row[4]);
       stages = await getStages(row[0]);
+      objective = row[3] == null ? null : await _objectiveAugeApi.getObjectiveById(row[5]);
 
-      initiatives.add(new Initiative()..id = row[0]..name = row[1]..description = row[2]..workItems = workItems..organization = organization..leader = user..stages = stages);
+      initiatives.add(new Initiative()..id = row[0]..name = row[1]..description = row[2]..objective = row[3]..workItems = workItems..organization = organization..leader = user..stages = stages);
     }
     return initiatives;
   }
@@ -294,23 +301,24 @@ class InitiativeAugeApi {
   /// Create (insert) a new initiative
   @ApiMethod( method: 'POST', path: 'initiatives')
   Future<VoidMessage> createInitiative(Initiative initiative) async {
-
     initiative.id = new Uuid().v4();
     try {
       await AugeConnection.getConnection().transaction((ctx) async {
         await ctx.query(
-            "INSERT INTO auge_initiative.initiatives(id, name, description, organization_id, leader_user_id) VALUES"
+            "INSERT INTO auge_initiative.initiatives(id, name, description, organization_id, leader_user_id,  objective_id) VALUES"
                 "(@id,"
                 "@name,"
                 "@description,"
                 "@organization_id,"
-                "@leader_user_id)"
+                "@leader_user_id,"
+                "@objective_id)"
             , substitutionValues: {
           "id": initiative.id,
           "name": initiative.name,
           "description": initiative.description,
           "organization_id": initiative.organization.id,
-          "leader_user_id": initiative.leader.id});
+          "leader_user_id": initiative.leader.id,
+          "objective_id": initiative?.objective == null ? null : initiative.objective.id,});
 
         for (Stage stage in initiative.stages) {
           stage.id = new Uuid().v4();
@@ -332,19 +340,8 @@ class InitiativeAugeApi {
     } on PostgreSQLException catch (e) {
       throw new ApplicationError(e);
     }
-
-/*
-    AugeConnection.getConnection().transaction((ctx) async {
-
-      await ctx.query(
-          "DELETE FROM auge_initiative.initiatives initiative"
-              " WHERE initiative.id = @id"
-          , substitutionValues: {
-        "id": id});
-    });
-  */
-
   }
+
 
   /// Update an initiative passing an instance of [Initiative]
   @ApiMethod( method: 'PUT', path: 'initiatives')
@@ -355,19 +352,20 @@ class InitiativeAugeApi {
               " SET name = @name,"
               " description = @description,"
               " organization_id = @organization_id,"
-              " leader_user_id = @leader_user_id"
+              " leader_user_id = @leader_user_id,"
+              " objective_id = @objective_id"
               " WHERE id = @id"
           , substitutionValues: {
         "id": initiative.id,
         "name": initiative.name,
         "description": initiative.description,
         "organization_id": initiative.organization.id,
-        "leader_user_id": initiative.leader.id});
+        "leader_user_id": initiative.leader.id,
+        "objective_id": initiative.objective.id});
     } on PostgreSQLException catch (e) {
       throw new ApplicationError(e);
     }
   }
-
 
   // *** INITIATIVE WORK ITEM ***
 

@@ -20,8 +20,8 @@ class ObjectiveService {
   }
 
   /// Return an [Objective] by Id
-  Future<Objective> getObjectiveById(String organizationId, String id, {bool withMeasures}) async {
-    return await _augeApiService.objectiveAugeApi.getObjectiveById(organizationId, id, withMeasures: withMeasures);
+  Future<Objective> getObjectiveById(String id, {bool withMeasures}) async {
+    return await _augeApiService.objectiveAugeApi.getObjectiveById(id, withMeasures: withMeasures);
   }
 
 

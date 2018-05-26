@@ -81,4 +81,5 @@ class AuthComponent {
   goToAppLayout() {
     _router.navigate(AppRoutes.appLayoutRoute.toUrl());
   }
+
 }

@@ -72,7 +72,7 @@ class MeasureDetailComponent implements OnActivate {
 
 
     if (objectiveId != null) {
-      objective = await _objectiveService.getObjectiveById(_authService.selectedOrganization.id, objectiveId, withMeasures: false);
+      objective = await _objectiveService.getObjectiveById(objectiveId, withMeasures: false);
     }
 
 

@@ -7,27 +7,29 @@ environment:
 dependencies:
   code_builder: ^3.0.3
   #browser: ^0.10.0+3
-  angular_router: ^2.0.0-alpha+10
-  angular: ^5.0.0-alpha+10
-  angular_forms: ^2.0.0-alpha+2
-  angular_components: ^0.9.0-alpha+10
-  angular_compiler: ^0.4.0-alpha+10
-  intl: ^0.15.2
-  intl_translation: ^0.16.3
+  angular_router: ^2.0.0-alpha+11
+  angular: ^5.0.0-alpha+12
+  angular_forms: ^2.0.0-alpha+4
+  angular_components: ^0.9.0-alpha+12
+  angular_compiler: ^0.4.0-alpha+12
+  angular_ast: ^0.5.3
+  intl: ^0.15.6
+  intl_translation: ^0.16.7
   rpc: ^0.5.8
-  postgres: ^0.9.8
-  build: ^0.12.0+2
-  sass_builder: ^1.1.5
+  postgres: ^0.9.9
+  build: ^0.12.6
+  sass_builder: ^2.0.0
   http: '>=0.11.1 <0.12.0'
   _discoveryapis_commons: '>=0.1.0 <0.2.0'
   crypto: ^2.0.2+1
+  uuid: ^1.0.0
   #quiver: ^0.29.0+1
 
 dev_dependencies:
-  build_runner: ^0.8.2+2
-  build_web_compilers: ^0.3.6
+  build_runner: ^0.8.9
+  build_web_compilers: ^0.4.0+1
   webdriver: ^2.0.0-beta
 
 dependency_overrides:
-  analyzer: ^0.31.2-alpha.1
-  quiver: ^0.29.0+1
+  #analyzer: ^0.31.2-alpha.1
+  #quiver: ^0.29.0+1

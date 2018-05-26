@@ -7,6 +7,8 @@ import 'package:auge/shared/model/initiative/state.dart';
 import 'package:auge/shared/model/initiative/stage.dart';
 import 'package:auge/shared/model/initiative/work_item.dart';
 
+import 'package:auge/shared/model/objective/objective.dart';
+
 /// Domain model class to represent an initiative (action plan, projects)
 class Initiative extends Object {
   String id;
@@ -14,8 +16,10 @@ class Initiative extends Object {
   String name;
   String description;
 
+  Objective objective;
   Organization organization;
   User leader;
+
   List<Stage> stages;
   List<WorkItem> workItems;
 

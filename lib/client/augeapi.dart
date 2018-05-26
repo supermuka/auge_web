@@ -207,14 +207,13 @@ class AugeApi {
   async.Future<User> getAuthenticatedUserWithEmail(
       core.String eMail, core.String password,
       {core.bool withProfile}) {
-    core.print('xx 0');
     var _url = null;
     var _queryParams = new core.Map();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
-    core.print('xx 1');
+
     if (eMail == null) {
       throw new core.ArgumentError("Parameter eMail is required.");
     }
@@ -224,20 +223,18 @@ class AugeApi {
     if (withProfile != null) {
       _queryParams["withProfile"] = ["${withProfile}"];
     }
-    core.print('xx 2');
 
     _url = 'users/' +
         commons.Escaper.ecapeVariable('$eMail') +
         '/' +
         commons.Escaper.ecapeVariable('$password');
-    core.print('xx 3');
+
     var _response = _requester.request(_url, "GET",
         body: _body,
         queryParams: _queryParams,
         uploadOptions: _uploadOptions,
         uploadMedia: _uploadMedia,
         downloadOptions: _downloadOptions);
-    core.print('xx 4');
     return _response.then((data) => UserFactory.fromJson(data));
   }
 

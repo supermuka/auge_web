@@ -18,6 +18,7 @@ class AugeApiService {
 
   final String _protocol = window.location.protocol;
   //final String _serverUrl = '35.196.72.249:8091/'; // GCloud
+  // final String _serverUrl = '35.231.201.73:8091/'; // GCloud
   final String _serverUrl = 'localhost:8091/'; // Local;
 
   AugeApi _augeApi;

@@ -1,10 +1,10 @@
 targets:
   $default:
     builders:
-      angular:
-        options:
+      #angular:
+        #options:
           #use_legacy_style_encapsulation: false
-          fast_boot: true
+          #fast_boot: true
           #use_new_template_parser: true
       build_web_compilers|entrypoint:
         options:

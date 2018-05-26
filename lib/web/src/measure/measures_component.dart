@@ -114,7 +114,7 @@ class MeasuresComponent implements OnActivate, OnDestroy {
     String id = routerStateCurrent.parameters[AppRoutes.objectiveIdParameter];
 
     if (id != null && id.isNotEmpty) {
-      objective =  await _objectiveService.getObjectiveById(_authService.selectedOrganization.id, id, withMeasures: true);
+      objective =  await _objectiveService.getObjectiveById(id, withMeasures: true);
     }
 
     _appLayoutService.searchEnabled = true;
@@ -164,5 +164,4 @@ class MeasuresComponent implements OnActivate, OnDestroy {
   }
 
   toInt(double value) => value?.toInt();
-
 }

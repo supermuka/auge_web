@@ -269,8 +269,6 @@ class ObjectiveAugeApi {
 
   /// Request parameters:
   ///
-  /// [organizationId] - Path parameter: 'organizationId'.
-  ///
   /// [id] - Path parameter: 'id'.
   ///
   /// [withMeasures] - Query parameter: 'withMeasures'.
@@ -282,8 +280,7 @@ class ObjectiveAugeApi {
   ///
   /// If the used [http.Client] completes with an error when making a REST call,
   /// this method will complete with the same error.
-  async.Future<Objective> getObjectiveById(
-      core.String organizationId, core.String id,
+  async.Future<Objective> getObjectiveById(core.String id,
       {core.bool withMeasures}) {
     var _url = null;
     var _queryParams = new core.Map();
@@ -292,9 +289,6 @@ class ObjectiveAugeApi {
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
-    if (organizationId == null) {
-      throw new core.ArgumentError("Parameter organizationId is required.");
-    }
     if (id == null) {
       throw new core.ArgumentError("Parameter id is required.");
     }
@@ -302,10 +296,7 @@ class ObjectiveAugeApi {
       _queryParams["withMeasures"] = ["${withMeasures}"];
     }
 
-    _url = 'organization/' +
-        commons.Escaper.ecapeVariable('$organizationId') +
-        '/objectives/' +
-        commons.Escaper.ecapeVariable('$id');
+    _url = 'objectives/' + commons.Escaper.ecapeVariable('$id');
 
     var _response = _requester.request(_url, "GET",
         body: _body,

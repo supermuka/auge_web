@@ -9,6 +9,9 @@ import 'dart:convert' as convert;
 import 'package:_discoveryapis_commons/_discoveryapis_commons.dart' as commons;
 import 'package:http/http.dart' as http;
 import 'package:auge/shared/model/initiative/initiative.dart';
+import 'package:auge/shared/model/objective/measure.dart';
+import 'package:auge/shared/model/objective/measure_unit.dart';
+import 'package:auge/shared/model/objective/objective.dart';
 import 'package:auge/shared/model/organization.dart';
 import 'package:auge/shared/model/initiative/stage.dart';
 import 'package:auge/shared/model/initiative/state.dart';
@@ -446,6 +449,9 @@ class InitiativeFactory {
     if (_json.containsKey("name")) {
       message.name = _json["name"];
     }
+    if (_json.containsKey("objective")) {
+      message.objective = ObjectiveFactory.fromJson(_json["objective"]);
+    }
     if (_json.containsKey("organization")) {
       message.organization =
           OrganizationFactory.fromJson(_json["organization"]);
@@ -476,6 +482,9 @@ class InitiativeFactory {
     if (message.name != null) {
       _json["name"] = message.name;
     }
+    if (message.objective != null) {
+      _json["objective"] = ObjectiveFactory.toJson(message.objective);
+    }
     if (message.organization != null) {
       _json["organization"] = OrganizationFactory.toJson(message.organization);
     }
@@ -487,6 +496,177 @@ class InitiativeFactory {
       _json["workItems"] = message.workItems
           .map((value) => WorkItemFactory.toJson(value))
           .toList();
+    }
+    return _json;
+  }
+}
+
+class MeasureFactory {
+  static Measure fromJson(core.Map _json) {
+    var message = new Measure();
+    if (_json.containsKey("currentValue")) {
+      message.currentValue = _json["currentValue"];
+    }
+    if (_json.containsKey("description")) {
+      message.description = _json["description"];
+    }
+    if (_json.containsKey("endValue")) {
+      message.endValue = _json["endValue"];
+    }
+    if (_json.containsKey("id")) {
+      message.id = _json["id"];
+    }
+    if (_json.containsKey("measureUnit")) {
+      message.measureUnit = MeasureUnitFactory.fromJson(_json["measureUnit"]);
+    }
+    if (_json.containsKey("metric")) {
+      message.metric = _json["metric"];
+    }
+    if (_json.containsKey("name")) {
+      message.name = _json["name"];
+    }
+    if (_json.containsKey("startValue")) {
+      message.startValue = _json["startValue"];
+    }
+    return message;
+  }
+
+  static core.Map toJson(Measure message) {
+    var _json = new core.Map();
+    if (message.currentValue != null) {
+      _json["currentValue"] = message.currentValue;
+    }
+    if (message.description != null) {
+      _json["description"] = message.description;
+    }
+    if (message.endValue != null) {
+      _json["endValue"] = message.endValue;
+    }
+    if (message.id != null) {
+      _json["id"] = message.id;
+    }
+    if (message.measureUnit != null) {
+      _json["measureUnit"] = MeasureUnitFactory.toJson(message.measureUnit);
+    }
+    if (message.metric != null) {
+      _json["metric"] = message.metric;
+    }
+    if (message.name != null) {
+      _json["name"] = message.name;
+    }
+    if (message.startValue != null) {
+      _json["startValue"] = message.startValue;
+    }
+    return _json;
+  }
+}
+
+class MeasureUnitFactory {
+  static MeasureUnit fromJson(core.Map _json) {
+    var message = new MeasureUnit();
+    if (_json.containsKey("id")) {
+      message.id = _json["id"];
+    }
+    if (_json.containsKey("name")) {
+      message.name = _json["name"];
+    }
+    if (_json.containsKey("symbol")) {
+      message.symbol = _json["symbol"];
+    }
+    return message;
+  }
+
+  static core.Map toJson(MeasureUnit message) {
+    var _json = new core.Map();
+    if (message.id != null) {
+      _json["id"] = message.id;
+    }
+    if (message.name != null) {
+      _json["name"] = message.name;
+    }
+    if (message.symbol != null) {
+      _json["symbol"] = message.symbol;
+    }
+    return _json;
+  }
+}
+
+class ObjectiveFactory {
+  static Objective fromJson(core.Map _json) {
+    var message = new Objective();
+    if (_json.containsKey("alignedTo")) {
+      message.alignedTo = ObjectiveFactory.fromJson(_json["alignedTo"]);
+    }
+    if (_json.containsKey("alignedWithChildren")) {
+      message.alignedWithChildren = _json["alignedWithChildren"]
+          .map((value) => ObjectiveFactory.fromJson(value))
+          .toList();
+    }
+    if (_json.containsKey("description")) {
+      message.description = _json["description"];
+    }
+    if (_json.containsKey("endDate")) {
+      message.endDate = core.DateTime.parse(_json["endDate"]);
+    }
+    if (_json.containsKey("id")) {
+      message.id = _json["id"];
+    }
+    if (_json.containsKey("leader")) {
+      message.leader = UserFactory.fromJson(_json["leader"]);
+    }
+    if (_json.containsKey("measures")) {
+      message.measures = _json["measures"]
+          .map((value) => MeasureFactory.fromJson(value))
+          .toList();
+    }
+    if (_json.containsKey("name")) {
+      message.name = _json["name"];
+    }
+    if (_json.containsKey("organization")) {
+      message.organization =
+          OrganizationFactory.fromJson(_json["organization"]);
+    }
+    if (_json.containsKey("startDate")) {
+      message.startDate = core.DateTime.parse(_json["startDate"]);
+    }
+    return message;
+  }
+
+  static core.Map toJson(Objective message) {
+    var _json = new core.Map();
+    if (message.alignedTo != null) {
+      _json["alignedTo"] = ObjectiveFactory.toJson(message.alignedTo);
+    }
+    if (message.alignedWithChildren != null) {
+      _json["alignedWithChildren"] = message.alignedWithChildren
+          .map((value) => ObjectiveFactory.toJson(value))
+          .toList();
+    }
+    if (message.description != null) {
+      _json["description"] = message.description;
+    }
+    if (message.endDate != null) {
+      _json["endDate"] = (message.endDate).toIso8601String();
+    }
+    if (message.id != null) {
+      _json["id"] = message.id;
+    }
+    if (message.leader != null) {
+      _json["leader"] = UserFactory.toJson(message.leader);
+    }
+    if (message.measures != null) {
+      _json["measures"] = message.measures
+          .map((value) => MeasureFactory.toJson(value))
+          .toList();
+    }
+    if (message.name != null) {
+      _json["name"] = message.name;
+    }
+    if (message.organization != null) {
+      _json["organization"] = OrganizationFactory.toJson(message.organization);
+    }
+    if (message.startDate != null) {
+      _json["startDate"] = (message.startDate).toIso8601String();
     }
     return _json;
   }

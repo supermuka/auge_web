@@ -40,7 +40,11 @@ Future main(List<String> args) async {
   _apiServer.addApi(new ObjectiveAugeApi());
   _apiServer.enableDiscoveryApi();
 
+  // response.headers.add('Access-Control-Allow-Headers', '*');
+
+
   server.listen(_apiServer.httpRequestHandler);
+
 
   /*
    HttpServer.bind('127.0.0.1', 8080).then((server){

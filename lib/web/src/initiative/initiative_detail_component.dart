@@ -11,13 +11,14 @@ import 'package:auge/shared/model/user.dart';
 import 'package:auge/shared/model/initiative/initiative.dart';
 import 'package:auge/shared/model/initiative/stage.dart';
 import 'package:auge/shared/model/initiative/state.dart';
+import 'package:auge/shared/model/objective/objective.dart';
 import 'package:auge/shared/message/messages.dart';
 
 import 'package:auge/web/services/common_service.dart' as common_service;
 import 'package:auge/web/src/auth/auth_service.dart';
 import 'package:auge/web/src/user/user_service.dart';
-
 import 'package:auge/web/src/initiative/initiative_service.dart';
+import 'package:auge/web/src/objective/objective_service.dart';
 
 import 'package:angular_components/model/ui/has_factory.dart';
 
@@ -28,7 +29,7 @@ import 'initiative_detail_component.template.dart' as initiative_detail_componen
 
 @Component(
     selector: 'auge-initiative-detail',
-    providers: const [UserService],
+    providers: const [ObjectiveService, UserService],
     directives: const [
       coreDirectives,
       routerDirectives,
@@ -52,6 +53,7 @@ class InitiativeDetailComponent implements OnActivate {
 
   final AuthService _authService;
   final InitiativeService _initiativeService;
+  final ObjectiveService _objectiveService;
   final UserService _userService;
   final Location _location;
   final Router _router;
@@ -65,13 +67,17 @@ class InitiativeDetailComponent implements OnActivate {
   SelectionModel stateSingleSelectModel;
 
   String leaderInputText = '';
+  String objectiveInputText = '';
   SelectionOptions leaderOptions;
+  SelectionOptions objectiveOptions;
   SelectionModel leaderSingleSelectModel;
-  String leadingGlyph = 'search';
+  SelectionModel objectiveSingleSelectModel;
+  String glyph = 'search';
   String leaderLabel = 'Leader';
+  String objectiveLabel = 'Objective';
   String emptyPlaceholder = 'No match';
 
-  InitiativeDetailComponent(this._authService, this._initiativeService, this._userService, this._location, this._router);
+  InitiativeDetailComponent(this._authService, this._initiativeService, this._objectiveService,  this._userService, this._location, this._router);
 
   // Define messages and labels
   String requiredValueMsg() => CommonMessage.requiredValueMsg();
@@ -104,8 +110,13 @@ class InitiativeDetailComponent implements OnActivate {
     leaderOptions = new StringSelectionOptions<User>(
         users, toFilterableString: (User user) => user.name);
 
+    // Objective
+    List<Objective> objectives = await _objectiveService.getObjectives(_authService.selectedOrganization.id, withMeasures: false);
 
+    objectiveOptions = new StringSelectionOptions<Objective>(
+        objectives, toFilterableString: (Objective objective) => objective.name);
 
+    // Leader Select Model
     leaderSingleSelectModel =
     new SelectionModel.single()
       ..selectionChanges.listen((leader) {
@@ -117,6 +128,20 @@ class InitiativeDetailComponent implements OnActivate {
 
     if (initiative.leader != null)
       leaderSingleSelectModel.select(initiative.leader);
+
+
+    // Objective Select Model
+    objectiveSingleSelectModel =
+    new SelectionModel.single()
+      ..selectionChanges.listen((objective) {
+
+        if (objective.isNotEmpty && objective.first.added != null && objective.first.added.length != 0 && objective.first.added?.first != null) {
+          initiative.objective = objective.first.added.first;
+        }
+      });
+
+    if (initiative.objective != null)
+      objectiveSingleSelectModel.select(initiative.objective);
   }
 
   void saveInitiative() {
@@ -140,7 +165,21 @@ class InitiativeDetailComponent implements OnActivate {
     return nameLabel;
   }
 
+  String get objectiveLabelRenderer {
+    String nameLabel;
+    if ((objectiveSingleSelectModel != null &&
+        objectiveSingleSelectModel.selectedValues != null &&
+        objectiveSingleSelectModel.selectedValues.length != null)) {
+
+      nameLabel = objectiveSingleSelectModel.selectedValues.first.name;
+    }
+
+    return nameLabel;
+  }
+
   ItemRenderer get leaderItemRenderer => (dynamic user) => user.name;
+
+  ItemRenderer get objectiveItemRenderer => (dynamic objective) => objective.name;
 
   Future<Null> goToList() async {
     _router.navigate(AppRoutes.initiativesRoute.toUrl());
@@ -165,7 +204,6 @@ class InitiativeDetailComponent implements OnActivate {
       initiative.stages.sort((a, b) =>
           a?.state?.index?.compareTo(b?.state?.index));
     }
-
     stageEntry = '';
   }
 

@@ -88,7 +88,7 @@ class ObjectiveDetailComponent implements OnActivate {
     String id = routerStateCurrent.parameters[AppRoutes.objectiveIdParameter];
 
     if (id != null && id.isNotEmpty) {
-      objective  = await _objectiveService.getObjectiveById(_authService.selectedOrganization.id, id);
+      objective  = await _objectiveService.getObjectiveById(id);
     } else {
       objective.organization = _authService.selectedOrganization;
     }

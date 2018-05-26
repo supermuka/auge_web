@@ -27,14 +27,10 @@ class AuthService  {
 
     /// Return an [Organization] list for an eMail.
   Future<Null> getAuthorizatedOrganizationsByUserId(String id) async {
-
     List<UserProfileOrganization> usersOrganizations;
-
     if (id.isNotEmpty)
       usersOrganizations = await _augeApiService.augeApi.getAuthorizatedOrganizationsByUserId(id);
-
     return usersOrganizations;
-
   }
 
   close() async {
@@ -51,19 +47,12 @@ class AuthService  {
         String password = base64.encode(sha256
             .convert(passwordStr.codeUnits)
             .bytes);
-
-        print('getAuthenticatedUserWithEmail');
         user = await _augeApiService.augeApi.getAuthenticatedUserWithEmail(
              email, password, withProfile: true);
-        print('getAuthenticatedUserWithEmail 2');
-        print(user);
-
       } catch (e) {
         print(e);
       }
     }
-
     return user;
   }
-
 }
