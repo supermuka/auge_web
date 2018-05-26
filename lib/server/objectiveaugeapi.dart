@@ -231,8 +231,8 @@ class ObjectiveAugeApi {
     Map<String, dynamic> substitutionValues;
 
     if (id != null) {
-      queryStatementWhere = " objective.organization_id = @organization_id and objective.id = @id";
-      substitutionValues = {"organization_id": organizationId, "id": id};
+      queryStatementWhere = " objective.id = @id";
+      substitutionValues = {"id": id};
     } else {
       queryStatementWhere = " objective.organization_id = @organization_id";
       substitutionValues = {"organization_id": organizationId};

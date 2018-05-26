@@ -71,9 +71,9 @@ class InitiativeAugeApi {
       organization = await _augeApi.getOrganizationById(row[3]);
       user = await _augeApi.getUserById(row[4]);
       stages = await getStages(row[0]);
-      objective = row[3] == null ? null : await _objectiveAugeApi.getObjectiveById(row[5]);
+      objective = row[5] == null ? null : await _objectiveAugeApi.getObjectiveById(row[5]);
+      initiatives.add(new Initiative()..id = row[0]..name = row[1]..description = row[2]..workItems = workItems..organization = organization..leader = user..stages = stages..objective = objective);
 
-      initiatives.add(new Initiative()..id = row[0]..name = row[1]..description = row[2]..objective = row[3]..workItems = workItems..organization = organization..leader = user..stages = stages);
     }
     return initiatives;
   }
