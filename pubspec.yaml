@@ -23,6 +23,7 @@ dependencies:
   _discoveryapis_commons: '>=0.1.0 <0.2.0'
   crypto: ^2.0.2+1
   uuid: ^1.0.0
+  image: ^2.0.0
   #quiver: ^0.29.0+1
 
 dev_dependencies:

@@ -5,7 +5,7 @@
             <h3 *ngIf="user.id != null">{{label('Edit User')}}</h3>
         </div>
         <div>
-            <material-input [(ngModel)]="user.name" floatingLabel [label]="label('User')" required [requiredErrorMsg]="requiredValueMsg()"></material-input>
+            <material-input [(ngModel)]="user.name" floatingLabel [label]="label('Name')" required [requiredErrorMsg]="requiredValueMsg()"></material-input>
             <br/>
             <material-input [(ngModel)]="user.eMail" floatingLabel [label]="label('e-Mail')" required [requiredErrorMsg]="requiredValueMsg()"></material-input>
             <br/>
@@ -21,9 +21,8 @@
                 </material-radio><br>
             </material-radio-group>
             <div>
-                <div class="avatar" [style.background-image]="'url(' + userUrlImage(user) + ')'"></div>
+                <span class="avatar" [style.background-image]="'url(' + userUrlImage(user) + ')'"></span>
                 <input type="file" id="upload_image" accept="image/*,capture=camera">
-                <br/>
                 <material-button icon (trigger)="uploadImage()">{{buttonLabel('Upload')}}
                     <material-icon icon="done"></material-icon>
                 </material-button>

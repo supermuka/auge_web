@@ -12,8 +12,7 @@ import 'package:angular_forms/angular_forms.dart';
 
 import 'package:auge/shared/model/user.dart';
 import 'package:auge/shared/message/messages.dart';
-import 'package:angular_components/material_radio/material_radio.dart';
-import 'package:angular_components/material_radio/material_radio_group.dart';
+
 import 'package:angular_components/model/selection/selection_model.dart';
 
 import 'package:auge/web/src/user/user_service.dart';
@@ -22,6 +21,8 @@ import 'dart:typed_data' show Uint8List, ByteBuffer;
 import 'package:crypto/crypto.dart' show sha256;
 
 import 'package:auge/web/services/app_routes.dart';
+
+import 'package:image/image.dart';
 
 @Component(
     selector: 'auge-user-detail',
@@ -57,8 +58,6 @@ class UserDetailComponent implements OnActivate {
 
   User user = new User();
 
-  List<User> _users;
-
   String errorPercentualConcluido;
   
   List<Option> userAuthorizationOptions = new List();
@@ -75,9 +74,8 @@ class UserDetailComponent implements OnActivate {
   String buttonLabel(String label) =>  CommonMessage.buttonLabel(label);
 
   @override
-  Future onActivate(b, a) async {
-
-    String id = _router.current.parameters[AppRoutes.userIdParameter];
+  Future onActivate(RouterState previous, RouterState current) async {
+    String id = current.parameters[AppRoutes.userIdParameter];
     if (id != null && id.isNotEmpty) {
       user = await _userService.getUserById(id, true);
     }
@@ -87,16 +85,6 @@ class UserDetailComponent implements OnActivate {
     await _userService.saveUser(user);
     goBack();
   }
-
-  Future<Null> delete() async {
-    try {
-      await _userService.deleteUser(user);
-      goBack();
-    } catch (e) {
-      print(e);
-    }
-  }
-
 
   void goBack() {
     _location.back();
@@ -109,13 +97,19 @@ class UserDetailComponent implements OnActivate {
     if (files.length > 0) {
       html.File file = files.item(0);
 
+
+
       html.FileReader reader = new html.FileReader();
 
       reader.onLoad.listen((fileEvent) {
         Uint8List fileContent = reader.result;
         // Code doing stuff with fileContent goes here!
 
-        user.userProfile.image = base64.encode(fileContent);
+        Image image = decodeImage(fileContent);
+
+        Image thumbnail = copyResize(image, 120);
+
+        user.userProfile.image = base64.encode(encodePng(thumbnail));
 
       });
 

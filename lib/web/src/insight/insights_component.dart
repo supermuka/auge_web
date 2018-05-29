@@ -60,10 +60,9 @@ class InsightsComponent implements OnActivate  {
   int get overallProgress {
     int _sumOverallProgress = 0;
     for (int i=0;i<objectives.length;i++) {
-      print(objectives[i].progress);
       _sumOverallProgress = _sumOverallProgress + objectives[i].progress ?? 0;
     }
-    return objectives.length > 0 && _sumOverallProgress > 0 ? (_sumOverallProgress / objectives.length) : 0;
+    return objectives.length > 0 && _sumOverallProgress > 0 ? (_sumOverallProgress / objectives.length).toInt() : 0;
   }
 
   /// Return a total number of objectives

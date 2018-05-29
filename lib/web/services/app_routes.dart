@@ -129,6 +129,7 @@ class AppRoutes {
 
   static final appLayoutHomeRoute = new RoutePath(
     path: '',
+
     useAsDefault: true,
   );
 

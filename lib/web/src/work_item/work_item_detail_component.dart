@@ -108,7 +108,7 @@ class WorkItemDetailComponent implements OnActivate  {
   String buttonLabel(String label) =>  CommonMessage.buttonLabel(label);
 
   @override
-  Future onActivate(b, a) async {
+  Future onActivate(RouterState previous, RouterState current) async {
 
     String initiativeId = _router.current.parameters[AppRoutes
         .initiativeIdParameter];

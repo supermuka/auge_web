@@ -22,10 +22,10 @@ class Measure {
   set currentValueInt(int value) => currentValue = value.toDouble();
 
   int get progress {
-    int startPlusEndValue = (startValueInt + endValueInt);
+    int endMinusStartValue = (endValueInt - startValueInt);
     int progress;
-    if (startPlusEndValue != null && startPlusEndValue > 0)
-      progress = (currentValueInt ?? 0 / startPlusEndValue).toInt();
+    if (endMinusStartValue != null && endMinusStartValue > 0)
+      progress = (((currentValueInt ?? 0) - (startValueInt ?? 0)) / endMinusStartValue).toInt();
     else
       progress = 0;
     return progress;

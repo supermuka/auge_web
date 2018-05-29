@@ -62,7 +62,7 @@ import 'package:auge/web/src/measure/measure_detail_component.template.dart' as 
       'measures_component.css'
     ])
 
-class MeasuresComponent implements OnActivate, OnDestroy {
+class MeasuresComponent extends Object with CanReuse implements OnActivate, OnDestroy {
 
   final AuthService _authService;
   final AppLayoutService _appLayoutService;

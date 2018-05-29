@@ -1,44 +1,44 @@
 <div class="tree">
     <ul *ngIf="objectivesMap.length > 0">
         <li *ngFor="let iObjectiveMapLevel1 of objectivesMap">
-            <a href="#"><span class="node">{{iObjectiveMapLevel1.name}}</span>
+            <a (click)="goToMeasure(iObjectiveMapLevel1)"><span class="node">{{iObjectiveMapLevel1.name}}</span>
                 <span class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel1.leader)  + ')'" [materialTooltip]="'Leader: ' + iObjectiveMapLevel1.leader.name"></span>
             </a>
             <ul *ngIf="iObjectiveMapLevel1.alignedWithChildren.length > 0">
                  <li *ngFor="let iObjectiveMapLevel2 of iObjectiveMapLevel1.alignedWithChildren">
-                    <a href="#">{{iObjectiveMapLevel2.name}}<span class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel2.leader)  + ')'" [materialTooltip]="'Leader: ' + iObjectiveMapLevel2.leader.name"></span>
+                    <a (click)="goToMeasure(iObjectiveMapLevel2)">{{iObjectiveMapLevel2.name}}<span class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel2.leader)  + ')'" [materialTooltip]="'Leader: ' + iObjectiveMapLevel2.leader.name"></span>
                     </a>
                     <ul *ngIf="iObjectiveMapLevel2.alignedWithChildren.length > 0">
                         <li *ngFor="let iObjectiveMapLevel3 of iObjectiveMapLevel2.alignedWithChildren">
-                            <a href="#">{{iObjectiveMapLevel3.name}}<span class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel3.leader)  + ')'" [materialTooltip]="'Leader: ' + iObjectiveMapLevel3.leader.name"></span>
+                            <a (click)="goToMeasure(iObjectiveMapLevel3)">{{iObjectiveMapLevel3.name}}<span class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel3.leader)  + ')'" [materialTooltip]="'Leader: ' + iObjectiveMapLevel3.leader.name"></span>
                             </a>
                             <ul *ngIf="iObjectiveMapLevel3.alignedWithChildren.length > 0">
                                 <li *ngFor="let iObjectiveMapLevel4 of iObjectiveMapLevel3.alignedWithChildren">
-                                    <a href="#">{{iObjectiveMapLevel4.name}}<span class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel4.leader)  + ')'" [materialTooltip]="'Leader: ' + iObjectiveMapLevel4.leader.name"></span>
+                                    <a (click)="goToMeasure(iObjectiveMapLevel4)">{{iObjectiveMapLevel4.name}}<span class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel4.leader)  + ')'" [materialTooltip]="'Leader: ' + iObjectiveMapLevel4.leader.name"></span>
                                     </a>
                                     <ul *ngIf="iObjectiveMapLevel4.alignedWithChildren.length > 0">
                                         <li *ngFor="let iObjectiveMapLevel5 of iObjectiveMapLevel4.alignedWithChildren">
-                                            <a href="#">{{iObjectiveMapLevel5.name}}<span class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel5.leader)  + ')'" [materialTooltip]="'Leader: ' + iObjectiveMapLevel5.leader.name"></span>
+                                            <a (click)="goToMeasure(iObjectiveMapLevel5)">{{iObjectiveMapLevel5.name}}<span class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel5.leader)  + ')'" [materialTooltip]="'Leader: ' + iObjectiveMapLevel5.leader.name"></span>
                                             </a>
                                             <ul *ngIf="iObjectiveMapLevel5.alignedWithChildren.length > 0">
                                                 <li *ngFor="let iObjectiveMapLevel6 of iObjectiveMapLevel5.alignedWithChildren">
-                                                    <a href="#">{{iObjectiveMapLevel6.name}}<span class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel6.leader)  + ')'" [materialTooltip]="'Leader: ' + iObjectiveMapLevel6.leader.name"></span>
+                                                    <a (click)="goToMeasure(iObjectiveMapLevel6)">{{iObjectiveMapLevel6.name}}<span class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel6.leader)  + ')'" [materialTooltip]="'Leader: ' + iObjectiveMapLevel6.leader.name"></span>
                                                     </a>
                                                     <ul *ngIf="iObjectiveMapLevel6.alignedWithChildren.length > 0">
                                                         <li *ngFor="let iObjectiveMapLevel7 of iObjectiveMapLevel6.alignedWithChildren">
-                                                            <a href="#">{{iObjectiveMapLevel7.name}}<span class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel7.leader)  + ')'" [materialTooltip]="'Leader: ' + iObjectiveMapLevel7.leader.name"></span>
+                                                            <a (click)="goToMeasure(iObjectiveMapLevel7)">{{iObjectiveMapLevel7.name}}<span class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel7.leader)  + ')'" [materialTooltip]="'Leader: ' + iObjectiveMapLevel7.leader.name"></span>
                                                             </a>
                                                             <ul *ngIf="iObjectiveMapLevel7.alignedWithChildren.length > 0">
                                                                 <li *ngFor="let iObjectiveMapLevel8 of iObjectiveMapLevel7.alignedWithChildren">
-                                                                    <a href="#">{{iObjectiveMapLevel8.name}}<span class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel8.leader)  + ')'" [materialTooltip]="'Leader: ' + iObjectiveMapLevel8.leader.name"></span>
+                                                                    <a (click)="goToMeasure(iObjectiveMapLevel8)">{{iObjectiveMapLevel8.name}}<span class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel8.leader)  + ')'" [materialTooltip]="'Leader: ' + iObjectiveMapLevel8.leader.name"></span>
                                                                     </a>
                                                                     <ul *ngIf="iObjectiveMapLevel8.alignedWithChildren.length > 0">
                                                                         <li *ngFor="let iObjectiveMapLevel9 of iObjectiveMapLevel8.alignedWithChildren">
-                                                                            <a href="#">{{iObjectiveMapLevel9.name}}<span class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel9.leader)  + ')'" [materialTooltip]="'Leader: ' + iObjectiveMapLevel9.leader.name"></span>
+                                                                            <a (click)="goToMeasure(iObjectiveMapLevel9)">{{iObjectiveMapLevel9.name}}<span class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel9.leader)  + ')'" [materialTooltip]="'Leader: ' + iObjectiveMapLevel9.leader.name"></span>
                                                                             </a>
                                                                             <ul *ngIf="iObjectiveMapLevel9.alignedWithChildren.length > 0">
                                                                                 <li *ngFor="let iObjectiveMapLevel10 of iObjectiveMapLevel9.alignedWithChildren">
-                                                                                    <a href="#">{{iObjectiveMapLevel10.name}}<span class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel10.leader)  + ')'" [materialTooltip]="'Leader: ' + iObjectiveMapLevel10.leader.name"></span>
+                                                                                    <a (click)="goToMeasure(iObjectiveMapLevel10)">{{iObjectiveMapLevel10.name}}<span class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel10.leader)  + ')'" [materialTooltip]="'Leader: ' + iObjectiveMapLevel10.leader.name"></span>
                                                                                     </a>
                                                                                 </li>
                                                                             </ul>

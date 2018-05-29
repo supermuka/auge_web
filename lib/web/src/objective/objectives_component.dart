@@ -60,7 +60,7 @@ import 'package:auge/web/src/objective/objective_detail_component.template.dart'
       'objectives_component.css'
     ])
 
-class ObjectivesComponent implements OnActivate, OnDestroy {
+class ObjectivesComponent extends Object with CanReuse implements OnActivate, OnDestroy {
 
   final AuthService _authService;
   final AppLayoutService _appLayoutService;

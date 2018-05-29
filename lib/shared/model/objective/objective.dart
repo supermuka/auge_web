@@ -37,12 +37,11 @@ class Objective {
     double progress = 0.0;
 
     for (int i = 0;i < measures?.length;i++) {
-      if ( ((measures[i]?.startValue ?? 0) + (measures[i]?.endValue ?? 0))!= 0) {
+      if ((measures[i]?.endValue ?? 0) - (measures[i]?.startValue ?? 0) != 00) {
         progress = progress +
-            measures[i].currentValue /  ((measures[i]?.startValue ?? 0) + (measures[i]?.endValue ?? 0));
+            ((measures[i]?.currentValue ?? 0) - (measures[i]?.startValue ?? 0))  /  ((measures[i]?.endValue ?? 0) - (measures[i]?.startValue ?? 0));
       }
     }
-
     return measures.length == 0 ? 0 : ((progress * 100) / measures.length ).toInt();
   }
 }
