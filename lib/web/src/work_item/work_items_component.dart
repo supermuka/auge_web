@@ -109,4 +109,9 @@ class WorkItemsComponent extends Object with CanReuse implements OnActivate {
   void selectView(String view) {
     selectedView = view;
   }
+
+  @override
+  Future<bool> canReuse(RouterState current, RouterState next) async {
+    return true;
+  }
 }

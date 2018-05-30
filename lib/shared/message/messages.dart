@@ -155,6 +155,7 @@ class InitiativeMessage {
         'Leader': 'Leader',
         'Stage': 'Stage',
         'Work Items Over Due': 'Work Items Over Due',
+        'Objective': 'Objective',
         'other': 'Not Defined'})}",
       name: "initiativeLabel",
       args: [label],

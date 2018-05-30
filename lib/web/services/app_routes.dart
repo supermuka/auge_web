@@ -55,15 +55,15 @@ class AppRoutes {
     parent: initiativesRoute
   );
   static final objectivesRoute = new RoutePath(
-    path: 'objetivos',
+    path: 'objectives',
     parent: appLayoutRoute
   );
 
-  static final objetivoDetalheAdicionarRoute = new RoutePath(
-    path: 'objetivo',
+  static final objectiveDetailAddRoute = new RoutePath(
+    path: 'objective',
     parent: objectivesRoute
   );
-  static final objetivoDetalheRoute = new RoutePath(
+  static final objectiveDetailRoute = new RoutePath(
     path: 'objetivo/:$objectiveIdParameter',
     parent: objectivesRoute
   );
@@ -142,5 +142,10 @@ class AppRoutes {
   static final organizationDetailRoute = new RoutePath(
     path: 'organization/:$organizationIdParameter',
     parent: organizationsRoute
+  );
+
+  static final organizationRoute = new RoutePath(
+      path: 'organization/:$organizationIdParameter',
+      parent: appLayoutRoute
   );
 }

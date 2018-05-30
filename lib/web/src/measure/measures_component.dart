@@ -164,4 +164,9 @@ class MeasuresComponent extends Object with CanReuse implements OnActivate, OnDe
   }
 
   toInt(double value) => value?.toInt();
+
+  @override
+  Future<bool> canReuse(RouterState current, RouterState next) async {
+    return true;
+  }
 }

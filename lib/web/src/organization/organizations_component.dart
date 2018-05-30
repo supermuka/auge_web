@@ -1,6 +1,8 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
+import 'dart:async';
+
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
 import 'package:angular_components/angular_components.dart';
@@ -118,6 +120,11 @@ class OrganizationsComponent extends Object with CanReuse implements OnActivate,
     } catch(e) {
       print(e);
     }
+  }
+
+  @override
+  Future<bool> canReuse(RouterState current, RouterState next) async {
+    return true;
   }
 
 }

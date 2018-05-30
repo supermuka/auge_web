@@ -114,4 +114,8 @@ class UsersComponent extends Object with CanReuse implements OnActivate {
     return common_service.userUrlImage(user);
   }
 
+  @override
+  Future<bool> canReuse(RouterState current, RouterState next) async {
+    return true;
+  }
 }

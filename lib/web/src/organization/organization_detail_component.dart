@@ -14,7 +14,7 @@ import 'package:auge/web/services/app_routes.dart';
 
 @Component(
     selector: 'auge-organization-detail',
-    providers: const <dynamic>[materialProviders],
+    providers: const <dynamic>[materialProviders, OrganizationService],
     directives: const [
     coreDirectives,
     routerDirectives,

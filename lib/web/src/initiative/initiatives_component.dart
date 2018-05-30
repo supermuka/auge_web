@@ -173,5 +173,10 @@ class InitiativesComponent extends Object with CanReuse implements OnActivate, O
     return (stateWorkItemsCount / workItemsCount * widthTotal).toString();
   }
 
+  @override
+  Future<bool> canReuse(RouterState current, RouterState next) async {
+     return true;
+  }
+
 }
 

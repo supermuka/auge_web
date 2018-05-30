@@ -1,5 +1,5 @@
 <material-drawer temporary #drawer="drawer">
-    <material-list class="menu-drawer" *deferredContent>
+    <material-list class="menorganizationsRouteUrlu-drawer" *deferredContent>
         <!--
         <div group class="mat-drawer-spacer">
         </div>
@@ -30,7 +30,7 @@
         </div>
         <div group>
             <div label>{{label('Admin')}}</div>
-            <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(organizationDetailRouteUrl)">
+            <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(organizationRouteUrl)">
                 <material-icon icon="account_circle"></material-icon>{{label('Organization')}}
             </material-list-item>
             <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(usersRouteUrl)">

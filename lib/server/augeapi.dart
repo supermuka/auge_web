@@ -249,11 +249,21 @@ class AugeApi {
       try {
         await ctx.query(
             "INSERT INTO auge.users(id, name, email, password) VALUES("
+            "@id,"
+            "@name,"
+            "@email,"
+            "@password)"
+            , substitutionValues: {
+            "id": user.id,
+            "name": user.name,
+            "email": user.eMail,
+            "password": user.password});
+            /*
                 "'${user.id}',"
                 "'${user.name}',"
                 "'${user.eMail}',"
                 "'${user.password}')");
-
+*/
         if (user.userProfile != null)
           await ctx.query(
               "INSERT INTO auge.users_profile(user_id, image, is_super_admin) VALUES("

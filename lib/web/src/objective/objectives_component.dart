@@ -80,11 +80,11 @@ class ObjectivesComponent extends Object with CanReuse implements OnActivate, On
        ),
 
     new RouteDefinition(
-      routePath: AppRoutes.objetivoDetalheAdicionarRoute,
+      routePath: AppRoutes.objectiveDetailAddRoute,
       component: objective_detail_component.ObjectiveDetailComponentNgFactory,
     ),
     new RouteDefinition(
-      routePath: AppRoutes.objetivoDetalheRoute,
+      routePath: AppRoutes.objectiveDetailRoute,
       component: objective_detail_component.ObjectiveDetailComponentNgFactory,
     ),
   ];
@@ -118,9 +118,9 @@ class ObjectivesComponent extends Object with CanReuse implements OnActivate, On
 
   void goToDetail(Objective objective) {
     if (objective == null) {
-      _router.navigate(AppRoutes.objetivoDetalheAdicionarRoute.toUrl());
+      _router.navigate(AppRoutes.objectiveDetailAddRoute.toUrl());
     } else {
-      _router.navigate(AppRoutes.objetivoDetalheRoute.toUrl(parameters: {
+      _router.navigate(AppRoutes.objectiveDetailRoute.toUrl(parameters: {
         AppRoutes.objectiveIdParameter: objective != null ? objective.id : null
       }));
     }
@@ -145,5 +145,10 @@ class ObjectivesComponent extends Object with CanReuse implements OnActivate, On
 
   void stopPropagation(MouseEvent me) {
     me.stopPropagation();
+  }
+
+  @override
+  Future<bool> canReuse(RouterState current, RouterState next) async {
+    return true;
   }
 }
