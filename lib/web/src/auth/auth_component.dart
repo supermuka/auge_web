@@ -69,7 +69,7 @@ class AuthComponent {
         await _authService.getAuthorizatedOrganizationsByUserId(
             _authService.authenticatedUser.id);
 
-        if (_authService.authorizatedOrganizations == null) {
+        if (_authService.authorizatedOrganizations == null || _authService.authorizatedOrganizations.length == 0) {
           error = AuthMessage.organizationNotFoundMsg();
         } else {
           goToAppLayout();

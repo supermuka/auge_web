@@ -266,6 +266,13 @@ class InitiativeAugeApi {
   Future<VoidMessage> deleteInitiative(String id) async {
     try {
       await AugeConnection.getConnection().transaction((ctx) async {
+
+        await ctx.query(
+            "DELETE FROM auge_initiative.stages stage"
+                " WHERE stage.initiative_id = @id"
+            , substitutionValues: {
+          "id": id});
+
         await ctx.query(
             "DELETE FROM auge_initiative.initiatives initiative"
                 " WHERE initiative.id = @id"
@@ -342,29 +349,77 @@ class InitiativeAugeApi {
     }
   }
 
-
   /// Update an initiative passing an instance of [Initiative]
   @ApiMethod( method: 'PUT', path: 'initiatives')
   Future<VoidMessage> updateInitiative(Initiative initiative) async {
-    try {
-      await AugeConnection.getConnection().query(
-          "UPDATE auge_initiative.initiatives "
-              " SET name = @name,"
-              " description = @description,"
-              " organization_id = @organization_id,"
-              " leader_user_id = @leader_user_id,"
-              " objective_id = @objective_id"
-              " WHERE id = @id"
-          , substitutionValues: {
-        "id": initiative.id,
-        "name": initiative.name,
-        "description": initiative.description,
-        "organization_id": initiative.organization.id,
-        "leader_user_id": initiative.leader.id,
-        "objective_id": initiative.objective.id});
-    } on PostgreSQLException catch (e) {
-      throw new ApplicationError(e);
-    }
+
+    await AugeConnection.getConnection().transaction((ctx) async {
+      try {
+        await ctx.query("UPDATE auge_initiative.initiatives "
+            " SET name = @name,"
+            " description = @description,"
+            " organization_id = @organization_id,"
+            " leader_user_id = @leader_user_id,"
+            " objective_id = @objective_id"
+            " WHERE id = @id"
+            , substitutionValues: {
+              "id": initiative.id,
+              "name": initiative.name,
+              "description": initiative.description,
+              "organization_id": initiative.organization.id,
+              "leader_user_id": initiative.leader.id,
+              "objective_id": initiative.objective.id});
+
+        // Stages
+        StringBuffer stagesId = new StringBuffer();
+        for (Stage stage in initiative.stages) {
+          if (stage.id == null) {
+            stage.id = new Uuid().v4();
+
+            await ctx.query(
+                "INSERT INTO auge_initiative.stages(id, name, index, state_id, initiative_id) VALUES"
+                    "(@id,"
+                    "@name,"
+                    "@index,"
+                    "@state_id,"
+                    "@initiative_id)"
+                , substitutionValues: {
+              "id": stage.id,
+              "name": stage.name,
+              "index": stage.index,
+              "state_id": stage.state.id,
+              "initiative_id": initiative.id});
+          } else {
+            await ctx.query("UPDATE auge_initiative.stages SET"
+                " name = @name,"
+                " index = @index,"
+                " state_id = @state_id,"
+                " work_item_id = @work_item_id,"
+                " initiative_id = @initiative_id"
+                " WHERE id = @id"
+                , substitutionValues: {
+                  "id": stage.id,
+                  "name": stage.name,
+                  "index": stage.index,
+                  "state_id": stage.state.id,
+                  "initiative_id": initiative.id});
+          }
+
+          if (stagesId.isNotEmpty)
+            stagesId.write(',');
+          stagesId.write("'");
+          stagesId.write(stage.id);
+          stagesId.write("'");
+        }
+
+        if (stagesId.isNotEmpty) {
+          await ctx.query("DELETE FROM auge_initiative.stages "
+              " WHERE id NOT IN (${stagesId.toString()})");
+        }
+      } on PostgreSQLException catch (e) {
+        throw new ApplicationError(e);
+      }
+    });
   }
 
   // *** INITIATIVE WORK ITEM ***
@@ -546,8 +601,7 @@ class InitiativeAugeApi {
                   "finished": checkItem.finished,
                   "work_item_id": workItem.id});
           } else {
-            print('update');
-            print(checkItem.finished);
+
             await ctx.query("UPDATE auge_initiative.work_item_check_items SET"
                 " name = @name,"
                 " finished = @finished,"

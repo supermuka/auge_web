@@ -50,9 +50,9 @@ class InsightsComponent implements OnActivate  {
   void onActivate(RouterState previous, RouterState current) async {
     _appLayoutService.searchEnabled = false;
 
-    objectives = await _objectiveService.getObjectives(_authService.selectedOrganization.id, withMeasures: true);
+    objectives = await _objectiveService.getObjectives(_authService.selectedOrganization?.id, withMeasures: true);
 
-    initiatives = await _initiativeService.getInitiatives(_authService.selectedOrganization.id, withWorkItems: true);
+    initiatives = await _initiativeService.getInitiatives(_authService.selectedOrganization?.id, withWorkItems: true);
 
   }
 

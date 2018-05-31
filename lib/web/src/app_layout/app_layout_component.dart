@@ -69,7 +69,8 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
   String get mapRouteUrl => AppRoutes.mapRoute.toUrl();
   String get objectivesRouteUrl => AppRoutes.objectivesRoute.toUrl();
   String get initiativesRouteUrl => AppRoutes.initiativesRoute.toUrl();
-  String get organizationRouteUrl =>  AppRoutes.organizationRoute.toUrl(parameters: { AppRoutes.organizationIdParameter: this._authService.selectedOrganization.id });
+ // String get organizationRouteUrl =>  AppRoutes.organizationRoute.toUrl();
+  String get organizationRouteUrl =>  AppRoutes.organizationRoute.toUrl(parameters: { AppRoutes.organizationIdParameter: this._authService.selectedOrganization?.id });
   String get organizationsRouteUrl => AppRoutes.organizationsRoute.toUrl();
   String get usersRouteUrl => AppRoutes.usersRoute.toUrl();
 

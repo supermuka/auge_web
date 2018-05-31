@@ -12,6 +12,7 @@ import 'package:auge/server/objectiveaugeapi.dart';
 //String _host = InternetAddress.anyIPv4.host;
 //String _host = InternetAddress.loopbackIPv4.host;
 String _host = '0.0.0.0'; // GCloud
+//String _host = '127.0.0.1'; // Local
 const String _API_PREFIX = '/';
 final ApiServer _apiServer = new ApiServer(apiPrefix: _API_PREFIX, prettyPrint: true);
 
@@ -41,8 +42,14 @@ Future main(List<String> args) async {
   _apiServer.enableDiscoveryApi();
 
   // response.headers.add('Access-Control-Allow-Headers', '*');
-
-
+ // server.defaultResponseHeaders.removeAll("Access-Control-Allow-Origin");
+ // server.defaultResponseHeaders.add("Access-Control-Allow-Origin", "http://localhost:8080");
+/*
+  server.defaultResponseHeaders.add("Access-Control-Allow-Origin", "*");
+  server.defaultResponseHeaders.add("Access-Control-Allow-Methods", "POST,GET,DELETE,PUT,OPTIONS");
+  server.defaultResponseHeaders.add('Access-Control-Allow-Headers',
+  'Origin, X-Requested-With, Content-Type, Accept');
+*/
   server.listen(_apiServer.httpRequestHandler);
 
 
@@ -62,4 +69,14 @@ Future main(List<String> args) async {
     });
   });
    */
+
+
+  void addCorsHeaders(HttpResponse response) {
+    response.headers.add('Access-Control-Allow-Origin', '*');
+    response.headers
+        .add('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    response.headers.add('Access-Control-Allow-Headers',
+        'Origin, X-Requested-With, Content-Type, Accept');
+  }
+
 }

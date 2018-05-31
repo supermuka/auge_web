@@ -4,11 +4,11 @@
             <h3 *ngIf="initiative.id == null">{{label('Add Initiative')}}</h3>
             <h3 *ngIf="initiative.id != null">{{label('Edit Initiative')}}</h3>
         </div>
-        <material-input class="width-240" [(ngModel)]="initiative.name" floatingLabel [label]="label('Name')" required [requiredErrorMsg]="requiredValueMsg()"></material-input>
+        <material-input class="width-320" [(ngModel)]="initiative.name" floatingLabel [label]="label('Name')" required [requiredErrorMsg]="requiredValueMsg()"></material-input>
         <br/>
-        <material-input class="width-240" [(ngModel)]="initiative.description" floatingLabel multiline rows="3" [label]="label('Description')"></material-input>
+        <material-input class="width-320" [(ngModel)]="initiative.description" floatingLabel multiline rows="3" [label]="label('Description')"></material-input>
         <br/>
-        <material-auto-suggest-input class="width-480"
+        <material-auto-suggest-input class="width-320"
                                      [(inputText)]="leaderInputText"
                                      [filterSuggestions]="true"
                                      [popupMatchInputWidth]="true"
@@ -56,7 +56,7 @@
             </material-list>
         </div>
         <br/>
-        <material-auto-suggest-input class="width-480"
+        <material-auto-suggest-input class="width-320"
                                      [(inputText)]="objectiveInputText"
                                      [filterSuggestions]="true"
                                      [popupMatchInputWidth]="true"
