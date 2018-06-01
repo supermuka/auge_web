@@ -2,7 +2,6 @@
 // Author: Samuel C. Schwebel.
 
 import 'dart:html' as html;
-
 import 'dart:async';
 
 import 'package:angular/angular.dart';
@@ -10,11 +9,14 @@ import 'package:angular_router/angular_router.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:angular_forms/angular_forms.dart';
 
+import 'package:intl/intl.dart';
+
 import 'package:auge/shared/model/user.dart';
 import 'package:auge/shared/message/messages.dart';
 
 import 'package:angular_components/model/selection/selection_model.dart';
 
+import 'package:auge/web/src/auth/auth_service.dart';
 import 'package:auge/web/src/user/user_service.dart';
 import 'dart:convert' show base64;
 import 'dart:typed_data' show Uint8List, ByteBuffer;
@@ -29,6 +31,7 @@ import 'package:image/image.dart';
     providers: const [UserService],
     directives: const [
       coreDirectives,
+      NgStyle,
       routerDirectives,
       AutoFocusDirective,
       ModalComponent,
@@ -41,6 +44,10 @@ import 'package:image/image.dart';
       MaterialIconComponent,
       MaterialDialogComponent,
       MaterialAutoSuggestInputComponent,
+      MaterialRadioGroupComponent,
+      MaterialRadioComponent,
+      MaterialCheckboxComponent,
+      MaterialTooltipDirective,
     ],
     templateUrl: 'user_detail_component.html',
     styleUrls: const [
@@ -50,6 +57,7 @@ import 'package:image/image.dart';
 /// Component uses to add and edit an [User] and [UserProfile]
 class UserDetailComponent implements OnActivate {
 
+  final AuthService _authService;
   final UserService _userService;
   final Router _router;
   final Location _location;
@@ -63,10 +71,17 @@ class UserDetailComponent implements OnActivate {
   List<Option> userAuthorizationOptions = new List();
   
   final SelectionModel selectionModelUserAuthorization = new SelectionModel.multi();
+  final SelectionModel selectionModelIdiom = new SelectionModel.multi();
 
-  UserDetailComponent(this._userService, this._router, this._location) {
+  String get getUsFlag => '/packages/auge/web/assets/images/flag_us.png';
+  String get getEsFlag => '/packages/auge/web/assets/images/flag_es.png';
+  String get getBrFlag => '/packages/auge/web/assets/images/flag_br.png';
+
+  UserDetailComponent(this._authService, this._userService, this._router, this._location) {
     UserAuthorization.values.forEach((f) => userAuthorizationOptions.add(new Option(f.index, UserMessage.label(f.toString()) , false, false) ));
   }
+
+  bool get authenticatedUserIsSuperAdmin => _authService.authenticatedUser.userProfile.isSuperAdmin;
 
   // Define messages and labels
   String requiredValueMsg() => CommonMessage.requiredValueMsg();
@@ -78,6 +93,8 @@ class UserDetailComponent implements OnActivate {
     String id = current.parameters[AppRoutes.userIdParameter];
     if (id != null && id.isNotEmpty) {
       user = await _userService.getUserById(id, true);
+    } else {
+      user.userProfile.idiomLocale = Intl.defaultLocale;
     }
   }
 

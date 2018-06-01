@@ -15,7 +15,7 @@ import 'package:crypto/crypto.dart' show sha256;
 @Injectable()
 class AuthService  {
 
-  static bool ehAdministrador = false;
+ // static bool ehAdministrador = false;
 
   User authenticatedUser;
   List<UserProfileOrganization> authorizatedOrganizations;

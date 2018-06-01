@@ -280,7 +280,7 @@ packages:
       name: html
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.13.3"
+    version: "0.13.3+1"
   http:
     dependency: "direct main"
     description:
@@ -350,7 +350,7 @@ packages:
       name: json_annotation
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.5"
+    version: "0.2.6"
   kernel:
     dependency: transitive
     description:
@@ -483,7 +483,7 @@ packages:
       name: rpc
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.8"
+    version: "0.5.9"
   sass:
     dependency: "direct overridden"
     description:
@@ -639,4 +639,4 @@ packages:
     source: hosted
     version: "2.1.14"
 sdks:
-  dart: ">=2.0.0-dev.55.0 <=2.0.0-dev.58.0"
+  dart: ">=2.0.0-dev.55.0 <=2.0.0-dev.59.0"

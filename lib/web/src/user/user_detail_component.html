@@ -11,15 +11,8 @@
             <br/>
             <material-input type="password" [(ngModel)]="passwordSecure" floatingLabel [label]="label('Password')" required [requiredErrorMsg]="requiredValueMsg()"></material-input>
             <br/>
-            <label>{{label('Authorization')}}</label>
+            <label>{{label('Photo')}}</label>
             <br/>
-            <material-radio-group [selectionModel]="selectionModelUserAuthorization">
-                <material-radio *ngFor="let option of userAuthorizationOptions"
-                                class="radio-per-line"
-                                [(checked)]="option.selected"
-                                [value]="option.label" no-ink>{{option.label}}
-                </material-radio><br>
-            </material-radio-group>
             <div>
                 <span class="avatar" [style.background-image]="'url(' + userUrlImage(user) + ')'"></span>
                 <input type="file" id="upload_image" accept="image/*,capture=camera">
@@ -30,7 +23,38 @@
                     <material-icon icon="clear"></material-icon>
                 </material-button>
             </div>
+            <br/>
+            <material-checkbox *ngIf="authenticatedUserIsSuperAdmin == true" [(ngModel)]="user.userProfile.isSuperAdmin" [label]="label('Super Admin')"></material-checkbox>
+            <br/>
+            <label>{{label('Authorization')}}</label>
+            <br/>
+            <material-radio-group [selectionModel]="selectionModelUserAuthorization">
+                <material-radio *ngFor="let option of userAuthorizationOptions"
+                                class="radio-per-line"
+                                [disabled]="user.userProfile.isSuperAdmin != null && user.userProfile.isSuperAdmin"
+                                [(checked)]="option.selected"
+                                [value]="option.label" no-ink>{{option.label}}
+                </material-radio><br>
+            </material-radio-group>
         </div>
+        <br/>
+        <label>{{label('Idiom')}}</label>
+        <br/>
+        <material-radio-group [(ngModel)]="user.userProfile.idiomLocale">
+            <material-radio class="radio-per-line"
+                            [value]="'pt_BR'" no-ink>
+                <span class="avatar-icon" [style.background-image]="'url(' + getBrFlag + ')'" [materialTooltip]="'Português - Brasil'"></span>Português
+            </material-radio>
+            <material-radio class="radio-per-line"
+                            [value]="'en_US'" no-ink>
+                <span class="avatar-icon" [style.background-image]="'url(' + getUsFlag + ')'" [materialTooltip]="'English - USA'"></span>English
+            </material-radio>
+            <material-radio class="radio-per-line"
+                            [value]="'es_ES'" no-ink>
+                <span class="avatar-icon" [style.background-image]="'url(' + getEsFlag + ')'" [materialTooltip]="'Español - España'"></span>Español
+            </material-radio>
+
+        </material-radio-group>
         <div footer>
             <material-button (trigger)="save()">{{buttonLabel('Save')}}
                 <material-icon icon="save"></material-icon>

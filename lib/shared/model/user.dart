@@ -3,7 +3,7 @@
 
 /// Domain model class to represent an user account
 
-enum UserAuthorization { superAdmin, admin, leader, standard }
+enum UserAuthorization { admin, leader, standard }
 
 class User extends Object  {
   String id;
@@ -31,5 +31,8 @@ class UserProfile extends Object  {
 
   // base64
   String image;
+
+  // pt_BR, en es_ES
+  String idiomLocale;
 
 }

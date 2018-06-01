@@ -143,7 +143,8 @@ class AugeApi {
     else {
       queryStatement = "SELECT u.id::VARCHAR, u.name, u.email, u.password, "
           " user_profile.image, "
-          " user_profile.is_super_admin "
+          " user_profile.is_super_admin, "
+          " user_profile.idiom_locale "
           " FROM auge.users u "
           " JOIN auge.users_profile user_profile on user_profile.user_id = u.id";
     }
@@ -184,7 +185,8 @@ class AugeApi {
       if (withProfile != null && withProfile) {
         user.userProfile = new UserProfile()
           ..image = row[4]
-          ..isSuperAdmin = row[5];
+          ..isSuperAdmin = row[5]
+          ..idiomLocale = row[6];
       }
       users.add(user);
     }
@@ -266,13 +268,15 @@ class AugeApi {
 */
         if (user.userProfile != null)
           await ctx.query(
-              "INSERT INTO auge.users_profile(user_id, image, is_super_admin) VALUES("
+              "INSERT INTO auge.users_profile(user_id, image, is_super_admin, idiom_locale) VALUES("
                   "@id,"
                   "@image,"
-                  "@is_super_admin)", substitutionValues: {
+                  "@is_super_admin,"
+                  "@idiom_locale)", substitutionValues: {
             "id": user.id,
             "image": user.userProfile.image,
-            "is_super_admin": user.userProfile.isSuperAdmin});
+            "is_super_admin": user.userProfile.isSuperAdmin,
+            "idiom_locale": user.userProfile.idiomLocale});
       } on PostgreSQLException catch (e) {
         throw new ApplicationError(e);
       }
@@ -301,11 +305,13 @@ class AugeApi {
         await ctx.query(
             "UPDATE auge.users_profile "
                 "SET image = @image, "
-                "is_super_admin = @is_super_admin "
+                "is_super_admin = @is_super_admin, "
+                "idiom_locale = @idiom_locale "
                 "WHERE user_id = '${user.id}'"
             , substitutionValues: {
           "image": user.userProfile.image,
-          "is_super_admin": user.userProfile.isSuperAdmin});
+          "is_super_admin": user.userProfile.isSuperAdmin,
+          "idiom_locale": user.userProfile.idiomLocale});
       } on PostgreSQLException catch (e) {
         throw new ApplicationError(e);
       }

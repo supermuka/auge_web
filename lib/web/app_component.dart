@@ -46,7 +46,7 @@ class AppComponent extends Object with CanReuse {
   ];
 
   AppComponent(this._router) {
-    Intl.defaultLocale = 'en';
+    Intl.defaultLocale = 'en_US';
     initializeMessages(Intl.defaultLocale);
   }
 }

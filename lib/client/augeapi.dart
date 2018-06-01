@@ -601,6 +601,9 @@ class UserFactory {
 class UserProfileFactory {
   static UserProfile fromJson(core.Map _json) {
     var message = new UserProfile();
+    if (_json.containsKey("idiomLocale")) {
+      message.idiomLocale = _json["idiomLocale"];
+    }
     if (_json.containsKey("image")) {
       message.image = _json["image"];
     }
@@ -615,6 +618,9 @@ class UserProfileFactory {
 
   static core.Map toJson(UserProfile message) {
     var _json = new core.Map();
+    if (message.idiomLocale != null) {
+      _json["idiomLocale"] = message.idiomLocale;
+    }
     if (message.image != null) {
       _json["image"] = message.image;
     }
