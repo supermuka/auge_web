@@ -24,10 +24,14 @@ class Measure {
   int get progress {
     int endMinusStartValue = (endValueInt - startValueInt);
     int progress;
-    if (endMinusStartValue != null && endMinusStartValue > 0)
-      progress = (((currentValueInt ?? 0) - (startValueInt ?? 0)) / endMinusStartValue).toInt();
-    else
+    if (endMinusStartValue != null && endMinusStartValue != 0) {
+      progress =
+          (((currentValueInt ?? 0) - (startValueInt ?? 0)) / endMinusStartValue * 100)
+              .toInt();
+    }
+    else {
       progress = 0;
+    }
     return progress;
   }
 }

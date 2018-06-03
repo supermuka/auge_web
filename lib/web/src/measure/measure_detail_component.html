@@ -16,11 +16,11 @@
         </material-dropdown-select>
         <br/>
         <material-input type="number" [(ngModel)]="measure.startValue" floatingLabel [label]="label('Start Value')"></material-input>
+        <material-input type="number" [(ngModel)]="measure.currentValue" floatingLabel [label]="label('Current Value')" [lowerBound]="lowerBound()" [upperBound]="upperBound()"></material-input>
         <material-input type="number" [(ngModel)]="measure.endValue" floatingLabel [label]="label('End Value')"></material-input>
-        <material-input type="number" [(ngModel)]="measure.currentValue" floatingLabel [label]="label('Current Value')"></material-input>
 
         <div footer>
-            <material-button (trigger)="saveMeasure()">{{buttonLabel('Save')}}
+            <material-button [disabled]="!validInput()" (trigger)="saveMeasure()">{{buttonLabel('Save')}}
                 <material-icon icon="save"></material-icon>
             </material-button>
             <material-button  autoFocus (trigger)="goBack()">{{buttonLabel('Back')}}

@@ -54,7 +54,7 @@ import 'package:auge/web/src/measure/measure_detail_component.template.dart' as 
       MaterialTooltipTargetDirective,
       MaterialTooltipSourceDirective,
       ModalComponent,
-      MaterialSliderComponent,
+      MaterialProgressComponent,
       LeviusProgressCircleComponent,
     ],
     templateUrl: 'measures_component.html',
@@ -169,4 +169,6 @@ class MeasuresComponent extends Object with CanReuse implements OnActivate, OnDe
   Future<bool> canReuse(RouterState current, RouterState next) async {
     return true;
   }
+
+
 }

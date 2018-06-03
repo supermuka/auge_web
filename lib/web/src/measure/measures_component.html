@@ -28,11 +28,14 @@
                                     <material-progress materialTooltip="Progresso" [activeProgress]="progress(measure)"></material-progress>
                                 </div>
                                 -->
+                                <material-progress materialTooltip="{{label('Progress') + ' ' + iMeasure.progress.toString() + '%'}}" [activeProgress]="iMeasure.progress"></material-progress>
+                                <!--
                                 <material-slider [(value)]="iMeasure.currentValueInt" style="width: 100%" [min]="iMeasure.startValueInt"
                                                  [max]="iMeasure.endValueInt"
                                                  [step]="1"
                                                  materialTooltip="{{label('Current Value')}}" (click)="updateMeasure(iMeasure)">
                                 </material-slider>
+                                -->
                                 <div class="width-240-flex">
                                     <span materialTooltip="{{label('Start Value')}}">{{iMeasure.startValue}}</span>
                                     <span materialTooltip="{{label('Current Value')}}">{{iMeasure.currentValue}}</span>

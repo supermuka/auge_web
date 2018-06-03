@@ -35,6 +35,7 @@ import 'package:auge/web/services/app_routes.dart';
       MaterialListItemComponent,
       MaterialExpansionPanel,
       ModalComponent,
+      MaterialNumberValidator,
      // MaterialSliderComponent,
     ],
     templateUrl: 'measure_detail_component.html',
@@ -117,4 +118,32 @@ class MeasureDetailComponent implements OnActivate {
   }
 
   ItemRenderer get measureUnitItemRenderer => (dynamic unit) => unit.simbol;
+
+  double lowerBound() {
+    if (measure?.startValue == null || measure?.endValue == null) return measure?.startValue;
+    if (measure.startValue < measure.endValue) {
+      return measure.startValue;
+    } else {
+      return measure.endValue;
+    }
+  }
+
+  double upperBound() {
+    if (measure?.startValue == null || measure?.endValue == null) return measure?.endValue;
+    if (measure.startValue > measure.endValue) {
+      return measure.startValue;
+    } else {
+      return measure.endValue;
+    }
+  }
+
+  bool validInput() {
+    print('entrou');
+    if (measure?.currentValue != null && (measure.currentValue < lowerBound() || measure.currentValue > upperBound())) {
+      return false;
+    } else {
+      return true;
+    }
+
+  }
 }
