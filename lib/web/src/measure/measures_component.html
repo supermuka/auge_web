@@ -5,8 +5,14 @@
     <br/>
 
     <div class="container">
-        <levius-progress-circle [percent]="objective?.progress">
-        </levius-progress-circle>
+        <div class="c100 p{{objective?.progress}}">
+            <span>{{objective?.progress}}%</span>
+            <div class="slice">
+                <div class="bar"></div>
+                <div class="fill"></div>
+            </div>
+        </div>
+
         <div>
             <h4 class="material-list-item-content"><strong>{{objective?.name}}</strong></h4>
             <p class="material-list-item-content">{{objective?.description}}</p>

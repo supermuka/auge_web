@@ -7,11 +7,17 @@
         <div *ngFor="let iObjective of objectives">
             <material-list-item (trigger)="goToMeasure(iObjective)">
                 <div class="truncate-ellipsed-parent">
-                    <span>{{iObjective.progress}}</span>
-
+                    <div class="c100 p{{iObjective.progress}}">
+                        <span>{{iObjective.progress}}%</span>
+                        <div class="slice">
+                            <div class="bar"></div>
+                            <div class="fill"></div>
+                        </div>
+                    </div>
+<!--
                     <levius-progress-circle [percent]="iObjective.progress">
                     </levius-progress-circle>
-
+-->
 
                     <div>
                         <h4 class="truncate-ellipsed">{{iObjective.name}}</h4>
