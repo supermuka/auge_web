@@ -9,9 +9,6 @@ https://msdn.microsoft.com/en-us/library/bb668962.aspx
 
 _Kanban_
 
-
-_Kanban_
-
 https://leankit.com/learn/kanban/kanban-card/
 https://kanbanize.com/kanban-resources/case-studies/kanban-work-breakdown-structure/
 

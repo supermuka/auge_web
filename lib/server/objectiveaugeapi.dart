@@ -12,9 +12,10 @@ import 'package:auge/server/augeapi.dart';
 
 import 'package:auge/shared/model/objective/objective.dart';
 import 'package:auge/shared/model/objective/measure.dart';
-import 'package:auge/shared/model/objective/measure_unit.dart';
 import 'package:auge/shared/model/organization.dart';
 import 'package:auge/shared/model/user.dart';
+
+import 'package:auge/shared/message/messages.dart';
 
 /// Api for Objective Domain
 @ApiClass(version: 'v1')
@@ -31,6 +32,7 @@ class ObjectiveAugeApi {
   Future<List<MeasureUnit>> _queryGetMeasureUnits({String id}) async {
     List<List> results;
 
+    /*
     String queryStatement;
 
     queryStatement = "SELECT measure_unit.id::VARCHAR, measure_unit.name"
@@ -56,6 +58,33 @@ class ObjectiveAugeApi {
           ..name = row[1]);
       }
     }
+
+    */
+    List<MeasureUnit> mesuareUnits = new List();
+
+    mesuareUnits.add(new MeasureUnit()
+      ..id = 'f748d3ad-b533-4a2d-b4ae-0ae1e255cf81'
+      ..symbol = '%'
+      ..name = MeasureMessage.measureUnitLabel('Percent')
+    );
+    mesuareUnits.add(new MeasureUnit()
+      ..id = 'fad0dc86-0124-4caa-9954-7526814efc3a'
+      ..symbol = '\$'
+      ..name =  MeasureMessage.measureUnitLabel('Money')
+    );
+
+    mesuareUnits.add(new MeasureUnit()
+      ..id = 'fad0dc86-0124-4caa-9954-7526814efc3a'
+      ..symbol = ''
+      ..name = MeasureMessage.measureUnitLabel('Index')
+    );
+
+    mesuareUnits.add(new MeasureUnit()
+      ..id = '723f1387-d5da-44f7-8373-17de31921cae'
+      ..symbol = ''
+      ..name = MeasureMessage.measureUnitLabel('Unitary')
+    );
+
     return mesuareUnits;
   }
 
@@ -225,7 +254,7 @@ class ObjectiveAugeApi {
     List<List> results;
 
    // String queryStatementColumns = "objective.id::VARCHAR, objective.name, objective.description, objective.start_date, objective.end_date, objective.leader_user_id, objective.aligned_to_objective_id";
-    String queryStatementColumns = "objective.id, objective.name, objective.description, objective.start_date, objective.end_date, objective.leader_user_id, objective.aligned_to_objective_id";
+    String queryStatementColumns = "objective.id, objective.name, objective.description, objective.start_date, objective.end_date, objective.leader_user_id, objective.aligned_to_objective_id, objective.organization_id";
 
     String queryStatementWhere = "";
     Map<String, dynamic> substitutionValues;
@@ -292,7 +321,7 @@ class ObjectiveAugeApi {
 
     if (results != null && results.isNotEmpty) {
 
-      Organization organization = await _augeApi.getOrganizationById(organizationId);
+      Organization organization; // = await _augeApi.getOrganizationById(organizationId);
 
       List<Measure> measures;
       User leaderUser;
@@ -303,6 +332,10 @@ class ObjectiveAugeApi {
 
       for (var row in results) {
         // Measures
+
+        if (organization == null || organization.id != row[7]) {
+          organization = await _augeApi.getOrganizationById(row[7]);
+        }
 
         measures = (withMeasures) ? await _queryGetMeasures(objectiveId: row[0]) : [];
 

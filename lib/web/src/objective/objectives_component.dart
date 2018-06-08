@@ -18,8 +18,6 @@ import 'package:auge/web/src/search/search_service.dart';
 import 'package:auge/web/src/auth/auth_service.dart';
 import 'package:auge/web/src/app_layout/app_layout_service.dart';
 
-import 'package:auge/web/utils/levius_progress_circle.dart';
-
 import 'package:auge/web/services/app_routes.dart';
 
 // ignore_for_file: uri_has_not_been_generated
@@ -27,7 +25,7 @@ import 'package:auge/web/src/app_layout/app_layout_home.template.dart' as app_la
 import 'package:auge/web/src/objective/objective_detail_component.template.dart' as objective_detail_component;
 
 @Component(
-    selector: 'auge-objective',
+    selector: 'auge-objectives',
     providers: const [ObjectiveService],
     directives: const [
       coreDirectives,
@@ -53,7 +51,6 @@ import 'package:auge/web/src/objective/objective_detail_component.template.dart'
       MaterialTooltipTargetDirective,
       MaterialTooltipSourceDirective,
       ModalComponent,
-      LeviusProgressCircleComponent,
     ],
     templateUrl: 'objectives_component.html',
     styleUrls: const [

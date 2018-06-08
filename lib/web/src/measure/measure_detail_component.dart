@@ -9,7 +9,6 @@ import 'package:angular_router/angular_router.dart';
 
 import 'package:auge/shared/model/objective/objective.dart';
 import 'package:auge/shared/model/objective/measure.dart';
-import 'package:auge/shared/model/objective/measure_unit.dart';
 import 'package:auge/shared/message/messages.dart';
 
 import 'package:auge/web/src/objective/objective_service.dart';

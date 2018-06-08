@@ -11,6 +11,7 @@ class AppRoutes {
   static const userIdParameter = 'user_id';
   static const objectiveIdParameter = 'objective_id';
   static const measureIdParameter = 'measure_id';
+  static const groupIdParameter = 'group_id';
 
   static final appRoute = new RoutePath(
     path: 'app',
@@ -67,8 +68,6 @@ class AppRoutes {
     path: 'objetivo/:$objectiveIdParameter',
     parent: objectivesRoute
   );
-
-
   static final workItemsRoute = new RoutePath(
     path: 'initiative/:$initiativeIdParameter/work_items',
     parent: appLayoutRoute
@@ -147,5 +146,18 @@ class AppRoutes {
   static final organizationRoute = new RoutePath(
       path: 'organization/:$organizationIdParameter',
       parent: appLayoutRoute
+  );
+  static final groupsRoute = new RoutePath(
+      path: 'groups',
+      parent: appLayoutRoute
+  );
+
+  static final groupDetailAddRoute = new RoutePath(
+      path: 'group',
+      parent: groupsRoute
+  );
+  static final groupDetailRoute = new RoutePath(
+      path: 'group/:$groupIdParameter',
+      parent: groupsRoute
   );
 }

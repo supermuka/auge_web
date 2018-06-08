@@ -1,5 +1,8 @@
-import 'package:auge/shared/model/objective/measure_unit.dart';
+// Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
+// Author: Samuel C. Schwebel
 
+
+/// Domain model class to represent an measure
 class Measure {
 
   String id;
@@ -11,6 +14,10 @@ class Measure {
   double startValue;
   double endValue;
   double currentValue;
+
+  Measure() {
+
+  }
 
   int get startValueInt => startValue.toInt();
   set startValueInt(int value) => startValue = value.toDouble();
@@ -35,3 +42,13 @@ class Measure {
     return progress;
   }
 }
+
+class MeasureUnit {
+
+  String id;
+
+  String symbol;
+  String name;
+
+}
+

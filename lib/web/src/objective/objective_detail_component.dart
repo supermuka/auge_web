@@ -16,7 +16,6 @@ import 'package:auge/web/services/common_service.dart' as common_service;
 import 'package:auge/web/src/auth/auth_service.dart';
 import 'package:auge/web/src/user/user_service.dart';
 import 'package:auge/web/src/objective/objective_service.dart';
-import 'package:auge/web/utils/levius_progress_circle.dart';
 
 import 'package:auge/web/services/app_routes.dart';
 

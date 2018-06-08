@@ -1,11 +1,8 @@
 import 'dart:async';
 
 import 'package:angular/core.dart';
-
 import 'package:auge/web/services/augeapi_service.dart';
-
 import 'package:auge/shared/model/objective/measure.dart';
-import 'package:auge/shared/model/objective/measure_unit.dart';
 
 @Injectable()
 class MeasureService {

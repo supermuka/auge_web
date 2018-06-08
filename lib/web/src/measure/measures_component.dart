@@ -18,9 +18,6 @@ import 'package:auge/web/src/app_layout/app_layout_service.dart';
 import 'package:auge/web/src/measure/measure_service.dart';
 import 'package:auge/web/src/objective/objective_service.dart';
 
-
-import 'package:auge/web/utils/levius_progress_circle.dart';
-
 import 'package:auge/web/services/app_routes.dart';
 
 // ignore_for_file: uri_has_not_been_generated
@@ -55,7 +52,6 @@ import 'package:auge/web/src/measure/measure_detail_component.template.dart' as 
       MaterialTooltipSourceDirective,
       ModalComponent,
       MaterialProgressComponent,
-      LeviusProgressCircleComponent,
     ],
     templateUrl: 'measures_component.html',
     styleUrls: const [

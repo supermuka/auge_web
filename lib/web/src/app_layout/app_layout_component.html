@@ -36,6 +36,9 @@
             <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(usersRouteUrl)">
                 <material-icon icon="account_circle"></material-icon>{{label('Users')}}
             </material-list-item>
+            <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(groupsRouteUrl)">
+                <material-icon icon="account_circle"></material-icon>{{label('Groups')}}
+            </material-list-item>
         </div>
         <div *ngIf="isSuperAdmin" group>
             <div label>{{label('Super Admin')}}</div>

@@ -8,6 +8,7 @@ import 'dart:convert' as convert;
 
 import 'package:_discoveryapis_commons/_discoveryapis_commons.dart' as commons;
 import 'package:http/http.dart' as http;
+import 'package:auge/shared/model/group.dart';
 import 'package:auge/shared/model/organization.dart';
 import 'package:auge/shared/model/user.dart';
 import 'package:auge/shared/model/user_profile_organization.dart';
@@ -45,6 +46,40 @@ class AugeApi {
     _url = 'close';
 
     var _response = _requester.request(_url, "PUT",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then((data) => null);
+  }
+
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future createGroup(Group request) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (request != null) {
+      _body = convert.JSON.encode(GroupFactory.toJson(request));
+    }
+
+    _downloadOptions = null;
+
+    _url = 'groups';
+
+    var _response = _requester.request(_url, "POST",
         body: _body,
         queryParams: _queryParams,
         uploadOptions: _uploadOptions,
@@ -113,6 +148,40 @@ class AugeApi {
     _url = 'users';
 
     var _response = _requester.request(_url, "POST",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then((data) => null);
+  }
+
+  /// Request parameters:
+  ///
+  /// [id] - Path parameter: 'id'.
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future deleteGroup(core.String id) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (id == null) {
+      throw new core.ArgumentError("Parameter id is required.");
+    }
+
+    _downloadOptions = null;
+
+    _url = 'groups/' + commons.Escaper.ecapeVariable('$id');
+
+    var _response = _requester.request(_url, "DELETE",
         body: _body,
         queryParams: _queryParams,
         uploadOptions: _uploadOptions,
@@ -274,6 +343,111 @@ class AugeApi {
     return _response.then((data) => data
         .map((value) => UserProfileOrganizationFactory.fromJson(value))
         .toList());
+  }
+
+  /// Request parameters:
+  ///
+  /// [id] - Path parameter: 'id'.
+  ///
+  /// Completes with a [Group].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<Group> getGroupById(core.String id) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (id == null) {
+      throw new core.ArgumentError("Parameter id is required.");
+    }
+
+    _url = 'groups/' + commons.Escaper.ecapeVariable('$id');
+
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then((data) => GroupFactory.fromJson(data));
+  }
+
+  /// Request parameters:
+  ///
+  /// [id] - Path parameter: 'id'.
+  ///
+  /// Completes with a [GroupType].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<GroupType> getGroupTypeById(core.String id) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (id == null) {
+      throw new core.ArgumentError("Parameter id is required.");
+    }
+
+    _url = 'group_types/' + commons.Escaper.ecapeVariable('$id');
+
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then((data) => GroupTypeFactory.fromJson(data));
+  }
+
+  /// Request parameters:
+  ///
+  /// [organizationId] - Path parameter: 'organizationId'.
+  ///
+  /// Completes with a [core.List<Group>].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<core.List<Group>> getGroups(core.String organizationId) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (organizationId == null) {
+      throw new core.ArgumentError("Parameter organizationId is required.");
+    }
+
+    _url = 'organization/' +
+        commons.Escaper.ecapeVariable('$organizationId') +
+        '/groups';
+
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then(
+        (data) => data.map((value) => GroupFactory.fromJson(value)).toList());
   }
 
   /// Request parameters:
@@ -466,6 +640,40 @@ class AugeApi {
   ///
   /// If the used [http.Client] completes with an error when making a REST call,
   /// this method will complete with the same error.
+  async.Future updateGroup(Group request) {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    if (request != null) {
+      _body = convert.JSON.encode(GroupFactory.toJson(request));
+    }
+
+    _downloadOptions = null;
+
+    _url = 'groups';
+
+    var _response = _requester.request(_url, "PUT",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then((data) => null);
+  }
+
+  /// [request] - The metadata request object.
+  ///
+  /// Request parameters:
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
   async.Future updateOrganization(Organization request) {
     var _url = null;
     var _queryParams = new core.Map();
@@ -523,6 +731,85 @@ class AugeApi {
         uploadMedia: _uploadMedia,
         downloadOptions: _downloadOptions);
     return _response.then((data) => null);
+  }
+}
+
+class GroupFactory {
+  static Group fromJson(core.Map _json) {
+    var message = new Group();
+    if (_json.containsKey("active")) {
+      message.active = _json["active"];
+    }
+    if (_json.containsKey("groupType")) {
+      message.groupType = GroupTypeFactory.fromJson(_json["groupType"]);
+    }
+    if (_json.containsKey("id")) {
+      message.id = _json["id"];
+    }
+    if (_json.containsKey("leader")) {
+      message.leader = UserFactory.fromJson(_json["leader"]);
+    }
+    if (_json.containsKey("name")) {
+      message.name = _json["name"];
+    }
+    if (_json.containsKey("organization")) {
+      message.organization =
+          OrganizationFactory.fromJson(_json["organization"]);
+    }
+    if (_json.containsKey("superGroup")) {
+      message.superGroup = GroupFactory.fromJson(_json["superGroup"]);
+    }
+    return message;
+  }
+
+  static core.Map toJson(Group message) {
+    var _json = new core.Map();
+    if (message.active != null) {
+      _json["active"] = message.active;
+    }
+    if (message.groupType != null) {
+      _json["groupType"] = GroupTypeFactory.toJson(message.groupType);
+    }
+    if (message.id != null) {
+      _json["id"] = message.id;
+    }
+    if (message.leader != null) {
+      _json["leader"] = UserFactory.toJson(message.leader);
+    }
+    if (message.name != null) {
+      _json["name"] = message.name;
+    }
+    if (message.organization != null) {
+      _json["organization"] = OrganizationFactory.toJson(message.organization);
+    }
+    if (message.superGroup != null) {
+      _json["superGroup"] = GroupFactory.toJson(message.superGroup);
+    }
+    return _json;
+  }
+}
+
+class GroupTypeFactory {
+  static GroupType fromJson(core.Map _json) {
+    var message = new GroupType();
+    if (_json.containsKey("id")) {
+      message.id = _json["id"];
+    }
+    if (_json.containsKey("name")) {
+      message.name = _json["name"];
+    }
+    return message;
+  }
+
+  static core.Map toJson(GroupType message) {
+    var _json = new core.Map();
+    if (message.id != null) {
+      _json["id"] = message.id;
+    }
+    if (message.name != null) {
+      _json["name"] = message.name;
+    }
+    return _json;
   }
 }
 

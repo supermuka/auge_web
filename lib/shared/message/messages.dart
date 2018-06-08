@@ -223,7 +223,7 @@ class ObjectiveMessage {
 /// Specific messages and label for [Measure]
 class MeasureMessage {
 
-  /// Label for initiative
+  /// Label for Measure
   static label(String label) => Intl.message(
       "${Intl.select(label, {
         'Measures': 'Measures',
@@ -237,11 +237,23 @@ class MeasureMessage {
         'Current Value': 'Current Value',
         'Progress': 'Progress',
         'other': 'Not Defined'})}",
-      name: "measuereLabel",
+      name: "measureLabel",
       args: [label],
       // locale: "en",
-      desc: "Measure labels",
-      examples: const {"Name": "Name"}
+      desc: "Measure labels"
+  );
+
+  /// Label for Measure Unit
+  static measureUnitLabel(String label) => Intl.message(
+      "${Intl.select(label, {
+        'Percent': 'Percent',
+        'Money': 'Money',
+        'Index': 'Index',
+        'Unitary': 'Unitary'})}",
+      name: "measureUnitLabel",
+      args: [label],
+      // locale: "en",
+      desc: "Measure Unit labels"
   );
 }
 
@@ -257,5 +269,41 @@ class ObjectiveHierarchyMessage {
       args: [label],
       // locale: "en",
       desc: "Objective Map labels"
+  );
+}
+
+/// Specific messages and label for [Group]
+class GroupMessage {
+
+  /// Label for initiative
+  static label(String label) => Intl.message(
+      "${Intl.select(label, {
+        'Groups': 'Groups',
+        'Edit Group': 'Edit Group',
+        'Add Group': 'Add Group',
+        'Name': 'Name',
+        'Description': 'Description',
+        'Start Date': 'Start Date',
+        'End Date': 'End Date',
+        'Subgroup': 'Subgroup',
+        'Leader': 'Leader',
+        'other': 'Not Defined'})}",
+      name: "groupLabel",
+      args: [label],
+      // locale: "en",
+      desc: "Group labels",
+  );
+
+  /// Label for Measure Unit
+  static groupTypeLabel(String label) => Intl.message(
+      "${Intl.select(label, {
+        'Company': 'Company',
+        'Business Unit': 'Business Unit',
+        'Department': 'Department',
+        'Team': 'Team'})}",
+      name: "groupTypeLabel",
+      args: [label],
+      // locale: "en",
+      desc: "Group type labels"
   );
 }

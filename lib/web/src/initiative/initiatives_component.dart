@@ -13,7 +13,6 @@ import 'package:angular_components/model/menu/menu.dart';
 import 'package:auge/shared/message/messages.dart';
 
 import 'package:auge/shared/model/initiative/initiative.dart';
-import 'package:auge/web/utils/levius_progress_circle.dart';
 
 import 'package:auge/web/src/auth/auth_service.dart';
 import 'package:auge/web/src/initiative/initiative_service.dart';
@@ -57,7 +56,6 @@ import 'package:auge/web/src/initiative/initiative_detail_component.template.dar
       MaterialTooltipTargetDirective,
       MaterialTooltipSourceDirective,
       ModalComponent,
-      LeviusProgressCircleComponent,
       WorkItemsComponent,
     ],
     templateUrl: 'initiatives_component.html',

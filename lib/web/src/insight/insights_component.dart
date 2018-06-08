@@ -8,7 +8,6 @@ import 'package:angular_router/angular_router.dart';
 import 'package:angular_components/scorecard/scoreboard.dart';
 import 'package:angular_components/scorecard/scorecard.dart';
 
-import 'package:auge/web/utils/levius_progress_circle.dart';
 
 import 'package:auge/web/src/auth/auth_service.dart';
 import 'package:auge/web/src/app_layout/app_layout_service.dart';
@@ -25,7 +24,7 @@ import 'package:auge/shared/model/initiative/initiative.dart';
     coreDirectives,
     ScoreboardComponent,
     ScorecardComponent,
-    LeviusProgressCircleComponent
+
   ],
   styleUrls: const ['insights_component.css'],
   templateUrl: 'insights_component.html',

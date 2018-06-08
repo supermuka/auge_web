@@ -10,6 +10,8 @@ import 'package:auge/server/augeconnection.dart';
 import 'package:auge/shared/model/organization.dart';
 import 'package:auge/shared/model/user.dart';
 import 'package:auge/shared/model/user_profile_organization.dart';
+import 'package:auge/shared/model/group.dart';
+import 'package:auge/shared/message/messages.dart';
 
 /// Api for Shared Domain
 @ApiClass(version: 'v1')
@@ -394,7 +396,213 @@ class AugeApi {
     } on PostgreSQLException catch (e) {
       throw new ApplicationError(e);
     }
+  }
 
+   // *** GROUP  ***
+  Future<List<Group>> _queryGetGroups({String id, String organizationId, int alignedToRecursive = 1}) async {
+    List<List> results;
+
+    String queryStatement = '';
+
+    queryStatement = "SELECT g.id::VARCHAR,"
+    " g.name,"            //0
+    " g.active,"          //1
+    " g.organization_id," //2
+    " g.group_type_id,"   //3
+    " g.leader_user_id,"  //4
+    " g.super_group_id "  //5
+    " FROM auge.groups g ";
+
+    Map<String, dynamic> _substitutionValues;
+
+    if (id != null) {
+      queryStatement = queryStatement + " WHERE g.id = @id";
+      _substitutionValues = {
+        "id": id
+      };
+
+    } else {
+      queryStatement = queryStatement + " WHERE g.organization_id = @organization_id";
+      _substitutionValues = {
+        "organization_id": organizationId
+      };
+    }
+
+    results =  await AugeConnection.getConnection().query(queryStatement, substitutionValues: _substitutionValues);
+
+    List<Group> groups = new List();
+    Group superGroup;
+    List<Group> superGroups;
+    GroupType groupType;
+
+    if (results.length > 0) {
+      Organization organization;
+
+      for (var row in results) {
+
+        if (organization == null || organization.id != row[3]) {
+          organization = await getOrganizationById(row[3]);
+        }
+
+        if (row[5] != null && alignedToRecursive > 0) {
+          superGroups = await _queryGetGroups(id: row[5],
+              alignedToRecursive: --alignedToRecursive);
+          superGroup = superGroups.first;
+        }
+
+        groupType = await getGroupTypeById(row[3]);
+
+        Group group = new Group()
+          ..id = row[0]
+          ..name = row[1]
+          ..active = row[2]
+          ..organization = organization
+          ..groupType = groupType
+          ..superGroup = superGroup;
+
+        groups.add(group);
+      }
+    }
+    return groups;
+  }
+
+  /// Return [Group] list.
+  @ApiMethod( method: 'GET', path: 'organization/{organizationId}/groups')
+  Future<List<Group>> getGroups(String organizationId) async {
+    try {
+      return _queryGetGroups(organizationId: organizationId);
+    } on PostgreSQLException catch (e) {
+      throw new ApplicationError(e);
+    }
+  }
+
+  /// Return a [Group] by Id key.
+  @ApiMethod( method: 'GET', path: 'groups/{id}')
+  Future<Group> getGroupById(String id) async {
+    try {
+      List<Group> groups;
+      groups = await _queryGetGroups(id: id);
+      return groups.first;
+    } on PostgreSQLException catch (e) {
+      throw new ApplicationError(e);
+    }
+  }
+
+  /// Create (insert) a new group
+  @ApiMethod( method: 'POST', path: 'groups')
+  Future<VoidMessage> createGroup(Group group) async {
+
+    group.id = new Uuid().v4();
+
+    await AugeConnection.getConnection().transaction((ctx) async {
+      try {
+        await ctx.query(
+            "INSERT INTO auge.groups(id, name, active, organization_id, group_type_id, super_group_id, leader_user_id) VALUES("
+                "@id,"
+                "@name,"
+                "@active,"
+                "@organization_id,"
+                "@group_type_id,"
+                "@super_group_id,"
+                "@leader_user_id)"
+            , substitutionValues: {
+          "id": group.id,
+          "name": group.name,
+          "active": group.active,
+          "organization_id": group.organization.id,
+          "group_type_id": group.groupType.id,
+          "super_group_id": group.superGroup.id,
+          "leader_user_id": group.leader.id});
+      } on PostgreSQLException catch (e) {
+        throw new ApplicationError(e);
+      }
+    });
+    return null;
+
+  }
+
+  /// Update a [Group]
+  @ApiMethod( method: 'PUT', path: 'groups')
+  Future<VoidMessage> updateGroup(Group group) async {
+
+    await AugeConnection.getConnection().transaction((ctx) async {
+      try {
+        await ctx.query(
+            "UPDATE auge.users "
+                "SET name = @name,"
+                "active = @active,"
+                "organization_id = @organization_id,"
+                "group_type_id = @group_type_id,"
+                "super_group_id = @super_group_id,"
+                "leader_user_id = @leader_user_id)"
+                "WHERE id = @id", substitutionValues: {
+          "id": group.id,
+          "name": group.name,
+          "active": group.active,
+          "organization_id": group.organization.id,
+          "group_type_id": group.groupType.id,
+          "super_group_id": group.superGroup.id,
+          "leader_user_id": group.leader.id});
+      } on PostgreSQLException catch (e) {
+        throw new ApplicationError(e);
+      }
+    });
+  }
+
+  /// Delete a group by [id]
+  @ApiMethod( method: 'DELETE', path: 'groups/{id}')
+  Future<VoidMessage> deleteGroup(String id) async {
+
+    await AugeConnection.getConnection().transaction((ctx) async {
+      try {
+        await ctx.query(
+            "DELETE FROM auge.groups group WHERE group.id = @id "
+            , substitutionValues: {
+          "id": id});
+
+      } on PostgreSQLException catch (e) {
+        throw new ApplicationError(e);
+      }
+
+    });
+  }
+
+  Future<List<GroupType>> _queryGetGroupTypes({String id}) async {
+
+    List<GroupType> groupTypes = new List();
+
+    groupTypes.add(new GroupType()
+      ..id = '1dce85a6-f876-4f96-8342-5890457d5154'
+      ..name = GroupMessage.groupTypeLabel('Company')
+    );
+    groupTypes.add(new GroupType()
+      ..id = '97611ed6-895e-4aa9-afe7-88f1238e21e5'
+      ..name =  GroupMessage.groupTypeLabel('Business Unit')
+    );
+
+    groupTypes.add(new GroupType()
+      ..id = 'df25232f-3f85-4c1a-b685-3b958b486dcf'
+      ..name = GroupMessage.groupTypeLabel('Department')
+    );
+
+    groupTypes.add(new GroupType()
+      ..id = '0a3614a3-887e-45eb-9464-30ccf4be6c65'
+      ..name = GroupMessage.groupTypeLabel('Team')
+    );
+
+    return id != null ? groupTypes.where((t) => (t.id == id)) : groupTypes;
+  }
+
+  /// Return a [GroupType] by Id key.
+  @ApiMethod( method: 'GET', path: 'group_types/{id}')
+  Future<GroupType> getGroupTypeById(String id) async {
+    try {
+      List<GroupType> groupTypes;
+      groupTypes = await _queryGetGroupTypes(id: id);
+      return groupTypes.first;
+    } on PostgreSQLException catch (e) {
+      throw new ApplicationError(e);
+    }
   }
 
 }

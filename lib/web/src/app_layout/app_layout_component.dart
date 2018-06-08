@@ -23,7 +23,6 @@ import 'package:auge/shared/model/user.dart';
 import 'package:auge/shared/model/organization.dart';
 import 'package:auge/shared/model/user_profile_organization.dart';
 
-
 // ignore_for_file: uri_has_not_been_generated
 import 'package:auge/web/src/insight/insights_component.template.dart' as insights_component;
 import 'package:auge/web/src/organization/organizations_component.template.dart' as organizations_component;
@@ -35,6 +34,7 @@ import 'package:auge/web/src/work_item/work_items_component.template.dart' as wo
 import 'package:auge/web/src/map/map_component.template.dart' as map_component;
 import 'package:auge/web/src/objective/objectives_component.template.dart' as objectives_component;
 import 'package:auge/web/src/measure/measures_component.template.dart' as measures_component;
+import 'package:auge/web/src/group/groups_component.template.dart' as groups_component;
 
 @Component(
     selector: 'auge-layout',
@@ -73,6 +73,7 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
   String get organizationRouteUrl =>  AppRoutes.organizationRoute.toUrl(parameters: { AppRoutes.organizationIdParameter: this._authService.selectedOrganization?.id });
   String get organizationsRouteUrl => AppRoutes.organizationsRoute.toUrl();
   String get usersRouteUrl => AppRoutes.usersRoute.toUrl();
+  String get groupsRouteUrl => AppRoutes.groupsRoute.toUrl();
 
   final List<RouteDefinition> routes = [
     new RouteDefinition(
@@ -114,6 +115,10 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
     new RouteDefinition(
       routePath: AppRoutes.userSelectedDetailRoute,
       component: user_detail_component.UserDetailComponentNgFactory,
+    ),
+    new RouteDefinition(
+      routePath: AppRoutes.groupsRoute,
+      component: groups_component.GroupsComponentNgFactory,
     ),
   ];
 

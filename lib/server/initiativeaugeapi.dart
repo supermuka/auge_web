@@ -67,8 +67,10 @@ class InitiativeAugeApi {
       // Work Items
       workItems = (withWorkItems) ? await _queryGetWorkItems(initiativeId: row[0]) : [];
 
+      if (organization == null || organization.id != row[3]) {
+        organization = await _augeApi.getOrganizationById(row[3]);
+      }
 
-      organization = await _augeApi.getOrganizationById(row[3]);
       user = await _augeApi.getUserById(row[4]);
       stages = await getStages(row[0]);
       objective = row[5] == null ? null : await _objectiveAugeApi.getObjectiveById(row[5]);

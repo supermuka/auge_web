@@ -8,7 +8,7 @@ import 'package:auge/shared/model/objective/measure.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-/// Domain model class to represent an objective (
+/// Domain model class to represent an objective
 class Objective {
 
   String id;
