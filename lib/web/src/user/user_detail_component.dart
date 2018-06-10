@@ -90,6 +90,12 @@ class UserDetailComponent implements OnActivate {
 
   @override
   Future onActivate(RouterState previous, RouterState current) async {
+
+    if (this._authService.authenticatedUser == null) {
+      _router.navigate(AppRoutes.authRoute.toUrl());
+    }
+
+
     String id = current.parameters[AppRoutes.userIdParameter];
     if (id != null && id.isNotEmpty) {
       user = await _userService.getUserById(id, true);

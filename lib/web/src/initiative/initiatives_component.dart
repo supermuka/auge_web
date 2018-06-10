@@ -103,6 +103,10 @@ class InitiativesComponent extends Object with CanReuse implements OnActivate, O
   @override
   Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
 
+    if (this._authService.authenticatedUser == null) {
+      _router.navigate(AppRoutes.authRoute.toUrl());
+    }
+    
     _appLayoutService.headerTitle = InitiativeMessage.label('Initiatives');
 
     _initiatives = await _initiativeService.getInitiatives(_authService.selectedOrganization?.id, withWorkItems: true);

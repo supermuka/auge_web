@@ -95,6 +95,11 @@ class ObjectivesComponent extends Object with CanReuse implements OnActivate, On
   @override
   Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
 
+    if (this._authService.authenticatedUser == null) {
+      _router.navigate(AppRoutes.authRoute.toUrl());
+    }
+
+
     _appLayoutService.headerTitle = ObjectiveMessage.label('Objectives');
 
     _objectives = await _objectiveService.getObjectives(_authService.selectedOrganization.id, withMeasures: true);

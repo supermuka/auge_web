@@ -12,6 +12,7 @@ import 'package:angular_components/model/menu/menu.dart';
 import 'package:auge/shared/model/user.dart';
 import 'package:auge/shared/message/messages.dart';
 
+import 'package:auge/web/src/auth/auth_service.dart';
 import 'package:auge/web/src/user/user_service.dart';
 import 'package:auge/web/src/app_layout/app_layout_service.dart';
 
@@ -63,6 +64,8 @@ class UsersComponent extends Object with CanReuse implements OnActivate {
       component: user_detail_component.UserDetailComponentNgFactory,
     ),
   ];
+
+  final AuthService _authService;
   final AppLayoutService _appLayoutService;
   final UserService _userService;
   final Router _router;
@@ -73,12 +76,17 @@ class UsersComponent extends Object with CanReuse implements OnActivate {
 
   MenuModel<MenuItem> menuModel;
 
-  UsersComponent(this._appLayoutService, this._userService, this._router) {
+  UsersComponent(this._authService, this._appLayoutService,  this._userService, this._router) {
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMessage.buttonLabel('Edit'), icon: new Icon('edit') , action: () => goToDetail(userSelected)), new MenuItem(CommonMessage.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete(userSelected))])], icon: new Icon('menu'));
   }
 
   @override
   Future onActivate(routeStateprevious, routeStatecurrent) async {
+
+    if (this._authService.authenticatedUser == null) {
+      _router.navigate(AppRoutes.authRoute.toUrl());
+    }
+
 
     _appLayoutService.headerTitle = UserMessage.label('Users');
 

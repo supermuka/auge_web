@@ -66,6 +66,10 @@ class MeasureDetailComponent implements OnActivate {
 
   @override
   Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
+    if (this._authService.authenticatedUser == null) {
+      _router.navigate(AppRoutes.authRoute.toUrl());
+    }
+
 
     String objectiveId = _router.current.parameters[AppRoutes
         .objectiveIdParameter];

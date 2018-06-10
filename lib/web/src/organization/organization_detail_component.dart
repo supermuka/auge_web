@@ -10,6 +10,8 @@ import 'package:auge/shared/model/organization.dart';
 import 'package:auge/shared/message/messages.dart';
 
 import 'package:auge/web/src/organization/organization_service.dart';
+import 'package:auge/web/src/auth/auth_service.dart';
+
 import 'package:auge/web/services/app_routes.dart';
 
 @Component(
@@ -35,10 +37,11 @@ import 'package:auge/web/services/app_routes.dart';
     final OrganizationService _organizationService;
     final Location _location;
     final Router _router;
+    final AuthService _authService;
 
     Organization organization = new Organization();
 
-    OrganizationDetailComponent(this._organizationService,  this._router, this._location);
+    OrganizationDetailComponent(this._organizationService,  this._router, this._location, this._authService);
 
 
     // Define messages and labels
@@ -48,6 +51,11 @@ import 'package:auge/web/services/app_routes.dart';
 
     @override
     Future onActivate(routeStatePrevious, routeStateCurrent) async {
+
+      if (this._authService.authenticatedUser == null) {
+        _router.navigate(AppRoutes.authRoute.toUrl());
+      }
+
       if (routeStateCurrent.parameters.isNotEmpty) {
         var uuid = routeStateCurrent.parameters[AppRoutes.organizationIdParameter];
         if (uuid != null && uuid.isNotEmpty) {

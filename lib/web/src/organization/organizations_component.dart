@@ -14,6 +14,8 @@ import 'package:auge/shared/message/messages.dart';
 
 import 'package:auge/web/src/organization/organization_service.dart';
 import 'package:auge/web/services/app_routes.dart';
+
+import 'package:auge/web/src/auth/auth_service.dart';
 import 'package:auge/web/src/app_layout/app_layout_service.dart';
 import 'package:auge/web/src/search/search_service.dart';
 
@@ -60,6 +62,7 @@ class OrganizationsComponent extends Object with CanReuse implements OnActivate,
     ),
   ];
 
+  final AuthService _authService;
   final AppLayoutService _appLayoutService;
   final OrganizationService _organizationService;
   final SearchService _searchService;
@@ -71,13 +74,18 @@ class OrganizationsComponent extends Object with CanReuse implements OnActivate,
 
   MenuModel<MenuItem> menuModel;
 
-  OrganizationsComponent(this._appLayoutService, this._organizationService, this._searchService, this._router) {
+  OrganizationsComponent(this._authService, this._appLayoutService, this._organizationService, this._searchService, this._router) {
 
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMessage.buttonLabel('Edit'), icon: new Icon('edit') , action: () => goToDetail(organizationSelected)), new MenuItem(CommonMessage.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete(organizationSelected))])], icon: new Icon('menu'));
   }
 
   @override
   onActivate(RouterState previous, RouterState current) async {
+
+    if (this._authService.authenticatedUser == null) {
+      _router.navigate(AppRoutes.authRoute.toUrl());
+    }
+
 
     _appLayoutService.headerTitle =
          OrganizationMessage.label('Organizations');

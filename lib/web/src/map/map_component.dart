@@ -47,6 +47,10 @@ class MapComponent implements OnActivate {
   @override
   Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
 
+    if (this._authService.authenticatedUser == null) {
+      _router.navigate(AppRoutes.authRoute.toUrl());
+    }
+
     _appLayoutService.headerTitle = ObjectiveHierarchyMessage.label('Objectives Map');
 
     _appLayoutService.searchEnabled = false;

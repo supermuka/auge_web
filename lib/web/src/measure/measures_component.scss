@@ -3,19 +3,13 @@
 @import 'package:angular_components/material_button/mixins';
 @import 'package:angular_components/material_dialog/mixins';
 
-
 .container-list {
    display: inline-flex;
    overflow-x: hidden;
    flex-direction: column;
-   /* align-items: center; */
    justify-content: center;
-
-
-  /* margin: 0; */
    width: 100%;
 }
-
 
 .container {
   display: inline-flex;

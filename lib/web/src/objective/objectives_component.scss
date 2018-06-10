@@ -17,21 +17,6 @@
    @include material-shadow();
 }
 
-.shadow-box-material-list {
-   @include material-shadow();
-   overflow: hidden;
-   margin: 0px;
-   padding: 4px;
-   line-height: 1;
-   /* Last size to small = min
-      Last size to tablet = max
-       https://material.io/design/layout/responsive-layout-grid.html#breakpoints
-       */
-   max-width: 1280px;
-   min-width: 360px;
-   width: 100%;
-}
-
 material-fab {
     /* position: absolute; */
     position: fixed !important;
@@ -114,4 +99,14 @@ material-list div:last-child hr { display: none; }
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+}
+
+.shadow-box-material-list {
+   @include material-shadow();
+   overflow: hidden;
+   margin: 8px;
+   padding: 8px;
+   line-height: 1;
+   max-width: 1280px;
+   min-width: 600px;
 }

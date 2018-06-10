@@ -17,6 +17,8 @@ import 'package:auge/web/src/initiative/initiative_service.dart';
 import 'package:auge/shared/model/objective/objective.dart';
 import 'package:auge/shared/model/initiative/initiative.dart';
 
+import 'package:auge/web/services/app_routes.dart';
+
 @Component(
   selector: 'auge-insights',
   providers: const [ObjectiveService, InitiativeService],
@@ -39,14 +41,20 @@ class InsightsComponent implements OnActivate  {
   AppLayoutService _appLayoutService;
   ObjectiveService _objectiveService;
   InitiativeService _initiativeService;
+  final Router _router;
 
   List<Objective> objectives = new List();
   List<Initiative> initiatives = new List();
 
-  InsightsComponent(this._authService, this._appLayoutService, this._objectiveService, this._initiativeService);
+  InsightsComponent(this._authService, this._appLayoutService, this._objectiveService, this._initiativeService, this._router);
 
   @override
   void onActivate(RouterState previous, RouterState current) async {
+
+    if (this._authService.authenticatedUser == null) {
+      _router.navigate(AppRoutes.authRoute.toUrl());
+    }
+
     _appLayoutService.searchEnabled = false;
 
     objectives = await _objectiveService.getObjectives(_authService.selectedOrganization?.id, withMeasures: true);

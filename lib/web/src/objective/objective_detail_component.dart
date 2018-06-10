@@ -84,6 +84,11 @@ class ObjectiveDetailComponent implements OnActivate {
   @override
   Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
 
+    if (this._authService.authenticatedUser == null) {
+      _router.navigate(AppRoutes.authRoute.toUrl());
+    }
+
+
     String id = routerStateCurrent.parameters[AppRoutes.objectiveIdParameter];
 
     if (id != null && id.isNotEmpty) {

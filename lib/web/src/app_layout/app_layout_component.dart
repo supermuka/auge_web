@@ -145,6 +145,10 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
 
   @override
   onActivate(previous, current) async {
+    if (this._authService.authenticatedUser == null) {
+      _router.navigate(AppRoutes.authRoute.toUrl());
+    }
+
 
     _appLayoutService.searchEnabled = false;
 

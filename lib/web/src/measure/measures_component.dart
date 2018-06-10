@@ -105,6 +105,10 @@ class MeasuresComponent extends Object with CanReuse implements OnActivate, OnDe
   @override
   Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
 
+    if (this._authService.authenticatedUser == null) {
+      _router.navigate(AppRoutes.authRoute.toUrl());
+    }
+
     _appLayoutService.headerTitle = label('Measures');
 
     String id = routerStateCurrent.parameters[AppRoutes.objectiveIdParameter];
