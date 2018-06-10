@@ -415,6 +415,35 @@ class AugeApi {
 
   /// Request parameters:
   ///
+  /// Completes with a [core.List<GroupType>].
+  ///
+  /// Completes with a [commons.ApiRequestError] if the API endpoint returned an
+  /// error.
+  ///
+  /// If the used [http.Client] completes with an error when making a REST call,
+  /// this method will complete with the same error.
+  async.Future<core.List<GroupType>> getGroupTypes() {
+    var _url = null;
+    var _queryParams = new core.Map();
+    var _uploadMedia = null;
+    var _uploadOptions = null;
+    var _downloadOptions = commons.DownloadOptions.Metadata;
+    var _body = null;
+
+    _url = 'group_types';
+
+    var _response = _requester.request(_url, "GET",
+        body: _body,
+        queryParams: _queryParams,
+        uploadOptions: _uploadOptions,
+        uploadMedia: _uploadMedia,
+        downloadOptions: _downloadOptions);
+    return _response.then((data) =>
+        data.map((value) => GroupTypeFactory.fromJson(value)).toList());
+  }
+
+  /// Request parameters:
+  ///
   /// [organizationId] - Path parameter: 'organizationId'.
   ///
   /// Completes with a [core.List<Group>].

@@ -404,13 +404,14 @@ class AugeApi {
 
     String queryStatement = '';
 
-    queryStatement = "SELECT g.id::VARCHAR,"
-    " g.name,"            //0
-    " g.active,"          //1
-    " g.organization_id," //2
-    " g.group_type_id,"   //3
-    " g.leader_user_id,"  //4
-    " g.super_group_id "  //5
+    queryStatement = "SELECT"
+    " g.id::VARCHAR,"     //0
+    " g.name,"            //1
+    " g.active,"          //2
+    " g.organization_id," //3
+    " g.group_type_id,"   //4
+    " g.leader_user_id,"  //5
+    " g.super_group_id "  //6
     " FROM auge.groups g ";
 
     Map<String, dynamic> _substitutionValues;
@@ -444,13 +445,13 @@ class AugeApi {
           organization = await getOrganizationById(row[3]);
         }
 
-        if (row[5] != null && alignedToRecursive > 0) {
-          superGroups = await _queryGetGroups(id: row[5],
+        if (row[6] != null && alignedToRecursive > 0) {
+          superGroups = await _queryGetGroups(id: row[6],
               alignedToRecursive: --alignedToRecursive);
           superGroup = superGroups.first;
         }
 
-        groupType = await getGroupTypeById(row[3]);
+        groupType = await getGroupTypeById(row[4]);
 
         Group group = new Group()
           ..id = row[0]
@@ -511,8 +512,8 @@ class AugeApi {
           "active": group.active,
           "organization_id": group.organization.id,
           "group_type_id": group.groupType.id,
-          "super_group_id": group.superGroup.id,
-          "leader_user_id": group.leader.id});
+          "super_group_id": group?.superGroup == null ? null : group.superGroup.id,
+          "leader_user_id": group?.leader == null ? null : group?.leader.id});
       } on PostgreSQLException catch (e) {
         throw new ApplicationError(e);
       }
@@ -528,14 +529,14 @@ class AugeApi {
     await AugeConnection.getConnection().transaction((ctx) async {
       try {
         await ctx.query(
-            "UPDATE auge.users "
-                "SET name = @name,"
-                "active = @active,"
-                "organization_id = @organization_id,"
-                "group_type_id = @group_type_id,"
-                "super_group_id = @super_group_id,"
-                "leader_user_id = @leader_user_id)"
-                "WHERE id = @id", substitutionValues: {
+            "UPDATE auge.groups"
+                " SET name = @name,"
+                " active = @active,"
+                " organization_id = @organization_id,"
+                " group_type_id = @group_type_id,"
+                " super_group_id = @super_group_id,"
+                " leader_user_id = @leader_user_id"
+                " WHERE id = @id", substitutionValues: {
           "id": group.id,
           "name": group.name,
           "active": group.active,
@@ -556,7 +557,7 @@ class AugeApi {
     await AugeConnection.getConnection().transaction((ctx) async {
       try {
         await ctx.query(
-            "DELETE FROM auge.groups group WHERE group.id = @id "
+            "DELETE FROM auge.groups g WHERE g.id = @id "
             , substitutionValues: {
           "id": id});
 
@@ -593,6 +594,17 @@ class AugeApi {
     return id != null ? groupTypes.where((t) => (t.id == id)) : groupTypes;
   }
 
+
+  /// Return [GroupType] list.
+  @ApiMethod( method: 'GET', path: 'group_types')
+  Future<List<GroupType>> getGroupTypes() async {
+    try {
+      return _queryGetGroupTypes();
+    } on PostgreSQLException catch (e) {
+      throw new ApplicationError(e);
+    }
+  }
+
   /// Return a [GroupType] by Id key.
   @ApiMethod( method: 'GET', path: 'group_types/{id}')
   Future<GroupType> getGroupTypeById(String id) async {
@@ -604,6 +616,8 @@ class AugeApi {
       throw new ApplicationError(e);
     }
   }
+
+
 
 }
 
