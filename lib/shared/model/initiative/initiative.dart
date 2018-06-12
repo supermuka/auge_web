@@ -6,6 +6,7 @@ import 'package:auge/shared/model/user.dart';
 import 'package:auge/shared/model/initiative/state.dart';
 import 'package:auge/shared/model/initiative/stage.dart';
 import 'package:auge/shared/model/initiative/work_item.dart';
+import 'package:auge/shared/model/group.dart';
 
 import 'package:auge/shared/model/objective/objective.dart';
 
@@ -18,6 +19,7 @@ class Initiative extends Object {
 
   Objective objective;
   Organization organization;
+  Group group;
   User leader;
 
   List<Stage> stages;

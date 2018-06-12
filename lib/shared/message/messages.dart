@@ -159,6 +159,8 @@ class InitiativeMessage {
         'Stage': 'Stage',
         'Work Items Over Due': 'Work Items Over Due',
         'Objective': 'Objective',
+        'Group': 'Group',
+        'No Match': 'No Match',
         'other': 'Not Defined'})}",
       name: "initiativeLabel",
       args: [label],
@@ -212,6 +214,8 @@ class ObjectiveMessage {
         'Aligned To': 'Aligned To',
         'Leader': 'Leader',
         'Progress': 'Progress',
+        'Group': 'Group',
+        'No Match': 'No Match',
         'other': 'Not Defined'})}",
       name: "objectiveLabel",
       args: [label],
@@ -276,7 +280,7 @@ class ObjectiveHierarchyMessage {
 /// Specific messages and label for [Group]
 class GroupMessage {
 
-  /// Label for initiative
+  /// Label for Group
   static label(String label) => Intl.message(
       "${Intl.select(label, {
         'Groups': 'Groups',
@@ -289,6 +293,8 @@ class GroupMessage {
         'Super Group': 'Super Group',
         'Leader': 'Leader',
         'Active': 'Active',
+        'Group': 'Group',
+        'No Match': 'No Match',
         'other': 'Not Defined'})}",
       name: "groupLabel",
       args: [label],
@@ -296,7 +302,7 @@ class GroupMessage {
       desc: "Group labels",
   );
 
-  /// Label for Measure Unit
+  /// Label for Group Type
   static groupTypeLabel(String label) => Intl.message(
       "${Intl.select(label, {
         'Company': 'Company',

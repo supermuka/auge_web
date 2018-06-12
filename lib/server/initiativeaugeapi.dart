@@ -20,6 +20,7 @@ import 'package:auge/shared/model/initiative/work_item_check_item.dart';
 import 'package:auge/shared/model/organization.dart';
 import 'package:auge/shared/model/user.dart';
 import 'package:auge/shared/model/objective/objective.dart';
+import 'package:auge/shared/model/group.dart';
 
 /// Api for Initiative Domain
 @ApiClass(version: 'v1')
@@ -41,7 +42,7 @@ class InitiativeAugeApi {
 
     String queryStatement;
 
-    queryStatement = "SELECT initiative.id::VARCHAR, initiative.name, initiative.description, initiative.organization_id, initiative.leader_user_id, initiative.objective_id"
+    queryStatement = "SELECT initiative.id::VARCHAR, initiative.name, initiative.description, initiative.organization_id, initiative.leader_user_id, initiative.objective_id, initiative.group_id"
         " FROM auge_initiative.initiatives initiative";
 
     Map<String, dynamic> substitutionValues;
@@ -58,10 +59,12 @@ class InitiativeAugeApi {
 
     List<Initiative> initiatives = new List();
     List<WorkItem> workItems;
+
     Objective objective;
     Organization organization;
     User user;
     List<Stage> stages;
+    Group group;
 
     for (var row in results) {
       // Work Items
@@ -73,8 +76,10 @@ class InitiativeAugeApi {
 
       user = await _augeApi.getUserById(row[4]);
       stages = await getStages(row[0]);
+
       objective = row[5] == null ? null : await _objectiveAugeApi.getObjectiveById(row[5]);
-      initiatives.add(new Initiative()..id = row[0]..name = row[1]..description = row[2]..workItems = workItems..organization = organization..leader = user..stages = stages..objective = objective);
+      group =  row[6] == null ? null : await _augeApi.getGroupById(row[6]);
+      initiatives.add(new Initiative()..id = row[0]..name = row[1]..description = row[2]..workItems = workItems..organization = organization..leader = user..stages = stages..objective = objective..group = group);
 
     }
     return initiatives;
@@ -320,14 +325,16 @@ class InitiativeAugeApi {
                 "@description,"
                 "@organization_id,"
                 "@leader_user_id,"
-                "@objective_id)"
+                "@objective_id,"
+                "group_id)"
             , substitutionValues: {
           "id": initiative.id,
           "name": initiative.name,
           "description": initiative.description,
           "organization_id": initiative.organization.id,
           "leader_user_id": initiative.leader.id,
-          "objective_id": initiative?.objective == null ? null : initiative.objective.id,});
+          "objective_id": initiative?.objective == null ? null : initiative.objective.id,
+          "group_id": initiative?.group == null ? null : initiative.group.id});
 
         for (Stage stage in initiative.stages) {
           stage.id = new Uuid().v4();
@@ -362,7 +369,8 @@ class InitiativeAugeApi {
             " description = @description,"
             " organization_id = @organization_id,"
             " leader_user_id = @leader_user_id,"
-            " objective_id = @objective_id"
+            " objective_id = @objective_id,"
+            " group_id = @group_id"
             " WHERE id = @id"
             , substitutionValues: {
               "id": initiative.id,
@@ -370,7 +378,8 @@ class InitiativeAugeApi {
               "description": initiative.description,
               "organization_id": initiative.organization.id,
               "leader_user_id": initiative.leader.id,
-              "objective_id": initiative.objective.id});
+              "objective_id": initiative.objective.id,
+              "group_id": initiative.group.id});
 
         // Stages
         StringBuffer stagesId = new StringBuffer();

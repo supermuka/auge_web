@@ -20,12 +20,8 @@ import 'package:auge/web/src/search/search_component.template.dart' as search_co
   templateUrl: 'search_component.html',
   directives: const [
     coreDirectives,
-    formDirectives,
     materialDirectives,
-    MaterialInputComponent,
-    MaterialIconComponent,
-    MaterialButtonComponent,
-    MaterialAutoSuggestInputComponent,
+    formDirectives,
   ],
 )
 

@@ -5,10 +5,27 @@
             <h3 *ngIf="objective.id != null">{{label('Edit Objective')}}</h3>
         </div>
         <div class="w3-row">
-            <material-input class="width-240" [(ngModel)]="objective.name" floatingLabel [label]="label('Name')" required [requiredErrorMsg]="requiredValueMsg()"></material-input>
+            <material-input class="w3-col l12" [(ngModel)]="objective.name" floatingLabel [label]="label('Name')" required [requiredErrorMsg]="requiredValueMsg()"></material-input>
         </div>
         <div class="w3-row">
-            <material-input class="width-240" [(ngModel)]="objective.description" floatingLabel multiline rows="3" [label]="label('Description')"></material-input>
+            <material-input class="w3-col l12" [(ngModel)]="objective.description" floatingLabel multiline rows="3" [label]="label('Description')"></material-input>
+        </div>
+        <div class="w3-row">
+            <material-auto-suggest-input class="w3-col l12"
+                                         [(inputText)]="groupInputText"
+                                         [filterSuggestions]="true"
+                                         [popupMatchInputWidth]="true"
+                                         [trailingGlyph]="'search'"
+                                         [rightAlign]="false"
+                                         [shouldClearOnSelection]="false"
+                                         [label]="label('Group')"
+                                         [floatingLabel]="true"
+                                         [emptyPlaceholder]="label('No Match')"
+                                         [selection]="groupSingleSelectModel"
+                                         [selectionOptions]="groupOptions"
+                                         [itemRenderer]="groupItemRenderer"
+                                         [limit]="10">
+            </material-auto-suggest-input>
         </div>
         <div class="w3-row">
             <div class="w3-col m6">
@@ -33,7 +50,7 @@
             </div>
         </div>
         <div class="w3-row">
-            <material-auto-suggest-input class="width-240"
+            <material-auto-suggest-input class="w3-col l12"
                                          [(inputText)]="alignedToInputText"
                                          [filterSuggestions]="true"
                                          [popupMatchInputWidth]="true"
@@ -50,7 +67,7 @@
             </material-auto-suggest-input>
         </div>
         <div class="w3-row">
-            <material-auto-suggest-input class="width-240"
+            <material-auto-suggest-input class="w3-col l12"
                                          [(inputText)]="leaderInputText"
                                          [filterSuggestions]="true"
                                          [popupMatchInputWidth]="true"

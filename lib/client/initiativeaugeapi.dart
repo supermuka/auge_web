@@ -8,6 +8,7 @@ import 'dart:convert' as convert;
 
 import 'package:_discoveryapis_commons/_discoveryapis_commons.dart' as commons;
 import 'package:http/http.dart' as http;
+import 'package:auge/shared/model/group.dart';
 import 'package:auge/shared/model/initiative/initiative.dart';
 import 'package:auge/shared/model/objective/measure.dart';
 import 'package:auge/shared/model/objective/objective.dart';
@@ -433,11 +434,93 @@ class InitiativeAugeApi {
   }
 }
 
+class GroupFactory {
+  static Group fromJson(core.Map _json) {
+    var message = new Group();
+    if (_json.containsKey("active")) {
+      message.active = _json["active"];
+    }
+    if (_json.containsKey("groupType")) {
+      message.groupType = GroupTypeFactory.fromJson(_json["groupType"]);
+    }
+    if (_json.containsKey("id")) {
+      message.id = _json["id"];
+    }
+    if (_json.containsKey("leader")) {
+      message.leader = UserFactory.fromJson(_json["leader"]);
+    }
+    if (_json.containsKey("name")) {
+      message.name = _json["name"];
+    }
+    if (_json.containsKey("organization")) {
+      message.organization =
+          OrganizationFactory.fromJson(_json["organization"]);
+    }
+    if (_json.containsKey("superGroup")) {
+      message.superGroup = GroupFactory.fromJson(_json["superGroup"]);
+    }
+    return message;
+  }
+
+  static core.Map toJson(Group message) {
+    var _json = new core.Map();
+    if (message.active != null) {
+      _json["active"] = message.active;
+    }
+    if (message.groupType != null) {
+      _json["groupType"] = GroupTypeFactory.toJson(message.groupType);
+    }
+    if (message.id != null) {
+      _json["id"] = message.id;
+    }
+    if (message.leader != null) {
+      _json["leader"] = UserFactory.toJson(message.leader);
+    }
+    if (message.name != null) {
+      _json["name"] = message.name;
+    }
+    if (message.organization != null) {
+      _json["organization"] = OrganizationFactory.toJson(message.organization);
+    }
+    if (message.superGroup != null) {
+      _json["superGroup"] = GroupFactory.toJson(message.superGroup);
+    }
+    return _json;
+  }
+}
+
+class GroupTypeFactory {
+  static GroupType fromJson(core.Map _json) {
+    var message = new GroupType();
+    if (_json.containsKey("id")) {
+      message.id = _json["id"];
+    }
+    if (_json.containsKey("name")) {
+      message.name = _json["name"];
+    }
+    return message;
+  }
+
+  static core.Map toJson(GroupType message) {
+    var _json = new core.Map();
+    if (message.id != null) {
+      _json["id"] = message.id;
+    }
+    if (message.name != null) {
+      _json["name"] = message.name;
+    }
+    return _json;
+  }
+}
+
 class InitiativeFactory {
   static Initiative fromJson(core.Map _json) {
     var message = new Initiative();
     if (_json.containsKey("description")) {
       message.description = _json["description"];
+    }
+    if (_json.containsKey("group")) {
+      message.group = GroupFactory.fromJson(_json["group"]);
     }
     if (_json.containsKey("id")) {
       message.id = _json["id"];
@@ -471,6 +554,9 @@ class InitiativeFactory {
     var _json = new core.Map();
     if (message.description != null) {
       _json["description"] = message.description;
+    }
+    if (message.group != null) {
+      _json["group"] = GroupFactory.toJson(message.group);
     }
     if (message.id != null) {
       _json["id"] = message.id;
@@ -607,6 +693,9 @@ class ObjectiveFactory {
     if (_json.containsKey("endDate")) {
       message.endDate = core.DateTime.parse(_json["endDate"]);
     }
+    if (_json.containsKey("group")) {
+      message.group = GroupFactory.fromJson(_json["group"]);
+    }
     if (_json.containsKey("id")) {
       message.id = _json["id"];
     }
@@ -646,6 +735,9 @@ class ObjectiveFactory {
     }
     if (message.endDate != null) {
       _json["endDate"] = (message.endDate).toIso8601String();
+    }
+    if (message.group != null) {
+      _json["group"] = GroupFactory.toJson(message.group);
     }
     if (message.id != null) {
       _json["id"] = message.id;
@@ -818,6 +910,9 @@ class UserFactory {
 class UserProfileFactory {
   static UserProfile fromJson(core.Map _json) {
     var message = new UserProfile();
+    if (_json.containsKey("idiomLocale")) {
+      message.idiomLocale = _json["idiomLocale"];
+    }
     if (_json.containsKey("image")) {
       message.image = _json["image"];
     }
@@ -832,6 +927,9 @@ class UserProfileFactory {
 
   static core.Map toJson(UserProfile message) {
     var _json = new core.Map();
+    if (message.idiomLocale != null) {
+      _json["idiomLocale"] = message.idiomLocale;
+    }
     if (message.image != null) {
       _json["image"] = message.image;
     }

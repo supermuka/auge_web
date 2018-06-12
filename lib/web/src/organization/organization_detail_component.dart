@@ -18,15 +18,10 @@ import 'package:auge/web/services/app_routes.dart';
     selector: 'auge-organization-detail',
     providers: const <dynamic>[materialProviders, OrganizationService],
     directives: const [
-    coreDirectives,
-    routerDirectives,
-    AutoFocusDirective,
-    ModalComponent,
-    materialDirectives,
-    MaterialInputComponent,
-    MaterialButtonComponent,
-    MaterialIconComponent,
-    MaterialDialogComponent,],
+      coreDirectives,
+      routerDirectives,
+      materialDirectives,
+    ],
     templateUrl: 'organization_detail_component.html',
     styleUrls: const [
       'organization_detail_component.css'

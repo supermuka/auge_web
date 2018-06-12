@@ -14,6 +14,7 @@ import 'package:auge/shared/model/objective/objective.dart';
 import 'package:auge/shared/model/objective/measure.dart';
 import 'package:auge/shared/model/organization.dart';
 import 'package:auge/shared/model/user.dart';
+import 'package:auge/shared/model/group.dart';
 
 import 'package:auge/shared/message/messages.dart';
 
@@ -32,34 +33,6 @@ class ObjectiveAugeApi {
   Future<List<MeasureUnit>> _queryGetMeasureUnits({String id}) async {
     List<List> results;
 
-    /*
-    String queryStatement;
-
-    queryStatement = "SELECT measure_unit.id::VARCHAR, measure_unit.name"
-        " FROM auge_objective.measure_units measure_unit";
-
-    Map<String, dynamic> substitutionValues;
-
-    if (id != null) {
-      queryStatement += " WHERE measure_unit.id = @id";
-      substitutionValues = {"id": id};
-    }
-
-    results = await AugeConnection.getConnection().query(
-        queryStatement, substitutionValues: substitutionValues);
-
-    List<MeasureUnit> mesuareUnits = new List();
-
-    if (results != null && results.isNotEmpty) {
-
-      for (var row in results) {
-        mesuareUnits.add(new MeasureUnit()
-          ..id = row[0]
-          ..name = row[1]);
-      }
-    }
-
-    */
     List<MeasureUnit> mesuareUnits = new List();
 
     mesuareUnits.add(new MeasureUnit()
@@ -254,7 +227,15 @@ class ObjectiveAugeApi {
     List<List> results;
 
    // String queryStatementColumns = "objective.id::VARCHAR, objective.name, objective.description, objective.start_date, objective.end_date, objective.leader_user_id, objective.aligned_to_objective_id";
-    String queryStatementColumns = "objective.id, objective.name, objective.description, objective.start_date, objective.end_date, objective.leader_user_id, objective.aligned_to_objective_id, objective.organization_id";
+    String queryStatementColumns = "objective.id," //0
+    " objective.name," //1
+    " objective.description," //2
+    " objective.start_date," //3
+    " objective.end_date," //4
+    " objective.leader_user_id," //5
+    " objective.aligned_to_objective_id," //6
+    " objective.organization_id," //7
+    " objective.group_id"; //8
 
     String queryStatementWhere = "";
     Map<String, dynamic> substitutionValues;
@@ -281,37 +262,11 @@ class ObjectiveAugeApi {
               " )"
               " SELECT " + queryStatementColumns.replaceAll("objective.", "") + " FROM nodes";
     }
-/*
-    queryStatement = "WITH RECURSIVE nodes(id,aligned_to_objective_id, n) AS ("
-        " SELECT s1.id, s1.aligned_to_objective_id, 1"
-        " FROM auge_objective.objectives s1 WHERE objective.organization_id = @organization_id AND aligned_to_objective_id is null"
-        " UNION"
-        " SELECT s2.id, s2.aligned_to_objective_id, n+1"
-        " FROM auge_objective.objectives s2, nodes s1 WHERE objective.organization_id = @organization_id AND s2.aligned_to_objective_id = s1.id"
-        " )"
-        " SELECT * FROM nodes";
-*/
     else {
         queryStatement = "SELECT " + queryStatementColumns +
             " FROM auge_objective.objectives objective"
                 " WHERE " + queryStatementWhere;
     }
-
-/*
-    queryStatement = "SELECT objective.id::VARCHAR, objective.name, objective.description, objective.start_date, objective.end_date, objective.leader_user_id, objective.aligned_to_objective_id"
-        " FROM auge_objective.objectives objective";
-
-
-    Map<String, dynamic> substitutionValues;
-
-    if (id != null) {
-      queryStatement += " WHERE objective.organization_id = @organization_id and objective.id = @id";
-      substitutionValues = {"organization_id": organizationId, "id": id};
-    } else {
-      queryStatement == " WHERE objective.organization_id = @organization_id";
-      substitutionValues = {"organization_id": organizationId};
-    }
-*/
 
     results = await AugeConnection.getConnection().query(
         queryStatement, substitutionValues: substitutionValues);
@@ -329,6 +284,7 @@ class ObjectiveAugeApi {
       List<Objective> alignedToObjectives;
 
       Objective objective;
+      Group group;
 
       for (var row in results) {
         // Measures
@@ -347,6 +303,8 @@ class ObjectiveAugeApi {
           alignedToObjective = alignedToObjectives.first;
         }
 
+        group = row[8] == null ? null : await _augeApi.getGroupById(row[8]);
+
         objective = new Objective()
           ..id = row[0]
           ..name = row[1]
@@ -356,7 +314,8 @@ class ObjectiveAugeApi {
           ..organization = organization
           ..leader = leaderUser
           ..measures = measures
-          ..alignedTo = alignedToObjective;
+          ..alignedTo = alignedToObjective
+          ..group = group;
 
         objectives.add(objective);
 
@@ -425,7 +384,7 @@ class ObjectiveAugeApi {
 
     objective.id = new Uuid().v4();
     try {
-      await  AugeConnection.getConnection().query("INSERT INTO auge_objective.objectives(id, name, description, start_date, end_date, aligned_to_objective_id, organization_id, leader_user_id) VALUES"
+      await  AugeConnection.getConnection().query("INSERT INTO auge_objective.objectives(id, name, description, start_date, end_date, aligned_to_objective_id, organization_id, leader_user_id, group_id) VALUES"
             "(@id,"
             "@name,"
             "@description,"
@@ -433,7 +392,8 @@ class ObjectiveAugeApi {
             "@end_date,"
             "@aligned_to_objective_id, "
             "@organization_id,"
-            "@leader_user_id)"
+            "@leader_user_id,"
+            "@gropu_id)"
             , substitutionValues: {
               "id": objective.id,
               "name": objective.name,
@@ -442,7 +402,8 @@ class ObjectiveAugeApi {
               "end_date": objective.endDate,
               "aligned_to_objective_id": objective?.alignedTo?.id,
               "organization_id": objective.organization.id,
-              "leader_user_id": objective.leader.id});
+              "leader_user_id": objective.leader.id,
+              "group_id": objective?.group?.id});
     } on PostgreSQLException catch (e) {
       throw new ApplicationError(e);
     }
@@ -460,7 +421,8 @@ class ObjectiveAugeApi {
               " end_date = @end_date,"
               " aligned_to_objective_id = @aligned_to_objective_id,"
               " organization_id = @organization_id,"
-              " leader_user_id = @leader_user_id"
+              " leader_user_id = @leader_user_id,"
+              " group_id = @group_id"
               " WHERE id = @id"
           , substitutionValues: {
         "id": objective.id,
@@ -470,7 +432,8 @@ class ObjectiveAugeApi {
         "end_date": objective.endDate,
         "aligned_to_objective_id": objective?.alignedTo?.id,
         "organization_id": objective.organization.id,
-        "leader_user_id": objective.leader.id});
+        "leader_user_id": objective.leader.id,
+        "group_id": objective?.group?.id});
     } on PostgreSQLException catch (e) {
       throw new ApplicationError(e);
     }

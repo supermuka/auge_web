@@ -29,17 +29,7 @@ import 'package:auge/web/src/user/user_detail_component.template.dart' as user_d
     directives: const [
       coreDirectives,
       routerDirectives,
-      AutoFocusDirective,
       materialDirectives,
-      NgStyle,
-      MaterialInputComponent,
-      MaterialFabComponent,
-      MaterialButtonComponent,
-      MaterialIconComponent,
-      MaterialDialogComponent,
-      MaterialProgressComponent,
-      ModalComponent,
-
     ],
     templateUrl: 'users_component.html',
     styleUrls: const [

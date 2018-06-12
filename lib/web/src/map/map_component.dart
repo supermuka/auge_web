@@ -26,9 +26,8 @@ import 'package:auge/web/services/app_routes.dart';
 
   directives: const [
     coreDirectives,
-    NgStyle,
-    MaterialTooltipDirective,
-
+    routerDirectives,
+    materialDirectives,
   ],
 )
 

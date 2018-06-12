@@ -7,6 +7,7 @@ import 'package:angular_components/angular_components.dart';
 import 'package:angular_router/angular_router.dart';
 import 'package:auge/shared/model/objective/objective.dart';
 import 'package:auge/shared/model/user.dart';
+import 'package:auge/shared/model/group.dart';
 
 import 'package:auge/shared/message/messages.dart';
 
@@ -16,6 +17,7 @@ import 'package:auge/web/services/common_service.dart' as common_service;
 import 'package:auge/web/src/auth/auth_service.dart';
 import 'package:auge/web/src/user/user_service.dart';
 import 'package:auge/web/src/objective/objective_service.dart';
+import 'package:auge/web/src/group/group_service.dart';
 
 import 'package:auge/web/services/app_routes.dart';
 
@@ -24,22 +26,11 @@ import 'objective_detail_component.template.dart' as objective_detail_component;
 
 @Component(
     selector: 'auge-objective-detail',
-    providers: const [UserService],
+    providers: const [UserService, GroupService],
     directives: const [
       coreDirectives,
       routerDirectives,
-      AutoFocusDirective,
       materialDirectives,
-      MaterialInputComponent,
-      MaterialButtonComponent,
-      MaterialFabComponent,
-      MaterialIconComponent,
-      MaterialDialogComponent,
-      MaterialListComponent,
-      MaterialListItemComponent,
-      MaterialExpansionPanel,
-      ModalComponent,
-
     ],
     templateUrl: 'objective_detail_component.html',
     styleUrls: const [
@@ -51,15 +42,19 @@ class ObjectiveDetailComponent implements OnActivate {
   final AuthService _authService;
   final UserService _userService;
   final ObjectiveService _objectiveService;
+  final GroupService _groupService;
 
   final Location _location;
   final Router _router;
 
   Objective objective = new Objective();
 
+  String groupInputText = '';
   String alignedToInputText = '';
   String leaderInputText = '';
 
+  SelectionOptions groupOptions;
+  SelectionModel groupSingleSelectModel;
   SelectionOptions alignedToOptions;
   SelectionModel alignedToSingleSelectModel;
   SelectionOptions leaderOptions;
@@ -73,7 +68,7 @@ class ObjectiveDetailComponent implements OnActivate {
   DateRange limitToDateRange =
   new DateRange(new Date.today().add(years: -1), new Date.today().add(years: 1));
 
-  ObjectiveDetailComponent(this._authService, this._userService, this._objectiveService, this._location, this._router) {
+  ObjectiveDetailComponent(this._authService, this._userService, this._objectiveService, this._groupService, this._location, this._router) {
   }
 
   // Define messages and labels
@@ -140,6 +135,28 @@ class ObjectiveDetailComponent implements OnActivate {
 
     leaderOptions = new StringSelectionOptions<User>(
         users, toFilterableString: (User user) => user.name);
+
+    // Group
+    List<Group> groups = await _groupService.getGroups(_authService.selectedOrganization.id);
+
+    groupOptions = new StringSelectionOptions<Group>(
+        groups, toFilterableString: (Group gru) => gru.name);
+
+    groupSingleSelectModel =
+    new SelectionModel.single()
+      ..selectionChanges.listen((groupEvent) {
+
+        if (groupEvent.isNotEmpty && groupEvent.first.added != null && groupEvent.first.added.length != 0 && groupEvent.first.added?.first != null) {
+          objective.group = groupEvent.first.added.first;
+        }
+      });
+
+
+    print('** group **');
+    print(objective.group);
+
+    if (objective.group != null)
+      groupSingleSelectModel.select(objective.group);
   }
 
   void saveObjective() {
@@ -208,6 +225,21 @@ class ObjectiveDetailComponent implements OnActivate {
   set endDate(Date _endDate) {
     objective.endDate = _endDate.asUtcTime();
   }
+
+  String get groupLabelRenderer {
+    String nameLabel;
+    if ((groupSingleSelectModel != null &&
+        groupSingleSelectModel.selectedValues != null &&
+        groupSingleSelectModel.selectedValues.length != null)) {
+
+      nameLabel = groupSingleSelectModel.selectedValues.first.name;
+    }
+
+    return nameLabel;
+  }
+
+  ItemRenderer get groupItemRenderer => (dynamic gru) => gru.name;
+
 }
 
 @Component(

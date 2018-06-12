@@ -26,7 +26,6 @@ import 'package:auge/web/services/app_routes.dart';
     coreDirectives,
     ScoreboardComponent,
     ScorecardComponent,
-
   ],
   styleUrls: const ['insights_component.css'],
   templateUrl: 'insights_component.html',

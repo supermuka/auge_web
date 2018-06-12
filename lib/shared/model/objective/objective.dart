@@ -4,6 +4,7 @@
 import 'package:auge/shared/model/organization.dart';
 import 'package:auge/shared/model/user.dart';
 import 'package:auge/shared/model/objective/measure.dart';
+import 'package:auge/shared/model/group.dart';
 
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -19,6 +20,7 @@ class Objective {
   DateTime endDate;
 
   Organization organization;
+  Group group;
   Objective alignedTo;
   List<Objective> alignedWithChildren;
   User leader;

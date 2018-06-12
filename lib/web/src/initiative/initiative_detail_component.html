@@ -4,26 +4,47 @@
             <h3 *ngIf="initiative.id == null">{{label('Add Initiative')}}</h3>
             <h3 *ngIf="initiative.id != null">{{label('Edit Initiative')}}</h3>
         </div>
-        <material-input class="width-320" [(ngModel)]="initiative.name" floatingLabel [label]="label('Name')" required [requiredErrorMsg]="requiredValueMsg()"></material-input>
-        <br/>
-        <material-input class="width-320" [(ngModel)]="initiative.description" floatingLabel multiline rows="3" [label]="label('Description')"></material-input>
-        <br/>
-        <material-auto-suggest-input class="width-320"
-                                     [(inputText)]="leaderInputText"
-                                     [filterSuggestions]="true"
-                                     [popupMatchInputWidth]="true"
-                                     [trailingGlyph]="glyph"
-                                     [rightAlign]="false"
-                                     [shouldClearOnSelection]="false"
-                                     [label]="label('Leader')"
-                                     [floatingLabel]="true"
-                                     [emptyPlaceholder]="emptyPlaceholder"
-                                     [selection]="leaderSingleSelectModel"
-                                     [selectionOptions]="leaderOptions"
-                                     [itemRenderer]="leaderItemRenderer"
-                                     [factoryRenderer]="leaderFactoryRenderer"
-                                     [limit]="10">
-        </material-auto-suggest-input>
+        <div class="w3-row">
+           <material-input class="w3-col l12" [(ngModel)]="initiative.name" floatingLabel [label]="label('Name')" required [requiredErrorMsg]="requiredValueMsg()"></material-input>
+        </div>
+        <div class="w3-row">
+           <material-input class="w3-col l12" [(ngModel)]="initiative.description" floatingLabel multiline rows="3" [label]="label('Description')"></material-input>
+        </div>
+        <div class="w3-row">
+            <material-auto-suggest-input class="w3-col l12"
+                                          [(inputText)]="groupInputText"
+                                          [filterSuggestions]="true"
+                                          [popupMatchInputWidth]="true"
+                                          [trailingGlyph]="'search'"
+                                          [rightAlign]="false"
+                                          [shouldClearOnSelection]="false"
+                                          [label]="label('Group')"
+                                          [floatingLabel]="true"
+                                          [emptyPlaceholder]="label('No Match')"
+                                          [selection]="groupSingleSelectModel"
+                                          [selectionOptions]="groupOptions"
+                                          [itemRenderer]="groupItemRenderer"
+                                          [limit]="10">
+            </material-auto-suggest-input>
+        </div>
+        <div class="w3-row">
+            <material-auto-suggest-input class="w3-col l12"
+                                         [(inputText)]="leaderInputText"
+                                         [filterSuggestions]="true"
+                                         [popupMatchInputWidth]="true"
+                                         [trailingGlyph]="'search'"
+                                         [rightAlign]="false"
+                                         [shouldClearOnSelection]="false"
+                                         [label]="label('Leader')"
+                                         [floatingLabel]="true"
+                                         [emptyPlaceholder]="label('No Match')"
+                                         [selection]="leaderSingleSelectModel"
+                                         [selectionOptions]="leaderOptions"
+                                         [itemRenderer]="leaderItemRenderer"
+                                         [factoryRenderer]="leaderFactoryRenderer"
+                                         [limit]="10">
+            </material-auto-suggest-input>
+        </div>
         <div class="material-shadow-box-list" elevation="2">
             <material-input [(ngModel)]="stageEntry" floatingLabel [label]="label('Stage')"></material-input>
             <material-dropdown-select [buttonText]="stateSingleSelectLabel"
@@ -55,23 +76,23 @@
                 </material-list-item>
             </material-list>
         </div>
-        <br/>
-        <material-auto-suggest-input class="width-320"
-                                     [(inputText)]="objectiveInputText"
-                                     [filterSuggestions]="true"
-                                     [popupMatchInputWidth]="true"
-                                     [trailingGlyph]="glyph"
-                                     [rightAlign]="false"
-                                     [shouldClearOnSelection]="false"
-                                     [label]="label('Objective')"
-                                     [floatingLabel]="true"
-                                     [emptyPlaceholder]="emptyPlaceholder"
-                                     [selection]="objectiveSingleSelectModel"
-                                     [selectionOptions]="objectiveOptions"
-                                     [itemRenderer]="objectiveItemRenderer"
-                                     [limit]="10">
-        </material-auto-suggest-input>
-        <br/>
+        <div class="w3-row">
+            <material-auto-suggest-input class="w3-col l12"
+                                         [(inputText)]="objectiveInputText"
+                                         [filterSuggestions]="true"
+                                         [popupMatchInputWidth]="true"
+                                         [trailingGlyph]="'search'"
+                                         [rightAlign]="false"
+                                         [shouldClearOnSelection]="false"
+                                         [label]="label('Objective')"
+                                         [floatingLabel]="true"
+                                         [emptyPlaceholder]="label('No Match')"
+                                         [selection]="objectiveSingleSelectModel"
+                                         [selectionOptions]="objectiveOptions"
+                                         [itemRenderer]="objectiveItemRenderer"
+                                         [limit]="10">
+            </material-auto-suggest-input>
+        </div>
         <div footer>
             <material-button (trigger)="saveInitiative()">{{buttonLabel('Save')}}
                 <material-icon icon="save"></material-icon>

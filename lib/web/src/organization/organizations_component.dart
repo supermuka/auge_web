@@ -29,15 +29,7 @@ import 'package:auge/web/src/organization/organization_detail_component.template
     directives: const [
       coreDirectives,
       routerDirectives,
-      AutoFocusDirective,
       materialDirectives,
-      MaterialInputComponent,
-      MaterialFabComponent,
-      MaterialButtonComponent,
-      MaterialIconComponent,
-      MaterialDialogComponent,
-      ModalComponent,
-      MaterialMenuComponent,
     ],
     templateUrl: 'organizations_component.html',
     styleUrls: const [

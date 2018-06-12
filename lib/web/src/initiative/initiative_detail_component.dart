@@ -12,6 +12,8 @@ import 'package:auge/shared/model/initiative/initiative.dart';
 import 'package:auge/shared/model/initiative/stage.dart';
 import 'package:auge/shared/model/initiative/state.dart';
 import 'package:auge/shared/model/objective/objective.dart';
+import 'package:auge/shared/model/group.dart';
+
 import 'package:auge/shared/message/messages.dart';
 
 import 'package:auge/web/services/common_service.dart' as common_service;
@@ -19,6 +21,7 @@ import 'package:auge/web/src/auth/auth_service.dart';
 import 'package:auge/web/src/user/user_service.dart';
 import 'package:auge/web/src/initiative/initiative_service.dart';
 import 'package:auge/web/src/objective/objective_service.dart';
+import 'package:auge/web/src/group/group_service.dart';
 
 import 'package:angular_components/model/ui/has_factory.dart';
 
@@ -29,21 +32,11 @@ import 'initiative_detail_component.template.dart' as initiative_detail_componen
 
 @Component(
     selector: 'auge-initiative-detail',
-    providers: const [ObjectiveService, UserService],
+    providers: const [ObjectiveService, UserService, GroupService],
     directives: const [
       coreDirectives,
       routerDirectives,
-      AutoFocusDirective,
       materialDirectives,
-      MaterialInputComponent,
-      MaterialButtonComponent,
-      MaterialFabComponent,
-      MaterialIconComponent,
-      MaterialDialogComponent,
-      MaterialListComponent,
-      MaterialListItemComponent,
-      MaterialExpansionPanel,
-      ModalComponent,
     ],
     templateUrl: 'initiative_detail_component.html',
     styleUrls: const [
@@ -55,6 +48,7 @@ class InitiativeDetailComponent implements OnActivate {
   final InitiativeService _initiativeService;
   final ObjectiveService _objectiveService;
   final UserService _userService;
+  final GroupService _groupService;
   final Location _location;
   final Router _router;
 
@@ -66,18 +60,18 @@ class InitiativeDetailComponent implements OnActivate {
   SelectionOptions stateOptions;
   SelectionModel stateSingleSelectModel;
 
+  String groupInputText = '';
   String leaderInputText = '';
   String objectiveInputText = '';
+
   SelectionOptions leaderOptions;
   SelectionOptions objectiveOptions;
   SelectionModel leaderSingleSelectModel;
   SelectionModel objectiveSingleSelectModel;
-  String glyph = 'search';
-  String leaderLabel = 'Leader';
-  String objectiveLabel = 'Objective';
-  String emptyPlaceholder = 'No match';
+  SelectionOptions groupOptions;
+  SelectionModel groupSingleSelectModel;
 
-  InitiativeDetailComponent(this._authService, this._initiativeService, this._objectiveService,  this._userService, this._location, this._router);
+  InitiativeDetailComponent(this._authService, this._initiativeService, this._objectiveService,  this._userService, this._groupService, this._location, this._router);
 
   // Define messages and labels
   String requiredValueMsg() => CommonMessage.requiredValueMsg();
@@ -99,6 +93,9 @@ class InitiativeDetailComponent implements OnActivate {
     } else {
       initiative.organization = _authService.selectedOrganization;
     }
+
+    print('initiative');
+    print(initiative.name);
 
     states = await _initiativeService.getStates();
 
@@ -147,6 +144,28 @@ class InitiativeDetailComponent implements OnActivate {
 
     if (initiative.objective != null)
       objectiveSingleSelectModel.select(initiative.objective);
+
+    // Group
+    List<Group> groups = await _groupService.getGroups(_authService.selectedOrganization.id);
+
+    groupOptions = new StringSelectionOptions<Group>(
+        groups, toFilterableString: (Group gru) => gru.name);
+
+       groupSingleSelectModel =
+    new SelectionModel.single()
+      ..selectionChanges.listen((groupEvent) {
+
+        if (groupEvent.isNotEmpty && groupEvent.first.added != null && groupEvent.first.added.length != 0 && groupEvent.first.added?.first != null) {
+          initiative.group = groupEvent.first.added.first;
+        }
+      });
+
+     if (initiative.group != null) {
+      groupSingleSelectModel.select(groupOptions.optionsList.singleWhere((g) => g.id == initiative.group.id));
+
+      //groupSingleSelectModel.select(initiative.group);
+    }
+
   }
 
   void saveInitiative() {
@@ -240,6 +259,20 @@ class InitiativeDetailComponent implements OnActivate {
   }
 
   ItemRenderer get stateItemRenderer => (dynamic state) => state?.name;
+
+  String get groupLabelRenderer {
+    String nameLabel;
+    if ((groupSingleSelectModel != null &&
+        groupSingleSelectModel.selectedValues != null &&
+        groupSingleSelectModel.selectedValues.length != null)) {
+
+      nameLabel = groupSingleSelectModel.selectedValues.first.name;
+    }
+
+    return nameLabel;
+  }
+
+  ItemRenderer get groupItemRenderer => (dynamic gru) => gru.name;
 
 }
 

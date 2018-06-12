@@ -21,10 +21,7 @@ import 'package:auge/web/src/app_layout/app_layout_component.template.dart' as a
   directives: const [
     coreDirectives,
     routerDirectives,
-    ModalComponent,
-    MaterialDialogComponent,
     materialDirectives,
-    MaterialInputComponent,
   ],
   styleUrls: const ['auth_component.css'],
   templateUrl: 'auth_component.html',
