@@ -15,7 +15,6 @@ import 'package:auge/web/src/auth/auth_service.dart';
 // ignore_for_file: uri_has_not_been_generated
 import 'package:auge/web/src/auth/auth_component.template.dart' as auth_component;
 import 'package:auge/web/src/app_layout/app_layout_component.template.dart' as app_layout_component;
-import 'package:auge/web/src/app_layout/app_layout_home.template.dart' as app_layout_home;
 
 @Component(
     selector: 'auge-app-component',

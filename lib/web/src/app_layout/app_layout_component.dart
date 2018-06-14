@@ -44,6 +44,7 @@ import 'package:auge/web/src/group/groups_component.template.dart' as groups_com
       routerDirectives,
       materialDirectives,
       formDirectives,
+      SearchComponent,
     ],
     templateUrl: 'app_layout_component.html',
     styleUrls: const [

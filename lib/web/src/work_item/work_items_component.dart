@@ -28,6 +28,8 @@ import 'package:auge/web/services/app_routes.dart';
       coreDirectives,
       routerDirectives,
       materialDirectives,
+      WorkItemsListComponent,
+      WorkItemsKanbanComponent,
     ],
     pipes: const [commonPipes],
     templateUrl: 'work_items_component.html',
