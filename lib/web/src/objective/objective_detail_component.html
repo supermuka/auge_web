@@ -1,14 +1,14 @@
 <modal [visible]="true">
     <material-dialog headered class="headered-dialog">
         <div header>
-            <h3 *ngIf="objective.id == null">{{label('Add Objective')}}</h3>
-            <h3 *ngIf="objective.id != null">{{label('Edit Objective')}}</h3>
+            <h3 *ngIf="objective.id == null">{{addObjectiveLabel}}</h3>
+            <h3 *ngIf="objective.id != null">{{editObjectiveLabel}}</h3>
         </div>
         <div class="w3-row">
-            <material-input class="w3-col l12" [(ngModel)]="objective.name" floatingLabel [label]="label('Name')" required [requiredErrorMsg]="requiredValueMsg()"></material-input>
+            <material-input class="w3-col l12" [(ngModel)]="objective.name" floatingLabel [label]="nameLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
         </div>
         <div class="w3-row">
-            <material-input class="w3-col l12" [(ngModel)]="objective.description" floatingLabel multiline rows="3" [label]="label('Description')"></material-input>
+            <material-input class="w3-col l12" [(ngModel)]="objective.description" floatingLabel multiline rows="3" [label]="descriptionLabel"></material-input>
         </div>
         <div class="w3-row">
             <material-auto-suggest-input class="w3-col l12"
@@ -18,9 +18,9 @@
                                          [trailingGlyph]="'search'"
                                          [rightAlign]="false"
                                          [shouldClearOnSelection]="false"
-                                         [label]="label('Group')"
+                                         [label]="groupLabel"
                                          [floatingLabel]="true"
-                                         [emptyPlaceholder]="label('No Match')"
+                                         [emptyPlaceholder]="noMatchLabel"
                                          [selection]="groupSingleSelectModel"
                                          [selectionOptions]="groupOptions"
                                          [itemRenderer]="groupItemRenderer"
@@ -30,7 +30,7 @@
         <div class="w3-row">
             <div class="w3-col m6">
                 <label class="input-container">
-                    <span class="label-text">{{label('Start Date')}}</span>
+                    <span class="label-text">{{startDateLabel}}</span>
                     <material-datepicker [(date)]="startDate"
                                          [minDate]="limitToDateRange.start"
                                          [maxDate]="limitToDateRange.end"
@@ -40,7 +40,7 @@
             </div>
             <div class="w3-col m6">
                 <label class="input-container">
-                    <span class="label-text">{{label('End Date')}}</span>
+                    <span class="label-text">{{endDateLabel}}</span>
                     <material-datepicker [(date)]="endDate"
                                          [minDate]="limitToDateRange.start"
                                          [maxDate]="limitToDateRange.end"
@@ -57,9 +57,9 @@
                                          [trailingGlyph]="leadingGlyph"
                                          [rightAlign]="false"
                                          [shouldClearOnSelection]="false"
-                                         [label]="label('Aligned To')"
+                                         [label]="alignedToLabel"
                                          [floatingLabel]="true"
-                                         [emptyPlaceholder]="emptyPlaceholder"
+                                         [emptyPlaceholder]="noMatchLabel"
                                          [selection]="alignedToSingleSelectModel"
                                          [selectionOptions]="alignedToOptions"
                                          [itemRenderer]="alignedToItemRenderer"
@@ -74,9 +74,9 @@
                                          [trailingGlyph]="leadingGlyph"
                                          [rightAlign]="false"
                                          [shouldClearOnSelection]="false"
-                                         [label]="label('Leader')"
+                                         [label]="leaderLabel"
                                          [floatingLabel]="true"
-                                         [emptyPlaceholder]="emptyPlaceholder"
+                                         [emptyPlaceholder]="noMatchLabel"
                                          [selection]="leaderSingleSelectModel"
                                          [selectionOptions]="leaderOptions"
                                          [itemRenderer]="leaderItemRenderer"
@@ -85,10 +85,10 @@
             </material-auto-suggest-input>
         </div>
         <div footer>
-            <material-button (trigger)="saveObjective()">{{buttonLabel('Save')}}
+            <material-button [disabled]="!validInput" (trigger)="saveObjective()">{{saveButtonLabel}}
                 <material-icon icon="save"></material-icon>
             </material-button>
-            <material-button autoFocus (trigger)="goBack()">{{buttonLabel('Back')}}
+            <material-button autoFocus (trigger)="goBack()">{{backButtonLabel}}
                 <material-icon icon="arrow_back"></material-icon>
             </material-button>
         </div>

@@ -29,23 +29,12 @@
                     <div class="material-list-item-secondary">
                         <div class="horizontal">
                             <div class="width-240">
-                                <!--
-                                <div class="material-progress-custom-theme">
-                                    <material-progress materialTooltip="Progresso" [activeProgress]="progress(measure)"></material-progress>
-                                </div>
-                                -->
-                                <material-progress materialTooltip="{{label('Progress') + ' ' + iMeasure.progress.toString() + '%'}}" [activeProgress]="iMeasure.progress"></material-progress>
-                                <!--
-                                <material-slider [(value)]="iMeasure.currentValueInt" style="width: 100%" [min]="iMeasure.startValueInt"
-                                                 [max]="iMeasure.endValueInt"
-                                                 [step]="1"
-                                                 materialTooltip="{{label('Current Value')}}" (click)="updateMeasure(iMeasure)">
-                                </material-slider>
-                                -->
+                                <material-progress materialTooltip="{{progressLabel + ' ' + iMeasure.progress.toString() + '%'}}" [activeProgress]="iMeasure.progress"></material-progress>
+
                                 <div class="width-240-flex">
-                                    <span materialTooltip="{{label('Start Value')}}">{{iMeasure.startValue}}</span>
-                                    <span materialTooltip="{{label('Current Value')}}">{{iMeasure.currentValue}}</span>
-                                    <span materialTooltip="{{label('End Value')}}">{{iMeasure.endValue}}</span>
+                                    <span materialTooltip="{{startValueLabel}}">{{iMeasure.startValue}}</span>
+                                    <span materialTooltip="{{currentValueLabel}}">{{iMeasure.currentValue}}</span>
+                                    <span materialTooltip="{{endValueLabel}}">{{iMeasure.endValue}}</span>
                                 </div>
                             </div>
                             <div class="row-spacer"></div>

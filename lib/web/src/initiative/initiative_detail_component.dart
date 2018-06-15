@@ -74,9 +74,20 @@ class InitiativeDetailComponent implements OnActivate {
   InitiativeDetailComponent(this._authService, this._initiativeService, this._objectiveService,  this._userService, this._groupService, this._location, this._router);
 
   // Define messages and labels
-  String requiredValueMsg() => CommonMessage.requiredValueMsg();
-  String label(String label) =>  InitiativeMessage.label(label);
-  String buttonLabel(String label) =>  CommonMessage.buttonLabel(label);
+  static final String requiredValueMsg = CommonMessage.requiredValueMsg();
+
+  static final String addInitiativeLabel =  InitiativeMessage.label('Add Initiative');
+  static final String editInitiativeLabel =  InitiativeMessage.label('Edit Initiative');
+  static final String nameLabel =  InitiativeMessage.label('Name');
+  static final String descriptionLabel =  InitiativeMessage.label('Description');
+  static final String groupLabel =  InitiativeMessage.label('Group');
+  static final String noMatchLabel =  InitiativeMessage.label('No Match');
+  static final String leaderLabel =  InitiativeMessage.label('Leader');
+  static final String stageLabel =  InitiativeMessage.label('Stage');
+  static final String objectiveLabel =  InitiativeMessage.label('Objective');
+
+  static final String saveButtonLabel = CommonMessage.buttonLabel('Save');
+  static final String backButtonLabel = CommonMessage.buttonLabel('Back');
 
   @override
   Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
@@ -93,9 +104,6 @@ class InitiativeDetailComponent implements OnActivate {
     } else {
       initiative.organization = _authService.selectedOrganization;
     }
-
-    print('initiative');
-    print(initiative.name);
 
     states = await _initiativeService.getStates();
 
@@ -165,6 +173,8 @@ class InitiativeDetailComponent implements OnActivate {
 
       //groupSingleSelectModel.select(initiative.group);
     }
+
+
 
   }
 
@@ -273,6 +283,10 @@ class InitiativeDetailComponent implements OnActivate {
   }
 
   ItemRenderer get groupItemRenderer => (dynamic gru) => gru.name;
+
+  bool get validInput {
+    return initiative.name?.trim()?.isNotEmpty ?? false;
+  }
 
 }
 

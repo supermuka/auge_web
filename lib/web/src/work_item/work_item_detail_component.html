@@ -1,16 +1,16 @@
 <modal [visible]="true">
     <material-dialog headered class="headered-dialog">
         <div header>
-            <h3 *ngIf="workItem.id == null">{{label('Add Work Item')}}</h3>
-            <h3 *ngIf="workItem.id != null">{{label('Edit Work Item')}}</h3>
+            <h3 *ngIf="workItem.id == null">{{addLabel}}</h3>
+            <h3 *ngIf="workItem.id != null">{{editLabel}}</h3>
         </div>
         <div class="w3-row">
             <div class="w3-col m8">
-              <material-input type="text" [(ngModel)]="workItem.name" style="width:100%" floatingLabel [label]="label('Name')" required [requiredErrorMsg]="requiredValueMsg()"></material-input>
+              <material-input type="text" [(ngModel)]="workItem.name" style="width:100%" floatingLabel [label]="nameLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
             </div>
             <div class="w3-col m4">
                 <label class="input-container">
-                    <span class="label-text">{{label('Due Date')}}</span>
+                    <span class="label-text">{{dueDateLabel}}</span>
                     <material-datepicker [(date)]="dueDate"
                                          [minDate]="limitToDueDateRange.start"
                                          [maxDate]="limitToDueDateRange.end"
@@ -20,25 +20,17 @@
             </div>
         </div>
         <div class="w3-row">
-           <material-input type="text" [(ngModel)]="workItem.description" style="width:100%;height:100%" floatingLabel multiline rows="5" [label]="label('Description')"></material-input>
+           <material-input type="text" [(ngModel)]="workItem.description" style="width:100%;height:100%" floatingLabel multiline rows="5" [label]="descriptionLabel"></material-input>
         </div>
         <div class="w3-row" >
             <div class="w3-col m5" >
-                <material-input type="number" style="width: 100%" [(ngModel)]="completed" trailingText="%" [rightAlign]="true"  floatingLabel [label]="label('Completed')" [error]="errorCompleted"></material-input>
+                <material-input type="number" style="width: 100%" [(ngModel)]="completed" trailingText="%" [rightAlign]="true"  floatingLabel [label]="completedLabel" [error]="errorCompleted"></material-input>
             </div>
-            <!--
-            <div class="w3-col m6" >
-                <material-slider style="width: 100%" [min]="0"
-                                 [max]="100"
-                                 [step]="1"
-                                 [(value)]="completed" >
-                </material-slider>
-            </div>
-            -->
+
              <div class="w3-col m7" >
                  <label class="input-container">
                      <span class="label-text" >
-                         {{label('Stage')}}
+                         {{stageLabel}}
                      </span>
                     <material-dropdown-select style="width: 100%" [buttonText]="stageSingleSelectLabel"
                                               [(selection)]="stageSingleSelectModel"
@@ -55,8 +47,8 @@
                     [popupMatchInputWidth]="true"
                     [leadingGlyph]="leadingGlyph"
                     [shouldClearOnSelection]="true"
-                    [label]="label('Assigned To')"
-                    [emptyPlaceholder]="emptyPlaceholder"
+                    [label]="assignedToLabel"
+                    [emptyPlaceholder]="noMatchLabel"
                     [selection]="memberSingleSelectModel"
                     [selectionOptions]="memberOptions"
                     [itemRenderer]="memberItemRenderer"
@@ -74,7 +66,7 @@
         </div>
         <div class="w3-row">
             <div class="material-shadow-box-list" elevation="2">
-                <material-input [(ngModel)]="checkItemEntry" floatingLabel [label]="label('Check Item')"></material-input>
+                <material-input [(ngModel)]="checkItemEntry" floatingLabel [label]="checkItemLabel"></material-input>
                 <span>
                     <material-fab *ngIf="selectedCheckItem== null" mini raised (trigger)="addCheckItem()">
                       <material-icon icon="add"></material-icon>
@@ -96,10 +88,10 @@
             </div>
         </div>
         <div footer>
-            <material-button (trigger)="save()">{{buttonLabel('Save')}}
+            <material-button [disabled]="!validInput" (trigger)="save()">{{saveButtonLabel}}
                 <material-icon icon="save"></material-icon>
             </material-button>
-            <material-button autoFocus (trigger)="goBack()">{{buttonLabel('Back')}}
+            <material-button autoFocus (trigger)="goBack()">{{BackButtonLabel}}
                 <material-icon icon="arrow_back"></material-icon>
             </material-button>
         </div>

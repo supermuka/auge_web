@@ -1,29 +1,29 @@
 <modal [visible]="true">
     <material-dialog headered class="headered-dialog">
         <div header>
-            <h3 *ngIf="measure.id == null">{{label('Add Measure')}}</h3>
-            <h3 *ngIf="measure.id != null">{{label('Edit Measure')}}</h3>
+            <h3 *ngIf="measure.id == null">{{addMeasureLabel}}</h3>
+            <h3 *ngIf="measure.id != null">{{editMeasureLabel}}</h3>
         </div>
-        <material-input class="width-240" [(ngModel)]="measure.name" floatingLabel [label]="label('Name')" required [requiredErrorMsg]="requiredValueMsg()"></material-input>
+        <material-input class="width-240" [(ngModel)]="measure.name" floatingLabel [label]="nameLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
         <br/>
-        <material-input class="width-240" [(ngModel)]="measure.description" floatingLabel multiline rows="3" [label]="label('Description')"></material-input>
+        <material-input class="width-240" [(ngModel)]="measure.description" floatingLabel multiline rows="3" [label]="descriptionLabel"></material-input>
         <br/>
-        <material-input class="width-240" [(ngModel)]="measure.metric" floatingLabel [label]="label('Metric')"></material-input>
+        <material-input class="width-240" [(ngModel)]="measure.metric" floatingLabel [label]="metricLabel"></material-input>
         <material-dropdown-select [buttonText]="measureUnitSingleSelectLabel"
                                   [(selection)]="measureUnitSingleSelectModel"
                                   [(options)]="measureUnitOptions"
                                   [itemRenderer]="measureUnitItemRenderer">
         </material-dropdown-select>
         <br/>
-        <material-input type="number" [(ngModel)]="measure.startValue" floatingLabel [label]="label('Start Value')"></material-input>
-        <material-input type="number" [(ngModel)]="measure.currentValue" floatingLabel [label]="label('Current Value')" [lowerBound]="lowerBound()" [upperBound]="upperBound()"></material-input>
-        <material-input type="number" [(ngModel)]="measure.endValue" floatingLabel [label]="label('End Value')"></material-input>
+        <material-input type="number" [(ngModel)]="measure.startValue" floatingLabel [label]="startValueLabel"></material-input>
+        <material-input type="number" [(ngModel)]="measure.currentValue" floatingLabel [label]="currentValueLabel" [lowerBound]="lowerBound()" [upperBound]="upperBound()"></material-input>
+        <material-input type="number" [(ngModel)]="measure.endValue" floatingLabel [label]="endValueLabel"></material-input>
 
         <div footer>
-            <material-button [disabled]="!validInput()" (trigger)="saveMeasure()">{{buttonLabel('Save')}}
+            <material-button [disabled]="!validInput" (trigger)="saveMeasure()">{{saveButtonLabel}}
                 <material-icon icon="save"></material-icon>
             </material-button>
-            <material-button  autoFocus (trigger)="goBack()">{{buttonLabel('Back')}}
+            <material-button  autoFocus (trigger)="goBack()">{{backButtonLabel}}
                 <material-icon icon="arrow_back"></material-icon>
             </material-button>
         </div>

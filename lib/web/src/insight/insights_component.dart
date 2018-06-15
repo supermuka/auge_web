@@ -8,6 +8,7 @@ import 'package:angular_router/angular_router.dart';
 import 'package:angular_components/scorecard/scoreboard.dart';
 import 'package:angular_components/scorecard/scorecard.dart';
 
+import 'package:auge/shared/message/messages.dart';
 
 import 'package:auge/web/src/auth/auth_service.dart';
 import 'package:auge/web/src/app_layout/app_layout_service.dart';
@@ -46,6 +47,22 @@ class InsightsComponent implements OnActivate  {
   List<Initiative> initiatives = new List();
 
   InsightsComponent(this._authService, this._appLayoutService, this._objectiveService, this._initiativeService, this._router);
+
+  // Define messages and labels
+  static final String objectivesOverallLabel = InsightMessage.label('Objectives Overall');
+  static final String objectivesLabel =  InsightMessage.label('Objectives');
+  static final String objectivesAchievedLabel =  InsightMessage.label('Objectives Achieved');
+  static final String objectivesRequiringAttentionLabel =  InsightMessage.label('Objectives Requiring Attention');
+  static final String measuresLabel =  InsightMessage.label('Measures');
+  static final String measuresAchievedLabel =  InsightMessage.label('Measures Achieved');
+  static final String measuresRequiringAttentionLabel =  InsightMessage.label('Measures Requiring Attention');
+  static final String initiativesLabel =  InsightMessage.label('Initiatives');
+  static final String initiativesCompletedLabel =  InsightMessage.label('Initiatives Completed');
+  static final String initiativesRequiringAttentionLabel =  InsightMessage.label('Initiatives Requiring Attention');
+  static final String workItemsLabel =  InsightMessage.label('Work Items');
+  static final String workItemsCompletedLabel =  InsightMessage.label('Work Items Completed');
+  static final String workItemsRequiringAttentionLabel =  InsightMessage.label('Work Items Requiring Attention');
+
 
   @override
   void onActivate(RouterState previous, RouterState current) async {

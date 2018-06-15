@@ -70,9 +70,19 @@ class UserDetailComponent implements OnActivate {
   bool get authenticatedUserIsSuperAdmin => _authService.authenticatedUser.userProfile.isSuperAdmin;
 
   // Define messages and labels
-  String requiredValueMsg() => CommonMessage.requiredValueMsg();
-  String label(String label) =>  UserMessage.label(label);
-  String buttonLabel(String label) =>  CommonMessage.buttonLabel(label);
+  static final String requiredValueMsg = CommonMessage.requiredValueMsg();
+
+  static final String addUserLabel =  UserMessage.label('Add User');
+  static final String editUserLabel =  UserMessage.label('Edit User');
+  static final String nameLabel =  UserMessage.label('Name');
+  static final String emailLabel =  UserMessage.label('e-Mail');
+  static final String passwordLabel =  UserMessage.label('Password');
+  static final String authorizationLabel = UserMessage.label('Authorization');
+
+  static final String uploadButtonLabel = CommonMessage.buttonLabel('Upload');
+  static final String clearButtonLabel = CommonMessage.buttonLabel('Clear');
+  static final String saveButtonLabel = CommonMessage.buttonLabel('Save');
+  static final String backButtonLabel = CommonMessage.buttonLabel('Back');
 
   @override
   Future onActivate(RouterState previous, RouterState current) async {
@@ -147,6 +157,10 @@ class UserDetailComponent implements OnActivate {
     _passwordOrigin = '';
 
     return _passwordOrigin;
+  }
+
+  bool get validInput {
+    return (user.name?.trim()?.isNotEmpty && user.eMail?.trim()?.isNotEmpty) ?? false;
   }
 }
 

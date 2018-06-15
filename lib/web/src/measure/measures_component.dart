@@ -6,7 +6,6 @@ import 'dart:async';
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:angular_components/material_menu/material_menu.dart';
 import 'package:angular_components/model/menu/menu.dart';
 import 'package:auge/shared/model/objective/objective.dart';
 import 'package:auge/shared/model/objective/measure.dart';
@@ -79,7 +78,11 @@ class MeasuresComponent extends Object with CanReuse implements OnActivate, OnDe
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMessage.buttonLabel('Edit'), icon: new Icon('edit') , action: () => goToDetail(_selectedMeasure)), new MenuItem(CommonMessage.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete(_selectedMeasure))])], icon: new Icon('menu'));
   }
 
-  String label(String label) =>  MeasureMessage.label(label);
+  // Define messages and labels
+  static final String progressLabel =  MeasureMessage.label('Progress');
+  static final String startValueLabel =  MeasureMessage.label('Start Value');
+  static final String currentValueLabel =  MeasureMessage.label('Current Value');
+  static final String endValueLabel =  MeasureMessage.label('End Value');
 
   @override
   Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
@@ -88,7 +91,7 @@ class MeasuresComponent extends Object with CanReuse implements OnActivate, OnDe
       _router.navigate(AppRoutes.authRoute.toUrl());
     }
 
-    _appLayoutService.headerTitle = label('Measures');
+    _appLayoutService.headerTitle = MeasureMessage.label('Measures');
 
     String id = routerStateCurrent.parameters[AppRoutes.objectiveIdParameter];
 
@@ -132,7 +135,7 @@ class MeasuresComponent extends Object with CanReuse implements OnActivate, OnDe
     }
   }
 
-  List<Measure> get measures => objective?.measures;
+  //List<Measure> get measures => measures;
 
   int progress(Measure measure) {
     return measure?.currentValue == null || measure?.currentValue == 0 ? 0 :  (measure?.currentValue / (measure?.startValue + measure?.endValue) * 100).toInt() ;
@@ -148,6 +151,11 @@ class MeasuresComponent extends Object with CanReuse implements OnActivate, OnDe
   Future<bool> canReuse(RouterState current, RouterState next) async {
     return true;
   }
+
+  List<Measure> get measures {
+    return _searchService?.searchTerm.toString().isEmpty ? objective?.measures : objective?.measures?.where((t) => t.name.contains(_searchService.searchTerm)).toList();
+  }
+
 
 
 }

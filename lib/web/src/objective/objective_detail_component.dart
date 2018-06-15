@@ -61,9 +61,6 @@ class ObjectiveDetailComponent implements OnActivate {
   SelectionModel leaderSingleSelectModel;
 
   String leadingGlyph = 'search';
-  String alignedToLabel = 'Aligned To Objective';
-  String leaderLabel = 'Leader';
-  String emptyPlaceholder = 'No match';
 
   DateRange limitToDateRange =
   new DateRange(new Date.today().add(years: -1), new Date.today().add(years: 1));
@@ -72,9 +69,24 @@ class ObjectiveDetailComponent implements OnActivate {
   }
 
   // Define messages and labels
-  String requiredValueMsg() => CommonMessage.requiredValueMsg();
-  String label(String label) =>  ObjectiveMessage.label(label);
-  String buttonLabel(String label) =>  CommonMessage.buttonLabel(label);
+  static final String requiredValueMsg = CommonMessage.requiredValueMsg();
+
+  static final String addObjectiveLabel =  ObjectiveMessage.label('Add Objective');
+  static final String editObjectiveLabel =  ObjectiveMessage.label('Edit Objective');
+  static final String nameLabel =  ObjectiveMessage.label('Name');
+  static final String descriptionLabel =  ObjectiveMessage.label('Description');
+  static final String groupLabel =  ObjectiveMessage.label('Group');
+  static final String noMatchLabel =  ObjectiveMessage.label('No Match');
+  static final String leaderLabel =  ObjectiveMessage.label('Leader');
+  static final String stageLabel =  ObjectiveMessage.label('Stage');
+  static final String objectiveLabel =  ObjectiveMessage.label('Objective');
+
+  static final String startDateLabel =  ObjectiveMessage.label('Start Date');
+  static final String endDateLabel =  ObjectiveMessage.label('End Date');
+  static final String alignedToLabel =  ObjectiveMessage.label('Aligned To');
+
+  static final String saveButtonLabel = CommonMessage.buttonLabel('Save');
+  static final String backButtonLabel = CommonMessage.buttonLabel('Back');
 
   @override
   Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
@@ -239,6 +251,10 @@ class ObjectiveDetailComponent implements OnActivate {
   }
 
   ItemRenderer get groupItemRenderer => (dynamic gru) => gru.name;
+
+  bool get validInput {
+    return objective.name?.trim()?.isNotEmpty ?? false;
+  }
 
 }
 

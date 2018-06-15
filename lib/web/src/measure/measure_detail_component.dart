@@ -19,7 +19,6 @@ import 'package:auge/web/services/app_routes.dart';
 
 @Component(
     selector: 'auge-measure-detail',
-//    providers: const [IniciativaService],
     directives: const [
       coreDirectives,
       routerDirectives,
@@ -48,9 +47,18 @@ class MeasureDetailComponent implements OnActivate {
   MeasureDetailComponent(this._authService, this._objectiveService, this._measureService, this._location, this._router);
 
   // Define messages and labels
-  String requiredValueMsg() => CommonMessage.requiredValueMsg();
-  String label(String label) =>  MeasureMessage.label(label);
-  String buttonLabel(String label) => CommonMessage.buttonLabel(label);
+  static final String requiredValueMsg = CommonMessage.requiredValueMsg();
+  static final String addMeasureLabel =  MeasureMessage.label('Add Measure');
+  static final String editMeasureLabel =  MeasureMessage.label('Edit Measure');
+  static final String nameLabel =  MeasureMessage.label('Name');
+  static final String descriptionLabel =  MeasureMessage.label('Description');
+  static final String metricLabel =  MeasureMessage.label('Metric');
+  static final String startValueLabel =  MeasureMessage.label('Start Value');
+  static final String currentValueLabel =  MeasureMessage.label('Current Value');
+  static final String endValueLabel =  MeasureMessage.label('End Value');
+
+  static final String saveButtonLabel = CommonMessage.buttonLabel('Save');
+  static final String backButtonLabel = CommonMessage.buttonLabel('Back');
 
   @override
   Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
@@ -66,8 +74,6 @@ class MeasureDetailComponent implements OnActivate {
     if (objectiveId != null) {
       objective = await _objectiveService.getObjectiveById(objectiveId, withMeasures: false);
     }
-
-
 
     String id = routerStateCurrent.parameters[AppRoutes.measureIdParameter];
 
@@ -98,14 +104,14 @@ class MeasureDetailComponent implements OnActivate {
 
   // Label for the button for single selection.
   String get measureUnitSingleSelectLabel {
-    String nomeLabel;
+    String nameLabel;
     if ((measureUnitSingleSelectModel != null) &&
         (measureUnitSingleSelectModel.selectedValues != null) &&
         (measureUnitSingleSelectModel.selectedValues.length > 0)) {
 
-      nomeLabel = measureUnitSingleSelectModel.selectedValues.first.nome;
+      nameLabel = measureUnitSingleSelectModel.selectedValues.first.name;
     }
-    return nomeLabel ;
+    return nameLabel ;
   }
 
   ItemRenderer get measureUnitItemRenderer => (dynamic unit) => unit.simbol;
@@ -128,13 +134,11 @@ class MeasureDetailComponent implements OnActivate {
     }
   }
 
-  bool validInput() {
-    print('entrou');
+  bool get validInput {
     if (measure?.currentValue != null && (measure.currentValue < lowerBound() || measure.currentValue > upperBound())) {
       return false;
     } else {
       return true;
     }
-
   }
 }

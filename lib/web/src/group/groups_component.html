@@ -1,0 +1,29 @@
+<div class="container-list">
+    <material-fab raised (trigger)="selectGroup(null);goToDetail(null)">
+        <material-icon icon="add"></material-icon>
+    </material-fab>
+    <br/>
+    <material-list class="shadow-box-material-list" elevation="2">
+        <div *ngFor="let iGroup of groups">
+            <material-list-item>
+                <h5><span class="avatar avatar-border" [style.background-color]="colorFromUuid(iGroup.id)"><strong class="text-group-letter">{{firstLetter(iGroup.name)}}</strong></span></h5>
+                <div class="truncate-ellipsed-parent">
+                    <div>
+                        <h4 class="truncate-ellipsed">{{iGroup.name}}</h4>
+                        <p>{{iGroup.leader?.name}}</p>
+                        <p>{{iGroup.active}}</p>
+                    </div>
+                </div>
+                <span class="row-spacer"></span>
+                <div class="material-list-item-secondary">
+                    <div>
+                        <material-menu [menu]="menuModel" (click)="selectGroup(iGroup)">
+                        </material-menu>
+                    </div>
+                </div>
+            </material-list-item>
+            <hr>
+        </div>
+    </material-list>
+</div>
+<router-outlet [routes]="routes"></router-outlet>

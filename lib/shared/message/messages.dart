@@ -62,6 +62,7 @@ class AuthMessage {
   static informEMailPasswordCorrectlyMsg() => Intl.message("Inform an e-mail and password correctly.");
   static userNotFoundMsg() => Intl.message("User account with the informed email not found.");
   static organizationNotFoundMsg() => Intl.message("An organization to user account not found.");
+  static serverApiErrorMsg() => Intl.message("Server not available.");
 
 }
 
@@ -314,4 +315,32 @@ class GroupMessage {
       // locale: "en",
       desc: "Group type labels"
   );
+}
+
+/// Specific messages and label for [Insight]
+class InsightMessage {
+
+  /// Label for Insight
+  static label(String label) => Intl.message(
+    "${Intl.select(label, {
+      'Objectives Overall': 'Objectives Overall',
+      'Objectives': 'Objectives',
+      'Objectives Achieved': 'Objectives Achieved',
+      'Objectives Requiring Attention': 'Objectives Requiring Attention',
+      'Measures': 'Measures',
+      'Measures Achieved': 'Measures Achieved',
+      'Measures Requiring Attention': 'Measures Requiring Attention',
+      'Initiatives': 'Initiatives',
+      'Initiatives Completed': 'Initiatives Completed',
+      'Initiatives Requiring Attention': 'Initiatives Requiring Attention',
+      'Work Items': 'Work Items',
+      'Work Items Completed': 'Work Items Completed',
+      'Work Items Requiring Attention': 'Work Items Requiring Attention',
+      'other': 'Not Defined'})}",
+    name: "insightLabel",
+    args: [label],
+    // locale: "en",
+    desc: "Insight labels",
+  );
+
 }

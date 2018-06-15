@@ -40,9 +40,15 @@ import 'package:auge/web/services/app_routes.dart';
 
 
     // Define messages and labels
-    String requiredValueMsg() => CommonMessage.requiredValueMsg();
-    String label(String label) =>  OrganizationMessage.label(label);
-    String buttonLabel(String label) =>  CommonMessage.buttonLabel(label);
+    static final String requiredValueMsg = CommonMessage.requiredValueMsg();
+    static final String addOrganizationLabel =  OrganizationMessage.label('Add Organization');
+    static final String editOrganizationLabel =  OrganizationMessage.label('Edit Organization');
+
+    static final String nameLabel =  OrganizationMessage.label('Name');
+    static final String codeLabel =  OrganizationMessage.label('Code');
+
+    static final String saveButtonLabel = CommonMessage.buttonLabel('Save');
+    static final String backButtonLabel = CommonMessage.buttonLabel('Back');
 
     @override
     Future onActivate(routeStatePrevious, routeStateCurrent) async {
@@ -66,5 +72,9 @@ import 'package:auge/web/services/app_routes.dart';
 
     void goBack() {
       _location.back();
+    }
+
+    bool get validInput {
+      return organization.name?.trim()?.isNotEmpty ?? false;
     }
 }

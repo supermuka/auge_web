@@ -1,14 +1,14 @@
 <modal [visible]="true">
     <material-dialog headered class="headered-dialog">
         <div header>
-            <h3 *ngIf="initiative.id == null">{{label('Add Initiative')}}</h3>
-            <h3 *ngIf="initiative.id != null">{{label('Edit Initiative')}}</h3>
+            <h3 *ngIf="initiative.id == null">{{addInitiativeLabel}}</h3>
+            <h3 *ngIf="initiative.id != null">{{editInitiativeLabel}}</h3>
         </div>
         <div class="w3-row">
-           <material-input class="w3-col l12" [(ngModel)]="initiative.name" floatingLabel [label]="label('Name')" required [requiredErrorMsg]="requiredValueMsg()"></material-input>
+           <material-input class="w3-col l12" [(ngModel)]="initiative.name" floatingLabel [label]="nameLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
         </div>
         <div class="w3-row">
-           <material-input class="w3-col l12" [(ngModel)]="initiative.description" floatingLabel multiline rows="3" [label]="label('Description')"></material-input>
+           <material-input class="w3-col l12" [(ngModel)]="initiative.description" floatingLabel multiline rows="3" [label]="descriptionLabel"></material-input>
         </div>
         <div class="w3-row">
             <material-auto-suggest-input class="w3-col l12"
@@ -18,9 +18,9 @@
                                           [trailingGlyph]="'search'"
                                           [rightAlign]="false"
                                           [shouldClearOnSelection]="false"
-                                          [label]="label('Group')"
+                                          [label]="groupLabel"
                                           [floatingLabel]="true"
-                                          [emptyPlaceholder]="label('No Match')"
+                                          [emptyPlaceholder]="noMatchLabel"
                                           [selection]="groupSingleSelectModel"
                                           [selectionOptions]="groupOptions"
                                           [itemRenderer]="groupItemRenderer"
@@ -35,9 +35,9 @@
                                          [trailingGlyph]="'search'"
                                          [rightAlign]="false"
                                          [shouldClearOnSelection]="false"
-                                         [label]="label('Leader')"
+                                         [label]="leaderLabel"
                                          [floatingLabel]="true"
-                                         [emptyPlaceholder]="label('No Match')"
+                                         [emptyPlaceholder]="noMatchLabel"
                                          [selection]="leaderSingleSelectModel"
                                          [selectionOptions]="leaderOptions"
                                          [itemRenderer]="leaderItemRenderer"
@@ -46,7 +46,7 @@
             </material-auto-suggest-input>
         </div>
         <div class="material-shadow-box-list" elevation="2">
-            <material-input [(ngModel)]="stageEntry" floatingLabel [label]="label('Stage')"></material-input>
+            <material-input [(ngModel)]="stageEntry" floatingLabel [label]="stageLabel"></material-input>
             <material-dropdown-select [buttonText]="stateSingleSelectLabel"
                                       [(selection)]="stateSingleSelectModel"
                                       [(options)]="stateOptions"
@@ -84,9 +84,9 @@
                                          [trailingGlyph]="'search'"
                                          [rightAlign]="false"
                                          [shouldClearOnSelection]="false"
-                                         [label]="label('Objective')"
+                                         [label]="objectiveLabel"
                                          [floatingLabel]="true"
-                                         [emptyPlaceholder]="label('No Match')"
+                                         [emptyPlaceholder]="noMatchLabel"
                                          [selection]="objectiveSingleSelectModel"
                                          [selectionOptions]="objectiveOptions"
                                          [itemRenderer]="objectiveItemRenderer"
@@ -94,11 +94,11 @@
             </material-auto-suggest-input>
         </div>
         <div footer>
-            <material-button (trigger)="saveInitiative()">{{buttonLabel('Save')}}
+            <material-button [disabled]="!validInput" (trigger)="saveInitiative()">{{saveButtonLabel}}
                 <material-icon icon="save"></material-icon>
             </material-button>
 
-            <material-button autoFocus (trigger)="goBack()">{{buttonLabel('Back')}}
+            <material-button autoFocus (trigger)="goBack()">{{backButtonLabel}}
                 <material-icon icon="arrow_back"></material-icon>
             </material-button>
         </div>

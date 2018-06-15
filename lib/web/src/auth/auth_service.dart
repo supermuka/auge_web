@@ -42,16 +42,18 @@ class AuthService  {
   Future<User> getAuthenticatedUserWithEmail(String email, String passwordStr) async {
     User user;
     if (!email.isEmpty || !passwordStr.isEmpty) {
-      try {
+      //try {
 
         String password = base64.encode(sha256
             .convert(passwordStr.codeUnits)
             .bytes);
         user = await _augeApiService.augeApi.getAuthenticatedUserWithEmail(
              email, password, withProfile: true);
+        /*
       } catch (e) {
         print(e);
       }
+      */
     }
     return user;
   }

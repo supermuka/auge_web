@@ -89,9 +89,21 @@ class WorkItemDetailComponent implements OnActivate  {
   }
 
   // Define messages and labels
-  String requiredValueMsg() => CommonMessage.requiredValueMsg();
-  String label(String label) =>  WorkItemMessage.label(label);
-  String buttonLabel(String label) =>  CommonMessage.buttonLabel(label);
+  static final String requiredValueMsg =  CommonMessage.requiredValueMsg();
+  static final String addWorkItemLabel =  WorkItemMessage.label('Add Work Item');
+  static final String editWorkItemLabel =  WorkItemMessage.label('Edit Work Item');
+
+  static final String nameLabel =  WorkItemMessage.label('Name');
+  static final String dueDateLabel =  WorkItemMessage.label('Due Date');
+  static final String completedLabel =  WorkItemMessage.label('Completed');
+  static final String stageLabel =  WorkItemMessage.label('Stage');
+  static final String noMatchLabel =  WorkItemMessage.label('No Match');
+  static final String assignedToLabel =  WorkItemMessage.label('Assigned To');
+  static final String checkItemLabel =  WorkItemMessage.label('Check Item');
+
+  static final String saveButtonLabel = CommonMessage.buttonLabel('Save');
+  static final String backButtonLabel = CommonMessage.buttonLabel('Back');
+
 
   @override
   Future onActivate(RouterState previous, RouterState current) async {
@@ -212,7 +224,7 @@ class WorkItemDetailComponent implements OnActivate  {
 
         nameLabel = stageSingleSelectModel.selectedValues.first?.name;
     } else {
-      nameLabel = label('Select a value');
+      nameLabel = WorkItemMessage.label('Select a value');
     }
     return nameLabel ;
   }
@@ -249,6 +261,10 @@ class WorkItemDetailComponent implements OnActivate  {
 
     workItem.checkItems.elementAt(workItem.checkItems.indexOf(checkItem))
         ..name = checkItemEntry;
+  }
+
+  bool get validInput {
+    return workItem.name?.trim()?.isNotEmpty ?? false;
   }
 }
 

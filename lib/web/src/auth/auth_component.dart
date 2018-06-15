@@ -35,20 +35,20 @@ class AuthComponent {
 
   String eMail = "samuel.schwebel@gmail.com";
   String passwordStr = "1234567";
-  String error;
+  static String error;
 
   Router _router;
 
   AuthComponent(this._authService, this._router);
 
   /// Messages and labels
-  String get headerTitleLabel => CommonMessage.label('AUGE');
-  String get headerSubtitleLabel => CommonMessage.label('Objectives and Initiatives');
-  String get loginButtonLabel =>  CommonMessage.buttonLabel('Login');
-  String get requiredValueMsg =>  CommonMessage.requiredValueMsg();
+  static final String headerTitleLabel = CommonMessage.label('AUGE');
+  static final String headerSubtitleLabel = CommonMessage.label('Objectives and Initiatives');
+  static final String loginButtonLabel = CommonMessage.buttonLabel('Login');
+  static final String requiredValueMsg = CommonMessage.requiredValueMsg();
 
-  String get eMailLabel => AuthMessage.label("eMail");
-  String get passwordLabel => AuthMessage.label("Password");
+  static final String eMailLabel = AuthMessage.label("eMail");
+  static final String passwordLabel = AuthMessage.label("Password");
 
   Future<Null> authenticateAuthorizate(String email, String password) async {
 
@@ -56,26 +56,37 @@ class AuthComponent {
       error = AuthMessage.informEMailPasswordCorrectlyMsg();
     } else {
 
-      _authService.authenticatedUser =
-      await _authService.getAuthenticatedUserWithEmail(email, password);
+     try {
 
-      if (_authService.authenticatedUser == null) {
-        error = AuthMessage.userNotFoundMsg();
-      } else {
-        _authService.authorizatedOrganizations =
-        await _authService.getAuthorizatedOrganizationsByUserId(
-            _authService.authenticatedUser.id);
+       _authService.authenticatedUser =
+       await _authService.getAuthenticatedUserWithEmail(email, password);
 
-        if (_authService.authorizatedOrganizations == null || _authService.authorizatedOrganizations.length == 0) {
-          error = AuthMessage.organizationNotFoundMsg();
+        if (_authService.authenticatedUser == null) {
+          error = AuthMessage.userNotFoundMsg();
         } else {
-          goToAppLayout();
+          _authService.authorizatedOrganizations =
+          await _authService.getAuthorizatedOrganizationsByUserId(
+             _authService.authenticatedUser.id);
+
+          if (_authService.authorizatedOrganizations == null || _authService.authorizatedOrganizations.length == 0) {
+            error = AuthMessage.organizationNotFoundMsg();
+          } else {
+            goToAppLayout();
+          }
         }
+      } catch (e) {
+        error = AuthMessage.serverApiErrorMsg();
+        print(e);
       }
     }
   }
 
   goToAppLayout() {
     _router.navigate(AppRoutes.appLayoutRoute.toUrl());
+  }
+
+  bool get validInput {
+    return (eMail?.trim()?.isNotEmpty
+        && passwordStr?.trim()?.isNotEmpty) ?? false;
   }
 }

@@ -22,11 +22,11 @@
                                 [(ngModel)]="passwordStr">
                 </material-input>
                 <br/>
-                <p>{{error}}</p>
+                <p class="error">{{error}}</p>
             </div>
             <div footer>
                 <br/>
-                <material-button raised class="red" (trigger)="authenticateAuthorizate(eMail, passwordStr)">{{loginButtonLabel}}</material-button>
+                <material-button raised class="red" [disabled]="!validInput" (trigger)="authenticateAuthorizate(eMail, passwordStr)">{{loginButtonLabel}}</material-button>
             </div>
         </material-dialog>
     </div>

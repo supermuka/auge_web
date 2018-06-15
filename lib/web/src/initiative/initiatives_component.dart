@@ -7,7 +7,6 @@ import 'dart:html';
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:angular_components/material_menu/material_menu.dart';
 import 'package:angular_components/model/menu/menu.dart';
 
 import 'package:auge/shared/message/messages.dart';
@@ -19,18 +18,16 @@ import 'package:auge/web/src/initiative/initiative_service.dart';
 import 'package:auge/web/src/search/search_service.dart';
 
 import 'package:auge/web/src/app_layout/app_layout_service.dart';
-import 'package:auge/web/src/work_item/work_items_component.dart';
 
 import 'package:auge/web/services/app_routes.dart';
 
 // ignore_for_file: uri_has_not_been_generated
 import 'package:auge/web/src/app_layout/app_layout_home.template.dart' as app_layout_home;
 import 'package:auge/web/src/initiative/initiative_detail_component.template.dart' as initiative_detail_component;
-// import 'package:auge/src/item_trabalho/itens_trabalho_component.template.dart' as itens_trabalho_component;
+
 
 @Component(
     selector: 'auge-initiatives',
- //   providers: const [popupBindings],
     providers: const [InitiativeService],
     directives: const [
       coreDirectives,
@@ -77,7 +74,8 @@ class InitiativesComponent extends Object with CanReuse implements OnActivate, O
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMessage.buttonLabel('Edit'), icon: new Icon('edit') , action: () => goToDetail(_initiativeSelected)), new MenuItem(CommonMessage.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete(_initiativeSelected))])], icon: new Icon('menu'));
   }
 
-  String label(String label) =>  InitiativeMessage.label(label);
+  // Define messages and labels
+  static final String workItemsOverDueLabel =  InitiativeMessage.label('Work Items Over Due');
 
   @override
   Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {

@@ -1,32 +1,32 @@
 <modal [visible]="true">
     <material-dialog headered class="headered-dialog">
         <div header>
-            <h3 *ngIf="user.id == null">{{label('Add User')}}</h3>
-            <h3 *ngIf="user.id != null">{{label('Edit User')}}</h3>
+            <h3 *ngIf="user.id == null">{{addUserLabel}}</h3>
+            <h3 *ngIf="user.id != null">{{editUserLabel}}</h3>
         </div>
         <div>
-            <material-input [(ngModel)]="user.name" floatingLabel [label]="label('Name')" required [requiredErrorMsg]="requiredValueMsg()"></material-input>
+            <material-input [(ngModel)]="user.name" floatingLabel [label]="nameLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
             <br/>
-            <material-input [(ngModel)]="user.eMail" floatingLabel [label]="label('e-Mail')" required [requiredErrorMsg]="requiredValueMsg()"></material-input>
+            <material-input [(ngModel)]="user.eMail" floatingLabel [label]="emailLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
             <br/>
-            <material-input type="password" [(ngModel)]="passwordSecure" floatingLabel [label]="label('Password')" required [requiredErrorMsg]="requiredValueMsg()"></material-input>
+            <material-input type="password" [(ngModel)]="passwordSecure" floatingLabel [label]="passwordLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
             <br/>
             <label>{{label('Photo')}}</label>
             <br/>
             <div>
                 <span class="avatar" [style.background-image]="'url(' + userUrlImage(user) + ')'"></span>
                 <input type="file" id="upload_image" accept="image/*,capture=camera">
-                <material-button icon (trigger)="uploadImage()">{{buttonLabel('Upload')}}
+                <material-button icon (trigger)="uploadImage()">{{uploadButtonLabel}}
                     <material-icon icon="done"></material-icon>
                 </material-button>
-                <material-button  icon [disabled]="true">{{buttonLabel('Clear')}}
+                <material-button  icon [disabled]="true">{{clarButtonLabel}}
                     <material-icon icon="clear"></material-icon>
                 </material-button>
             </div>
             <br/>
             <material-checkbox *ngIf="authenticatedUserIsSuperAdmin == true" [(ngModel)]="user.userProfile.isSuperAdmin" [label]="label('Super Admin')"></material-checkbox>
             <br/>
-            <label>{{label('Authorization')}}</label>
+            <label>{{authorizationLabel}}</label>
             <br/>
             <material-radio-group [selectionModel]="selectionModelUserAuthorization">
                 <material-radio *ngFor="let option of userAuthorizationOptions"
@@ -56,7 +56,7 @@
 
         </material-radio-group>
         <div footer>
-            <material-button (trigger)="save()">{{buttonLabel('Save')}}
+            <material-button [disabled]="!validInput" (trigger)="save()">{{buttonLabel('Save')}}
                 <material-icon icon="save"></material-icon>
             </material-button>
             <material-button autoFocus (trigger)="goBack()">{{buttonLabel('Back')}}
