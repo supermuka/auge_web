@@ -94,6 +94,7 @@ class WorkItemDetailComponent implements OnActivate  {
   static final String editWorkItemLabel =  WorkItemMessage.label('Edit Work Item');
 
   static final String nameLabel =  WorkItemMessage.label('Name');
+  static final String descriptionLabel =  WorkItemMessage.label('Description');
   static final String dueDateLabel =  WorkItemMessage.label('Due Date');
   static final String completedLabel =  WorkItemMessage.label('Completed');
   static final String stageLabel =  WorkItemMessage.label('Stage');

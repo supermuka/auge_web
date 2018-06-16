@@ -1,8 +1,8 @@
 <modal [visible]="true">
     <material-dialog headered class="headered-dialog">
         <div header>
-            <h3 *ngIf="organization.id == null">{{label('Add Organization')}}</h3>
-            <h3 *ngIf="organization.id != null">{{label('Edit Organization')}}</h3>
+            <h3 *ngIf="organization.id == null">{{addOrganizationLabel}}</h3>
+            <h3 *ngIf="organization.id != null">{{editOrganizationLabel}}</h3>
         </div>
         <material-content>
             <material-input class="width-300" [(ngModel)]="organization.name" floatingLabel [label]="nameLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>

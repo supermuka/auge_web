@@ -21,42 +21,42 @@ packages:
       name: angular
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.0-alpha+14"
+    version: "5.0.0-alpha+15"
   angular_ast:
     dependency: "direct main"
     description:
       name: angular_ast
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.3+2"
+    version: "0.5.3+3"
   angular_compiler:
     dependency: "direct main"
     description:
       name: angular_compiler
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.0-alpha+14"
+    version: "0.4.0-alpha+15"
   angular_components:
     dependency: "direct main"
     description:
       name: angular_components
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.9.0-alpha+14"
+    version: "0.9.0-alpha+15"
   angular_forms:
     dependency: "direct main"
     description:
       name: angular_forms
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0-alpha+6"
+    version: "2.0.0-alpha+7"
   angular_router:
     dependency: "direct main"
     description:
       name: angular_router
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0-alpha+13"
+    version: "2.0.0-alpha+14"
   archive:
     dependency: transitive
     description:
@@ -196,7 +196,7 @@ packages:
       name: crypto
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.3"
+    version: "2.0.5"
   csslib:
     dependency: transitive
     description:
@@ -204,13 +204,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.14.4"
-  dart2_constant:
-    dependency: transitive
-    description:
-      name: dart2_constant
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.1+dart2"
   dart_internal:
     dependency: transitive
     description:
@@ -420,7 +413,7 @@ packages:
       name: path
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.6.0"
+    version: "1.6.1"
   perf_api:
     dependency: transitive
     description:
@@ -497,7 +490,7 @@ packages:
       name: sass
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.5.1"
+    version: "1.6.1"
   sass_builder:
     dependency: "direct main"
     description:
@@ -646,4 +639,4 @@ packages:
     source: hosted
     version: "2.1.14"
 sdks:
-  dart: ">=2.0.0-dev.56.0 <=2.0.0-dev.61.0"
+  dart: ">=2.0.0-dev.62.0 <=2.0.0-dev.63.0"

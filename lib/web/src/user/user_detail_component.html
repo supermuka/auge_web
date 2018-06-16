@@ -11,7 +11,7 @@
             <br/>
             <material-input type="password" [(ngModel)]="passwordSecure" floatingLabel [label]="passwordLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
             <br/>
-            <label>{{label('Photo')}}</label>
+            <label>{{photoLabel}}</label>
             <br/>
             <div>
                 <span class="avatar" [style.background-image]="'url(' + userUrlImage(user) + ')'"></span>
@@ -19,12 +19,12 @@
                 <material-button icon (trigger)="uploadImage()">{{uploadButtonLabel}}
                     <material-icon icon="done"></material-icon>
                 </material-button>
-                <material-button  icon [disabled]="true">{{clarButtonLabel}}
+                <material-button  icon [disabled]="true">{{clearButtonLabel}}
                     <material-icon icon="clear"></material-icon>
                 </material-button>
             </div>
             <br/>
-            <material-checkbox *ngIf="authenticatedUserIsSuperAdmin == true" [(ngModel)]="user.userProfile.isSuperAdmin" [label]="label('Super Admin')"></material-checkbox>
+            <material-checkbox *ngIf="authenticatedUserIsSuperAdmin == true" [(ngModel)]="user.userProfile.isSuperAdmin" [label]="superAdminLabel"></material-checkbox>
             <br/>
             <label>{{authorizationLabel}}</label>
             <br/>
@@ -38,7 +38,7 @@
             </material-radio-group>
         </div>
         <br/>
-        <label>{{label('Idiom')}}</label>
+        <label>{{idiomLabel}}</label>
         <br/>
         <material-radio-group [(ngModel)]="user.userProfile.idiomLocale">
             <material-radio class="radio-per-line"
@@ -56,10 +56,10 @@
 
         </material-radio-group>
         <div footer>
-            <material-button [disabled]="!validInput" (trigger)="save()">{{buttonLabel('Save')}}
+            <material-button [disabled]="!validInput" (trigger)="save()">{{saveButtonLabel}}
                 <material-icon icon="save"></material-icon>
             </material-button>
-            <material-button autoFocus (trigger)="goBack()">{{buttonLabel('Back')}}
+            <material-button autoFocus (trigger)="goBack()">{{backButtonLabel}}
                 <material-icon icon="arrow_back"></material-icon>
             </material-button>
         </div>

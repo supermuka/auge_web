@@ -78,6 +78,10 @@ class UserDetailComponent implements OnActivate {
   static final String emailLabel =  UserMessage.label('e-Mail');
   static final String passwordLabel =  UserMessage.label('Password');
   static final String authorizationLabel = UserMessage.label('Authorization');
+  static final String photoLabel = UserMessage.label('Photo');
+  static final String superAdminLabel = UserMessage.label('Super Admin');
+  static final String idiomLabel = UserMessage.label('Idiom');
+
 
   static final String uploadButtonLabel = CommonMessage.buttonLabel('Upload');
   static final String clearButtonLabel = CommonMessage.buttonLabel('Clear');
