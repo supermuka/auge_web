@@ -114,7 +114,7 @@ class MeasureDetailComponent implements OnActivate {
     return nameLabel ;
   }
 
-  ItemRenderer get measureUnitItemRenderer => (dynamic unit) => unit.simbol;
+  ItemRenderer get measureUnitItemRenderer => (dynamic unit) => unit.name + '(' + unit.symbol + ')';
 
   double lowerBound() {
     if (measure?.startValue == null || measure?.endValue == null) return measure?.startValue;

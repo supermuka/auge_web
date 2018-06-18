@@ -1,5 +1,7 @@
 // This is a generated file (see the discoveryapis_generator project).
 
+// ignore_for_file: unnecessary_cast
+
 library auge.augeApi.client;
 
 import 'dart:core' as core;
@@ -35,7 +37,7 @@ class AugeApi {
   /// this method will complete with the same error.
   async.Future closeConnection() {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -65,14 +67,14 @@ class AugeApi {
   /// this method will complete with the same error.
   async.Future createGroup(Group request) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode(GroupFactory.toJson(request));
+      _body = convert.json.encode(GroupFactory.toJson(request));
     }
 
     _downloadOptions = null;
@@ -99,14 +101,14 @@ class AugeApi {
   /// this method will complete with the same error.
   async.Future createOrganization(Organization request) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode(OrganizationFactory.toJson(request));
+      _body = convert.json.encode(OrganizationFactory.toJson(request));
     }
 
     _downloadOptions = null;
@@ -133,14 +135,14 @@ class AugeApi {
   /// this method will complete with the same error.
   async.Future createUser(User request) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode(UserFactory.toJson(request));
+      _body = convert.json.encode(UserFactory.toJson(request));
     }
 
     _downloadOptions = null;
@@ -167,7 +169,7 @@ class AugeApi {
   /// this method will complete with the same error.
   async.Future deleteGroup(core.String id) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -201,7 +203,7 @@ class AugeApi {
   /// this method will complete with the same error.
   async.Future deleteOrganization(core.String id) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -235,7 +237,7 @@ class AugeApi {
   /// this method will complete with the same error.
   async.Future deleteUser(core.String id) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -277,7 +279,7 @@ class AugeApi {
       core.String eMail, core.String password,
       {core.bool withProfile}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -321,7 +323,7 @@ class AugeApi {
   async.Future<core.List<UserProfileOrganization>>
       getAuthorizatedOrganizationsByUserId(core.String userId) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -340,8 +342,9 @@ class AugeApi {
         uploadOptions: _uploadOptions,
         uploadMedia: _uploadMedia,
         downloadOptions: _downloadOptions);
-    return _response.then((data) => data
-        .map((value) => UserProfileOrganizationFactory.fromJson(value))
+    return _response.then((data) => (data as core.List)
+        .map<UserProfileOrganization>(
+            (value) => UserProfileOrganizationFactory.fromJson(value))
         .toList());
   }
 
@@ -358,7 +361,7 @@ class AugeApi {
   /// this method will complete with the same error.
   async.Future<Group> getGroupById(core.String id) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -392,7 +395,7 @@ class AugeApi {
   /// this method will complete with the same error.
   async.Future<GroupType> getGroupTypeById(core.String id) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -424,7 +427,7 @@ class AugeApi {
   /// this method will complete with the same error.
   async.Future<core.List<GroupType>> getGroupTypes() {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -438,8 +441,9 @@ class AugeApi {
         uploadOptions: _uploadOptions,
         uploadMedia: _uploadMedia,
         downloadOptions: _downloadOptions);
-    return _response.then((data) =>
-        data.map((value) => GroupTypeFactory.fromJson(value)).toList());
+    return _response.then((data) => (data as core.List)
+        .map<GroupType>((value) => GroupTypeFactory.fromJson(value))
+        .toList());
   }
 
   /// Request parameters:
@@ -455,7 +459,7 @@ class AugeApi {
   /// this method will complete with the same error.
   async.Future<core.List<Group>> getGroups(core.String organizationId) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -475,8 +479,9 @@ class AugeApi {
         uploadOptions: _uploadOptions,
         uploadMedia: _uploadMedia,
         downloadOptions: _downloadOptions);
-    return _response.then(
-        (data) => data.map((value) => GroupFactory.fromJson(value)).toList());
+    return _response.then((data) => (data as core.List)
+        .map<Group>((value) => GroupFactory.fromJson(value))
+        .toList());
   }
 
   /// Request parameters:
@@ -492,7 +497,7 @@ class AugeApi {
   /// this method will complete with the same error.
   async.Future<Organization> getOrganizationById(core.String id) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -524,7 +529,7 @@ class AugeApi {
   /// this method will complete with the same error.
   async.Future<core.List<Organization>> getOrganizations() {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -538,8 +543,9 @@ class AugeApi {
         uploadOptions: _uploadOptions,
         uploadMedia: _uploadMedia,
         downloadOptions: _downloadOptions);
-    return _response.then((data) =>
-        data.map((value) => OrganizationFactory.fromJson(value)).toList());
+    return _response.then((data) => (data as core.List)
+        .map<Organization>((value) => OrganizationFactory.fromJson(value))
+        .toList());
   }
 
   /// Request parameters:
@@ -557,7 +563,7 @@ class AugeApi {
   /// this method will complete with the same error.
   async.Future<User> getUserById(core.String id, {core.bool withProfile}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -594,7 +600,7 @@ class AugeApi {
   /// this method will complete with the same error.
   async.Future<core.List<User>> getUsers({core.bool withProfile}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -612,8 +618,9 @@ class AugeApi {
         uploadOptions: _uploadOptions,
         uploadMedia: _uploadMedia,
         downloadOptions: _downloadOptions);
-    return _response.then(
-        (data) => data.map((value) => UserFactory.fromJson(value)).toList());
+    return _response.then((data) => (data as core.List)
+        .map<User>((value) => UserFactory.fromJson(value))
+        .toList());
   }
 
   /// Request parameters:
@@ -633,7 +640,7 @@ class AugeApi {
       core.String organizationId,
       {core.bool withProfile}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -656,8 +663,9 @@ class AugeApi {
         uploadOptions: _uploadOptions,
         uploadMedia: _uploadMedia,
         downloadOptions: _downloadOptions);
-    return _response.then(
-        (data) => data.map((value) => UserFactory.fromJson(value)).toList());
+    return _response.then((data) => (data as core.List)
+        .map<User>((value) => UserFactory.fromJson(value))
+        .toList());
   }
 
   /// [request] - The metadata request object.
@@ -671,14 +679,14 @@ class AugeApi {
   /// this method will complete with the same error.
   async.Future updateGroup(Group request) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode(GroupFactory.toJson(request));
+      _body = convert.json.encode(GroupFactory.toJson(request));
     }
 
     _downloadOptions = null;
@@ -705,14 +713,14 @@ class AugeApi {
   /// this method will complete with the same error.
   async.Future updateOrganization(Organization request) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode(OrganizationFactory.toJson(request));
+      _body = convert.json.encode(OrganizationFactory.toJson(request));
     }
 
     _downloadOptions = null;
@@ -739,14 +747,14 @@ class AugeApi {
   /// this method will complete with the same error.
   async.Future updateUser(User request) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode(UserFactory.toJson(request));
+      _body = convert.json.encode(UserFactory.toJson(request));
     }
 
     _downloadOptions = null;

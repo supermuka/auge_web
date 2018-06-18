@@ -1,5 +1,7 @@
 // This is a generated file (see the discoveryapis_generator project).
 
+// ignore_for_file: unnecessary_cast
+
 library auge.objectiveAugeApi.client;
 
 import 'dart:core' as core;
@@ -40,14 +42,14 @@ class ObjectiveAugeApi {
   /// this method will complete with the same error.
   async.Future createMeasure(Measure request, core.String objectiveid) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode(MeasureFactory.toJson(request));
+      _body = convert.json.encode(MeasureFactory.toJson(request));
     }
     if (objectiveid == null) {
       throw new core.ArgumentError("Parameter objectiveid is required.");
@@ -79,14 +81,14 @@ class ObjectiveAugeApi {
   /// this method will complete with the same error.
   async.Future createObjective(Objective request) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode(ObjectiveFactory.toJson(request));
+      _body = convert.json.encode(ObjectiveFactory.toJson(request));
     }
 
     _downloadOptions = null;
@@ -113,7 +115,7 @@ class ObjectiveAugeApi {
   /// this method will complete with the same error.
   async.Future deleteMeasure(core.String id) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -147,7 +149,7 @@ class ObjectiveAugeApi {
   /// this method will complete with the same error.
   async.Future deleteObjective(core.String id) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -183,7 +185,7 @@ class ObjectiveAugeApi {
   /// this method will complete with the same error.
   async.Future<Measure> getMeasureById(core.String id) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -217,7 +219,7 @@ class ObjectiveAugeApi {
   /// this method will complete with the same error.
   async.Future<MeasureUnit> getMeasureUnitById(core.String id) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -249,7 +251,7 @@ class ObjectiveAugeApi {
   /// this method will complete with the same error.
   async.Future<core.List<MeasureUnit>> getMeasureUnits() {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -263,8 +265,9 @@ class ObjectiveAugeApi {
         uploadOptions: _uploadOptions,
         uploadMedia: _uploadMedia,
         downloadOptions: _downloadOptions);
-    return _response.then((data) =>
-        data.map((value) => MeasureUnitFactory.fromJson(value)).toList());
+    return _response.then((data) => (data as core.List)
+        .map<MeasureUnit>((value) => MeasureUnitFactory.fromJson(value))
+        .toList());
   }
 
   /// Request parameters:
@@ -283,7 +286,7 @@ class ObjectiveAugeApi {
   async.Future<Objective> getObjectiveById(core.String id,
       {core.bool withMeasures}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -329,7 +332,7 @@ class ObjectiveAugeApi {
       core.bool treeAlignedWithChildren,
       core.bool withProfile}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -358,8 +361,9 @@ class ObjectiveAugeApi {
         uploadOptions: _uploadOptions,
         uploadMedia: _uploadMedia,
         downloadOptions: _downloadOptions);
-    return _response.then((data) =>
-        data.map((value) => ObjectiveFactory.fromJson(value)).toList());
+    return _response.then((data) => (data as core.List)
+        .map<Objective>((value) => ObjectiveFactory.fromJson(value))
+        .toList());
   }
 
   /// [request] - The metadata request object.
@@ -375,14 +379,14 @@ class ObjectiveAugeApi {
   /// this method will complete with the same error.
   async.Future updateMeasure(Measure request, core.String objectiveid) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode(MeasureFactory.toJson(request));
+      _body = convert.json.encode(MeasureFactory.toJson(request));
     }
     if (objectiveid == null) {
       throw new core.ArgumentError("Parameter objectiveid is required.");
@@ -414,14 +418,14 @@ class ObjectiveAugeApi {
   /// this method will complete with the same error.
   async.Future updateObjective(Objective request) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode(ObjectiveFactory.toJson(request));
+      _body = convert.json.encode(ObjectiveFactory.toJson(request));
     }
 
     _downloadOptions = null;
@@ -521,13 +525,13 @@ class MeasureFactory {
   static Measure fromJson(core.Map _json) {
     var message = new Measure();
     if (_json.containsKey("currentValue")) {
-      message.currentValue = _json["currentValue"];
+      message.currentValue = _json["currentValue"].toDouble();
     }
     if (_json.containsKey("description")) {
       message.description = _json["description"];
     }
     if (_json.containsKey("endValue")) {
-      message.endValue = _json["endValue"];
+      message.endValue = _json["endValue"].toDouble();
     }
     if (_json.containsKey("id")) {
       message.id = _json["id"];
@@ -542,7 +546,7 @@ class MeasureFactory {
       message.name = _json["name"];
     }
     if (_json.containsKey("startValue")) {
-      message.startValue = _json["startValue"];
+      message.startValue = _json["startValue"].toDouble();
     }
     return message;
   }
@@ -614,8 +618,8 @@ class ObjectiveFactory {
       message.alignedTo = ObjectiveFactory.fromJson(_json["alignedTo"]);
     }
     if (_json.containsKey("alignedWithChildren")) {
-      message.alignedWithChildren = _json["alignedWithChildren"]
-          .map((value) => ObjectiveFactory.fromJson(value))
+      message.alignedWithChildren = (_json["alignedWithChildren"] as core.List)
+          .map<Objective>((value) => ObjectiveFactory.fromJson(value))
           .toList();
     }
     if (_json.containsKey("description")) {
@@ -634,8 +638,8 @@ class ObjectiveFactory {
       message.leader = UserFactory.fromJson(_json["leader"]);
     }
     if (_json.containsKey("measures")) {
-      message.measures = _json["measures"]
-          .map((value) => MeasureFactory.fromJson(value))
+      message.measures = (_json["measures"] as core.List)
+          .map<Measure>((value) => MeasureFactory.fromJson(value))
           .toList();
     }
     if (_json.containsKey("name")) {

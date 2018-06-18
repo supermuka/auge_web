@@ -1,5 +1,7 @@
 // This is a generated file (see the discoveryapis_generator project).
 
+// ignore_for_file: unnecessary_cast
+
 library auge.initiativeAugeApi.client;
 
 import 'dart:core' as core;
@@ -43,14 +45,14 @@ class InitiativeAugeApi {
   /// this method will complete with the same error.
   async.Future createInitiative(Initiative request) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode(InitiativeFactory.toJson(request));
+      _body = convert.json.encode(InitiativeFactory.toJson(request));
     }
 
     _downloadOptions = null;
@@ -79,14 +81,14 @@ class InitiativeAugeApi {
   /// this method will complete with the same error.
   async.Future createWorkItem(WorkItem request, core.String initiativeId) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode(WorkItemFactory.toJson(request));
+      _body = convert.json.encode(WorkItemFactory.toJson(request));
     }
     if (initiativeId == null) {
       throw new core.ArgumentError("Parameter initiativeId is required.");
@@ -118,7 +120,7 @@ class InitiativeAugeApi {
   /// this method will complete with the same error.
   async.Future deleteInitiative(core.String id) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -152,7 +154,7 @@ class InitiativeAugeApi {
   /// this method will complete with the same error.
   async.Future deleteWorkItem(core.String id) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -191,7 +193,7 @@ class InitiativeAugeApi {
   async.Future<Initiative> getInitiativeById(core.String id,
       {core.bool withWorkItems}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -231,7 +233,7 @@ class InitiativeAugeApi {
   async.Future<core.List<Initiative>> getInitiatives(core.String organizationId,
       {core.bool withWorkItems}) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -254,8 +256,9 @@ class InitiativeAugeApi {
         uploadOptions: _uploadOptions,
         uploadMedia: _uploadMedia,
         downloadOptions: _downloadOptions);
-    return _response.then((data) =>
-        data.map((value) => InitiativeFactory.fromJson(value)).toList());
+    return _response.then((data) => (data as core.List)
+        .map<Initiative>((value) => InitiativeFactory.fromJson(value))
+        .toList());
   }
 
   /// Request parameters:
@@ -271,7 +274,7 @@ class InitiativeAugeApi {
   /// this method will complete with the same error.
   async.Future<core.List<Stage>> getStages(core.String initiativeid) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -291,8 +294,9 @@ class InitiativeAugeApi {
         uploadOptions: _uploadOptions,
         uploadMedia: _uploadMedia,
         downloadOptions: _downloadOptions);
-    return _response.then(
-        (data) => data.map((value) => StageFactory.fromJson(value)).toList());
+    return _response.then((data) => (data as core.List)
+        .map<Stage>((value) => StageFactory.fromJson(value))
+        .toList());
   }
 
   /// Request parameters:
@@ -306,7 +310,7 @@ class InitiativeAugeApi {
   /// this method will complete with the same error.
   async.Future<core.List<State>> getStates() {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -320,8 +324,9 @@ class InitiativeAugeApi {
         uploadOptions: _uploadOptions,
         uploadMedia: _uploadMedia,
         downloadOptions: _downloadOptions);
-    return _response.then(
-        (data) => data.map((value) => StateFactory.fromJson(value)).toList());
+    return _response.then((data) => (data as core.List)
+        .map<State>((value) => StateFactory.fromJson(value))
+        .toList());
   }
 
   /// Request parameters:
@@ -337,7 +342,7 @@ class InitiativeAugeApi {
   /// this method will complete with the same error.
   async.Future<WorkItem> getWorkItemById(core.String id) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
@@ -369,14 +374,14 @@ class InitiativeAugeApi {
   /// this method will complete with the same error.
   async.Future updateInitiative(Initiative request) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode(InitiativeFactory.toJson(request));
+      _body = convert.json.encode(InitiativeFactory.toJson(request));
     }
 
     _downloadOptions = null;
@@ -405,14 +410,14 @@ class InitiativeAugeApi {
   /// this method will complete with the same error.
   async.Future updateWorkItem(WorkItem request, core.String initiativeId) {
     var _url = null;
-    var _queryParams = new core.Map();
+    var _queryParams = new core.Map<core.String, core.List<core.String>>();
     var _uploadMedia = null;
     var _uploadOptions = null;
     var _downloadOptions = commons.DownloadOptions.Metadata;
     var _body = null;
 
     if (request != null) {
-      _body = convert.JSON.encode(WorkItemFactory.toJson(request));
+      _body = convert.json.encode(WorkItemFactory.toJson(request));
     }
     if (initiativeId == null) {
       throw new core.ArgumentError("Parameter initiativeId is required.");
@@ -539,12 +544,13 @@ class InitiativeFactory {
           OrganizationFactory.fromJson(_json["organization"]);
     }
     if (_json.containsKey("stages")) {
-      message.stages =
-          _json["stages"].map((value) => StageFactory.fromJson(value)).toList();
+      message.stages = (_json["stages"] as core.List)
+          .map<Stage>((value) => StageFactory.fromJson(value))
+          .toList();
     }
     if (_json.containsKey("workItems")) {
-      message.workItems = _json["workItems"]
-          .map((value) => WorkItemFactory.fromJson(value))
+      message.workItems = (_json["workItems"] as core.List)
+          .map<WorkItem>((value) => WorkItemFactory.fromJson(value))
           .toList();
     }
     return message;
@@ -590,13 +596,13 @@ class MeasureFactory {
   static Measure fromJson(core.Map _json) {
     var message = new Measure();
     if (_json.containsKey("currentValue")) {
-      message.currentValue = _json["currentValue"];
+      message.currentValue = _json["currentValue"].toDouble();
     }
     if (_json.containsKey("description")) {
       message.description = _json["description"];
     }
     if (_json.containsKey("endValue")) {
-      message.endValue = _json["endValue"];
+      message.endValue = _json["endValue"].toDouble();
     }
     if (_json.containsKey("id")) {
       message.id = _json["id"];
@@ -611,7 +617,7 @@ class MeasureFactory {
       message.name = _json["name"];
     }
     if (_json.containsKey("startValue")) {
-      message.startValue = _json["startValue"];
+      message.startValue = _json["startValue"].toDouble();
     }
     return message;
   }
@@ -683,8 +689,8 @@ class ObjectiveFactory {
       message.alignedTo = ObjectiveFactory.fromJson(_json["alignedTo"]);
     }
     if (_json.containsKey("alignedWithChildren")) {
-      message.alignedWithChildren = _json["alignedWithChildren"]
-          .map((value) => ObjectiveFactory.fromJson(value))
+      message.alignedWithChildren = (_json["alignedWithChildren"] as core.List)
+          .map<Objective>((value) => ObjectiveFactory.fromJson(value))
           .toList();
     }
     if (_json.containsKey("description")) {
@@ -703,8 +709,8 @@ class ObjectiveFactory {
       message.leader = UserFactory.fromJson(_json["leader"]);
     }
     if (_json.containsKey("measures")) {
-      message.measures = _json["measures"]
-          .map((value) => MeasureFactory.fromJson(value))
+      message.measures = (_json["measures"] as core.List)
+          .map<Measure>((value) => MeasureFactory.fromJson(value))
           .toList();
     }
     if (_json.containsKey("name")) {
@@ -833,7 +839,8 @@ class StateFactory {
   static State fromJson(core.Map _json) {
     var message = new State();
     if (_json.containsKey("color")) {
-      message.color = _json["color"];
+      message.color =
+          (_json["color"] as core.Map).cast<core.String, core.String>();
     }
     if (_json.containsKey("id")) {
       message.id = _json["id"];
@@ -947,13 +954,14 @@ class WorkItemFactory {
   static WorkItem fromJson(core.Map _json) {
     var message = new WorkItem();
     if (_json.containsKey("assignedTo")) {
-      message.assignedTo = _json["assignedTo"]
-          .map((value) => UserFactory.fromJson(value))
+      message.assignedTo = (_json["assignedTo"] as core.List)
+          .map<User>((value) => UserFactory.fromJson(value))
           .toList();
     }
     if (_json.containsKey("checkItems")) {
-      message.checkItems = _json["checkItems"]
-          .map((value) => WorkItemCheckItemFactory.fromJson(value))
+      message.checkItems = (_json["checkItems"] as core.List)
+          .map<WorkItemCheckItem>(
+              (value) => WorkItemCheckItemFactory.fromJson(value))
           .toList();
     }
     if (_json.containsKey("completed")) {
