@@ -527,6 +527,9 @@ class MeasureFactory {
     if (_json.containsKey("currentValue")) {
       message.currentValue = _json["currentValue"].toDouble();
     }
+    if (_json.containsKey("decimalsNumber")) {
+      message.decimalsNumber = _json["decimalsNumber"];
+    }
     if (_json.containsKey("description")) {
       message.description = _json["description"];
     }
@@ -555,6 +558,9 @@ class MeasureFactory {
     var _json = new core.Map();
     if (message.currentValue != null) {
       _json["currentValue"] = message.currentValue;
+    }
+    if (message.decimalsNumber != null) {
+      _json["decimalsNumber"] = message.decimalsNumber;
     }
     if (message.description != null) {
       _json["description"] = message.description;

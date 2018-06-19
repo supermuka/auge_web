@@ -66,7 +66,7 @@ class ObjectiveAugeApi {
 
     String queryStatement;
 
-    queryStatement = "SELECT id::VARCHAR, name, description, metric, start_value::REAL, end_value::REAL, current_value::REAL, measure_unit_id"
+    queryStatement = "SELECT id::VARCHAR, name, description, metric, decimals_number, start_value::REAL, end_value::REAL, current_value::REAL, measure_unit_id"
         " FROM auge_objective.measures ";
 
     Map<String, dynamic> substitutionValues;
@@ -90,8 +90,8 @@ class ObjectiveAugeApi {
 
       for (var row in results) {
 
-        if (row[7] != null)
-          measureUnit = await getMeasureUnitById(row[7]);
+        if (row[8] != null)
+          measureUnit = await getMeasureUnitById(row[8]);
         else
           measureUnit = null;
 
@@ -100,9 +100,10 @@ class ObjectiveAugeApi {
           ..name = row[1]
           ..description = row[2]
           ..metric = row[3]
-          ..startValue = row[4]
-          ..endValue = row[5]
-          ..currentValue = row[6]
+          ..decimalsNumber = row[4]
+          ..startValue = row[5]
+          ..endValue = row[6]
+          ..currentValue = row[7]
           ..measureUnit = measureUnit);
       }
     }
@@ -165,11 +166,12 @@ class ObjectiveAugeApi {
 
     measure.id = new Uuid().v4();
     try {
-      await  AugeConnection.getConnection().query("INSERT INTO auge_objective.measures(id, name, description, metric, start_value, end_value, current_value, measure_unit_id, objective_id) VALUES"
+      await  AugeConnection.getConnection().query("INSERT INTO auge_objective.measures(id, name, description, metric, decimals_number, start_value, end_value, current_value, measure_unit_id, objective_id) VALUES"
           "(@id,"
           "@name,"
           "@description,"
           "@metric,"
+          "@decimals_number,"
           "@start_value,"
           "@end_value,"
           "@current_value,"
@@ -180,6 +182,7 @@ class ObjectiveAugeApi {
             "name": measure.name,
             "description": measure.description,
             "metric": measure.metric,
+            "decilmas_number": measure.decimalsNumber,
             "start_value": measure.startValue,
             "end_value": measure.endValue,
             "current_value": measure.currentValue,
@@ -199,6 +202,7 @@ class ObjectiveAugeApi {
           " SET name = @name,"
           " description = @description,"
           " metric = @metric,"
+          " decimals_number = @decimals_number,"
           " start_value = @start_value,"
           " end_value = @end_value,"
           " current_value = @current_value,"
@@ -210,6 +214,7 @@ class ObjectiveAugeApi {
             "name": measure.name,
             "description": measure.description,
             "metric": measure.metric,
+            "decimals_number": measure.decimalsNumber,
             "start_value": measure.startValue,
             "end_value": measure.endValue,
             "current_value": measure.currentValue,
@@ -219,6 +224,7 @@ class ObjectiveAugeApi {
     } on PostgreSQLException catch (e) {
       throw new ApplicationError(e);
     }
+
   }
 
   // *** OBJECTIVES ***

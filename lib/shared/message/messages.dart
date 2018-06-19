@@ -242,6 +242,7 @@ class MeasureMessage {
         'End Value': 'End Value',
         'Current Value': 'Current Value',
         'Progress': 'Progress',
+        'Decimals': 'Decimals',
         'other': 'Not Defined'})}",
       name: "measureLabel",
       args: [label],

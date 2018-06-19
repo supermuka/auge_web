@@ -1,6 +1,7 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel
 
+import 'package:intl/intl.dart';
 
 /// Domain model class to represent an measure
 class Measure {
@@ -11,11 +12,16 @@ class Measure {
   String description;
   String metric;
   MeasureUnit measureUnit;
+  int decimalsNumber;
   double startValue;
   double endValue;
   double currentValue;
 
+  NumberFormat _formatter;
+
   Measure() {
+    decimalsNumber = 0; // default
+
 
   }
 
@@ -27,6 +33,15 @@ class Measure {
 
   int get currentValueInt => currentValue.toInt();
   set currentValueInt(int value) => currentValue = value.toDouble();
+
+  double get startValueDecimal => startValue == null ? null : double.parse(startValue.toStringAsFixed(decimalsNumber));
+  set startValueDecimal(double value) => startValue = value;
+
+  double get endValueDecimal => endValue == null ? null : double.parse(endValue.toStringAsFixed(decimalsNumber));
+  set endValueDecimal(double value) => endValue = value;
+
+  double get currentValueDecimal => currentValue == null ? null : double.parse(currentValue.toStringAsFixed(decimalsNumber));
+  set currentValueDecimal(double value) => currentValue = value;
 
   int get progress {
     int endMinusStartValue = (endValueInt - startValueInt);
@@ -41,6 +56,7 @@ class Measure {
     }
     return progress;
   }
+
 }
 
 class MeasureUnit {

@@ -3,6 +3,7 @@
 
 import 'dart:async';
 
+
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:angular_router/angular_router.dart';
@@ -31,6 +32,8 @@ import 'package:auge/web/services/app_routes.dart';
 
 class MeasureDetailComponent implements OnActivate {
 
+  num decimalValue = 123.45678;
+
   final AuthService _authService;
   final ObjectiveService _objectiveService;
   final MeasureService _measureService;
@@ -53,6 +56,7 @@ class MeasureDetailComponent implements OnActivate {
   static final String nameLabel =  MeasureMessage.label('Name');
   static final String descriptionLabel =  MeasureMessage.label('Description');
   static final String metricLabel =  MeasureMessage.label('Metric');
+  static final String decimalsNumberLabel = MeasureMessage.label('Decimals');
   static final String startValueLabel =  MeasureMessage.label('Start Value');
   static final String currentValueLabel =  MeasureMessage.label('Current Value');
   static final String endValueLabel =  MeasureMessage.label('End Value');
@@ -114,7 +118,7 @@ class MeasureDetailComponent implements OnActivate {
     return nameLabel ;
   }
 
-  ItemRenderer get measureUnitItemRenderer => (dynamic unit) => unit.name + '(' + unit.symbol + ')';
+  ItemRenderer get measureUnitItemRenderer => (dynamic unit) => unit.name + (unit.symbol == null || unit.symbol.trim().length == 0 ? '' : ' (' + unit.symbol + ')');
 
   double lowerBound() {
     if (measure?.startValue == null || measure?.endValue == null) return measure?.startValue;
@@ -134,11 +138,38 @@ class MeasureDetailComponent implements OnActivate {
     }
   }
 
+
+
+
   bool get validInput {
     if (measure?.currentValue != null && (measure.currentValue < lowerBound() || measure.currentValue > upperBound())) {
       return false;
     } else {
       return true;
     }
+
   }
+
+
+
+
+
+
+
+
 }
+
+/*
+@Directive(
+  selector: '[twoDecimals]',
+  providers: const [
+    const FactoryProvider<NumberFormat>(
+        NumberFormat, TwoDecimalNumberFormat.createNumberFormat)
+  ],
+)
+class TwoDecimalNumberFormat {
+
+  static NumberFormat createNumberFormat() =>
+      new NumberFormat.decimalPattern()..maximumFractionDigits = 2;
+}
+*/
