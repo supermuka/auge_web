@@ -90,11 +90,23 @@ class MeasureDetailComponent implements OnActivate {
     measureUnitOptions = new SelectionOptions.fromList(measureUnits);
 
     measureUnitSingleSelectModel =
-    new SelectionModel.single();
+    new SelectionModel.single()
+      ..selectionChanges.listen((unit) {
 
-    if (measureUnitOptions.optionsList.isNotEmpty) {
+        if (unit.isNotEmpty && unit.first.added != null && unit.first.added.length != 0 && unit.first.added?.first != null) {
+          measure.measureUnit = unit.first.added.first;
+        }
+      });
+
+    if (measure.measureUnit != null)
+      measureUnitSingleSelectModel.select(measure.measureUnit);
+    else if (measureUnitOptions.optionsList.isNotEmpty) {
       measureUnitSingleSelectModel.select(measureUnitOptions.optionsList.first);
     }
+
+
+
+
   }
 
   void saveMeasure() {
@@ -150,12 +162,9 @@ class MeasureDetailComponent implements OnActivate {
 
   }
 
+  String get unitLeadingText => measure?.measureUnit == null ? null : measure.measureUnit.symbol.contains(r'$') ? measure.measureUnit.symbol : null;
 
-
-
-
-
-
+  String get unitTrailingText => measure?.measureUnit == null ? null : !measure.measureUnit.symbol.contains(r'$') ? measure.measureUnit.symbol : null;
 
 }
 

@@ -21,8 +21,6 @@ class Measure {
 
   Measure() {
     decimalsNumber = 0; // default
-
-
   }
 
   int get startValueInt => startValue.toInt();

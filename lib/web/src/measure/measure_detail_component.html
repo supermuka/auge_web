@@ -11,26 +11,27 @@
            <material-input class="w3-col l12" [(ngModel)]="measure.description" floatingLabel multiline rows="3" [label]="descriptionLabel"></material-input>
         </div>
         <div class="w3-row">
-            <div class="w3-col l6">
-               <material-input [(ngModel)]="measure.metric" floatingLabel [label]="metricLabel"></material-input>
-            </div>
-            <div class="w3-col l4">
-               <material-dropdown-select  [buttonText]="measureUnitSingleSelectLabel"
-                                          [(selection)]="measureUnitSingleSelectModel"
-                                          [(options)]="measureUnitOptions"
-                                          [itemRenderer]="measureUnitItemRenderer">
-                </material-dropdown-select>
-            </div>
-            <div class="w3-col l2" >
+
+               <material-input class="w3-col l6" [(ngModel)]="measure.metric" floatingLabel [label]="metricLabel"></material-input>
+
+               <div class="w3-col l4">
+
+                   <label>Unit</label><br/>
+                   <material-dropdown-select [buttonText]="measureUnitSingleSelectLabel"
+                                              [(selection)]="measureUnitSingleSelectModel"
+                                              [(options)]="measureUnitOptions"
+                                              [itemRenderer]="measureUnitItemRenderer">
+                   </material-dropdown-select>
+
+               </div>
+
                <material-input type="number" class="w3-col l2" [(ngModel)]="measure.decimalsNumber"  [rightAlign]="true" floatingLabel [label]="decimalsNumberLabel" [lowerBound]="0" [upperBound]="5"></material-input>
-            </div>
+
         </div>
         <div class="w3-row">
-            <material-input class="w3-col l4" type="number"
-                            [(ngModel)]="measure.startValueDecimal"
-                            [rightAlign]="true" floatingLabel [label]="startValueLabel"></material-input>
-            <material-input class="w3-col l4" type="number" [(ngModel)]="measure.currentValueDecimal"  [rightAlign]="true" floatingLabel [label]="currentValueLabel" [lowerBound]="lowerBound()" [upperBound]="upperBound()"></material-input>
-            <material-input class="w3-col l4" type="number" [(ngModel)]="measure.endValueDecimal" [rightAlign]="true" floatingLabel [label]="endValueLabel"></material-input>
+            <material-input class="w3-col l4" type="number" [(ngModel)]="measure.startValueDecimal" [rightAlign]="true" floatingLabel [label]="startValueLabel" [leadingText]="unitLeadingText" [trailingText]="unitTrailingText"></material-input>
+            <material-input class="w3-col l4" type="number" [(ngModel)]="measure.currentValueDecimal"  [rightAlign]="true" floatingLabel [label]="currentValueLabel" [lowerBound]="lowerBound()" [upperBound]="upperBound()" [leadingText]="unitLeadingText" [trailingText]="unitTrailingText"></material-input>
+            <material-input class="w3-col l4" type="number" [(ngModel)]="measure.endValueDecimal" [rightAlign]="true" floatingLabel [label]="endValueLabel" [leadingText]="unitLeadingText" [trailingText]="unitTrailingText"></material-input>
         </div>
         <div footer>
             <material-button [disabled]="!validInput" (trigger)="saveMeasure()">{{saveButtonLabel}}
