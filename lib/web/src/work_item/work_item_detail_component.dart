@@ -243,13 +243,12 @@ class WorkItemDetailComponent implements OnActivate  {
   }
 
   void addCheckItem() {
-    print('addCheckItem');
-    print(workItem.checkItems);
-      workItem.checkItems.add(new WorkItemCheckItem()
-        ..name = checkItemEntry
-        ..index = workItem.checkItems.length);
-      workItem.checkItems.sort((a, b) =>
-          a?.index?.compareTo(b?.index));
+
+    workItem.checkItems.add(new WorkItemCheckItem()
+      ..name = checkItemEntry
+      ..index = workItem.checkItems.length);
+    workItem.checkItems.sort((a, b) =>
+        a?.index?.compareTo(b?.index));
 
     checkItemEntry = '';
   }

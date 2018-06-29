@@ -163,10 +163,6 @@ class ObjectiveDetailComponent implements OnActivate {
         }
       });
 
-
-    print('** group **');
-    print(objective.group);
-
     if (objective.group != null)
       groupSingleSelectModel.select(objective.group);
   }

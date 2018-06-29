@@ -17,6 +17,9 @@ https://kanbanize.com/kanban-resources/case-studies/kanban-work-breakdown-struct
 pub run build_runner serve
 pub run rpc:generate client -i lib/server/augeapi.dart -o lib/client -p 8091
 
+pub global activate discoveryapis_generator
+
+
 _i18l_
 
 pub run intl_translation:extract_to_arb --output-dir=lib\shared\i10n lib\shared\message\messages.dart --locale=en
@@ -51,4 +54,10 @@ https://www.iconfinder.com/search/?q=flag
 
 CSS Press Circle
 https://codepen.io/LFeh/pen/vGMJBN
+
+DART update (linux)
+
+$ sudo sh -c 'curl https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_unstable.list > /etc/apt/sources.list.d/dart_unstable.list'
+$ sudo apt-get update
+$ sudo apt-get install dart
 

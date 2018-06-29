@@ -22,7 +22,7 @@ class AugeApiService {
   //final String _serverUrl = '10.142.0.2:8091/'; // GCloud IP Local;
   //final String _serverUrl = '127.0.0.1:8091/'; // Local;
   final String _serverUrl = 'localhost:8091/'; // Local;
-  // final String _serverUrl = '35.231.201.73:8091/'; // GCloud
+  //final String _serverUrl = '35.231.201.73:8091/'; // GCloud
 
   AugeApi _augeApi;
   InitiativeAugeApi _initiativeAugeApi;
