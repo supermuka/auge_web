@@ -10,10 +10,10 @@ import 'dart:convert' as convert;
 
 import 'package:_discoveryapis_commons/_discoveryapis_commons.dart' as commons;
 import 'package:http/http.dart' as http;
-import 'package:auge/shared/model/group.dart';
-import 'package:auge/shared/model/organization.dart';
-import 'package:auge/shared/model/user.dart';
-import 'package:auge/shared/model/user_profile_organization.dart';
+import 'package:auge_shared/model/group.dart';
+import 'package:auge_shared/model/organization.dart';
+import 'package:auge_shared/model/user.dart';
+import 'package:auge_shared/model/user_profile_organization.dart';
 export 'package:_discoveryapis_commons/_discoveryapis_commons.dart'
     show ApiRequestError, DetailedApiRequestError;
 

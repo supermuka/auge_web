@@ -1,16 +1,13 @@
 // Copyright (c) 2017, Administrador. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'dart:html';
-
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
-//import 'package:auge/web/app_component.dart';
 import 'package:http/browser_client.dart';
 
 // ignore_for_file: uri_has_not_been_generated
 import 'main.template.dart' as ng;
-import 'package:auge/web/app_component.template.dart' as app_component;
+import 'package:auge_web/app_component.template.dart' as app_component;
 
 @GenerateInjector([
    routerProviders,
