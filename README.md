@@ -64,3 +64,12 @@ $ sudo sh -c 'curl https://storage.googleapis.com/download.dartlang.org/linux/de
 $ sudo apt-get update
 $ sudo apt-get install dart
 
+
+
+Decision to Components instead Router
+
+Google Inbox use component. New mails and foward don't have back browser navitage
+Has better performance by pass param (data) from parent (master) screen.
+Use to high related components and concepts.
+
+

@@ -1,9 +1,5 @@
 <div class="container-list">
-    <material-fab raised (trigger)="selectMeasure(null);goToDetail(null)">
-        <material-icon icon="add"></material-icon>
-    </material-fab>
-    <br/>
-
+<!--
     <div class="container">
         <div class="c100 p{{objective?.progress}}">
             <span>{{objective?.progress}}%</span>
@@ -18,8 +14,14 @@
             <p class="material-list-item-content">{{objective?.description}}</p>
         </div>
     </div>
+    -->
+    <!--
     <div class="container">
         <material-list class="shadow-box-material-list" elevation="2">
+            <material-fab mini raised (trigger)="selectMeasure(null);goToDetail(null)">
+                <material-icon icon="add"></material-icon>
+            </material-fab>
+            <br/>
             <div *ngFor="let iMeasure of measures">
                 <material-list-item>
                     <div>
@@ -50,7 +52,69 @@
                 <hr>
             </div>
         </material-list>
+        <!--
         <router-outlet [routes]="routes"></router-outlet>
+        -->
+<!--
     </div>
+-->
+
+    <material-expansionpanel disabled
+            [alwaysHideExpandIcon]="true"
+            [expanded]="true"
+            [showSaveCancel]="false">
+        <div name>
+            <span><strong>Measures</strong></span>
+        </div>
+        <div action>
+            <material-button class="add" icon (trigger)="selectMeasure(null);viewDetail(null)">
+                <material-icon icon="add"></material-icon>
+            </material-button>
+        </div>
+        <material-expansionpanel-set>
+            <!-- material-fab mini raised (trigger)="selectMeasure(null);goToDetail(null)">
+                <material-icon icon="add"></material-icon>
+            </material-fab -->
+            <br/>
+            <div *ngFor="let iMeasure of measures">
+                <material-expansionpanel disabled
+                                         [expanded]="false"
+                                         [hideExpandedHeader]="false"
+                                         [showSaveCancel]="false">
+                    <div name>
+                        <h4 class="material-list-item-content"><strong>{{iMeasure.name}}</strong></h4>
+                    </div>
+                    <span class="row-spacer"></span>
+                    <div value>
+                        <div class="horizontal">
+                            <div class="width-240">
+                                <material-progress materialTooltip="{{progressLabel + ' ' + iMeasure.progress.toString() + '%'}}" [activeProgress]="iMeasure.progress"></material-progress>
+
+                                <div class="width-240-flex">
+                                    <span materialTooltip="{{startValueLabel}}">{{iMeasure.startValueDecimal}}</span>
+                                    <span materialTooltip="{{currentValueLabel}}">{{iMeasure.currentValueDecimal}}</span>
+                                    <span materialTooltip="{{endValueLabel}}">{{iMeasure.endValueDecimal}}</span>
+                                </div>
+                            </div>
+                            <div class="row-spacer"></div>
+                            <div class="row-spacer"></div>
+
+
+                        </div>
+                    </div>
+                    <div action>
+                        <div>
+                            <material-menu [menu]="menuModel" (click)="selectMeasure(iMeasure)">
+                            </material-menu>
+                        </div>
+                    </div>
+
+                </material-expansionpanel>
+            </div>
+        </material-expansionpanel-set>
+    </material-expansionpanel>
+    <auge-measures-detail *ngIf="detailVisible == true" [objective]="objective" [selectedMeasure]="selectedMeasure" (saved)="changeListDetail($event)" (closed)="detailVisible = false">
+    </auge-measures-detail>
 </div>
+<!-- router-outlet [routes]="routes"></router-outlet -->
 

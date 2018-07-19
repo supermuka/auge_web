@@ -54,7 +54,7 @@ class AugeApiService {
       _objectiveAugeApi = new ObjectiveAugeApi(_client, rootUrl: '$_protocol//$_serverUrl');
     }
     return _objectiveAugeApi;
-
   }
+
 
 }

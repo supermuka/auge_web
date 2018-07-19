@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:angular/core.dart';
+import 'package:uuid/uuid.dart';
+
 import 'package:auge_web/services/augeapi_service.dart';
 import 'package:auge_shared/model/objective/measure.dart';
 
@@ -29,6 +31,7 @@ class MeasureService {
   /// Save (create or update) an [Measure]
   void saveMeasure(String objectiveId, Measure measure) {
     if (measure.id == null) {
+      measure.id = new Uuid().v4();
       _augeApiService.objectiveAugeApi.createMeasure(measure, objectiveId);
     } else {
       _augeApiService.objectiveAugeApi.updateMeasure(measure, objectiveId);

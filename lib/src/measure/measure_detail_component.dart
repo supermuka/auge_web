@@ -30,9 +30,7 @@ import 'package:auge_web/services/app_routes.dart';
       'measure_detail_component.css'
     ])
 
-class MeasureDetailComponent implements OnActivate {
-
-  num decimalValue = 123.45678;
+class MeasureDetailComponent extends Object implements OnInit /* with CanReuse  implements OnActivate */ {
 
   final AuthService _authService;
   final ObjectiveService _objectiveService;
@@ -40,8 +38,13 @@ class MeasureDetailComponent implements OnActivate {
   final Location _location;
   final Router _router;
 
+  @Input()
   Objective objective;
-  Measure measure = new Measure();
+
+  @Input()
+  Measure selectedMeasure;
+
+  Measure measure;
 
   List<MeasureUnit> measureUnits = new List();
   SelectionOptions measureUnitOptions;
@@ -63,7 +66,7 @@ class MeasureDetailComponent implements OnActivate {
 
   static final String saveButtonLabel = CommonMessage.buttonLabel('Save');
   static final String backButtonLabel = CommonMessage.buttonLabel('Back');
-
+/*
   @override
   Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
     if (this._authService.authenticatedUser == null) {
@@ -103,10 +106,36 @@ class MeasureDetailComponent implements OnActivate {
     else if (measureUnitOptions.optionsList.isNotEmpty) {
       measureUnitSingleSelectModel.select(measureUnitOptions.optionsList.first);
     }
+  }
+  */
 
+  @override
+  void ngOnInit() async {
 
+    if (selectedMeasure != null) {
+      measure = selectedMeasure;
+    } else {
+      measure = new Measure();
+    }
 
+    measureUnits = await _measureService.getMeasureUnits();
 
+    measureUnitOptions = new SelectionOptions.fromList(measureUnits);
+
+    measureUnitSingleSelectModel =
+    new SelectionModel.single()
+      ..selectionChanges.listen((unit) {
+
+        if (unit.isNotEmpty && unit.first.added != null && unit.first.added.length != 0 && unit.first.added?.first != null) {
+          measure.measureUnit = unit.first.added.first;
+        }
+      });
+
+    if (measure.measureUnit != null)
+      measureUnitSingleSelectModel.select(measure.measureUnit);
+    else if (measureUnitOptions.optionsList.isNotEmpty) {
+      measureUnitSingleSelectModel.select(measureUnitOptions.optionsList.first);
+    }
   }
 
   void saveMeasure() {
@@ -150,9 +179,6 @@ class MeasureDetailComponent implements OnActivate {
     }
   }
 
-
-
-
   bool get validInput {
     if (measure?.currentValue != null && (measure.currentValue < lowerBound() || measure.currentValue > upperBound())) {
       return false;
@@ -167,18 +193,3 @@ class MeasureDetailComponent implements OnActivate {
   String get unitTrailingText => measure?.measureUnit == null ? null : !measure.measureUnit.symbol.contains(r'$') ? measure.measureUnit.symbol : null;
 
 }
-
-/*
-@Directive(
-  selector: '[twoDecimals]',
-  providers: const [
-    const FactoryProvider<NumberFormat>(
-        NumberFormat, TwoDecimalNumberFormat.createNumberFormat)
-  ],
-)
-class TwoDecimalNumberFormat {
-
-  static NumberFormat createNumberFormat() =>
-      new NumberFormat.decimalPattern()..maximumFractionDigits = 2;
-}
-*/

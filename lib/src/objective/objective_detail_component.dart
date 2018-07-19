@@ -1,6 +1,7 @@
 // Copyright (c) 2017, Levius.
 
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
@@ -23,6 +24,7 @@ import 'package:auge_web/services/app_routes.dart';
 
 // ignore_for_file: uri_has_not_been_generated
 import 'objective_detail_component.template.dart' as objective_detail_component;
+import 'package:auge_web/client/objectiveaugeapi.dart';
 
 @Component(
     selector: 'auge-objective-detail',
@@ -37,7 +39,7 @@ import 'objective_detail_component.template.dart' as objective_detail_component;
       'objective_detail_component.css'
     ])
 
-class ObjectiveDetailComponent implements OnActivate {
+class ObjectiveDetailComponent extends Object implements OnInit /* with CanReuse implements OnActivate */ {
 
   final AuthService _authService;
   final UserService _userService;
@@ -46,6 +48,21 @@ class ObjectiveDetailComponent implements OnActivate {
 
   final Location _location;
   final Router _router;
+
+  @Input()
+  Objective selectedObjective;
+
+  final _closedController = new StreamController<Null>.broadcast(sync: true);
+
+  /// Publishes events when save or close.
+  @Output()
+  Stream<Null> get closed => _closedController.stream;
+
+  final _savedController = new StreamController<Objective>.broadcast(sync: true);
+
+  /// Publishes events when save or close.
+  @Output()
+  Stream<Objective> get saved => _savedController.stream;
 
   Objective objective = new Objective();
 
@@ -66,6 +83,7 @@ class ObjectiveDetailComponent implements OnActivate {
   new DateRange(new Date.today().add(years: -1), new Date.today().add(years: 1));
 
   ObjectiveDetailComponent(this._authService, this._userService, this._objectiveService, this._groupService, this._location, this._router) {
+
   }
 
   // Define messages and labels
@@ -89,18 +107,16 @@ class ObjectiveDetailComponent implements OnActivate {
   static final String backButtonLabel = CommonMessage.buttonLabel('Back');
 
   @override
-  Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
+  void ngOnInit() async {
 
-    if (this._authService.authenticatedUser == null) {
-      _router.navigate(AppRoutes.authRoute.toUrl());
-    }
+    if (selectedObjective != null) {
+      // objective = selectedObjective;
 
+      // Clone objective
+      objective = selectedObjective.clone();
 
-    String id = routerStateCurrent.parameters[AppRoutes.objectiveIdParameter];
-
-    if (id != null && id.isNotEmpty) {
-      objective  = await _objectiveService.getObjectiveById(id);
     } else {
+     // objective = new Objective();
       objective.organization = _authService.selectedOrganization;
     }
 
@@ -110,7 +126,7 @@ class ObjectiveDetailComponent implements OnActivate {
 
     // Remove the current object
     if (objective.id != null)
-       alignedToObjectives.removeWhere((testObjective) => testObjective.id == objective.id);
+      alignedToObjectives.removeWhere((testObjective) => testObjective.id == objective.id);
 
 
     alignedToOptions = new StringSelectionOptions<Objective>(
@@ -128,7 +144,6 @@ class ObjectiveDetailComponent implements OnActivate {
     if (objective.alignedTo != null)
       alignedToSingleSelectModel.select(objective.alignedTo);
 
-
     // Leader
     List<User> users = await _userService.getUsersByOrganizationId(_authService.selectedOrganization.id, withProfile: true);
 
@@ -143,7 +158,6 @@ class ObjectiveDetailComponent implements OnActivate {
 
     if (objective.leader != null)
       leaderSingleSelectModel.select(objective.leader);
-
 
     leaderOptions = new StringSelectionOptions<User>(
         users, toFilterableString: (User user) => user.name);
@@ -167,13 +181,18 @@ class ObjectiveDetailComponent implements OnActivate {
       groupSingleSelectModel.select(objective.group);
   }
 
-  void saveObjective() {
-    _objectiveService.saveObjective(objective);
-    goBack();
+  void saveObjective() async {
+
+      await _objectiveService.saveObjective(objective);
+
+      _savedController.add(objective);
+
+      goBack();
+
   }
 
   goBack() {
-    _location.back();;
+     _closedController.add(null);
   }
 
   String get alignedToLabelRenderer {

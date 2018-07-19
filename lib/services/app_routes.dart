@@ -109,6 +109,17 @@ class AppRoutes {
     parent:  measuresRoute,
   );
 
+  static final measureDetailAddRouteFromObjective = new RoutePath(
+    path: 'medida',
+    parent:  objectivesRoute,
+  );
+
+  static final measureDetailRouteFromObjective = new RoutePath(
+    path: 'medida/:$measureIdParameter',
+    parent:  objectivesRoute,
+  );
+
+
   static final userDetailAddRoute = new RoutePath(
     path: 'user',
     parent:  usersRoute,

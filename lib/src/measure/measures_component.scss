@@ -9,6 +9,8 @@
    flex-direction: column;
    justify-content: center;
    width: 100%;
+   margin: 8px;
+   padding: 16px;
 }
 
 .container {
@@ -62,12 +64,14 @@
 }
 
 material-fab {
-    position: fixed !important;
+   /* position: fixed !important; */
+    position: relative !important;
     z-index: 9999999;
-    background-color: $mat-red;
+    background-color: $mat-red !important;
     color: $mat-white;
     float: right;
-    right: 32px;
+    top: 32px;
+    /* right: 32px; */
 }
 
 /*
@@ -121,3 +125,17 @@ material-list div hr {
 }
 
 material-list div:last-child hr { display: none; }
+
+/*
+:host {
+  @include button-color('material-button.add', $mat-white);
+  @include button-background-color('material-button.add', $mat-red);
+}
+*/
+
+material-button {
+  color: $mat-white;
+  background-color: $mat-red;
+  margin: 8px;
+}
+

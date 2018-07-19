@@ -1,9 +1,10 @@
 import 'dart:async';
 
 import 'package:angular/core.dart';
+import 'package:uuid/uuid.dart';
 
+import 'package:auge_web/client/objectiveaugeapi.dart';
 import 'package:auge_web/services/augeapi_service.dart';
-
 import 'package:auge_shared/model/objective/objective.dart';
 
 @Injectable()
@@ -31,11 +32,12 @@ class ObjectiveService {
   }
 
   /// Save (create or update) an [Objective]
-  void saveObjective(Objective objective) {
-    if (objective.id == null) {
-      _augeApiService.objectiveAugeApi.createObjective(objective);
-    } else {
-      _augeApiService.objectiveAugeApi.updateObjective(objective);
-    }
+  void saveObjective(Objective objective) async {
+      if (objective.id == null) {
+        objective.id = new Uuid().v4();
+        await _augeApiService.objectiveAugeApi.createObjective(objective);
+      } else {
+        await _augeApiService.objectiveAugeApi.updateObjective(objective);
+      }
   }
 }
