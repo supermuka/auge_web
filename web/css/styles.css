@@ -15,7 +15,7 @@ body {
 }
 
 .shadow-box {
-    @include material-shadow();
+  @include material-shadow();
 }
 
 .container {
@@ -23,66 +23,88 @@ body {
   justify-content: center;
 }
 
+.container-list {
+
+  /* centering inner elements */
+  margin-left: auto;
+  margin-right: auto;
+
+  /* material design specification - large = initial */
+  max-width: 1280px;
+  padding: 2px;
+
+  /* material design spectification - xsmal/large = initial*/
+  /* min-width: 400px; */
+}
+
+.truncate-ellipsed-parent {
+  min-width: 0;
+}
+
+.truncate-ellipsed {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
 .avatar {
 
-    vertical-align: middle;
-    horizontal-align: middle;
-    text-align: center;
+  vertical-align: middle;
+  horizontal-align: middle;
+  text-align: center;
 
-    /* make a square container */
-    width: 40px;
-    height: 40px;
-    min-width: 40px;
-    min-height: 40px;
+  /* make a square container */
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
 
-    /* fill the container, preserving aspect ratio, and cropping to fit */
-    background-size: cover;
+  /* fill the container, preserving aspect ratio, and cropping to fit */
+  background-size: cover;
 
-    /* center the image vertically and horizontally */
-    background-position: center;
+  /* center the image vertically and horizontally */
+  background-position: center;
 
-    /* baseado no left-icon no material_chip */
-    margin-left: -8px;
-    margin-right: 4px;
-    padding: 0px;
+  /* baseado no left-icon no material_chip */
+  margin-left: -8px;
+  margin-right: 4px;
+  padding: 0px;
 
-    /* round the edges to a circle with border radius 1/2 container size */
-    border-radius: 50%;
-    display: inline-block;
+  /* round the edges to a circle with border radius 1/2 container size */
+  border-radius: 50%;
+  display: inline-block;
 }
 
 .avatar-border {
-   @extend .avatar;
-   border-style: solid;
-   border-width: thin;
+  @extend .avatar;
+  border-style: solid;
+  border-width: thin;
 }
-
-
 
 .avatar-icon {
 
-    /* This image is 687 wide by 1024 tall, similar to your aspect ratio */
-    /* background-image: url(''); */
-    vertical-align: middle;
+  /* This image is 687 wide by 1024 tall, similar to your aspect ratio */
+  /* background-image: url(''); */
+  vertical-align: middle;
 
-    /* make a square container */
-    width: 24px;
-    height: 24px;
-    min-width: 24px;
-    min-height: 24px;
+  /* make a square container */
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  min-height: 24px;
 
-    /* fill the container, preserving aspect ratio, and cropping to fit */
-    background-size: cover;
+  /* fill the container, preserving aspect ratio, and cropping to fit */
+  background-size: cover;
 
-    /* center the image vertically and horizontally */
-    background-position: center;
+  /* center the image vertically and horizontally */
+  background-position: center;
 
-    /* baseado no left-icon no material_chip */
-    margin-left: -4px;
-    margin-right: 4px;
-    padding: 3px;
+  /* baseado no left-icon no material_chip */
+  margin-left: -4px;
+  margin-right: 4px;
+  padding: 3px;
 
-    /* round the edges to a circle with border radius 1/2 container size */
-    /* border-radius: 50%; */
-    display: inline-block;
+  /* round the edges to a circle with border radius 1/2 container size */
+  /* border-radius: 50%; */
+  display: inline-block;
 }

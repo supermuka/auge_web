@@ -1,64 +1,4 @@
 <div class="container-list">
-<!--
-    <div class="container">
-        <div class="c100 p{{objective?.progress}}">
-            <span>{{objective?.progress}}%</span>
-            <div class="slice">
-                <div class="bar"></div>
-                <div class="fill"></div>
-            </div>
-        </div>
-
-        <div>
-            <h4 class="material-list-item-content"><strong>{{objective?.name}}</strong></h4>
-            <p class="material-list-item-content">{{objective?.description}}</p>
-        </div>
-    </div>
-    -->
-    <!--
-    <div class="container">
-        <material-list class="shadow-box-material-list" elevation="2">
-            <material-fab mini raised (trigger)="selectMeasure(null);goToDetail(null)">
-                <material-icon icon="add"></material-icon>
-            </material-fab>
-            <br/>
-            <div *ngFor="let iMeasure of measures">
-                <material-list-item>
-                    <div>
-                        <h4 class="material-list-item-content"><strong>{{iMeasure.name}}</strong></h4>
-                    </div>
-                    <span class="row-spacer"></span>
-                    <div class="material-list-item-secondary">
-                        <div class="horizontal">
-                            <div class="width-240">
-                                <material-progress materialTooltip="{{progressLabel + ' ' + iMeasure.progress.toString() + '%'}}" [activeProgress]="iMeasure.progress"></material-progress>
-
-                                <div class="width-240-flex">
-                                    <span materialTooltip="{{startValueLabel}}">{{iMeasure.startValueDecimal}}</span>
-                                    <span materialTooltip="{{currentValueLabel}}">{{iMeasure.currentValueDecimal}}</span>
-                                    <span materialTooltip="{{endValueLabel}}">{{iMeasure.endValueDecimal}}</span>
-                                </div>
-                            </div>
-                            <div class="row-spacer"></div>
-                            <div class="row-spacer"></div>
-
-                            <div>
-                                <material-menu [menu]="menuModel" (click)="selectMeasure(iMeasure)">
-                                </material-menu>
-                            </div>
-                        </div>
-                    </div>
-                </material-list-item>
-                <hr>
-            </div>
-        </material-list>
-        <!--
-        <router-outlet [routes]="routes"></router-outlet>
-        -->
-<!--
-    </div>
--->
-
     <material-expansionpanel disabled
             [alwaysHideExpandIcon]="true"
             [expanded]="true"
@@ -67,27 +7,24 @@
             <span><strong>Measures</strong></span>
         </div>
         <div action>
-            <material-button class="add" icon (trigger)="selectMeasure(null);viewDetail(null)">
+            <material-button class="add" icon (trigger)="selectMeasure(null);detailVisible = true">
                 <material-icon icon="add"></material-icon>
             </material-button>
         </div>
         <material-expansionpanel-set>
-            <!-- material-fab mini raised (trigger)="selectMeasure(null);goToDetail(null)">
-                <material-icon icon="add"></material-icon>
-            </material-fab -->
             <br/>
             <div *ngFor="let iMeasure of measures">
                 <material-expansionpanel disabled
                                          [expanded]="false"
                                          [hideExpandedHeader]="false"
                                          [showSaveCancel]="false">
-                    <div name>
-                        <h4 class="material-list-item-content"><strong>{{iMeasure.name}}</strong></h4>
+                    <div name class="truncate-ellipsed-parent">
+                        <h4 class="truncate-ellipsed">{{iMeasure.name}}</h4>
                     </div>
                     <span class="row-spacer"></span>
                     <div value>
-                        <div class="horizontal">
-                            <div class="width-240">
+                        <!--div class="horizontal">
+                            <div class="width-240" -->
                                 <material-progress materialTooltip="{{progressLabel + ' ' + iMeasure.progress.toString() + '%'}}" [activeProgress]="iMeasure.progress"></material-progress>
 
                                 <div class="width-240-flex">
@@ -95,12 +32,8 @@
                                     <span materialTooltip="{{currentValueLabel}}">{{iMeasure.currentValueDecimal}}</span>
                                     <span materialTooltip="{{endValueLabel}}">{{iMeasure.endValueDecimal}}</span>
                                 </div>
-                            </div>
-                            <div class="row-spacer"></div>
-                            <div class="row-spacer"></div>
-
-
-                        </div>
+                            <!-- /div>
+                        </div -->
                     </div>
                     <div action>
                         <div>
@@ -113,8 +46,7 @@
             </div>
         </material-expansionpanel-set>
     </material-expansionpanel>
-    <auge-measures-detail *ngIf="detailVisible == true" [objective]="objective" [selectedMeasure]="selectedMeasure" (saved)="changeListDetail($event)" (closed)="detailVisible = false">
-    </auge-measures-detail>
+    <auge-measure-detail *ngIf="detailVisible == true" [objective]="objective" [selectedMeasure]="selectedMeasure" (save)="changeListItemDetail($event)" (close)="detailVisible = false">
+    </auge-measure-detail>
 </div>
-<!-- router-outlet [routes]="routes"></router-outlet -->
 

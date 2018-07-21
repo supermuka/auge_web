@@ -1,66 +1,29 @@
 <div class="container-list">
-<!--
-    <material-list class="shadow-box-material-list" elevation="2">
-        <div *ngFor="let iObjective of objectives">
-            <material-list-item (trigger)="goToMeasureX(iObjective)">
-
-                <div class="truncate-ellipsed-parent">
-                    <div class="c100 p{{iObjective.progress}}">
-                        <span>{{iObjective.progress}}%</span>
-                        <div class="slice">
-                            <div class="bar"></div>
-                            <div class="fill"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <h4 class="truncate-ellipsed">{{iObjective.name}}</h4>
-                        <p class="truncate-ellipsed">{{iObjective.description}}</p>
-                    </div>
-
-                </div>
-                <span class="row-spacer"></span>
-                <div class="material-list-item-secondary">
-                    <div>
-                        <material-menu [menu]="menuModel" (click)="stopPropagation($event);selectObjective(iObjective)">
-                        </material-menu>
-                    </div>
-                </div>
-
-            </material-list-item>
-
-            <hr>
-        </div>
-    </material-list>
--->
-<!--
-    <material-fab  raised (trigger)="selectObjective(null);goToDetail(null)">
-        <material-icon icon="add"></material-icon>
-    </material-fab>
-    -->
-
-    <material-fab raised (trigger)="selectObjective(null);viewDetail()">
+    <material-fab raised (trigger)="selectObjective(null);detailVisible = true">
         <material-icon icon="add"></material-icon>
     </material-fab>
 
     <br/>
-    <material-expansionpanel-set>
+    <material-expansionpanel-set >
         <div *ngFor="let iObjective of objectives">
             <material-expansionpanel
                     [alwaysHideExpandIcon]="true"
                     [hideExpandedHeader]="false"
                     [showSaveCancel]="false">
-                <div name class="truncate-ellipsed-parent">
-                    <div class="c100 p{{iObjective.progress}}">
-                        <span>{{iObjective.progress}}%</span>
-                        <div class="slice">
-                            <div class="bar"></div>
-                            <div class="fill"></div>
-                        </div>
-                    </div>
-                    <div>
+                <div name class="custom-material-expansionpanel-name">
+                    <span class="c100">
+                        <span class="p{{iObjective.progress}}">
+                            <div>{{iObjective.progress}}%</div>
+                            <div class="slice">
+                                <div class="bar"></div>
+                                <div class="fill"></div>
+                            </div>
+                        </span>
+                    </span>
+                    <span class="truncate-ellipsed-parent">
                         <h4 class="truncate-ellipsed">{{iObjective.name}}</h4>
                         <p class="truncate-ellipsed">{{iObjective.description}}</p>
-                    </div>
+                    </span>
                 </div>
                 <div action>
                     <material-menu [menu]="menuModel" (click)="stopPropagation($event);selectObjective(iObjective)">
@@ -69,11 +32,9 @@
                 <div>
                     <auge-measures [objective]="iObjective"></auge-measures>
                 </div>
-             </material-expansionpanel>
-
+            </material-expansionpanel>
         </div>
     </material-expansionpanel-set>
-    <auge-objective-detail *ngIf="detailVisible == true" [selectedObjective]="selectedObjective" (saved)="changeListDetail($event)" (closed)="detailVisible = false">
+    <auge-objective-detail *ngIf="detailVisible == true" [selectedObjective]="selectedObjective" (save)="changeListDetail($event)" (close)="detailVisible = false">
     </auge-objective-detail>
 </div>
-

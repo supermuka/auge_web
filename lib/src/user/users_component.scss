@@ -1,11 +1,6 @@
 @import 'package:angular_components/css/material/material';
 @import 'package:angular_components/css/material/shadow';
 
-.container-list {
-   display: flex;
-   justify-content: center;
-}
-
 .shadow-box-material-list {
    @include material-shadow();
    overflow: hidden;

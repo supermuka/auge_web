@@ -6,7 +6,6 @@ import 'dart:async';
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
-//import 'package:angular_components/angular_components.dart';
 import 'package:angular_components/material_button/material_fab.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel_set.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
@@ -14,7 +13,7 @@ import 'package:angular_components/material_menu/material_menu.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
 import 'package:angular_components/model/menu/menu.dart';
 import 'package:angular_components/model/ui/icon.dart';
-import 'package:angular_components/model/action/async_action.dart';
+
 
 import 'package:angular_components/laminate/components/modal/modal.dart';
 
@@ -75,7 +74,7 @@ class ObjectivesComponent extends Object /* with CanReuse  */ implements OnInit,
   MenuModel<MenuItem> menuModel;
 
   ObjectivesComponent(this._authService, this._appLayoutService, this._objectiveService, this._searchService, this._router) {
-    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMessage.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail()), new MenuItem(CommonMessage.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
+    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMessage.buttonLabel('Edit'), icon: new Icon('edit') , action: () => detailVisible = true), new MenuItem(CommonMessage.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
   }
 
   @override
@@ -128,6 +127,7 @@ class ObjectivesComponent extends Object /* with CanReuse  */ implements OnInit,
 
   Future<Null> delete() async {
     try {
+
       await _objectiveService.deleteObjective(selectedObjective.id);
       objectives.remove(selectedObjective);
     } catch(e) {
@@ -149,7 +149,7 @@ class ObjectivesComponent extends Object /* with CanReuse  */ implements OnInit,
     return true;
   }
 
-  void changeListDetail(Objective objetive) {
+  void changeListItemDetail(Objective objetive) {
 
     if (selectedObjective == null) {
       objectives.add(objetive);

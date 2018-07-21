@@ -89,8 +89,8 @@
             <material-button [disabled]="!validInput" (trigger)="saveObjective()">{{saveButtonLabel}}
                 <material-icon icon="save"></material-icon>
             </material-button>
-            <material-button autoFocus (trigger)="goBack()">{{backButtonLabel}}
-                <material-icon icon="arrow_back"></material-icon>
+            <material-button autoFocus (trigger)="closeDetail()">{{backButtonLabel}}
+                <material-icon icon="close"></material-icon>
             </material-button>
         </div>
     </material-dialog>

@@ -16,8 +16,6 @@ import 'package:auge_shared/message/messages.dart';
 import 'package:auge_web/src/measure/measure_detail_component.dart';
 
 import 'package:auge_web/src/search/search_service.dart';
-import 'package:auge_web/src/auth/auth_service.dart';
-import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/src/measure/measure_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 
@@ -29,10 +27,9 @@ import 'package:auge_web/src/measure/measure_detail_component.template.dart' as 
 
 @Component(
     selector: 'auge-measures',
-    providers: const [ObjectiveService, MeasureService],
+    providers: const [MeasureService],
     directives: const [
       coreDirectives,
-      routerDirectives,
       materialDirectives,
       MeasureDetailComponent,
     ],
@@ -41,11 +38,8 @@ import 'package:auge_web/src/measure/measure_detail_component.template.dart' as 
       'measures_component.css'
     ])
 
-class MeasuresComponent extends Object /* with CanReuse */ implements OnInit /*, OnActivate, OnDestroy */ {
+class MeasuresComponent extends Object implements OnInit {
 
-  //final AuthService _authService;
-  //final AppLayoutService _appLayoutService;
-  //final ObjectiveService _objectiveService;
   final MeasureService _measureService;
   final SearchService _searchService;
   final Router _router;
@@ -55,53 +49,12 @@ class MeasuresComponent extends Object /* with CanReuse */ implements OnInit /*,
 
   Measure selectedMeasure;
 
-  bool modal = false;
-
   bool detailVisible;
-/*
-  final List<RouteDefinition> routes = [
-
-    new RouteDefinition(
-        routePath: AppRoutes.appLayoutHomeRoute,
-        component: app_layout_home.AppLayoutHomeComponentNgFactory,
-        useAsDefault: true,
-       ),
-
-    new RouteDefinition(
-      routePath: AppRoutes.measureDetailAddRoute,
-      component: measure_detail_component.MeasureDetailComponentNgFactory,
-      // useAsDefault: true
-    ),
-
-    new RouteDefinition(
-      routePath: AppRoutes.measureDetailRoute,
-      component: measure_detail_component.MeasureDetailComponentNgFactory,
-
-     // useAsDefault: true
-    ),
-    */
-/*
-    new RouteDefinition(
-      routePath: AppRoutes.measureDetailAddRouteFromObjective,
-      component: measure_detail_component.MeasureDetailComponentNgFactory,
-      // useAsDefault: true
-    ),
-
-    new RouteDefinition(
-      routePath: AppRoutes.measureDetailRouteFromObjective,
-      component: measure_detail_component.MeasureDetailComponentNgFactory,
-
-      // useAsDefault: true
-    ),
-
-
-  ];
-   */
 
   MenuModel<MenuItem> menuModel;
   MeasuresComponent(/* this._authService, this._appLayoutService, this._objectiveService, */ this._measureService, this._searchService, this._router) {
 
-    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMessage.buttonLabel('Edit'), icon: new Icon('edit') , action: () => goToDetailFromObjective(selectedMeasure)), new MenuItem(CommonMessage.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete(selectedMeasure))])], icon: new Icon('menu'));
+    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMessage.buttonLabel('Edit'), icon: new Icon('edit') , action: () => detailVisible = true), new MenuItem(CommonMessage.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
   }
 
   // Define messages and labels
@@ -112,50 +65,18 @@ class MeasuresComponent extends Object /* with CanReuse */ implements OnInit /*,
 
   @override
   void ngOnInit() {
-    /*
-    if (this._authService.authenticatedUser == null) {
-      _router.navigate(AppRoutes.authRoute.toUrl());
-    }
-    */
 
-    //_appLayoutService.headerTitle = MeasureMessage.label('Measures');
-
-    // _appLayoutService.searchEnabled = true;
 
   }
-/*
-  @override
-  Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
 
-    if (this._authService.authenticatedUser == null) {
-      _router.navigate(AppRoutes.authRoute.toUrl());
-    }
-
-    _appLayoutService.headerTitle = MeasureMessage.label('Measures');
-
-    String id = routerStateCurrent.parameters[AppRoutes.objectiveIdParameter];
-
-    if (id != null && id.isNotEmpty) {
-      objective =  await _objectiveService.getObjectiveById(id, withMeasures: true);
-    }
-
-    _appLayoutService.searchEnabled = true;
-  }
-
-  @override
-  ngOnDestroy() async {
-    _appLayoutService.searchEnabled = false;
-
-  }
-*/
   void selectMeasure(Measure measure) {
     selectedMeasure = measure;
   }
 
-  Future<Null> delete(Measure measure) async {
+  Future<Null> delete() async {
     try {
-      await _measureService.deleteMeasure(measure.id);
-      objective.measures.remove(measure);
+      await _measureService.deleteMeasure(selectedMeasure.id);
+      objective.measures.remove(selectedMeasure);
     } catch(e) {
       print(e);
     }
@@ -174,7 +95,6 @@ class MeasuresComponent extends Object /* with CanReuse */ implements OnInit /*,
   }
 
   void goToDetailFromObjective(Measure measure) {
-    print('xxxxxx');
     if (measure == null) {
       _router.navigate(AppRoutes.measureDetailAddRouteFromObjective.toUrl(parameters: {AppRoutes.objectiveIdParameter:objective.id}));
     } else {
@@ -184,8 +104,6 @@ class MeasuresComponent extends Object /* with CanReuse */ implements OnInit /*,
       }));
     }
   }
-
-  //List<Measure> get measures => measures;
 
   int progress(Measure measure) {
     return measure?.currentValue == null || measure?.currentValue == 0 ? 0 :  (measure?.currentValue / (measure?.startValue + measure?.endValue) * 100).toInt() ;
@@ -210,11 +128,11 @@ class MeasuresComponent extends Object /* with CanReuse */ implements OnInit /*,
     me.stopPropagation();
   }
 
-  void changeListDetail(Measure measure) {
+  void changeListItemDetail(Measure measure) {
     if (selectedMeasure == null) {
       measures.add(measure);
     } else {
-      selectedMeasure = measure;
+      measure.cloneTo(measures[measures.indexOf(selectedMeasure)]);
     }
   }
 

@@ -1,18 +1,16 @@
 // Copyright (c) 2017, Levius.
 
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:angular_router/angular_router.dart';
+import 'package:angular_components/model/ui/has_factory.dart';
+
 import 'package:auge_shared/model/objective/objective.dart';
 import 'package:auge_shared/model/user.dart';
 import 'package:auge_shared/model/group.dart';
 
 import 'package:auge_shared/message/messages.dart';
-
-import 'package:angular_components/model/ui/has_factory.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/auth/auth_service.dart';
@@ -20,18 +18,14 @@ import 'package:auge_web/src/user/user_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/group/group_service.dart';
 
-import 'package:auge_web/services/app_routes.dart';
-
 // ignore_for_file: uri_has_not_been_generated
 import 'objective_detail_component.template.dart' as objective_detail_component;
-import 'package:auge_web/client/objectiveaugeapi.dart';
 
 @Component(
     selector: 'auge-objective-detail',
     providers: const [UserService, GroupService],
     directives: const [
       coreDirectives,
-      routerDirectives,
       materialDirectives,
     ],
     templateUrl: 'objective_detail_component.html',
@@ -46,23 +40,20 @@ class ObjectiveDetailComponent extends Object implements OnInit /* with CanReuse
   final ObjectiveService _objectiveService;
   final GroupService _groupService;
 
-  final Location _location;
-  final Router _router;
-
   @Input()
   Objective selectedObjective;
 
-  final _closedController = new StreamController<Null>.broadcast(sync: true);
+  final _closeController = new StreamController<Null>.broadcast(sync: true);
 
-  /// Publishes events when save or close.
+  /// Publishes events when close.
   @Output()
-  Stream<Null> get closed => _closedController.stream;
+  Stream<Null> get close => _closeController.stream;
 
-  final _savedController = new StreamController<Objective>.broadcast(sync: true);
+  final _saveController = new StreamController<Objective>.broadcast(sync: true);
 
-  /// Publishes events when save or close.
+  /// Publishes events when save.
   @Output()
-  Stream<Objective> get saved => _savedController.stream;
+  Stream<Objective> get save => _saveController.stream;
 
   Objective objective = new Objective();
 
@@ -82,7 +73,7 @@ class ObjectiveDetailComponent extends Object implements OnInit /* with CanReuse
   DateRange limitToDateRange =
   new DateRange(new Date.today().add(years: -1), new Date.today().add(years: 1));
 
-  ObjectiveDetailComponent(this._authService, this._userService, this._objectiveService, this._groupService, this._location, this._router) {
+  ObjectiveDetailComponent(this._authService, this._userService, this._objectiveService, this._groupService) {
 
   }
 
@@ -185,14 +176,14 @@ class ObjectiveDetailComponent extends Object implements OnInit /* with CanReuse
 
       await _objectiveService.saveObjective(objective);
 
-      _savedController.add(objective);
+      _saveController.add(objective);
 
-      goBack();
+      closeDetail();
 
   }
 
-  goBack() {
-     _closedController.add(null);
+  void closeDetail() {
+     _closeController.add(null);
   }
 
   String get alignedToLabelRenderer {
@@ -223,9 +214,6 @@ class ObjectiveDetailComponent extends Object implements OnInit /* with CanReuse
 
   ItemRenderer get leaderItemRenderer => (dynamic user) => user.name;
 
-  Future<Null> goToList() async {
-    _router.navigate(AppRoutes.initiativesRoute.toUrl());
-  }
 
   FactoryRenderer get leaderFactoryRenderer => (_) => objective_detail_component.LeaderRendererComponentNgFactory;
 

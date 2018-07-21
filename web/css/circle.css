@@ -45,7 +45,8 @@
   -ms-border-radius: 50%;
   -o-border-radius: 50%;
   border-radius: 50%;
-  float: left;
+  /* float: left; --- original */
+  display: block;
   margin: 0 0.1em 0.1em 0;
   background-color: #cccccc;
 }

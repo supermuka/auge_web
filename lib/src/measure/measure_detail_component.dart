@@ -3,26 +3,20 @@
 
 import 'dart:async';
 
-
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:angular_router/angular_router.dart';
+import 'package:angular_components/model/ui/has_factory.dart';
 
 import 'package:auge_shared/model/objective/objective.dart';
 import 'package:auge_shared/model/objective/measure.dart';
 import 'package:auge_shared/message/messages.dart';
 
-import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/measure/measure_service.dart';
-
-import 'package:auge_web/src/auth/auth_service.dart';
-import 'package:auge_web/services/app_routes.dart';
 
 @Component(
     selector: 'auge-measure-detail',
     directives: const [
       coreDirectives,
-      routerDirectives,
       materialDirectives,
     ],
     templateUrl: 'measure_detail_component.html',
@@ -30,13 +24,9 @@ import 'package:auge_web/services/app_routes.dart';
       'measure_detail_component.css'
     ])
 
-class MeasureDetailComponent extends Object implements OnInit /* with CanReuse  implements OnActivate */ {
+class MeasureDetailComponent extends Object implements OnInit {
 
-  final AuthService _authService;
-  final ObjectiveService _objectiveService;
   final MeasureService _measureService;
-  final Location _location;
-  final Router _router;
 
   @Input()
   Objective objective;
@@ -44,13 +34,25 @@ class MeasureDetailComponent extends Object implements OnInit /* with CanReuse  
   @Input()
   Measure selectedMeasure;
 
-  Measure measure;
+  final _closeController = new StreamController<Null>.broadcast(sync: true);
+
+  /// Publishes events when close.
+  @Output()
+  Stream<Null> get close => _closeController.stream;
+
+  final _saveController = new StreamController<Measure>.broadcast(sync: true);
+
+  /// Publishes events when save.
+  @Output()
+  Stream<Measure> get save => _saveController.stream;
+
+  Measure measure = new Measure();
 
   List<MeasureUnit> measureUnits = new List();
   SelectionOptions measureUnitOptions;
   SelectionModel measureUnitSingleSelectModel;
 
-  MeasureDetailComponent(this._authService, this._objectiveService, this._measureService, this._location, this._router);
+  MeasureDetailComponent(this._measureService);
 
   // Define messages and labels
   static final String requiredValueMsg = CommonMessage.requiredValueMsg();
@@ -66,56 +68,15 @@ class MeasureDetailComponent extends Object implements OnInit /* with CanReuse  
 
   static final String saveButtonLabel = CommonMessage.buttonLabel('Save');
   static final String backButtonLabel = CommonMessage.buttonLabel('Back');
-/*
-  @override
-  Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
-    if (this._authService.authenticatedUser == null) {
-      _router.navigate(AppRoutes.authRoute.toUrl());
-    }
-
-
-    String objectiveId = _router.current.parameters[AppRoutes
-        .objectiveIdParameter];
-
-
-    if (objectiveId != null) {
-      objective = await _objectiveService.getObjectiveById(objectiveId, withMeasures: false);
-    }
-
-    String id = routerStateCurrent.parameters[AppRoutes.measureIdParameter];
-
-    if (id != null && id.isNotEmpty) {
-      measure = await _measureService.getMeasureById(id);
-    }
-
-    measureUnits = await _measureService.getMeasureUnits();
-
-    measureUnitOptions = new SelectionOptions.fromList(measureUnits);
-
-    measureUnitSingleSelectModel =
-    new SelectionModel.single()
-      ..selectionChanges.listen((unit) {
-
-        if (unit.isNotEmpty && unit.first.added != null && unit.first.added.length != 0 && unit.first.added?.first != null) {
-          measure.measureUnit = unit.first.added.first;
-        }
-      });
-
-    if (measure.measureUnit != null)
-      measureUnitSingleSelectModel.select(measure.measureUnit);
-    else if (measureUnitOptions.optionsList.isNotEmpty) {
-      measureUnitSingleSelectModel.select(measureUnitOptions.optionsList.first);
-    }
-  }
-  */
 
   @override
   void ngOnInit() async {
 
     if (selectedMeasure != null) {
-      measure = selectedMeasure;
+      measure = selectedMeasure.clone();
     } else {
-      measure = new Measure();
+      // measure = new Measure();
+
     }
 
     measureUnits = await _measureService.getMeasureUnits();
@@ -139,12 +100,17 @@ class MeasureDetailComponent extends Object implements OnInit /* with CanReuse  
   }
 
   void saveMeasure() {
+    print('***');
+    print(measure.name);
     _measureService.saveMeasure(objective.id, measure);
-    goBack();
+
+    _saveController.add(measure);
+
+    closeDetail();
   }
 
-  void goBack() {
-    _location.back();
+  void closeDetail() {
+    _closeController.add(null);
   }
 
   // Label for the button for single selection.
@@ -180,7 +146,7 @@ class MeasureDetailComponent extends Object implements OnInit /* with CanReuse  
   }
 
   bool get validInput {
-    if (measure?.currentValue != null && (measure.currentValue < lowerBound() || measure.currentValue > upperBound())) {
+    if (measure?.currentValue != null && (lowerBound() != null && measure.currentValue < lowerBound() || upperBound() != null && measure.currentValue > upperBound())) {
       return false;
     } else {
       return true;
