@@ -1,12 +1,4 @@
 @import 'package:angular_components/css/material/material';
-@import 'package:angular_components/css/material/shadow';
-@import 'package:angular_components/material_button/mixins';
-@import 'package:angular_components/material_dialog/mixins';
-@import 'package:angular_components/material_expansionpanel/mixins';
-
-.shadow-box {
-   @include material-shadow();
-}
 
 material-fab {
     position: fixed !important;

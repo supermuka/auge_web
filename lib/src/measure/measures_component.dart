@@ -11,23 +11,16 @@ import 'package:angular_components/model/menu/menu.dart';
 
 import 'package:auge_shared/model/objective/objective.dart';
 import 'package:auge_shared/model/objective/measure.dart';
+
 import 'package:auge_shared/message/messages.dart';
 
 import 'package:auge_web/src/measure/measure_detail_component.dart';
 
-import 'package:auge_web/src/search/search_service.dart';
 import 'package:auge_web/src/measure/measure_service.dart';
-import 'package:auge_web/src/objective/objective_service.dart';
-
-import 'package:auge_web/services/app_routes.dart';
-
-// ignore_for_file: uri_has_not_been_generated
-import 'package:auge_web/src/app_layout/app_layout_home.template.dart' as app_layout_home;
-import 'package:auge_web/src/measure/measure_detail_component.template.dart' as measure_detail_component;
 
 @Component(
     selector: 'auge-measures',
-    providers: const [MeasureService],
+    providers: [MeasureService],
     directives: const [
       coreDirectives,
       materialDirectives,
@@ -38,11 +31,9 @@ import 'package:auge_web/src/measure/measure_detail_component.template.dart' as 
       'measures_component.css'
     ])
 
-class MeasuresComponent extends Object implements OnInit {
+class MeasuresComponent extends Object {
 
   final MeasureService _measureService;
-  final SearchService _searchService;
-  final Router _router;
 
   @Input()
   Objective objective;
@@ -51,8 +42,10 @@ class MeasuresComponent extends Object implements OnInit {
 
   bool detailVisible;
 
+  int tst = 0;
+
   MenuModel<MenuItem> menuModel;
-  MeasuresComponent(/* this._authService, this._appLayoutService, this._objectiveService, */ this._measureService, this._searchService, this._router) {
+  MeasuresComponent(this._measureService) {
 
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMessage.buttonLabel('Edit'), icon: new Icon('edit') , action: () => detailVisible = true), new MenuItem(CommonMessage.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
   }
@@ -63,45 +56,16 @@ class MeasuresComponent extends Object implements OnInit {
   static final String currentValueLabel =  MeasureMessage.label('Current Value');
   static final String endValueLabel =  MeasureMessage.label('End Value');
 
-  @override
-  void ngOnInit() {
-
-
-  }
-
   void selectMeasure(Measure measure) {
     selectedMeasure = measure;
   }
 
-  Future<Null> delete() async {
+  Future<void> delete() async {
     try {
       await _measureService.deleteMeasure(selectedMeasure.id);
       objective.measures.remove(selectedMeasure);
     } catch(e) {
       print(e);
-    }
-  }
-
-  void goToDetail(Measure measure) {
-
-    if (measure == null) {
-      _router.navigate(AppRoutes.measureDetailAddRoute.toUrl(parameters: {AppRoutes.objectiveIdParameter:objective.id}));
-    } else {
-      _router.navigate(AppRoutes.measureDetailRoute.toUrl(parameters: {
-        AppRoutes.objectiveIdParameter: objective.id,
-        AppRoutes.measureIdParameter: measure != null ? measure.id : null
-      }));
-    }
-  }
-
-  void goToDetailFromObjective(Measure measure) {
-    if (measure == null) {
-      _router.navigate(AppRoutes.measureDetailAddRouteFromObjective.toUrl(parameters: {AppRoutes.objectiveIdParameter:objective.id}));
-    } else {
-      _router.navigate(AppRoutes.measureDetailRouteFromObjective.toUrl(parameters: {
-        AppRoutes.objectiveIdParameter: objective.id,
-        AppRoutes.measureIdParameter: measure != null ? measure.id : null
-      }));
     }
   }
 
@@ -121,7 +85,7 @@ class MeasuresComponent extends Object implements OnInit {
   }
 
   List<Measure> get measures {
-    return _searchService?.searchTerm.toString().isEmpty ? objective?.measures : objective?.measures?.where((t) => t.name.contains(_searchService.searchTerm)).toList();
+    return objective?.measures;
   }
 
   void stopPropagation(MouseEvent me) {
@@ -135,5 +99,4 @@ class MeasuresComponent extends Object implements OnInit {
       measure.cloneTo(measures[measures.indexOf(selectedMeasure)]);
     }
   }
-
 }

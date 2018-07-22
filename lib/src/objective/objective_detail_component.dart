@@ -43,11 +43,11 @@ class ObjectiveDetailComponent extends Object implements OnInit /* with CanReuse
   @Input()
   Objective selectedObjective;
 
-  final _closeController = new StreamController<Null>.broadcast(sync: true);
+  final _closeController = new StreamController<void>.broadcast(sync: true);
 
   /// Publishes events when close.
   @Output()
-  Stream<Null> get close => _closeController.stream;
+  Stream<void> get close => _closeController.stream;
 
   final _saveController = new StreamController<Objective>.broadcast(sync: true);
 
@@ -95,22 +95,18 @@ class ObjectiveDetailComponent extends Object implements OnInit /* with CanReuse
   static final String alignedToLabel =  ObjectiveMessage.label('Aligned To');
 
   static final String saveButtonLabel = CommonMessage.buttonLabel('Save');
-  static final String backButtonLabel = CommonMessage.buttonLabel('Back');
+  static final String closeButtonLabel = CommonMessage.buttonLabel('Close');
 
   @override
   void ngOnInit() async {
 
     if (selectedObjective != null) {
-      // objective = selectedObjective;
-
       // Clone objective
       objective = selectedObjective.clone();
 
     } else {
-     // objective = new Objective();
       objective.organization = _authService.selectedOrganization;
     }
-
 
     // Aligned to Objectives
     List<Objective> alignedToObjectives = await _objectiveService.getObjectives(_authService.selectedOrganization.id);
@@ -174,11 +170,9 @@ class ObjectiveDetailComponent extends Object implements OnInit /* with CanReuse
 
   void saveObjective() async {
 
-      await _objectiveService.saveObjective(objective);
-
-      _saveController.add(objective);
-
-      closeDetail();
+    await _objectiveService.saveObjective(objective);
+    _saveController.add(objective);
+    closeDetail();
 
   }
 
@@ -213,7 +207,6 @@ class ObjectiveDetailComponent extends Object implements OnInit /* with CanReuse
   }
 
   ItemRenderer get leaderItemRenderer => (dynamic user) => user.name;
-
 
   FactoryRenderer get leaderFactoryRenderer => (_) => objective_detail_component.LeaderRendererComponentNgFactory;
 

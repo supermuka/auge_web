@@ -11,29 +11,28 @@
                 <material-icon icon="add"></material-icon>
             </material-button>
         </div>
+
+
         <material-expansionpanel-set>
             <br/>
             <div *ngFor="let iMeasure of measures">
-                <material-expansionpanel disabled
+                <material-expansionpanel class="custom-expansionpanel-panel-name-min-width" disabled
                                          [expanded]="false"
                                          [hideExpandedHeader]="false"
                                          [showSaveCancel]="false">
-                    <div name class="truncate-ellipsed-parent">
+
+                    <div name class="truncate-ellipsed-parent custom-expansionpanel-panel-name-width">
                         <h4 class="truncate-ellipsed">{{iMeasure.name}}</h4>
                     </div>
-                    <span class="row-spacer"></span>
                     <div value>
-                        <!--div class="horizontal">
-                            <div class="width-240" -->
-                                <material-progress materialTooltip="{{progressLabel + ' ' + iMeasure.progress.toString() + '%'}}" [activeProgress]="iMeasure.progress"></material-progress>
+                        <!--material-progress materialTooltip="{{progressLabel + ' ' + iMeasure.progress.toString() + '%'}}" [activeProgress]="iMeasure.progress"></material-progress-->
+                        <material-slider  [(value)]="iMeasure.currentValueInt" [min]="iMeasure.startValueInt" [max]="iMeasure.endValueInt"></material-slider>
+                        <div class="width-flex">
+                            <span materialTooltip="{{startValueLabel}}">{{iMeasure.startValueDecimal}}</span>
+                            <span materialTooltip="{{currentValueLabel}}">{{iMeasure.currentValueDecimal}}</span>
+                            <span materialTooltip="{{endValueLabel}}">{{iMeasure.endValueDecimal}}</span>
+                        </div>
 
-                                <div class="width-240-flex">
-                                    <span materialTooltip="{{startValueLabel}}">{{iMeasure.startValueDecimal}}</span>
-                                    <span materialTooltip="{{currentValueLabel}}">{{iMeasure.currentValueDecimal}}</span>
-                                    <span materialTooltip="{{endValueLabel}}">{{iMeasure.endValueDecimal}}</span>
-                                </div>
-                            <!-- /div>
-                        </div -->
                     </div>
                     <div action>
                         <div>

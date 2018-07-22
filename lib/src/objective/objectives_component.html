@@ -4,6 +4,7 @@
     </material-fab>
 
     <br/>
+
     <material-expansionpanel-set >
         <div *ngFor="let iObjective of objectives">
             <material-expansionpanel
@@ -24,6 +25,7 @@
                         <h4 class="truncate-ellipsed">{{iObjective.name}}</h4>
                         <p class="truncate-ellipsed">{{iObjective.description}}</p>
                     </span>
+
                 </div>
                 <div action>
                     <material-menu [menu]="menuModel" (click)="stopPropagation($event);selectObjective(iObjective)">

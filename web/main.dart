@@ -16,13 +16,7 @@ import 'package:auge_web/app_component.template.dart' as app_component;
    // Remove next line in production
   const ClassProvider(LocationStrategy, useClass: HashLocationStrategy),
 
- // const FactoryProvider.forToken(WindowToken, constWindow),
   const ClassProvider(BrowserClient, useClass: BrowserClient),
-
- //const FactoryProvider.forToken(BrowserClientToken, constBrowserClient),
-
-  //new Provider(Window, useValue: window),
- // provide(BrowserClient, useFactory: () => new BrowserClient(), deps: [])
 ])
 
 final InjectorFactory rootInjector = ng.rootInjector$Injector;
@@ -30,19 +24,7 @@ final InjectorFactory rootInjector = ng.rootInjector$Injector;
 void main() {
 
   runApp(app_component.AppComponentNgFactory, createInjector: rootInjector);
- // runApp(app_component.AppComponentNgFactory);
-/*
-  bootstrapStatic(AppComponent, [
-    routerProviders,
-    // We use this instead of <base href="/" /> to make local development
-    // nicer (i.e. load "styles.css" relatively).
-    const Provider(appBaseHref, useValue: '/'),
-    new Provider(Window, useValue: window),
-    // Remove next line in production
-    provide(LocationStrategy, useClass: HashLocationStrategy),
-    provide(BrowserClient, useFactory: () => new BrowserClient(), deps: [])],  ng.initReflector );
 
-*/
 }
 
 

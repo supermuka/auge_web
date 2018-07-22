@@ -34,11 +34,11 @@ class MeasureDetailComponent extends Object implements OnInit {
   @Input()
   Measure selectedMeasure;
 
-  final _closeController = new StreamController<Null>.broadcast(sync: true);
+  final _closeController = new StreamController<void>.broadcast(sync: true);
 
   /// Publishes events when close.
   @Output()
-  Stream<Null> get close => _closeController.stream;
+  Stream<void> get close => _closeController.stream;
 
   final _saveController = new StreamController<Measure>.broadcast(sync: true);
 
@@ -67,7 +67,7 @@ class MeasureDetailComponent extends Object implements OnInit {
   static final String endValueLabel =  MeasureMessage.label('End Value');
 
   static final String saveButtonLabel = CommonMessage.buttonLabel('Save');
-  static final String backButtonLabel = CommonMessage.buttonLabel('Back');
+  static final String closeButtonLabel = CommonMessage.buttonLabel('Close');
 
   @override
   void ngOnInit() async {
@@ -100,12 +100,8 @@ class MeasureDetailComponent extends Object implements OnInit {
   }
 
   void saveMeasure() {
-    print('***');
-    print(measure.name);
     _measureService.saveMeasure(objective.id, measure);
-
     _saveController.add(measure);
-
     closeDetail();
   }
 
