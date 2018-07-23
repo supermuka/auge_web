@@ -73,7 +73,8 @@ class MeasuresComponent extends Object {
     return measure?.currentValue == null || measure?.currentValue == 0 ? 0 :  (measure?.currentValue / (measure?.startValue + measure?.endValue) * 100).toInt() ;
   }
 
-  void updateMeasure(Measure measure) {
+  void updateMeasure(Measure measure, num value) {
+    measure.currentValue = value;
     _measureService.saveMeasure(objective.id, measure);
   }
 
