@@ -5,7 +5,7 @@ import 'dart:async';
 
 import 'package:angular/core.dart';
 
-import 'package:auge_shared/model/user.dart';
+import 'package:auge_server/model/user.dart';
 
 import 'package:auge_web/services/augeapi_service.dart';
 

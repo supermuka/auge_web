@@ -8,8 +8,8 @@ import 'package:angular_router/angular_router.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:angular_components/model/menu/menu.dart';
 
-import 'package:auge_shared/model/group.dart';
-import 'package:auge_shared/message/messages.dart';
+import 'package:auge_server/model/group.dart';
+import 'package:auge_web/message/messages.dart';
 
 import 'package:auge_web/src/group/group_service.dart';
 import 'package:auge_web/src/search/search_service.dart';

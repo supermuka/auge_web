@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:angular/core.dart';
 
-import 'package:auge_shared/model/user.dart';
-import 'package:auge_shared/model/organization.dart';
-import 'package:auge_shared/model/user_profile_organization.dart';
+import 'package:auge_server/model/user.dart';
+import 'package:auge_server/model/organization.dart';
+import 'package:auge_server/model/user_profile_organization.dart';
 
 import 'package:auge_web/services/augeapi_service.dart';
 import 'dart:convert' show base64;

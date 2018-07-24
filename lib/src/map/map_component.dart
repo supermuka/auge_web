@@ -4,10 +4,10 @@ import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
 import 'package:angular_components/angular_components.dart';
 
-import 'package:auge_shared/model/objective/objective.dart';
-import 'package:auge_shared/model/user.dart';
+import 'package:auge_server/model/objective/objective.dart';
+import 'package:auge_server/model/user.dart';
 
-import 'package:auge_shared/message/messages.dart';
+import 'package:auge_web/message/messages.dart';
 
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';

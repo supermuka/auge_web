@@ -1,21 +1,6 @@
 @import 'package:angular_components/css/material/material';
 @import 'package:angular_components/css/material/shadow';
 
-.shadow-box-material-list {
-   @include material-shadow();
-   overflow: hidden;
-   margin: 8px;
-   padding: 8px;
-   line-height: 1;
-   max-width: 1280px;
-   min-width: 600px;
-}
-
-.material-list-item-content {
-   max-width: 840px;
-   max-width: 840px;
-}
-
 material-fab {
    position: fixed !important;
    z-index: 9999999;
@@ -23,18 +8,4 @@ material-fab {
    color: $mat-white;
    float: right;
    right: 32px;
-}
-
-.row-spacer {
-   margin-left: 8px;
-   margin-right: 8px;
-}
-
-material-list div hr {
-   margin: 2px;
-   padding: 2px;
-}
-
-material-list div:last-child hr {
-   display: none;
 }

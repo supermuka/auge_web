@@ -17,15 +17,16 @@ import 'package:auge_web/src/search/search_service.dart';
 import 'package:auge_web/services/app_routes.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
 
-import 'package:auge_shared/message/messages.dart';
-import 'package:auge_shared/model/user.dart';
-import 'package:auge_shared/model/organization.dart';
-import 'package:auge_shared/model/user_profile_organization.dart';
+import 'package:auge_web/message/messages.dart';
+
+import 'package:auge_server/model/user.dart';
+import 'package:auge_server/model/organization.dart';
+import 'package:auge_server/model/user_profile_organization.dart';
 
 // ignore_for_file: uri_has_not_been_generated
 import 'package:auge_web/src/insight/insights_component.template.dart' as insights_component;
 import 'package:auge_web/src/organization/organizations_component.template.dart' as organizations_component;
-import 'package:auge_web/src/organization/organization_detail_component.template.dart' as organization_detail_component;
+import 'package:auge_web/src/organization/organization_component.template.dart' as organization_component;
 import 'package:auge_web/src/user/users_component.template.dart' as users_component;
 import 'package:auge_web/src/user/user_detail_component.template.dart' as user_detail_component;
 import 'package:auge_web/src/initiative/initiatives_component.template.dart' as initiatives_component;
@@ -74,7 +75,7 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
     ),
     new RouteDefinition(
       routePath: AppRoutes.organizationRoute,
-      component: organization_detail_component.OrganizationDetailComponentNgFactory,
+      component: organization_component.OrganizationComponentNgFactory,
     ),
     new RouteDefinition(
       routePath: AppRoutes.usersRoute,

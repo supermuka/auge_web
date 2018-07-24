@@ -4,7 +4,7 @@ import 'package:angular/core.dart';
 
 import 'package:auge_web/services/augeapi_service.dart';
 
-import 'package:auge_shared/model/objective/objective.dart';
+import 'package:auge_server/model/objective/objective.dart';
 
 @Injectable()
 class MapService {

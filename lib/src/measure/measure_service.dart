@@ -4,7 +4,9 @@ import 'package:angular/core.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:auge_web/services/augeapi_service.dart';
-import 'package:auge_shared/model/objective/measure.dart';
+import 'package:auge_server/model/objective/measure.dart';
+
+import 'package:auge_web/message/messages.dart';
 
 @Injectable()
 class MeasureService {
@@ -25,7 +27,10 @@ class MeasureService {
 
   /// Return a [MeasureUnit] by Id
   Future<List<MeasureUnit>> getMeasureUnits() async {
-    return await _augeApiService.objectiveAugeApi.getMeasureUnits();
+    List<MeasureUnit> measureUnits = await _augeApiService.objectiveAugeApi.getMeasureUnits();
+
+    // Translate name
+    measureUnits.forEach((f) => f.name = MeasureMessage.measureUnitLabel(f.name));
   }
 
   /// Save (create or update) an [Measure]

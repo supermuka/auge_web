@@ -11,8 +11,8 @@ import 'package:angular_forms/angular_forms.dart';
 
 import 'package:intl/intl.dart';
 
-import 'package:auge_shared/model/user.dart';
-import 'package:auge_shared/message/messages.dart';
+import 'package:auge_server/model/user.dart';
+import 'package:auge_web/message/messages.dart';
 
 import 'package:angular_components/model/selection/selection_model.dart';
 

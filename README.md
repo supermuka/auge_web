@@ -15,7 +15,7 @@ https://kanbanize.com/kanban-resources/case-studies/kanban-work-breakdown-struct
 **ARQUITETURA - VISÃO DE IMPLEMENTAÇÃO**
 
 pub run build_runner serve
-pub run rpc:generate client -i lib/server/augeapi.dart -o lib/client -p 8091
+pub run rpc:generate client -i lib/augeapi.dart -o lib/client -p 8091
 
 c:\dart-sdk-dev.63\bin\pub run rpc:generate client -i lib/augeapi.dart -o ../auge/lib/client -p 8091
 

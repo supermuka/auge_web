@@ -1,27 +1,28 @@
 <div class="container-list">
-    <material-fab raised (trigger)="goToDetail(null)">
+    <material-fab raised (trigger)="selectOrganization(null);viewDetail(true)">
         <material-icon icon="add"></material-icon>
     </material-fab>
     <br/>
-    <material-list  class="shadow-box-material-list" elevation="2">
-        <div *ngFor="let o of organizations">
-          <material-list-item>
-              <div>
-                  <h4 class="material-list-item-content"><strong>{{o.name}}</strong></h4>
-                  <p class="material-list-item-content">{{o.code}}</p>
-              </div>
-              <span class="row-spacer"></span>
-              <div class="material-list-item-secondary">
-                  <div>
-                      <material-menu [menu]="menuModel" (click)="selectOrganization(o)">
-                      </material-menu>
-                  </div>
-              </div>
-           </material-list-item>
-           <hr>
-       </div>
-    </material-list>
-</div>
-<div>
-   <router-outlet [routes]="routes"></router-outlet>
+    <material-expansionpanel-set>
+        <div *ngFor="let organizationItem of organizations">
+            <material-expansionpanel
+                    disabled
+                    [alwaysHideExpandIcon]="true"
+                    [hideExpandedHeader]="false"
+                    [showSaveCancel]="false">
+                <div name>
+                    <strong>{{organizationItem.name}}</strong>
+                </div>
+                <div value>
+                    {{organizationItem.code}}
+                </div>
+                <div action>
+                    <material-menu [menu]="menuModel" (click)="selectOrganization(organizationItem)">
+                    </material-menu>
+                </div>
+           </material-expansionpanel>
+        </div>
+    </material-expansionpanel-set>
+    <auge-organization-detail *ngIf="detailVisible == true" [selectedOrganization]="selectedOrganization" (save)="changeListItemDetail($event)" (close)="viewDetail(false)">
+    </auge-organization-detail>
 </div>

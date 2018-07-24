@@ -6,75 +6,81 @@ import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:angular_router/angular_router.dart';
 
-import 'package:auge_shared/model/organization.dart';
-import 'package:auge_shared/message/messages.dart';
+import 'package:auge_server/model/organization.dart';
+import 'package:auge_web/message/messages.dart';
 
 import 'package:auge_web/src/organization/organization_service.dart';
-import 'package:auge_web/src/auth/auth_service.dart';
-
-import 'package:auge_web/services/app_routes.dart';
 
 @Component(
-    selector: 'auge-organization-detail',
-    providers: const <dynamic>[materialProviders, OrganizationService],
-    directives: const [
-      coreDirectives,
-      routerDirectives,
-      materialDirectives,
-    ],
-    templateUrl: 'organization_detail_component.html',
-    styleUrls: const [
-      'organization_detail_component.css'
-    ])
+  selector: 'auge-organization-detail',
+  providers: const <dynamic>[materialProviders, OrganizationService],
+  directives: const [
+    coreDirectives,
+    routerDirectives,
+    materialDirectives,
+  ],
+  templateUrl: 'organization_detail_component.html',
+  styleUrls: const [
+    'organization_detail_component.css'
+  ])
 
-  class OrganizationDetailComponent implements OnActivate {
+class OrganizationDetailComponent extends Object implements OnInit {
 
-    final OrganizationService _organizationService;
-    final Location _location;
-    final Router _router;
-    final AuthService _authService;
+  @Input()
+  Organization selectedOrganization;
 
-    Organization organization = new Organization();
+  final OrganizationService _organizationService;
 
-    OrganizationDetailComponent(this._organizationService,  this._router, this._location, this._authService);
+  Organization organization = new Organization();
 
+  final _closeController = new StreamController<void>.broadcast(sync: true);
 
-    // Define messages and labels
-    static final String requiredValueMsg = CommonMessage.requiredValueMsg();
-    static final String addOrganizationLabel =  OrganizationMessage.label('Add Organization');
-    static final String editOrganizationLabel =  OrganizationMessage.label('Edit Organization');
+  /// Publishes events when close.
+  @Output()
+  Stream<void> get close => _closeController.stream;
 
-    static final String nameLabel =  OrganizationMessage.label('Name');
-    static final String codeLabel =  OrganizationMessage.label('Code');
+  final _saveController = new StreamController<Organization>.broadcast(sync: true);
 
-    static final String saveButtonLabel = CommonMessage.buttonLabel('Save');
-    static final String backButtonLabel = CommonMessage.buttonLabel('Back');
+  /// Publishes events when save.
+  @Output()
+  Stream<Organization> get save => _saveController.stream;
 
-    @override
-    Future onActivate(routeStatePrevious, routeStateCurrent) async {
+  OrganizationDetailComponent(this._organizationService);
 
-      if (this._authService.authenticatedUser == null) {
-        _router.navigate(AppRoutes.authRoute.toUrl());
-      }
+  // Define messages and labels
+  static final String requiredValueMsg = CommonMessage.requiredValueMsg();
+  static final String addOrganizationLabel =  OrganizationMessage.label('Add Organization');
+  static final String editOrganizationLabel =  OrganizationMessage.label('Edit Organization');
 
-      if (routeStateCurrent.parameters.isNotEmpty) {
-        var uuid = routeStateCurrent.parameters[AppRoutes.organizationIdParameter];
-        if (uuid != null && uuid.isNotEmpty) {
-          organization = await _organizationService.getOrganizationById(uuid);
-        }
-      }
+  static final String nameLabel =  OrganizationMessage.label('Name');
+  static final String codeLabel =  OrganizationMessage.label('Code');
+
+  static final String saveButtonLabel = CommonMessage.buttonLabel('Save');
+  static final String closeButtonLabel = CommonMessage.buttonLabel('Close');
+
+  @override
+  void ngOnInit() {
+    if (selectedOrganization != null) {
+      // Clone objective
+      organization = selectedOrganization.clone();
+
+    } else {
+      // objective.organization = _authService.selectedOrganization;
     }
+  }
 
-    void saveOrganization() {
-      _organizationService.saveOrganization(organization);
-      goBack();
-    }
+  void saveOrganization() async {
+    await _organizationService.saveOrganization(organization);
+    _saveController.add(organization);
+    closeDetail();
+  }
 
-    void goBack() {
-      _location.back();
-    }
+  bool get validInput {
+    return organization.name?.trim()?.isNotEmpty ?? false;
+  }
 
-    bool get validInput {
-      return organization.name?.trim()?.isNotEmpty ?? false;
-    }
+  void closeDetail() {
+    _closeController.add(null);
+  }
+
 }

@@ -5,8 +5,8 @@ import 'dart:async';
 
 import 'package:angular/core.dart';
 
-import 'package:auge_shared/model/initiative/initiative.dart';
-import 'package:auge_shared/model/initiative/state.dart';
+import 'package:auge_server/model/initiative/initiative.dart';
+import 'package:auge_server/model/initiative/state.dart';
 
 import 'package:auge_web/services/augeapi_service.dart';
 

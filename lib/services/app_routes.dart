@@ -155,8 +155,8 @@ class AppRoutes {
   );
 
   static final organizationRoute = new RoutePath(
-      path: 'organization/:$organizationIdParameter',
-      parent: appLayoutRoute
+     path: 'organization/:$organizationIdParameter',
+     parent: appLayoutRoute
   );
   static final groupsRoute = new RoutePath(
       path: 'groups',

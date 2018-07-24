@@ -1,13 +1,11 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
-import 'dart:html';
+
 import 'dart:async';
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
-
-import 'package:angular_components/angular_components.dart';
 
 import 'package:angular_components/material_button/material_fab.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel_set.dart';
@@ -20,8 +18,8 @@ import 'package:angular_components/model/ui/icon.dart';
 
 import 'package:angular_components/laminate/components/modal/modal.dart';
 
-import 'package:auge_shared/model/objective/objective.dart';
-import 'package:auge_shared/message/messages.dart';
+import 'package:auge_server/model/objective/objective.dart';
+import 'package:auge_web/message/messages.dart';
 
 import 'package:auge_web/src/objective/objective_detail_component.dart';
 import 'package:auge_web/src/measure/measures_component.dart';
@@ -50,7 +48,6 @@ import 'package:auge_web/services/app_routes.dart';
       ModalComponent,
       MeasuresComponent,
       ObjectiveDetailComponent,
-
     ],
     templateUrl: 'objectives_component.html',
     styleUrls: const [
@@ -104,7 +101,7 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
     selectedObjective = objective;
   }
 
-  Future<Null> delete() async {
+  Future<void> delete() async {
     try {
 
       await _objectiveService.deleteObjective(selectedObjective.id);
@@ -114,10 +111,6 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
     }
   }
 
-  void stopPropagation(MouseEvent me) {
-    me.stopPropagation();
-  }
-
   void changeListItemDetail(Objective objetive) {
 
     if (selectedObjective == null) {
@@ -125,5 +118,9 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
     } else {
       objetive.cloneTo(objectives[objectives.indexOf(selectedObjective)]);
     }
+  }
+
+  void viewDetail(bool detailVisible) {
+    this.detailVisible = detailVisible;
   }
 }

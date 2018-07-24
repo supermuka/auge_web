@@ -6,9 +6,9 @@ import 'dart:html';
 import 'package:angular/core.dart';
 
 import 'package:http/browser_client.dart';
-import 'package:auge_web/client/augeapi.dart';
-import 'package:auge_web/client/initiativeaugeapi.dart';
-import 'package:auge_web/client/objectiveaugeapi.dart';
+import 'package:auge_server/client/augeapi.dart';
+import 'package:auge_server/client/objectiveaugeapi.dart';
+import 'package:auge_server/client/initiativeaugeapi.dart';
 
 /// Provide services for Server APIs access
 @Injectable()

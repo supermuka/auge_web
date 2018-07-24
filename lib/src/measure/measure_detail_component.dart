@@ -7,9 +7,10 @@ import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:angular_components/model/ui/has_factory.dart';
 
-import 'package:auge_shared/model/objective/objective.dart';
-import 'package:auge_shared/model/objective/measure.dart';
-import 'package:auge_shared/message/messages.dart';
+import 'package:auge_server/model/objective/objective.dart';
+import 'package:auge_server/model/objective/measure.dart';
+
+import 'package:auge_web/message/messages.dart';
 
 import 'package:auge_web/src/measure/measure_service.dart';
 

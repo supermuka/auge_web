@@ -12,11 +12,12 @@ import 'package:angular_router/angular_router.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:angular_components/model/menu/menu.dart';
 
-import 'package:auge_shared/model/user.dart';
-import 'package:auge_shared/model/initiative/initiative.dart';
-import 'package:auge_shared/model/initiative/work_item.dart';
-import 'package:auge_shared/model/initiative/stage.dart';
-import 'package:auge_shared/message/messages.dart';
+import 'package:auge_server/model/user.dart';
+import 'package:auge_server/model/initiative/initiative.dart';
+import 'package:auge_server/model/initiative/work_item.dart';
+import 'package:auge_server/model/initiative/stage.dart';
+
+import 'package:auge_web/message/messages.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/work_item/work_item_service.dart';

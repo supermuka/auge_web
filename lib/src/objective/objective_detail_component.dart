@@ -6,11 +6,11 @@ import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:angular_components/model/ui/has_factory.dart';
 
-import 'package:auge_shared/model/objective/objective.dart';
-import 'package:auge_shared/model/user.dart';
-import 'package:auge_shared/model/group.dart';
+import 'package:auge_server/model/objective/objective.dart';
+import 'package:auge_server/model/user.dart';
+import 'package:auge_server/model/group.dart';
 
-import 'package:auge_shared/message/messages.dart';
+import 'package:auge_web/message/messages.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/auth/auth_service.dart';

@@ -5,7 +5,7 @@ import 'package:angular_router/angular_router.dart';
 import 'package:angular_components/angular_components.dart';
 
 import 'package:intl/intl.dart';
-import 'package:auge_shared/i18n/messages_all.dart';
+import 'package:auge_web/message/i18n/messages_all.dart';
 
 import 'package:auge_web/services/app_routes.dart';
 

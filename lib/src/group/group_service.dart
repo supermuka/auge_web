@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:angular/core.dart';
 import 'package:auge_web/services/augeapi_service.dart';
-import 'package:auge_shared/model/group.dart';
+import 'package:auge_server/model/group.dart';
+
+import 'package:auge_web/message/messages.dart';
 
 @Injectable()
 class GroupService {
@@ -37,6 +39,11 @@ class GroupService {
 
   /// Return a list of [GroupType]
   Future<List<GroupType>> getGroupTypes() async {
-    return await _augeApiService.augeApi.getGroupTypes();
+    List<GroupType> groupTypes = await _augeApiService.augeApi.getGroupTypes();
+
+    // Translate
+    groupTypes.forEach((f) => f.name = GroupMessage.groupTypeLabel(f.name));
+
+
   }
 }

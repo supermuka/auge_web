@@ -9,10 +9,10 @@ import 'package:angular_router/angular_router.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:angular_components/model/menu/menu.dart';
 
-import 'package:auge_shared/model/objective/objective.dart';
-import 'package:auge_shared/model/objective/measure.dart';
+import 'package:auge_server/model/objective/objective.dart';
+import 'package:auge_server/model/objective/measure.dart';
 
-import 'package:auge_shared/message/messages.dart';
+import 'package:auge_web/message/messages.dart';
 
 import 'package:auge_web/src/measure/measure_detail_component.dart';
 
@@ -42,8 +42,6 @@ class MeasuresComponent extends Object {
 
   bool detailVisible;
 
-  int tst = 0;
-
   MenuModel<MenuItem> menuModel;
   MeasuresComponent(this._measureService) {
 
@@ -61,12 +59,8 @@ class MeasuresComponent extends Object {
   }
 
   Future<void> delete() async {
-    try {
-      await _measureService.deleteMeasure(selectedMeasure.id);
-      objective.measures.remove(selectedMeasure);
-    } catch(e) {
-      print(e);
-    }
+    await _measureService.deleteMeasure(selectedMeasure.id);
+    objective.measures.remove(selectedMeasure);
   }
 
   int progress(Measure measure) {
@@ -87,10 +81,6 @@ class MeasuresComponent extends Object {
 
   List<Measure> get measures {
     return objective?.measures;
-  }
-
-  void stopPropagation(MouseEvent me) {
-    me.stopPropagation();
   }
 
   void changeListItemDetail(Measure measure) {

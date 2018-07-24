@@ -1,26 +1,23 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
-import 'dart:async';
+import 'dart:html';
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:angular_components/model/menu/menu.dart';
 
-import 'package:auge_shared/model/organization.dart';
-import 'package:auge_shared/message/messages.dart';
+import 'package:auge_server/model/organization.dart';
+import 'package:auge_web/message/messages.dart';
 
+import 'package:auge_web/src/organization/organization_detail_component.dart';
 import 'package:auge_web/src/organization/organization_service.dart';
 import 'package:auge_web/services/app_routes.dart';
 
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
-
-// ignore_for_file: uri_has_not_been_generated
-import 'package:auge_web/src/app_layout/app_layout_home.template.dart' as app_layout_home;
-import 'package:auge_web/src/organization/organization_detail_component.template.dart' as organization_detail;
 
 @Component(
     selector: 'auge-organizations',
@@ -29,29 +26,14 @@ import 'package:auge_web/src/organization/organization_detail_component.template
       coreDirectives,
       routerDirectives,
       materialDirectives,
+      OrganizationDetailComponent,
     ],
     templateUrl: 'organizations_component.html',
     styleUrls: const [
       'organizations_component.css'
     ])
 
-class OrganizationsComponent extends Object with CanReuse implements OnActivate, OnDestroy  {
-
-  final List<RouteDefinition> routes = [
-    new RouteDefinition(
-        routePath: AppRoutes.appLayoutHomeRoute,
-        component: app_layout_home.AppLayoutHomeComponentNgFactory,
-        useAsDefault: true
-    ),
-    new RouteDefinition(
-        routePath: AppRoutes.organizationDetailRoute,
-        component: organization_detail.OrganizationDetailComponentNgFactory,
-    ),
-    new RouteDefinition(
-      routePath: AppRoutes.organizationDetailAddRoute,
-      component: organization_detail.OrganizationDetailComponentNgFactory,
-    ),
-  ];
+class OrganizationsComponent extends Object implements OnActivate, OnDestroy  {
 
   final AuthService _authService;
   final AppLayoutService _appLayoutService;
@@ -59,15 +41,18 @@ class OrganizationsComponent extends Object with CanReuse implements OnActivate,
   final SearchService _searchService;
   final Router _router;
 
+  bool detailVisible = false;
+
   List<Organization> _organizations;
 
-  Organization organizationSelected;
+  Organization selectedOrganization;
 
   MenuModel<MenuItem> menuModel;
 
+
   OrganizationsComponent(this._authService, this._appLayoutService, this._organizationService, this._searchService, this._router) {
 
-    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMessage.buttonLabel('Edit'), icon: new Icon('edit') , action: () => goToDetail(organizationSelected)), new MenuItem(CommonMessage.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete(organizationSelected))])], icon: new Icon('menu'));
+    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMessage.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)), new MenuItem(CommonMessage.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
   }
 
   @override
@@ -77,18 +62,16 @@ class OrganizationsComponent extends Object with CanReuse implements OnActivate,
       _router.navigate(AppRoutes.authRoute.toUrl());
     }
 
-
     _appLayoutService.headerTitle =
          OrganizationMessage.label('Organizations');
     _organizations = await _organizationService.getOrganizations();
 
     // Enable Input Search on Header App
     _appLayoutService.searchEnabled = true;
-
   }
 
   @override
-  ngOnDestroy() async {
+  void ngOnDestroy() {
     _appLayoutService.searchEnabled = false;
 
   }
@@ -99,31 +82,23 @@ class OrganizationsComponent extends Object with CanReuse implements OnActivate,
   }
 
   void selectOrganization(Organization organization) {
-    organizationSelected = organization;
+    selectedOrganization = organization;
   }
 
-  void goToDetail(Organization organization) {
-    if (organization == null) {
-      _router.navigate(AppRoutes.organizationDetailAddRoute.toUrl());
+  void delete() async {
+    await _organizationService.deleteOrganization(selectedOrganization);
+    _organizations.remove(selectedOrganization);
+  }
+
+  void viewDetail(bool detailVisible) {
+    this.detailVisible = detailVisible;
+  }
+
+  void changeListItemDetail(Organization organization) {
+    if (selectedOrganization == null) {
+      organizations.add(organization);
     } else {
-      _router.navigate(AppRoutes.organizationDetailRoute.toUrl(parameters: {
-        AppRoutes.organizationIdParameter: organization != null ? organization.id : null
-      }));
+      organization.cloneTo(organizations[organizations.indexOf(selectedOrganization)]);
     }
   }
-
-  void delete(Organization organization) {
-    try {
-      _organizationService.deleteOrganization(organization);
-      _organizations.remove(organization);
-    } catch(e) {
-      print(e);
-    }
-  }
-
-  @override
-  Future<bool> canReuse(RouterState current, RouterState next) async {
-    return true;
-  }
-
 }

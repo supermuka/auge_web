@@ -1,7 +1,7 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
-import 'package:auge_shared/model/user.dart';
+import 'package:auge_server/model/user.dart';
 
 /// Return an image uri for user
 String userUrlImage(User user) {

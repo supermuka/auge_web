@@ -8,7 +8,7 @@ import 'package:angular_router/angular_router.dart';
 import 'package:angular_components/angular_components.dart';
 import 'auth_service.dart';
 
-import 'package:auge_shared/message/messages.dart';
+import 'package:auge_web/message/messages.dart';
 
 import 'package:auge_web/services/app_routes.dart';
 

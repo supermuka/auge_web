@@ -5,7 +5,7 @@
             <h3 *ngIf="objective.id != null">{{editObjectiveLabel}}</h3>
         </div>
         <div class="w3-row">
-            <material-input class="w3-col l12" [(ngModel)]="objective.name" floatingLabel [label]="nameLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
+                <material-input class="w3-col l12" [(ngModel)]="objective.name" floatingLabel [label]="nameLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
         </div>
         <div class="w3-row">
             <material-input class="w3-col l12" [(ngModel)]="objective.description" floatingLabel multiline rows="3" [label]="descriptionLabel"></material-input>
@@ -27,7 +27,7 @@
                                          [limit]="10">
             </material-auto-suggest-input>
         </div>
-        <div class="w3-row">
+        <div class="w3-row-padding">
             <div class="w3-col m6">
                 <label class="input-container">
                     <span class="label-text">{{startDateLabel}}</span>

@@ -1,10 +1,8 @@
 <div class="container-list">
-    <material-fab raised (trigger)="selectObjective(null);detailVisible = true">
+    <material-fab raised (trigger)="selectObjective(null);viewDetail(true)">
         <material-icon icon="add"></material-icon>
     </material-fab>
-
     <br/>
-
     <material-expansionpanel-set >
         <div *ngFor="let iObjective of objectives">
             <material-expansionpanel
@@ -28,7 +26,7 @@
 
                 </div>
                 <div action>
-                    <material-menu [menu]="menuModel" (click)="stopPropagation($event);selectObjective(iObjective)">
+                    <material-menu [menu]="menuModel" (click)="selectObjective(iObjective)">
                     </material-menu>
                 </div>
                 <div>
@@ -37,6 +35,6 @@
             </material-expansionpanel>
         </div>
     </material-expansionpanel-set>
-    <auge-objective-detail *ngIf="detailVisible == true" [selectedObjective]="selectedObjective" (save)="changeListDetail($event)" (close)="detailVisible = false">
+    <auge-objective-detail *ngIf="detailVisible == true" [selectedObjective]="selectedObjective" (save)="changeListItemDetail($event)" (close)="viewDetail(false)">
     </auge-objective-detail>
 </div>
