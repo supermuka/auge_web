@@ -63,7 +63,6 @@ class InsightsComponent implements OnActivate  {
   static final String workItemsCompletedLabel =  InsightMessage.label('Work Items Completed');
   static final String workItemsRequiringAttentionLabel =  InsightMessage.label('Work Items Requiring Attention');
 
-
   @override
   void onActivate(RouterState previous, RouterState current) async {
 

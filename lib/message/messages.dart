@@ -73,6 +73,7 @@ class AppLayoutMessage {
   static label(String label) => Intl.message(
       "${Intl.select(label, {
         'Organization': 'Organization',
+        'Organizations': 'Organizations',
         'All Organizations': 'All Organizations',
         'Admin': 'Administration',
         'Super Admin': 'Super Administration',
