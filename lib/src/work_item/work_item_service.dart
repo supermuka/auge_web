@@ -4,6 +4,7 @@ import 'package:angular/core.dart';
 
 import 'package:auge_server/model/initiative/initiative.dart';
 import 'package:auge_server/model/initiative/work_item.dart';
+import 'package:auge_server/message_type/id_message.dart';
 
 import 'package:auge_web/services/augeapi_service.dart';
 
@@ -25,11 +26,13 @@ class WorkItemService {
   }
 
   /// Save (create or update) a [WorkItem]
-  void saveWorkItem(String initiativeId, WorkItem workItem) {
+  void saveWorkItem(String initiativeId, WorkItem workItem) async {
     if (workItem.id == null) {
-      _augeApiService.initiativeAugeApi.createWorkItem(workItem, initiativeId);
+      IdMessage idMessage = await _augeApiService.initiativeAugeApi.createWorkItem(workItem, initiativeId);
+
+      workItem.id = idMessage?.id;
     } else {
-      _augeApiService.initiativeAugeApi.updateWorkItem(workItem, initiativeId);
+      await _augeApiService.initiativeAugeApi.updateWorkItem(workItem, initiativeId);
     }
   }
 

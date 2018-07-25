@@ -54,19 +54,21 @@ class OrganizationComponent extends Object with CanReuse implements OnActivate {
 
     _appLayoutService.headerTitle =
         OrganizationMessage.label('Organization');
-
+/*
     if (routeStateCurrent.parameters.isNotEmpty) {
       var uuid = routeStateCurrent.parameters[AppRoutes.organizationIdParameter];
       if (uuid != null && uuid.isNotEmpty) {
         selectedOrganization = await _organizationService.getOrganizationById(uuid);
       }
     }
+*/
+    selectedOrganization = _authService.selectedOrganization;
 
     viewDetail(true);
 
   }
 
-  void changeOrganizationItemDetail(Organization organization) {
+  void changeOrganizationDetail(Organization organization) {
     if (selectedOrganization == null) {
       selectedOrganization = organization;
     } else {

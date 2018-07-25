@@ -18,8 +18,6 @@ import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
 import 'package:auge_web/src/group/group_service.dart';
 
-import 'package:auge_web/services/app_routes.dart';
-
 // ignore_for_file: uri_has_not_been_generated
 import 'group_detail_component.template.dart' as group_detail_component;
 
@@ -28,7 +26,6 @@ import 'group_detail_component.template.dart' as group_detail_component;
     providers: const [UserService],
     directives: const [
       coreDirectives,
-      routerDirectives,
       materialDirectives,
     ],
     templateUrl: 'group_detail_component.html',
@@ -36,7 +33,23 @@ import 'group_detail_component.template.dart' as group_detail_component;
       'group_detail_component.css'
     ])
 
-class GroupDetailComponent implements OnActivate {
+class GroupDetailComponent extends Object implements OnInit {
+
+  /// Entry to edit data. If new, this should be null
+  @Input()
+  Group selectedGroup;
+
+  final _closeController = new StreamController<void>.broadcast(sync: true);
+
+  /// Publishes events when close.
+  @Output()
+  Stream<void> get close => _closeController.stream;
+
+  final _saveController = new StreamController<Group>.broadcast(sync: true);
+
+  /// Publishes events when save.
+  @Output()
+  Stream<Group> get save => _saveController.stream;
 
   final AuthService _authService;
   final UserService _userService;
@@ -65,27 +78,28 @@ class GroupDetailComponent implements OnActivate {
   static final String editGroupLabel =  GroupMessage.label('Edit Group');
   static final String nameLabel =  GroupMessage.label('Name');
   static final String superGroupLabel =  GroupMessage.label('Super Group');
+  static final String groupTypeLabel = GroupMessage.label('Group Type');
   static final String leaderLabel =  GroupMessage.label('Leader');
   static final String activeLabel =  GroupMessage.label('Active');
   static final String noMatchLabel =  GroupMessage.label('No Match');
 
   static final String saveButtonLabel = CommonMessage.buttonLabel('Save');
-  static final String backButtonLabel = CommonMessage.buttonLabel('Back');
+  static final String closeButtonLabel = CommonMessage.buttonLabel('Close');
+
 
   @override
-  Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
-    if (this._authService.authenticatedUser == null) {
-      _router.navigate(AppRoutes.authRoute.toUrl());
-    }
+  void ngOnInit() async {
 
+    print('ngOnInit');
+    print(selectedGroup);
 
-    String id = routerStateCurrent.parameters[AppRoutes.groupIdParameter];
-
-    if (id != null && id.isNotEmpty) {
-      group  = await _groupService.getGroupById(id);
+    if (selectedGroup != null) {
+      // Clone objective
+      group = selectedGroup.clone();
     } else {
       group.organization = _authService.selectedOrganization;
       group.active = true;
+
     }
 
     // Super Group
@@ -126,23 +140,35 @@ class GroupDetailComponent implements OnActivate {
     if (group.leader != null)
       leaderSingleSelectModel.select(group.leader);
 
-
     leaderOptions = new StringSelectionOptions<User>(
         users, toFilterableString: (User user) => user.name);
 
-
     groupTypes = await _groupService.getGroupTypes();
 
-    group.groupType = groupTypes.last;
+    if (group.groupType == null) {
+      group.groupType = groupTypes?.last;
+    }
   }
 
-  void saveGroup() {
-    _groupService.saveObjective(group);
-    goBack();
+  void saveGroup() async {
+
+    print('*** saveGroup ***');
+    print('organization');
+    print(group.organization.id);
+    print('groupType');
+    print(group.groupType.id);
+    print('leader');
+    print(group.leader.id);
+    print('super group');
+    print(group.superGroup.id);
+
+    await _groupService.saveObjective(group);
+    _saveController.add(group);
+    closeDetail();
   }
 
-  goBack() {
-    _location.back();
+  closeDetail() {
+    _closeController.add(null);
   }
 
   String get superGroupLabelRenderer {

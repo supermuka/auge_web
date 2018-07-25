@@ -37,15 +37,15 @@ class OrganizationService {
       IdMessage idMessage = await _augeApiService.augeApi.createOrganization(organization);
 
       // ID - primary key generated on server-side.
-      organization.id = idMessage.id;
+      organization.id = idMessage?.id;
     } else {
       await _augeApiService.augeApi.updateOrganization(organization);
     }
   }
 
   /// Delete an [Organization]
-  void deleteOrganization(Organization organization) {
-    _augeApiService.augeApi.deleteOrganization(organization.id);
+  void deleteOrganization(Organization organization) async {
+    await _augeApiService.augeApi.deleteOrganization(organization.id);
 
   }
 }

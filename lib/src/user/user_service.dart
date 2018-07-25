@@ -6,6 +6,7 @@ import 'dart:async';
 import 'package:angular/core.dart';
 
 import 'package:auge_server/model/user.dart';
+import 'package:auge_server/message_type/id_message.dart';
 
 import 'package:auge_web/services/augeapi_service.dart';
 
@@ -38,27 +39,33 @@ class UserService {
   }
 
   /// Save (create or update) an [User]
-  void saveUser(User user) {
+  void saveUser(User user) async {
+
     if (user.id == null) {
-      _augeApiService.augeApi.createUser(user);
+
+      IdMessage idMessage = await _augeApiService.augeApi.createUser(user);
+
+      // ID - primary key generated on server-side.
+      user.id = idMessage?.id;
+
     } else {
-      _augeApiService.augeApi.updateUser(user);
+      await _augeApiService.augeApi.updateUser(user);
     }
   }
 
   /// Delete an [User]
-  void deleteUser(User user) {
-    _augeApiService.augeApi.deleteUser(user.id);
-
+  void deleteUser(User user) async {
+    await _augeApiService.augeApi.deleteUser(user.id);
   }
 
   /// Return an image uri
-  String userUrlImage(User user) {
-    if (user?.userProfile?.image == null)
-      return '/packages/auge/assets/images/no_avatar.png';
-    else
-      return 'data:image/*;base64,' + user?.userProfile?.image;
-  }
+  //String userUrlImage(User user) {
+  //  if (user?.userProfile?.image == null)
+  //    return '/packages/auge_web/assets/images/no_avatar.png';
+  //  else
+  //    return 'data:image/*;base64,' + user?.userProfile?.image;
+  //}
+
 }
 
 

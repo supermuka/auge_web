@@ -15,13 +15,10 @@ import 'package:auge_web/message/messages.dart';
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
+import 'package:auge_web/src/user/user_detail_component.dart';
 
 import 'package:auge_web/services/app_routes.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
-
-// ignore_for_file: uri_has_not_been_generated
-import 'package:auge_web/src/app_layout/app_layout_home.template.dart' as app_layout_home;
-import 'package:auge_web/src/user/user_detail_component.template.dart' as user_detail_component;
 
 @Component(
     selector: 'auge-users',
@@ -30,30 +27,14 @@ import 'package:auge_web/src/user/user_detail_component.template.dart' as user_d
       coreDirectives,
       routerDirectives,
       materialDirectives,
+      UserDetailComponent,
     ],
     templateUrl: 'users_component.html',
     styleUrls: const [
       'users_component.css'
     ])
 
-class UsersComponent extends Object with CanReuse implements OnActivate {
-
-  final List<RouteDefinition> rotas = [
-
-    new RouteDefinition(
-        routePath: AppRoutes.appLayoutHomeRoute,
-        component: app_layout_home.AppLayoutHomeComponentNgFactory,
-        useAsDefault: true
-    ),
-    new RouteDefinition(
-      routePath: AppRoutes.userDetailAddRoute,
-      component: user_detail_component.UserDetailComponentNgFactory,
-    ),
-    new RouteDefinition(
-      routePath: AppRoutes.userDetailRoute,
-      component: user_detail_component.UserDetailComponentNgFactory,
-    ),
-  ];
+class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
 
   final AuthService _authService;
   final AppLayoutService _appLayoutService;
@@ -62,12 +43,14 @@ class UsersComponent extends Object with CanReuse implements OnActivate {
 
   List<User> users;
 
-  User userSelected;
+  User selectedUser;
+
+  bool detailVisible;
 
   MenuModel<MenuItem> menuModel;
 
   UsersComponent(this._authService, this._appLayoutService,  this._userService, this._router) {
-    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMessage.buttonLabel('Edit'), icon: new Icon('edit') , action: () => goToDetail(userSelected)), new MenuItem(CommonMessage.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete(userSelected))])], icon: new Icon('menu'));
+    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMessage.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)), new MenuItem(CommonMessage.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
   }
 
   @override
@@ -76,44 +59,36 @@ class UsersComponent extends Object with CanReuse implements OnActivate {
     if (this._authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
     }
-
-
     _appLayoutService.headerTitle = UserMessage.label('Users');
 
     users = await _userService.getUsers(withProfile: true);
   }
 
-  void goToDetail(User user) {
-    String url;
-    if (user == null) {
-      url = AppRoutes.userDetailAddRoute.toUrl();
-    } else {
-      url = AppRoutes.userDetailRoute.toUrl(parameters: {
-        AppRoutes.userIdParameter: user.id
-      });
-    }
-    _router.navigate(url);
-  }
 
-  void delete(User user) {
-    try {
-      _userService.deleteUser(user);
-      users.remove(user);
-    } catch(e) {
-      print(e);
-    }
+  void delete() {
+      _userService.deleteUser(selectedUser);
+      users.remove(selectedUser);
   }
 
   void selectUser(User user) {
-    userSelected = user;
+    selectedUser = user;
+
+    print(user.name);
   }
 
   String userUrlImage(User user) {
     return common_service.userUrlImage(user);
   }
 
-  @override
-  Future<bool> canReuse(RouterState current, RouterState next) async {
-    return true;
+  void viewDetail(bool detailVisible) {
+    this.detailVisible = detailVisible;
+  }
+
+  void changeListItemDetail(User user) {
+    if (selectedUser == null) {
+      users.add(user);
+    } else {
+      user.cloneTo(users[users.indexOf(selectedUser)]);
+    }
   }
 }

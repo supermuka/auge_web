@@ -11,16 +11,14 @@ import 'package:angular_components/model/menu/menu.dart';
 import 'package:auge_server/model/group.dart';
 import 'package:auge_web/message/messages.dart';
 
+import 'package:auge_web/src/group/group_detail_component.dart';
+
 import 'package:auge_web/src/group/group_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 
 import 'package:auge_web/services/app_routes.dart';
-
-// ignore_for_file: uri_has_not_been_generated
-import 'package:auge_web/src/app_layout/app_layout_home.template.dart' as app_layout_home;
-import 'package:auge_web/src/group/group_detail_component.template.dart' as group_detail_component;
 
 @Component(
     selector: 'auge-groups',
@@ -29,13 +27,14 @@ import 'package:auge_web/src/group/group_detail_component.template.dart' as grou
       coreDirectives,
       routerDirectives,
       materialDirectives,
+      GroupDetailComponent,
     ],
     templateUrl: 'groups_component.html',
     styleUrls: const [
       'groups_component.css'
     ])
 
-class GroupsComponent extends Object with CanReuse implements OnActivate, OnDestroy {
+class GroupsComponent extends Object /* with CanReuse */ implements OnActivate, OnDestroy {
 
   final AuthService _authService;
   final AppLayoutService _appLayoutService;
@@ -44,29 +43,14 @@ class GroupsComponent extends Object with CanReuse implements OnActivate, OnDest
   final Router _router;
 
   List<Group> _groups = new List();
-  Group _selectedGroup;
+  Group selectedGroup;
 
-  final List<RouteDefinition> routes = [
-
-    new RouteDefinition(
-        routePath: AppRoutes.appLayoutHomeRoute,
-        component: app_layout_home.AppLayoutHomeComponentNgFactory,
-        useAsDefault: true,
-    ),
-    new RouteDefinition(
-      routePath: AppRoutes.groupDetailAddRoute,
-      component: group_detail_component.GroupDetailComponentNgFactory,
-    ),
-    new RouteDefinition(
-      routePath: AppRoutes.groupDetailRoute,
-      component: group_detail_component.GroupDetailComponentNgFactory,
-    ),
-  ];
+  bool detailVisible;
 
   MenuModel<MenuItem> menuModel;
 
   GroupsComponent(this._authService, this._appLayoutService, this._groupService, this._searchService, this._router) {
-    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMessage.buttonLabel('Edit'), icon: new Icon('edit') , action: () => goToDetail(_selectedGroup)), new MenuItem(CommonMessage.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete(_selectedGroup))])], icon: new Icon('menu'));
+    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMessage.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)), new MenuItem(CommonMessage.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
   }
 
   @override
@@ -75,7 +59,6 @@ class GroupsComponent extends Object with CanReuse implements OnActivate, OnDest
     if (this._authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
     }
-
 
     _appLayoutService.headerTitle = GroupMessage.label('Groups');
 
@@ -95,33 +78,13 @@ class GroupsComponent extends Object with CanReuse implements OnActivate, OnDest
 
   }
 
-  void goToDetail(Group group) {
-
-    if (group == null) {
-      _router.navigate(AppRoutes.groupDetailAddRoute.toUrl());
-    } else {
-      _router.navigate(AppRoutes.groupDetailRoute.toUrl(parameters: {
-        AppRoutes.groupIdParameter: group != null ? group.id : null
-      }));
-    }
-  }
-
   void selectGroup(Group group) {
-    _selectedGroup = group;
+    selectedGroup = group;
   }
 
-  Future<Null> delete(Group group) async {
-    try {
-      await _groupService.deleteGroup(group.id);
-      groups.remove(group);
-    } catch(e) {
-      print(e);
-    }
-  }
-
-  @override
-  Future<bool> canReuse(RouterState current, RouterState next) async {
-    return true;
+  void delete() async {
+    await _groupService.deleteGroup(selectedGroup.id);
+    groups.remove(selectedGroup);
   }
 
   String colorFromUuid(String id) {
@@ -135,4 +98,21 @@ class GroupsComponent extends Object with CanReuse implements OnActivate, OnDest
     return name == null ? 'G' : name.substring(0, 1).toUpperCase();
 
   }
+
+  void viewDetail(bool detailVisible) {
+    this.detailVisible = detailVisible;
+  }
+
+  void changeListItemWithDetail(Group group) {
+    if (selectedGroup == null) {
+      groups.add(group);
+    } else {
+      group.cloneTo(groups[groups.indexOf(selectedGroup)]);
+    }
+  }
+
+  String groupActiveInactive(Group group) {
+    return group.active ? GroupMessage.label('Active') : GroupMessage.label('Inactive');
+  }
+
 }

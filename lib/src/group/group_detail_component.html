@@ -7,12 +7,17 @@
         <div class="w3-row">
                 <material-input class="w3-col l12" [(ngModel)]="group.name" floatingLabel [label]="nameLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
         </div>
-        <material-radio-group [(ngModel)]="group.groupType">
-            <material-radio *ngFor="let iGroupType of groupTypes"
-                            [checked]="group.groupType.id == iGroupType.id"
-                            [value]="iGroupType">{{iGroupType.name}}
-            </material-radio>
-        </material-radio-group>
+        <div class="w3-row">
+          <label>{{groupTypeLabel}}</label>
+        </div>
+        <div class="w3-row">
+            <material-radio-group [(ngModel)]="group.groupType">
+                <material-radio *ngFor="let iGroupType of groupTypes"
+                                [checked]="group.groupType.id == iGroupType.id"
+                                [value]="iGroupType">{{iGroupType.name}}
+                </material-radio>
+            </material-radio-group>
+        </div>
         <div class="w3-row">
             <material-auto-suggest-input  class="w3-col l12"
                                           [(inputText)]="superGroupInputText"
@@ -53,8 +58,8 @@
             <material-button [disabled]="!validInput" (trigger)="saveGroup()">{{saveButtonLabel}}
                 <material-icon icon="save"></material-icon>
             </material-button>
-            <material-button autoFocus (trigger)="goBack()">{{backButtonLabel}}
-                <material-icon icon="arrow_back"></material-icon>
+            <material-button autoFocus (trigger)="closeDetail()">{{closeButtonLabel}}
+                <material-icon icon="close"></material-icon>
             </material-button>
         </div>
     </material-dialog>

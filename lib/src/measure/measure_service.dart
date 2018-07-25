@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:angular/core.dart';
-import 'package:uuid/uuid.dart';
+
 
 import 'package:auge_web/services/augeapi_service.dart';
+
+import 'package:auge_server/message_type/id_message.dart';
 import 'package:auge_server/model/objective/measure.dart';
 
 import 'package:auge_web/message/messages.dart';
@@ -34,12 +36,15 @@ class MeasureService {
   }
 
   /// Save (create or update) an [Measure]
-  void saveMeasure(String objectiveId, Measure measure) {
+  void saveMeasure(String objectiveId, Measure measure) async {
     if (measure.id == null) {
-      measure.id = new Uuid().v4();
-      _augeApiService.objectiveAugeApi.createMeasure(measure, objectiveId);
+
+      IdMessage idMessage = await _augeApiService.objectiveAugeApi.createMeasure(measure, objectiveId);
+
+      // ID - primary key generated on server-side.
+      measure.id = idMessage?.id;
     } else {
-      _augeApiService.objectiveAugeApi.updateMeasure(measure, objectiveId);
+      await _augeApiService.objectiveAugeApi.updateMeasure(measure, objectiveId);
     }
   }
 }

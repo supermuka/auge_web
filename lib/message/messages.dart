@@ -124,6 +124,7 @@ class UserMessage {
   static label(String label) => Intl.message(
       "${Intl.select(label, {
         'Users': 'Users',
+        'User': 'User',
         'Edit User': 'Edit User',
         'Add User': 'Add User',
         'Name': 'Name',
@@ -293,9 +294,11 @@ class GroupMessage {
         'Description': 'Description',
         'Start Date': 'Start Date',
         'End Date': 'End Date',
+        'Group Type': 'Group Type',
         'Super Group': 'Super Group',
         'Leader': 'Leader',
         'Active': 'Active',
+        'Inactive': 'Inactive',
         'Group': 'Group',
         'No Match': 'No Match',
         'other': 'Not Defined'})}",

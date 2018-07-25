@@ -7,6 +7,7 @@ import 'package:angular/core.dart';
 
 import 'package:auge_server/model/initiative/initiative.dart';
 import 'package:auge_server/model/initiative/state.dart';
+import 'package:auge_server/message_type/id_message.dart';
 
 import 'package:auge_web/services/augeapi_service.dart';
 
@@ -38,11 +39,14 @@ class InitiativeService {
   }
 
   /// Save (create or update)an [Initiative]
-  void saveInitiative(Initiative initiative) {
-    if (initiative.id == null) {
-      _augeApiService.initiativeAugeApi.createInitiative(initiative);
+  void saveInitiative(Initiative initiative) async {
+    if (initiative.id == null)  {
+      IdMessage idMessage = await _augeApiService.initiativeAugeApi.createInitiative(initiative);
+
+      // ID - primary key generated on server-side.
+      initiative.id = idMessage?.id;
     } else {
-      _augeApiService.initiativeAugeApi.updateInitiative(initiative);
+      await _augeApiService.initiativeAugeApi.updateInitiative(initiative);
     }
   }
 }

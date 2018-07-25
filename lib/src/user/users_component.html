@@ -1,26 +1,29 @@
 <div class="container-list">
-    <material-fab raised (trigger)="goToDetail(null)">
+    <material-fab raised (trigger)="selectUser(null);viewDetail(true)">
         <material-icon icon="add"></material-icon>
     </material-fab>
     <br/>
-    <material-list  class="shadow-box-material-list" elevation="2">
-        <div *ngFor="let user of users">
-            <material-list-item>
-                <div>
-
-                    <h5><span class="avatar" [style.background-image]="'url(' + userUrlImage(user) + ')'"></span><strong>{{user.name}}</strong></h5>
-                    <p>{{user.eMail}}</p>
+    <material-expansionpanel-set>
+        <div *ngFor="let userItem of users">
+            <material-expansionpanel
+                    disabled
+                    [alwaysHideExpandIcon]="true"
+                    [hideExpandedHeader]="false"
+                    [showSaveCancel]="false">
+                <div name>
+                    <span class="avatar" [style.background-image]="'url(' + userUrlImage(userItem) + ')'"></span><strong>{{userItem.name}}</strong>
                 </div>
-                <span class="row-spacer"></span>
-                <div class="material-list-item-secondary">
-                    <div>
-                        <material-menu [menu]="menuModel" (click)="selectUser(user)">
-                        </material-menu>
-                    </div>
+                <div value>
+                    {{userItem.eMail}}
                 </div>
-            </material-list-item>
-            <hr>
+                <div action>
+                    <material-menu [menu]="menuModel" (click)="selectUser(userItem)">
+                    </material-menu>
+                </div>
+            </material-expansionpanel>
         </div>
-    </material-list>
+    </material-expansionpanel-set>
+
+    <auge-user-detail *ngIf="detailVisible == true" [selectedUser]="selectedUser" (save)="changeListItemDetail($event)" (close)="viewDetail(false)">
+    </auge-user-detail>
 </div>
-<router-outlet [routes]="rotas"></router-outlet>

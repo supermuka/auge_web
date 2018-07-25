@@ -28,7 +28,7 @@ import 'package:auge_web/src/insight/insights_component.template.dart' as insigh
 import 'package:auge_web/src/organization/organizations_component.template.dart' as organizations_component;
 import 'package:auge_web/src/organization/organization_component.template.dart' as organization_component;
 import 'package:auge_web/src/user/users_component.template.dart' as users_component;
-import 'package:auge_web/src/user/user_detail_component.template.dart' as user_detail_component;
+import 'package:auge_web/src/user/user_component.template.dart' as user_component;
 import 'package:auge_web/src/initiative/initiatives_component.template.dart' as initiatives_component;
 import 'package:auge_web/src/work_item/work_items_component.template.dart' as work_items_component;
 import 'package:auge_web/src/map/map_component.template.dart' as map_component;
@@ -103,7 +103,7 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
     ),
     new RouteDefinition(
       routePath: AppRoutes.userSelectedDetailRoute,
-      component: user_detail_component.UserDetailComponentNgFactory,
+      component: user_component.UserComponentNgFactory,
     ),
     new RouteDefinition(
       routePath: AppRoutes.groupsRoute,

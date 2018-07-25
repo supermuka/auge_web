@@ -66,18 +66,33 @@ body {
   background-position: center;
 
   /* baseado no left-icon no material_chip */
+  margin-top: 0px;
+  margin-botton: 0px;
   margin-left: -8px;
   margin-right: 4px;
-  padding: 0px;
+  padding: 8px;
 
   /* round the edges to a circle with border radius 1/2 container size */
   border-radius: 50%;
   display: inline-block;
 }
 
+.avatar-size {
+  display: inline-block;
+
+  vertical-align: middle;
+  horizontal-align: middle;
+  text-align: center;
+
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
+}
+
 .avatar-border {
   @extend .avatar;
-  border-style: solid;
+  border-style: dashed;
   border-width: thin;
 }
 
