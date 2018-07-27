@@ -16,6 +16,7 @@ import 'package:auge_server/model/initiative/initiative.dart';
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/initiative/initiative_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
+import 'package:auge_web/src/initiative/initiative_detail_component.dart';
 
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 
@@ -33,6 +34,7 @@ import 'package:auge_web/src/initiative/initiative_detail_component.template.dar
       coreDirectives,
       routerDirectives,
       materialDirectives,
+      InitiativeDetailComponent
     ],
     templateUrl: 'initiatives_component.html',
     styleUrls: const [
@@ -47,8 +49,13 @@ class InitiativesComponent extends Object with CanReuse implements OnActivate, O
   final AppLayoutService _appLayoutService;
   final AuthService _authService;
 
+  static final int progressBarWidth = 360;
+
+  bool detailVisible = false;
   List<Initiative> _initiatives = new List();
-  Initiative _initiativeSelected;
+  Initiative selectedInitiative;
+
+  bool expanded;
 
   final List<RouteDefinition> routes = [
     new RouteDefinition(
@@ -71,7 +78,7 @@ class InitiativesComponent extends Object with CanReuse implements OnActivate, O
 
   MenuModel<MenuItem> menuModel;
   InitiativesComponent(this._initiativeService, this._appLayoutService, this._authService, this._searchService, this._router) {
-    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMessage.buttonLabel('Edit'), icon: new Icon('edit') , action: () => goToDetail(_initiativeSelected)), new MenuItem(CommonMessage.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete(_initiativeSelected))])], icon: new Icon('menu'));
+    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMessage.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)), new MenuItem(CommonMessage.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
   }
 
   // Define messages and labels
@@ -110,27 +117,13 @@ class InitiativesComponent extends Object with CanReuse implements OnActivate, O
     me.stopPropagation();
   }
 
-  void goToDetail(Initiative initiative) {
-    if (initiative == null) {
-      _router.navigate(AppRoutes.initiativeDetailAddRoute.toUrl());
-    } else {
-      _router.navigate(AppRoutes.initiativeDetailRoute.toUrl(parameters: {
-        AppRoutes.initiativeIdParameter: initiative != null ? initiative.id : null
-      }));
-    }
-  }
-
   void selectInitiative(Initiative item) {
-    _initiativeSelected = item;
+    selectedInitiative = item;
   }
 
-  Future<Null> delete(Initiative initiative) async {
-    try {
-      await _initiativeService.deleteInitiative(initiative.id);
-      initiatives.remove(initiative);
-    } catch(e) {
-      print(e);
-    }
+  void delete() async {
+    await _initiativeService.deleteInitiative(selectedInitiative.id);
+    initiatives.remove(selectedInitiative);
   }
 
   String circleColor(Initiative initiative)  {
@@ -157,5 +150,16 @@ class InitiativesComponent extends Object with CanReuse implements OnActivate, O
      return true;
   }
 
+  void viewDetail(bool detailVisible) {
+    this.detailVisible = detailVisible;
+  }
+
+  void changeListItemWithDetail(Initiative initiative) {
+    if (selectedInitiative == null) {
+      initiatives.add(initiative);
+    } else {
+      initiative.cloneTo(initiatives[initiatives.indexOf(selectedInitiative)]);
+    }
+  }
 }
 

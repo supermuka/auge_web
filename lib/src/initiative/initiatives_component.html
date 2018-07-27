@@ -1,61 +1,69 @@
 <div class="container-list">
-    <material-fab raised (trigger)="selectInitiative(null);goToDetail(null)">
+    <material-fab raised (trigger)="selectInitiative(null);viewDetail(true)">
         <material-icon icon="add"></material-icon>
     </material-fab>
     <br/>
 
-    <material-list class="shadow-box-material-list" elevation="2">
-        <div *ngFor="let iinitiative of initiatives">
-            <material-list-item (trigger)="goToWorkItem(iinitiative)">
-
-                <div>
-                    <h4 class="material-list-item-content"><strong>{{iinitiative.name}}</strong></h4>
-                    <p class="material-list-item-content">{{iinitiative.description}}</p>
+    <material-expansionpanel-set>
+        <div *ngFor="let iInitiative of initiatives">
+            <material-expansionpanel
+                    [alwaysHideExpandIcon]="true"
+                    [hideExpandedHeader]="false"
+                    [showSaveCancel]="false">
+                <div name class="custom-expansionpanel-panel-specific-name-width">
+                    <span class="truncate-ellipsed-parent">
+                        <div class="truncate-ellipsed">{{iInitiative.name}}</div>
+                        <div class="truncate-ellipsed">{{iInitiative.description}}</div>
+                    </span>
                 </div>
-                <span class="row-spacer"></span>
-                <div class="material-list-item-secondary">
-                    <div class="horizontal">
-
-                        <span class="horizontal" clickableTooltipTarget
-                              keyboardOnlyFocusIndicator
-                              tabindex="0"
-                              size="medium"
-                              #clickableRef="tooltipTarget">
-
-                            <div class="progress-state-bar" *ngFor="let istate of iinitiative.stateWorkItemsCount.keys">
-                                <span [style.background-color]="'hsl(' + istate?.colorHue + ', ' + istate?.colorSaturation + '%, ' + istate?.colorLightness + '%)'" [style.width]="widthState(iinitiative?.workItemsCount, iinitiative?.stateWorkItemsCount[istate], 128) + 'px'"></span>
-                            </div>
+                <div value>
+                    <!-- span class="horizontal">
+                        <span *ngFor="let istate of iInitiative.stateWorkItemsCount.keys">
+                            <div [style.background-color]="'hsl(' + istate?.colorHue + ', ' + istate?.colorSaturation + '%, ' + istate?.colorLightness + '%)'" [style.width]="widthState(iInitiative?.workItemsCount, iInitiative?.stateWorkItemsCount[istate], 128) + 'px'" [style.min-width]="widthState(iInitiative?.workItemsCount, iInitiative?.stateWorkItemsCount[istate], 128) + 'px'">x</div>
                         </span>
-                        <material-tooltip-card [for]="clickableRef">
-                            <div *ngFor="let istage of iinitiative.stageWorkItemsCount.keys; let iee = index">
-                                <div *ngIf="iee == 0 || iinitiative.stageWorkItemsCount.keys.elementAt(iee-1).state != iinitiative.stageWorkItemsCount.keys.elementAt(iee).state">
-                                    <br/>
-                                    <div class="tooltip-card-bar" [style.background-color]="'hsl(' + istage.state.colorHue + ', ' + istage.state.colorSaturation + '%, ' + istage.state.colorLightness + '%)'">
-                                    </div>&nbsp;<strong>{{istage.state.name}}</strong><br/>
-                                </div>
-                                <b>{{iinitiative?.stageWorkItemsCount[istage]}}</b>&nbsp;{{istage.name}}
+                    </span -->
+
+                    <span class="progress-bar" clickableTooltipTarget
+                          keyboardOnlyFocusIndicator
+                          tabindex="0"
+                          size="medium"
+                          #clickableRef="tooltipTarget">
+
+                        <span *ngFor="let istate of iInitiative.stateWorkItemsCount.keys">
+                            <span [style.background-color]="'hsl(' + istate?.colorHue + ', ' + istate?.colorSaturation + '%, ' + istate?.colorLightness + '%)'" [style.width]="widthState(iInitiative?.workItemsCount, iInitiative?.stateWorkItemsCount[istate], progressBarWidth) + 'px'" [style.min-width]="widthState(iInitiative?.workItemsCount, iInitiative?.stateWorkItemsCount[istate], progressBarWidth) + 'px'">&nbsp;</span>
+                        </span>
+                    </span>
+                    <material-tooltip-card [for]="clickableRef">
+                        <div *ngFor="let istage of iInitiative.stageWorkItemsCount.keys; let iee = index">
+                            <div *ngIf="iee == 0 || iInitiative.stageWorkItemsCount.keys.elementAt(iee-1).state != iInitiative.stageWorkItemsCount.keys.elementAt(iee).state">
+                                <br/>
+                                <div class="tooltip-card-bar" [style.background-color]="'hsl(' + istage.state.colorHue + ', ' + istage.state.colorSaturation + '%, ' + istage.state.colorLightness + '%)'">
+                                </div>&nbsp;<strong>{{istage.state.name}}</strong><br/>
                             </div>
+                            <b>{{iInitiative?.stageWorkItemsCount[istage]}}</b>&nbsp;{{istage.name}}
+                        </div>
+                    </material-tooltip-card>
+                    <span *ngIf="iInitiative.workItemsCount != 0" class="circle" [style.background-color]="circleColor(iInitiative)" clickableTooltipTarget
+                         keyboardOnlyFocusIndicator
+                         tabindex="0"
+                         size="medium"
+                         #clickableRefCircle="tooltipTarget">
+                        <material-tooltip-card [for]="clickableRefCircle" >
+                            <p><b>{{iInitiative.workItemsOverDueCount}} / {{iInitiative.workItemsCount}}</b>&nbsp;{{workItemsOverDueLabel}}</p>
                         </material-tooltip-card>
-                        <span class="row-spacer"></span>
-                        <div *ngIf="iinitiative.workItemsCount != 0" class="circle" [style.background-color]="circleColor(iinitiative)" clickableTooltipTarget
-                             keyboardOnlyFocusIndicator
-                             tabindex="0"
-                             size="medium"
-                             #clickableRefCircle="tooltipTarget">
-                            <material-tooltip-card [for]="clickableRefCircle" >
-                                <p><b>{{iinitiative.workItemsOverDueCount}} / {{iinitiative.workItemsCount}}</b>&nbsp;{{workItemsOverDueLabel}}</p>
-                            </material-tooltip-card>
-                        </div>
-                        <span class="row-spacer"></span>
-                        <div>
-                            <material-menu [menu]="menuModel" (click)="stopPropagation($event);selectInitiative(iinitiative)">
-                            </material-menu>
-                        </div>
-                    </div>
+                    </span>
                 </div>
-            </material-list-item>
-            <hr>
+                <div action>
+                    <material-menu [menu]="menuModel" (click)="selectInitiative(iInitiative)">
+                    </material-menu>
+                </div>
+                <div>
+                    T.E.S.T.E
+                </div>
+
+            </material-expansionpanel>
         </div>
-    </material-list>
+    </material-expansionpanel-set>
+    <auge-initiative-detail *ngIf="detailVisible == true" [selectedInitiative]="selectedInitiative" (save)="changeListItemWithDetail($event)" (close)="viewDetail(false)">
+    </auge-initiative-detail>
 </div>
-<router-outlet [routes]="routes"></router-outlet>

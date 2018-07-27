@@ -55,8 +55,7 @@ class GroupDetailComponent extends Object implements OnInit {
   final UserService _userService;
   final GroupService _groupService;
 
-  final Location _location;
-  final Router _router;
+
 
   Group group = new Group();
   List<GroupType> groupTypes = new List();
@@ -69,7 +68,7 @@ class GroupDetailComponent extends Object implements OnInit {
   SelectionOptions leaderOptions;
   SelectionModel leaderSingleSelectModel;
 
-  GroupDetailComponent(this._authService, this._userService, this._groupService, this._location, this._router) {
+  GroupDetailComponent(this._authService, this._userService, this._groupService) {
   }
 
   // Define messages and labels
@@ -90,16 +89,12 @@ class GroupDetailComponent extends Object implements OnInit {
   @override
   void ngOnInit() async {
 
-    print('ngOnInit');
-    print(selectedGroup);
-
     if (selectedGroup != null) {
       // Clone objective
       group = selectedGroup.clone();
     } else {
       group.organization = _authService.selectedOrganization;
       group.active = true;
-
     }
 
     // Super Group
@@ -152,22 +147,12 @@ class GroupDetailComponent extends Object implements OnInit {
 
   void saveGroup() async {
 
-    print('*** saveGroup ***');
-    print('organization');
-    print(group.organization.id);
-    print('groupType');
-    print(group.groupType.id);
-    print('leader');
-    print(group.leader.id);
-    print('super group');
-    print(group.superGroup.id);
-
     await _groupService.saveObjective(group);
     _saveController.add(group);
     closeDetail();
   }
 
-  closeDetail() {
+  void closeDetail() {
     _closeController.add(null);
   }
 

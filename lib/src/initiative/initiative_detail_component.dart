@@ -25,32 +25,45 @@ import 'package:auge_web/src/group/group_service.dart';
 
 import 'package:angular_components/model/ui/has_factory.dart';
 
-import 'package:auge_web/services/app_routes.dart';
-
 // ignore_for_file: uri_has_not_been_generated
 import 'initiative_detail_component.template.dart' as initiative_detail_component;
 
 @Component(
-    selector: 'auge-initiative-detail',
-    providers: const [ObjectiveService, UserService, GroupService],
-    directives: const [
-      coreDirectives,
-      routerDirectives,
-      materialDirectives,
-    ],
-    templateUrl: 'initiative_detail_component.html',
-    styleUrls: const [
-      'initiative_detail_component.css'
-    ])
-class InitiativeDetailComponent implements OnActivate {
+  selector: 'auge-initiative-detail',
+  providers: const [ObjectiveService, UserService, GroupService],
+  directives: const [
+    coreDirectives,
+    routerDirectives,
+    materialDirectives,
+  ],
+  templateUrl: 'initiative_detail_component.html',
+  styleUrls: const [
+    'initiative_detail_component.css'
+  ])
+class InitiativeDetailComponent implements OnInit {
+
+  /// Entry to edit data. If new, this should be null
+  @Input()
+  Initiative selectedInitiative;
+
+  final _closeController = new StreamController<void>.broadcast(sync: true);
+
+  /// Publishes events when close.
+  @Output()
+  Stream<void> get close => _closeController.stream;
+
+  final _saveController = new StreamController<Initiative>.broadcast(sync: true);
+
+  /// Publishes events when save.
+  @Output()
+  Stream<Initiative> get save => _saveController.stream;
+
 
   final AuthService _authService;
   final InitiativeService _initiativeService;
   final ObjectiveService _objectiveService;
   final UserService _userService;
   final GroupService _groupService;
-  final Location _location;
-  final Router _router;
 
 
   Initiative initiative = new Initiative();
@@ -71,7 +84,7 @@ class InitiativeDetailComponent implements OnActivate {
   SelectionOptions groupOptions;
   SelectionModel groupSingleSelectModel;
 
-  InitiativeDetailComponent(this._authService, this._initiativeService, this._objectiveService,  this._userService, this._groupService, this._location, this._router);
+  InitiativeDetailComponent(this._authService, this._initiativeService, this._objectiveService,  this._userService, this._groupService);
 
   // Define messages and labels
   static final String requiredValueMsg = CommonMessage.requiredValueMsg();
@@ -87,8 +100,82 @@ class InitiativeDetailComponent implements OnActivate {
   static final String objectiveLabel =  InitiativeMessage.label('Objective');
 
   static final String saveButtonLabel = CommonMessage.buttonLabel('Save');
-  static final String backButtonLabel = CommonMessage.buttonLabel('Back');
+  static final String closeButtonLabel = CommonMessage.buttonLabel('Close');
 
+  @override
+  void ngOnInit() async {
+    if (selectedInitiative != null) {
+      // Clone objective
+      initiative = selectedInitiative.clone();
+    } else {
+      initiative.organization = _authService.selectedOrganization;
+    }
+
+    states = await _initiativeService.getStates();
+
+    stateOptions = new SelectionOptions.fromList(states);
+
+    stateSingleSelectModel = new SelectionModel.single();
+
+    if (stateOptions.optionsList.isNotEmpty)
+      stateSingleSelectModel.select(stateOptions.optionsList.first);
+
+    // Leader
+    List<User> users = await _userService.getUsersByOrganizationId(_authService.selectedOrganization.id, withProfile: true);
+
+    leaderOptions = new StringSelectionOptions<User>(
+        users, toFilterableString: (User user) => user.name);
+
+    // Objective
+    List<Objective> objectives = await _objectiveService.getObjectives(_authService.selectedOrganization.id, withMeasures: false);
+
+    objectiveOptions = new StringSelectionOptions<Objective>(
+        objectives, toFilterableString: (Objective objective) => objective.name);
+
+    // Leader Select Model
+    leaderSingleSelectModel =
+    new SelectionModel.single()
+      ..selectionChanges.listen((leader) {
+        if (leader.isNotEmpty && leader.first.added != null && leader.first.added.length != 0 && leader.first.added?.first != null) {
+          initiative.leader = leader.first.added.first;
+        }
+      });
+
+    if (initiative.leader != null)
+      leaderSingleSelectModel.select(initiative.leader);
+
+    // Objective Select Model
+    objectiveSingleSelectModel =
+    new SelectionModel.single()
+      ..selectionChanges.listen((objective) {
+        if (objective.isNotEmpty && objective.first.added != null && objective.first.added.length != 0 && objective.first.added?.first != null) {
+          initiative.objective = objective.first.added.first;
+        }
+      });
+
+    if (initiative.objective != null)
+      objectiveSingleSelectModel.select(initiative.objective);
+
+    // Group
+    List<Group> groups = await _groupService.getGroups(_authService.selectedOrganization.id);
+
+    groupOptions = new StringSelectionOptions<Group>(
+        groups, toFilterableString: (Group gru) => gru.name);
+
+    groupSingleSelectModel =
+    new SelectionModel.single()
+      ..selectionChanges.listen((groupEvent) {
+        if (groupEvent.isNotEmpty && groupEvent.first.added != null && groupEvent.first.added.length != 0 && groupEvent.first.added?.first != null) {
+          initiative.group = groupEvent.first.added.first;
+        }
+      });
+
+    if (initiative.group != null) {
+      groupSingleSelectModel.select(groupOptions.optionsList.singleWhere((g) => g.id == initiative.group.id));
+    }
+  }
+
+  /*
   @override
   Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
 
@@ -173,19 +260,22 @@ class InitiativeDetailComponent implements OnActivate {
 
       //groupSingleSelectModel.select(initiative.group);
     }
+  }
+  */
 
+  void saveInitiative() async {
+    print('***');
+    print(initiative.objective.id);
+    await _initiativeService.saveInitiative(initiative);
 
-
+    _saveController.add(initiative);
+    closeDetail();
   }
 
-  void saveInitiative() {
-    _initiativeService.saveInitiative(initiative);
-    goBack();
+  void closeDetail() {
+    _closeController.add(null);
   }
 
-  void goBack() {
-    _location.back();
-  }
 
   String get leaderLabelRenderer {
     String nameLabel;
@@ -214,11 +304,6 @@ class InitiativeDetailComponent implements OnActivate {
   ItemRenderer get leaderItemRenderer => (dynamic user) => user.name;
 
   ItemRenderer get objectiveItemRenderer => (dynamic objective) => objective.name;
-
-  Future<Null> goToList() async {
-    _router.navigate(AppRoutes.initiativesRoute.toUrl());
-
-  }
 
   FactoryRenderer get leaderFactoryRenderer => (_) => initiative_detail_component.LeaderRendererComponentNgFactory;
 
@@ -287,7 +372,6 @@ class InitiativeDetailComponent implements OnActivate {
   bool get validInput {
     return initiative.name?.trim()?.isNotEmpty ?? false;
   }
-
 }
 
 @Component(

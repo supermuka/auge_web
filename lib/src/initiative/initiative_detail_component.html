@@ -78,6 +78,7 @@
         </div>
         <div class="w3-row">
             <material-auto-suggest-input class="w3-col l12"
+                                         required [requiredErrorMsg]="requiredValueMsg"
                                          [(inputText)]="objectiveInputText"
                                          [filterSuggestions]="true"
                                          [popupMatchInputWidth]="true"
@@ -98,8 +99,8 @@
                 <material-icon icon="save"></material-icon>
             </material-button>
 
-            <material-button autoFocus (trigger)="goBack()">{{backButtonLabel}}
-                <material-icon icon="arrow_back"></material-icon>
+            <material-button autoFocus (trigger)="closeDetail()">{{closeButtonLabel}}
+                <material-icon icon="close"></material-icon>
             </material-button>
         </div>
     </material-dialog>
