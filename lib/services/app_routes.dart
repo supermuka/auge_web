@@ -73,14 +73,14 @@ class AppRoutes {
     parent: appLayoutRoute
   );
 
-  static final itensTrabalhoListaRoute = new RoutePath(
-      path: 'initiative/:$initiativeIdParameter/itens_trabalho_lista',
-      parent: workItemsRoute,
-      useAsDefault: true,
+  static final workItemsListRoute = new RoutePath(
+      path: 'initiative/:$initiativeIdParameter/work_items_list',
+      parent: appLayoutRoute,
+     /* useAsDefault: true, */
   );
 
-  static final itensTrabalhoKanbanRoute = new RoutePath(
-    path: 'initiative/:$initiativeIdParameter/itens_trabalho_kanban',
+  static final workItemsKanbanRoute = new RoutePath(
+    path: 'initiative/:$initiativeIdParameter/work_items_kanban',
     parent: workItemsRoute
   );
 

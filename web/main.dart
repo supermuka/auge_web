@@ -3,7 +3,8 @@
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
-import 'package:http/browser_client.dart';
+//import 'package:http/browser_client.dart';
+import 'package:auge_web/services/augeapi_service.dart';
 
 // ignore_for_file: uri_has_not_been_generated
 import 'main.template.dart' as ng;
@@ -15,8 +16,8 @@ import 'package:auge_web/app_component.template.dart' as app_component;
 
    // Remove next line in production
   const ClassProvider(LocationStrategy, useClass: HashLocationStrategy),
-
-  const ClassProvider(BrowserClient, useClass: BrowserClient),
+ // const ClassProvider(BrowserClient, useClass: BrowserClient),
+  const ClassProvider(BrowserClientAuth, useClass: BrowserClientAuth),
 ])
 
 final InjectorFactory rootInjector = ng.rootInjector$Injector;

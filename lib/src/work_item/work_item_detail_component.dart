@@ -31,8 +31,6 @@ import 'package:auge_web/src/initiative/initiative_service.dart';
 import 'package:auge_web/src/work_item/work_item_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
 
-import 'package:auge_web/services/app_routes.dart';
-
 // ignore_for_file: uri_has_not_been_generated
 import 'work_item_detail_component.template.dart' as work_item_detail_component;
 
@@ -50,16 +48,30 @@ import 'work_item_detail_component.template.dart' as work_item_detail_component;
       'work_item_detail_component.css'
     ])
 
-class WorkItemDetailComponent implements OnActivate  {
+class WorkItemDetailComponent implements OnInit  {
 
   final AuthService _authService;
   final UserService _userService;
-  final InitiativeService _initiativeService;
   final WorkItemService _workItemService;
-  final Router _router;
-  final Location _location;
 
+  @Input()
   Initiative initiative;
+
+  @Input()
+  WorkItem selectedWorkItem;
+
+  final _closeController = new StreamController<void>.broadcast(sync: true);
+
+  /// Publishes events when close.
+  @Output()
+  Stream<void> get close => _closeController.stream;
+
+  final _saveController = new StreamController<WorkItem>.broadcast(sync: true);
+
+  /// Publishes events when save.
+  @Output()
+  Stream<WorkItem> get save => _saveController.stream;
+
   WorkItem workItem = new WorkItem();
 
   String memberInputText = '';
@@ -82,7 +94,7 @@ class WorkItemDetailComponent implements OnActivate  {
   WorkItemCheckItem selectedCheckItem;
   String checkItemEntry;
 
-  WorkItemDetailComponent(this._authService, this._userService, this._initiativeService, this._workItemService, this._router, this._location)  {
+  WorkItemDetailComponent(this._authService, this._userService, this._workItemService)  {
 
     initializeDateFormatting(Intl.defaultLocale , null);
 
@@ -103,26 +115,14 @@ class WorkItemDetailComponent implements OnActivate  {
   static final String checkItemLabel =  WorkItemMessage.label('Check Item');
 
   static final String saveButtonLabel = CommonMessage.buttonLabel('Save');
-  static final String backButtonLabel = CommonMessage.buttonLabel('Back');
-
+  static final String closeButtonLabel = CommonMessage.buttonLabel('Close');
 
   @override
-  Future onActivate(RouterState previous, RouterState current) async {
-    if (this._authService.authenticatedUser == null) {
-      _router.navigate(AppRoutes.authRoute.toUrl());
-    }
+  void ngOnInit() async {
 
-
-    String initiativeId = _router.current.parameters[AppRoutes
-        .initiativeIdParameter];
-
-    if (initiativeId != null) {
-      initiative = await _initiativeService.getInitiativeById(initiativeId, withWorkItems: false);
-    }
-
-    String id = _router.current.parameters[AppRoutes.workItemIdParameter];
-    if (id != null) {
-      workItem = await _workItemService.getWorkItemById(id);
+    // Clone the object to have an intermediate
+    if (selectedWorkItem != null) {
+      workItem = selectedWorkItem.clone();
     }
 
     List<User> users = await _userService.getUsersByOrganizationId(_authService.selectedOrganization?.id, withProfile: true);
@@ -141,7 +141,6 @@ class WorkItemDetailComponent implements OnActivate  {
         }
       });
 
-
     if (initiative.stages != null && initiative.stages.isNotEmpty) {
       stageOptions = new SelectionOptions.fromList( initiative.stages );
 
@@ -154,10 +153,10 @@ class WorkItemDetailComponent implements OnActivate  {
           }
         });
 
-      if  (workItem.stage == null) {
+      if (workItem.stage == null) {
         workItem.stage = initiative.stages.first;
-        stageSingleSelectModel.select(workItem.stage);
       }
+      stageSingleSelectModel.select(workItem.stage);
     }
   }
 
@@ -165,14 +164,15 @@ class WorkItemDetailComponent implements OnActivate  {
     workItem.assignedTo.remove(user);
   }
 
-  Future<Null> save() async {
+  void saveWorkItem() async {
     await _workItemService.saveWorkItem(initiative.id, workItem);
-    goBack();
+    _saveController.add(workItem);
+
+    closeDetail();
   }
 
-
-  void goBack() {
-    _location.back();
+  void closeDetail() {
+    _closeController.add(null);
   }
 
   String get memberLabelRenderer {
@@ -271,7 +271,6 @@ class WorkItemDetailComponent implements OnActivate  {
 @Component(
     selector: 'member-renderer',
     template: '<div left-icon class="avatar-icon" [style.background-image]="disPlayurl"></div>{{disPlayName}}',
-
     styles: const [
       ''
     ],

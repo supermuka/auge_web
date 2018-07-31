@@ -1,9 +1,8 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
+
 import 'dart:async';
-//import 'package:intl/intl.dart';
-//import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
@@ -19,11 +18,10 @@ import 'package:auge_web/src/initiative/initiative_service.dart';
 import 'package:auge_web/src/work_item/work_items_kanban_component.dart';
 import 'package:auge_web/src/work_item/work_items_list_component.dart';
 
-import 'package:auge_web/services/app_routes.dart';
 
 @Component(
     selector: 'auge-work-items',
-    providers: const [InitiativeService, WorkItemService],
+    providers: const [WorkItemService],
     directives: const [
       coreDirectives,
       routerDirectives,
@@ -37,41 +35,74 @@ import 'package:auge_web/services/app_routes.dart';
       'work_items_component.css'
     ])
 
-class WorkItemsComponent extends Object with CanReuse implements OnActivate {
+class WorkItemsComponent extends Object /* with CanReuse implements OnActivate  */{
 
+  @Input()
+  Initiative initiative;
+
+  bool fowardAddWorkItem;
+/*
+  final List<RouteDefinition> routes = [
+
+  new RouteDefinition(
+  routePath: AppRoutes.appLayoutHomeRoute,
+  component: app_layout_home.AppLayoutHomeComponentNgFactory,
+  useAsDefault: true
+  ),
+
+  new RouteDefinition(
+  routePath: AppRoutes.workItemsListRoute,
+  component: work_items_list_component.WorkItemsListComponentNgFactory,
+  // useAsDefault: true
+  ),
+
+  new RouteDefinition(
+  routePath: AppRoutes.workItemsKanbanRoute,
+  component: work_items_kanban_component.WorkItemsKanbanComponentNgFactory,
+  // useAsDefault: true
+  )];
+*/
   String selectedView = 'list';
 
   final AuthService _authService;
   final AppLayoutService _appLayoutService;
   final InitiativeService _initiativeService;
-  final Router _router;
+
+
   String _selectedInitiativeId;
 
-  Initiative initiative = new Initiative();
+  // Initiative initiative = new Initiative();
 
-  WorkItemsComponent(this._authService, this._appLayoutService, this._initiativeService, this._router) {
+  WorkItemsComponent(this._authService, this._appLayoutService, this._initiativeService)  {
    // initializeDateFormatting(Intl.defaultLocale);
   }
+/*
+  void ngOnInit() {
+    print('ngOnInit - initiative');
+    print(initiative.name);
+
+  }
+
+  */
 
   String label(String label) =>  InitiativeMessage.label(label);
 
+  /*
   @override
   Future onActivate(RouterState routerStateprevious, RouterState routerStateCurrent) async {
     if (this._authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
     }
 
-
     _appLayoutService.headerTitle = WorkItemMessage.label('Work Items');
 
     _selectedInitiativeId = routerStateCurrent.parameters[AppRoutes.initiativeIdParameter];
 
     if (_selectedInitiativeId != null && _selectedInitiativeId.isNotEmpty) {
-
       initiative = await _initiativeService.getInitiativeById(_selectedInitiativeId, withWorkItems: true);
-
     }
   }
+  */
 
   String circleColor(Initiative initiative)  {
     String color;
@@ -96,8 +127,42 @@ class WorkItemsComponent extends Object with CanReuse implements OnActivate {
     selectedView = view;
   }
 
+  /*
+  void goTo()  {
+    String url;
+    print('****');
+    print(selectedView);
+
+    if (selectedView == 'list') {
+      url = AppRoutes.workItemsListRoute.toUrl(parameters: {
+        AppRoutes.initiativeIdParameter: initiative.id
+      });
+    } else {
+      url = AppRoutes.workItemsKanbanRoute.toUrl(parameters: {
+        AppRoutes.initiativeIdParameter: initiative.id
+      });
+    }
+
+    print(url);
+
+    _router.navigate(url);
+  }
+*/
+
+  void viewFowardDetail(bool fowardAddWorkItem) {
+    this.fowardAddWorkItem = fowardAddWorkItem;
+  }
+
+  /*
+  @override
+  void onActivate(RouterState previous, RouterState current) {
+  }
+
+
   @override
   Future<bool> canReuse(RouterState current, RouterState next) async {
     return true;
   }
+  */
+
 }

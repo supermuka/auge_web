@@ -1,31 +1,5 @@
 @import 'package:angular_components/css/material/material';
-@import 'package:angular_components/css/material/shadow';
 @import 'package:angular_components/material_button/mixins';
-@import 'package:angular_components/material_dialog/mixins';
-
-
-.width-300 {
-   width: 300px;
-}
-
-.shadow-box {
-   @include material-shadow();
-}
-
-.shadow-box-material-list {
-   @include material-shadow();
-   overflow: hidden;
-   margin: 8px;
-   padding: 8px;
-   line-height: 1;
-   max-width: 1280px;
-   min-width: 600px;
-}
-
-.material-list-item-content {
-   max-width: 840px;
-   max-width: 840px;
-}
 
 material-fab {
     position: fixed !important;
@@ -36,84 +10,38 @@ material-fab {
     right: 32px;
 }
 
-
-.progress-state-bar {
-/*
-   display: table;
-   table-layout: fixed;
-   */
-
-   display: inline-flex;
-   /* flex-direction: row; */
-   /*  text-align: center; */
-   width: 100%;
-   height: 16px;
-   right: 0px;
-
-}
-
-.progress-state {
-  /* display: inline-block; */
-  width: 100%;
-}
-
-
-.circle {
-	border-radius: 50%;
-    margin: 0px;
-    padding: 0px;
-	width: 32px;
-	height: 32px;
-	background-color: $mat-gray;
-	/* width and height can be anything, as long as they're equal */
-}
-
-.row-spacer {
-	margin-left: 8px;
-	margin-right: 8px;
-}
-
 .tooltip-card-bar {
   display: inline-block;
   flex-direction: row;
   height: 16px;
-   width: 16px;
+  width: 16px;
   line-height: 1;
-
 }
-
-.horizontal {
-/*
-   display: inline-flex;
-   flex-direction: row;
-   */
-   display: grid;
-   grid-row-start: 1;
-   grid-row-end: 1;
-   grid-auto-flow: column;
-   grid-template-columns: auto;
-   align-items: center;
-   width: 128px;
-}
-
-material-list div hr {
-   margin: 2px;
-   padding: 2px;
-}
-
-material-list div:last-child hr { display: none; }
 
 .custom-expansionpanel-panel-specific-name-width {
-  width: 600px;
+  width: 400px;
 }
 
-.custom-expansionpanel-width-true {
-  position: relative;
-  width: 100vw;
-  left: calc(-50vw + 50%);
+.progress-bar {
+  display: flex;;
+  height: 16px;
+
+  flex-wrap: nowrap;
+  justify-items: center;
+
 }
 
 .progress-bar span {
+  display: inline-flex;
+  min-width: 0px;
+}
+
+.circle {
   display: inline-block;
-  height: 16px;
+  border-radius: 50%;
+  margin: 0 $mat-grid;
+  width: 32px;
+  height: 32px;
+  background-color: $mat-gray;
+  /* width and height can be anything, as long as they're equal */
 }

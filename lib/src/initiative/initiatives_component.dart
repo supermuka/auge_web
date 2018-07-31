@@ -18,6 +18,9 @@ import 'package:auge_web/src/initiative/initiative_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
 import 'package:auge_web/src/initiative/initiative_detail_component.dart';
 
+import 'package:auge_web/src/work_item/work_items_component.dart';
+import 'package:auge_web/src/work_item/work_items_list_component.dart';
+
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 
 import 'package:auge_web/services/app_routes.dart';
@@ -25,6 +28,7 @@ import 'package:auge_web/services/app_routes.dart';
 // ignore_for_file: uri_has_not_been_generated
 import 'package:auge_web/src/app_layout/app_layout_home.template.dart' as app_layout_home;
 import 'package:auge_web/src/initiative/initiative_detail_component.template.dart' as initiative_detail_component;
+import 'package:auge_web/src/work_item/work_items_list_component.template.dart' as work_items_list_component;
 
 
 @Component(
@@ -34,7 +38,9 @@ import 'package:auge_web/src/initiative/initiative_detail_component.template.dar
       coreDirectives,
       routerDirectives,
       materialDirectives,
-      InitiativeDetailComponent
+      InitiativeDetailComponent,
+      WorkItemsComponent,
+      WorkItemsListComponent,
     ],
     templateUrl: 'initiatives_component.html',
     styleUrls: const [
@@ -74,6 +80,8 @@ class InitiativesComponent extends Object with CanReuse implements OnActivate, O
 
      // useAsDefault: true
     ),
+
+
   ];
 
   MenuModel<MenuItem> menuModel;
@@ -145,11 +153,6 @@ class InitiativesComponent extends Object with CanReuse implements OnActivate, O
     return (stateWorkItemsCount / workItemsCount * widthTotal).toString();
   }
 
-  @override
-  Future<bool> canReuse(RouterState current, RouterState next) async {
-     return true;
-  }
-
   void viewDetail(bool detailVisible) {
     this.detailVisible = detailVisible;
   }
@@ -160,6 +163,11 @@ class InitiativesComponent extends Object with CanReuse implements OnActivate, O
     } else {
       initiative.cloneTo(initiatives[initiatives.indexOf(selectedInitiative)]);
     }
+  }
+
+  @override
+  Future<bool> canReuse(RouterState current, RouterState next) async {
+    return true;
   }
 }
 

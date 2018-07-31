@@ -74,11 +74,6 @@ class MeasuresComponent extends Object {
 
   toInt(double value) => value?.toInt();
 
-  @override
-  Future<bool> canReuse(RouterState current, RouterState next) async {
-    return true;
-  }
-
   List<Measure> get measures {
     return objective?.measures;
   }

@@ -1,10 +1,52 @@
 <div class="container-list">
+    <material-expansionpanel disabled
+                             [alwaysHideExpandIcon]="true"
+                             [expanded]="true"
+                             [showSaveCancel]="false">
+        <div name>
+            <span><strong>Work Items</strong></span>
+        </div>
+        <div action>
+            <!-- material-button (trigger)="selectView('list')">
+                <material-icon icon="search"></material-icon>
+            </material-button -->
+            <material-button (trigger)="selectView('list')">
+                <material-icon icon="view_list"></material-icon>
+            </material-button>
+            <material-button (trigger)="selectView('kanban')">
+                <material-icon icon="view_column"></material-icon>
+            </material-button>
+            <!-- material-button (trigger)="goTo()">
+                <material-icon icon="open_in_new"></material-icon>
+            </material-button -->
+            <material-button (trigger)="viewFowardDetail(true)">
+                <material-icon icon="add"></material-icon>
+            </material-button>
+        </div>
+        <!-- div class="container">
+            <material-button tabbable [tabindex]="'0'" (trigger)="selectView('list')">Lista
+                <material-icon icon="view_list"></material-icon>
+            </material-button>
+            <material-button tabbable [tabindex]="'1'" (trigger)="selectView('kanban')">Kanban
+                <material-icon icon="view_column"></material-icon>
+            </material-button>
+        </div -->
+        <div *ngIf="selectedView == 'list'">
+            <auge-work-items-list [fowardAddWorkItem]="fowardAddWorkItem" [initiative]="initiative" (closeDetail)="viewFowardDetail(false)"></auge-work-items-list>
+        </div>
+        <div *ngIf="selectedView == 'kanban'">
+            <auge-work-items-kanban [initiative]="initiative"></auge-work-items-kanban>
+        </div>
+    </material-expansionpanel>
+</div>
+<!-- router-outlet [routes]="routes"></router-outlet -->
+
+<!-- div class="container-list">
     <div class="container">
         <div>
             <h4><strong>{{initiative?.name}}</strong></h4>
         </div>
-        <span class="row-spacer"></span>
-        <div >
+        <div>
             <span class="horizontal">
                 <div class="progress-state-bar" *ngFor="let state of initiative?.stateWorkItemsCount?.keys" clickableTooltipTarget
                      keyboardOnlyFocusIndicator
@@ -38,7 +80,6 @@
                 <span class="row-spacer"></span>
             </span>
         </div>
-
     </div>
 
     <div class="container">
@@ -56,5 +97,4 @@
     <div *ngIf="selectedView == 'kanban'">
         <auge-work-items-kanban [initiative]="initiative"></auge-work-items-kanban>
     </div>
-</div>
-
+</div -->

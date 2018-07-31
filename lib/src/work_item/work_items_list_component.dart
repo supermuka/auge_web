@@ -9,7 +9,6 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:angular_components/material_menu/material_menu.dart';
 import 'package:angular_components/model/menu/menu.dart';
 
 import 'package:auge_server/model/user.dart';
@@ -19,90 +18,90 @@ import 'package:auge_web/message/messages.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/work_item/work_item_service.dart';
+import 'package:auge_web/src/auth/auth_service.dart';
+import 'package:auge_web/src/app_layout/app_layout_service.dart';
+import 'package:auge_web/src/initiative/initiative_service.dart';
 
-import 'package:auge_web/services/app_routes.dart';
+import 'package:auge_web/src/work_item/work_item_detail_component.dart';
 
-// ignore_for_file: uri_has_not_been_generated
-import 'package:auge_web/src/app_layout/app_layout_home.template.dart' as app_layout_home;
-import 'package:auge_web/src/work_item/work_item_detail_component.template.dart' as work_item_detail_component;
 
 @Component(
     selector: 'auge-work-items-list',
-    providers: const [WorkItemService],
+    providers: const [InitiativeService, WorkItemService],
     directives: const [
       coreDirectives,
       routerDirectives,
       materialDirectives,
+      WorkItemDetailComponent,
     ],
     pipes: const [commonPipes],
     templateUrl: 'work_items_list_component.html',
     styleUrls: const [
       'work_items_list_component.css'
     ])
-
-class WorkItemsListComponent extends Object /* with CanReuse */ {
-
-  final List<RouteDefinition> routes = [
-    new RouteDefinition(
-        routePath: AppRoutes.appLayoutHomeRoute,
-        component: app_layout_home.AppLayoutHomeComponentNgFactory,
-        useAsDefault: true
-    ),
-
-    new RouteDefinition(
-      routePath: AppRoutes.itemTrabalhoDetalheAdicionarRoute,
-      component: work_item_detail_component.WorkItemDetailComponentNgFactory,
-    ),
-
-    new RouteDefinition(
-      routePath: AppRoutes.itemTrabalhoDetalheRoute,
-      component: work_item_detail_component.WorkItemDetailComponentNgFactory,
-    ),
-  ];
+class WorkItemsListComponent extends Object /* with CanReuse implements OnActivate  */ {
 
   final WorkItemService _workItemService;
-  final Router _router;
+
+
+
+  // Embedded into initiative list item
+  bool embedded = true;
+
+  @Input()
+  set fowardAddWorkItem(bool fowardAddWorkItem) {
+    viewDetail(fowardAddWorkItem);
+  }
 
   @Input()
   Initiative initiative;
+
+  final _closeController = new StreamController<void>.broadcast(sync: true);
+
+  /// Publishes events when close.
+  @Output()
+  Stream<void> get closeDetail => _closeController.stream;
 
   WorkItem selectedWorkItem;
 
   MenuModel<MenuItem> menuModel;
 
-  WorkItemsListComponent(this._workItemService, this._router) {
+  bool detailVisible;
+
+  WorkItemsListComponent(this._workItemService) {
     initializeDateFormatting(Intl.defaultLocale);
 
-    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMessage.buttonLabel('Edit'), icon: new Icon('edit') , action: () => goToDetail(selectedWorkItem)), new MenuItem(CommonMessage.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete(selectedWorkItem))])], icon: new Icon('menu'));
-
+   menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMessage.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)), new MenuItem(CommonMessage.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
   }
+
+/*
+  // From navigate, list of work items to one
+  @override
+  Future onActivate(RouterState routerStateprevious, RouterState routerStateCurrent) async {
+    if (this._authService.authenticatedUser == null) {
+      _router.navigate(AppRoutes.authRoute.toUrl());
+    }
+
+    _appLayoutService.headerTitle = WorkItemMessage.label('Work Items');
+    _appLayoutService.searchEnabled = true;
+
+    String _selectedInitiativeId = routerStateCurrent.parameters[AppRoutes.initiativeIdParameter];
+
+    if (_selectedInitiativeId != null && _selectedInitiativeId.isNotEmpty) {
+      initiative = await _initiativeService.getInitiativeById(_selectedInitiativeId, withWorkItems: true);
+    }
+
+    embedded = false;
+  }
+*/
 
   String label(String label) =>  WorkItemMessage.label(label);
 
   void selectWorkItem(WorkItem workItem) => this.selectedWorkItem = workItem;
 
-  Future goToDetail(WorkItem workItem) async {
-    String url;
-    if (workItem == null) {
-      url = AppRoutes.itemTrabalhoDetalheAdicionarRoute.toUrl(parameters: {
-        AppRoutes.initiativeIdParameter: initiative.id
-      });
-    } else {
-      url = AppRoutes.itemTrabalhoDetalheRoute.toUrl(parameters: {
-        AppRoutes.initiativeIdParameter: initiative.id,
-        AppRoutes.workItemIdParameter: workItem.id
-      });
-    }
-    _router.navigate(url);
-   }
-
-  Future<Null> delete(WorkItem workItem) async {
-    try {
-      await _workItemService.deleteWorkItem(workItem.id);
-      initiative.workItems.remove(workItem);
-    } catch(e) {
-      print(e);
-    }
+  void delete() async {
+    await _workItemService.deleteWorkItem(selectedWorkItem.id);
+    initiative.workItems.remove(selectedWorkItem);
   }
 
   String dueDateColor(WorkItem workItem) {
@@ -118,4 +117,28 @@ class WorkItemsListComponent extends Object /* with CanReuse */ {
   String userUrlImage(User userMember) {
     return common_service.userUrlImage(userMember);
   }
+
+  void viewDetail(bool detailVisible) {
+
+    if (this.detailVisible && !detailVisible) {
+      _closeController.add(null);
+    }
+
+    this.detailVisible = detailVisible;
+  }
+
+  void changeListItemDetail(WorkItem workItem) {
+    if (selectedWorkItem == null) {
+      workItems.add(workItem);
+    } else {
+      workItem.cloneTo(workItems[workItems.indexOf(selectedWorkItem)]);
+    }
+  }
+
+/*
+  @override
+  Future<bool> canReuse(RouterState current, RouterState next) async {
+    return true;
+  }
+*/
 }

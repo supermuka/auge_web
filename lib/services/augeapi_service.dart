@@ -2,10 +2,13 @@
 // Author: Samuel C. Schwebel
 
 import 'dart:html';
+import 'dart:async';
 
 import 'package:angular/core.dart';
 
 import 'package:http/browser_client.dart';
+import 'package:http/src/streamed_response.dart';
+import 'package:http/src/base_request.dart';
 import 'package:auge_server/client/augeapi.dart';
 import 'package:auge_server/client/objectiveaugeapi.dart';
 import 'package:auge_server/client/initiativeaugeapi.dart';
@@ -14,7 +17,7 @@ import 'package:auge_server/client/initiativeaugeapi.dart';
 @Injectable()
 class AugeApiService {
 
-  final BrowserClient _client;
+  final BrowserClientAuth _client;
 
   final String _protocol = window.location.protocol;
   //final String _serverUrl = '35.196.72.249:8091/'; // GCloud
@@ -55,6 +58,26 @@ class AugeApiService {
     }
     return _objectiveAugeApi;
   }
+
+}
+
+/// Extends to remove message on client about user-agent and content-length and treat authorization
+class BrowserClientAuth extends BrowserClient {
+
+  BrowserClientAuth();
+
+  Future<StreamedResponse> send(BaseRequest request) async {
+
+    //request.headers['authorization'] = 'Bearer ${this.key}';
+    //request.headers['Cookie'] = null;
+
+    request.headers.remove('user-agent');
+    request.headers.remove('content-length');
+
+    return super.send(request);
+
+  }
+
 
 
 }
