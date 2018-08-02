@@ -61,7 +61,9 @@ class InitiativesComponent extends Object with CanReuse implements OnActivate, O
   List<Initiative> _initiatives = new List();
   Initiative selectedInitiative;
 
-  bool expanded;
+  bool expanded = false;
+  List<bool> wideControl = new List();
+  List<bool> expandedControl = new List();
 
   final List<RouteDefinition> routes = [
     new RouteDefinition(
@@ -102,6 +104,9 @@ class InitiativesComponent extends Object with CanReuse implements OnActivate, O
     _appLayoutService.headerTitle = InitiativeMessage.label('Initiatives');
 
     _initiatives = await _initiativeService.getInitiatives(_authService.selectedOrganization?.id, withWorkItems: true);
+
+    wideControl = new List<bool>.filled(_initiatives.length, false);
+    expandedControl = new List<bool>.filled(_initiatives.length, false);
 
     _appLayoutService.searchEnabled = true;
 

@@ -18,12 +18,9 @@ import 'package:auge_web/message/messages.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/work_item/work_item_service.dart';
-import 'package:auge_web/src/auth/auth_service.dart';
-import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/src/initiative/initiative_service.dart';
 
 import 'package:auge_web/src/work_item/work_item_detail_component.dart';
-
 
 @Component(
     selector: 'auge-work-items-list',
@@ -43,18 +40,13 @@ class WorkItemsListComponent extends Object /* with CanReuse implements OnActiva
 
   final WorkItemService _workItemService;
 
-
-
-  // Embedded into initiative list item
-  bool embedded = true;
+  @Input()
+  Initiative initiative;
 
   @Input()
   set fowardAddWorkItem(bool fowardAddWorkItem) {
     viewDetail(fowardAddWorkItem);
   }
-
-  @Input()
-  Initiative initiative;
 
   final _closeController = new StreamController<void>.broadcast(sync: true);
 
@@ -62,38 +54,17 @@ class WorkItemsListComponent extends Object /* with CanReuse implements OnActiva
   @Output()
   Stream<void> get closeDetail => _closeController.stream;
 
+  bool detailVisible;
+
   WorkItem selectedWorkItem;
 
   MenuModel<MenuItem> menuModel;
 
-  bool detailVisible;
-
   WorkItemsListComponent(this._workItemService) {
     initializeDateFormatting(Intl.defaultLocale);
 
-   menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMessage.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)), new MenuItem(CommonMessage.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
+    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMessage.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)), new MenuItem(CommonMessage.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
   }
-
-/*
-  // From navigate, list of work items to one
-  @override
-  Future onActivate(RouterState routerStateprevious, RouterState routerStateCurrent) async {
-    if (this._authService.authenticatedUser == null) {
-      _router.navigate(AppRoutes.authRoute.toUrl());
-    }
-
-    _appLayoutService.headerTitle = WorkItemMessage.label('Work Items');
-    _appLayoutService.searchEnabled = true;
-
-    String _selectedInitiativeId = routerStateCurrent.parameters[AppRoutes.initiativeIdParameter];
-
-    if (_selectedInitiativeId != null && _selectedInitiativeId.isNotEmpty) {
-      initiative = await _initiativeService.getInitiativeById(_selectedInitiativeId, withWorkItems: true);
-    }
-
-    embedded = false;
-  }
-*/
 
   String label(String label) =>  WorkItemMessage.label(label);
 

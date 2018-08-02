@@ -31,6 +31,8 @@ body {
 
   /* material design specification - large = initial */
   max-width: 1280px;
+  width: 100%;
+
   padding: 4px;
 
   /* material design spectification - xsmal/large = initial*/

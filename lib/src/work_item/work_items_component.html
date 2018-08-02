@@ -1,4 +1,4 @@
-<div class="container-list">
+<div class="custom-container-list">
     <material-expansionpanel disabled
                              [alwaysHideExpandIcon]="true"
                              [expanded]="true"
@@ -7,30 +7,16 @@
             <span><strong>Work Items</strong></span>
         </div>
         <div action>
-            <!-- material-button (trigger)="selectView('list')">
-                <material-icon icon="search"></material-icon>
-            </material-button -->
             <material-button (trigger)="selectView('list')">
                 <material-icon icon="view_list"></material-icon>
             </material-button>
             <material-button (trigger)="selectView('kanban')">
                 <material-icon icon="view_column"></material-icon>
             </material-button>
-            <!-- material-button (trigger)="goTo()">
-                <material-icon icon="open_in_new"></material-icon>
-            </material-button -->
             <material-button (trigger)="viewFowardDetail(true)">
                 <material-icon icon="add"></material-icon>
             </material-button>
         </div>
-        <!-- div class="container">
-            <material-button tabbable [tabindex]="'0'" (trigger)="selectView('list')">Lista
-                <material-icon icon="view_list"></material-icon>
-            </material-button>
-            <material-button tabbable [tabindex]="'1'" (trigger)="selectView('kanban')">Kanban
-                <material-icon icon="view_column"></material-icon>
-            </material-button>
-        </div -->
         <div *ngIf="selectedView == 'list'">
             <auge-work-items-list [fowardAddWorkItem]="fowardAddWorkItem" [initiative]="initiative" (closeDetail)="viewFowardDetail(false)"></auge-work-items-list>
         </div>
@@ -39,62 +25,3 @@
         </div>
     </material-expansionpanel>
 </div>
-<!-- router-outlet [routes]="routes"></router-outlet -->
-
-<!-- div class="container-list">
-    <div class="container">
-        <div>
-            <h4><strong>{{initiative?.name}}</strong></h4>
-        </div>
-        <div>
-            <span class="horizontal">
-                <div class="progress-state-bar" *ngFor="let state of initiative?.stateWorkItemsCount?.keys" clickableTooltipTarget
-                     keyboardOnlyFocusIndicator
-                     tabindex="0"
-                     size="medium"
-                     #clickableRef="tooltipTarget">
-                    <span [style.background-color]="'hsl(' + state?.colorHue + ', ' + state?.colorSaturation + '%, ' + state?.colorLightness + '%)'" [style.width]="widthState(initiative?.workItemsCount, initiative?.stateWorkItemsCount[state], 128) + 'px'"></span>
-                    <material-tooltip-card [for]="clickableRef">
-                        <div *ngFor="let stage of initiative?.stageWorkItemsCount?.keys; let iee = index">
-                            <div *ngIf="iee == 0 || initiative?.stageWorkItemsCount?.keys?.elementAt(iee-1).state != initiative?.stageWorkItemsCount?.keys?.elementAt(iee)?.state">
-                                <br/>
-                                <div class="tooltip-card-bar" [style.background-color]="'hsl(' + stage.state.colorHue + ', ' + stage.state.colorSaturation + '%, ' + stage.state.colorLightness + '%)'">
-                                </div>&nbsp;<strong>{{stage.state.name}}</strong><br/>
-                            </div>
-
-                            <b>{{initiative?.stageWorkItemsCount[stage]}}</b>&nbsp;{{stage.name}}
-                        </div>
-                    </material-tooltip-card>
-                 </div>
-
-                <span class="row-spacer"></span>
-                <div *ngIf="initiative?.workItemsCount != 0" class="circle" [style.background-color]="circleColor(initiative)" clickableTooltipTarget
-                     keyboardOnlyFocusIndicator
-                     tabindex="0"
-                     size="medium"
-                     #clickableRefCircle="tooltipTarget">
-                    <material-tooltip-card [for]="clickableRefCircle" >
-                        <p><b>{{initiative?.workItemsOverDueCount}} / {{initiative?.workItemsCount}}</b>&nbsp;{{label('Work Items Over Due')}}</p>
-                    </material-tooltip-card>
-                </div>
-                <span class="row-spacer"></span>
-            </span>
-        </div>
-    </div>
-
-    <div class="container">
-        <material-button  raised (trigger)="selectView('list')">Lista
-            <material-icon icon="view_list"></material-icon>
-        </material-button>
-        <material-button raised (trigger)="selectView('kanban')">Kanban
-            <material-icon icon="view_column"></material-icon>
-        </material-button>
-    </div>
-
-    <div *ngIf="selectedView == 'list'">
-       <auge-work-items-list [initiative]="initiative"></auge-work-items-list>
-    </div>
-    <div *ngIf="selectedView == 'kanban'">
-        <auge-work-items-kanban [initiative]="initiative"></auge-work-items-kanban>
-    </div>
-</div -->

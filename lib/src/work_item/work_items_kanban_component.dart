@@ -22,12 +22,6 @@ import 'package:auge_web/message/messages.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/work_item/work_item_service.dart';
 
-import 'package:auge_web/services/app_routes.dart';
-
-// ignore_for_file: uri_has_not_been_generated
-import 'package:auge_web/src/app_layout/app_layout_home.template.dart' as app_layout_home;
-import 'package:auge_web/src/work_item/work_item_detail_component.template.dart' as work_item_detail_component;
-
 @Component(
     selector: 'auge-work-items-kanban',
     providers: const [WorkItemService],
@@ -42,50 +36,40 @@ import 'package:auge_web/src/work_item/work_item_detail_component.template.dart'
       'work_items_kanban_component.css'
     ])
 
-class WorkItemsKanbanComponent extends Object /* with CanReuse */ implements OnInit {
-
-  final List<RouteDefinition> routes = [
-
-    new RouteDefinition(
-        routePath: AppRoutes.appLayoutHomeRoute,
-        component: app_layout_home.AppLayoutHomeComponentNgFactory,
-        useAsDefault: true
-    ),
-
-    new RouteDefinition(
-      routePath: AppRoutes.itemTrabalhoDetalheAdicionarRoute,
-      component: work_item_detail_component.WorkItemDetailComponentNgFactory,
-      // useAsDefault: true
-    ),
-
-    new RouteDefinition(
-      routePath: AppRoutes.itemTrabalhoDetalheRoute,
-      component: work_item_detail_component.WorkItemDetailComponentNgFactory,
-      // useAsDefault: true
-    ),
-  ];
+class WorkItemsKanbanComponent extends Object implements OnInit {
 
   final WorkItemService _workItemService;
-  final Router _router;
-  String _chaveIniciativaSelecionada;
 
   @Input()
   Initiative initiative;
 
+  @Input()
+  set fowardAddWorkItem(bool fowardAddWorkItem) {
+    viewDetail(fowardAddWorkItem);
+  }
+
+  final _closeController = new StreamController<void>.broadcast(sync: true);
+
+  /// Publishes events when close.
+  @Output()
+  Stream<void> get closeDetail => _closeController.stream;
+
+  bool detailVisible;
+
+  WorkItem selectedWorkItem;
   List<KanbanColumn> kanbanColumns;
 
   WorkItem workItemDnD;
-  WorkItem selectedWorkItem;
 
   KanbanColumn kanbanColumnDnD;
 
   MenuModel<MenuItem> menuModel;
 
 
-  WorkItemsKanbanComponent(this._workItemService, this._router) {
+  WorkItemsKanbanComponent(this._workItemService) {
     initializeDateFormatting(Intl.defaultLocale);
 
-    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMessage.buttonLabel('Edit'), icon: new Icon('edit') , action: () => goToDetail(selectedWorkItem)), new MenuItem(CommonMessage.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete(selectedWorkItem))])], icon: new Icon('menu'));
+    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMessage.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)), new MenuItem(CommonMessage.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
   }
 
   String label(String label) =>  WorkItemMessage.label(label);
@@ -104,39 +88,6 @@ class WorkItemsKanbanComponent extends Object /* with CanReuse */ implements OnI
         kanbanColumns.singleWhere((ik) => ik.stage.id == it.stage.id).columnWorkItems.add(it);
     });
   }
-
-  void goTo(WorkItem workItem) {
-    String url;
-    if (workItem == null) {
-      url = AppRoutes.itemTrabalhoDetalheAdicionarRoute.toUrl(parameters: {
-        AppRoutes.initiativeIdParameter: initiative.id
-      });
-    } else {
-      url = AppRoutes.itemTrabalhoDetalheRoute.toUrl(parameters: {
-        AppRoutes.initiativeIdParameter: initiative.id,
-        AppRoutes.workItemIdParameter: workItem.id
-      });
-    }
-
-    _router.navigate(url);
-
-  }
-
-  Future goToDetail(WorkItem workItem) async {
-    String url;
-    if (workItem == null) {
-      url = AppRoutes.itemTrabalhoDetalheAdicionarRoute.toUrl(parameters: {
-        AppRoutes.initiativeIdParameter: initiative.id
-      });
-    } else {
-      url = AppRoutes.itemTrabalhoDetalheRoute.toUrl(parameters: {
-        AppRoutes.initiativeIdParameter: initiative.id,
-        AppRoutes.workItemIdParameter: workItem.id
-      });
-    }
-    _router.navigate(url);
-  }
-
 
   void drag(html.MouseEvent ev, KanbanColumn kanbanColumn, WorkItem workItem) {
     kanbanColumnDnD = kanbanColumn;
@@ -162,13 +113,9 @@ class WorkItemsKanbanComponent extends Object /* with CanReuse */ implements OnI
     workItemDnD = null;
   }
 
-  Future<Null> delete(WorkItem workItem) async {
-    try {
-      await _workItemService.deleteWorkItem(workItem.id);
-      initiative.workItems.remove(workItem);
-    } catch(e) {
-      print(e);
-    }
+  void delete() async {
+    await _workItemService.deleteWorkItem(selectedWorkItem.id);
+    initiative.workItems.remove(selectedWorkItem);
   }
 
   void selectWorkItem(WorkItem workItem) => this.selectedWorkItem = workItem;
@@ -185,6 +132,23 @@ class WorkItemsKanbanComponent extends Object /* with CanReuse */ implements OnI
     _workItemService.saveWorkItem(initiative.id, workItem);
   }
 
+  void viewDetail(bool detailVisible) {
+
+    if (this.detailVisible && !detailVisible) {
+      _closeController.add(null);
+    }
+
+    this.detailVisible = detailVisible;
+  }
+
+  void changeListItemDetail(WorkItem workItem) {
+    if (selectedWorkItem == null) {
+      kanbanColumns.singleWhere((ik) => ik.stage.id == workItem.stage.id).columnWorkItems.add(workItem);
+    } else {
+      List<WorkItem> workItems = kanbanColumns.singleWhere((ik) => ik.stage.id == workItem.stage.id).columnWorkItems;
+      workItem.cloneTo(workItems[workItems.indexOf(selectedWorkItem)]);
+    }
+  }
 }
 
 class KanbanColumn {

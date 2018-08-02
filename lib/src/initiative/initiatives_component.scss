@@ -2,12 +2,12 @@
 @import 'package:angular_components/material_button/mixins';
 
 material-fab {
-    position: fixed !important;
-    z-index: 9999999;
-    background-color: $mat-red;
-    color: $mat-white;
-    float: right;
-    right: 32px;
+  position: fixed !important;
+  z-index: 9999999;
+  background-color: $mat-red;
+  color: $mat-white;
+  float: right;
+  right: 32px;
 }
 
 .tooltip-card-bar {
@@ -44,4 +44,18 @@ material-fab {
   height: 32px;
   background-color: $mat-gray;
   /* width and height can be anything, as long as they're equal */
+}
+
+.expansionpanel-wide-true {
+
+ /*Reference: https://css-tricks.com/full-width-containers-limited-width-parents/*/
+
+  position: relative;
+  width: calc(100vw - 5%);
+  left: 50%;
+  right: 50%;
+  margin-left: calc(-50vw + 5%);
+  margin-right: calc(-50vw + 5%);
+
+  height: calc(100vh - 5%);
 }

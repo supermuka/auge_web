@@ -2,7 +2,6 @@
     <material-icon icon="add"></material-icon>
 </material-fab -->
 <material-expansionpanel-set>
-    <br/>
     <div *ngFor="let iWorkItem of workItems">
         <material-expansionpanel disabled
                                  [expanded]="false"
@@ -54,5 +53,4 @@
         </material-expansionpanel>
     </div>
 </material-expansionpanel-set>
-<auge-work-item-detail *ngIf="detailVisible == true" [initiative]="initiative" [selectedWorkItem]="selectedWorkItem" (save)="changeListItemDetail($event)" (close)="viewDetail(false)">
-</auge-work-item-detail>
+<auge-work-item-detail *ngIf="detailVisible == true" [initiative]="initiative" [selectedWorkItem]="selectedWorkItem" (save)="changeListItemDetail($event)" (close)="viewDetail(false)"></auge-work-item-detail>
