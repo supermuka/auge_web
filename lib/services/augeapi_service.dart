@@ -9,9 +9,12 @@ import 'package:angular/core.dart';
 import 'package:http/browser_client.dart';
 import 'package:http/src/streamed_response.dart';
 import 'package:http/src/base_request.dart';
+
+import 'package:auge_server/augeconf.dart';
 import 'package:auge_server/client/augeapi.dart';
 import 'package:auge_server/client/objectiveaugeapi.dart';
 import 'package:auge_server/client/initiativeaugeapi.dart';
+
 
 /// Provide services for Server APIs access
 @Injectable()
@@ -71,13 +74,12 @@ class BrowserClientAuth extends BrowserClient {
     //request.headers['authorization'] = 'Bearer ${this.key}';
     //request.headers['Cookie'] = null;
 
+    request.headers.putIfAbsent('authorization',() => AugeConf.basicAuth);
+
     request.headers.remove('user-agent');
     request.headers.remove('content-length');
 
     return super.send(request);
 
   }
-
-
-
 }
