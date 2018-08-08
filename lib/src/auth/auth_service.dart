@@ -25,7 +25,7 @@ class AuthService  {
   AuthService(this._augeApiService);
 
     /// Return an [Organization] list for an eMail.
-  Future<Null> getAuthorizatedOrganizationsByUserId(String id) async {
+  getAuthorizatedOrganizationsByUserId(String id) async {
     List<UserProfileOrganization> usersOrganizations;
     if (id.isNotEmpty)
       usersOrganizations = await _augeApiService.augeApi.getAuthorizatedOrganizationsByUserId(id);

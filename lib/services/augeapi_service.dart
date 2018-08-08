@@ -27,8 +27,9 @@ class AugeApiService {
 
   //final String _serverUrl = '10.142.0.2:8091/'; // GCloud IP Local;
   //final String _serverUrl = '127.0.0.1:8091/'; // Local;
-  final String _serverUrl = 'localhost:8091/'; // Local;
+  //final String _serverUrl = 'localhost:8091/'; // Local;
   //final String _serverUrl = '35.231.201.73:8091/'; // GCloud
+  final String _serverUrl = '35.227.38.148:8091/'; // GCloud
 
   AugeApi _augeApi;
   InitiativeAugeApi _initiativeAugeApi;
@@ -74,7 +75,7 @@ class BrowserClientAuth extends BrowserClient {
     //request.headers['authorization'] = 'Bearer ${this.key}';
     //request.headers['Cookie'] = null;
 
-    request.headers.putIfAbsent('authorization',() => AugeConf.basicAuth);
+    // request.headers.putIfAbsent('authorization',() => AugeConf.basicAuth);
 
     request.headers.remove('user-agent');
     request.headers.remove('content-length');

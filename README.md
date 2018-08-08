@@ -15,12 +15,6 @@ https://kanbanize.com/kanban-resources/case-studies/kanban-work-breakdown-struct
 **ARQUITETURA - VISÃO DE IMPLEMENTAÇÃO**
 
 pub run build_runner serve
-pub run rpc:generate client -i lib/augeapi.dart -o lib/client -p 8091
-
-c:\dart-sdk-dev.63\bin\pub run rpc:generate client -i lib/augeapi.dart -o ../auge/lib/client -p 8091
-
-
-pub global activate discoveryapis_generator
 
 
 _i18l_
@@ -44,11 +38,6 @@ dart --snapshot=augeapi.dart.snapshot augeapi.dart
 https://github.com/dart-lang/sdk/wiki/Snapshots
 
 
-SSL
-
-https://www.digitalocean.com/community/tutorials/how-to-create-a-ssl-certificate-on-apache-for-debian-8
-https://certbot.eff.org/lets-encrypt/debianstretch-apache
-
 
 ICONS credits:
 
@@ -58,15 +47,13 @@ https://www.iconfinder.com/search/?q=flag
 CSS Press Circle
 https://codepen.io/LFeh/pen/vGMJBN
 
-DART update (linux)
-
-$ sudo sh -c 'curl https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_unstable.list > /etc/apt/sources.list.d/dart_unstable.list'
-$ sudo apt-get update
-$ sudo apt-get install dart
 
 
 
-Decision to Components instead Router
+
+
+
+**** Decision to Components instead Router
 
 Google Inbox use component. New mails and foward don't have back browser navitage
 Has better performance by pass param (data) from parent (master) screen.
