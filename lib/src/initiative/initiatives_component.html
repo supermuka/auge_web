@@ -24,11 +24,11 @@
                           tabindex="0"
                           size="medium"
                           #clickableRef="tooltipTarget">
-                        <span *ngFor="let istate of iInitiative.stateWorkItemsCount.keys">
+                        <!-- span *ngFor="let istate of iInitiative.stateWorkItemsCount.keys">
                             <span [style.background-color]="'hsl(' + istate?.colorHue + ', ' + istate?.colorSaturation + '%, ' + istate?.colorLightness + '%)'" [style.width]="widthState(iInitiative?.workItemsCount, iInitiative?.stateWorkItemsCount[istate], progressBarWidth) + 'px'">&nbsp;</span>
-                        </span>
+                        </span -->
 
-                        <material-tooltip-card [for]="clickableRef">
+                        <!-- material-tooltip-card [for]="clickableRef">
                             <div *ngFor="let istage of iInitiative.stageWorkItemsCount.keys; let iee = index">
                                 <div *ngIf="iee == 0 || iInitiative.stageWorkItemsCount.keys.elementAt(iee-1).state != iInitiative.stageWorkItemsCount.keys.elementAt(iee).state">
                                     <br/>
@@ -37,7 +37,7 @@
                                 </div>
                                 <b>{{iInitiative?.stageWorkItemsCount[istage]}}</b>&nbsp;{{istage.name}}
                             </div>
-                        </material-tooltip-card>
+                        </material-tooltip-card -->
                     </span>
                     <span *ngIf="iInitiative.workItemsCount != 0" class="circle w3-col s6 l2" [style.background-color]="circleColor(iInitiative)" clickableTooltipTarget
                          keyboardOnlyFocusIndicator
