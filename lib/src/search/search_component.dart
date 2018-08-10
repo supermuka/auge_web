@@ -1,15 +1,8 @@
-import 'dart:async';
-
 import 'package:angular/angular.dart';
 import 'package:angular_forms/angular_forms.dart';
 import 'package:angular_components/angular_components.dart';
 
-import 'package:angular_components/model/ui/has_factory.dart';
-
 import 'search_service.dart';
-
-// ignore_for_file: uri_has_not_been_generated
-import 'package:auge_web/src/search/search_component.template.dart' as search_component;
 
 @Component(
   selector: 'auge-search',
@@ -21,23 +14,17 @@ import 'package:auge_web/src/search/search_component.template.dart' as search_co
     formDirectives,
   ],
 )
-
-class SearchComponent implements OnInit {
+class SearchComponent {
 
   final SearchService _searchService;
   //String searchInputText = '';
-  //SelectionOptions searchOptions;
-  //SelectionModel searchSingleSelectModel;
+  SelectionOptions searchOptions = SelectionOptions.fromList([]);
+  SelectionModel searchSingleSelectModel = SelectionModel.single();
   String searchLeadingGlyph = 'search';
   String searchLabel = 'Search...';
   String searchEmptyPlaceholder = 'No correspondence';
 
   SearchComponent(this._searchService);
-
-  @override
-  Future<Null> ngOnInit() async {
-    // AutenticacaoService.inicializarFireBase();
-  }
 
   get searchTerm {
     return _searchService.searchTerm;
@@ -47,7 +34,7 @@ class SearchComponent implements OnInit {
     _searchService.searchTerm = term;
   }
 
-  ItemRenderer get searchItemRenderer => (dynamic conta) => conta.nome;
+ // ItemRenderer get searchItemRenderer => (dynamic conta) => conta.nome;
 
  // FactoryRenderer get searchFactoryRenderer => (_) => search_component.SearchRendererComponentNgFactory;
 }

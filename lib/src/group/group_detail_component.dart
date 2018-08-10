@@ -145,9 +145,9 @@ class GroupDetailComponent extends Object implements OnInit {
     }
   }
 
-  void saveGroup() async {
+  void saveGroup() {
 
-    await _groupService.saveObjective(group);
+    _groupService.saveObjective(group);
     _saveController.add(group);
     closeDetail();
   }

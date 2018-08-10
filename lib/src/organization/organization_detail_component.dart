@@ -69,8 +69,8 @@ class OrganizationDetailComponent extends Object implements OnInit {
     }
   }
 
-  void saveOrganization() async {
-    await _organizationService.saveOrganization(organization);
+  void saveOrganization() {
+    _organizationService.saveOrganization(organization);
     _saveController.add(organization);
     closeDetail();
   }

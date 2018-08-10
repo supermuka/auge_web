@@ -3,7 +3,7 @@
         <material-icon icon="add"></material-icon>
     </material-fab>
     <br/>
-    <material-expansionpanel-set >
+    <material-expansionpanel-set>
         <div *ngFor="let iObjective of objectives">
             <material-expansionpanel
                     [alwaysHideExpandIcon]="true"
@@ -31,6 +31,7 @@
                 </div>
                 <div>
                     <auge-measures [objective]="iObjective"></auge-measures>
+                    <auge-initiatives-summary [objective]="iObjective"></auge-initiatives-summary>
                 </div>
             </material-expansionpanel>
         </div>

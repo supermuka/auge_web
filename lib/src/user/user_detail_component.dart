@@ -120,8 +120,8 @@ class UserDetailComponent extends Object implements OnInit {
 
   }
 
-  void saveUser() async {
-    await _userService.saveUser(user);
+  void saveUser() {
+    _userService.saveUser(user);
     _saveController.add(user);
     closeDetail();
   }

@@ -16,7 +16,10 @@ import 'package:auge_server/model/initiative/initiative.dart';
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/initiative/initiative_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
+
+import 'package:auge_web/src/initiative/initiative_summary_component.dart';
 import 'package:auge_web/src/initiative/initiative_detail_component.dart';
+
 
 import 'package:auge_web/src/work_item/work_items_component.dart';
 import 'package:auge_web/src/work_item/work_items_list_component.dart';
@@ -26,9 +29,10 @@ import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/services/app_routes.dart';
 
 // ignore_for_file: uri_has_not_been_generated
+/*
 import 'package:auge_web/src/app_layout/app_layout_home.template.dart' as app_layout_home;
 import 'package:auge_web/src/initiative/initiative_detail_component.template.dart' as initiative_detail_component;
-import 'package:auge_web/src/work_item/work_items_list_component.template.dart' as work_items_list_component;
+*/
 
 
 @Component(
@@ -38,6 +42,7 @@ import 'package:auge_web/src/work_item/work_items_list_component.template.dart' 
       coreDirectives,
       routerDirectives,
       materialDirectives,
+      InitiativeSummaryComponent,
       InitiativeDetailComponent,
       WorkItemsComponent,
       WorkItemsListComponent,
@@ -47,7 +52,7 @@ import 'package:auge_web/src/work_item/work_items_list_component.template.dart' 
       'initiatives_component.css'
     ])
 
-class InitiativesComponent extends Object with CanReuse implements OnActivate, OnDestroy {
+class InitiativesComponent extends Object with CanReuse implements /* OnInit, */ OnActivate, OnDestroy {
 
   final InitiativeService _initiativeService;
   final SearchService _searchService;
@@ -55,7 +60,7 @@ class InitiativesComponent extends Object with CanReuse implements OnActivate, O
   final AppLayoutService _appLayoutService;
   final AuthService _authService;
 
-  static final int progressBarWidth = 360;
+  // static final int progressBarWidth = 360;
 
   bool detailVisible = false;
   List<Initiative> _initiatives = new List();
@@ -64,7 +69,7 @@ class InitiativesComponent extends Object with CanReuse implements OnActivate, O
   bool expanded = false;
   List<bool> wideControl = new List();
   List<bool> expandedControl = new List();
-
+/*
   final List<RouteDefinition> routes = [
     new RouteDefinition(
         routePath: AppRoutes.appLayoutHomeRoute,
@@ -85,6 +90,7 @@ class InitiativesComponent extends Object with CanReuse implements OnActivate, O
 
 
   ];
+*/
 
   MenuModel<MenuItem> menuModel;
   InitiativesComponent(this._initiativeService, this._appLayoutService, this._authService, this._searchService, this._router) {
@@ -92,7 +98,19 @@ class InitiativesComponent extends Object with CanReuse implements OnActivate, O
   }
 
   // Define messages and labels
-  static final String workItemsOverDueLabel =  InitiativeMessage.label('Work Items Over Due');
+  // static final String workItemsOverDueLabel =  InitiativeMessage.label('Work Items Over Due');
+
+  /*
+  @override
+  ngOnInit() async {
+
+    _initiatives = await _initiativeService.getInitiatives(_authService.selectedOrganization?.id, withWorkItems: true);
+
+    wideControl = new List<bool>.filled(_initiatives.length, false);
+    expandedControl = new List<bool>.filled(_initiatives.length, false);
+
+  }
+  */
 
   @override
   Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
@@ -138,7 +156,7 @@ class InitiativesComponent extends Object with CanReuse implements OnActivate, O
     await _initiativeService.deleteInitiative(selectedInitiative.id);
     initiatives.remove(selectedInitiative);
   }
-
+/*
   String circleColor(Initiative initiative)  {
     String color;
     int workItemsOverDueCount = initiative.workItemsOverDueCount;
@@ -157,7 +175,7 @@ class InitiativesComponent extends Object with CanReuse implements OnActivate, O
   String widthState(int workItemsCount, int stateWorkItemsCount, int widthTotal) {
     return (stateWorkItemsCount / workItemsCount * widthTotal).toString();
   }
-
+*/
   void viewDetail(bool detailVisible) {
     this.detailVisible = detailVisible;
   }

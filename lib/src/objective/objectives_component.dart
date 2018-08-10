@@ -23,6 +23,7 @@ import 'package:auge_web/message/messages.dart';
 
 import 'package:auge_web/src/objective/objective_detail_component.dart';
 import 'package:auge_web/src/measure/measures_component.dart';
+import 'package:auge_web/src/initiative/initiatives_summary_component.dart';
 
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
@@ -46,8 +47,9 @@ import 'package:auge_web/services/app_routes.dart';
       MaterialMenuComponent,
       MaterialSliderComponent,
       ModalComponent,
-      MeasuresComponent,
       ObjectiveDetailComponent,
+      MeasuresComponent,
+      InitiativesSummaryComponent,
     ],
     templateUrl: 'objectives_component.html',
     styleUrls: const [

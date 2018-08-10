@@ -85,8 +85,8 @@ class OrganizationsComponent extends Object implements OnActivate, OnDestroy  {
     selectedOrganization = organization;
   }
 
-  void delete() async {
-    await _organizationService.deleteOrganization(selectedOrganization);
+  void delete() {
+    _organizationService.deleteOrganization(selectedOrganization);
     _organizations.remove(selectedOrganization);
   }
 

@@ -263,11 +263,8 @@ class InitiativeDetailComponent implements OnInit {
   }
   */
 
-  void saveInitiative() async {
-    print('***');
-    print(initiative.objective.id);
-    await _initiativeService.saveInitiative(initiative);
-
+  void saveInitiative() {
+    _initiativeService.saveInitiative(initiative);
     _saveController.add(initiative);
     closeDetail();
   }

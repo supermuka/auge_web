@@ -50,7 +50,7 @@ class AuthComponent {
   static final String eMailLabel = AuthMessage.label("eMail");
   static final String passwordLabel = AuthMessage.label("Password");
 
-  Future<Null> authenticateAuthorizate(String email, String password) async {
+  Future<void> authenticateAuthorizate(String email, String password) async {
 
     if (email.isEmpty || password.isEmpty) {
       error = AuthMessage.informEMailPasswordCorrectlyMsg();

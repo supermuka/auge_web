@@ -1,0 +1,33 @@
+<div class="container-list">
+    <material-expansionpanel disabled
+                             [alwaysHideExpandIcon]="true"
+                             [expanded]="true"
+                             [showSaveCancel]="false">
+        <div name>
+            <span><strong>Initiatives</strong></span>
+        </div>
+        <div action>
+            <material-button icon (trigger)="goToInitiatives()">
+                <material-icon icon="launch"></material-icon>
+            </material-button>
+        </div>
+        <material-expansionpanel-set>
+            <div *ngFor="let iInitiative of initiatives;let i = index">
+                <material-expansionpanel disabled
+                                         [expanded]="false"
+                                         [hideExpandedHeader]="false"
+                                         [showSaveCancel]="false">
+                    <div name class="custom-expansionpanel-panel-specific-name-width">
+                        <span class="truncate-ellipsed-parent">
+                            <div class="truncate-ellipsed">{{iInitiative.name}}</div>
+                            <div class="truncate-ellipsed">{{iInitiative.description}}</div>
+                        </span>
+                    </div>
+                    <div value>
+                        <auge-initiative-summary [initiative]="iInitiative"></auge-initiative-summary>
+                    </div>
+                </material-expansionpanel>
+            </div>
+        </material-expansionpanel-set>
+    </material-expansionpanel>
+</div>

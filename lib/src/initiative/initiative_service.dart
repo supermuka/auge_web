@@ -19,8 +19,8 @@ class InitiativeService {
   InitiativeService(this._augeApiService);
 
   /// Return a list of [Initiative]
-  Future<List<Initiative>> getInitiatives(String organization_id, {bool withWorkItems}) async {
-    return await _augeApiService.initiativeAugeApi.getInitiatives(organization_id, withWorkItems: withWorkItems);
+  Future<List<Initiative>> getInitiatives(String organizationId, {String objectiveId, bool withWorkItems}) async {
+    return await _augeApiService.initiativeAugeApi.getInitiatives(organizationId, objectiveId: objectiveId, withWorkItems: withWorkItems);
   }
 
   /// Return a list of [Initiative] by Id

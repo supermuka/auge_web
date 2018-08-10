@@ -1,0 +1,29 @@
+<span class="progress-bar w3-col s6 l10" clickableTooltipTarget
+      keyboardOnlyFocusIndicator
+      tabindex="0"
+      size="medium"
+      #clickableRef="tooltipTarget">
+    <span *ngFor="let istate of initiative.stateWorkItemsCount.keys">
+        <span [style.background-color]="'hsl(' + istate?.colorHue + ', ' + istate?.colorSaturation + '%, ' + istate?.colorLightness + '%)'" [style.width]="widthState(initiative?.workItemsCount, initiative?.stateWorkItemsCount[istate], progressBarWidth) + 'px'">&nbsp;</span>
+    </span>
+
+    <material-tooltip-card [for]="clickableRef">
+        <div *ngFor="let istage of initiative.stageWorkItemsCount.keys; let iee = index">
+            <div *ngIf="iee == 0 || initiative.stageWorkItemsCount.keys.elementAt(iee-1).state != initiative.stageWorkItemsCount.keys.elementAt(iee).state">
+                <br/>
+                <div class="tooltip-card-bar" [style.background-color]="'hsl(' + istage.state.colorHue + ', ' + istage.state.colorSaturation + '%, ' + istage.state.colorLightness + '%)'">
+                </div>&nbsp;<strong>{{istage.state.name}}</strong><br/>
+            </div>
+            <b>{{initiative?.stageWorkItemsCount[istage]}}</b>&nbsp;{{istage.name}}
+        </div>
+    </material-tooltip-card>
+</span>
+<span *ngIf="initiative.workItemsCount != 0" class="circle w3-col s6 l2" [style.background-color]="circleColor(initiative)" clickableTooltipTarget
+     keyboardOnlyFocusIndicator
+     tabindex="0"
+     size="medium"
+     #clickableRefCircle="tooltipTarget">
+    <material-tooltip-card [for]="clickableRefCircle" >
+        <p><b>{{initiative.workItemsOverDueCount}} / {{initiative.workItemsCount}}</b>&nbsp;{{workItemsOverDueLabel}}</p>
+    </material-tooltip-card>
+</span>

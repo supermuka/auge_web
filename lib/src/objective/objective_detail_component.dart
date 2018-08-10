@@ -168,9 +168,8 @@ class ObjectiveDetailComponent extends Object implements OnInit /* with CanReuse
       groupSingleSelectModel.select(objective.group);
   }
 
-  void saveObjective() async {
-
-    await _objectiveService.saveObjective(objective);
+  void saveObjective() {
+    _objectiveService.saveObjective(objective);
     _saveController.add(objective);
     closeDetail();
 

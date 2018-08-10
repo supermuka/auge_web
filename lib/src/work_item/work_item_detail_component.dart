@@ -164,8 +164,8 @@ class WorkItemDetailComponent implements OnInit  {
     workItem.assignedTo.remove(user);
   }
 
-  void saveWorkItem() async {
-    await _workItemService.saveWorkItem(initiative.id, workItem);
+  void saveWorkItem() {
+    _workItemService.saveWorkItem(initiative.id, workItem);
     _saveController.add(workItem);
 
     closeDetail();

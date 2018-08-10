@@ -1,14 +1,4 @@
 @import 'package:angular_components/css/material/material';
-@import 'package:angular_components/material_button/mixins';
-
-material-fab {
-  position: fixed !important;
-  z-index: 9999999;
-  background-color: $mat-red;
-  color: $mat-white;
-  float: right;
-  right: 32px;
-}
 
 .custom-expansionpanel-panel-specific-name-width {
   width: 400px;

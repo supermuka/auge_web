@@ -1,0 +1,33 @@
+@import 'package:angular_components/css/material/material';
+
+.tooltip-card-bar {
+  display: inline-block;
+  flex-direction: row;
+  height: 16px;
+  width: 16px;
+  line-height: 1;
+}
+
+.progress-bar {
+  display: flex;;
+  height: 16px;
+
+  flex-wrap: nowrap;
+  justify-items: center;
+
+}
+
+.progress-bar span {
+  display: inline-flex;
+  min-width: 0px;
+}
+
+.circle {
+  display: inline-block;
+  border-radius: 50%;
+  margin: 0 $mat-grid;
+  width: 32px;
+  height: 32px;
+  background-color: $mat-gray;
+  /* width and height can be anything, as long as they're equal */
+}
