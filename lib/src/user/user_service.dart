@@ -18,31 +18,7 @@ class UserService {
 
   UserService(this._augeApiService);
 
-  /// Return a list of [User]
-  /*
-  Future<List<User>> getUsers(String organizationId, {bool withProfile}) async {
-
-    return await _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
-
-  }
-  */
-
-  /// Return an [User] by [id]
-  /*
-  Future<User> getUserById(String id, bool withProfile) async {
-
-    List<User> users = await _augeApiService.augeApi.getUsers(id: id, withProfile: withProfile);
-
-    if (users.length != 0) {
-      return users.first;
-    } else {
-      return null;
-    }
-
-  }
-  */
-
-  /// Return [User] list by Organization [id]
+    /// Return [User] list by Organization [id]
   Future<List<User>> getUsers(String organizationId, {bool withProfile}) async {
     // return await _augeApiService.augeApi.getUsers(organizationId: organizationId, withProfile: withProfile);
     return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
