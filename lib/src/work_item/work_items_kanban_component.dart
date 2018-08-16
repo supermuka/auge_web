@@ -75,7 +75,7 @@ class WorkItemsKanbanComponent extends Object implements OnInit {
   String label(String label) =>  WorkItemMessage.label(label);
 
   @override
-  ngOnInit() async {
+  ngOnInit() {
     kanbanColumns = new List();
 
     // Define os estados com base no que está na iniciativa
@@ -114,8 +114,13 @@ class WorkItemsKanbanComponent extends Object implements OnInit {
   }
 
   void delete() async {
-    await _workItemService.deleteWorkItem(selectedWorkItem.id);
-    initiative.workItems.remove(selectedWorkItem);
+    try {
+      await _workItemService.deleteWorkItem(selectedWorkItem.id);
+      initiative.workItems.remove(selectedWorkItem);
+    } catch (e) {
+      print('${e.runtimeType}, ${e}');
+      rethrow;
+    }
   }
 
   void selectWorkItem(WorkItem workItem) => this.selectedWorkItem = workItem;

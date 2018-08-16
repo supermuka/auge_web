@@ -58,18 +58,16 @@ class InitiativeDetailComponent implements OnInit {
   @Output()
   Stream<Initiative> get save => _saveController.stream;
 
-
   final AuthService _authService;
   final InitiativeService _initiativeService;
   final ObjectiveService _objectiveService;
   final UserService _userService;
   final GroupService _groupService;
 
-
-  Initiative initiative = new Initiative();
+  Initiative initiative;
   String stageEntry;
   Stage selectedStage = null;
-  List<State> states;
+
   SelectionOptions stateOptions;
   SelectionModel stateSingleSelectModel;
 
@@ -78,13 +76,30 @@ class InitiativeDetailComponent implements OnInit {
   String objectiveInputText = '';
 
   SelectionOptions leaderOptions;
+  SelectionModel<User> leaderSingleSelectModel;
   SelectionOptions objectiveOptions;
-  SelectionModel leaderSingleSelectModel;
   SelectionModel objectiveSingleSelectModel;
   SelectionOptions groupOptions;
   SelectionModel groupSingleSelectModel;
 
-  InitiativeDetailComponent(this._authService, this._initiativeService, this._objectiveService,  this._userService, this._groupService);
+  List<State> _states = [];
+  List<User> _users = [];
+  List<Objective> _objectives = [];
+  List<Group> _groups = [];
+
+  InitiativeDetailComponent(this._authService, this._initiativeService, this._objectiveService,  this._userService, this._groupService)  {
+    initialization();
+    print('Construtor');
+  }
+
+  void initialization() async {
+
+    _states =  await _initiativeService.getStates();
+    _users = await _userService.getUsers(_authService.selectedOrganization.id, withProfile: true);
+    _objectives = await _objectiveService.getObjectives(_authService.selectedOrganization.id, withMeasures: false);
+    _groups = await _groupService.getGroups(_authService.selectedOrganization.id);
+
+  }
 
   // Define messages and labels
   static final String requiredValueMsg = CommonMessage.requiredValueMsg();
@@ -103,7 +118,8 @@ class InitiativeDetailComponent implements OnInit {
   static final String closeButtonLabel = CommonMessage.buttonLabel('Close');
 
   @override
-  void ngOnInit() async {
+  void ngOnInit() {
+    print('OnInit');
     if (selectedInitiative != null) {
       // Clone objective
       initiative = selectedInitiative.clone();
@@ -111,9 +127,9 @@ class InitiativeDetailComponent implements OnInit {
       initiative.organization = _authService.selectedOrganization;
     }
 
-    states = await _initiativeService.getStates();
+   // List<State> states =  await _initiativeService.getStates();
 
-    stateOptions = new SelectionOptions.fromList(states);
+    stateOptions = new SelectionOptions.fromList(_states);
 
     stateSingleSelectModel = new SelectionModel.single();
 
@@ -121,25 +137,34 @@ class InitiativeDetailComponent implements OnInit {
       stateSingleSelectModel.select(stateOptions.optionsList.first);
 
     // Leader
-    List<User> users = await _userService.getUsersByOrganizationId(_authService.selectedOrganization.id, withProfile: true);
+   // List<User> users = await _userService.getUsers(_authService.selectedOrganization.id, withProfile: true);
 
     leaderOptions = new StringSelectionOptions<User>(
-        users, toFilterableString: (User user) => user.name);
+        _users, toFilterableString: (User user) => user.name);
 
     // Objective
-    List<Objective> objectives = await _objectiveService.getObjectives(_authService.selectedOrganization.id, withMeasures: false);
+    // List<Objective> objectives = await _objectiveService.getObjectives(_authService.selectedOrganization.id, withMeasures: false);
 
     objectiveOptions = new StringSelectionOptions<Objective>(
-        objectives, toFilterableString: (Objective objective) => objective.name);
+        _objectives, toFilterableString: (Objective objective) => objective.name);
 
     // Leader Select Model
-    leaderSingleSelectModel =
-    new SelectionModel.single()
+    //leaderSingleSelectModel = initiative.leader == null ? SelectionModel.single() : SelectionModel.single<User>(selected: initiative.leader);
+
+    leaderSingleSelectModel = SelectionModel.single();
+    /*
+    new SelectionModel.single(selected: initiative?.leader)
       ..selectionChanges.listen((leader) {
         if (leader.isNotEmpty && leader.first.added != null && leader.first.added.length != 0 && leader.first.added?.first != null) {
           initiative.leader = leader.first.added.first;
         }
       });
+    */
+    leaderSingleSelectModel.selectionChanges.listen((leader) {
+      if (leader.isNotEmpty && leader.first.added != null && leader.first.added.length != 0 && leader.first.added?.first != null) {
+        initiative.leader = leader.first.added.first;
+      }
+    });
 
     if (initiative.leader != null)
       leaderSingleSelectModel.select(initiative.leader);
@@ -157,10 +182,10 @@ class InitiativeDetailComponent implements OnInit {
       objectiveSingleSelectModel.select(initiative.objective);
 
     // Group
-    List<Group> groups = await _groupService.getGroups(_authService.selectedOrganization.id);
+    // List<Group> groups = await _groupService.getGroups(_authService.selectedOrganization.id);
 
     groupOptions = new StringSelectionOptions<Group>(
-        groups, toFilterableString: (Group gru) => gru.name);
+        _groups, toFilterableString: (Group gru) => gru.name);
 
     groupSingleSelectModel =
     new SelectionModel.single()
@@ -174,94 +199,6 @@ class InitiativeDetailComponent implements OnInit {
       groupSingleSelectModel.select(groupOptions.optionsList.singleWhere((g) => g.id == initiative.group.id));
     }
   }
-
-  /*
-  @override
-  Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
-
-    if (this._authService.authenticatedUser == null) {
-      _router.navigate(AppRoutes.authRoute.toUrl());
-    }
-
-
-    String id = routerStateCurrent.parameters[AppRoutes.initiativeIdParameter];
-
-    if (id != null && id.isNotEmpty) {
-      initiative = await _initiativeService.getInitiativeById(id);
-    } else {
-      initiative.organization = _authService.selectedOrganization;
-    }
-
-    states = await _initiativeService.getStates();
-
-    stateOptions = new SelectionOptions.fromList(states);
-
-    stateSingleSelectModel = new SelectionModel.single();
-
-    if (stateOptions.optionsList.isNotEmpty)
-      stateSingleSelectModel.select(stateOptions.optionsList.first);
-
-    // Leader
-    List<User> users = await _userService.getUsersByOrganizationId(_authService.selectedOrganization.id, withProfile: true);
-
-    leaderOptions = new StringSelectionOptions<User>(
-        users, toFilterableString: (User user) => user.name);
-
-    // Objective
-    List<Objective> objectives = await _objectiveService.getObjectives(_authService.selectedOrganization.id, withMeasures: false);
-
-    objectiveOptions = new StringSelectionOptions<Objective>(
-        objectives, toFilterableString: (Objective objective) => objective.name);
-
-    // Leader Select Model
-    leaderSingleSelectModel =
-    new SelectionModel.single()
-      ..selectionChanges.listen((leader) {
-
-        if (leader.isNotEmpty && leader.first.added != null && leader.first.added.length != 0 && leader.first.added?.first != null) {
-            initiative.leader = leader.first.added.first;
-        }
-      });
-
-    if (initiative.leader != null)
-      leaderSingleSelectModel.select(initiative.leader);
-
-
-    // Objective Select Model
-    objectiveSingleSelectModel =
-    new SelectionModel.single()
-      ..selectionChanges.listen((objective) {
-
-        if (objective.isNotEmpty && objective.first.added != null && objective.first.added.length != 0 && objective.first.added?.first != null) {
-          initiative.objective = objective.first.added.first;
-        }
-      });
-
-    if (initiative.objective != null)
-      objectiveSingleSelectModel.select(initiative.objective);
-
-    // Group
-    List<Group> groups = await _groupService.getGroups(_authService.selectedOrganization.id);
-
-    groupOptions = new StringSelectionOptions<Group>(
-        groups, toFilterableString: (Group gru) => gru.name);
-
-       groupSingleSelectModel =
-    new SelectionModel.single()
-      ..selectionChanges.listen((groupEvent) {
-
-        if (groupEvent.isNotEmpty && groupEvent.first.added != null && groupEvent.first.added.length != 0 && groupEvent.first.added?.first != null) {
-          initiative.group = groupEvent.first.added.first;
-        }
-      });
-
-     if (initiative.group != null) {
-      groupSingleSelectModel.select(groupOptions.optionsList.singleWhere((g) => g.id == initiative.group.id));
-
-      //groupSingleSelectModel.select(initiative.group);
-    }
-  }
-  */
 
   void saveInitiative() {
     _initiativeService.saveInitiative(initiative);

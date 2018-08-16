@@ -16,7 +16,13 @@ class MapService {
 
   /// Return a list of the [Objectives] in hierarchy form with yours children
   Future<List<Objective>> getObjectivesMap(String organizationId) async {
-    return await _augeApiService.objectiveAugeApi.getObjectives(
-        organizationId, treeAlignedWithChildren: true, withProfile: true);
+
+   //return await _augeApiService.objectiveAugeApi.getObjectives(
+   //     organizationId, treeAlignedWithChildren: true, withProfile: true);
+
+      return _augeApiService.objectiveAugeApi.getObjectives(
+          organizationId, treeAlignedWithChildren: true, withProfile: true);
+
+
   }
 }

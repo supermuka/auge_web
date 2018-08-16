@@ -1,0 +1,32 @@
+<modal [visible]="true">
+    <material-dialog headered class="headered-dialog">
+        <div header>
+            <h3>{{filterInitiativesLabel}}</h3>
+        </div>
+        <div class="w3-row">
+            <material-auto-suggest-input class="w3-col l12"
+                                         [(inputText)]="objectiveInputText"
+                                         [filterSuggestions]="true"
+                                         [popupMatchInputWidth]="true"
+                                         [trailingGlyph]="'search'"
+                                         [rightAlign]="false"
+                                         [shouldClearOnSelection]="false"
+                                         [label]="objectiveLabel"
+                                         [floatingLabel]="true"
+                                         [emptyPlaceholder]="noMatchLabel"
+                                         [selection]="objectiveSingleSelectModel"
+                                         [selectionOptions]="objectiveOptions"
+                                         [itemRenderer]="objectiveItemRenderer"
+                                         [limit]="10">
+            </material-auto-suggest-input>
+        </div>
+        <div footer>
+            <material-button (trigger)="clear()">{{clearButtonLabel}}
+                <material-icon icon="autorenew"></material-icon>
+            </material-button>
+            <material-button autoFocus (trigger)="applyCloseFilter()">{{applyButtonLabel}}
+                <material-icon icon="done"></material-icon>
+            </material-button>
+        </div>
+    </material-dialog>
+</modal>

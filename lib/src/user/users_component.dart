@@ -61,19 +61,24 @@ class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
     }
     _appLayoutService.headerTitle = UserMessage.label('Users');
 
-    users = await _userService.getUsers(withProfile: true);
+    users = await _userService.getUsers(_authService.selectedOrganization?.id, withProfile: true);
   }
 
 
   void delete() {
-      _userService.deleteUser(selectedUser);
+    try {
+      _userService.deleteUserProfileOrganizationByUserId(selectedUser.id);
+
+      _userService.deleteUser(selectedUser.id);
       users.remove(selectedUser);
+    } catch (e) {
+      print('${e.runtimeType}, ${e}');
+      rethrow;
+    }
   }
 
   void selectUser(User user) {
     selectedUser = user;
-
-    print(user.name);
   }
 
   String userUrlImage(User user) {

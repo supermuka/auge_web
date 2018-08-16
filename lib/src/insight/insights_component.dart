@@ -30,7 +30,6 @@ import 'package:auge_web/services/app_routes.dart';
   ],
   styleUrls: const ['insights_component.css'],
   templateUrl: 'insights_component.html',
-
 )
 
 class InsightsComponent implements OnActivate  {

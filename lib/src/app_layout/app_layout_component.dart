@@ -1,7 +1,6 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
-import 'dart:async';
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
@@ -13,6 +12,7 @@ import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/search/search_component.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
+import 'package:auge_web/src/user/user_detail_component.dart';
 
 import 'package:auge_web/services/app_routes.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
@@ -28,7 +28,6 @@ import 'package:auge_web/src/insight/insights_component.template.dart' as insigh
 import 'package:auge_web/src/organization/organizations_component.template.dart' as organizations_component;
 import 'package:auge_web/src/organization/organization_component.template.dart' as organization_component;
 import 'package:auge_web/src/user/users_component.template.dart' as users_component;
-import 'package:auge_web/src/user/user_component.template.dart' as user_component;
 import 'package:auge_web/src/initiative/initiatives_component.template.dart' as initiatives_component;
 import 'package:auge_web/src/work_item/work_items_component.template.dart' as work_items_component;
 import 'package:auge_web/src/map/map_component.template.dart' as map_component;
@@ -45,6 +44,7 @@ import 'package:auge_web/src/group/groups_component.template.dart' as groups_com
       materialDirectives,
       formDirectives,
       SearchComponent,
+      UserDetailComponent,
     ],
     templateUrl: 'app_layout_component.html',
     styleUrls: const [
@@ -54,11 +54,12 @@ import 'package:auge_web/src/group/groups_component.template.dart' as groups_com
 
 class AppLayoutComponent extends Object with CanReuse implements OnActivate {
 
+  bool userDetailVisible = false;
+
   String get insightsRouteUrl => AppRoutes.insightslRoute.toUrl();
   String get mapRouteUrl => AppRoutes.mapRoute.toUrl();
   String get objectivesRouteUrl => AppRoutes.objectivesRoute.toUrl();
   String get initiativesRouteUrl => AppRoutes.initiativesRoute.toUrl();
- // String get organizationRouteUrl =>  AppRoutes.organizationRoute.toUrl();
   String get organizationRouteUrl =>  AppRoutes.organizationRoute.toUrl(parameters: { AppRoutes.organizationIdParameter: this._authService.selectedOrganization?.id });
   String get organizationsRouteUrl => AppRoutes.organizationsRoute.toUrl();
   String get usersRouteUrl => AppRoutes.usersRoute.toUrl();
@@ -86,6 +87,10 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
       component: initiatives_component.InitiativesComponentNgFactory,
     ),
     new RouteDefinition(
+      routePath: AppRoutes.initiativesByObjectiveRoute,
+      component: initiatives_component.InitiativesComponentNgFactory,
+    ),
+    new RouteDefinition(
       routePath: AppRoutes.workItemsRoute,
       component: work_items_component.WorkItemsComponentNgFactory,
     ),
@@ -100,10 +105,6 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
     new RouteDefinition(
       routePath: AppRoutes.measuresRoute,
       component: measures_component.MeasuresComponentNgFactory,
-    ),
-    new RouteDefinition(
-      routePath: AppRoutes.userSelectedDetailRoute,
-      component: user_component.UserComponentNgFactory,
     ),
     new RouteDefinition(
       routePath: AppRoutes.groupsRoute,
@@ -166,21 +167,6 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
     String admGroupLabel = AppLayoutMessage.label('Super Admin');
 
     if (isSuperAdmin) {
-/*
-      adms.add(new AppLayoutSelectOption()
-        ..group = admGroupLabel
-        ..name = OrganizationMessage.label('Organizations')
-        ..organization = null
-        ..routeUrl = AppRoutes.organizationsRoute.toUrl());
-
-      adms.add(new AppLayoutSelectOption()
-        ..group = admGroupLabel
-        ..name = UserMessage.label('Users')
-        ..organization = null
-        ..routeUrl = AppRoutes.usersRoute.toUrl());
-
-        */
-
       adms.add(new AppLayoutSelectOption()
         ..group = admGroupLabel
         ..name = AppLayoutMessage.label('All Organizations')
@@ -215,9 +201,14 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
     userDetailOptions.add(new AppLayoutSelectOption()
       ..group = null
       ..name = AppLayoutMessage.label('User Detail')
+      ..viewComponent = (bool userDetailVisible) { this.userDetailVisible = userDetailVisible; }
+      ..routeUrl = null
+      /*
       ..routeUrl = AppRoutes.userSelectedDetailRoute.toUrl(parameters: {
         AppRoutes.userIdParameter: _authService.authenticatedUser.id
-      }));
+      })
+      */
+    );
 
     userProfileLogoutGroupOptions.add(new OptionGroup.withLabel(userDetailOptions, null));
 
@@ -235,11 +226,15 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
     // Model Listening
     userProfileLogoutSingleSelectModel =
     new SelectionModel.single()..selectionChanges.listen((d) async {
-
-      if (d?.first?.added?.first?.routeUrl != null) {
-        await goTo(d.first.added.first.routeUrl);
+      if (d?.isNotEmpty && d.first.added.isNotEmpty) {
+        if (d?.first?.added?.first?.routeUrl != null) {
+          await goTo(d.first.added.first.routeUrl);
+        } else if (d?.first?.added?.first?.viewComponent != null) {
+          d?.first?.added?.first?.viewComponent(true);
+        }
       }
-    });
+      userProfileLogoutSingleSelectModel.clear();
+  });
   }
 
   bool get isSuperAdmin {
@@ -263,10 +258,16 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
     _authService.close();
   }
 
-  Future goTo(String url) async {
+  void goTo(String url) async {
     if (url != null)
       await _router.navigate(url);
   }
+
+  void viewComponent(bool viewComponent) async {
+    // viewComponent
+  }
+
+
 
   bool get hasSelectedOrganization {
     return _authService.selectedOrganization != null;
@@ -281,6 +282,19 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
   String userUrlImage() {
     return common_service.userUrlImage(_authService.authenticatedUser);
   }
+
+  void changeUserDetail(User user) {
+    user.cloneTo(_authService.authenticatedUser);
+  }
+
+  User get authenticatedUser {
+    return _authService.authenticatedUser;
+  }
+
+  viewUserDetail(bool userDetailVisible) {
+    print('viewUserDetail');
+    this.userDetailVisible = userDetailVisible;
+  }
 }
 
 class AppLayoutSelectOption {
@@ -288,4 +302,6 @@ class AppLayoutSelectOption {
   String name;
   Organization organization;
   String routeUrl;
+  Function viewComponent;
+
 }

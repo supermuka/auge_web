@@ -18,47 +18,49 @@
         </div>
         <div class="w3-row-padding">
             <span class="avatar" [style.background-image]="'url(' + userUrlImage(user) + ')'"></span>
-            <input type="file" id="upload_image" accept="image/*,capture=camera">
+            <input type="file" id="upload_image" accept="image/png,image/jpg,image/jpeg,capture=camera">
             <material-button icon (trigger)="uploadImage()">{{uploadButtonLabel}}
                 <material-icon icon="done"></material-icon>
             </material-button>
-            <material-button  icon [disabled]="true">{{clearButtonLabel}}
+            <material-button icon [disabled]="user.userProfile.image == null" (trigger)="clearImage()">{{clearButtonLabel}}
                 <material-icon icon="clear"></material-icon>
             </material-button>
         </div>
         <div class="w3-row">
-            <material-checkbox *ngIf="authenticatedUserIsSuperAdmin == true" [(ngModel)]="user.userProfile.isSuperAdmin" [label]="superAdminLabel"></material-checkbox>
+            <label>{{idiomLabel}}</label>
+        </div>
+        <div class="w3-row">
+            <material-radio-group [(ngModel)]="user.userProfile.idiomLocale">
+                <material-radio [value]="'pt_BR'" no-ink>
+                    <span class="avatar-icon" [style.background-image]="'url(' + getBrFlag + ')'" [materialTooltip]="'Português - Brasil'"></span>Português
+                </material-radio>
+                <material-radio [value]="'en_US'" no-ink>
+                    <span class="avatar-icon" [style.background-image]="'url(' + getUsFlag + ')'" [materialTooltip]="'English - USA'"></span>English
+                </material-radio>
+                <material-radio [value]="'es_ES'" no-ink>
+                    <span class="avatar-icon" [style.background-image]="'url(' + getEsFlag + ')'" [materialTooltip]="'Español - España'"></span>Español
+                </material-radio>
+            </material-radio-group>
         </div>
         <div class="w3-row">
             <label>{{authorizationLabel}}</label>
         </div>
         <div class="w3-row">
-            <material-radio-group [selectionModel]="selectionModelUserAuthorization">
+            <material-checkbox *ngIf="authenticatedUserIsSuperAdmin == true" [(ngModel)]="user.userProfile.isSuperAdmin" [label]="superAdminLabel"></material-checkbox>
+        </div>
+        <div class="w3-row">
+            <!-- material-radio-group [selectionModel]="selectionModelUserAuthorization">
                 <material-radio *ngFor="let option of userAuthorizationOptions"
                                 class="radio-per-line"
                                 [disabled]="user.userProfile.isSuperAdmin != null && user.userProfile.isSuperAdmin"
                                 [(checked)]="option.selected"
                                 [value]="option.label" no-ink>{{option.label}}
                 </material-radio><br>
-            </material-radio-group>
-        </div>
-
-        <div class="w3-row">
-            <label>{{idiomLabel}}</label>
-        </div>
-        <div class="w3-row">
-            <material-radio-group [(ngModel)]="user.userProfile.idiomLocale">
-                <material-radio class="radio-per-line"
-                                [value]="'pt_BR'" no-ink>
-                    <span class="avatar-icon" [style.background-image]="'url(' + getBrFlag + ')'" [materialTooltip]="'Português - Brasil'"></span>Português
-                </material-radio>
-                <material-radio class="radio-per-line"
-                                [value]="'en_US'" no-ink>
-                    <span class="avatar-icon" [style.background-image]="'url(' + getUsFlag + ')'" [materialTooltip]="'English - USA'"></span>English
-                </material-radio>
-                <material-radio class="radio-per-line"
-                                [value]="'es_ES'" no-ink>
-                    <span class="avatar-icon" [style.background-image]="'url(' + getEsFlag + ')'" [materialTooltip]="'Español - España'"></span>Español
+            </material-radio-group -->
+            <material-radio-group [(ngModel)]="userProfileOrganization.authorizationLevel" class="radio-per-line">
+                <material-radio *ngFor="let option of userAuthorizationOptions"
+                                [disabled]="user.userProfile.isSuperAdmin != null && user.userProfile.isSuperAdmin"
+                                [value]="option.index" no-ink>{{option.label}}
                 </material-radio>
 
             </material-radio-group>

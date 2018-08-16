@@ -19,33 +19,34 @@ class OrganizationService {
 
   /// Return a list of [Organization]
   Future<List<Organization>> getOrganizations() async {
-
-    return await _augeApiService.augeApi.getOrganizations();
-
-  }
-
-  /// Return an Organization by [id]
-  Future<Organization> getOrganizationById(String id) async {
-
-    return await _augeApiService.augeApi.getOrganizationById(id);
-
+    return _augeApiService.augeApi.getOrganizations();
   }
 
   /// Save (create or update)an [Organization]
   void saveOrganization(Organization organization) async {
-    if (organization.id == null) {
-      IdMessage idMessage = await _augeApiService.augeApi.createOrganization(organization);
+    try {
+      if (organization.id == null) {
+        IdMessage idMessage = await _augeApiService.augeApi.createOrganization(
+            organization);
 
-      // ID - primary key generated on server-side.
-      organization.id = idMessage?.id;
-    } else {
-      await _augeApiService.augeApi.updateOrganization(organization);
+        // ID - primary key generated on server-side.
+        organization.id = idMessage?.id;
+      } else {
+        await _augeApiService.augeApi.updateOrganization(organization);
+      }
+    } catch (e) {
+      print('${e.runtimeType}, ${e}');
+      rethrow;
     }
   }
 
   /// Delete an [Organization]
-  void deleteOrganization(Organization organization) async {
-    await _augeApiService.augeApi.deleteOrganization(organization.id);
-
+  void deleteOrganization(String id) async {
+    try {
+      await _augeApiService.augeApi.deleteOrganization(id);
+    } catch (e) {
+      print('${e.runtimeType}, ${e}');
+      rethrow;
+    }
   }
 }

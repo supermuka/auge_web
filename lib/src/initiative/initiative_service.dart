@@ -20,33 +20,50 @@ class InitiativeService {
 
   /// Return a list of [Initiative]
   Future<List<Initiative>> getInitiatives(String organizationId, {String objectiveId, bool withWorkItems}) async {
+    // return await _augeApiService.initiativeAugeApi.getInitiatives(organizationId, objectiveId: objectiveId, withWorkItems: withWorkItems);
     return await _augeApiService.initiativeAugeApi.getInitiatives(organizationId, objectiveId: objectiveId, withWorkItems: withWorkItems);
   }
 
+
   /// Return a list of [Initiative] by Id
+  ///
+  /*
   Future<Initiative> getInitiativeById(String id, {bool withWorkItems}) async {
     return await _augeApiService.initiativeAugeApi.getInitiativeById(id, withWorkItems: withWorkItems);
   }
+  */
 
   /// Delete an [Initiative]
-  Future deleteInitiative(String id) async {
-    await _augeApiService.initiativeAugeApi.deleteInitiative(id);
+  void deleteInitiative(String id) async {
+    try {
+      await _augeApiService.initiativeAugeApi.deleteInitiative(id);
+    } catch (e) {
+      print('${e.runtimeType}, ${e}');
+      rethrow;
+    }
   }
 
   /// Return a list of [State]
   Future<List<State>> getStates() async {
-    return await _augeApiService.initiativeAugeApi.getStates();
+   // return await _augeApiService.initiativeAugeApi.getStates();
+    return _augeApiService.initiativeAugeApi.getStates();
   }
 
   /// Save (create or update)an [Initiative]
   void saveInitiative(Initiative initiative) async {
-    if (initiative.id == null)  {
-      IdMessage idMessage = await _augeApiService.initiativeAugeApi.createInitiative(initiative);
+    try {
+      if (initiative.id == null) {
+        IdMessage idMessage = await _augeApiService.initiativeAugeApi
+            .createInitiative(initiative);
 
-      // ID - primary key generated on server-side.
-      initiative.id = idMessage?.id;
-    } else {
-      await _augeApiService.initiativeAugeApi.updateInitiative(initiative);
+        // ID - primary key generated on server-side.
+        initiative.id = idMessage?.id;
+      } else {
+        await _augeApiService.initiativeAugeApi.updateInitiative(initiative);
+      }
+    } catch (e) {
+      print('${e.runtimeType}, ${e}');
+      rethrow;
     }
   }
 }

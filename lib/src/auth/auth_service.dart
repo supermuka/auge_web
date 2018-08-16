@@ -11,6 +11,7 @@ import 'dart:convert' show base64;
 // import 'dart:typed_data' show Uint8List, ByteBuffer;
 import 'package:crypto/crypto.dart' show sha256;
 
+
 @Injectable()
 class AuthService  {
 
@@ -25,35 +26,36 @@ class AuthService  {
   AuthService(this._augeApiService);
 
     /// Return an [Organization] list for an eMail.
-  getAuthorizatedOrganizationsByUserId(String id) async {
+  Future<List<UserProfileOrganization>> getAuthorizatedOrganizationsByUserId(String id) async {
     List<UserProfileOrganization> usersOrganizations;
     if (id.isNotEmpty)
       usersOrganizations = await _augeApiService.augeApi.getAuthorizatedOrganizationsByUserId(id);
     return usersOrganizations;
   }
 
-  close() async {
+  void close() async {
     await _augeApiService.augeApi.closeConnection();
     authenticatedUser = null;
     authorizatedOrganizations = null;
   }
 
-  Future<User> getAuthenticatedUserWithEmail(String email, String passwordStr) async {
+  Future<User> getAuthenticatedUserWithEmail(String eMail, String passwordStr) async {
     User user;
-    if (!email.isEmpty || !passwordStr.isEmpty) {
-      //try {
-
-        String password = base64.encode(sha256
-            .convert(passwordStr.codeUnits)
-            .bytes);
-        user = await _augeApiService.augeApi.getAuthenticatedUserWithEmail(
-             email, password, withProfile: true);
-        /*
-      } catch (e) {
-        print(e);
+    if (!eMail.isEmpty || !passwordStr.isEmpty) {
+      String password = base64.encode(sha256
+          .convert(passwordStr.codeUnits)
+          .bytes);
+        try {
+          user = await _augeApiService.augeApi.getAuthenticatedUserWithEmail(
+              eMail, password, withProfile: true);
+        } on DetailedApiRequestError catch (e) {
+          if (e.status == 404 && e.errors.firstWhere((ed) => ed.reason == RpcErrorDetailMessage.userDataNotFoundReason, orElse: null ) != null)
+            user = null;
+          else {
+            rethrow;
+          }
+        }
       }
-      */
-    }
     return user;
   }
 }

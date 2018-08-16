@@ -49,12 +49,16 @@ class MeasureDetailComponent extends Object implements OnInit {
 
   Measure measure = new Measure();
 
-  List<MeasureUnit> measureUnits = new List();
+  List<MeasureUnit> _measureUnits = [];
   SelectionOptions measureUnitOptions;
   SelectionModel measureUnitSingleSelectModel;
 
   MeasureDetailComponent(this._measureService);
 
+    void initialization() async {
+    _measureUnits = await _measureService.getMeasureUnits();
+
+  }
   // Define messages and labels
   static final String requiredValueMsg = CommonMessage.requiredValueMsg();
   static final String addMeasureLabel =  MeasureMessage.label('Add Measure');
@@ -71,7 +75,7 @@ class MeasureDetailComponent extends Object implements OnInit {
   static final String closeButtonLabel = CommonMessage.buttonLabel('Close');
 
   @override
-  void ngOnInit() async {
+  void ngOnInit() {
 
     if (selectedMeasure != null) {
       measure = selectedMeasure.clone();
@@ -80,9 +84,7 @@ class MeasureDetailComponent extends Object implements OnInit {
 
     }
 
-    measureUnits = await _measureService.getMeasureUnits();
-
-    measureUnitOptions = new SelectionOptions.fromList(measureUnits);
+    measureUnitOptions = new SelectionOptions.fromList(_measureUnits);
 
     measureUnitSingleSelectModel =
     new SelectionModel.single()

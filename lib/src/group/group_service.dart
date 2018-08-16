@@ -18,28 +18,36 @@ class GroupService {
 
   /// Return a list of [Group]
   Future<List<Group>> getGroups(String organizationId) async {
-    return await _augeApiService.augeApi.getGroups(organizationId);
-  }
 
-  /// Return an [Group] by Id
-  Future<Group> getGroupById(String id) async {
-    return await _augeApiService.augeApi.getGroupById(id);
+   // return await _augeApiService.augeApi.getGroups(organizationId);
+   return _augeApiService.augeApi.getGroups(organizationId);
+
   }
 
   /// Delete an [Group]
   Future deleteGroup(String id) async {
-    await _augeApiService.augeApi.deleteGroup(id);
+    try {
+      await _augeApiService.augeApi.deleteGroup(id);
+    } catch (e) {
+      print('${e.runtimeType}, ${e}');
+      rethrow;
+    }
   }
 
   /// Save (create or update) an [Group]
   void saveObjective(Group group) async {
-    if (group.id == null) {
-      IdMessage idMessage = await _augeApiService.augeApi.createGroup(group);
+    try {
+      if (group.id == null) {
+        IdMessage idMessage = await _augeApiService.augeApi.createGroup(group);
 
-      // ID - primary key generated on server-side.
-      group.id = idMessage?.id;
-    } else {
-      await _augeApiService.augeApi.updateGroup(group);
+        // ID - primary key generated on server-side.
+        group.id = idMessage?.id;
+      } else {
+        await _augeApiService.augeApi.updateGroup(group);
+      }
+    } catch (e) {
+      print('${e.runtimeType}, ${e}');
+      rethrow;
     }
   }
 

@@ -15,24 +15,38 @@ class WorkItemService {
 
   WorkItemService(this._augeApiService);
 
+  /*
   /// Return a list of [Initiative] by Id
   Future<WorkItem> getWorkItemById(String id) async {
     return await _augeApiService.initiativeAugeApi.getWorkItemById(id);
   }
+*/
 
   /// Delete a [WorkItem]
-  Future deleteWorkItem(String id) async {
-    await _augeApiService.initiativeAugeApi.deleteWorkItem(id);
+  void deleteWorkItem(String id) async {
+    try {
+      await _augeApiService.initiativeAugeApi.deleteWorkItem(id);
+    } catch (e) {
+      print('${e.runtimeType}, ${e}');
+      rethrow;
+    }
   }
 
   /// Save (create or update) a [WorkItem]
   void saveWorkItem(String initiativeId, WorkItem workItem) async {
-    if (workItem.id == null) {
-      IdMessage idMessage = await _augeApiService.initiativeAugeApi.createWorkItem(workItem, initiativeId);
+    try {
+      if (workItem.id == null) {
+        IdMessage idMessage = await _augeApiService.initiativeAugeApi
+            .createWorkItem(workItem, initiativeId);
 
-      workItem.id = idMessage?.id;
-    } else {
-      await _augeApiService.initiativeAugeApi.updateWorkItem(workItem, initiativeId);
+        workItem.id = idMessage?.id;
+      } else {
+        await _augeApiService.initiativeAugeApi.updateWorkItem(
+            workItem, initiativeId);
+      }
+    } catch (e) {
+      print('${e.runtimeType}, ${e}');
+      rethrow;
     }
   }
 

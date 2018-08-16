@@ -94,9 +94,18 @@ class WorkItemDetailComponent implements OnInit  {
   WorkItemCheckItem selectedCheckItem;
   String checkItemEntry;
 
+  List<User> _users;
+
   WorkItemDetailComponent(this._authService, this._userService, this._workItemService)  {
 
     initializeDateFormatting(Intl.defaultLocale , null);
+    initialization();
+
+  }
+
+  void initialization() async {
+
+    _users = await _userService.getUsers(_authService.selectedOrganization?.id, withProfile: true);
 
   }
 
@@ -118,17 +127,17 @@ class WorkItemDetailComponent implements OnInit  {
   static final String closeButtonLabel = CommonMessage.buttonLabel('Close');
 
   @override
-  void ngOnInit() async {
+  void ngOnInit() {
 
     // Clone the object to have an intermediate
     if (selectedWorkItem != null) {
       workItem = selectedWorkItem.clone();
     }
 
-    List<User> users = await _userService.getUsersByOrganizationId(_authService.selectedOrganization?.id, withProfile: true);
+    //List<User> users = await _userService.getUsers(_authService.selectedOrganization?.id, withProfile: true);
 
     memberOptions = new StringSelectionOptions<User>(
-        users, toFilterableString: (User user) => user.name);
+        _users, toFilterableString: (User user) => user.name);
 
     memberSingleSelectModel =
     new SelectionModel.single()

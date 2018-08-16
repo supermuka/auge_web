@@ -15,6 +15,10 @@ import 'package:auge_server/client/augeapi.dart';
 import 'package:auge_server/client/objectiveaugeapi.dart';
 import 'package:auge_server/client/initiativeaugeapi.dart';
 
+export 'package:_discoveryapis_commons/_discoveryapis_commons.dart'
+    show ApiRequestError, DetailedApiRequestError;
+export 'package:auge_server/shared/rpc_error_message.dart' show RpcErrorMessage, RpcErrorDetailMessage;
+
 
 /// Provide services for Server APIs access
 @Injectable()

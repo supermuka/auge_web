@@ -33,7 +33,7 @@ class AuthComponent {
 
   final AuthService _authService;
 
-  String eMail = "samuel.schwebel@gmail.com";
+  String eMail = "demo@levius.com.br";
   String passwordStr = "1234567";
   static String error;
 
@@ -55,30 +55,28 @@ class AuthComponent {
     if (email.isEmpty || password.isEmpty) {
       error = AuthMessage.informEMailPasswordCorrectlyMsg();
     } else {
-
-     try {
-
-       _authService.authenticatedUser =
-       await _authService.getAuthenticatedUserWithEmail(email, password);
-
+      try {
+        _authService.authenticatedUser =
+        await _authService.getAuthenticatedUserWithEmail(email, password);
         if (_authService.authenticatedUser == null) {
           error = AuthMessage.userNotFoundMsg();
         } else {
           _authService.authorizatedOrganizations =
           await _authService.getAuthorizatedOrganizationsByUserId(
-             _authService.authenticatedUser.id);
+              _authService.authenticatedUser.id);
 
-          if (_authService.authorizatedOrganizations == null || _authService.authorizatedOrganizations.length == 0) {
+          if (_authService.authorizatedOrganizations == null ||
+              _authService.authorizatedOrganizations.length == 0) {
             error = AuthMessage.organizationNotFoundMsg();
           } else {
             goToAppLayout();
           }
         }
       } catch (e) {
-        error = AuthMessage.serverApiErrorMsg();
-        print(e);
+          error = AuthMessage.serverApiErrorMsg();
+          rethrow;
+        }
       }
-    }
   }
 
   goToAppLayout() {

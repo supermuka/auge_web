@@ -12,9 +12,8 @@ import 'package:angular_forms/angular_forms.dart';
 import 'package:intl/intl.dart';
 
 import 'package:auge_server/model/user.dart';
+import 'package:auge_server/model/user_profile_organization.dart';
 import 'package:auge_web/message/messages.dart';
-
-import 'package:angular_components/model/selection/selection_model.dart';
 
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
@@ -65,24 +64,23 @@ class UserDetailComponent extends Object implements OnInit {
   final Router _router;
   final Location _location;
 
-  final SelectionModel selectionModelUserAuthorization = new SelectionModel.multi();
-  final SelectionModel selectionModelIdiom = new SelectionModel.multi();
+ //  final SelectionModel selectionModelUserAuthorization = new SelectionModel.multi();
 
   String _passwordOrigin;
 
-  User user = new User();
+  User user;
+  UserProfileOrganization userProfileOrganization;
 
-  String errorPercentualConcluido;
-  
-  List<Option> userAuthorizationOptions = new List();
-
+  List<Option> userAuthorizationOptions;
 
   String get getUsFlag => '/packages/auge_web/assets/images/flag_us.png';
   String get getEsFlag => '/packages/auge_web/assets/images/flag_es.png';
   String get getBrFlag => '/packages/auge_web/assets/images/flag_br.png';
 
   UserDetailComponent(this._authService, this._userService, this._router, this._location) {
-    UserAuthorization.values.forEach((f) => userAuthorizationOptions.add(new Option(f.index, UserMessage.label(f.toString()) , false, false) ));
+    userAuthorizationOptions = List<Option>();
+
+    //UserAuthorization.values.forEach((f) => userAuthorizationOptions.add(new Option(f.index, UserMessage.label(f.toString()) /* , false, false */) ));
   }
 
   bool get authenticatedUserIsSuperAdmin => _authService.authenticatedUser.userProfile.isSuperAdmin;
@@ -100,7 +98,6 @@ class UserDetailComponent extends Object implements OnInit {
   static final String superAdminLabel = UserMessage.label('Super Admin');
   static final String idiomLabel = UserMessage.label('Idiom');
 
-
   static final String uploadButtonLabel = CommonMessage.buttonLabel('Upload');
   static final String clearButtonLabel = CommonMessage.buttonLabel('Clear');
   static final String saveButtonLabel = CommonMessage.buttonLabel('Save');
@@ -108,20 +105,26 @@ class UserDetailComponent extends Object implements OnInit {
 
   @override
   void ngOnInit() {
-
     if (selectedUser != null) {
       // Clone objective
       user = selectedUser.clone();
     } else {
       // objective.organization = _authService.selectedOrganization;
-
       user.userProfile.idiomLocale = Intl.defaultLocale;
     }
 
+    UserAuthorization.values.forEach((f) => userAuthorizationOptions.add(new Option(f.index, UserMessage.label(f.toString()) /* , false, false */) ));
+
+    userProfileOrganization = _authService.authorizatedOrganizations?.firstWhere((o) => o.organization.id == _authService?.selectedOrganization?.id, orElse: () => null);
   }
 
   void saveUser() {
+
     _userService.saveUser(user);
+    if (userProfileOrganization != null) {
+      _userService.saveUserProfileOrganization(userProfileOrganization);
+    }
+
     _saveController.add(user);
     closeDetail();
   }
@@ -133,8 +136,6 @@ class UserDetailComponent extends Object implements OnInit {
     if (files.length > 0) {
       html.File file = files.item(0);
 
-
-
       html.FileReader reader = new html.FileReader();
 
       reader.onLoad.listen((fileEvent) {
@@ -143,7 +144,7 @@ class UserDetailComponent extends Object implements OnInit {
 
         Image image = decodeImage(fileContent);
 
-        Image thumbnail = copyResize(image, 120);
+        Image thumbnail = copyResize(image, 120, 120);
 
         user.userProfile.image = base64.encode(encodePng(thumbnail));
 
@@ -154,8 +155,11 @@ class UserDetailComponent extends Object implements OnInit {
       });
 
       reader.readAsArrayBuffer(file);
-
     }
+  }
+
+  void clearImage() {
+    user.userProfile.image = null;
   }
 
   String userUrlImage(User user) {
@@ -189,8 +193,10 @@ class UserDetailComponent extends Object implements OnInit {
 class Option {
   final int index;
   final String label;
+  /*
   bool selected;
   bool disabled;
+  */
 
-  Option(this.index, this.label, this.selected, this.disabled);
+  Option(this.index, this.label /*, this.selected, this.disabled */);
 }

@@ -58,9 +58,14 @@ class MeasuresComponent extends Object {
     selectedMeasure = measure;
   }
 
-  Future<void> delete() async {
-    await _measureService.deleteMeasure(selectedMeasure.id);
-    objective.measures.remove(selectedMeasure);
+  void delete() async {
+    try {
+      await _measureService.deleteMeasure(selectedMeasure.id);
+      objective.measures.remove(selectedMeasure);
+    } catch (e) {
+      print('${e.runtimeType}, ${e}');
+      rethrow;
+    }
   }
 
   int progress(Measure measure) {

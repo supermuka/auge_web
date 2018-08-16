@@ -86,8 +86,13 @@ class OrganizationsComponent extends Object implements OnActivate, OnDestroy  {
   }
 
   void delete() {
-    _organizationService.deleteOrganization(selectedOrganization);
-    _organizations.remove(selectedOrganization);
+    try {
+      _organizationService.deleteOrganization(selectedOrganization.id);
+      _organizations.remove(selectedOrganization);
+    } catch (e) {
+      print('${e.runtimeType}, ${e}');
+      rethrow;
+    }
   }
 
   void viewDetail(bool detailVisible) {

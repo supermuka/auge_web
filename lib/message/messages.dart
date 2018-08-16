@@ -9,7 +9,7 @@ class CommonMessage {
       "${Intl.select(label, {
         'AUGE': 'AUGE',
         'Objectives and Initiatives': 'Objectives and Initiatives',
-      })}",
+        'other': 'Not Defined'})}",
       name: "label",
       args: [label],
       // locale: "en",
@@ -20,6 +20,7 @@ class CommonMessage {
   /// Label for edit button
   static buttonLabel(String label) => Intl.message(
       "${Intl.select(label, {
+        'Apply': 'Apply',
         'Edit': 'Edit',
         'Delete': 'Delete',
         'Save': 'Save',
@@ -164,6 +165,7 @@ class InitiativeMessage {
         'Objective': 'Objective',
         'Group': 'Group',
         'No Match': 'No Match',
+        'Filter Initiatives': 'Filter Initiatives',
         'other': 'Not Defined'})}",
       name: "initiativeLabel",
       args: [label],

@@ -6,6 +6,7 @@ import 'dart:async';
 import 'package:angular/core.dart';
 
 import 'package:auge_server/model/user.dart';
+import 'package:auge_server/model/user_profile_organization.dart';
 import 'package:auge_server/message_type/id_message.dart';
 
 import 'package:auge_web/services/augeapi_service.dart';
@@ -18,24 +19,33 @@ class UserService {
   UserService(this._augeApiService);
 
   /// Return a list of [User]
-  Future<List<User>> getUsers({bool withProfile}) async {
+  /*
+  Future<List<User>> getUsers(String organizationId, {bool withProfile}) async {
 
-    return await _augeApiService.augeApi.getUsers(withProfile: withProfile);
+    return await _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
 
   }
+  */
 
   /// Return an [User] by [id]
+  /*
   Future<User> getUserById(String id, bool withProfile) async {
 
-    return await _augeApiService.augeApi.getUserById(id, withProfile: withProfile);
+    List<User> users = await _augeApiService.augeApi.getUsers(id: id, withProfile: withProfile);
+
+    if (users.length != 0) {
+      return users.first;
+    } else {
+      return null;
+    }
 
   }
+  */
 
   /// Return [User] list by Organization [id]
-  Future<List<User>> getUsersByOrganizationId(String organizationId, {bool withProfile}) async {
-
-    return await _augeApiService.augeApi.getUsersByOrganizationId(organizationId, withProfile: withProfile);
-
+  Future<List<User>> getUsers(String organizationId, {bool withProfile}) async {
+    // return await _augeApiService.augeApi.getUsers(organizationId: organizationId, withProfile: withProfile);
+    return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
   }
 
   /// Save (create or update) an [User]
@@ -53,19 +63,49 @@ class UserService {
     }
   }
 
-  /// Delete an [User]
-  void deleteUser(User user) async {
-    await _augeApiService.augeApi.deleteUser(user.id);
+  /// Save (create or update) an [UserProfileOrganization]
+  void saveUserProfileOrganization(UserProfileOrganization userProfileOrganization) async {
+
+    if (userProfileOrganization.id == null) {
+
+      IdMessage idMessage = await _augeApiService.augeApi.createUserProfileOrganization(userProfileOrganization);
+
+      userProfileOrganization.id = idMessage.id;
+
+    } else {
+      await _augeApiService.augeApi.updateUserProfileOrganization(userProfileOrganization);
+    }
   }
 
-  /// Return an image uri
-  //String userUrlImage(User user) {
-  //  if (user?.userProfile?.image == null)
-  //    return '/packages/auge_web/assets/images/no_avatar.png';
-  //  else
-  //    return 'data:image/*;base64,' + user?.userProfile?.image;
-  //}
+  /// Delete an [User]
+  void deleteUser(String id) async {
+    try {
+      await _augeApiService.augeApi.deleteUser(id);
+    } catch (e) {
+      print('${e.runtimeType}, ${e}');
+      rethrow;
+    }
+  }
 
+  /// Delete an [UserProfileOrganization]
+  void deleteUserProfileOrganization(String id) async {
+    try {
+      await _augeApiService.augeApi.deleteUserProfileOrganization(id);
+    } catch (e) {
+      print('${e.runtimeType}, ${e}');
+      rethrow;
+    }
+  }
+
+  /// Delete an [UserProfileOrganization]
+  void deleteUserProfileOrganizationByUserId(String userId) async {
+    try {
+      await _augeApiService.augeApi.deleteUserProfileOrganizationByUserId(userId);
+    } catch (e) {
+      print('${e.runtimeType}, ${e}');
+      rethrow;
+    }
+  }
 }
 
 

@@ -103,13 +103,13 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
     selectedObjective = objective;
   }
 
-  Future<void> delete() async {
+  void delete() async {
     try {
-
       await _objectiveService.deleteObjective(selectedObjective.id);
       objectives.remove(selectedObjective);
-    } catch(e) {
-      print(e);
+    } catch (e) {
+      print('${e.runtimeType}, ${e}');
+      rethrow;
     }
   }
 

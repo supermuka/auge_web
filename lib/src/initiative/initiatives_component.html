@@ -3,6 +3,10 @@
         <material-icon icon="add"></material-icon>
     </material-fab>
     <br/>
+    <!-- filter called by search component -->
+    <div *ngIf="visibleFilter == true">
+        <auge-initiatives-filter [initiativesFilterParam]="initiativesFilterParam" (close)="visibleFilter = false"></auge-initiatives-filter>
+    </div>
     <material-expansionpanel-set>
         <div *ngFor="let iInitiative of initiatives;let i = index">
             <material-expansionpanel

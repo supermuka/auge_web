@@ -71,8 +71,13 @@ class WorkItemsListComponent extends Object /* with CanReuse implements OnActiva
   void selectWorkItem(WorkItem workItem) => this.selectedWorkItem = workItem;
 
   void delete() async {
-    await _workItemService.deleteWorkItem(selectedWorkItem.id);
-    initiative.workItems.remove(selectedWorkItem);
+    try {
+      await _workItemService.deleteWorkItem(selectedWorkItem.id);
+      initiative.workItems.remove(selectedWorkItem);
+    } catch (e) {
+      print('${e.runtimeType}, ${e}');
+      rethrow;
+    }
   }
 
   String dueDateColor(WorkItem workItem) {
@@ -80,7 +85,12 @@ class WorkItemsListComponent extends Object /* with CanReuse implements OnActiva
   }
 
   void updateWorkItem(WorkItem workItem) {
-    _workItemService.saveWorkItem(initiative.id, workItem);
+    try {
+      _workItemService.saveWorkItem(initiative.id, workItem);
+    } catch (e) {
+      print('${e.runtimeType}, ${e}');
+      rethrow;
+    }
   }
 
   List<WorkItem> get workItems => initiative?.workItems;

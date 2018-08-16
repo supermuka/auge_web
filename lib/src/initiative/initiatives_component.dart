@@ -12,19 +12,22 @@ import 'package:angular_components/model/menu/menu.dart';
 import 'package:auge_web/message/messages.dart';
 
 import 'package:auge_server/model/initiative/initiative.dart';
+import 'package:auge_server/model/objective/objective.dart';
 
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/initiative/initiative_service.dart';
+import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
 
+import 'package:auge_web/src/initiative/initiatives_filter_component.dart';
 import 'package:auge_web/src/initiative/initiative_summary_component.dart';
 import 'package:auge_web/src/initiative/initiative_detail_component.dart';
-
 
 import 'package:auge_web/src/work_item/work_items_component.dart';
 import 'package:auge_web/src/work_item/work_items_list_component.dart';
 
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
+
 
 import 'package:auge_web/services/app_routes.dart';
 
@@ -37,15 +40,17 @@ import 'package:auge_web/src/initiative/initiative_detail_component.template.dar
 
 @Component(
     selector: 'auge-initiatives',
-    providers: const [InitiativeService],
+    providers: const [InitiativeService, ObjectiveService],
     directives: const [
       coreDirectives,
       routerDirectives,
       materialDirectives,
+      InitiativesFilterComponent,
       InitiativeSummaryComponent,
       InitiativeDetailComponent,
       WorkItemsComponent,
       WorkItemsListComponent,
+
     ],
     templateUrl: 'initiatives_component.html',
     styleUrls: const [
@@ -55,12 +60,13 @@ import 'package:auge_web/src/initiative/initiative_detail_component.template.dar
 class InitiativesComponent extends Object with CanReuse implements /* OnInit, */ OnActivate, OnDestroy {
 
   final InitiativeService _initiativeService;
+  final ObjectiveService _objectiveService;
   final SearchService _searchService;
   final Router _router;
   final AppLayoutService _appLayoutService;
   final AuthService _authService;
 
-  // static final int progressBarWidth = 360;
+  InitiativesFilterParam initiativesFilterParam;
 
   bool detailVisible = false;
   List<Initiative> _initiatives = new List();
@@ -69,48 +75,12 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
   bool expanded = false;
   List<bool> wideControl = new List();
   List<bool> expandedControl = new List();
-/*
-  final List<RouteDefinition> routes = [
-    new RouteDefinition(
-        routePath: AppRoutes.appLayoutHomeRoute,
-        component: app_layout_home.AppLayoutHomeComponentNgFactory,
-        useAsDefault: true,
-       ),
-    new RouteDefinition(
-      routePath: AppRoutes.initiativeDetailAddRoute,
-      component: initiative_detail_component.InitiativeDetailComponentNgFactory,
-      // useAsDefault: true
-    ),
-    new RouteDefinition(
-      routePath: AppRoutes.initiativeDetailRoute,
-      component: initiative_detail_component.InitiativeDetailComponentNgFactory,
-
-     // useAsDefault: true
-    ),
-
-
-  ];
-*/
 
   MenuModel<MenuItem> menuModel;
-  InitiativesComponent(this._initiativeService, this._appLayoutService, this._authService, this._searchService, this._router) {
+  InitiativesComponent(this._authService, this._appLayoutService, this._initiativeService, this._objectiveService, this._searchService, this._router) {
+    initiativesFilterParam = InitiativesFilterParam();
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMessage.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)), new MenuItem(CommonMessage.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
   }
-
-  // Define messages and labels
-  // static final String workItemsOverDueLabel =  InitiativeMessage.label('Work Items Over Due');
-
-  /*
-  @override
-  ngOnInit() async {
-
-    _initiatives = await _initiativeService.getInitiatives(_authService.selectedOrganization?.id, withWorkItems: true);
-
-    wideControl = new List<bool>.filled(_initiatives.length, false);
-    expandedControl = new List<bool>.filled(_initiatives.length, false);
-
-  }
-  */
 
   @override
   Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
@@ -121,17 +91,35 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
     
     _appLayoutService.headerTitle = InitiativeMessage.label('Initiatives');
 
+    if (routerStateCurrent.parameters.containsKey(AppRoutes.objectiveIdParameter)) {
+      String objectiveId = routerStateCurrent.parameters[AppRoutes
+          .objectiveIdParameter];
+
+      if (objectiveId != null || objectiveId.isNotEmpty) {
+        initiativesFilterParam.objective = await _objectiveService.getObjectiveById(objectiveId, withMeasures: false);
+      }
+    }
+
     _initiatives = await _initiativeService.getInitiatives(_authService.selectedOrganization?.id, withWorkItems: true);
 
     wideControl = new List<bool>.filled(_initiatives.length, false);
     expandedControl = new List<bool>.filled(_initiatives.length, false);
 
     _appLayoutService.searchEnabled = true;
+  }
 
+  get visibleFilter => _searchService.visibleFilter;
+
+  set visibleFilter(bool visibleFilter) {
+    _searchService.visibleFilter = visibleFilter;
   }
 
   List<Initiative> get initiatives {
-    return _searchService?.searchTerm.toString().isEmpty ? _initiatives : _initiatives.where((t) => t.name.contains(_searchService.searchTerm)).toList();
+
+    List<Initiative> initiativesFilter;
+    initiativesFilter = initiativesFilterParam.objective == null ? _initiatives : _initiatives.where((t) => t.objective != null && t.objective.id == initiativesFilterParam.objective.id).toList();
+
+    return _searchService?.searchTerm.toString().isEmpty ? initiativesFilter : initiativesFilter.where((t) => t.name.contains(_searchService.searchTerm)).toList();
   }
 
   @override
@@ -153,29 +141,15 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
   }
 
   void delete() async {
-    await _initiativeService.deleteInitiative(selectedInitiative.id);
-    initiatives.remove(selectedInitiative);
-  }
-/*
-  String circleColor(Initiative initiative)  {
-    String color;
-    int workItemsOverDueCount = initiative.workItemsOverDueCount;
-    int workItemsCount = initiative.workItemsCount;
-
-    if (workItemsOverDueCount == 0) {
-      color = 'hsl(120, 100%, 50%)';
-    } else if (workItemsOverDueCount < workItemsCount)
-      color = 'hsl(45, 100%, 50%)';
-    else {
-      color = 'hsl(0, 100%, 50%)';
+    try {
+      await _initiativeService.deleteInitiative(selectedInitiative.id);
+      initiatives.remove(selectedInitiative);
+    } catch (e) {
+      print('${e.runtimeType}, ${e}');
+      rethrow;
     }
-    return color;
   }
 
-  String widthState(int workItemsCount, int stateWorkItemsCount, int widthTotal) {
-    return (stateWorkItemsCount / workItemsCount * widthTotal).toString();
-  }
-*/
   void viewDetail(bool detailVisible) {
     this.detailVisible = detailVisible;
   }

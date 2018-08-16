@@ -1,9 +1,5 @@
 <material-drawer temporary #drawer="drawer">
     <material-list class="menorganizationsRouteUrlu-drawer" *deferredContent>
-        <!--
-        <div group class="mat-drawer-spacer">
-        </div>
-        -->
         <div group class="centralized">
             <material-dropdown-select class="button-look"
                                       slide="y"
@@ -70,9 +66,6 @@
             <div class="material-spacer"></div>
 
             <nav class="material-navigation centralized">
-                <!--
-
-                -->
                 <span class="spacer"></span>
 
                 <span class="avatar" [style.background-image]="'url(' + userUrlImage() + ')'"></span>
@@ -85,8 +78,9 @@
             </nav>
         </div>
     </header>
-    <div class="opcaoConteudo main">
+    <div class="contentMain main">
+        <auge-user-detail *ngIf="userDetailVisible == true" [selectedUser]="authenticatedUser" (save)="changeUserDetail($event)" (close)="userDetailVisible = false">
+        </auge-user-detail>
         <router-outlet [routes]="routes"></router-outlet>
     </div>
 </material-content>
-

@@ -1,6 +1,8 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
+import 'dart:async';
+
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
 import 'package:angular_components/angular_components.dart';
@@ -38,7 +40,7 @@ class InitiativesSummaryComponent extends Object implements OnInit {
   @Input()
   Objective objective;
 
-  List<Initiative> initiatives = new List();
+  List<Initiative> initiatives = [];
 
 /*
   final List<RouteDefinition> routes = [
@@ -70,12 +72,16 @@ class InitiativesSummaryComponent extends Object implements OnInit {
   @override
   ngOnInit() async {
 
-    initiatives = await _initiativeService.getInitiatives(_authService.selectedOrganization?.id, objectiveId: objective?.id, withWorkItems: true);
+    if (objective?.id != null) {
+      initiatives = await _initiativeService.getInitiatives(
+          _authService.selectedOrganization?.id, objectiveId: objective.id,
+          withWorkItems: true);
+    }
 
   }
 
   void goToInitiatives() {
-    _router.navigate(AppRoutes.initiativesRoute.toUrl());
+    _router.navigate(AppRoutes.initiativesByObjectiveRoute.toUrl(parameters: { AppRoutes.objectiveIdParameter: objective.id}));
   }
 
 }

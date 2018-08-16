@@ -19,32 +19,57 @@ class MeasureService {
 
   /// Delete a [Measure]
   Future deleteMeasure(String id) async {
-    await _augeApiService.objectiveAugeApi.deleteMeasure(id);
+    try {
+      await _augeApiService.objectiveAugeApi.deleteMeasure(id);
+    } catch (e) {
+      print('${e.runtimeType}, ${e}');
+      rethrow;
+    }
   }
+
 
   /// Return a [Measure] by Id
+  /*
   Future<Measure> getMeasureById(id) async {
-    return await _augeApiService.objectiveAugeApi.getMeasureById(id);
+    List<Measure> measures;
+    measures = await _augeApiService.objectiveAugeApi.getMeasures(id: id);
+    //return await _augeApiService.objectiveAugeApi.getMeasureById(id);
   }
+  */
 
-  /// Return a [MeasureUnit] by Id
+
+  /// Return [MeasureUnit] list
   Future<List<MeasureUnit>> getMeasureUnits() async {
-    List<MeasureUnit> measureUnits = await _augeApiService.objectiveAugeApi.getMeasureUnits();
+
+    // List<MeasureUnit> measureUnits = await _augeApiService.objectiveAugeApi.getMeasureUnits();
+
+      List<MeasureUnit> measureUnits =  await _augeApiService.objectiveAugeApi.getMeasureUnits();
+
+      // Translate name
+      measureUnits.forEach((f) => f.name = MeasureMessage.measureUnitLabel(f.name));
+      return measureUnits;
 
     // Translate name
-    measureUnits.forEach((f) => f.name = MeasureMessage.measureUnitLabel(f.name));
+    // measureUnits.forEach((f) => f.name = MeasureMessage.measureUnitLabel(f.name));
   }
+
 
   /// Save (create or update) an [Measure]
   void saveMeasure(String objectiveId, Measure measure) async {
-    if (measure.id == null) {
+    try {
+      if (measure.id == null) {
+        IdMessage idMessage = await _augeApiService.objectiveAugeApi
+            .createMeasure(measure, objectiveId);
 
-      IdMessage idMessage = await _augeApiService.objectiveAugeApi.createMeasure(measure, objectiveId);
-
-      // ID - primary key generated on server-side.
-      measure.id = idMessage?.id;
-    } else {
-      await _augeApiService.objectiveAugeApi.updateMeasure(measure, objectiveId);
+        // ID - primary key generated on server-side.
+        measure.id = idMessage?.id;
+      } else {
+        await _augeApiService.objectiveAugeApi.updateMeasure(
+            measure, objectiveId);
+      }
+    } catch (e) {
+      print('${e.runtimeType}, ${e}');
+      rethrow;
     }
   }
 }

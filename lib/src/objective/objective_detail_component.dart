@@ -33,7 +33,7 @@ import 'objective_detail_component.template.dart' as objective_detail_component;
       'objective_detail_component.css'
     ])
 
-class ObjectiveDetailComponent extends Object implements OnInit /* with CanReuse implements OnActivate */ {
+class ObjectiveDetailComponent extends Object implements OnInit {
 
   final AuthService _authService;
   final UserService _userService;
@@ -55,7 +55,7 @@ class ObjectiveDetailComponent extends Object implements OnInit /* with CanReuse
   @Output()
   Stream<Objective> get save => _saveController.stream;
 
-  Objective objective = new Objective();
+  Objective objective;
 
   String groupInputText = '';
   String alignedToInputText = '';
@@ -73,8 +73,18 @@ class ObjectiveDetailComponent extends Object implements OnInit /* with CanReuse
   DateRange limitToDateRange =
   new DateRange(new Date.today().add(years: -1), new Date.today().add(years: 1));
 
+  List<Objective> _alignedToObjectives = [];
+  List<User> _users = [];
+  List<Group> _groups = [];
+
   ObjectiveDetailComponent(this._authService, this._userService, this._objectiveService, this._groupService) {
 
+  }
+
+  void initialization() async {
+     _alignedToObjectives = await _objectiveService.getObjectives(_authService.selectedOrganization.id);
+     _users = await _userService.getUsers(_authService.selectedOrganization.id, withProfile: true);
+     _groups = await _groupService.getGroups(_authService.selectedOrganization.id);
   }
 
   // Define messages and labels
@@ -98,7 +108,9 @@ class ObjectiveDetailComponent extends Object implements OnInit /* with CanReuse
   static final String closeButtonLabel = CommonMessage.buttonLabel('Close');
 
   @override
-  void ngOnInit() async {
+  void ngOnInit() {
+
+    print(selectedObjective);
 
     if (selectedObjective != null) {
       // Clone objective
@@ -109,15 +121,15 @@ class ObjectiveDetailComponent extends Object implements OnInit /* with CanReuse
     }
 
     // Aligned to Objectives
-    List<Objective> alignedToObjectives = await _objectiveService.getObjectives(_authService.selectedOrganization.id);
+    // _alignedToObjectives = await _objectiveService.getObjectives(_authService.selectedOrganization.id);
 
     // Remove the current object
     if (objective.id != null)
-      alignedToObjectives.removeWhere((testObjective) => testObjective.id == objective.id);
+      _alignedToObjectives.removeWhere((testObjective) => testObjective.id == objective.id);
 
 
     alignedToOptions = new StringSelectionOptions<Objective>(
-        alignedToObjectives, toFilterableString: (Objective obj) => obj.name);
+        _alignedToObjectives, toFilterableString: (Objective obj) => obj.name);
 
     alignedToSingleSelectModel =
     new SelectionModel.single()
@@ -132,7 +144,7 @@ class ObjectiveDetailComponent extends Object implements OnInit /* with CanReuse
       alignedToSingleSelectModel.select(objective.alignedTo);
 
     // Leader
-    List<User> users = await _userService.getUsersByOrganizationId(_authService.selectedOrganization.id, withProfile: true);
+    // List<User> users = await _userService.getUsers(_authService.selectedOrganization.id, withProfile: true);
 
     leaderSingleSelectModel =
     new SelectionModel.single()
@@ -147,13 +159,13 @@ class ObjectiveDetailComponent extends Object implements OnInit /* with CanReuse
       leaderSingleSelectModel.select(objective.leader);
 
     leaderOptions = new StringSelectionOptions<User>(
-        users, toFilterableString: (User user) => user.name);
+        _users, toFilterableString: (User user) => user.name);
 
     // Group
-    List<Group> groups = await _groupService.getGroups(_authService.selectedOrganization.id);
+    // List<Group> groups = await _groupService.getGroups(_authService.selectedOrganization.id);
 
     groupOptions = new StringSelectionOptions<Group>(
-        groups, toFilterableString: (Group gru) => gru.name);
+        _groups, toFilterableString: (Group gru) => gru.name);
 
     groupSingleSelectModel =
     new SelectionModel.single()

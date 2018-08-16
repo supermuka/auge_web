@@ -83,8 +83,13 @@ class GroupsComponent extends Object /* with CanReuse */ implements OnActivate, 
   }
 
   void delete() async {
-    await _groupService.deleteGroup(selectedGroup.id);
-    groups.remove(selectedGroup);
+    try {
+      await _groupService.deleteGroup(selectedGroup.id);
+      groups.remove(selectedGroup);
+    } catch (e) {
+      print('${e.runtimeType}, ${e}');
+      rethrow;
+    }
   }
 
   String colorFromUuid(String id) {

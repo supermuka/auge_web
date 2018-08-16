@@ -4,6 +4,9 @@ import 'package:angular/core.dart';
 class SearchService {
 
   String _searchTerm = '';
+  bool visibleFilter = false;
+
+  var _filterView;
 
   String get searchTerm {
     return _searchTerm;
@@ -11,6 +14,14 @@ class SearchService {
 
   set searchTerm(String term) {
     _searchTerm = term;
+  }
+
+  set filterView(Function filterView) {
+    _filterView = filterView;
+  }
+
+  Function get filterView {
+    return _filterView;
   }
 
 }

@@ -17,6 +17,7 @@ import 'search_service.dart';
 class SearchComponent {
 
   final SearchService _searchService;
+
   //String searchInputText = '';
   SelectionOptions searchOptions = SelectionOptions.fromList([]);
   SelectionModel searchSingleSelectModel = SelectionModel.single();
@@ -32,6 +33,12 @@ class SearchComponent {
 
   set searchTerm(String term) {
     _searchService.searchTerm = term;
+  }
+
+  void viewFilter() {
+    _searchService.visibleFilter = !_searchService.visibleFilter;
+    print('****');
+    print(_searchService.visibleFilter);
   }
 
  // ItemRenderer get searchItemRenderer => (dynamic conta) => conta.nome;
