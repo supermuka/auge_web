@@ -30,7 +30,7 @@ import 'package:auge_web/src/app_layout/app_layout_component.template.dart' as a
 
 class AppComponent extends Object with CanReuse {
 
-  final Router _router;
+  // final Router _router;
 
   final List<RouteDefinition> routes = [
     new RouteDefinition(
@@ -44,7 +44,7 @@ class AppComponent extends Object with CanReuse {
     ),
   ];
 
-  AppComponent(this._router) {
+  AppComponent( /*this._router */) {
     Intl.defaultLocale = 'en_US';
     initializeMessages(Intl.defaultLocale);
   }

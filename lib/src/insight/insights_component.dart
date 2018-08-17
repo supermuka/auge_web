@@ -71,10 +71,15 @@ class InsightsComponent implements OnActivate  {
 
     _appLayoutService.searchEnabled = false;
 
-    objectives = await _objectiveService.getObjectives(_authService.selectedOrganization?.id, withMeasures: true);
+    if (_authService.selectedOrganization != null) {
+      print(_authService.selectedOrganization?.id);
+      objectives = await _objectiveService.getObjectives(
+          _authService.selectedOrganization.id, withMeasures: true);
 
-    initiatives = await _initiativeService.getInitiatives(_authService.selectedOrganization?.id, withWorkItems: true);
-
+      print(_authService.selectedOrganization?.id);
+      initiatives = await _initiativeService.getInitiatives(
+          _authService.selectedOrganization.id, withWorkItems: true);
+    }
   }
 
   /// Return overall progress

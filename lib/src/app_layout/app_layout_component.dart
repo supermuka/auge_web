@@ -1,7 +1,6 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
-
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
 import 'package:angular_forms/angular_forms.dart';
@@ -24,6 +23,7 @@ import 'package:auge_server/model/organization.dart';
 import 'package:auge_server/model/user_profile_organization.dart';
 
 // ignore_for_file: uri_has_not_been_generated
+import 'package:auge_web/src/app_layout/app_layout_component.template.dart' as app_layout_component;
 import 'package:auge_web/src/insight/insights_component.template.dart' as insights_component;
 import 'package:auge_web/src/organization/organizations_component.template.dart' as organizations_component;
 import 'package:auge_web/src/organization/organization_component.template.dart' as organization_component;
@@ -52,7 +52,10 @@ import 'package:auge_web/src/group/groups_component.template.dart' as groups_com
       'package:angular_components/app_layout/layout.scss.css',
     ])
 
-class AppLayoutComponent extends Object with CanReuse implements OnActivate {
+class AppLayoutComponent extends Object with CanReuse implements OnActivate /*, OnDeactivate  */{
+
+  @ViewChild('drawer')
+  MaterialTemporaryDrawerComponent materialTemporaryDrawer;
 
   bool userDetailVisible = false;
 
@@ -66,6 +69,10 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
   String get groupsRouteUrl => AppRoutes.groupsRoute.toUrl();
 
   final List<RouteDefinition> routes = [
+    new RouteDefinition(
+      routePath: AppRoutes.appLayoutRoute,
+      component: app_layout_component.AppLayoutComponentNgFactory,
+    ),
     new RouteDefinition(
       routePath: AppRoutes.insightslRoute,
       component: insights_component.InsightsComponentNgFactory,
@@ -117,12 +124,12 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
   Router _router;
 
   // Dropdown Select to Organization and SuperAdmin
-  List<OptionGroup<AppLayoutSelectOption>> organizationGroupOptions = new List();
+  List<OptionGroup<AppLayoutOrganizationSelectOption>> organizationGroupOptions = new List();
   SelectionOptions organizationOptions;
   SelectionModel organizationSingleSelectModel;
 
   // Dropdown Select to User Profile and Logout
-  List<OptionGroup<AppLayoutSelectOption>> userProfileLogoutGroupOptions = new List();
+  List<OptionGroup<AppLayoutSettingSelectOption>> userProfileLogoutGroupOptions = new List();
   SelectionOptions userProfileLogoutOptions;
   SelectionModel userProfileLogoutSingleSelectModel;
 
@@ -134,44 +141,41 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
   String label(String label) =>  AppLayoutMessage.label(label);
 
   @override
-  onActivate(previous, current) async {
+  onActivate(previous, current)  {
+
     if (this._authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
     }
 
-
     _appLayoutService.searchEnabled = false;
 
-    // *** Dropdown select to Organizations and Super Admin ***
+    // MENU LEFT *** Dropdown select to Organizations and Super Admin ***
     organizationGroupOptions.clear();
 
     // Organizations
-    List<AppLayoutSelectOption> orgs = new List();
+    List<AppLayoutOrganizationSelectOption> orgs = new List();
 
     String orgGroupLabel = AppLayoutMessage.label('Organization');
 
     if (_authService.authorizatedOrganizations != null && _authService.authorizatedOrganizations.isNotEmpty) {
       _authService.authorizatedOrganizations.forEach((e) =>
-          orgs.add(new AppLayoutSelectOption()
+          orgs.add(new AppLayoutOrganizationSelectOption()
             ..group = orgGroupLabel
             ..name = e.organization.name
-            ..organization = e?.organization
-            ..routeUrl = null));
+            ..organization = e?.organization));
     }
     organizationGroupOptions.add(new OptionGroup.withLabel(orgs, orgGroupLabel));
 
     // Super Administration
-
-    List<AppLayoutSelectOption> adms = new List();
+    List<AppLayoutOrganizationSelectOption> adms = new List();
 
     String admGroupLabel = AppLayoutMessage.label('Super Admin');
 
     if (isSuperAdmin) {
-      adms.add(new AppLayoutSelectOption()
+      adms.add(new AppLayoutOrganizationSelectOption()
         ..group = admGroupLabel
         ..name = AppLayoutMessage.label('All Organizations')
-        ..organization = null
-        ..routeUrl = null);
+        ..organization = null);
 
       organizationGroupOptions.add(new OptionGroup.withLabel(adms, admGroupLabel));
     }
@@ -180,41 +184,60 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
 
     // Model Listening
     organizationSingleSelectModel =
-      new SelectionModel.single()..selectionChanges.listen((d) async {
+    new SelectionModel.single()..selectionChanges.listen((d) async {
+        if (d?.isNotEmpty && d.first?.added.isNotEmpty) {
+          if (_authService.selectedOrganization != d?.first?.added?.first?.organization) {
 
-        _authService.selectedOrganization = d?.first?.added?.first?.organization;
+            if (_authService.selectedOrganization == null) {
+              _authService.selectedOrganization =
+                  d?.first?.added?.first?.organization;
+            } else {
+              _authService.selectedOrganization =
+                  d?.first?.added?.first?.organization;
+              // Refresh current page to new organization
 
-        if (d?.first?.added?.first?.routeUrl != null) {
-          await goTo(d.first.added.first.routeUrl);
+              // Insights is default view on AppLayout. Could not to call AppLayout again.
+              String path = _router.current.path == AppRoutes.appLayoutRoute.path ? AppRoutes.insightslRoute.toUrl() : _router.current.toUrl();
+
+              _router.navigate(path, NavigationParams(queryParameters: _router.current.queryParameters, fragment: _router.current.fragment, reload: true));
+            }
+
+            if (materialTemporaryDrawer.hostMatDrawerExpanded) {
+               materialTemporaryDrawer.toggle();
+            }
+
+            organizationSingleSelectLabel =
+                _authService.selectedOrganization.name ?? AppLayoutMessage.label('Select');
+
+          }
         }
-        organizationSingleSelectLabel = d?.first?.added?.first?.name ?? AppLayoutMessage.label('Select');
+
       });
 
-    organizationSingleSelectModel.select(organizationOptions.optionsList.first);
-    _authService.selectedOrganization = organizationSingleSelectModel.selectedValues.first.organization;
+      //if (organizationSingleSelectModel.selectedValues.isEmpty) {
+      //  organizationSingleSelectModel.select(organizationOptions.optionsList.first);
+      //}
 
-    // *** Dropdown select to User Profile and Logout ***
+    //    _authService.selectedOrganization = organizationSingleSelectModel.selectedValues.first.organization;
+
+    // RIGHT - SETTINGS *** Dropdown select to User Profile and Logout ***
     userProfileLogoutGroupOptions.clear();
 
     // User Options
-    List<AppLayoutSelectOption> userDetailOptions = new List();
-    userDetailOptions.add(new AppLayoutSelectOption()
+    List<AppLayoutSettingSelectOption> userDetailOptions = new List();
+    userDetailOptions.add(new AppLayoutSettingSelectOption()
       ..group = null
       ..name = AppLayoutMessage.label('User Detail')
       ..viewComponent = (bool userDetailVisible) { this.userDetailVisible = userDetailVisible; }
       ..routeUrl = null
-      /*
-      ..routeUrl = AppRoutes.userSelectedDetailRoute.toUrl(parameters: {
-        AppRoutes.userIdParameter: _authService.authenticatedUser.id
-      })
-      */
+
     );
 
     userProfileLogoutGroupOptions.add(new OptionGroup.withLabel(userDetailOptions, null));
 
     // User Logout
-    List<AppLayoutSelectOption> logout = new List();
-    logout.add(new AppLayoutSelectOption()
+    List<AppLayoutSettingSelectOption> logout = new List();
+    logout.add(new AppLayoutSettingSelectOption()
       ..group = null
       ..name = AppLayoutMessage.label('Logout')
       ..routeUrl = AppRoutes.authRoute.toUrl());
@@ -235,6 +258,10 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
       }
       userProfileLogoutSingleSelectModel.clear();
   });
+  }
+
+  void teste(String t) {
+    print(t);
   }
 
   bool get isSuperAdmin {
@@ -258,16 +285,14 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
     _authService.close();
   }
 
-  void goTo(String url) async {
+  void goTo(String url) {
     if (url != null)
-      await _router.navigate(url);
+      _router.navigate(url);
   }
 
   void viewComponent(bool viewComponent) async {
     // viewComponent
   }
-
-
 
   bool get hasSelectedOrganization {
     return _authService.selectedOrganization != null;
@@ -297,11 +322,18 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
   }
 }
 
-class AppLayoutSelectOption {
+class AppLayoutSettingSelectOption {
+  String group;
+  String name;
+  // Organization organization;
+  String routeUrl;
+  Function viewComponent;
+}
+
+class AppLayoutOrganizationSelectOption {
   String group;
   String name;
   Organization organization;
-  String routeUrl;
-  Function viewComponent;
-
+  // String routeUrl;
+  // Function viewComponent;
 }

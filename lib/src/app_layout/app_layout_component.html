@@ -1,5 +1,5 @@
-<material-drawer temporary #drawer="drawer">
-    <material-list class="menorganizationsRouteUrlu-drawer" *deferredContent>
+<material-drawer id="drawer" temporary #drawer="drawer">
+    <material-list class="menu-drawer" *deferredContent>
         <div group class="centralized">
             <material-dropdown-select class="button-look"
                                       slide="y"
@@ -8,6 +8,7 @@
                                       [(options)]="organizationOptions"
                                       [itemRenderer]="itemRenderer">
             </material-dropdown-select>
+            <!-- (click)="materialTemporaryDrawer = drawer" -->
         </div>
         <div group>
             <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(insightsRouteUrl)">
@@ -22,7 +23,6 @@
             <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(initiativesRouteUrl)">
                 <material-icon icon="toc"></material-icon>{{label('Initiatives')}}
             </material-list-item>
-
         </div>
         <div group>
             <div label>{{label('Admin')}}</div>
@@ -41,7 +41,6 @@
             <material-list-item [disabled]="hasSelectedOrganization" (click)="drawer.toggle();goTo(organizationsRouteUrl)">
                 <material-icon icon="account_circle"></material-icon>{{label('All Organizations')}}
             </material-list-item>
-
             <material-list-item [disabled]="hasSelectedOrganization" (click)="drawer.toggle();goTo(usersRouteUrl)">
                 <material-icon icon="account_circle"></material-icon>{{label('All Users')}}
             </material-list-item>
@@ -59,15 +58,11 @@
                <span class="material-header-title">{{headerTitle}}</span>
             </div>
             <div class="material-spacer"></div>
-
             <auge-search *ngIf="searchEnabled == true">
             </auge-search>
-
             <div class="material-spacer"></div>
-
             <nav class="material-navigation centralized">
                 <span class="spacer"></span>
-
                 <span class="avatar" [style.background-image]="'url(' + userUrlImage() + ')'"></span>
                 <material-dropdown-select class="button-look"
                                           slide="y"

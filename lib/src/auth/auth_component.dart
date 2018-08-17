@@ -27,7 +27,7 @@ import 'package:auge_web/src/app_layout/app_layout_component.template.dart' as a
   templateUrl: 'auth_component.html',
 )
 
-class AuthComponent {
+class AuthComponent extends Object with OnActivate {
 
   String appLayoutRoute = AppRoutes.appLayoutRoute.toUrl();
 
@@ -50,7 +50,18 @@ class AuthComponent {
   static final String eMailLabel = AuthMessage.label("eMail");
   static final String passwordLabel = AuthMessage.label("Password");
 
-  Future<void> authenticateAuthorizate(String email, String password) async {
+  @override
+  void onActivate(RouterState previous, RouterState current) {
+
+    // Clean the auth parameters to set new after user authentication.
+
+    print('AUTH onActivate');
+    _authService.authenticatedUser = null;
+    _authService.selectedOrganization = null;
+    _authService.authorizatedOrganizations = null;
+  }
+
+  void authenticateAuthorizate(String email, String password) async {
 
     if (email.isEmpty || password.isEmpty) {
       error = AuthMessage.informEMailPasswordCorrectlyMsg();
