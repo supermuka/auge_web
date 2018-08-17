@@ -1,5 +1,28 @@
 @import 'package:angular_components/css/material/material';
 
+$step-width: $mat-grid * 40;
+
+:host {
+  .step-a {
+   /*  background-color: $mat-blue-200;
+    height: $step-height;
+    width: $step-width;
+    */
+    margin-top: 32px;
+    width: $step-width;
+  }
+
+  .step-b {
+  /*
+    background-color: $mat-green-200;
+    height: $step-height;
+    width: $step-width;
+    */
+    margin-top: 32px;
+    width: $step-width;
+  }
+}
+
 .container {
   display: flex;
   align-items: center;

@@ -3,9 +3,9 @@
         <material-dialog headered class="headered-dialog">
             <div header>
                 <h3>{{headerTitleLabel}}</h3>
-                <h5>{{headerSubtitleLabel}}</h5>
+                <h4>{{headerSubtitleLabel}}</h4>
             </div>
-            <div>
+            <!-- div>
                 <material-input [label]="eMailLabel"
                             type="email"
                             autoFocus floatingLabel
@@ -23,11 +23,64 @@
                 </material-input>
                 <br/>
                 <p class="error">{{error}}</p>
-            </div>
-            <div footer>
+            </div -->
+
+
+            <!-- div footer>
                 <br/>
                 <material-button raised class="red" [disabled]="!validInput" (trigger)="authenticateAuthorizate(eMail, passwordStr)">{{loginButtonLabel}}</material-button>
-            </div>
+            </div -->
+
+            <material-stepper legalJumps="backwards"
+                              orientation="vertical"
+                              size="default">
+                <template step name="Login"
+                          (continue)="authenticateAuthorizate($event)"
+                           #stepA="step">
+                    <div class="step-a">
+                        <material-input [label]="eMailLabel"
+                                        type="email"
+                                        autoFocus floatingLabel
+                                        required
+                                        [requiredErrorMsg]="requiredValueMsg"
+                                        [(ngModel)]="eMail">
+                        </material-input>
+                        <br/>
+                        <material-input [label]="passwordLabel"
+                                        type="password"
+                                        floatingLabel
+                                        required
+                                        [requiredErrorMsg]="requiredValueMsg"
+                                        [(ngModel)]="passwordStr">
+                        </material-input>
+                        <br/>
+                        <p class="error">{{error}}</p>
+                    </div>
+                </template>
+                <template [summary]="stepA">
+                    <div class="step-a">
+                        <span class="avatar" [style.background-image]="'url(' + userUrlImage(authenticatedUser) + ')'"></span><strong>{{authenticatedUser?.name}}</strong>
+                    </div>
+                </template>
+                <template step name="Organization"
+                          (continue)="goToAppLayout($event)"
+                           #stepB="step">
+                    <div class="step-b">
+                        <material-dropdown-select class="button-look"
+                                                  slide="y"
+                                                  [buttonText]="organizationSingleSelectLabel"
+                                                  [(selection)]="organizationSingleSelectModel"
+                                                  [(options)]="organizationOptions"
+                                                  [itemRenderer]="itemRenderer">
+                        </material-dropdown-select>
+                    </div>
+                </template>
+                <template [summary]="stepB">
+                    <div class="step-b">
+                        <span><strong>{{authorizatedAndSelectedOrganization?.name}}</strong></span>
+                    </div>
+                </template>
+            </material-stepper>
         </material-dialog>
     </div>
 </div>

@@ -50,6 +50,10 @@ class AuthMessage {
       "${Intl.select(label, {
         'eMail': 'e-Mail',
         'Password': 'Password',
+        'Select:': 'Select',
+        'Super Admin': 'Super Admin',
+        'Organization': 'Organization',
+        'All Organizations': 'All Organizations',
         'Login': 'Login',
         'Logout': 'Logout',
         'other': 'Not Defined'})}",
@@ -80,7 +84,6 @@ class AppLayoutMessage {
         'Super Admin': 'Super Administration',
         'User Detail': 'User Detail',
         'Logout': 'Logout',
-        'Select': 'Select',
         'Insights': 'Insights',
         'Initiatives': 'Initiatives',
         'Objectives': 'Objectives',

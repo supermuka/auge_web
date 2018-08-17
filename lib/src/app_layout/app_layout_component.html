@@ -1,14 +1,7 @@
 <material-drawer id="drawer" temporary #drawer="drawer">
     <material-list class="menu-drawer" *deferredContent>
         <div group class="centralized">
-            <material-dropdown-select class="button-look"
-                                      slide="y"
-                                      [buttonText]="organizationSingleSelectLabel"
-                                      [(selection)]="organizationSingleSelectModel"
-                                      [(options)]="organizationOptions"
-                                      [itemRenderer]="itemRenderer">
-            </material-dropdown-select>
-            <!-- (click)="materialTemporaryDrawer = drawer" -->
+            <span><strong>{{selectedOrganization?.name}}</strong></span>
         </div>
         <div group>
             <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(insightsRouteUrl)">

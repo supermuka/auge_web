@@ -52,11 +52,12 @@ import 'package:auge_web/src/group/groups_component.template.dart' as groups_com
       'package:angular_components/app_layout/layout.scss.css',
     ])
 
-class AppLayoutComponent extends Object with CanReuse implements OnActivate /*, OnDeactivate  */{
+class AppLayoutComponent extends Object with CanReuse implements OnActivate {
 
+  /*
   @ViewChild('drawer')
   MaterialTemporaryDrawerComponent materialTemporaryDrawer;
-
+*/
   bool userDetailVisible = false;
 
   String get insightsRouteUrl => AppRoutes.insightslRoute.toUrl();
@@ -123,17 +124,10 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate /*, 
   final AuthService _authService;
   Router _router;
 
-  // Dropdown Select to Organization and SuperAdmin
-  List<OptionGroup<AppLayoutOrganizationSelectOption>> organizationGroupOptions = new List();
-  SelectionOptions organizationOptions;
-  SelectionModel organizationSingleSelectModel;
-
   // Dropdown Select to User Profile and Logout
   List<OptionGroup<AppLayoutSettingSelectOption>> userProfileLogoutGroupOptions = new List();
   SelectionOptions userProfileLogoutOptions;
   SelectionModel userProfileLogoutSingleSelectModel;
-
-  String organizationSingleSelectLabel = AppLayoutMessage.label('Select');
 
   AppLayoutComponent(this._appLayoutService, this._authService, this._router);
 
@@ -148,77 +142,6 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate /*, 
     }
 
     _appLayoutService.searchEnabled = false;
-
-    // MENU LEFT *** Dropdown select to Organizations and Super Admin ***
-    organizationGroupOptions.clear();
-
-    // Organizations
-    List<AppLayoutOrganizationSelectOption> orgs = new List();
-
-    String orgGroupLabel = AppLayoutMessage.label('Organization');
-
-    if (_authService.authorizatedOrganizations != null && _authService.authorizatedOrganizations.isNotEmpty) {
-      _authService.authorizatedOrganizations.forEach((e) =>
-          orgs.add(new AppLayoutOrganizationSelectOption()
-            ..group = orgGroupLabel
-            ..name = e.organization.name
-            ..organization = e?.organization));
-    }
-    organizationGroupOptions.add(new OptionGroup.withLabel(orgs, orgGroupLabel));
-
-    // Super Administration
-    List<AppLayoutOrganizationSelectOption> adms = new List();
-
-    String admGroupLabel = AppLayoutMessage.label('Super Admin');
-
-    if (isSuperAdmin) {
-      adms.add(new AppLayoutOrganizationSelectOption()
-        ..group = admGroupLabel
-        ..name = AppLayoutMessage.label('All Organizations')
-        ..organization = null);
-
-      organizationGroupOptions.add(new OptionGroup.withLabel(adms, admGroupLabel));
-    }
-
-    organizationOptions = new SelectionOptions.withOptionGroups(organizationGroupOptions);
-
-    // Model Listening
-    organizationSingleSelectModel =
-    new SelectionModel.single()..selectionChanges.listen((d) async {
-        if (d?.isNotEmpty && d.first?.added.isNotEmpty) {
-          if (_authService.selectedOrganization != d?.first?.added?.first?.organization) {
-
-            if (_authService.selectedOrganization == null) {
-              _authService.selectedOrganization =
-                  d?.first?.added?.first?.organization;
-            } else {
-              _authService.selectedOrganization =
-                  d?.first?.added?.first?.organization;
-              // Refresh current page to new organization
-
-              // Insights is default view on AppLayout. Could not to call AppLayout again.
-              String path = _router.current.path == AppRoutes.appLayoutRoute.path ? AppRoutes.insightslRoute.toUrl() : _router.current.toUrl();
-
-              _router.navigate(path, NavigationParams(queryParameters: _router.current.queryParameters, fragment: _router.current.fragment, reload: true));
-            }
-
-            if (materialTemporaryDrawer.hostMatDrawerExpanded) {
-               materialTemporaryDrawer.toggle();
-            }
-
-            organizationSingleSelectLabel =
-                _authService.selectedOrganization.name ?? AppLayoutMessage.label('Select');
-
-          }
-        }
-
-      });
-
-      //if (organizationSingleSelectModel.selectedValues.isEmpty) {
-      //  organizationSingleSelectModel.select(organizationOptions.optionsList.first);
-      //}
-
-    //    _authService.selectedOrganization = organizationSingleSelectModel.selectedValues.first.organization;
 
     // RIGHT - SETTINGS *** Dropdown select to User Profile and Logout ***
     userProfileLogoutGroupOptions.clear();
@@ -251,17 +174,13 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate /*, 
     new SelectionModel.single()..selectionChanges.listen((d) async {
       if (d?.isNotEmpty && d.first.added.isNotEmpty) {
         if (d?.first?.added?.first?.routeUrl != null) {
-          await goTo(d.first.added.first.routeUrl);
+          await goTo(d.first.added.first.routeUrl, reload: true);
         } else if (d?.first?.added?.first?.viewComponent != null) {
           d?.first?.added?.first?.viewComponent(true);
         }
       }
       userProfileLogoutSingleSelectModel.clear();
   });
-  }
-
-  void teste(String t) {
-    print(t);
   }
 
   bool get isSuperAdmin {
@@ -285,9 +204,9 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate /*, 
     _authService.close();
   }
 
-  void goTo(String url) {
+  void goTo(String url, {bool reload = false}) {
     if (url != null)
-      _router.navigate(url);
+      _router.navigate(url, NavigationParams(reload: reload));
   }
 
   void viewComponent(bool viewComponent) async {
@@ -316,8 +235,11 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate /*, 
     return _authService.authenticatedUser;
   }
 
+  Organization get selectedOrganization {
+    return _authService.selectedOrganization;
+  }
+
   viewUserDetail(bool userDetailVisible) {
-    print('viewUserDetail');
     this.userDetailVisible = userDetailVisible;
   }
 }
@@ -328,12 +250,4 @@ class AppLayoutSettingSelectOption {
   // Organization organization;
   String routeUrl;
   Function viewComponent;
-}
-
-class AppLayoutOrganizationSelectOption {
-  String group;
-  String name;
-  Organization organization;
-  // String routeUrl;
-  // Function viewComponent;
 }
