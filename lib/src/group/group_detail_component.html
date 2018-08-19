@@ -8,10 +8,10 @@
                 <material-input class="w3-col l12" [(ngModel)]="group.name" floatingLabel [label]="nameLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
         </div>
         <div class="w3-row">
-          <label>{{groupTypeLabel}}</label>
+          <label class="w3-col l12">{{groupTypeLabel}}</label>
         </div>
         <div class="w3-row">
-            <material-radio-group [(ngModel)]="group.groupType">
+            <material-radio-group  class="w3-col l12" [(ngModel)]="group.groupType">
                 <material-radio *ngFor="let iGroupType of groupTypes"
                                 [checked]="group.groupType.id == iGroupType.id"
                                 [value]="iGroupType">{{iGroupType.name}}
@@ -64,6 +64,3 @@
         </div>
     </material-dialog>
 </modal>
-
-
-

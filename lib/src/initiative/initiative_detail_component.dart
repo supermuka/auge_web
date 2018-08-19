@@ -89,7 +89,6 @@ class InitiativeDetailComponent implements OnInit {
 
   InitiativeDetailComponent(this._authService, this._initiativeService, this._objectiveService,  this._userService, this._groupService)  {
     initialization();
-    print('Construtor');
   }
 
   void initialization() async {
@@ -119,7 +118,6 @@ class InitiativeDetailComponent implements OnInit {
 
   @override
   void ngOnInit() {
-    print('OnInit');
     if (selectedInitiative != null) {
       // Clone objective
       initiative = selectedInitiative.clone();

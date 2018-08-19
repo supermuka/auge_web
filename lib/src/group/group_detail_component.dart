@@ -63,24 +63,16 @@ class GroupDetailComponent extends Object implements OnInit {
 
   SelectionOptions superGroupOptions;
   SelectionModel superGroupSingleSelectModel;
+
   SelectionOptions leaderOptions;
   SelectionModel leaderSingleSelectModel;
 
-  List<Group> _superGroups = [];
-  List<User> _users = [];
-  List<GroupType> _groupTypes = [];
+  List<Group> _superGroups;
+  List<User> _users;
 
   GroupDetailComponent(this._authService, this._userService, this._groupService) {
-    initialization();
-  }
-
-  void initialization() async {
-
-    _superGroups = await _groupService.getGroups(_authService.selectedOrganization.id);
-    _users = await _userService.getUsers(_authService.selectedOrganization.id, withProfile: true);
-    _groupTypes = await _groupService.getGroupTypes();
-
-
+    superGroupSingleSelectModel = SelectionModel.single();
+    leaderSingleSelectModel = SelectionModel.single();
   }
 
   // Define messages and labels
@@ -99,19 +91,19 @@ class GroupDetailComponent extends Object implements OnInit {
 
 
   @override
-  void ngOnInit() {
-
-    if (selectedGroup != null) {
+  void ngOnInit() async {
+      if (selectedGroup != null) {
       // Clone objective
       group = selectedGroup.clone();
     } else {
+      group = Group();
       group.organization = _authService.selectedOrganization;
       group.active = true;
     }
 
     // Super Group
    //  List<Group> superGroups = await _groupService.getGroups(_authService.selectedOrganization.id);
-
+    _superGroups = await _groupService.getGroups(_authService.selectedOrganization.id);
     // Remove the current object
     if (group.id != null)
       _superGroups.removeWhere((testGroup) => testGroup.id == group.id);
@@ -120,9 +112,7 @@ class GroupDetailComponent extends Object implements OnInit {
     superGroupOptions = new StringSelectionOptions<Group>(
         _superGroups, toFilterableString: (Group gru) => gru.name);
 
-    superGroupSingleSelectModel =
-    new SelectionModel.single()
-      ..selectionChanges.listen((superGroupEvent) {
+    superGroupSingleSelectModel.selectionChanges.listen((superGroupEvent) {
 
         if (superGroupEvent.isNotEmpty && superGroupEvent.first.added != null && superGroupEvent.first.added.length != 0 && superGroupEvent.first.added?.first != null) {
           group.superGroup = superGroupEvent.first.added.first;
@@ -134,10 +124,9 @@ class GroupDetailComponent extends Object implements OnInit {
 
     // Leader
     // List<User> users = await _userService.getUsers(_authService.selectedOrganization.id, withProfile: true);
+    _users = await _userService.getUsers(_authService.selectedOrganization.id, withProfile: true);
 
-    leaderSingleSelectModel =
-    new SelectionModel.single()
-      ..selectionChanges.listen((leaderEvent) {
+    leaderSingleSelectModel.selectionChanges.listen((leaderEvent) {
 
         if (leaderEvent.isNotEmpty && leaderEvent.first.added != null && leaderEvent.first.added.length != 0 && leaderEvent.first.added?.first != null) {
           group.leader = leaderEvent.first.added.first;
@@ -151,9 +140,9 @@ class GroupDetailComponent extends Object implements OnInit {
         _users, toFilterableString: (User user) => user.name);
 
     // groupTypes = await _groupService.getGroupTypes();
-
+    groupTypes = await _groupService.getGroupTypes();
     if (group.groupType == null) {
-      group.groupType = _groupTypes?.last;
+      group.groupType = groupTypes?.last;
     }
   }
 

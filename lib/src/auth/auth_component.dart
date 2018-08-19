@@ -94,8 +94,6 @@ class AuthComponent extends Object with OnActivate  {
 
   void authenticateAuthorizate(AsyncAction<bool> action) async {
 
-    print(organizationSingleSelectLabel);
-
     action.cancelIf( Future.sync(
             () async  {
       if (eMail.isEmpty || passwordStr.isEmpty) {
@@ -213,7 +211,7 @@ class AuthComponent extends Object with OnActivate  {
   }
 
   goToAppLayout(AsyncAction<bool> action) {
-    action.cancelIf(Future.delayed(const Duration(seconds: 1), () {
+    action.cancelIf(Future.sync(() {
       _router.navigate(AppRoutes.appLayoutRoute.toUrl(), NavigationParams(reload: true));
 
       // Don't cancel

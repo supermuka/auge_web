@@ -37,24 +37,5 @@ class SearchComponent {
 
   void viewFilter() {
     _searchService.visibleFilter = !_searchService.visibleFilter;
-    print('****');
-    print(_searchService.visibleFilter);
-  }
-
- // ItemRenderer get searchItemRenderer => (dynamic conta) => conta.nome;
-
- // FactoryRenderer get searchFactoryRenderer => (_) => search_component.SearchRendererComponentNgFactory;
-}
-
-/*
-class SearchRendererComponent implements RendersValue {
-  String disPlayName = '';
-  String disPlayurl;
-
-  @override
-  set value(newValue) {
-    disPlayName = (newValue as Conta).nome;
-    disPlayurl = 'url(' + (newValue as Conta).urlFoto + ')';
   }
 }
-*/

@@ -63,8 +63,10 @@ class ObjectiveDetailComponent extends Object implements OnInit {
 
   SelectionOptions groupOptions;
   SelectionModel groupSingleSelectModel;
+
   SelectionOptions alignedToOptions;
   SelectionModel alignedToSingleSelectModel;
+
   SelectionOptions leaderOptions;
   SelectionModel leaderSingleSelectModel;
 
@@ -73,18 +75,14 @@ class ObjectiveDetailComponent extends Object implements OnInit {
   DateRange limitToDateRange =
   new DateRange(new Date.today().add(years: -1), new Date.today().add(years: 1));
 
-  List<Objective> _alignedToObjectives = [];
-  List<User> _users = [];
-  List<Group> _groups = [];
+  List<Objective> _alignedToObjectives;
+  List<User> _users;
+  List<Group> _groups;
 
   ObjectiveDetailComponent(this._authService, this._userService, this._objectiveService, this._groupService) {
-
-  }
-
-  void initialization() async {
-     _alignedToObjectives = await _objectiveService.getObjectives(_authService.selectedOrganization.id);
-     _users = await _userService.getUsers(_authService.selectedOrganization.id, withProfile: true);
-     _groups = await _groupService.getGroups(_authService.selectedOrganization.id);
+    groupSingleSelectModel = SelectionModel.single();
+    alignedToSingleSelectModel = SelectionModel.single();
+    leaderSingleSelectModel = SelectionModel.single();
   }
 
   // Define messages and labels
@@ -108,32 +106,27 @@ class ObjectiveDetailComponent extends Object implements OnInit {
   static final String closeButtonLabel = CommonMessage.buttonLabel('Close');
 
   @override
-  void ngOnInit() {
-
-    print(selectedObjective);
+  void ngOnInit() async {
 
     if (selectedObjective != null) {
       // Clone objective
       objective = selectedObjective.clone();
 
     } else {
-      objective.organization = _authService.selectedOrganization;
+
+      objective = Objective()..organization = _authService.selectedOrganization;
     }
 
     // Aligned to Objectives
-    // _alignedToObjectives = await _objectiveService.getObjectives(_authService.selectedOrganization.id);
-
     // Remove the current object
-    if (objective.id != null)
-      _alignedToObjectives.removeWhere((testObjective) => testObjective.id == objective.id);
+    _alignedToObjectives = await _objectiveService.getObjectives(_authService.selectedOrganization.id);
+    _alignedToObjectives.removeWhere((testObjective) => testObjective.id == objective.id);
 
 
     alignedToOptions = new StringSelectionOptions<Objective>(
         _alignedToObjectives, toFilterableString: (Objective obj) => obj.name);
 
-    alignedToSingleSelectModel =
-    new SelectionModel.single()
-      ..selectionChanges.listen((alignedTo) {
+    alignedToSingleSelectModel.selectionChanges.listen((alignedTo) {
 
         if (alignedTo.isNotEmpty && alignedTo.first.added != null && alignedTo.first.added.length != 0 && alignedTo.first.added?.first != null) {
           objective.alignedTo = alignedTo.first.added.first;
@@ -146,17 +139,18 @@ class ObjectiveDetailComponent extends Object implements OnInit {
     // Leader
     // List<User> users = await _userService.getUsers(_authService.selectedOrganization.id, withProfile: true);
 
-    leaderSingleSelectModel =
-    new SelectionModel.single()
-      ..selectionChanges.listen((leader) {
+    _users = await _userService.getUsers(_authService.selectedOrganization.id, withProfile: true);
 
-        if (leader.isNotEmpty && leader.first.added != null && leader.first.added.length != 0 && leader.first.added?.first != null) {
-          objective.leader = leader.first.added.first;
-        }
-      });
 
     if (objective.leader != null)
       leaderSingleSelectModel.select(objective.leader);
+
+    leaderSingleSelectModel.selectionChanges.listen((leader) {
+
+    if (leader.isNotEmpty && leader.first.added != null && leader.first.added.length != 0 && leader.first.added?.first != null) {
+      objective.leader = leader.first.added.first;
+    }
+    });
 
     leaderOptions = new StringSelectionOptions<User>(
         _users, toFilterableString: (User user) => user.name);
@@ -164,12 +158,12 @@ class ObjectiveDetailComponent extends Object implements OnInit {
     // Group
     // List<Group> groups = await _groupService.getGroups(_authService.selectedOrganization.id);
 
+    _groups = await _groupService.getGroups(_authService.selectedOrganization.id);
+
     groupOptions = new StringSelectionOptions<Group>(
         _groups, toFilterableString: (Group gru) => gru.name);
 
-    groupSingleSelectModel =
-    new SelectionModel.single()
-      ..selectionChanges.listen((groupEvent) {
+    groupSingleSelectModel.selectionChanges.listen((groupEvent) {
 
         if (groupEvent.isNotEmpty && groupEvent.first.added != null && groupEvent.first.added.length != 0 && groupEvent.first.added?.first != null) {
           objective.group = groupEvent.first.added.first;
@@ -262,12 +256,10 @@ class ObjectiveDetailComponent extends Object implements OnInit {
   bool get validInput {
     return objective.name?.trim()?.isNotEmpty ?? false;
   }
-
 }
 
 @Component(
     selector: 'leader-renderer',
-    //  template: '<material-icon icon="language"></material-icon>{{disPlayName}}',
     template: '<div left-icon class="avatar-icon" [style.background-image]="disPlayurl"></div>{{disPlayName}}',
 
     styles: const [

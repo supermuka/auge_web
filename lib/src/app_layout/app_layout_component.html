@@ -1,7 +1,7 @@
 <material-drawer id="drawer" temporary #drawer="drawer">
     <material-list class="menu-drawer" *deferredContent>
         <div group class="centralized">
-            <span><strong>{{selectedOrganization?.name}}</strong></span>
+            <h4><strong>{{selectedOrganization?.name}}</strong></h4>
         </div>
         <div group>
             <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(insightsRouteUrl)">
