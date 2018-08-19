@@ -35,13 +35,12 @@ class MapComponent implements OnActivate {
 
   final AuthService _authService;
   final AppLayoutService _appLayoutService;
-  final ObjectiveService _objectiveService;
   final MapService _mapService;
   final Router _router;
 
   List<Objective> objectivesMap = new List();
 
-  MapComponent(this._authService, this._appLayoutService, this._objectiveService, this._mapService, this._router);
+  MapComponent(this._authService, this._appLayoutService, this._mapService, this._router);
 
   @override
   Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
@@ -61,7 +60,8 @@ class MapComponent implements OnActivate {
     return common_service.userUrlImage(userMember);
   }
 
-  void goToMeasure(Objective objective) {
-    _router.navigate(AppRoutes.measuresRoute.toUrl(parameters: { AppRoutes.objectiveIdParameter: objective.id }));
+  void goToObjectives(Objective objective) async {
+    _router.navigateByUrl(AppRoutes.objectivesRoute.toUrl(queryParameters: { AppRoutes.objectiveIdParameter: objective.id }));
+
   }
 }

@@ -8,7 +8,8 @@
             <material-expansionpanel
                     [alwaysHideExpandIcon]="true"
                     [hideExpandedHeader]="false"
-                    [showSaveCancel]="false">
+                    [showSaveCancel]="false"
+                    [expanded]="expandedInitial(iObjective)">
                 <div name class="custom-material-expansionpanel-name">
                     <span class="c100">
                         <span class="p{{iObjective.progress}}">

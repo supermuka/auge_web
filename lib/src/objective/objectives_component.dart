@@ -66,6 +66,7 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
   List<Objective> _objectives = new List();
 
   Objective selectedObjective;
+  String initialObjectiveId;
 
   bool detailVisible = false;
 
@@ -78,7 +79,6 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
   @override
   Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
 
-
     if (this._authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
     }
@@ -87,6 +87,10 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
     _objectives = await _objectiveService.getObjectives(_authService.selectedOrganization.id, withMeasures: true);
     _appLayoutService.searchEnabled = true;
 
+    // Expand panel whether [Id] objective is informed.
+    if (routerStateCurrent.queryParameters.containsKey(AppRoutes.objectiveIdParameter)) {
+      initialObjectiveId = routerStateCurrent.queryParameters[AppRoutes.objectiveIdParameter];
+    }
   }
 
   List<Objective> get objectives {
@@ -123,5 +127,13 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
 
   void viewDetail(bool detailVisible) {
     this.detailVisible = detailVisible;
+  }
+
+  bool expandedInitial(iObjective) {
+    if (iObjective.id == initialObjectiveId) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
