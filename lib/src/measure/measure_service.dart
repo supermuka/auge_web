@@ -22,7 +22,6 @@ class MeasureService {
     try {
       await _augeApiService.objectiveAugeApi.deleteMeasure(id);
     } catch (e) {
-      print('${e.runtimeType}, ${e}');
       rethrow;
     }
   }
@@ -68,7 +67,6 @@ class MeasureService {
             measure, objectiveId);
       }
     } catch (e) {
-      print('${e.runtimeType}, ${e}');
       rethrow;
     }
   }

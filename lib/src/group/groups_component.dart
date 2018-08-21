@@ -62,10 +62,14 @@ class GroupsComponent extends Object /* with CanReuse */ implements OnActivate, 
 
     _appLayoutService.headerTitle = GroupMessage.label('Groups');
 
-    _groups = await _groupService.getGroups(_authService.selectedOrganization.id);
+    _appLayoutService.enabledSearch = true;
 
-    _appLayoutService.searchEnabled = true;
-
+    try {
+      _groups = await _groupService.getGroups(_authService.selectedOrganization.id);
+    } catch (e) {
+      _appLayoutService.error = e.toString();
+      rethrow;
+    }
   }
 
   List<Group> get groups {
@@ -74,7 +78,7 @@ class GroupsComponent extends Object /* with CanReuse */ implements OnActivate, 
 
   @override
   ngOnDestroy() async {
-    _appLayoutService.searchEnabled = false;
+    _appLayoutService.enabledSearch = false;
 
   }
 
@@ -87,7 +91,6 @@ class GroupsComponent extends Object /* with CanReuse */ implements OnActivate, 
       await _groupService.deleteGroup(selectedGroup.id);
       groups.remove(selectedGroup);
     } catch (e) {
-      print('${e.runtimeType}, ${e}');
       rethrow;
     }
   }

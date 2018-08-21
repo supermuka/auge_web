@@ -82,22 +82,18 @@ class InitiativeDetailComponent implements OnInit {
   SelectionOptions groupOptions;
   SelectionModel groupSingleSelectModel;
 
-  List<State> _states = [];
-  List<User> _users = [];
-  List<Objective> _objectives = [];
-  List<Group> _groups = [];
+  List<State> _states;
+  List<User> _users;
+  List<Objective> _objectives;
+  List<Group> _groups;
+
+  /// When it exists, the error/exception message presented into dialog view.
+  String dialogError;
 
   InitiativeDetailComponent(this._authService, this._initiativeService, this._objectiveService,  this._userService, this._groupService)  {
-    initialization();
-  }
-
-  void initialization() async {
-
-    _states =  await _initiativeService.getStates();
-    _users = await _userService.getUsers(_authService.selectedOrganization.id, withProfile: true);
-    _objectives = await _objectiveService.getObjectives(_authService.selectedOrganization.id, withMeasures: false);
-    _groups = await _groupService.getGroups(_authService.selectedOrganization.id);
-
+    stateSingleSelectModel = SelectionModel.single();
+    leaderSingleSelectModel = SelectionModel.single();
+    objectiveSingleSelectModel = SelectionModel.single();
   }
 
   // Define messages and labels
@@ -117,7 +113,7 @@ class InitiativeDetailComponent implements OnInit {
   static final String closeButtonLabel = CommonMessage.buttonLabel('Close');
 
   @override
-  void ngOnInit() {
+  void ngOnInit() async {
     if (selectedInitiative != null) {
       // Clone objective
       initiative = selectedInitiative.clone();
@@ -125,11 +121,20 @@ class InitiativeDetailComponent implements OnInit {
       initiative.organization = _authService.selectedOrganization;
     }
 
+    try {
+      _states =  await _initiativeService.getStates();
+      _users = await _userService.getUsers(_authService.selectedOrganization.id, withProfile: true);
+      _objectives = await _objectiveService.getObjectives(_authService.selectedOrganization.id, withMeasures: false);
+      _groups = await _groupService.getGroups(_authService.selectedOrganization.id);
+
+    } catch (e) {
+      dialogError = e.toString();
+      rethrow;
+    }
+
    // List<State> states =  await _initiativeService.getStates();
 
     stateOptions = new SelectionOptions.fromList(_states);
-
-    stateSingleSelectModel = new SelectionModel.single();
 
     if (stateOptions.optionsList.isNotEmpty)
       stateSingleSelectModel.select(stateOptions.optionsList.first);
@@ -148,8 +153,6 @@ class InitiativeDetailComponent implements OnInit {
 
     // Leader Select Model
     //leaderSingleSelectModel = initiative.leader == null ? SelectionModel.single() : SelectionModel.single<User>(selected: initiative.leader);
-
-    leaderSingleSelectModel = SelectionModel.single();
     /*
     new SelectionModel.single(selected: initiative?.leader)
       ..selectionChanges.listen((leader) {
@@ -168,9 +171,8 @@ class InitiativeDetailComponent implements OnInit {
       leaderSingleSelectModel.select(initiative.leader);
 
     // Objective Select Model
-    objectiveSingleSelectModel =
-    new SelectionModel.single()
-      ..selectionChanges.listen((objective) {
+
+    objectiveSingleSelectModel.selectionChanges.listen((objective) {
         if (objective.isNotEmpty && objective.first.added != null && objective.first.added.length != 0 && objective.first.added?.first != null) {
           initiative.objective = objective.first.added.first;
         }
@@ -199,9 +201,14 @@ class InitiativeDetailComponent implements OnInit {
   }
 
   void saveInitiative() {
-    _initiativeService.saveInitiative(initiative);
-    _saveController.add(initiative);
-    closeDetail();
+    try {
+      _initiativeService.saveInitiative(initiative);
+      _saveController.add(initiative);
+      closeDetail();
+    } catch (e) {
+      dialogError = e.toString();
+      rethrow;
+    }
   }
 
   void closeDetail() {

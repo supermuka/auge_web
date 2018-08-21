@@ -75,7 +75,6 @@ class WorkItemsListComponent extends Object /* with CanReuse implements OnActiva
       await _workItemService.deleteWorkItem(selectedWorkItem.id);
       initiative.workItems.remove(selectedWorkItem);
     } catch (e) {
-      print('${e.runtimeType}, ${e}');
       rethrow;
     }
   }

@@ -27,7 +27,7 @@ class WorkItemService {
     try {
       await _augeApiService.initiativeAugeApi.deleteWorkItem(id);
     } catch (e) {
-      print('${e.runtimeType}, ${e}');
+
       rethrow;
     }
   }

@@ -45,7 +45,7 @@ class UserDetailComponent extends Object implements OnInit {
 
   /// Entry user to edit. If new, this should be null
   @Input()
-  User selectedUser = new User();
+  User selectedUser;
 
   final _closeController = new StreamController<void>.broadcast(sync: true);
 
@@ -77,6 +77,9 @@ class UserDetailComponent extends Object implements OnInit {
   String get getEsFlag => '/packages/auge_web/assets/images/flag_es.png';
   String get getBrFlag => '/packages/auge_web/assets/images/flag_br.png';
 
+  /// When it exists, the error/exception message is presented into dialog view.
+  String dialogError;
+
   UserDetailComponent(this._authService, this._userService, this._router, this._location) {
     userAuthorizationOptions = List<Option>();
 
@@ -104,29 +107,59 @@ class UserDetailComponent extends Object implements OnInit {
   static final String closeButtonLabel = CommonMessage.buttonLabel('Close');
 
   @override
-  void ngOnInit() {
+  void ngOnInit() async {
+    print('ngOnInit()');
+
     if (selectedUser != null) {
       // Clone objective
       user = selectedUser.clone();
+
+      try {
+        print(user.id);
+        print(_authService.selectedOrganization.id);
+
+        List<UserProfileOrganization> userProfileOrganizations = await _userService.getUsersProfileOrganizations(user.id, _authService.selectedOrganization.id);
+        print('lista....');
+
+        userProfileOrganizations.forEach((f) => print(f.organization.name) );
+        if (userProfileOrganizations.isNotEmpty) {
+          userProfileOrganization = userProfileOrganizations.first;
+        }
+      } catch (e) {
+        dialogError = e.toString();
+        rethrow;
+      }
     } else {
-      // objective.organization = _authService.selectedOrganization;
+      user = User();
       user.userProfile.idiomLocale = Intl.defaultLocale;
+
+      userProfileOrganization = UserProfileOrganization();
+
+      // Authorizated and selected organization
+      userProfileOrganization.organization = _authService.selectedOrganization;
     }
 
-    UserAuthorization.values.forEach((f) => userAuthorizationOptions.add(new Option(f.index, UserMessage.label(f.toString()) /* , false, false */) ));
-
-    userProfileOrganization = _authService.authorizatedOrganizations?.firstWhere((o) => o.organization.id == _authService?.selectedOrganization?.id, orElse: () => null);
+    UserAuthorization.values.forEach((f) => userAuthorizationOptions.add(new Option(f.index, UserMessage.label(f.toString())) ));
   }
 
-  void saveUser() {
+  void saveUser() async {
 
-    _userService.saveUser(user);
-    if (userProfileOrganization != null) {
-      _userService.saveUserProfileOrganization(userProfileOrganization);
+    try {
+      await _userService.saveUser(user);
+
+      if (userProfileOrganization != null) {
+        userProfileOrganization.user = user;
+
+        await _userService.saveUserProfileOrganization(userProfileOrganization);
+      }
+
+      _saveController.add(user);
+      closeDetail();
+    } catch (e) {
+      dialogError = e.toString();
+      rethrow;
     }
 
-    _saveController.add(user);
-    closeDetail();
   }
 
   void uploadImage() async {
@@ -181,7 +214,7 @@ class UserDetailComponent extends Object implements OnInit {
   }
 
   bool get validInput {
-    return (user.name?.trim()?.isNotEmpty && user.eMail?.trim()?.isNotEmpty) ?? false;
+    return (user?.name?.trim()?.isNotEmpty ?? false) && (user?.eMail?.trim()?.isNotEmpty ?? false);
   }
 
   void closeDetail() {

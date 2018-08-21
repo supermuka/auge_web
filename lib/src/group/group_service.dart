@@ -29,7 +29,6 @@ class GroupService {
     try {
       await _augeApiService.augeApi.deleteGroup(id);
     } catch (e) {
-      print('${e.runtimeType}, ${e}');
       rethrow;
     }
   }
@@ -46,7 +45,6 @@ class GroupService {
         await _augeApiService.augeApi.updateGroup(group);
       }
     } catch (e) {
-      print('${e.runtimeType}, ${e}');
       rethrow;
     }
   }

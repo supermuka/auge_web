@@ -51,9 +51,15 @@ class MapComponent implements OnActivate {
 
     _appLayoutService.headerTitle = ObjectiveHierarchyMessage.label('Objectives Map');
 
-    _appLayoutService.searchEnabled = false;
+    _appLayoutService.enabledSearch = false;
 
-    objectivesMap = await _mapService.getObjectivesMap(_authService.selectedOrganization.id);
+    try {
+      objectivesMap = await _mapService.getObjectivesMap(_authService.selectedOrganization.id);
+    } catch (e) {
+      _appLayoutService.error = e.toString();
+      rethrow;
+    }
+
   }
 
   String userUrlImage(User userMember) {

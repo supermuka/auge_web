@@ -1,6 +1,6 @@
 <div class="container">
     <div class="child">
-        <material-dialog headered class="headered-dialog">
+        <material-dialog headered class="headered-dialog" [error]="dialogError">
             <div header>
                 <h3>{{headerTitleLabel}}</h3>
                 <h4>{{headerSubtitleLabel}}</h4>
@@ -27,8 +27,6 @@
                                         [requiredErrorMsg]="requiredValueMsg"
                                         [(ngModel)]="passwordStr">
                         </material-input>
-                        <br/>
-                        <p class="error">{{error}}</p>
                     </div>
                 </template>
                 <template [summary]="stepA">

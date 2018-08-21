@@ -141,7 +141,7 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
       _router.navigate(AppRoutes.authRoute.toUrl());
     }
 
-    _appLayoutService.searchEnabled = false;
+    _appLayoutService.enabledSearch = false;
 
     // RIGHT - SETTINGS *** Dropdown select to User Profile and Logout ***
     userProfileLogoutGroupOptions.clear();
@@ -196,6 +196,10 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
     return _appLayoutService.headerTitle;
   }
 
+  String get error {
+    return _appLayoutService.error;
+  }
+
   bool isAuthenticated() {
     return (_authService.authenticatedUser != null);
   }
@@ -219,8 +223,8 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
 
   ItemRenderer get itemRenderer => (dynamic item) => item.name;
 
-  get searchEnabled {
-    return _appLayoutService.searchEnabled;
+  get enabledSearch {
+    return _appLayoutService.enabledSearch;
   }
 
   String userUrlImage() {

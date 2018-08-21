@@ -53,12 +53,13 @@ class MeasureDetailComponent extends Object implements OnInit {
   SelectionOptions measureUnitOptions;
   SelectionModel measureUnitSingleSelectModel;
 
-  MeasureDetailComponent(this._measureService);
+  /// When it exists, the error/exception message is presented into dialog view.
+  String dialogError;
 
-    void initialization() async {
-    _measureUnits = await _measureService.getMeasureUnits();
-
+  MeasureDetailComponent(this._measureService) {
+    measureUnitSingleSelectModel = SelectionModel.single();
   }
+
   // Define messages and labels
   static final String requiredValueMsg = CommonMessage.requiredValueMsg();
   static final String addMeasureLabel =  MeasureMessage.label('Add Measure');
@@ -75,7 +76,7 @@ class MeasureDetailComponent extends Object implements OnInit {
   static final String closeButtonLabel = CommonMessage.buttonLabel('Close');
 
   @override
-  void ngOnInit() {
+  void ngOnInit() async {
 
     if (selectedMeasure != null) {
       measure = selectedMeasure.clone();
@@ -84,11 +85,17 @@ class MeasureDetailComponent extends Object implements OnInit {
 
     }
 
+    try {
+      _measureUnits = await _measureService.getMeasureUnits();
+    } catch (e) {
+      dialogError = e.toString();
+      rethrow;
+    }
+
+
     measureUnitOptions = new SelectionOptions.fromList(_measureUnits);
 
-    measureUnitSingleSelectModel =
-    new SelectionModel.single()
-      ..selectionChanges.listen((unit) {
+    measureUnitSingleSelectModel.selectionChanges.listen((unit) {
 
         if (unit.isNotEmpty && unit.first.added != null && unit.first.added.length != 0 && unit.first.added?.first != null) {
           measure.measureUnit = unit.first.added.first;
@@ -103,9 +110,14 @@ class MeasureDetailComponent extends Object implements OnInit {
   }
 
   void saveMeasure() {
-    _measureService.saveMeasure(objective.id, measure);
-    _saveController.add(measure);
-    closeDetail();
+    try {
+      _measureService.saveMeasure(objective.id, measure);
+      _saveController.add(measure);
+      closeDetail();
+    } catch (e) {
+      dialogError = e.toString();
+      rethrow;
+    }
   }
 
   void closeDetail() {

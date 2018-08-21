@@ -18,38 +18,53 @@ class UserService {
 
   UserService(this._augeApiService);
 
-    /// Return [User] list by Organization [id]
+  /// Return [User] list by Organization [id]
   Future<List<User>> getUsers(String organizationId, {bool withProfile}) async {
-    // return await _augeApiService.augeApi.getUsers(organizationId: organizationId, withProfile: withProfile);
     return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
+  }
+
+  Future<List<UserProfileOrganization>> getUsersProfileOrganizations(String userId, String organizationId) async {
+    try {
+      return await _augeApiService.augeApi.getUsersProfileOrganizations(
+          userId: userId, organizationId: organizationId);
+    } catch (e) {
+      rethrow;
+    }
   }
 
   /// Save (create or update) an [User]
   void saveUser(User user) async {
 
-    if (user.id == null) {
+    try {
+      if (user.id == null) {
+        IdMessage idMessage = await _augeApiService.augeApi.createUser(user);
 
-      IdMessage idMessage = await _augeApiService.augeApi.createUser(user);
-
-      // ID - primary key generated on server-side.
-      user.id = idMessage?.id;
-
-    } else {
-      await _augeApiService.augeApi.updateUser(user);
+        // ID - primary key generated on server-side.
+        user.id = idMessage?.id;
+      } else {
+        await _augeApiService.augeApi.updateUser(user);
+      }
+    } catch (e) {
+      rethrow;
     }
   }
 
   /// Save (create or update) an [UserProfileOrganization]
   void saveUserProfileOrganization(UserProfileOrganization userProfileOrganization) async {
+    try {
+      if (userProfileOrganization.id == null) {
+        IdMessage idMessage = await _augeApiService.augeApi
+            .createUserProfileOrganization(userProfileOrganization);
 
-    if (userProfileOrganization.id == null) {
-
-      IdMessage idMessage = await _augeApiService.augeApi.createUserProfileOrganization(userProfileOrganization);
-
-      userProfileOrganization.id = idMessage.id;
-
-    } else {
-      await _augeApiService.augeApi.updateUserProfileOrganization(userProfileOrganization);
+        userProfileOrganization.id = idMessage.id;
+      } else {
+        await _augeApiService.augeApi.updateUserProfileOrganization(
+            userProfileOrganization);
+      }
+    } catch (e) {
+      print('saveUserProfileOrganization');
+      print(e);
+      rethrow;
     }
   }
 
@@ -58,7 +73,6 @@ class UserService {
     try {
       await _augeApiService.augeApi.deleteUser(id);
     } catch (e) {
-      print('${e.runtimeType}, ${e}');
       rethrow;
     }
   }
@@ -68,7 +82,6 @@ class UserService {
     try {
       await _augeApiService.augeApi.deleteUserProfileOrganization(id);
     } catch (e) {
-      print('${e.runtimeType}, ${e}');
       rethrow;
     }
   }
@@ -78,7 +91,6 @@ class UserService {
     try {
       await _augeApiService.augeApi.deleteUserProfileOrganizationByUserId(userId);
     } catch (e) {
-      print('${e.runtimeType}, ${e}');
       rethrow;
     }
   }

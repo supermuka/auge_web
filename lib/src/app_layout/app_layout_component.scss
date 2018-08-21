@@ -1,5 +1,6 @@
 @import 'package:angular_components/css/material/material';
 @import 'package:angular_components/material_select/mixins';
+@import 'package:auge_web/app_global.css';
 
 :host {
   display: block;
@@ -9,10 +10,6 @@
 
 .button-look {
    @include button-look();
-}
-
-.contentMain {
-  margin: 20px;
 }
 
 .centralized {
@@ -48,9 +45,11 @@ material-content header {
 .main {
     overflow: hidden;
     margin-top: 72px;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
-.hide-title-small-width-search-enabled-true {
+.hide-title-small-width-enabled-search-true {
     @media (max-width: 800px) {
        display:none;
     }

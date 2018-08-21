@@ -62,7 +62,7 @@ class AuthComponent extends Object with OnActivate  {
 
   String eMail = "demo@levius.com.br";
   String passwordStr = "1234567";
-  static String error;
+  String dialogError;
 
   // Dropdown Select to Organization and SuperAdmin
   List<OptionGroup<AppLayoutOrganizationSelectOption>> organizationGroupOptions = new List();
@@ -97,22 +97,23 @@ class AuthComponent extends Object with OnActivate  {
     action.cancelIf( Future.sync(
             () async  {
       if (eMail.isEmpty || passwordStr.isEmpty) {
-        error = AuthMessage.informEMailPasswordCorrectlyMsg();
+        dialogError = AuthMessage.informEMailPasswordCorrectlyMsg();
       } else {
         try {
+
           _authService.authenticatedUser =
               await _authService.getAuthenticatedUserWithEmail(eMail, passwordStr);
           if (_authService.authenticatedUser == null) {
-            error = AuthMessage.userNotFoundMsg();
+            dialogError = AuthMessage.userNotFoundMsg();
           } else {
 
             _authService.authorizatedOrganizations =
             await _authService.getAuthorizatedOrganizationsByUserId(
                 _authService.authenticatedUser.id);
-            // (TODO) Treat the super admin
+            // (TODO) Treating the super admin
             if (_authService.authorizatedOrganizations == null ||
                 _authService.authorizatedOrganizations.length == 0) {
-              error = AuthMessage.organizationNotFoundMsg();
+              dialogError = AuthMessage.organizationNotFoundMsg();
             } else {
 
               configOrganizationSeletion();
@@ -122,8 +123,7 @@ class AuthComponent extends Object with OnActivate  {
           }
 
         } catch (e) {
-          error = AuthMessage.serverApiErrorMsg();
-
+          dialogError = AuthMessage.serverApiErrorMsg();
           rethrow;
         }
       }

@@ -63,7 +63,6 @@ class MeasuresComponent extends Object {
       await _measureService.deleteMeasure(selectedMeasure.id);
       objective.measures.remove(selectedMeasure);
     } catch (e) {
-      print('${e.runtimeType}, ${e}');
       rethrow;
     }
   }

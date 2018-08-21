@@ -92,20 +92,24 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
     _appLayoutService.headerTitle = InitiativeMessage.label('Initiatives');
 
     if (routerStateCurrent.parameters.containsKey(AppRoutes.objectiveIdParameter)) {
-      String objectiveId = routerStateCurrent.parameters[AppRoutes
-          .objectiveIdParameter];
+        String objectiveId = routerStateCurrent.parameters[AppRoutes
+            .objectiveIdParameter];
 
-      if (objectiveId != null || objectiveId.isNotEmpty) {
-        initiativesFilterParam.objective = await _objectiveService.getObjectiveById(objectiveId, withMeasures: false);
+        try {
+          if (objectiveId != null || objectiveId.isNotEmpty) {
+              initiativesFilterParam.objective = await _objectiveService.getObjectiveById(objectiveId, withMeasures: false);
+          }
+          _initiatives = await _initiativeService.getInitiatives(_authService.selectedOrganization?.id, withWorkItems: true);
+       } catch (e) {
+        _appLayoutService.error = e.toString();
+        rethrow;
       }
     }
-
-    _initiatives = await _initiativeService.getInitiatives(_authService.selectedOrganization?.id, withWorkItems: true);
 
     wideControl = new List<bool>.filled(_initiatives.length, false);
     expandedControl = new List<bool>.filled(_initiatives.length, false);
 
-    _appLayoutService.searchEnabled = true;
+    _appLayoutService.enabledSearch = true;
   }
 
   get visibleFilter => _searchService.visibleFilter;
@@ -124,7 +128,7 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
 
   @override
   ngOnDestroy() async {
-    _appLayoutService.searchEnabled = false;
+    _appLayoutService.enabledSearch = false;
 
   }
 
@@ -145,7 +149,7 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
       await _initiativeService.deleteInitiative(selectedInitiative.id);
       initiatives.remove(selectedInitiative);
     } catch (e) {
-      print('${e.runtimeType}, ${e}');
+      _appLayoutService.error = e.toString();
       rethrow;
     }
   }

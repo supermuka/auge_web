@@ -8,31 +8,31 @@
                 <material-icon icon="home"></material-icon>{{label('Insights')}}
             </material-list-item>
             <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(mapRouteUrl)">
-                <material-icon icon="toc"></material-icon>{{label('Objectives Map')}}
+                <material-icon icon="map"></material-icon>{{label('Objectives Map')}}
             </material-list-item>
             <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(objectivesRouteUrl)">
-                <material-icon icon="toc"></material-icon>{{label('Objectives')}}
+                <material-icon icon="visibility"></material-icon>{{label('Objectives')}}
             </material-list-item>
             <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(initiativesRouteUrl)">
-                <material-icon icon="toc"></material-icon>{{label('Initiatives')}}
+                <material-icon icon="timeline"></material-icon>{{label('Initiatives')}}
             </material-list-item>
         </div>
         <div group>
             <div label>{{label('Admin')}}</div>
             <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(organizationRouteUrl)">
-                <material-icon icon="account_circle"></material-icon>{{label('Organization')}}
+                <material-icon icon="account_balance"></material-icon>{{label('Organization')}}
             </material-list-item>
             <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(usersRouteUrl)">
                 <material-icon icon="account_circle"></material-icon>{{label('Users')}}
             </material-list-item>
             <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(groupsRouteUrl)">
-                <material-icon icon="account_circle"></material-icon>{{label('Groups')}}
+                <material-icon icon="group"></material-icon>{{label('Groups')}}
             </material-list-item>
         </div>
         <div *ngIf="isSuperAdmin" group>
             <div label>{{label('Super Admin')}}</div>
             <material-list-item [disabled]="hasSelectedOrganization" (click)="drawer.toggle();goTo(organizationsRouteUrl)">
-                <material-icon icon="account_circle"></material-icon>{{label('All Organizations')}}
+                <material-icon icon="account_balance"></material-icon>{{label('All Organizations')}}
             </material-list-item>
             <material-list-item [disabled]="hasSelectedOrganization" (click)="drawer.toggle();goTo(usersRouteUrl)">
                 <material-icon icon="account_circle"></material-icon>{{label('All Users')}}
@@ -40,18 +40,18 @@
         </div>
     </material-list>
 </material-drawer>
-<material-content>
+<div class="material-content">
     <header class="material-header shadow">
         <div class="material-header-row">
             <material-button icon
                              class="material-drawer-button" (trigger)="drawer.toggle()">
                 <material-icon icon="menu"></material-icon>
             </material-button>
-            <div class="hide-title-small-width-search-enabled-{{searchEnabled}}">
+            <div class="hide-title-small-width-enabled-search-{{enabledSearch}}">
                <span class="material-header-title">{{headerTitle}}</span>
             </div>
             <div class="material-spacer"></div>
-            <auge-search *ngIf="searchEnabled == true">
+            <auge-search *ngIf="enabledSearch == true">
             </auge-search>
             <div class="material-spacer"></div>
             <nav class="material-navigation centralized">
@@ -66,9 +66,10 @@
             </nav>
         </div>
     </header>
-    <div class="contentMain main">
+    <div class="error" [class.expanded]="error != null">{{error}}</div>
+    <div class="main">
         <auge-user-detail *ngIf="userDetailVisible == true" [selectedUser]="authenticatedUser" (save)="changeUserDetail($event)" (close)="userDetailVisible = false">
         </auge-user-detail>
         <router-outlet [routes]="routes"></router-outlet>
     </div>
-</material-content>
+</div>

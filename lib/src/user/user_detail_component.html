@@ -1,5 +1,5 @@
 <modal [visible]="true">
-    <material-dialog headered class="headered-dialog">
+    <material-dialog headered class="headered-dialog" [error]="dialogError">
         <div header>
             <h3 *ngIf="user.id == null">{{addUserLabel}}</h3>
             <h3 *ngIf="user.id != null">{{editUserLabel}}</h3>
@@ -49,20 +49,11 @@
             <material-checkbox *ngIf="authenticatedUserIsSuperAdmin == true" [(ngModel)]="user.userProfile.isSuperAdmin" [label]="superAdminLabel"></material-checkbox>
         </div>
         <div class="w3-row">
-            <!-- material-radio-group [selectionModel]="selectionModelUserAuthorization">
-                <material-radio *ngFor="let option of userAuthorizationOptions"
-                                class="radio-per-line"
-                                [disabled]="user.userProfile.isSuperAdmin != null && user.userProfile.isSuperAdmin"
-                                [(checked)]="option.selected"
-                                [value]="option.label" no-ink>{{option.label}}
-                </material-radio><br>
-            </material-radio-group -->
-            <material-radio-group [(ngModel)]="userProfileOrganization.authorizationLevel" class="radio-per-line">
+            <material-radio-group *ngIf="userProfileOrganization != null" [(ngModel)]="userProfileOrganization.authorizationLevel" class="radio-per-line">
                 <material-radio *ngFor="let option of userAuthorizationOptions"
                                 [disabled]="user.userProfile.isSuperAdmin != null && user.userProfile.isSuperAdmin"
                                 [value]="option.index" no-ink>{{option.label}}
                 </material-radio>
-
             </material-radio-group>
         </div>
         <div footer>

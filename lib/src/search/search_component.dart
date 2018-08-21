@@ -38,4 +38,8 @@ class SearchComponent {
   void viewFilter() {
     _searchService.visibleFilter = !_searchService.visibleFilter;
   }
+
+  bool get visibleFilter {
+    return _searchService.visibleFilter;
+  }
 }

@@ -96,16 +96,13 @@ class WorkItemDetailComponent implements OnInit  {
 
   List<User> _users;
 
+  /// When it exists, the error/exception message presented into dialog view.
+  String dialogError;
+
   WorkItemDetailComponent(this._authService, this._userService, this._workItemService)  {
 
     initializeDateFormatting(Intl.defaultLocale , null);
-    initialization();
-
-  }
-
-  void initialization() async {
-
-    _users = await _userService.getUsers(_authService.selectedOrganization?.id, withProfile: true);
+    memberSingleSelectModel = SelectionModel.single();
 
   }
 
@@ -127,7 +124,7 @@ class WorkItemDetailComponent implements OnInit  {
   static final String closeButtonLabel = CommonMessage.buttonLabel('Close');
 
   @override
-  void ngOnInit() {
+  void ngOnInit() async {
 
     // Clone the object to have an intermediate
     if (selectedWorkItem != null) {
@@ -135,13 +132,18 @@ class WorkItemDetailComponent implements OnInit  {
     }
 
     //List<User> users = await _userService.getUsers(_authService.selectedOrganization?.id, withProfile: true);
+    try {
+      _users = await _userService.getUsers(_authService.selectedOrganization?.id, withProfile: true);
+    } catch (e) {
+      dialogError = e.toString();
+      rethrow;
+    }
 
     memberOptions = new StringSelectionOptions<User>(
         _users, toFilterableString: (User user) => user.name);
 
-    memberSingleSelectModel =
-    new SelectionModel.single()
-      ..selectionChanges.listen((member) {
+
+    memberSingleSelectModel.selectionChanges.listen((member) {
 
         if (member.isNotEmpty && member.first.added != null && member.first.added.length != 0 && member.first.added?.first != null) {
           if (!workItem.assignedTo.contains(member.first.added.first)) {
@@ -174,10 +176,15 @@ class WorkItemDetailComponent implements OnInit  {
   }
 
   void saveWorkItem() {
-    _workItemService.saveWorkItem(initiative.id, workItem);
-    _saveController.add(workItem);
+    try {
+      _workItemService.saveWorkItem(initiative.id, workItem);
+      _saveController.add(workItem);
 
-    closeDetail();
+      closeDetail();
+    } catch (e) {
+      dialogError = e.toString();
+      rethrow;
+    }
   }
 
   void closeDetail() {

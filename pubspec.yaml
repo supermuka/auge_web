@@ -5,25 +5,16 @@ environment:
   sdk: '>=2.0.0-dev.3.0 <3.0.0'
 
 dependencies:
-  #angular_router: ^2.0.0-alpha+15
   angular_router: ^2.0.0-alpha+19
-  #angular: ^5.0.0-beta
   angular: ^5.0.0
-  #angular_forms: ^2.0.0-beta
   angular_forms: ^2.0.0
-  #angular_components: ^0.9.0-alpha+15
   angular_components: ^0.9.0
-  #angular_compiler: ^0.4.0-alpha+16
-  #angular_compiler: 0.4.0
+  sass_builder: ^2.1.1
   intl: ^0.15.7
   rpc: ^0.6.0
-  #rpc: ^0.5.10
-  #postgres: ^1.0.0-beta.1
-  sass_builder: ^2.1.1
   crypto: ^2.0.6
   uuid: ^1.0.1
   image: ^2.0.4
-  #front_end: ^0.1.4
   auge_server:
     path: ../auge_server/
 

@@ -118,7 +118,6 @@ class WorkItemsKanbanComponent extends Object implements OnInit {
       await _workItemService.deleteWorkItem(selectedWorkItem.id);
       initiative.workItems.remove(selectedWorkItem);
     } catch (e) {
-      print('${e.runtimeType}, ${e}');
       rethrow;
     }
   }

@@ -35,7 +35,6 @@ class OrganizationService {
         await _augeApiService.augeApi.updateOrganization(organization);
       }
     } catch (e) {
-      print('${e.runtimeType}, ${e}');
       rethrow;
     }
   }

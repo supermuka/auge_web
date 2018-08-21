@@ -41,6 +41,9 @@ class OrganizationsComponent extends Object implements OnActivate, OnDestroy  {
   final SearchService _searchService;
   final Router _router;
 
+  /// When it exists, the error/exception message presented into view.
+  String error;
+
   bool detailVisible = false;
 
   List<Organization> _organizations;
@@ -64,15 +67,22 @@ class OrganizationsComponent extends Object implements OnActivate, OnDestroy  {
 
     _appLayoutService.headerTitle =
          OrganizationMessage.label('Organizations');
-    _organizations = await _organizationService.getOrganizations();
+
+    try {
+      _organizations = await _organizationService.getOrganizations();
+    } catch (e) {
+      error = e.toString();
+      rethrow;
+    }
+
 
     // Enable Input Search on Header App
-    _appLayoutService.searchEnabled = true;
+    _appLayoutService.enabledSearch = true;
   }
 
   @override
   void ngOnDestroy() {
-    _appLayoutService.searchEnabled = false;
+    _appLayoutService.enabledSearch = false;
 
   }
 
@@ -90,7 +100,6 @@ class OrganizationsComponent extends Object implements OnActivate, OnDestroy  {
       _organizationService.deleteOrganization(selectedOrganization.id);
       _organizations.remove(selectedOrganization);
     } catch (e) {
-      print('${e.runtimeType}, ${e}');
       rethrow;
     }
   }

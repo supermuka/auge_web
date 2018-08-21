@@ -45,6 +45,9 @@ class OrganizationDetailComponent extends Object implements OnInit {
   @Output()
   Stream<Organization> get save => _saveController.stream;
 
+  /// When it exists, the error/exception message is presented into dialog view.
+  String dialogError;
+
   OrganizationDetailComponent(this._organizationService);
 
   // Define messages and labels
@@ -70,9 +73,14 @@ class OrganizationDetailComponent extends Object implements OnInit {
   }
 
   void saveOrganization() {
-    _organizationService.saveOrganization(organization);
-    _saveController.add(organization);
-    closeDetail();
+    try {
+      _organizationService.saveOrganization(organization);
+      _saveController.add(organization);
+      closeDetail();
+    } catch (e) {
+      dialogError = e.toString();
+      rethrow;
+    }
   }
 
   bool get validInput {

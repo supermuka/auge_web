@@ -42,6 +42,9 @@ import 'initiative_detail_component.template.dart' as initiative_detail_componen
   ])
 class InitiativesFilterComponent implements OnInit {
 
+  /// When it exists, the error/exception message presented into dialog view.
+  String dialogError;
+
   /// If empty, no filter. Otherwide, filter initiatives with [Objective] informed.
   @Input()
   InitiativesFilterParam initiativesFilterParam;
@@ -76,11 +79,17 @@ class InitiativesFilterComponent implements OnInit {
   @override
   void ngOnInit() async {
 
-    // Objective
-    List<Objective> objectives = await _objectiveService.getObjectives(_authService.selectedOrganization.id, withMeasures: false);
+    try {
+      // Objective
+      List<Objective> objectives = await _objectiveService.getObjectives(
+          _authService.selectedOrganization.id, withMeasures: false);
 
-    objectiveOptions = new StringSelectionOptions<Objective>(
-        objectives, toFilterableString: (Objective objective) => objective.name);
+      objectiveOptions = new StringSelectionOptions<Objective>(
+          objectives, toFilterableString: (Objective objective) => objective.name);
+    } catch (e) {
+      dialogError = e.toString();
+      rethrow;
+    }
 
     // Objective Select Model
     objectiveSingleSelectModel =

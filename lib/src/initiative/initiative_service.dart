@@ -38,7 +38,6 @@ class InitiativeService {
     try {
       await _augeApiService.initiativeAugeApi.deleteInitiative(id);
     } catch (e) {
-      print('${e.runtimeType}, ${e}');
       rethrow;
     }
   }

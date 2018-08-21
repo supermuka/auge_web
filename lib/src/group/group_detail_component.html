@@ -1,5 +1,5 @@
 <modal [visible]="true">
-    <material-dialog headered class="headered-dialog">
+    <material-dialog headered class="headered-dialog" [error]="dialogError">
         <div header>
             <h3 *ngIf="group.id == null">{{addGroupLabel}}</h3>
             <h3 *ngIf="group.id != null">{{editGroupLabel}}</h3>

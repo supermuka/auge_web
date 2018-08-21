@@ -69,15 +69,20 @@ class InsightsComponent implements OnActivate  {
       _router.navigate(AppRoutes.authRoute.toUrl());
     }
 
-    _appLayoutService.searchEnabled = false;
+    _appLayoutService.enabledSearch = false;
 
-    if (_authService.selectedOrganization != null) {
-
-      objectives = await _objectiveService.getObjectives(
-          _authService.selectedOrganization.id, withMeasures: true);
-      initiatives = await _initiativeService.getInitiatives(
-          _authService.selectedOrganization.id, withWorkItems: true);
+    try {
+      if (_authService.selectedOrganization != null) {
+        objectives = await _objectiveService.getObjectives(
+            _authService.selectedOrganization.id, withMeasures: true);
+        initiatives = await _initiativeService.getInitiatives(
+            _authService.selectedOrganization.id, withWorkItems: true);
+      }
+    } catch (e) {
+      _appLayoutService.error = e.toString();
+      rethrow;
     }
+
   }
 
   /// Return overall progress

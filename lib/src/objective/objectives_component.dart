@@ -84,13 +84,23 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
     }
 
     _appLayoutService.headerTitle = ObjectiveMessage.label('Objectives');
-    _objectives = await _objectiveService.getObjectives(_authService.selectedOrganization.id, withMeasures: true);
-    _appLayoutService.searchEnabled = true;
+
+
+    _appLayoutService.enabledSearch = true;
 
     // Expand panel whether [Id] objective is informed.
     if (routerStateCurrent.queryParameters.containsKey(AppRoutes.objectiveIdParameter)) {
       initialObjectiveId = routerStateCurrent.queryParameters[AppRoutes.objectiveIdParameter];
     }
+
+    try {
+      _objectives = await _objectiveService.getObjectives(
+          _authService.selectedOrganization.id, withMeasures: true);
+    } catch (e) {
+      _appLayoutService.error = e.toString();
+      rethrow;
+    }
+
   }
 
   List<Objective> get objectives {
@@ -99,7 +109,7 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
 
   @override
   ngOnDestroy() async {
-    _appLayoutService.searchEnabled = false;
+    _appLayoutService.enabledSearch = false;
   }
 
   void selectObjective(Objective objective) {
@@ -111,7 +121,6 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
       await _objectiveService.deleteObjective(selectedObjective.id);
       objectives.remove(selectedObjective);
     } catch (e) {
-      print('${e.runtimeType}, ${e}');
       rethrow;
     }
   }

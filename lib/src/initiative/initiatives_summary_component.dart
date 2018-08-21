@@ -11,6 +11,7 @@ import 'package:auge_server/model/initiative/initiative.dart';
 import 'package:auge_server/model/objective/objective.dart';
 
 import 'package:auge_web/src/auth/auth_service.dart';
+import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/src/initiative/initiative_service.dart';
 
 import 'package:auge_web/src/initiative/initiative_summary_component.dart';
@@ -36,6 +37,7 @@ class InitiativesSummaryComponent extends Object implements OnInit {
   final InitiativeService _initiativeService;
   final Router _router;
   final AuthService _authService;
+  final AppLayoutService _appLayoutService;
 
   @Input()
   Objective objective;
@@ -65,18 +67,24 @@ class InitiativesSummaryComponent extends Object implements OnInit {
   ];
 */
 
-  InitiativesSummaryComponent(this._authService, this._initiativeService,  this._router) {
+  InitiativesSummaryComponent( this._authService, this._appLayoutService, this._initiativeService,  this._router) {
 
   }
 
   @override
   ngOnInit() async {
 
-    if (objective?.id != null) {
-      initiatives = await _initiativeService.getInitiatives(
-          _authService.selectedOrganization?.id, objectiveId: objective.id,
-          withWorkItems: true);
+    try {
+      if (objective?.id != null) {
+        initiatives = await _initiativeService.getInitiatives(
+            _authService.selectedOrganization?.id, objectiveId: objective.id,
+            withWorkItems: true);
+      }
+    } catch (e) {
+      _appLayoutService.error = e.toString();
+      rethrow;
     }
+
 
   }
 

@@ -70,6 +70,9 @@ class GroupDetailComponent extends Object implements OnInit {
   List<Group> _superGroups;
   List<User> _users;
 
+  /// When it exists, the error/exception message presented into dialog view.
+  String dialogError;
+
   GroupDetailComponent(this._authService, this._userService, this._groupService) {
     superGroupSingleSelectModel = SelectionModel.single();
     leaderSingleSelectModel = SelectionModel.single();
@@ -101,9 +104,20 @@ class GroupDetailComponent extends Object implements OnInit {
       group.active = true;
     }
 
+    try {
+      _superGroups = await _groupService.getGroups(_authService.selectedOrganization.id);
+      _users = await _userService.getUsers(_authService.selectedOrganization.id, withProfile: true);
+      groupTypes = await _groupService.getGroupTypes();
+    } catch (e) {
+      dialogError = e.toString();
+      rethrow;
+    }
+
+
+
     // Super Group
    //  List<Group> superGroups = await _groupService.getGroups(_authService.selectedOrganization.id);
-    _superGroups = await _groupService.getGroups(_authService.selectedOrganization.id);
+
     // Remove the current object
     if (group.id != null)
       _superGroups.removeWhere((testGroup) => testGroup.id == group.id);
@@ -124,7 +138,7 @@ class GroupDetailComponent extends Object implements OnInit {
 
     // Leader
     // List<User> users = await _userService.getUsers(_authService.selectedOrganization.id, withProfile: true);
-    _users = await _userService.getUsers(_authService.selectedOrganization.id, withProfile: true);
+
 
     leaderSingleSelectModel.selectionChanges.listen((leaderEvent) {
 
@@ -140,17 +154,21 @@ class GroupDetailComponent extends Object implements OnInit {
         _users, toFilterableString: (User user) => user.name);
 
     // groupTypes = await _groupService.getGroupTypes();
-    groupTypes = await _groupService.getGroupTypes();
+
     if (group.groupType == null) {
       group.groupType = groupTypes?.last;
     }
   }
 
   void saveGroup() {
-
-    _groupService.saveObjective(group);
-    _saveController.add(group);
-    closeDetail();
+    try {
+      _groupService.saveObjective(group);
+      _saveController.add(group);
+      closeDetail();
+    } catch (e) {
+      dialogError = e.toString();
+      rethrow;
+    }
   }
 
   void closeDetail() {

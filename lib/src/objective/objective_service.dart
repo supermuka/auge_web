@@ -42,7 +42,6 @@ class ObjectiveService {
     try {
       await _augeApiService.objectiveAugeApi.deleteObjective(id);
     } catch (e) {
-      print('${e.runtimeType}, ${e}');
       rethrow;
     }
   }

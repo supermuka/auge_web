@@ -79,6 +79,9 @@ class ObjectiveDetailComponent extends Object implements OnInit {
   List<User> _users;
   List<Group> _groups;
 
+  /// When it exists, the error/exception message presented into dialog view.
+  String dialogError;
+
   ObjectiveDetailComponent(this._authService, this._userService, this._objectiveService, this._groupService) {
     groupSingleSelectModel = SelectionModel.single();
     alignedToSingleSelectModel = SelectionModel.single();
@@ -117,11 +120,20 @@ class ObjectiveDetailComponent extends Object implements OnInit {
       objective = Objective()..organization = _authService.selectedOrganization;
     }
 
+    try {
+      _alignedToObjectives = await _objectiveService.getObjectives(_authService.selectedOrganization.id);
+      _users = await _userService.getUsers(_authService.selectedOrganization.id, withProfile: true);
+      _groups = await _groupService.getGroups(_authService.selectedOrganization.id);
+
+    } catch (e) {
+      dialogError = e.toString();
+      rethrow;
+    }
+
     // Aligned to Objectives
     // Remove the current object
-    _alignedToObjectives = await _objectiveService.getObjectives(_authService.selectedOrganization.id);
-    _alignedToObjectives.removeWhere((testObjective) => testObjective.id == objective.id);
 
+    _alignedToObjectives.removeWhere((testObjective) => testObjective.id == objective.id);
 
     alignedToOptions = new StringSelectionOptions<Objective>(
         _alignedToObjectives, toFilterableString: (Objective obj) => obj.name);
@@ -139,9 +151,6 @@ class ObjectiveDetailComponent extends Object implements OnInit {
     // Leader
     // List<User> users = await _userService.getUsers(_authService.selectedOrganization.id, withProfile: true);
 
-    _users = await _userService.getUsers(_authService.selectedOrganization.id, withProfile: true);
-
-
     if (objective.leader != null)
       leaderSingleSelectModel.select(objective.leader);
 
@@ -157,9 +166,6 @@ class ObjectiveDetailComponent extends Object implements OnInit {
 
     // Group
     // List<Group> groups = await _groupService.getGroups(_authService.selectedOrganization.id);
-
-    _groups = await _groupService.getGroups(_authService.selectedOrganization.id);
-
     groupOptions = new StringSelectionOptions<Group>(
         _groups, toFilterableString: (Group gru) => gru.name);
 
@@ -175,9 +181,14 @@ class ObjectiveDetailComponent extends Object implements OnInit {
   }
 
   void saveObjective() {
-    _objectiveService.saveObjective(objective);
-    _saveController.add(objective);
-    closeDetail();
+    try {
+      _objectiveService.saveObjective(objective);
+      _saveController.add(objective);
+      closeDetail();
+    } catch (e) {
+      dialogError = e.toString();
+      rethrow;
+    }
 
   }
 
