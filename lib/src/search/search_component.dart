@@ -39,6 +39,7 @@ class SearchComponent {
     _searchService.visibleFilter = !_searchService.visibleFilter;
   }
 
+  /// When null, the filter button does not appear
   bool get visibleFilter {
     return _searchService.visibleFilter;
   }

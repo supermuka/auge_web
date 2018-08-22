@@ -134,6 +134,20 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
   // Define messages and labels
   String label(String label) =>  AppLayoutMessage.label(label);
 
+  /// Messages and labels
+  static final String insightsLabel = AppLayoutMessage.label('Insights');
+  static final String objectivesMapLabel = AppLayoutMessage.label('Objectives Map');
+  static final String objectivesLabel = AppLayoutMessage.label('Objectives');
+  static final String initiativesLabel = AppLayoutMessage.label('Initiatives');
+  static final String organizationLabel = AppLayoutMessage.label('Organization');
+  static final String usersLabel = AppLayoutMessage.label('Users');
+  static final String adminLabel = AppLayoutMessage.label('Admin');
+  static final String leaderLabel = AppLayoutMessage.label('Leader');
+  static final String groupsLabel = AppLayoutMessage.label('Groups');
+  static final String superAdminLabel = AppLayoutMessage.label('Super Admin');
+  static final String allOrganizationsLabel = AppLayoutMessage.label('All Organizations');
+  static final String allUsersLabel = AppLayoutMessage.label('All Users');
+
   @override
   onActivate(previous, current)  {
 
@@ -190,6 +204,11 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
   bool get isAdmin {
     UserProfileOrganization userOrganization = _authService.authorizatedOrganizations?.firstWhere((o) => o.organization.id == _authService?.selectedOrganization?.id, orElse: () => null);
     return _authService?.authorizatedOrganizations != null && _authService?.selectedOrganization != null && userOrganization != null && userOrganization?.authorizationLevel == UserAuthorization.admin.index;
+  }
+
+  bool get isLeader {
+    UserProfileOrganization userOrganization = _authService.authorizatedOrganizations?.firstWhere((o) => o.organization.id == _authService?.selectedOrganization?.id, orElse: () => null);
+    return _authService?.authorizatedOrganizations != null && _authService?.selectedOrganization != null && userOrganization != null && userOrganization?.authorizationLevel == UserAuthorization.leader.index;
   }
 
   String get headerTitle {

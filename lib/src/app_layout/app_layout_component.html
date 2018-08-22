@@ -5,37 +5,37 @@
         </div>
         <div group>
             <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(insightsRouteUrl)">
-                <material-icon icon="home"></material-icon>{{label('Insights')}}
+                <material-icon icon="home"></material-icon>{{insightsLabel}}
             </material-list-item>
             <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(mapRouteUrl)">
-                <material-icon icon="map"></material-icon>{{label('Objectives Map')}}
+                <material-icon icon="map"></material-icon>{{objectivesMapLabel}}
             </material-list-item>
             <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(objectivesRouteUrl)">
-                <material-icon icon="visibility"></material-icon>{{label('Objectives')}}
+                <material-icon icon="visibility"></material-icon>{{objectivesLabel}}
             </material-list-item>
             <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(initiativesRouteUrl)">
-                <material-icon icon="timeline"></material-icon>{{label('Initiatives')}}
+                <material-icon icon="timeline"></material-icon>{{initiativesLabel}}
             </material-list-item>
         </div>
-        <div group>
-            <div label>{{label('Admin')}}</div>
-            <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(organizationRouteUrl)">
-                <material-icon icon="account_balance"></material-icon>{{label('Organization')}}
+        <div *ngIf="isSuperAdmin || isAdmin || isLeader" group>
+            <div label>{{adminLabel}} · {{leaderLabel}}</div>
+            <material-list-item *ngIf="isSuperAdmin" [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(organizationRouteUrl)">
+                <material-icon icon="account_balance"></material-icon>{{organizationLabel}}
             </material-list-item>
-            <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(usersRouteUrl)">
-                <material-icon icon="account_circle"></material-icon>{{label('Users')}}
+            <material-list-item *ngIf="isSuperAdmin || isAdmin" [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(usersRouteUrl)">
+                <material-icon icon="account_circle"></material-icon>{{usersLabel}}
             </material-list-item>
             <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(groupsRouteUrl)">
-                <material-icon icon="group"></material-icon>{{label('Groups')}}
+                <material-icon icon="group"></material-icon>{{groupsLabel}}
             </material-list-item>
         </div>
         <div *ngIf="isSuperAdmin" group>
-            <div label>{{label('Super Admin')}}</div>
+            <div label>{{superAdminLabel}}</div>
             <material-list-item [disabled]="hasSelectedOrganization" (click)="drawer.toggle();goTo(organizationsRouteUrl)">
-                <material-icon icon="account_balance"></material-icon>{{label('All Organizations')}}
+                <material-icon icon="account_balance"></material-icon>{{allOrganizationsLabel}}
             </material-list-item>
             <material-list-item [disabled]="hasSelectedOrganization" (click)="drawer.toggle();goTo(usersRouteUrl)">
-                <material-icon icon="account_circle"></material-icon>{{label('All Users')}}
+                <material-icon icon="account_circle"></material-icon>{{allUsersLabel}}
             </material-list-item>
         </div>
     </material-list>
