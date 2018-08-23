@@ -80,6 +80,7 @@ class AppLayoutMessage {
         'Organization': 'Organization',
         'Organizations': 'Organizations',
         'All Organizations': 'All Organizations',
+        'Leader': 'Leader',
         'Admin': 'Administration',
         'Super Admin': 'Super Administration',
         'User Detail': 'User Detail',
