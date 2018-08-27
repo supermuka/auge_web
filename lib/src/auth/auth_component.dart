@@ -90,6 +90,7 @@ class AuthComponent extends Object with OnActivate  {
     _authService.authenticatedUser = null;
     _authService.selectedOrganization = null;
     _authService.authorizatedOrganizations = null;
+    _authService.currentAuthorizationRole = null;
   }
 
   void authenticateAuthorizate(AsyncAction<bool> action) async {
@@ -107,6 +108,7 @@ class AuthComponent extends Object with OnActivate  {
             dialogError = AuthMessage.userNotFoundMsg();
           } else {
 
+        
             _authService.authorizatedOrganizations =
             await _authService.getAuthorizatedOrganizationsByUserId(
                 _authService.authenticatedUser.id);
@@ -142,7 +144,6 @@ class AuthComponent extends Object with OnActivate  {
   bool get isSuperAdmin {
     return (_authService?.authenticatedUser?.userProfile?.isSuperAdmin == true);
   }
-
 
   void configOrganizationSeletion() {
 

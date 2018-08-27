@@ -25,7 +25,7 @@
 .menu-drawer {
   overflow: auto;
 }
-
+/*
 material-content material-drawer {
     overflow: hidden;
     position: fixed;
@@ -33,8 +33,9 @@ material-content material-drawer {
     width: 100%;
     z-index: 9999999;
 }
+*/
 
-material-content header {
+.material-content header {
     overflow: hidden;
     position: fixed;
     top: 0;

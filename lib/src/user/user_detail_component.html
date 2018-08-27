@@ -46,12 +46,12 @@
             <label>{{authorizationLabel}}</label>
         </div>
         <div class="w3-row">
-            <material-checkbox *ngIf="authenticatedUserIsSuperAdmin == true" [(ngModel)]="user.userProfile.isSuperAdmin" [label]="superAdminLabel"></material-checkbox>
+            <material-checkbox [disabled]="authenticatedUserIsSuperAdmin != true" [(ngModel)]="user.userProfile.isSuperAdmin" [label]="superAdminLabel"></material-checkbox>
         </div>
         <div class="w3-row">
-            <material-radio-group *ngIf="userProfileOrganization != null" [(ngModel)]="userProfileOrganization.authorizationLevel" class="radio-per-line">
+            <material-radio-group *ngIf="userProfileOrganization != null" [(ngModel)]="userProfileOrganization.authorizationRole" class="radio-per-line">
                 <material-radio *ngFor="let option of userAuthorizationOptions"
-                                [disabled]="user.userProfile.isSuperAdmin != null && user.userProfile.isSuperAdmin"
+                                [disabled]="!option.enabled"
                                 [value]="option.index" no-ink>{{option.label}}
                 </material-radio>
             </material-radio-group>

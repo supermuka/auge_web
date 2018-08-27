@@ -6,9 +6,11 @@ import 'package:auge_server/model/user.dart';
 import 'package:auge_server/model/organization.dart';
 import 'package:auge_server/model/user_profile_organization.dart';
 
+import 'package:auge_server/model/authorization.dart';
+export 'package:auge_server/model/authorization.dart';
+
 import 'package:auge_web/services/augeapi_service.dart';
 import 'dart:convert' show base64;
-// import 'dart:typed_data' show Uint8List, ByteBuffer;
 import 'package:crypto/crypto.dart' show sha256;
 
 
@@ -19,13 +21,17 @@ class AuthService  {
 
   User authenticatedUser;
   List<UserProfileOrganization> authorizatedOrganizations;
-  Organization selectedOrganization;
+  AuthorizationPolicy _generalAuthorizationPolicy;
+  Organization _selectedOrganization;
+  AuthorizationRole currentAuthorizationRole;
 
   final AugeApiService _augeApiService;
 
-  AuthService(this._augeApiService);
+  AuthService(this._augeApiService) {
+    _generalAuthorizationPolicy = GeneralAuthorizationPolicy();
+  }
 
-    /// Return an [Organization] list for an eMail.
+  /// Return an [Organization] list for an eMail.
   Future<List<UserProfileOrganization>> getAuthorizatedOrganizationsByUserId(String id) async {
     List<UserProfileOrganization> usersOrganizations;
     if (id.isNotEmpty)
@@ -57,5 +63,46 @@ class AuthService  {
         }
       }
     return user;
+  }
+
+  Organization get selectedOrganization => _selectedOrganization;
+
+  set selectedOrganization(Organization organization) {
+
+    _selectedOrganization = organization;
+
+    if (authenticatedUser != null) {
+      if (authenticatedUser.userProfile?.isSuperAdmin) {
+        currentAuthorizationRole = AuthorizationRole.superAdmin;
+      } else {
+        currentAuthorizationRole =
+        AuthorizationRole.values[authorizatedOrganizations
+            .singleWhere((o) => o.organization.id == selectedOrganization.id)
+            .authorizationRole];
+      }
+    }
+  }
+
+  bool isAuthorizedCurrentRole(AuthorizationObject authorizationObject, dynamic authorizationFunction, {dynamic authorizationConstraint}) {
+    if (_generalAuthorizationPolicy != null) {
+      return _generalAuthorizationPolicy.isAuthorizated(currentAuthorizationRole, authorizationObject, authorizationFunction, authorizationConstraint: authorizationConstraint);
+    } else {
+      print('_generalAuthorizationPolicy');
+      return false;
+    }
+  }
+
+  bool get isSuperAdmin {
+    return (authenticatedUser?.userProfile?.isSuperAdmin == true);
+  }
+
+  bool get isAdmin {
+    UserProfileOrganization userOrganization = authorizatedOrganizations?.firstWhere((o) => o.organization.id == selectedOrganization?.id, orElse: () => null);
+    return authorizatedOrganizations != null && selectedOrganization != null && userOrganization != null && userOrganization?.authorizationRole == AuthorizationRole.admin.index;
+  }
+
+  bool get isLeader {
+    UserProfileOrganization userOrganization = authorizatedOrganizations?.firstWhere((o) => o.organization.id == selectedOrganization?.id, orElse: () => null);
+    return authorizatedOrganizations != null && selectedOrganization != null && userOrganization != null && userOrganization?.authorizationRole == AuthorizationRole.leader.index;
   }
 }

@@ -198,17 +198,15 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
   }
 
   bool get isSuperAdmin {
-    return (_authService?.authenticatedUser?.userProfile?.isSuperAdmin == true);
+    return _authService?.isSuperAdmin;
   }
 
   bool get isAdmin {
-    UserProfileOrganization userOrganization = _authService.authorizatedOrganizations?.firstWhere((o) => o.organization.id == _authService?.selectedOrganization?.id, orElse: () => null);
-    return _authService?.authorizatedOrganizations != null && _authService?.selectedOrganization != null && userOrganization != null && userOrganization?.authorizationLevel == UserAuthorization.admin.index;
+    return _authService?.isAdmin;
   }
 
   bool get isLeader {
-    UserProfileOrganization userOrganization = _authService.authorizatedOrganizations?.firstWhere((o) => o.organization.id == _authService?.selectedOrganization?.id, orElse: () => null);
-    return _authService?.authorizatedOrganizations != null && _authService?.selectedOrganization != null && userOrganization != null && userOrganization?.authorizationLevel == UserAuthorization.leader.index;
+    return _authService?.isLeader;
   }
 
   String get headerTitle {

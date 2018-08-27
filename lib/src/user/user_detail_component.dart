@@ -13,6 +13,7 @@ import 'package:intl/intl.dart';
 
 import 'package:auge_server/model/user.dart';
 import 'package:auge_server/model/user_profile_organization.dart';
+
 import 'package:auge_web/message/messages.dart';
 
 import 'package:auge_web/src/auth/auth_service.dart';
@@ -65,7 +66,6 @@ class UserDetailComponent extends Object implements OnInit {
   final Location _location;
 
  //  final SelectionModel selectionModelUserAuthorization = new SelectionModel.multi();
-
   String _passwordOrigin;
 
   User user;
@@ -105,23 +105,17 @@ class UserDetailComponent extends Object implements OnInit {
   static final String clearButtonLabel = CommonMessage.buttonLabel('Clear');
   static final String saveButtonLabel = CommonMessage.buttonLabel('Save');
   static final String closeButtonLabel = CommonMessage.buttonLabel('Close');
+  
 
   @override
   void ngOnInit() async {
-    print('ngOnInit()');
-
     if (selectedUser != null) {
       // Clone objective
       user = selectedUser.clone();
 
       try {
-        print(user.id);
-        print(_authService.selectedOrganization.id);
-
         List<UserProfileOrganization> userProfileOrganizations = await _userService.getUsersProfileOrganizations(user.id, _authService.selectedOrganization.id);
-        print('lista....');
 
-        userProfileOrganizations.forEach((f) => print(f.organization.name) );
         if (userProfileOrganizations.isNotEmpty) {
           userProfileOrganization = userProfileOrganizations.first;
         }
@@ -139,11 +133,19 @@ class UserDetailComponent extends Object implements OnInit {
       userProfileOrganization.organization = _authService.selectedOrganization;
     }
 
-    UserAuthorization.values.forEach((f) => userAuthorizationOptions.add(new Option(f.index, UserMessage.label(f.toString())) ));
+    AuthorizationRole.values.forEach((role) {
+      if (role != AuthorizationRole.superAdmin) {
+        userAuthorizationOptions.add(new Option(
+            role.index,
+            UserMessage.label(role.toString()), _authService.isAuthorizedCurrentRole(
+            AuthorizationObject.user, UserAuthorizationFunction.all,
+            authorizationConstraint: role
+        )));
+      }
+    });
   }
 
   void saveUser() async {
-
     try {
       await _userService.saveUser(user);
 
@@ -219,17 +221,13 @@ class UserDetailComponent extends Object implements OnInit {
 
   void closeDetail() {
     _closeController.add(null);
-
   }
 }
 
 class Option {
   final int index;
   final String label;
-  /*
-  bool selected;
-  bool disabled;
-  */
+  final bool enabled;
 
-  Option(this.index, this.label /*, this.selected, this.disabled */);
+  Option(this.index, this.label, this.enabled);
 }
