@@ -89,8 +89,8 @@ class AuthComponent extends Object with OnActivate  {
     // Needs to set auth attributes again
     _authService.authenticatedUser = null;
     _authService.selectedOrganization = null;
-    _authService.authorizatedOrganizations = null;
-    _authService.currentAuthorizationRole = null;
+    _authService.authorizedOrganizations = null;
+    _authService.authorizedRole = null;
   }
 
   void authenticateAuthorizate(AsyncAction<bool> action) async {
@@ -109,12 +109,12 @@ class AuthComponent extends Object with OnActivate  {
           } else {
 
         
-            _authService.authorizatedOrganizations =
-            await _authService.getAuthorizatedOrganizationsByUserId(
+            _authService.authorizedOrganizations =
+            await _authService.getAuthorizedOrganizationsByUserId(
                 _authService.authenticatedUser.id);
             // (TODO) Treating the super admin
-            if (_authService.authorizatedOrganizations == null ||
-                _authService.authorizatedOrganizations.length == 0) {
+            if (_authService.authorizedOrganizations == null ||
+                _authService.authorizedOrganizations.length == 0) {
               dialogError = AuthMessage.organizationNotFoundMsg();
             } else {
 
@@ -137,7 +137,7 @@ class AuthComponent extends Object with OnActivate  {
     return _authService?.authenticatedUser;
   }
 
-  Organization get authorizatedAndSelectedOrganization {
+  Organization get authorizedAndSelectedOrganization {
     return _authService?.selectedOrganization;
   }
 
@@ -155,9 +155,9 @@ class AuthComponent extends Object with OnActivate  {
 
     String orgGroupLabel = AuthMessage.label('Organization');
 
-    if (_authService.authorizatedOrganizations != null &&
-        _authService.authorizatedOrganizations.isNotEmpty) {
-      _authService.authorizatedOrganizations.forEach((e) =>
+    if (_authService.authorizedOrganizations != null &&
+        _authService.authorizedOrganizations.isNotEmpty) {
+      _authService.authorizedOrganizations.forEach((e) =>
           orgs.add(new AppLayoutOrganizationSelectOption()
             ..group = orgGroupLabel
             ..name = e.organization.name
@@ -202,8 +202,8 @@ class AuthComponent extends Object with OnActivate  {
         }
       });
 
-    if (_authService.authorizatedOrganizations.isNotEmpty) {
-      organizationSingleSelectModel.select(_authService.authorizatedOrganizations.first);
+    if (_authService.authorizedOrganizations.isNotEmpty) {
+      organizationSingleSelectModel.select(_authService.authorizedOrganizations.first);
     }
   }
 

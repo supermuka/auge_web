@@ -105,7 +105,6 @@ class UserDetailComponent extends Object implements OnInit {
   static final String clearButtonLabel = CommonMessage.buttonLabel('Clear');
   static final String saveButtonLabel = CommonMessage.buttonLabel('Save');
   static final String closeButtonLabel = CommonMessage.buttonLabel('Close');
-  
 
   @override
   void ngOnInit() async {
@@ -137,8 +136,8 @@ class UserDetailComponent extends Object implements OnInit {
       if (role != AuthorizationRole.superAdmin) {
         userAuthorizationOptions.add(new Option(
             role.index,
-            UserMessage.label(role.toString()), _authService.isAuthorizedCurrentRole(
-            AuthorizationObject.user, UserAuthorizationFunction.all,
+            UserMessage.label(role.toString()), _authService.isAuthorizedForAtuhorizatedRole(
+            AuthorizationObject.users, authorizationFunction: user.id == null ?  UserAuthorizationFunction.create : UserAuthorizationFunction.update,
             authorizationConstraint: role
         )));
       }

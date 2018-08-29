@@ -32,6 +32,10 @@ DEPLOY
 
 pub run build_runner build -r -o web:build
 
+/var/www/auge.levius.com..br/public_html
+
+
+
 cd bin
 dart --snapshot=augeapi.dart.snapshot augeapi.dart
 
@@ -48,15 +52,11 @@ CSS Press Circle
 https://codepen.io/LFeh/pen/vGMJBN
 
 
-
-
-
-
-
 **** Decision to Components instead Router
 
 Google Inbox use component. New mails and foward don't have back browser navitage
 Has better performance by pass param (data) from parent (master) screen.
 Use to high related components and concepts.
+
 
 

@@ -20,7 +20,6 @@ import 'package:auge_web/message/messages.dart';
 
 import 'package:auge_server/model/user.dart';
 import 'package:auge_server/model/organization.dart';
-import 'package:auge_server/model/user_profile_organization.dart';
 
 // ignore_for_file: uri_has_not_been_generated
 import 'package:auge_web/src/app_layout/app_layout_component.template.dart' as app_layout_component;
@@ -129,7 +128,18 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
   SelectionOptions userProfileLogoutOptions;
   SelectionModel userProfileLogoutSingleSelectModel;
 
-  AppLayoutComponent(this._appLayoutService, this._authService, this._router);
+  /// Return [true] is authenticated role can access Users
+  bool isAuthorizedToAccessUsers;
+
+  /// Return [true] is authenticated role can access Organizations
+  bool isAuthorizedToAccessOrganizations;
+
+  /// Return [true] is authenticated role can access Groups
+  bool isAuthorizedToAccessGroups;
+
+  AppLayoutComponent(this._appLayoutService, this._authService, this._router) {
+
+  }
 
   // Define messages and labels
   String label(String label) =>  AppLayoutMessage.label(label);
@@ -148,12 +158,19 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
   static final String allOrganizationsLabel = AppLayoutMessage.label('All Organizations');
   static final String allUsersLabel = AppLayoutMessage.label('All Users');
 
+
+
   @override
   onActivate(previous, current)  {
 
     if (this._authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
     }
+
+    isAuthorizedToAccessUsers =_authService.isAuthorizedForAtuhorizatedRole(AuthorizationObject.users);
+    isAuthorizedToAccessOrganizations =_authService.isAuthorizedForAtuhorizatedRole(AuthorizationObject.organizations);
+    isAuthorizedToAccessGroups = _authService.isAuthorizedForAtuhorizatedRole(AuthorizationObject.groups);
+
 
     _appLayoutService.enabledSearch = false;
 

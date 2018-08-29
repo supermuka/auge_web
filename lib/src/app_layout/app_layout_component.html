@@ -17,15 +17,15 @@
                 <material-icon icon="timeline"></material-icon>{{initiativesLabel}}
             </material-list-item>
         </div>
-        <div *ngIf="isSuperAdmin || isAdmin || isLeader" group>
+        <div *ngIf="isAuthorizedToAccessOrganizations || isAuthorizedToAccessUsers || isAuthorizedToAccessGroups" group>
             <div label>{{adminLabel}} · {{leaderLabel}}</div>
-            <material-list-item *ngIf="isSuperAdmin || isAdmin" [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(organizationRouteUrl)">
+            <material-list-item *ngIf="isAuthorizedToAccessOrganizations" [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(organizationRouteUrl)">
                 <material-icon icon="account_balance"></material-icon>{{organizationLabel}}
             </material-list-item>
-            <material-list-item *ngIf="isSuperAdmin || isAdmin" [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(usersRouteUrl)">
+            <material-list-item *ngIf="isAuthorizedToAccessUsers" [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(usersRouteUrl)">
                 <material-icon icon="account_circle"></material-icon>{{usersLabel}}
             </material-list-item>
-            <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(groupsRouteUrl)">
+            <material-list-item *ngIf="isAuthorizedToAccessGroups" [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(groupsRouteUrl)">
                 <material-icon icon="group"></material-icon>{{groupsLabel}}
             </material-list-item>
         </div>

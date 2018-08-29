@@ -6,6 +6,7 @@ import 'package:auge_server/model/user.dart';
 import 'package:auge_server/model/organization.dart';
 import 'package:auge_server/model/user_profile_organization.dart';
 
+import 'package:auge_server/shared/authorization_policy.dart';
 import 'package:auge_server/model/authorization.dart';
 export 'package:auge_server/model/authorization.dart';
 
@@ -20,10 +21,10 @@ class AuthService  {
  // static bool ehAdministrador = false;
 
   User authenticatedUser;
-  List<UserProfileOrganization> authorizatedOrganizations;
+  List<UserProfileOrganization> authorizedOrganizations;
   AuthorizationPolicy _generalAuthorizationPolicy;
   Organization _selectedOrganization;
-  AuthorizationRole currentAuthorizationRole;
+  AuthorizationRole authorizedRole;
 
   final AugeApiService _augeApiService;
 
@@ -32,17 +33,17 @@ class AuthService  {
   }
 
   /// Return an [Organization] list for an eMail.
-  Future<List<UserProfileOrganization>> getAuthorizatedOrganizationsByUserId(String id) async {
+  Future<List<UserProfileOrganization>> getAuthorizedOrganizationsByUserId(String id) async {
     List<UserProfileOrganization> usersOrganizations;
     if (id.isNotEmpty)
-      usersOrganizations = await _augeApiService.augeApi.getAuthorizatedOrganizationsByUserId(id);
+      usersOrganizations = await _augeApiService.augeApi.getAuthorizedOrganizationsByUserId(id);
     return usersOrganizations;
   }
 
   void close() async {
     await _augeApiService.augeApi.closeConnection();
     authenticatedUser = null;
-    authorizatedOrganizations = null;
+    authorizedOrganizations = null;
   }
 
   Future<User> getAuthenticatedUserWithEmail(String eMail, String passwordStr) async {
@@ -73,21 +74,23 @@ class AuthService  {
 
     if (authenticatedUser != null) {
       if (authenticatedUser.userProfile?.isSuperAdmin) {
-        currentAuthorizationRole = AuthorizationRole.superAdmin;
+        authorizedRole = AuthorizationRole.superAdmin;
       } else {
-        currentAuthorizationRole =
-        AuthorizationRole.values[authorizatedOrganizations
+        authorizedRole =
+        AuthorizationRole.values[authorizedOrganizations
             .singleWhere((o) => o.organization.id == selectedOrganization.id)
             .authorizationRole];
       }
     }
   }
 
-  bool isAuthorizedCurrentRole(AuthorizationObject authorizationObject, dynamic authorizationFunction, {dynamic authorizationConstraint}) {
+  bool isAuthorizedForAtuhorizatedRole(AuthorizationObject authorizationObject, {dynamic authorizationFunction, dynamic authorizationConstraint}) {
+    print('isAuthorizedForAtuhorizatedRole');
+    print(authorizedRole);
+    print(authorizationObject);
     if (_generalAuthorizationPolicy != null) {
-      return _generalAuthorizationPolicy.isAuthorizated(currentAuthorizationRole, authorizationObject, authorizationFunction, authorizationConstraint: authorizationConstraint);
+      return _generalAuthorizationPolicy.isAuthorized(authorizedRole, authorizationObject, authorizationFunction: authorizationFunction, authorizationConstraint: authorizationConstraint);
     } else {
-      print('_generalAuthorizationPolicy');
       return false;
     }
   }
@@ -97,12 +100,12 @@ class AuthService  {
   }
 
   bool get isAdmin {
-    UserProfileOrganization userOrganization = authorizatedOrganizations?.firstWhere((o) => o.organization.id == selectedOrganization?.id, orElse: () => null);
-    return authorizatedOrganizations != null && selectedOrganization != null && userOrganization != null && userOrganization?.authorizationRole == AuthorizationRole.admin.index;
+    UserProfileOrganization userOrganization = authorizedOrganizations?.firstWhere((o) => o.organization.id == selectedOrganization?.id, orElse: () => null);
+    return authorizedOrganizations != null && selectedOrganization != null && userOrganization != null && userOrganization?.authorizationRole == AuthorizationRole.admin.index;
   }
 
   bool get isLeader {
-    UserProfileOrganization userOrganization = authorizatedOrganizations?.firstWhere((o) => o.organization.id == selectedOrganization?.id, orElse: () => null);
-    return authorizatedOrganizations != null && selectedOrganization != null && userOrganization != null && userOrganization?.authorizationRole == AuthorizationRole.leader.index;
+    UserProfileOrganization userOrganization = authorizedOrganizations?.firstWhere((o) => o.organization.id == selectedOrganization?.id, orElse: () => null);
+    return authorizedOrganizations != null && selectedOrganization != null && userOrganization != null && userOrganization?.authorizationRole == AuthorizationRole.leader.index;
   }
 }
