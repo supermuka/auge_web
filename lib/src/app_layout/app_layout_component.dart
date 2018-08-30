@@ -132,7 +132,7 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
   bool isAuthorizedToAccessUsers;
 
   /// Return [true] is authenticated role can access Organizations
-  bool isAuthorizedToAccessOrganizations;
+  bool isAuthorizedToAccessOrganizationProfile;
 
   /// Return [true] is authenticated role can access Groups
   bool isAuthorizedToAccessGroups;
@@ -168,7 +168,7 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
     }
 
     isAuthorizedToAccessUsers =_authService.isAuthorizedForAtuhorizatedRole(AuthorizationObject.users);
-    isAuthorizedToAccessOrganizations =_authService.isAuthorizedForAtuhorizatedRole(AuthorizationObject.organizations);
+    isAuthorizedToAccessOrganizationProfile =_authService.isAuthorizedForAtuhorizatedRole(AuthorizationObject.organization_profile);
     isAuthorizedToAccessGroups = _authService.isAuthorizedForAtuhorizatedRole(AuthorizationObject.groups);
 
 

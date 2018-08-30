@@ -196,15 +196,18 @@ class AuthComponent extends Object with OnActivate  {
                   d?.first?.added?.first?.organization;
 
             organizationSingleSelectLabel =
-                _authService.selectedOrganization.name ??
+                d?.first?.added?.first?.name ??
                     AuthMessage.label('Select');
+
           }
         }
       });
 
+    /*
     if (_authService.authorizedOrganizations.isNotEmpty) {
       organizationSingleSelectModel.select(_authService.authorizedOrganizations.first);
     }
+    */
   }
 
   String userUrlImage(User user) {
