@@ -54,7 +54,7 @@ class WorkItemsListComponent extends Object /* with CanReuse implements OnActiva
   @Output()
   Stream<void> get closeDetail => _closeController.stream;
 
-  bool detailVisible;
+  bool detailVisible = false;
 
   WorkItem selectedWorkItem;
 

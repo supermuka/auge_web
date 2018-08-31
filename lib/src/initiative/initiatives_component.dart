@@ -99,15 +99,14 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
           if (objectiveId != null || objectiveId.isNotEmpty) {
               initiativesFilterParam.objective = await _objectiveService.getObjectiveById(objectiveId, withMeasures: false);
           }
-          _initiatives = await _initiativeService.getInitiatives(_authService.selectedOrganization?.id, withWorkItems: true);
 
-          print('debug - initiatives');
-          _initiatives.forEach((f) => f.name);
        } catch (e) {
         _appLayoutService.error = e.toString();
         rethrow;
       }
     }
+
+    _initiatives = await _initiativeService.getInitiatives(_authService.selectedOrganization?.id, withWorkItems: true);
 
     wideControl = new List<bool>.filled(_initiatives.length, false);
     expandedControl = new List<bool>.filled(_initiatives.length, false);
