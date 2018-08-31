@@ -158,8 +158,6 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
   static final String allOrganizationsLabel = AppLayoutMessage.label('All Organizations');
   static final String allUsersLabel = AppLayoutMessage.label('All Users');
 
-
-
   @override
   onActivate(previous, current)  {
 
@@ -262,7 +260,7 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
   }
 
   String userUrlImage() {
-    return common_service.userUrlImage(_authService.authenticatedUser);
+    return common_service.userUrlImage(_authService.authenticatedUser?.userProfile?.image);
   }
 
   void changeUserDetail(User user) {

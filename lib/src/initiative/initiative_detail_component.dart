@@ -352,6 +352,6 @@ class LeaderRendererComponent implements RendersValue {
   @override
   set value(newValue) {
     disPlayName = (newValue as User).name;
-    disPlayurl = 'url(' + common_service.userUrlImage((newValue as User))  + ')';
+    disPlayurl = 'url(' + common_service.userUrlImage((newValue as User)?.userProfile?.image)  + ')';
   }
 }

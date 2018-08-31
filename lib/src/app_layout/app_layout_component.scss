@@ -25,29 +25,19 @@
 .menu-drawer {
   overflow: auto;
 }
-/*
-material-content material-drawer {
-    overflow: hidden;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 9999999;
-}
-*/
 
-.material-content header {
-    overflow: hidden;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 9999999;
+.material-content .header-painel {
+  position: fixed;
+  overflow: hidden;
+  top: 0;
+  width: 100%;
+  z-index: 2;
 }
 
 .main {
-    overflow: hidden;
-    margin-top: 72px;
-    margin-left: 20px;
-    margin-right: 20px;
+  margin-top: 64px; /* $mat-header-height: 64px; needs because was used position: fixed on header painel */
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 .hide-title-small-width-enabled-search-true {
@@ -55,4 +45,3 @@ material-content material-drawer {
        display:none;
     }
 }
-

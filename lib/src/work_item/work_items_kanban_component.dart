@@ -129,7 +129,7 @@ class WorkItemsKanbanComponent extends Object implements OnInit {
   }
 
   String userUrlImage(User userMember) {
-    return common_service.userUrlImage(userMember);
+    return common_service.userUrlImage(userMember?.userProfile?.image);
   }
 
   void updateWorkItem(WorkItem workItem) {

@@ -95,7 +95,7 @@ class WorkItemsListComponent extends Object /* with CanReuse implements OnActiva
   List<WorkItem> get workItems => initiative?.workItems;
 
   String userUrlImage(User userMember) {
-    return common_service.userUrlImage(userMember);
+    return common_service.userUrlImage(userMember?.userProfile?.image);
   }
 
   void viewDetail(bool detailVisible) {

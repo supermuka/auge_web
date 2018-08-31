@@ -50,7 +50,7 @@ class AuthMessage {
       "${Intl.select(label, {
         'eMail': 'e-Mail',
         'Password': 'Password',
-        'Select:': 'Select',
+        'Select': 'Select',
         'Super Admin': 'Super Admin',
         'Organization': 'Organization',
         'All Organizations': 'All Organizations',

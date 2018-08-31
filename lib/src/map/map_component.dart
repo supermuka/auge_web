@@ -63,7 +63,7 @@ class MapComponent implements OnActivate {
   }
 
   String userUrlImage(User userMember) {
-    return common_service.userUrlImage(userMember);
+    return common_service.userUrlImage(userMember?.userProfile?.image);
   }
 
   void goToObjectives(Objective objective) async {

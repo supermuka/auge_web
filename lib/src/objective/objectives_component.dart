@@ -121,6 +121,7 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
       await _objectiveService.deleteObjective(selectedObjective.id);
       objectives.remove(selectedObjective);
     } catch (e) {
+      _appLayoutService.error = e.toString();
       rethrow;
     }
   }

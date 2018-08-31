@@ -85,9 +85,6 @@ class AuthService  {
   }
 
   bool isAuthorizedForAtuhorizatedRole(AuthorizationObject authorizationObject, {dynamic authorizationFunction, dynamic authorizationConstraint}) {
-    print('isAuthorizedForAtuhorizatedRole');
-    print(authorizedRole);
-    print(authorizationObject);
     if (_generalAuthorizationPolicy != null) {
       return _generalAuthorizationPolicy.isAuthorized(authorizedRole, authorizationObject, authorizationFunction: authorizationFunction, authorizationConstraint: authorizationConstraint);
     } else {

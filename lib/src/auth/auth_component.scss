@@ -41,3 +41,8 @@ $step-width: $mat-grid * 40;
 material-input {
   width: 300px;
 }
+
+h4 {
+  color: $mat-blue-A100;
+  /* text-shadow: -0.5px 0 white, 0 0.5px white, 0.5px 0 white, 0 -0.5px white; */
+}

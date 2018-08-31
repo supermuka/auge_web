@@ -19,14 +19,14 @@
         </div>
         <div *ngIf="isAuthorizedToAccessOrganizationProfile || isAuthorizedToAccessUsers || isAuthorizedToAccessGroups" group>
             <div label>{{adminLabel}} · {{leaderLabel}}</div>
-            <material-list-item *ngIf="isAuthorizedToAccessOrganizationProfile" [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(organizationRouteUrl)">
-                <material-icon icon="account_balance"></material-icon>{{organizationLabel}}
-            </material-list-item>
             <material-list-item *ngIf="isAuthorizedToAccessUsers" [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(usersRouteUrl)">
                 <material-icon icon="account_circle"></material-icon>{{usersLabel}}
             </material-list-item>
             <material-list-item *ngIf="isAuthorizedToAccessGroups" [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(groupsRouteUrl)">
                 <material-icon icon="group"></material-icon>{{groupsLabel}}
+            </material-list-item>
+            <material-list-item *ngIf="isAuthorizedToAccessOrganizationProfile" [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(organizationRouteUrl)">
+                <material-icon icon="account_balance"></material-icon>{{organizationLabel}}
             </material-list-item>
         </div>
         <div *ngIf="isSuperAdmin" group>
@@ -41,32 +41,34 @@
     </material-list>
 </material-drawer>
 <div class="material-content">
-    <header class="material-header shadow">
-        <div class="material-header-row">
-            <material-button icon
-                             class="material-drawer-button" (trigger)="drawer.toggle()">
-                <material-icon icon="menu"></material-icon>
-            </material-button>
-            <div class="hide-title-small-width-enabled-search-{{enabledSearch}}">
-               <span class="material-header-title">{{headerTitle}}</span>
+    <div class="header-painel">
+        <header class="material-header shadow">
+            <div class="material-header-row">
+                <material-button icon
+                                 class="material-drawer-button" (trigger)="drawer.toggle()">
+                    <material-icon icon="menu"></material-icon>
+                </material-button>
+                <div class="hide-title-small-width-enabled-search-{{enabledSearch}}">
+                   <span class="material-header-title">{{headerTitle}}</span>
+                </div>
+                <div class="material-spacer"></div>
+                <auge-search *ngIf="enabledSearch == true">
+                </auge-search>
+                <div class="material-spacer"></div>
+                <nav class="material-navigation centralized">
+                    <span class="spacer"></span>
+                    <span class="avatar" [style.background-image]="'url(' + userUrlImage() + ')'"></span>
+                    <material-dropdown-select class="button-look"
+                                              slide="y"
+                                              [(selection)]="userProfileLogoutSingleSelectModel"
+                                              [(options)]="userProfileLogoutOptions"
+                                              [itemRenderer]="itemRenderer">
+                    </material-dropdown-select>
+                </nav>
             </div>
-            <div class="material-spacer"></div>
-            <auge-search *ngIf="enabledSearch == true">
-            </auge-search>
-            <div class="material-spacer"></div>
-            <nav class="material-navigation centralized">
-                <span class="spacer"></span>
-                <span class="avatar" [style.background-image]="'url(' + userUrlImage() + ')'"></span>
-                <material-dropdown-select class="button-look"
-                                          slide="y"
-                                          [(selection)]="userProfileLogoutSingleSelectModel"
-                                          [(options)]="userProfileLogoutOptions"
-                                          [itemRenderer]="itemRenderer">
-                </material-dropdown-select>
-            </nav>
-        </div>
-    </header>
-    <div class="error" [class.expanded]="error != null">{{error}}</div>
+        </header>
+        <div class="error" [class.expanded]="error != null">{{error}}</div>
+    </div>
     <div class="main">
         <auge-user-detail *ngIf="userDetailVisible == true" [selectedUser]="authenticatedUser" (save)="changeUserDetail($event)" (close)="userDetailVisible = false">
         </auge-user-detail>

@@ -100,6 +100,9 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
               initiativesFilterParam.objective = await _objectiveService.getObjectiveById(objectiveId, withMeasures: false);
           }
           _initiatives = await _initiativeService.getInitiatives(_authService.selectedOrganization?.id, withWorkItems: true);
+
+          print('debug - initiatives');
+          _initiatives.forEach((f) => f.name);
        } catch (e) {
         _appLayoutService.error = e.toString();
         rethrow;

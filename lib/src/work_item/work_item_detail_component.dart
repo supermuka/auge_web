@@ -249,7 +249,7 @@ class WorkItemDetailComponent implements OnInit  {
   ItemRenderer get stageItemRenderer => (dynamic stage) => stage.name;
 
   String userUrlImage(User userMember) {
-    return common_service.userUrlImage(userMember);
+    return common_service.userUrlImage(userMember?.userProfile?.image);
   }
 
   void selectCheckItem(WorkItemCheckItem checkItem) {
@@ -301,6 +301,6 @@ class MemberRendererComponent implements RendersValue {
   @override
   set value(newValue) {
     disPlayName = (newValue as User).name;
-    disPlayurl = 'url(' + common_service.userUrlImage((newValue as User))  + ')';
+    disPlayurl = 'url(' + common_service.userUrlImage((newValue as User)?.userProfile?.image)  + ')';
   }
 }

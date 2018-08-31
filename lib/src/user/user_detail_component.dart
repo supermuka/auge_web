@@ -197,7 +197,7 @@ class UserDetailComponent extends Object implements OnInit {
   }
 
   String userUrlImage(User user) {
-    return common_service.userUrlImage(user);
+    return common_service.userUrlImage(user?.userProfile?.image);
   }
 
   set passwordSecure(String password) {

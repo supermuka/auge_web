@@ -29,7 +29,7 @@ import 'package:auge_web/message/messages.dart';
 import 'package:auge_web/services/app_routes.dart';
 
 // ignore_for_file: uri_has_not_been_generated
-import 'package:auge_web/src/app_layout/app_layout_component.template.dart' as app_layout_component;
+// import 'package:auge_web/src/app_layout/app_layout_component.template.dart' as app_layout_component;
 
 @Component(
   selector: 'auge-auth',
@@ -79,10 +79,10 @@ class AuthComponent extends Object with OnActivate  {
   static final String loginButtonLabel = CommonMessage.buttonLabel('Login');
   static final String requiredValueMsg = CommonMessage.requiredValueMsg();
 
-  static final String eMailLabel = AuthMessage.label("eMail");
-  static final String passwordLabel = AuthMessage.label("Password");
+  static final String eMailLabel = AuthMessage.label('eMail');
+  static final String passwordLabel = AuthMessage.label('Password');
 
-  String organizationSingleSelectLabel = AuthMessage.label('Select');
+  static String organizationSingleSelectLabel = AuthMessage.label('Select');
 
   void onActivate(RouterState previous, RouterState current) {
 
@@ -123,7 +123,6 @@ class AuthComponent extends Object with OnActivate  {
               return false;
             }
           }
-
         } catch (e) {
           dialogError = AuthMessage.serverApiErrorMsg();
           rethrow;
@@ -195,23 +194,21 @@ class AuthComponent extends Object with OnActivate  {
               _authService.selectedOrganization =
                   d?.first?.added?.first?.organization;
 
-            organizationSingleSelectLabel =
+              organizationSingleSelectLabel =
                 d?.first?.added?.first?.name ??
-                    AuthMessage.label('Select');
-
+                  AuthMessage.label('Select');
           }
         }
       });
 
-    /*
-    if (_authService.authorizedOrganizations.isNotEmpty) {
-      organizationSingleSelectModel.select(_authService.authorizedOrganizations.first);
+
+    if (organizationSingleSelectModel.isEmpty && organizationOptions.optionsList.isNotEmpty) {
+      organizationSingleSelectModel.select(organizationOptions.optionsList.first);
     }
-    */
   }
 
   String userUrlImage(User user) {
-    return common_service.userUrlImage(user);
+    return common_service.userUrlImage(user?.userProfile?.image);
   }
 
   goToAppLayout(AsyncAction<bool> action) {

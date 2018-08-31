@@ -96,7 +96,7 @@ class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
   }
 
   String userUrlImage(User user) {
-    return common_service.userUrlImage(user);
+    return common_service.userUrlImage(user?.userProfile?.image);
   }
 
   void viewDetail(bool detailVisible) {
