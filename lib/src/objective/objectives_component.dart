@@ -63,7 +63,11 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
   final SearchService _searchService;
   final Router _router;
 
+
+
   List<Objective> _objectives = new List();
+  List<bool> expandedControl;
+
 
   Objective selectedObjective;
   String initialObjectiveId;
@@ -85,7 +89,6 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
 
     _appLayoutService.headerTitle = ObjectiveMessage.label('Objectives');
 
-
     _appLayoutService.enabledSearch = true;
 
     // Expand panel whether [Id] objective is informed.
@@ -96,6 +99,15 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
     try {
       _objectives = await _objectiveService.getObjectives(
           _authService.selectedOrganization.id, withMeasures: true);
+
+      expandedControl = new List<bool>.filled(_objectives.length, false, growable: true);
+
+      if (initialObjectiveId != null) {
+        int indexObjetive = _objectives.indexWhere((o) => o.id == initialObjectiveId);
+        if (indexObjetive >= 0) {
+          expandedControl[indexObjetive] = true;
+        }
+      }
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;
@@ -119,7 +131,10 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
   void delete() async {
     try {
       await _objectiveService.deleteObjective(selectedObjective.id);
+
+      expandedControl.removeAt(objectives.indexOf(selectedObjective));
       objectives.remove(selectedObjective);
+
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;
@@ -130,6 +145,10 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
 
     if (selectedObjective == null) {
       objectives.add(objetive);
+
+      expandedControl.fillRange(0, expandedControl.length, false);
+      expandedControl.add(true);
+
     } else {
       objetive.cloneTo(objectives[objectives.indexOf(selectedObjective)]);
     }
@@ -137,13 +156,5 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
 
   void viewDetail(bool detailVisible) {
     this.detailVisible = detailVisible;
-  }
-
-  bool expandedInitial(iObjective) {
-    if (iObjective.id == initialObjectiveId) {
-      return true;
-    } else {
-      return false;
-    }
   }
 }

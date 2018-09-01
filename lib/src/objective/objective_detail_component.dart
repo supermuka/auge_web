@@ -140,10 +140,16 @@ class ObjectiveDetailComponent extends Object implements OnInit {
 
     alignedToSingleSelectModel.selectionChanges.listen((alignedTo) {
 
-        if (alignedTo.isNotEmpty && alignedTo.first.added != null && alignedTo.first.added.length != 0 && alignedTo.first.added?.first != null) {
-          objective.alignedTo = alignedTo.first.added.first;
-        }
-      });
+      print('alignedToSingleSelectModel');
+
+      if (alignedTo.isNotEmpty && alignedTo.first.added != null && alignedTo.first.added.length != 0 && alignedTo.first.added?.first != null) {
+        objective.alignedTo = alignedTo.first.added.first;
+      } else {
+        objective.alignedTo = null;
+      }
+
+      print(objective.alignedTo);
+    });
 
     if (objective.alignedTo != null)
       alignedToSingleSelectModel.select(objective.alignedTo);
@@ -272,7 +278,6 @@ class ObjectiveDetailComponent extends Object implements OnInit {
 @Component(
     selector: 'leader-renderer',
     template: '<div left-icon class="avatar-icon" [style.background-image]="disPlayurl"></div>{{disPlayName}}',
-
     styles: const [
       ''
     ],

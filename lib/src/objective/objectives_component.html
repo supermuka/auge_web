@@ -4,12 +4,15 @@
     </material-fab>
     <br/>
     <material-expansionpanel-set>
-        <div *ngFor="let iObjective of objectives">
+        <div *ngFor="let iObjective of objectives;let i = index">
             <material-expansionpanel
                     [alwaysHideExpandIcon]="true"
                     [hideExpandedHeader]="false"
                     [showSaveCancel]="false"
-                    [expanded]="expandedInitial(iObjective)">
+                    [expanded]="expandedControl[i]"
+                    (expandedChange)="expandedControl[i] = $event">
+                    <!-- [expanded]="expandedInitial(iObjective)" -->
+
                 <div name class="custom-material-expansionpanel-name">
                     <span class="c100">
                         <span class="p{{iObjective.progress}}">

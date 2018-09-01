@@ -6,7 +6,7 @@ import 'dart:async';
 
 /// Return an image uri for user
 String userUrlImage(String userProfileImage) {
-  if (userUrlImage == null)
+  if (userProfileImage == null)
     return '/packages/auge_web/assets/images/no_avatar.png';
   else
     return 'data:image/*;base64,' + userProfileImage;
