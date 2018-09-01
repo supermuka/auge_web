@@ -6,16 +6,9 @@ import 'dart:async';
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
 
-import 'package:angular_components/material_button/material_fab.dart';
-import 'package:angular_components/material_expansionpanel/material_expansionpanel_set.dart';
-import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
-import 'package:angular_components/material_slider/material_slider.dart';
-import 'package:angular_components/material_menu/material_menu.dart';
-import 'package:angular_components/material_icon/material_icon.dart';
+import 'package:angular_components/angular_components.dart';
 import 'package:angular_components/model/menu/menu.dart';
 import 'package:angular_components/model/ui/icon.dart';
-
-import 'package:angular_components/laminate/components/modal/modal.dart';
 
 import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_web/message/messages.dart';
@@ -24,6 +17,7 @@ import 'package:auge_web/src/objective/objective_detail_component.dart';
 import 'package:auge_web/src/measure/measures_component.dart';
 import 'package:auge_web/src/initiative/initiatives_summary_component.dart';
 
+import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
 import 'package:auge_web/src/auth/auth_service.dart';
@@ -37,19 +31,12 @@ import 'package:auge_web/services/app_routes.dart';
     directives: const [
       coreDirectives,
       routerDirectives,
-      NgFor,
-      NgIf,
-      MaterialFabComponent,
-      MaterialIconComponent,
-      MaterialExpansionPanelSet,
-      MaterialExpansionPanel,
-      MaterialMenuComponent,
-      MaterialSliderComponent,
-      ModalComponent,
+      materialDirectives,
       ObjectiveDetailComponent,
       MeasuresComponent,
       InitiativesSummaryComponent,
     ],
+    pipes: const [commonPipes],
     templateUrl: 'objectives_component.html',
     styleUrls: const [
       'objectives_component.css'
@@ -63,11 +50,8 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
   final SearchService _searchService;
   final Router _router;
 
-
-
   List<Objective> _objectives = new List();
   List<bool> expandedControl;
-
 
   Objective selectedObjective;
   String initialObjectiveId;
@@ -75,6 +59,9 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
   bool detailVisible = false;
 
   MenuModel<MenuItem> menuModel;
+
+  // Define messages and labels
+  static final String alignedToLabel =  ObjectiveMessage.label('Aligned To');
 
   ObjectivesComponent(this._authService, this._appLayoutService, this._objectiveService, this._searchService, this._router) {
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMessage.buttonLabel('Edit'), icon: new Icon('edit') , action: () => detailVisible = true), new MenuItem(CommonMessage.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
@@ -97,8 +84,14 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
     }
 
     try {
-      _objectives = await _objectiveService.getObjectives(
-          _authService.selectedOrganization.id, withMeasures: true);
+
+      List<Objective> objectivesAux = await _objectiveService.getObjectives(
+          _authService.selectedOrganization.id, withMeasures: true, withProfile: true);
+
+      // Order by to group
+      objectivesAux.sort((a, b) => a?.group == null || b?.group == null ? -1 : a.group.name.compareTo(b.group.name));
+
+      _objectives = objectivesAux;
 
       expandedControl = new List<bool>.filled(_objectives.length, false, growable: true);
 
@@ -156,5 +149,17 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
 
   void viewDetail(bool detailVisible) {
     this.detailVisible = detailVisible;
+  }
+
+  String userUrlImage(String userProfileImage) {
+    return common_service.userUrlImage(userProfileImage);
+  }
+
+  String colorFromUuid(String id) {
+    return id == null ? '#ffffff' : '#' + id.substring(0, 6);
+  }
+
+  String firstLetter(String name) {
+    return name == null ? 'G' : name.substring(0, 1).toUpperCase();
   }
 }

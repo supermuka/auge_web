@@ -23,3 +23,15 @@ material-fab {
   text-overflow: ellipsis;
   overflow: hidden;
 }
+
+.right {
+ text-align: right;
+}
+
+.text-group-letter {
+    color: white; /* foi preciso colocar, senão não funcionava o mix-blend-mode */
+    vertical-align: middle;
+    horizontal-align: middle;
+    text-align: center;
+    mix-blend-mode: difference;
+}

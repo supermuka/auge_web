@@ -5,7 +5,6 @@ import 'dart:async';
 
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:angular_router/angular_router.dart';
 import 'package:auge_server/model/group.dart';
 import 'package:auge_server/model/user.dart';
 
@@ -130,6 +129,8 @@ class GroupDetailComponent extends Object implements OnInit {
 
         if (superGroupEvent.isNotEmpty && superGroupEvent.first.added != null && superGroupEvent.first.added.length != 0 && superGroupEvent.first.added?.first != null) {
           group.superGroup = superGroupEvent.first.added.first;
+        } else {
+          group.superGroup = null;
         }
       });
 
@@ -144,6 +145,8 @@ class GroupDetailComponent extends Object implements OnInit {
 
         if (leaderEvent.isNotEmpty && leaderEvent.first.added != null && leaderEvent.first.added.length != 0 && leaderEvent.first.added?.first != null) {
           group.leader = leaderEvent.first.added.first;
+        } else {
+          group.leader = null;
         }
       });
 

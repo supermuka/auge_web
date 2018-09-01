@@ -5,6 +5,14 @@
     <br/>
     <material-expansionpanel-set>
         <div *ngFor="let iObjective of objectives;let i = index">
+            <h4>
+                <span class="avatar avatar-border" [style.background-color]="colorFromUuid(iObjective?.group?.id)">
+                    <span class="text-group-letter">{{firstLetter(iObjective?.group?.name)}}</span>
+                </span>
+                <span class="truncate-ellipsed-parent">
+                    <span class="truncate-ellipsed">{{iObjective?.group?.name}}</span>
+                </span>
+            </h4>
             <material-expansionpanel
                     [alwaysHideExpandIcon]="true"
                     [hideExpandedHeader]="false"
@@ -23,17 +31,20 @@
                             </div>
                         </span>
                     </span>
-                    <span class="truncate-ellipsed-parent">
+                    <div class="truncate-ellipsed-parent">
                         <h4 class="truncate-ellipsed">{{iObjective.name}}</h4>
-                        <p class="truncate-ellipsed">{{iObjective.description}}</p>
-                    </span>
-
+                        <div>{{iObjective.startDate | date}}<span>&nbsp;·&nbsp;</span>{{iObjective.endDate | date}}</div>
+                    </div>
+                </div>
+                <div value class="right">
+                    <span class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjective?.leader?.userProfile?.image)  + ')'" [materialTooltip]="iObjective?.leader?.name"></span>
                 </div>
                 <div action>
                     <material-menu [menu]="menuModel" (click)="selectObjective(iObjective)">
                     </material-menu>
                 </div>
                 <div>
+                    <span><strong>{{alignedToLabel}} {{iObjective?.alignedTo?.name}}</strong></span>
                     <auge-measures [objective]="iObjective"></auge-measures>
                     <auge-initiatives-summary [objective]="iObjective"></auge-initiatives-summary>
                 </div>

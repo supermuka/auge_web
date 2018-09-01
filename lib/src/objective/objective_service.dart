@@ -15,9 +15,10 @@ class ObjectiveService {
   ObjectiveService(this._augeApiService);
 
   /// Return a list of [Objective]
-  Future<List<Objective>> getObjectives(String organizationId, {bool withMeasures = false}) async {
+  Future<List<Objective>> getObjectives(String organizationId, {bool withMeasures = false, bool withProfile = false}) async {
     // return await _augeApiService.objectiveAugeApi.getObjectives(organizationId, withMeasures: withMeasures);
-    return await _augeApiService.objectiveAugeApi.getObjectives(organizationId, withMeasures: withMeasures);
+
+    return await _augeApiService.objectiveAugeApi.getObjectives(organizationId, withMeasures: withMeasures, withProfile: withProfile);
 
   }
 

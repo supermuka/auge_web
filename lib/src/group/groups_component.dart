@@ -91,6 +91,7 @@ class GroupsComponent extends Object /* with CanReuse */ implements OnActivate, 
       await _groupService.deleteGroup(selectedGroup.id);
       groups.remove(selectedGroup);
     } catch (e) {
+      _appLayoutService.error = e.toString();
       rethrow;
     }
   }
