@@ -6,7 +6,7 @@
     <material-expansionpanel-set>
         <div *ngFor="let iObjective of objectives;let i = index">
             <h4>
-                <span class="avatar avatar-border" [style.background-color]="colorFromUuid(iObjective?.group?.id)">
+                <span class="avatar avatar-border" [style.background-color]="colorFromUuid(iObjective?.group?.id)" [materialTooltip]="groupLabel">
                     <span class="text-group-letter">{{firstLetter(iObjective?.group?.name)}}</span>
                 </span>
                 <span class="truncate-ellipsed-parent">
@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div value class="right">
-                    <span class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjective?.leader?.userProfile?.image)  + ')'" [materialTooltip]="iObjective?.leader?.name"></span>
+                    <span class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjective?.leader?.userProfile?.image) + ')'" [materialTooltip]="leaderLabel + ': ' + iObjective?.leader?.name"></span>
                 </div>
                 <div action>
                     <material-menu [menu]="menuModel" (click)="selectObjective(iObjective)">

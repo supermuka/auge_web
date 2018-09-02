@@ -50,8 +50,7 @@ body {
 
 .avatar {
 
-  vertical-align: middle;
-  horizontal-align: middle;
+  /* vertical-align: middle; */
   text-align: center;
 
   /* make a square container */
@@ -68,10 +67,10 @@ body {
 
   /* baseado no left-icon no material_chip */
   margin-top: 0px;
-  margin-botton: 0px;
+  margin-bottom: 0px;
   margin-left: -4px;
   margin-right: 4px;
-  padding: 8px;
+  padding: 0px;
 
   /* round the edges to a circle with border radius 1/2 container size */
   border-radius: 50%;
@@ -82,7 +81,7 @@ body {
   display: inline-block;
 
   vertical-align: middle;
-  horizontal-align: middle;
+
   text-align: center;
 
   width: 40px;

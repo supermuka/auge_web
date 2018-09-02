@@ -30,8 +30,6 @@ material-fab {
 
 .text-group-letter {
     color: white; /* foi preciso colocar, senão não funcionava o mix-blend-mode */
-    vertical-align: middle;
-    horizontal-align: middle;
-    text-align: center;
     mix-blend-mode: difference;
+    line-height: 40px; /* same height to parent - class avatar*/
 }

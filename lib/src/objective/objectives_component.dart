@@ -62,6 +62,8 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
 
   // Define messages and labels
   static final String alignedToLabel =  ObjectiveMessage.label('Aligned To');
+  static final String leaderLabel =  ObjectiveMessage.label('Leader');
+  static final String groupLabel =  ObjectiveMessage.label('Group');
 
   ObjectivesComponent(this._authService, this._appLayoutService, this._objectiveService, this._searchService, this._router) {
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMessage.buttonLabel('Edit'), icon: new Icon('edit') , action: () => detailVisible = true), new MenuItem(CommonMessage.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
