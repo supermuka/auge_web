@@ -19,16 +19,16 @@
                                          [hideExpandedHeader]="false"
                                          [showSaveCancel]="false">
                     <div name class="truncate-ellipsed-parent custom-expansionpanel-panel-specific-name-width">
-                        <h4 class="truncate-ellipsed">{{iMeasure.name}}</h4>
+                        <span class="truncate-ellipsed">{{iMeasure.name}}</span>
                     </div>
                     <div value class="custom-slider">
                         <!--material-progress materialTooltip="{{progressLabel + ' ' + iMeasure.progress.toString() + '%'}}" [activeProgress]="iMeasure.progress"></material-progress-->
                         <!-- material-slider [(value)]="iMeasure.currentValueInt"  [min]="iMeasure.startValueInt" [max]="iMeasure.endValueInt" (valueChange)="updateMeasure($event)"></material-slider -->
-                        <material-slider [value]="iMeasure.currentValueInt" [min]="iMeasure.startValueInt" [max]="iMeasure.endValueInt" (valueChange)="updateMeasure(iMeasure, $event)" materialTooltip="{{progressLabel + ' ' + iMeasure.progress.toString() + '%'}}"></material-slider>
+                        <material-slider [value]="iMeasure.valueRelatedMinMax" [min]="iMeasure.minValue" [max]="iMeasure.maxValue" (valueChange)="updateMeasure(iMeasure, $event)" materialTooltip="{{progressLabel + ' ' + iMeasure.progress.toString() + '%'}}"></material-slider>
                         <div class="width-flex">
-                            <span materialTooltip="{{startValueLabel}}">{{iMeasure.startValueDecimal}}</span>
-                            <span materialTooltip="{{currentValueLabel}}">{{iMeasure.currentValueDecimal}}</span>
-                            <span materialTooltip="{{endValueLabel}}">{{iMeasure.endValueDecimal}}</span>
+                            <span materialTooltip="{{startValueLabel}}">{{iMeasure.startValue | number:'.' + iMeasure?.decimalsNumber?.toString()}}</span>
+                            <span materialTooltip="{{currentValueLabel}}">{{iMeasure.currentValue | number:'.' + iMeasure?.decimalsNumber?.toString()}}</span>
+                            <span materialTooltip="{{endValueLabel}}">{{iMeasure.endValue | number:'.' + iMeasure?.decimalsNumber?.toString()}}</span>
                         </div>
 
                     </div>
@@ -43,7 +43,7 @@
             </div>
         </material-expansionpanel-set>
     </material-expansionpanel>
-    <auge-measure-detail *ngIf="detailVisible == true" [objective]="objective" [selectedMeasure]="selectedMeasure" (save)="changeListItemDetail($event)" (close)="detailVisible = false">
+    <auge-measure-detail *ngIf="detailVisible == true" [objective]="objective" [selectedMeasure]="selectedMeasure" (save)="changeListItem($event)" (close)="detailVisible = false">
     </auge-measure-detail>
 </div>
 

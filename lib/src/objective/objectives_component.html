@@ -25,14 +25,12 @@
                     <!-- [expanded]="expandedInitial(iObjective)" -->
 
                 <div name class="custom-material-expansionpanel-name">
-                    <span class="c100 small">
-                        <span class="p{{iObjective.progress}}">
-                            <div>{{iObjective.progress}}%</div>
-                            <div class="slice">
-                                <div class="bar"></div>
-                                <div class="fill"></div>
-                            </div>
-                        </span>
+                    <span class="c100 p{{iObjective.progress}} small">
+                        <span>{{iObjective.progress}}%</span>
+                        <div class="slice">
+                            <div class="bar"></div>
+                            <div class="fill"></div>
+                        </div>
                     </span>
                     <div class="truncate-ellipsed-parent">
                         <h4 class="truncate-ellipsed">{{iObjective.name}}</h4>

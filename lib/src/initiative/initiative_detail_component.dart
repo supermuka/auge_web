@@ -118,6 +118,7 @@ class InitiativeDetailComponent implements OnInit {
       // Clone objective
       initiative = selectedInitiative.clone();
     } else {
+      initiative = Initiative();
       initiative.organization = _authService.selectedOrganization;
     }
 

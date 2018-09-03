@@ -47,7 +47,7 @@ class MeasureDetailComponent extends Object implements OnInit {
   @Output()
   Stream<Measure> get save => _saveController.stream;
 
-  Measure measure = new Measure();
+  Measure measure;
 
   List<MeasureUnit> _measureUnits = [];
   SelectionOptions measureUnitOptions;
@@ -59,8 +59,8 @@ class MeasureDetailComponent extends Object implements OnInit {
   String showCurrentValueErrorMsg;
   String showEndValueErrorMsg;
 
-  List errorControl = [];
-  bool validInput = false;
+ // List errorControl = [];
+ // bool validInput = false;
 
   MeasureDetailComponent(this._measureService) {
     measureUnitSingleSelectModel = SelectionModel.single();
@@ -89,8 +89,7 @@ class MeasureDetailComponent extends Object implements OnInit {
     if (selectedMeasure != null) {
       measure = selectedMeasure.clone();
     } else {
-      // measure = new Measure();
-
+      measure = new Measure();
     }
 
     try {
@@ -193,50 +192,53 @@ class MeasureDetailComponent extends Object implements OnInit {
 
   void validStartValue(String startValue) {
     if (!validValue(double.tryParse(startValue), measure?.currentValue, measure?.endValue)) {
-      errorControl.add(validStartValue);
+   //   errorControl.add(validStartValue);
       showStartValueErrorMsg = valueErrorMsg;
     } else {
-      errorControl.remove(validStartValue);
+  //    errorControl.remove(validStartValue);
       showStartValueErrorMsg = null;
     }
-    validInput = errorControl.isEmpty;
+//    validInput = errorControl.isEmpty;
   }
 
   void validCurrentValue(String currentValue) {
     if (!validValue(measure?.startValue, double.tryParse(currentValue), measure?.endValue)) {
-      errorControl.add(validCurrentValue);
+     // errorControl.add(validCurrentValue);
       showCurrentValueErrorMsg = valueErrorMsg;
     } else {
-      errorControl.remove(validCurrentValue);
+    //  errorControl.remove(validCurrentValue);
       showCurrentValueErrorMsg = null;
     }
-    validInput = errorControl.isEmpty;
+ //   validInput = errorControl.isEmpty;
   }
 
   void validEndValue(String endValue) {
     if (!validValue(measure?.startValue, measure?.currentValue, double.tryParse(endValue))) {
-      errorControl.add(validEndValue);
+//      errorControl.add(validEndValue);
       showEndValueErrorMsg = valueErrorMsg;
     } else {
-      errorControl.remove(validEndValue);
+ //     errorControl.remove(validEndValue);
       showEndValueErrorMsg = null;
     }
-    validInput = errorControl.isEmpty;
+ //   validInput = errorControl.isEmpty;
   }
 
-  void validName(String value) {
+  /*
+  void validName(var value) {
+
     if (value.isEmpty) {
       errorControl.add(validName);
     } else {
       errorControl.remove(validName);
     }
     validInput = errorControl.isEmpty;
-  }
 
-  /*
+  }
+  */
+
   bool get validInput {
-    print('validInput');
-    if ((measure?.name != null && measure.name.isEmpty) /* || !validCurrentValueLimit() */) {
+    if ((measure?.name != null && measure.name.isEmpty)
+        || !validValue(measure?.startValue, measure?.currentValue, measure?.endValue)) {
       return false;
     } else {
       return true;
@@ -244,7 +246,6 @@ class MeasureDetailComponent extends Object implements OnInit {
 
   }
 
-  */
 
   String get unitLeadingText => measure?.measureUnit == null ? null : measure.measureUnit.symbol.contains(r'$') ? measure.measureUnit.symbol : null;
 

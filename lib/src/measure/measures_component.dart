@@ -26,6 +26,7 @@ import 'package:auge_web/src/measure/measure_service.dart';
       materialDirectives,
       MeasureDetailComponent,
     ],
+    pipes: const [commonPipes],
     templateUrl: 'measures_component.html',
     styleUrls: const [
       'measures_component.css'
@@ -72,17 +73,30 @@ class MeasuresComponent extends Object {
   }
 
   void updateMeasure(Measure measure, num value) {
-    measure.currentValue = value;
+   // measure.currentValue = value;
+    measure.startValue <= measure.endValue ? measure.currentValue = value : measure.currentValue = measure.startValue + measure.endValue - value;
     _measureService.saveMeasure(objective.id, measure);
   }
 
   toInt(double value) => value?.toInt();
 
+  num currrentValueSlider(Measure measure) {
+    return measure.startValue <= measure.endValue ? measure.currentValue : measure?.startValue  + measure?.endValue - measure?.currentValue;
+  }
+
+  num startValueSlider(Measure measure) {
+    return measure.startValue <= measure.endValue ? measure.startValue : measure?.endValue;
+  }
+
+  num endValueSlider(Measure measure) {
+    return measure.startValue <= measure.endValue ? measure.endValue : measure?.startValue;
+  }
+
   List<Measure> get measures {
     return objective?.measures;
   }
 
-  void changeListItemDetail(Measure measure) {
+  void changeListItem(Measure measure) {
     if (selectedMeasure == null) {
       measures.add(measure);
     } else {
