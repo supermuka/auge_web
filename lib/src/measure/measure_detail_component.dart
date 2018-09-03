@@ -55,6 +55,12 @@ class MeasureDetailComponent extends Object implements OnInit {
 
   /// When it exists, the error/exception message is presented into dialog view.
   String dialogError;
+  String showStartValueErrorMsg;
+  String showCurrentValueErrorMsg;
+  String showEndValueErrorMsg;
+
+  List errorControl = [];
+  bool validInput = false;
 
   MeasureDetailComponent(this._measureService) {
     measureUnitSingleSelectModel = SelectionModel.single();
@@ -62,6 +68,8 @@ class MeasureDetailComponent extends Object implements OnInit {
 
   // Define messages and labels
   static final String requiredValueMsg = CommonMessage.requiredValueMsg();
+  static final String valueErrorMsg =  MeasureMessage.valueErrorMsg();
+
   static final String addMeasureLabel =  MeasureMessage.label('Add Measure');
   static final String editMeasureLabel =  MeasureMessage.label('Edit Measure');
   static final String nameLabel =  MeasureMessage.label('Name');
@@ -138,8 +146,12 @@ class MeasureDetailComponent extends Object implements OnInit {
 
   ItemRenderer get measureUnitItemRenderer => (dynamic unit) => unit.name + (unit.symbol == null || unit.symbol.trim().length == 0 ? '' : ' (' + unit.symbol + ')');
 
+  /*
   double lowerBound() {
-    if (measure?.startValue == null || measure?.endValue == null) return measure?.startValue;
+    print('lowerBound()');
+    print(measure?.startValue);
+    print(measure?.endValue);
+    if (measure?.startValue == null || measure?.endValue == null) return measure?.currentValue;
     if (measure.startValue < measure.endValue) {
       return measure.startValue;
     } else {
@@ -148,22 +160,91 @@ class MeasureDetailComponent extends Object implements OnInit {
   }
 
   double upperBound() {
-    if (measure?.startValue == null || measure?.endValue == null) return measure?.endValue;
+    print('upperBound()');
+    print(measure?.startValue);
+    print(measure?.endValue);
+    if (measure?.startValue == null || measure?.endValue == null) return measure?.currentValue;
     if (measure.startValue > measure.endValue) {
       return measure.startValue;
     } else {
       return measure.endValue;
     }
   }
+  */
 
+
+  bool validValue(double startValue, double currentValue, double endValue) {
+    if (startValue != null && currentValue != null && endValue != null) {
+
+      if (startValue <= endValue) {
+        if (currentValue < startValue ||
+            currentValue > endValue) {
+          return false;
+        }
+      } else if (startValue > endValue) {
+        if (currentValue > startValue ||
+            currentValue < endValue) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  void validStartValue(String startValue) {
+    if (!validValue(double.tryParse(startValue), measure?.currentValue, measure?.endValue)) {
+      errorControl.add(validStartValue);
+      showStartValueErrorMsg = valueErrorMsg;
+    } else {
+      errorControl.remove(validStartValue);
+      showStartValueErrorMsg = null;
+    }
+    validInput = errorControl.isEmpty;
+  }
+
+  void validCurrentValue(String currentValue) {
+    if (!validValue(measure?.startValue, double.tryParse(currentValue), measure?.endValue)) {
+      errorControl.add(validCurrentValue);
+      showCurrentValueErrorMsg = valueErrorMsg;
+    } else {
+      errorControl.remove(validCurrentValue);
+      showCurrentValueErrorMsg = null;
+    }
+    validInput = errorControl.isEmpty;
+  }
+
+  void validEndValue(String endValue) {
+    if (!validValue(measure?.startValue, measure?.currentValue, double.tryParse(endValue))) {
+      errorControl.add(validEndValue);
+      showEndValueErrorMsg = valueErrorMsg;
+    } else {
+      errorControl.remove(validEndValue);
+      showEndValueErrorMsg = null;
+    }
+    validInput = errorControl.isEmpty;
+  }
+
+  void validName(String value) {
+    if (value.isEmpty) {
+      errorControl.add(validName);
+    } else {
+      errorControl.remove(validName);
+    }
+    validInput = errorControl.isEmpty;
+  }
+
+  /*
   bool get validInput {
-    if (measure?.currentValue != null && (lowerBound() != null && measure.currentValue < lowerBound() || upperBound() != null && measure.currentValue > upperBound())) {
+    print('validInput');
+    if ((measure?.name != null && measure.name.isEmpty) /* || !validCurrentValueLimit() */) {
       return false;
     } else {
       return true;
     }
 
   }
+
+  */
 
   String get unitLeadingText => measure?.measureUnit == null ? null : measure.measureUnit.symbol.contains(r'$') ? measure.measureUnit.symbol : null;
 

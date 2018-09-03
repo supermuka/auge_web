@@ -51,7 +51,7 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
   final Router _router;
 
   List<Objective> _objectives = new List();
-  List<bool> expandedControl;
+  Map<Objective, bool> expandedControl = {};
 
   Objective selectedObjective;
   String initialObjectiveId;
@@ -90,24 +90,21 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
       List<Objective> objectivesAux = await _objectiveService.getObjectives(
           _authService.selectedOrganization.id, withMeasures: true, withProfile: true);
 
-      // Order by to group
-      objectivesAux.sort((a, b) => a?.group == null || b?.group == null ? -1 : a.group.name.compareTo(b.group.name));
+      sortObjectivesOrderByGroup(objectivesAux);
 
       _objectives = objectivesAux;
 
-      expandedControl = new List<bool>.filled(_objectives.length, false, growable: true);
 
       if (initialObjectiveId != null) {
-        int indexObjetive = _objectives.indexWhere((o) => o.id == initialObjectiveId);
-        if (indexObjetive >= 0) {
-          expandedControl[indexObjetive] = true;
+        Objective initialObjective = _objectives.singleWhere((o) => o.id == initialObjectiveId);
+        if (initialObjective != null) {
+          expandedControl[initialObjective] = true;
         }
       }
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;
     }
-
   }
 
   List<Objective> get objectives {
@@ -127,7 +124,7 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
     try {
       await _objectiveService.deleteObjective(selectedObjective.id);
 
-      expandedControl.removeAt(objectives.indexOf(selectedObjective));
+      expandedControl.remove(selectedObjective);
       objectives.remove(selectedObjective);
 
     } catch (e) {
@@ -140,13 +137,14 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
 
     if (selectedObjective == null) {
       objectives.add(objetive);
-
-      expandedControl.fillRange(0, expandedControl.length, false);
-      expandedControl.add(true);
+      expandedControl[objetive] = true;
 
     } else {
       objetive.cloneTo(objectives[objectives.indexOf(selectedObjective)]);
+
     }
+
+    sortObjectivesOrderByGroup(objectives);
   }
 
   void viewDetail(bool detailVisible) {
@@ -163,5 +161,10 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
 
   String firstLetter(String name) {
     return name == null ? 'G' : name.substring(0, 1).toUpperCase();
+  }
+
+  // Order by to group
+  void sortObjectivesOrderByGroup(List<Objective> objectives) {
+    objectives.sort((a, b) => a?.group == null || b?.group == null ? -1 : a.group.name.compareTo(b.group.name));
   }
 }

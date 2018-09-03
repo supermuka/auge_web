@@ -26,7 +26,7 @@
   overflow: auto;
 }
 
-.material-content .header-painel {
+.material-content .header-panel {
   position: fixed;
   overflow: hidden;
   top: 0;
@@ -35,7 +35,7 @@
 }
 
 .main {
-  margin-top: 64px; /* $mat-header-height: 64px; needs because was used position: fixed on header painel */
+  margin-top: 64px; /* $mat-header-height: 64px; needs because was used position: fixed on header panel */
   margin-left: 20px;
   margin-right: 20px;
 }

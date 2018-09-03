@@ -270,6 +270,8 @@ class MeasureMessage {
       // locale: "en",
       desc: "Measure Unit labels"
   );
+
+  static valueErrorMsg() => Intl.message("Current value should be between Start and End value.");
 }
 
 /// Specific messages and label for [ObjectiveHierarchy]

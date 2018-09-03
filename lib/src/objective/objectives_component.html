@@ -5,7 +5,7 @@
     <br/>
     <material-expansionpanel-set>
         <div *ngFor="let iObjective of objectives;let i = index">
-            <h4>
+            <h4 *ngIf="i == 0 || objectives[i-1]?.group?.id != objectives[i]?.group?.id">
                 <span class="avatar avatar-border" [style.background-color]="colorFromUuid(iObjective?.group?.id)" [materialTooltip]="groupLabel">
                     <span class="text-group-letter">{{firstLetter(iObjective?.group?.name)}}</span>
                 </span>
@@ -17,12 +17,15 @@
                     [alwaysHideExpandIcon]="true"
                     [hideExpandedHeader]="false"
                     [showSaveCancel]="false"
-                    [expanded]="expandedControl[i]"
-                    (expandedChange)="expandedControl[i] = $event">
+                    [expanded]="expandedControl[iObjective]"
+                    (expandedChange)="expandedControl[iObjective] = $event">
+
+                    <!-- [expanded]="expandedControl[i]"
+                    (expandedChange)="expandedControl[i] = $event" -->
                     <!-- [expanded]="expandedInitial(iObjective)" -->
 
                 <div name class="custom-material-expansionpanel-name">
-                    <span class="c100">
+                    <span class="c100 small">
                         <span class="p{{iObjective.progress}}">
                             <div>{{iObjective.progress}}%</div>
                             <div class="slice">
