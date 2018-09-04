@@ -94,6 +94,7 @@ class InitiativeDetailComponent implements OnInit {
     stateSingleSelectModel = SelectionModel.single();
     leaderSingleSelectModel = SelectionModel.single();
     objectiveSingleSelectModel = SelectionModel.single();
+    groupSingleSelectModel = SelectionModel.single();
   }
 
   // Define messages and labels
@@ -134,7 +135,6 @@ class InitiativeDetailComponent implements OnInit {
     }
 
    // List<State> states =  await _initiativeService.getStates();
-
     stateOptions = new SelectionOptions.fromList(_states);
 
     if (stateOptions.optionsList.isNotEmpty)
@@ -142,15 +142,18 @@ class InitiativeDetailComponent implements OnInit {
 
     // Leader
    // List<User> users = await _userService.getUsers(_authService.selectedOrganization.id, withProfile: true);
-
     leaderOptions = new StringSelectionOptions<User>(
         _users, toFilterableString: (User user) => user.name);
 
     // Objective
     // List<Objective> objectives = await _objectiveService.getObjectives(_authService.selectedOrganization.id, withMeasures: false);
-
     objectiveOptions = new StringSelectionOptions<Objective>(
         _objectives, toFilterableString: (Objective objective) => objective.name);
+
+    // List<Group> groups = await _groupService.getGroups(_authService.selectedOrganization.id);
+
+    groupOptions = new StringSelectionOptions<Group>(
+        _groups, toFilterableString: (Group gru) => gru.name);
 
     // Leader Select Model
     //leaderSingleSelectModel = initiative.leader == null ? SelectionModel.single() : SelectionModel.single<User>(selected: initiative.leader);
@@ -168,29 +171,26 @@ class InitiativeDetailComponent implements OnInit {
       }
     });
 
-    if (initiative.leader != null)
-      leaderSingleSelectModel.select(initiative.leader);
+    if (initiative.leader != null) {
+     // leaderSingleSelectModel.select(initiative.leader);
+      leaderSingleSelectModel.select(leaderOptions.optionsList.singleWhere((l) => l.id == initiative.leader.id));
+    }
 
     // Objective Select Model
-
     objectiveSingleSelectModel.selectionChanges.listen((objective) {
         if (objective.isNotEmpty && objective.first.added != null && objective.first.added.length != 0 && objective.first.added?.first != null) {
           initiative.objective = objective.first.added.first;
         }
       });
 
-    if (initiative.objective != null)
-      objectiveSingleSelectModel.select(initiative.objective);
+    if (initiative.objective != null) {
+      objectiveSingleSelectModel.select(objectiveOptions.optionsList.singleWhere((o) => o.id == initiative.objective.id));
+      //objectiveSingleSelectModel.select(initiative.objective);
+
+    }
 
     // Group
-    // List<Group> groups = await _groupService.getGroups(_authService.selectedOrganization.id);
-
-    groupOptions = new StringSelectionOptions<Group>(
-        _groups, toFilterableString: (Group gru) => gru.name);
-
-    groupSingleSelectModel =
-    new SelectionModel.single()
-      ..selectionChanges.listen((groupEvent) {
+    groupSingleSelectModel.selectionChanges.listen((groupEvent) {
         if (groupEvent.isNotEmpty && groupEvent.first.added != null && groupEvent.first.added.length != 0 && groupEvent.first.added?.first != null) {
           initiative.group = groupEvent.first.added.first;
         }
@@ -198,6 +198,7 @@ class InitiativeDetailComponent implements OnInit {
 
     if (initiative.group != null) {
       groupSingleSelectModel.select(groupOptions.optionsList.singleWhere((g) => g.id == initiative.group.id));
+    //  groupSingleSelectModel.select(initiative.group);
     }
   }
 
@@ -260,6 +261,7 @@ class InitiativeDetailComponent implements OnInit {
       initiative.stages.add(new Stage()
         ..name = stageEntry
         ..state = stateSingleSelectModel.selectedValues?.first);
+
       initiative.stages.sort((a, b) =>
           a?.state?.index?.compareTo(b?.state?.index));
     }
@@ -311,6 +313,10 @@ class InitiativeDetailComponent implements OnInit {
 
   bool get validInput {
     return initiative.name?.trim()?.isNotEmpty ?? false;
+  }
+
+  bool get validStageInput {
+    return (stageEntry != null && stageEntry.isNotEmpty && stateSingleSelectModel != null && stateSingleSelectModel.selectedValues.isNotEmpty && stateSingleSelectModel.selectedValues.first.index != null);
   }
 }
 

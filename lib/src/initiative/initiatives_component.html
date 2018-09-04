@@ -9,16 +9,23 @@
     </div>
     <material-expansionpanel-set>
         <div *ngFor="let iInitiative of initiatives;let i = index">
+            <h4 *ngIf="i == 0 || initiatives[i-1]?.group?.id != initiatives[i]?.group?.id">
+                <span class="avatar avatar-border" [style.background-color]="colorFromUuid(iInitiative?.group?.id)" [materialTooltip]="groupLabel">
+                    <span class="text-group-letter">{{firstLetter(iInitiative?.group?.name)}}</span>
+                </span>
+                <span class="truncate-ellipsed-parent">
+                    <span class="truncate-ellipsed">{{iInitiative?.group?.name}}</span>
+                </span>
+            </h4>
             <material-expansionpanel
-                    class="expansionpanel-wide-{{wideControl[i]}}"
+                    class="expansionpanel-wide-{{wideControl[iInitiative]}}"
                     [alwaysHideExpandIcon]="true"
                     [hideExpandedHeader]="false"
                     [showSaveCancel]="false"
-                    (expandedChange)="expandedControl[i] = $event">
-
+                    (expandedChange)="expandedControl[iInitiative] = $event">
                 <div name class="custom-expansionpanel-panel-specific-name-width">
                     <span class="truncate-ellipsed-parent">
-                        <div class="truncate-ellipsed">{{iInitiative.name}}</div>
+                        <h4 class="truncate-ellipsed">{{iInitiative.name}}</h4>
                         <div class="truncate-ellipsed">{{iInitiative.description}}</div>
                     </span>
                 </div>
@@ -26,14 +33,15 @@
                     <auge-initiative-summary [initiative]="iInitiative"></auge-initiative-summary>
                 </div>
                 <div action>
-                    <material-toggle [(disabled)]="!expandedControl[i]" [(checked)]="wideControl[i]"></material-toggle>
+                    <material-toggle [(disabled)]="expandedControl[iInitiative] != null && !expandedControl[iInitiative]" [(checked)]="wideControl[iInitiative] != null && wideControl[iInitiative]"></material-toggle>
                     <material-menu [menu]="menuModel" (click)="selectInitiative(iInitiative)">
                     </material-menu>
                 </div>
-                 <auge-work-items [initiative]="iInitiative"></auge-work-items>
+                <span><strong>{{objectiveLabel}} {{iInitiative?.objective?.name}}</strong></span>
+                <auge-work-items [initiative]="iInitiative"></auge-work-items>
             </material-expansionpanel>
         </div>
     </material-expansionpanel-set>
-    <auge-initiative-detail *ngIf="detailVisible == true" [selectedInitiative]="selectedInitiative" (save)="changeListItemWithDetail($event)" (close)="viewDetail(false)">
+    <auge-initiative-detail *ngIf="detailVisible == true" [selectedInitiative]="selectedInitiative" (save)="changeListItem($event)" (close)="viewDetail(false)">
     </auge-initiative-detail>
 </div>

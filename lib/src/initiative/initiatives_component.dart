@@ -13,6 +13,7 @@ import 'package:auge_web/message/messages.dart';
 
 import 'package:auge_server/model/initiative/initiative.dart';
 
+
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/initiative/initiative_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
@@ -27,15 +28,7 @@ import 'package:auge_web/src/work_item/work_items_list_component.dart';
 
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 
-
 import 'package:auge_web/services/app_routes.dart';
-
-// ignore_for_file: uri_has_not_been_generated
-/*
-import 'package:auge_web/src/app_layout/app_layout_home.template.dart' as app_layout_home;
-import 'package:auge_web/src/initiative/initiative_detail_component.template.dart' as initiative_detail_component;
-*/
-
 
 @Component(
     selector: 'auge-initiatives',
@@ -72,14 +65,20 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
   Initiative selectedInitiative;
 
   bool expanded = false;
-  List<bool> wideControl = new List();
-  List<bool> expandedControl = new List();
+  // List<bool> wideControl = new List();
+  // List<bool> expandedControl = new List();
+  Map<Initiative, bool> wideControl = Map();
+  Map<Initiative, bool> expandedControl = Map();
 
   MenuModel<MenuItem> menuModel;
   InitiativesComponent(this._authService, this._appLayoutService, this._initiativeService, this._objectiveService, this._searchService, this._router) {
     initiativesFilterParam = InitiativesFilterParam();
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMessage.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)), new MenuItem(CommonMessage.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
   }
+
+  // Define messages and labels
+  static final String objectiveLabel =  InitiativeMessage.label('Objective');
+  static final String groupLabel =  InitiativeMessage.label('Group');
 
   @override
   Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
@@ -105,10 +104,14 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
       }
     }
 
-    _initiatives = await _initiativeService.getInitiatives(_authService.selectedOrganization?.id, withWorkItems: true);
+    List<Initiative> initiativesAux = await _initiativeService.getInitiatives(_authService.selectedOrganization?.id, withWorkItems: true, withProfile: true);
 
-    wideControl = new List<bool>.filled(_initiatives.length, false);
-    expandedControl = new List<bool>.filled(_initiatives.length, false);
+    _sortInitiativesOrderByGroup(initiativesAux);
+
+    _initiatives = initiativesAux;
+
+    // wideControl = new List<bool>.filled(_initiatives.length, false);
+   // expandedControl = new List<bool>.filled(_initiatives.length, false);
 
     _appLayoutService.enabledSearch = true;
   }
@@ -148,7 +151,9 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
   void delete() async {
     try {
       await _initiativeService.deleteInitiative(selectedInitiative.id);
+      expandedControl.remove(selectedInitiative);
       initiatives.remove(selectedInitiative);
+
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;
@@ -159,17 +164,31 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
     this.detailVisible = detailVisible;
   }
 
-  void changeListItemWithDetail(Initiative initiative) {
+  void changeListItem(Initiative initiative) {
     if (selectedInitiative == null) {
       initiatives.add(initiative);
+      expandedControl[initiative] = true;
     } else {
       initiative.cloneTo(initiatives[initiatives.indexOf(selectedInitiative)]);
     }
+    _sortInitiativesOrderByGroup(initiatives);
   }
 
   @override
   Future<bool> canReuse(RouterState current, RouterState next) async {
     return true;
   }
-}
 
+  String colorFromUuid(String id) {
+    return id == null ? '#ffffff' : '#' + id.substring(0, 6);
+  }
+
+  String firstLetter(String name) {
+    return name == null ? 'G' : name.substring(0, 1).toUpperCase();
+  }
+
+  // Order by to group
+  void _sortInitiativesOrderByGroup(List<Initiative> initiatives) {
+    initiatives.sort((a, b) => a?.group == null || b?.group == null ? -1 : a.group.name.compareTo(b.group.name));
+  }
+}

@@ -50,8 +50,8 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
   final SearchService _searchService;
   final Router _router;
 
-  List<Objective> _objectives = new List();
-  Map<Objective, bool> expandedControl = {};
+  List<Objective> _objectives = List();
+  Map<Objective, bool> expandedControl = Map();
 
   Objective selectedObjective;
   String initialObjectiveId;
@@ -90,7 +90,7 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
       List<Objective> objectivesAux = await _objectiveService.getObjectives(
           _authService.selectedOrganization.id, withMeasures: true, withProfile: true);
 
-      sortObjectivesOrderByGroup(objectivesAux);
+      _sortObjectivesOrderByGroup(objectivesAux);
 
       _objectives = objectivesAux;
 
@@ -133,7 +133,7 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
     }
   }
 
-  void changeListItemDetail(Objective objetive) {
+  void changeListItem(Objective objetive) {
 
     if (selectedObjective == null) {
       objectives.add(objetive);
@@ -144,7 +144,7 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
 
     }
 
-    sortObjectivesOrderByGroup(objectives);
+    _sortObjectivesOrderByGroup(objectives);
   }
 
   void viewDetail(bool detailVisible) {
@@ -164,7 +164,7 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
   }
 
   // Order by to group
-  void sortObjectivesOrderByGroup(List<Objective> objectives) {
+  void _sortObjectivesOrderByGroup(List<Objective> objectives) {
     objectives.sort((a, b) => a?.group == null || b?.group == null ? -1 : a.group.name.compareTo(b.group.name));
   }
 }

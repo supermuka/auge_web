@@ -8,6 +8,7 @@ import 'package:auge_web/message/messages.dart';
 
 import 'package:auge_server/model/initiative/initiative.dart';
 
+import 'package:auge_web/services/common_service.dart' as common_service;
 
 @Component(
     selector: 'auge-initiative-summary',
@@ -28,6 +29,7 @@ class InitiativeSummaryComponent extends Object {
 
   // Define messages and labels
   static final String workItemsOverDueLabel =  InitiativeMessage.label('Work Items Over Due');
+  static final String leaderLabel =  InitiativeMessage.label('Leader');
 
   String circleColor(Initiative initiative)  {
     String color;
@@ -47,5 +49,11 @@ class InitiativeSummaryComponent extends Object {
   String widthState(int workItemsCount, int stateWorkItemsCount, int widthTotal) {
     return (stateWorkItemsCount / workItemsCount * widthTotal).toString();
   }
+
+  String userUrlImage(String userProfileImage) {
+    return common_service.userUrlImage(userProfileImage);
+  }
+
+
 
 }
