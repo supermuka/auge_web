@@ -22,11 +22,14 @@
                     [alwaysHideExpandIcon]="true"
                     [hideExpandedHeader]="false"
                     [showSaveCancel]="false"
-                    (expandedChange)="expandedControl[iInitiative] = $event">
+                    (expandedChange)="expandedChange(iInitiative, $event)">
                 <div name class="custom-expansionpanel-panel-specific-name-width">
                     <span class="truncate-ellipsed-parent">
-                        <h4 class="truncate-ellipsed">{{iInitiative.name}}</h4>
-                        <div class="truncate-ellipsed">{{iInitiative.description}}</div>
+                        <span class="truncate-ellipsed">{{iInitiative.name}}</span>
+                        <!-- div class="truncate-ellipsed">{{iInitiative.description}}</div -->
+                    </span>
+                    <span class="w3-right">
+                        <span class="avatar" [style.background-image]="'url(' +  userUrlImage(iInitiative?.leader?.userProfile?.image) + ')'" [materialTooltip]="leaderLabel + ': ' + iInitiative?.leader?.name"></span>
                     </span>
                 </div>
                 <div value>
@@ -39,7 +42,7 @@
                 </div>
                 <div>
                     <hr>
-                    <span><strong>{{objectiveLabel}} {{iInitiative?.objective?.name}}</strong></span>
+                    <span><strong>{{objectiveLabel}}:</strong> {{iInitiative?.objective?.name}}</span>
                     <auge-work-items [initiative]="iInitiative"></auge-work-items>
                 </div>
             </material-expansionpanel>

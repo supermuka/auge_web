@@ -44,6 +44,7 @@ class MapComponent implements OnActivate {
 
   @override
   Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
+    print('***');
 
     if (this._authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
@@ -54,7 +55,10 @@ class MapComponent implements OnActivate {
     _appLayoutService.enabledSearch = false;
 
     try {
+      print(_authService.selectedOrganization.id);
       objectivesMap = await _mapService.getObjectivesMap(_authService.selectedOrganization.id);
+
+      print(objectivesMap.length);
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;

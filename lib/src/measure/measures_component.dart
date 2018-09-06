@@ -1,12 +1,20 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
-import 'dart:async';
-import 'dart:html';
-
 import 'package:angular/angular.dart';
-import 'package:angular_router/angular_router.dart';
-import 'package:angular_components/angular_components.dart';
+// import 'package:angular_components/angular_components.dart';
+
+import 'package:angular_components/material_slider/material_slider.dart';
+import 'package:angular_components/laminate/components/modal/modal.dart';
+import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
+import 'package:angular_components/material_expansionpanel/material_expansionpanel_set.dart';
+import 'package:angular_components/material_icon/material_icon.dart';
+import 'package:angular_components/model/ui/icon.dart';
+import 'package:angular_components/material_input/material_input.dart';
+import 'package:angular_components/material_menu/material_menu.dart';
+import 'package:angular_components/material_tooltip/material_tooltip.dart';
+
+
 import 'package:angular_components/model/menu/menu.dart';
 
 import 'package:auge_server/model/objective/objective.dart';
@@ -23,7 +31,15 @@ import 'package:auge_web/src/measure/measure_service.dart';
     providers: [MeasureService],
     directives: const [
       coreDirectives,
-      materialDirectives,
+      // materialDirectives,
+      MaterialSliderComponent,
+      MaterialExpansionPanel,
+      MaterialExpansionPanelSet,
+      MaterialIconComponent,
+      MaterialMenuComponent,
+      MaterialTooltipDirective,
+      ModalComponent,
+      NgModel,
       MeasureDetailComponent,
     ],
     pipes: const [commonPipes],
@@ -79,18 +95,6 @@ class MeasuresComponent extends Object {
   }
 
   toInt(double value) => value?.toInt();
-
-  num currrentValueSlider(Measure measure) {
-    return measure.startValue <= measure.endValue ? measure.currentValue : measure?.startValue  + measure?.endValue - measure?.currentValue;
-  }
-
-  num startValueSlider(Measure measure) {
-    return measure.startValue <= measure.endValue ? measure.startValue : measure?.endValue;
-  }
-
-  num endValueSlider(Measure measure) {
-    return measure.startValue <= measure.endValue ? measure.endValue : measure?.startValue;
-  }
 
   List<Measure> get measures {
     return objective?.measures;

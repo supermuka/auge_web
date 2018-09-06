@@ -29,7 +29,6 @@ class InitiativeSummaryComponent extends Object {
 
   // Define messages and labels
   static final String workItemsOverDueLabel =  InitiativeMessage.label('Work Items Over Due');
-  static final String leaderLabel =  InitiativeMessage.label('Leader');
 
   String circleColor(Initiative initiative)  {
     String color;
@@ -50,9 +49,7 @@ class InitiativeSummaryComponent extends Object {
     return (stateWorkItemsCount / workItemsCount * widthTotal).toString();
   }
 
-  String userUrlImage(String userProfileImage) {
-    return common_service.userUrlImage(userProfileImage);
-  }
+
 
 
 

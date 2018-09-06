@@ -18,6 +18,7 @@ import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/initiative/initiative_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
+import 'package:auge_web/services/common_service.dart' as common_service;
 
 import 'package:auge_web/src/initiative/initiatives_filter_component.dart';
 import 'package:auge_web/src/initiative/initiative_summary_component.dart';
@@ -79,6 +80,7 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
   // Define messages and labels
   static final String objectiveLabel =  InitiativeMessage.label('Objective');
   static final String groupLabel =  InitiativeMessage.label('Group');
+  static final String leaderLabel =  InitiativeMessage.label('Leader');
 
   @override
   Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
@@ -174,6 +176,13 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
     _sortInitiativesOrderByGroup(initiatives);
   }
 
+  void expandedChange(Initiative initiative, bool expanded) {
+    expandedControl[initiative] = expanded;
+    if (!expanded) {
+      wideControl[initiative] = false;
+    }
+  }
+
   @override
   Future<bool> canReuse(RouterState current, RouterState next) async {
     return true;
@@ -190,5 +199,9 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
   // Order by to group
   void _sortInitiativesOrderByGroup(List<Initiative> initiatives) {
     initiatives.sort((a, b) => a?.group == null || b?.group == null ? -1 : a.group.name.compareTo(b.group.name));
+  }
+
+  String userUrlImage(String userProfileImage) {
+    return common_service.userUrlImage(userProfileImage);
   }
 }

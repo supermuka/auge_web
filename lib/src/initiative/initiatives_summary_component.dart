@@ -10,9 +10,12 @@ import 'package:angular_components/angular_components.dart';
 import 'package:auge_server/model/initiative/initiative.dart';
 import 'package:auge_server/model/objective/objective.dart';
 
+import 'package:auge_web/message/messages.dart';
+
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/src/initiative/initiative_service.dart';
+import 'package:auge_web/services/common_service.dart' as common_service;
 
 import 'package:auge_web/src/initiative/initiative_summary_component.dart';
 
@@ -71,26 +74,31 @@ class InitiativesSummaryComponent extends Object implements OnInit {
 
   }
 
+  static final String groupLabel =  InitiativeMessage.label('Group');
+  static final String leaderLabel =  InitiativeMessage.label('Leader');
+
   @override
   ngOnInit() async {
-
     try {
       if (objective?.id != null) {
         initiatives = await _initiativeService.getInitiatives(
             _authService.selectedOrganization?.id, objectiveId: objective.id,
-            withWorkItems: true);
+            withWorkItems: true, withProfile: true);
       }
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;
     }
-
-
   }
 
   void goToInitiatives() {
     _router.navigate(AppRoutes.initiativesByObjectiveRoute.toUrl(parameters: { AppRoutes.objectiveIdParameter: objective.id}));
   }
+
+  String userUrlImage(String userProfileImage) {
+    return common_service.userUrlImage(userProfileImage);
+  }
+
 
 }
 

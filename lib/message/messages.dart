@@ -169,6 +169,7 @@ class InitiativeMessage {
         'Objective': 'Objective',
         'Group': 'Group',
         'No Match': 'No Match',
+        'Select': 'Select',
         'Filter Initiatives': 'Filter Initiatives',
         'other': 'Not Defined'})}",
       name: "initiativeLabel",

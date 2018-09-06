@@ -109,6 +109,7 @@ class InitiativeDetailComponent implements OnInit {
   static final String leaderLabel =  InitiativeMessage.label('Leader');
   static final String stageLabel =  InitiativeMessage.label('Stage');
   static final String objectiveLabel =  InitiativeMessage.label('Objective');
+  static final String selectLabel =  InitiativeMessage.label('Select');
 
   static final String saveButtonLabel = CommonMessage.buttonLabel('Save');
   static final String closeButtonLabel = CommonMessage.buttonLabel('Close');
@@ -252,8 +253,11 @@ class InitiativeDetailComponent implements OnInit {
     selectedStage = e;
     stageEntry = e.name;
 
+    print('selectStage');
+    print(e?.state?.id);
+
     if (e.state != null)
-      stateSingleSelectModel.select(e.state);
+      stateSingleSelectModel.select( stateOptions.optionsList.singleWhere((s) => s.id == e?.state?.id));
   }
 
   void addStage() {
@@ -261,6 +265,9 @@ class InitiativeDetailComponent implements OnInit {
       initiative.stages.add(new Stage()
         ..name = stageEntry
         ..state = stateSingleSelectModel.selectedValues?.first);
+
+      print('*****');
+      print(stateSingleSelectModel.selectedValues?.first);
 
       initiative.stages.sort((a, b) =>
           a?.state?.index?.compareTo(b?.state?.index));
@@ -279,6 +286,7 @@ class InitiativeDetailComponent implements OnInit {
         ..state = stateSingleSelectModel.selectedValues?.first;
       initiative.stages.sort((a, b) =>
           a?.state?.index?.compareTo(b?.state?.index));
+      selectedStage = null;
     }
   }
 
@@ -291,6 +299,8 @@ class InitiativeDetailComponent implements OnInit {
         (stateSingleSelectModel.selectedValues != null) &&
         (stateSingleSelectModel.selectedValues.length > 0)) {
       nameLabel = stateSingleSelectModel.selectedValues.first?.name;
+    } else {
+      nameLabel = selectLabel;
     }
     return nameLabel;
   }

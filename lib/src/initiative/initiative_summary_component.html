@@ -1,4 +1,4 @@
-<span class="progress-bar w3-col s6 l9" clickableTooltipTarget
+<span class="progress-bar w3-col s6 l10" clickableTooltipTarget
       keyboardOnlyFocusIndicator
       tabindex="0"
       size="medium"
@@ -17,7 +17,7 @@
         </div>
     </material-tooltip-card>
 </span>
-<span class="w3-col s3 l1">
+<span class="w3-col s6 l2">
     <span *ngIf="initiative.workItemsCount != 0" class="circle" [style.background-color]="circleColor(initiative)" clickableTooltipTarget
          keyboardOnlyFocusIndicator
          tabindex="0"
@@ -27,7 +27,4 @@
             <p><b>{{initiative.workItemsOverDueCount}} / {{initiative.workItemsCount}}</b>&nbsp;{{workItemsOverDueLabel}}</p>
         </material-tooltip-card>
     </span>&nbsp;
-</span>
-<span class="right w3-col s3 l2">
-    <span class="avatar" [style.background-image]="'url(' +  userUrlImage(initiative?.leader?.userProfile?.image) + ')'" [materialTooltip]="leaderLabel + ': ' + initiative?.leader?.name"></span>
 </span>
