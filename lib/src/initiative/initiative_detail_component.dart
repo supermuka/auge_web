@@ -253,8 +253,6 @@ class InitiativeDetailComponent implements OnInit {
     selectedStage = e;
     stageEntry = e.name;
 
-    print('selectStage');
-    print(e?.state?.id);
 
     if (e.state != null)
       stateSingleSelectModel.select( stateOptions.optionsList.singleWhere((s) => s.id == e?.state?.id));
@@ -264,10 +262,8 @@ class InitiativeDetailComponent implements OnInit {
     if (stateSingleSelectModel?.selectedValues?.isNotEmpty) {
       initiative.stages.add(new Stage()
         ..name = stageEntry
-        ..state = stateSingleSelectModel.selectedValues?.first);
-
-      print('*****');
-      print(stateSingleSelectModel.selectedValues?.first);
+        ..state = stateSingleSelectModel.selectedValues?.first
+        ..index = initiative.stages.length);
 
       initiative.stages.sort((a, b) =>
           a?.state?.index?.compareTo(b?.state?.index));
@@ -328,6 +324,19 @@ class InitiativeDetailComponent implements OnInit {
   bool get validStageInput {
     return (stageEntry != null && stageEntry.isNotEmpty && stateSingleSelectModel != null && stateSingleSelectModel.selectedValues.isNotEmpty && stateSingleSelectModel.selectedValues.first.index != null);
   }
+
+  void moveUpStage(Stage stage) {
+    int i = initiative.stages.indexOf(stage);
+    if (i > 0) {
+      initiative.stages.removeAt(i);
+      initiative.stages.insert(i-1, stage);
+    }
+  }
+
+  void moveDownStage(Stage stage) {
+
+  }
+
 }
 
 @Component(

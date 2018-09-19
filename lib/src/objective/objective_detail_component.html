@@ -34,7 +34,8 @@
                     <material-datepicker [(date)]="startDate"
                                          [minDate]="limitToDateRange.start"
                                          [maxDate]="limitToDateRange.end"
-                                         [required]="false">
+                                         [required]="false"
+                                         [supportsClearRange]="true">
                     </material-datepicker>
                 </label>
             </div>
@@ -44,7 +45,8 @@
                     <material-datepicker [(date)]="endDate"
                                          [minDate]="limitToDateRange.start"
                                          [maxDate]="limitToDateRange.end"
-                                         [required]="false">
+                                         [required]="false"
+                                         [supportsClearRange]="true">
                     </material-datepicker>
                 </label>
             </div>

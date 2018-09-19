@@ -89,7 +89,7 @@ class WorkItemDetailComponent implements OnInit  {
   String errorCompleted;
 
   DateRange limitToDueDateRange =
-  new DateRange(new Date.today().add(years: -1), new Date.today().add(years: 1));
+  new DateRange(new Date.today().add(years: -1), new Date.today().add(years: 10));
 
   WorkItemCheckItem selectedCheckItem;
   String checkItemEntry;
@@ -214,7 +214,11 @@ class WorkItemDetailComponent implements OnInit  {
   }
 
   set dueDate(Date _dueDate) {
-    workItem.dueDate = _dueDate.asUtcTime();
+    if (_dueDate == null) {
+      workItem.dueDate = null;
+    } else {
+      workItem.dueDate = _dueDate.asUtcTime();
+    }
   }
 
   int get completed {

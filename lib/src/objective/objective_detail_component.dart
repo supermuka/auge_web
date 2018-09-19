@@ -73,7 +73,7 @@ class ObjectiveDetailComponent extends Object implements OnInit {
   String leadingGlyph = 'search';
 
   DateRange limitToDateRange =
-  new DateRange(new Date.today().add(years: -1), new Date.today().add(years: 1));
+  new DateRange(new Date.today().add(years: -1), new Date.today().add(years: 10));
 
   List<Objective> _alignedToObjectives;
   List<User> _users;
@@ -240,8 +240,12 @@ class ObjectiveDetailComponent extends Object implements OnInit {
     return _startDate;
   }
 
-  set startDate(Date _startDate) {
-    objective.startDate = _startDate.asUtcTime();
+  set startDate(Date _startDate)  {
+    if (_startDate == null) {
+      objective.startDate = null;
+    } else {
+      objective.startDate = _startDate.asUtcTime();
+    }
   }
 
   Date get endDate {
@@ -253,7 +257,11 @@ class ObjectiveDetailComponent extends Object implements OnInit {
   }
 
   set endDate(Date _endDate) {
-    objective.endDate = _endDate.asUtcTime();
+    if (_endDate == null) {
+      objective.endDate = null;
+    } else {
+      objective.endDate = _endDate.asUtcTime();
+    }
   }
 
   String get groupLabelRenderer {

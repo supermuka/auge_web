@@ -27,16 +27,24 @@ class AugeApiService {
   final BrowserClientAuth _client;
 
   final String _protocol = window.location.protocol;
-  //final String _serverUrl = '127.0.0.1:8091/'; // Local;
-  final String _serverUrl = 'localhost:8091/'; // Local;
+  //final String _protocol = 'https:';
 
- // final String _serverUrl = '35.227.38.148:8091/'; // GCloud
+  //final String _serverUrl = '127.0.0.1:8091/'; // Local;
+
+  // final String _serverUrl = 'localhost:8091/'; // Local;
+
+  // final String _serverUrl = '35.227.38.148:8091/'; // GCloud
+
+  final String _serverUrl =  'auge.levius.com.br:8091/';
+
 
   AugeApi _augeApi;
   InitiativeAugeApi _initiativeAugeApi;
   ObjectiveAugeApi _objectiveAugeApi;
 
-  AugeApiService(this._client);
+  AugeApiService(this._client) {
+    // _client.withCredentials = true;
+  }
 
   AugeApi get augeApi {
 

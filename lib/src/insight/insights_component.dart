@@ -70,6 +70,7 @@ class InsightsComponent implements OnActivate  {
     }
 
     _appLayoutService.enabledSearch = false;
+    _appLayoutService.headerTitle = AppLayoutMessage.label('Insights');
 
     try {
       if (_authService.selectedOrganization != null) {
@@ -159,6 +160,25 @@ class InsightsComponent implements OnActivate  {
   /// Return a total number of initiatives
   String get initiativesNumber {
     return initiatives.length?.toString() ?? '0';
+  }
+
+  /// Return a total number of initiatives completed = all work items completed
+  String get completedInitiativesNumber {
+
+    int _completedInitiativesNumber = 0;
+
+    for (int i=0;i<initiatives.length;i++) {
+      int _completedInitiaveWorkItemsNumber = 0;
+      for (int ii=0;ii<initiatives[i].workItems.length;ii++) {
+        if (initiatives[i].workItems[ii].completed == 100) {
+          _completedInitiaveWorkItemsNumber++;
+        }
+      }
+      if (initiatives[i].workItems.length != 0 && initiatives[i].workItems.length == _completedInitiaveWorkItemsNumber) {
+        _completedInitiativesNumber++;
+      }
+    }
+    return _completedInitiativesNumber?.toString() ?? '0';
   }
 
   /// Return a total number of initiatives with over due work items

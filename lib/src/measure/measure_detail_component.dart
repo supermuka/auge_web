@@ -117,9 +117,7 @@ class MeasureDetailComponent extends Object implements OnInit {
   }
 
   void saveMeasure() {
-    print('saveMeasure()');
     try {
-
       _measureService.saveMeasure(objective.id, measure);
       _saveController.add(measure);
       closeDetail();
@@ -175,9 +173,7 @@ class MeasureDetailComponent extends Object implements OnInit {
 
 
   bool validValue(double startValue, double currentValue, double endValue) {
-    print('validValue 1');
     if (startValue != null && currentValue != null && endValue != null) {
-
       if (startValue <= endValue) {
         if (currentValue < startValue ||
             currentValue > endValue) {
@@ -190,7 +186,6 @@ class MeasureDetailComponent extends Object implements OnInit {
         }
       }
     }
-    print('validValue 2');
     return true;
   }
 

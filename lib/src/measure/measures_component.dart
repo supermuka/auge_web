@@ -89,9 +89,16 @@ class MeasuresComponent extends Object {
   }
 
   void updateMeasure(Measure measure, num value) {
-   // measure.currentValue = value;
-    measure.startValue <= measure.endValue ? measure.currentValue = value : measure.currentValue = measure.startValue + measure.endValue - value;
-    _measureService.saveMeasure(objective.id, measure);
+    // measure.currentValue = value;
+
+    // Treat invert slider value, when applied;
+    if (measure.startValue != null || measure?.endValue != null) {
+      measure.startValue <= measure.endValue
+          ? measure.currentValue = value
+          : measure.currentValue =
+          measure.startValue + measure.endValue - value;
+      _measureService.saveMeasure(objective.id, measure);
+    }
   }
 
   toInt(double value) => value?.toInt();
