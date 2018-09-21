@@ -137,7 +137,7 @@ class UserDetailComponent extends Object implements OnInit {
         userAuthorizationOptions.add(new Option(
             role.index,
             UserMessage.label(role.toString()), _authService.isAuthorizedForAtuhorizatedRole(
-            AuthorizationObject.users, authorizationFunction: user.id == null ?  UserAuthorizationFunction.create : UserAuthorizationFunction.update,
+            AuthorizationObject.users, authorizationFunction: user.id == null ?  AuthorizationFunction.create : AuthorizationFunction.update,
             authorizationConstraint: role
         )));
       }

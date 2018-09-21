@@ -140,7 +140,6 @@ class ObjectiveDetailComponent extends Object implements OnInit {
 
     alignedToSingleSelectModel.selectionChanges.listen((alignedTo) {
 
-      print('alignedToSingleSelectModel');
 
       if (alignedTo.isNotEmpty && alignedTo.first.added != null && alignedTo.first.added.length != 0 && alignedTo.first.added?.first != null) {
         objective.alignedTo = alignedTo.first.added.first;

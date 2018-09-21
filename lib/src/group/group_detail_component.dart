@@ -59,6 +59,7 @@ class GroupDetailComponent extends Object implements OnInit {
 
   String superGroupInputText = '';
   String leaderInputText = '';
+  String memberInputText = '';
 
   SelectionOptions superGroupOptions;
   SelectionModel superGroupSingleSelectModel;
@@ -66,8 +67,12 @@ class GroupDetailComponent extends Object implements OnInit {
   SelectionOptions leaderOptions;
   SelectionModel leaderSingleSelectModel;
 
+  SelectionOptions memberOptions;
+  SelectionModel memberSingleSelectModel;
+
   List<Group> _superGroups;
   List<User> _users;
+  List<User> memberUsers = new List();
 
   /// When it exists, the error/exception message presented into dialog view.
   String dialogError;
@@ -75,6 +80,7 @@ class GroupDetailComponent extends Object implements OnInit {
   GroupDetailComponent(this._authService, this._userService, this._groupService) {
     superGroupSingleSelectModel = SelectionModel.single();
     leaderSingleSelectModel = SelectionModel.single();
+    memberSingleSelectModel = SelectionModel.single();
   }
 
   // Define messages and labels
@@ -87,6 +93,7 @@ class GroupDetailComponent extends Object implements OnInit {
   static final String leaderLabel =  GroupMessage.label('Leader');
   static final String activeLabel =  GroupMessage.label('Active');
   static final String noMatchLabel =  GroupMessage.label('No Match');
+  static final String membersLabel =  GroupMessage.label('Members');
 
   static final String saveButtonLabel = CommonMessage.buttonLabel('Save');
   static final String closeButtonLabel = CommonMessage.buttonLabel('Close');
@@ -156,6 +163,19 @@ class GroupDetailComponent extends Object implements OnInit {
     leaderOptions = new StringSelectionOptions<User>(
         _users, toFilterableString: (User user) => user.name);
 
+      memberOptions = new StringSelectionOptions<User>(
+          _users, toFilterableString: (User user) => user.name);
+
+
+      memberSingleSelectModel.selectionChanges.listen((member) {
+
+        if (member.isNotEmpty && member.first.added != null && member.first.added.length != 0 && member.first.added?.first != null) {
+          if (!group.members.contains(member.first.added.first)) {
+            group.members.add(member.first.added.first);
+          }
+        }
+      });
+
     // groupTypes = await _groupService.getGroupTypes();
 
     if (group.groupType == null) {
@@ -206,7 +226,31 @@ class GroupDetailComponent extends Object implements OnInit {
 
   ItemRenderer get leaderItemRenderer => (dynamic user) => user.name;
 
-  FactoryRenderer get leaderFactoryRenderer => (_) => group_detail_component.LeaderRendererComponentNgFactory;
+  FactoryRenderer get leaderFactoryRenderer => (_) => group_detail_component.UserRendererComponentNgFactory;
+
+  removeMember(User user) {
+    group.members.remove(user);
+  }
+
+  String get memberLabelRenderer {
+    String nameLabel;
+    if ((memberSingleSelectModel != null &&
+        memberSingleSelectModel.selectedValues != null &&
+        memberSingleSelectModel.selectedValues.length != null)) {
+
+      nameLabel = memberSingleSelectModel.selectedValues.first?.name;
+    }
+
+    return nameLabel;
+  }
+
+  ItemRenderer get memberItemRenderer => (dynamic user) => user.name;
+
+  FactoryRenderer get factoryRenderer => (_) => group_detail_component.UserRendererComponentNgFactory;
+
+  String userUrlImage(User userMember) {
+    return common_service.userUrlImage(userMember?.userProfile?.image);
+  }
 
   bool get validInput {
     return group.name?.trim()?.isNotEmpty ?? false;
@@ -215,7 +259,7 @@ class GroupDetailComponent extends Object implements OnInit {
 }
 
 @Component(
-    selector: 'leader-renderer',
+    selector: 'user-renderer',
     //  template: '<material-icon icon="language"></material-icon>{{disPlayName}}',
     template: '<div left-icon class="avatar-icon" [style.background-image]="disPlayurl"></div>{{disPlayName}}',
 
@@ -225,7 +269,7 @@ class GroupDetailComponent extends Object implements OnInit {
     directives: const [
       MaterialIconComponent
     ])
-class LeaderRendererComponent implements RendersValue {
+class UserRendererComponent implements RendersValue {
   String disPlayName = '';
   String disPlayurl;
 

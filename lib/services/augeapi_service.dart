@@ -35,8 +35,10 @@ class AugeApiService {
 
   // final String _serverUrl = '35.227.38.148:8091/'; // GCloud
 
-  final String _serverUrl =  'auge.levius.com.br:8091/';
 
+ // final String _serverUrl = 'auge.levius.com.br:8091/';
+
+  final String _serverUrl = window.location.hostname + ':8091/'; // Api Port
 
   AugeApi _augeApi;
   InitiativeAugeApi _initiativeAugeApi;

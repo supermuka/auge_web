@@ -35,7 +35,6 @@ class InitiativeService {
 
   /// Delete an [Initiative]
   void deleteInitiative(String id) async {
-    print('deleteInitiative');
     try {
       await _augeApiService.initiativeAugeApi.deleteInitiative(id);
     } catch (e) {

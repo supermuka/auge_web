@@ -310,6 +310,7 @@ class GroupMessage {
         'Inactive': 'Inactive',
         'Group': 'Group',
         'No Match': 'No Match',
+        'Members': 'Members',
         'other': 'Not Defined'})}",
       name: "groupLabel",
       args: [label],

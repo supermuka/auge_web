@@ -53,6 +53,30 @@
                                          [limit]="10">
             </material-auto-suggest-input>
         </div>
+        <div class="w3-row ">
+            <material-auto-suggest-input style="width: 100%"
+                                         [(inputText)]="memberInputText"
+                                         [filterSuggestions]="true"
+                                         [popupMatchInputWidth]="true"
+                                         [leadingGlyph]="'search'"
+                                         [shouldClearOnSelection]="true"
+                                         [label]="membersLabel"
+                                         [emptyPlaceholder]="noMatchLabel"
+                                         [selection]="memberSingleSelectModel"
+                                         [selectionOptions]="memberOptions"
+                                         [itemRenderer]="memberItemRenderer"
+                                         [factoryRenderer]="factoryRenderer"
+                                         [limit]="10">
+            </material-auto-suggest-input>
+        </div>
+        <div class="w3-row">
+            <material-chips [removeable]="true" *ngFor="let member of group?.members">
+                <material-chip [hasLeftIcon]="true" (remove)="removeMember(member)">
+                    <div left-icon class="avatar" [style.background-image]="'url(' +  userUrlImage(member)  + ')'"></div>
+                    {{member?.name}}
+                </material-chip>
+            </material-chips>
+        </div>
         <material-checkbox [(ngModel)]="group.active" [label]="activeLabel"></material-checkbox>
         <div footer>
             <material-button [disabled]="!validInput" (trigger)="saveGroup()">{{saveButtonLabel}}

@@ -53,14 +53,8 @@ class GroupService {
   Future<List<GroupType>> getGroupTypes() async {
     List<GroupType> groupTypes = await _augeApiService.augeApi.getGroupTypes();
 
-
-    print('Group Types');
-    print(groupTypes.length);
     // Translate
     groupTypes.forEach((f) => f.name = GroupMessage.groupTypeLabel(f.name));
-
-    groupTypes.forEach((f) => print(f.name));
-
 
     return groupTypes;
   }

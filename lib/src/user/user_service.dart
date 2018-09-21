@@ -62,7 +62,6 @@ class UserService {
             userProfileOrganization);
       }
     } catch (e) {
-      print('saveUserProfileOrganization');
       print(e);
       rethrow;
     }
