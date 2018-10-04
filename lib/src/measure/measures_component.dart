@@ -13,7 +13,7 @@ import 'package:angular_components/model/ui/icon.dart';
 import 'package:angular_components/material_input/material_input.dart';
 import 'package:angular_components/material_menu/material_menu.dart';
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
-
+import 'package:angular_components/material_button/material_button.dart';
 
 import 'package:angular_components/model/menu/menu.dart';
 
@@ -38,6 +38,7 @@ import 'package:auge_web/src/measure/measure_service.dart';
       MaterialIconComponent,
       MaterialMenuComponent,
       MaterialTooltipDirective,
+      MaterialButtonComponent,
       ModalComponent,
       NgModel,
       MeasureDetailComponent,

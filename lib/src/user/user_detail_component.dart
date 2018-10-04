@@ -132,13 +132,13 @@ class UserDetailComponent extends Object implements OnInit {
       userProfileOrganization.organization = _authService.selectedOrganization;
     }
 
-    AuthorizationRole.values.forEach((role) {
-      if (role != AuthorizationRole.superAdmin) {
+    SystemRole.values.forEach((role) {
+      if (role != SystemRole.superAdmin) {
         userAuthorizationOptions.add(new Option(
             role.index,
             UserMessage.label(role.toString()), _authService.isAuthorizedForAtuhorizatedRole(
-            AuthorizationObject.users, authorizationFunction: user.id == null ?  AuthorizationFunction.create : AuthorizationFunction.update,
-            authorizationConstraint: role
+            SystemModule.users, systemFunction: user.id == null ?  SystemFunction.create : SystemFunction.update,
+            systemConstraint: role
         )));
       }
     });

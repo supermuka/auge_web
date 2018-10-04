@@ -1,1 +1,15 @@
-@import 'package:auge_web/css/app_style.css';
+/*
+// Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
+// Author: Samuel C. Schwebel.
+*/
+
+@import 'package:angular_components/css/material/material';
+
+.material-fab-add {
+   position: fixed !important;
+   z-index: 9999999;
+   background-color: $mat-red;
+   color: $mat-white;
+   float: right;
+   right: 32px;
+}

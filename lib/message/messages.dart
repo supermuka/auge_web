@@ -291,7 +291,7 @@ class ObjectiveHierarchyMessage {
 }
 
 /// Specific messages and label for [Group]
-class GroupMessage {
+class GroupMsg {
 
   /// Label for Group
   static label(String label) => Intl.message(

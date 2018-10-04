@@ -165,9 +165,9 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
       _router.navigate(AppRoutes.authRoute.toUrl());
     }
 
-    isAuthorizedToAccessUsers =_authService.isAuthorizedForAtuhorizatedRole(AuthorizationObject.users);
-    isAuthorizedToAccessOrganizationProfile =_authService.isAuthorizedForAtuhorizatedRole(AuthorizationObject.organization_profile);
-    isAuthorizedToAccessGroups = _authService.isAuthorizedForAtuhorizatedRole(AuthorizationObject.groups);
+    isAuthorizedToAccessUsers =_authService.isAuthorizedForAtuhorizatedRole(SystemModule.users);
+    isAuthorizedToAccessOrganizationProfile =_authService.isAuthorizedForAtuhorizatedRole(SystemModule.organization_profile);
+    isAuthorizedToAccessGroups = _authService.isAuthorizedForAtuhorizatedRole(SystemModule.groups);
 
 
     _appLayoutService.enabledSearch = false;
@@ -218,10 +218,6 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
 
   bool get isAdmin {
     return _authService?.isAdmin;
-  }
-
-  bool get isLeader {
-    return _authService?.isLeader;
   }
 
   String get headerTitle {

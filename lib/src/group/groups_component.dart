@@ -60,7 +60,7 @@ class GroupsComponent extends Object /* with CanReuse */ implements OnActivate, 
       _router.navigate(AppRoutes.authRoute.toUrl());
     }
 
-    _appLayoutService.headerTitle = GroupMessage.label('Groups');
+    _appLayoutService.headerTitle = GroupMsg.label('Groups');
 
     _appLayoutService.enabledSearch = true;
 
@@ -121,7 +121,7 @@ class GroupsComponent extends Object /* with CanReuse */ implements OnActivate, 
   }
 
   String groupActiveInactive(Group group) {
-    return group.active ? GroupMessage.label('Active') : GroupMessage.label('Inactive');
+    return group.active ? GroupMsg.label('Active') : GroupMsg.label('Inactive');
   }
 
 }

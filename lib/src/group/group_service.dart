@@ -54,7 +54,7 @@ class GroupService {
     List<GroupType> groupTypes = await _augeApiService.augeApi.getGroupTypes();
 
     // Translate
-    groupTypes.forEach((f) => f.name = GroupMessage.groupTypeLabel(f.name));
+    groupTypes.forEach((f) => f.name = GroupMsg.groupTypeLabel(f.name));
 
     return groupTypes;
   }

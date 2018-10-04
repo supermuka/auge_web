@@ -85,15 +85,15 @@ class GroupDetailComponent extends Object implements OnInit {
 
   // Define messages and labels
   static final String requiredValueMsg =  CommonMessage.requiredValueMsg();
-  static final String addGroupLabel =  GroupMessage.label('Add Group');
-  static final String editGroupLabel =  GroupMessage.label('Edit Group');
-  static final String nameLabel =  GroupMessage.label('Name');
-  static final String superGroupLabel =  GroupMessage.label('Super Group');
-  static final String groupTypeLabel = GroupMessage.label('Group Type');
-  static final String leaderLabel =  GroupMessage.label('Leader');
-  static final String activeLabel =  GroupMessage.label('Active');
-  static final String noMatchLabel =  GroupMessage.label('No Match');
-  static final String membersLabel =  GroupMessage.label('Members');
+  static final String addGroupLabel =  GroupMsg.label('Add Group');
+  static final String editGroupLabel =  GroupMsg.label('Edit Group');
+  static final String nameLabel =  GroupMsg.label('Name');
+  static final String superGroupLabel =  GroupMsg.label('Super Group');
+  static final String groupTypeLabel = GroupMsg.label('Group Type');
+  static final String leaderLabel =  GroupMsg.label('Leader');
+  static final String activeLabel =  GroupMsg.label('Active');
+  static final String noMatchLabel =  GroupMsg.label('No Match');
+  static final String membersLabel =  GroupMsg.label('Members');
 
   static final String saveButtonLabel = CommonMessage.buttonLabel('Save');
   static final String closeButtonLabel = CommonMessage.buttonLabel('Close');

@@ -24,7 +24,7 @@ class AuthService  {
   List<UserProfileOrganization> authorizedOrganizations;
   AuthorizationPolicy _generalAuthorizationPolicy;
   Organization _selectedOrganization;
-  AuthorizationRole authorizedRole;
+  SystemRole authorizedSystemRole;
 
   final AugeApiService _augeApiService;
 
@@ -74,19 +74,19 @@ class AuthService  {
 
     if (authenticatedUser != null) {
       if (authenticatedUser.userProfile?.isSuperAdmin) {
-        authorizedRole = AuthorizationRole.superAdmin;
+        authorizedSystemRole = SystemRole.superAdmin;
       } else {
-        authorizedRole =
-        AuthorizationRole.values[authorizedOrganizations
+        authorizedSystemRole =
+        SystemRole.values[authorizedOrganizations
             .singleWhere((o) => o.organization.id == selectedOrganization.id)
             .authorizationRole];
       }
     }
   }
 
-  bool isAuthorizedForAtuhorizatedRole(AuthorizationObject authorizationObject, {dynamic authorizationFunction, dynamic authorizationConstraint}) {
+  bool isAuthorizedForAtuhorizatedRole(SystemModule systemModule, {dynamic systemFunction, dynamic systemConstraint}) {
     if (_generalAuthorizationPolicy != null) {
-      return _generalAuthorizationPolicy.isAuthorized(authorizedRole, authorizationObject, authorizationFunction: authorizationFunction, authorizationConstraint: authorizationConstraint);
+      return _generalAuthorizationPolicy.isAuthorized(authorizedSystemRole, systemModule, systemFunction: systemFunction, systemConstraint: systemConstraint);
     } else {
       return false;
     }
@@ -98,11 +98,6 @@ class AuthService  {
 
   bool get isAdmin {
     UserProfileOrganization userOrganization = authorizedOrganizations?.firstWhere((o) => o.organization.id == selectedOrganization?.id, orElse: () => null);
-    return authorizedOrganizations != null && selectedOrganization != null && userOrganization != null && userOrganization?.authorizationRole == AuthorizationRole.admin.index;
-  }
-
-  bool get isLeader {
-    UserProfileOrganization userOrganization = authorizedOrganizations?.firstWhere((o) => o.organization.id == selectedOrganization?.id, orElse: () => null);
-    return authorizedOrganizations != null && selectedOrganization != null && userOrganization != null && userOrganization?.authorizationRole == AuthorizationRole.leader.index;
+    return authorizedOrganizations != null && selectedOrganization != null && userOrganization != null && userOrganization?.authorizationRole == SystemRole.admin.index;
   }
 }

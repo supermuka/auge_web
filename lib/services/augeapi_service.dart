@@ -10,7 +10,6 @@ import 'package:http/browser_client.dart';
 import 'package:http/src/streamed_response.dart';
 import 'package:http/src/base_request.dart';
 
-import 'package:auge_server/augeconf.dart';
 import 'package:auge_server/client/augeapi.dart';
 import 'package:auge_server/client/objectiveaugeapi.dart';
 import 'package:auge_server/client/initiativeaugeapi.dart';

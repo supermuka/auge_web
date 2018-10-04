@@ -1,6 +1,5 @@
 @import 'package:angular_components/css/material/material';
 @import 'package:angular_components/material_select/mixins';
-@import 'package:auge_web/css/app_style.css';
 
 :host {
   display: block;
@@ -44,4 +43,43 @@
     @media (max-width: 800px) {
        display:none;
     }
+}
+
+/*
+.error {
+  @include mat-type-body;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  background: $mat-gray-200;
+  color: $mat-red-700;
+  padding: 0 $mat-grid * 3;
+  transition: padding $mat-transition $mat-transition-standard 0s;
+  width: 100%;
+
+  &.expanded {
+    border-bottom: 1px $mat-gray-300 solid;
+    border-top: 1px $mat-gray-300 solid;
+    padding: $mat-grid $mat-grid * 3;
+  }
+}
+*/
+
+/* copy from material-dialog */
+.error {
+  // TODO(google): Migrate to extended mixin mat-font-body
+  font-size: $mat-font-size-body;
+  font-weight: $mat-font-weight-regular;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  background: $mat-gray-200;
+  color: $mat-red-700;
+  padding: 0 $mat-grid * 3;
+  transition: padding $mat-transition $mat-transition-standard 0s;
+  width: 100%;
+
+  &.expanded {
+    border-bottom: 1px $mat-gray-300 solid;
+    border-top: 1px $mat-gray-300 solid;
+    padding: $mat-grid $mat-grid * 3;
+  }
 }
