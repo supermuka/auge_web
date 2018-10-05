@@ -58,6 +58,7 @@ class MeasureDetailComponent extends Object implements OnInit {
   String showStartValueErrorMsg;
   String showCurrentValueErrorMsg;
   String showEndValueErrorMsg;
+  String showDecimalsNumberErrorMsg;
 
  // List errorControl = [];
  // bool validInput = false;
@@ -69,6 +70,7 @@ class MeasureDetailComponent extends Object implements OnInit {
   // Define messages and labels
   static final String requiredValueMsg = CommonMessage.requiredValueMsg();
   static final String valueErrorMsg =  MeasureMessage.valueErrorMsg();
+  static final String decimalNumberErrorMsg = MeasureMessage.decimalNumberErrorMsg();
 
   static final String addMeasureLabel =  MeasureMessage.label('Add Measure');
   static final String editMeasureLabel =  MeasureMessage.label('Edit Measure');
@@ -90,6 +92,7 @@ class MeasureDetailComponent extends Object implements OnInit {
       measure = selectedMeasure.clone();
     } else {
       measure = new Measure();
+      measure.decimalsNumber = 0;
     }
 
     try {
@@ -189,7 +192,7 @@ class MeasureDetailComponent extends Object implements OnInit {
     return true;
   }
 
-  void validStartValue(String startValue) {
+  void changedStartValue(String startValue) {
     if (!validValue(double.tryParse(startValue), measure?.currentValue, measure?.endValue)) {
    //   errorControl.add(validStartValue);
       showStartValueErrorMsg = valueErrorMsg;
@@ -200,7 +203,7 @@ class MeasureDetailComponent extends Object implements OnInit {
 //    validInput = errorControl.isEmpty;
   }
 
-  void validCurrentValue(String currentValue) {
+  void changedCurrentValue(String currentValue) {
     if (!validValue(measure?.startValue, double.tryParse(currentValue), measure?.endValue)) {
      // errorControl.add(validCurrentValue);
       showCurrentValueErrorMsg = valueErrorMsg;
@@ -211,7 +214,7 @@ class MeasureDetailComponent extends Object implements OnInit {
  //   validInput = errorControl.isEmpty;
   }
 
-  void validEndValue(String endValue) {
+  void changedEndValue(String endValue) {
     if (!validValue(measure?.startValue, measure?.currentValue, double.tryParse(endValue))) {
 //      errorControl.add(validEndValue);
       showEndValueErrorMsg = valueErrorMsg;
@@ -220,6 +223,23 @@ class MeasureDetailComponent extends Object implements OnInit {
       showEndValueErrorMsg = null;
     }
  //   validInput = errorControl.isEmpty;
+  }
+
+  void changedDecimalsNumber(String decimalsNumber) {
+      if (!validDecimalsNumber(int.tryParse(decimalsNumber))) {
+        showDecimalsNumberErrorMsg = decimalNumberErrorMsg;
+      } else {
+        showDecimalsNumberErrorMsg = null;
+      }
+  }
+
+  bool validDecimalsNumber(int decimalsNumber) {
+    if (decimalsNumber == null || decimalsNumber < 0 || decimalsNumber > 5) {
+      return false;
+    } else {
+      return true;
+    }
+    //   validInput = errorControl.isEmpty;
   }
 
   /*
@@ -235,9 +255,12 @@ class MeasureDetailComponent extends Object implements OnInit {
   }
   */
 
+
+
   bool get validInput {
     if ((measure?.name != null && measure.name.isEmpty)
-        || !validValue(measure?.startValue, measure?.currentValue, measure?.endValue)) {
+        || !validValue(measure?.startValue, measure?.currentValue, measure?.endValue)
+    || !validDecimalsNumber(measure.decimalsNumber)) {
       return false;
     } else {
       return true;

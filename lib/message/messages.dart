@@ -273,6 +273,7 @@ class MeasureMessage {
   );
 
   static valueErrorMsg() => Intl.message("Current value should be between Start and End value.");
+  static decimalNumberErrorMsg() => Intl.message("Decimal number should be between 0 and 5.");
 }
 
 /// Specific messages and label for [ObjectiveHierarchy]
