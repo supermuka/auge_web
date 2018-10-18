@@ -3,6 +3,8 @@
 
 import 'dart:async';
 
+import 'package:platform_detect/platform_detect.dart';
+
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
 import 'package:angular_components/material_dialog/material_dialog.dart';
@@ -91,6 +93,11 @@ class AuthComponent extends Object with OnActivate  {
     _authService.selectedOrganization = null;
     _authService.authorizedOrganizations = null;
     _authService.authorizedSystemRole = null;
+
+    if (!browser.isChrome) {
+      dialogError = AuthMessage.browserCompatibleErrorMsg();
+    }
+
   }
 
   void authenticateAuthorizate(AsyncAction<bool> action) async {
@@ -189,13 +196,13 @@ class AuthComponent extends Object with OnActivate  {
       ..selectionChanges.listen((d) async {
         if (d != null && d.isNotEmpty && d.first != null && d.first.added != null && d.first.added.isNotEmpty) {
           if (_authService.selectedOrganization !=
-              d?.first?.added?.first?.organization) {
+              d.first?.added.first.organization) {
 
               _authService.selectedOrganization =
-                  d?.first?.added?.first?.organization;
+                  d.first.added.first.organization;
 
               organizationSingleSelectLabel =
-                d?.first?.added?.first?.name ??
+                d.first.added.first.name ??
                   AuthMessage.label('Select');
           }
         }

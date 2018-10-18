@@ -35,6 +35,10 @@ import 'initiative_detail_component.template.dart' as initiative_detail_componen
     coreDirectives,
     routerDirectives,
     materialDirectives,
+    /*
+    materialInputDirectives,
+    MaterialDropdownSelectComponent,
+    DropdownSelectValueAccessor, */
   ],
   templateUrl: 'initiative_detail_component.html',
   styleUrls: const [
@@ -68,19 +72,18 @@ class InitiativeDetailComponent implements OnInit {
   String stageEntry;
   Stage selectedStage = null;
 
-  SelectionOptions stateOptions;
-  SelectionModel stateSingleSelectModel;
-
   String groupInputText = '';
   String leaderInputText = '';
   String objectiveInputText = '';
 
+  SelectionOptions stateOptions;
+  SelectionModel<State> stateSingleSelectModel;
   SelectionOptions leaderOptions;
   SelectionModel<User> leaderSingleSelectModel;
   SelectionOptions objectiveOptions;
-  SelectionModel objectiveSingleSelectModel;
+  SelectionModel<Objective> objectiveSingleSelectModel;
   SelectionOptions groupOptions;
-  SelectionModel groupSingleSelectModel;
+  SelectionModel<Group> groupSingleSelectModel;
 
   List<State> _states;
   List<User> _users;
@@ -136,10 +139,15 @@ class InitiativeDetailComponent implements OnInit {
     }
 
    // List<State> states =  await _initiativeService.getStates();
-    stateOptions = new SelectionOptions.fromList(_states);
+    // stateOptions = new SelectionOptions.fromList(_states);
+    stateOptions = new StringSelectionOptions<State>(
+        _states, toFilterableString: (State state) => state.name);
+/*
+    if (stateOptions.optionsList.isNotEmpty) {
+       stateSingleSelectModel.select(stateOptions.optionsList.first);
+    }
+    */
 
-    if (stateOptions.optionsList.isNotEmpty)
-      stateSingleSelectModel.select(stateOptions.optionsList.first);
 
     // Leader
    // List<User> users = await _userService.getUsers(_authService.selectedOrganization.id, withProfile: true);
@@ -250,12 +258,16 @@ class InitiativeDetailComponent implements OnInit {
   FactoryRenderer get leaderFactoryRenderer => (_) => initiative_detail_component.LeaderRendererComponentNgFactory;
 
   void selectStage(Stage e) {
+
     selectedStage = e;
     stageEntry = e.name;
+/*
+    if (e.state != null) {
+      stateSingleSelectModel.select(
+          stateOptions.optionsList.singleWhere((s) => s.id == e.state.id));
+    }
 
-
-    if (e.state != null)
-      stateSingleSelectModel.select( stateOptions.optionsList.singleWhere((s) => s.id == e?.state?.id));
+*/
   }
 
   void addStage() {
@@ -289,7 +301,7 @@ class InitiativeDetailComponent implements OnInit {
 
   }
 
-  FactoryRenderer get stateFactoryRenderer => (_) => initiative_detail_component.StateRendererComponentNgFactory;
+
 
   // Label for the button for single selection.
   String get stateSingleSelectLabel {
@@ -304,7 +316,9 @@ class InitiativeDetailComponent implements OnInit {
     return nameLabel;
   }
 
-  ItemRenderer get stateItemRenderer => (dynamic state) => state?.name;
+  ItemRenderer get stateItemRenderer => (dynamic state) => state.name;
+
+  FactoryRenderer get stateFactoryRenderer => (_) => initiative_detail_component.StateRendererComponentNgFactory;
 
   String get groupLabelRenderer {
     String nameLabel;
@@ -332,22 +346,25 @@ class InitiativeDetailComponent implements OnInit {
     int i = initiative.stages.indexOf(stage);
 
     if (i > 0) {
-      initiative.stages.removeAt(i);
 
       // Receive state equals previous stage, because can be different that the actual
       stage.state = initiative.stages[i-1].state;
+
+      initiative.stages.removeAt(i);
       initiative.stages.insert(i-1, stage);
     }
   }
 
   void moveDownStage(Stage stage) {
     int i = initiative.stages.indexOf(stage);
-    if (i > 0) {
-      initiative.stages.removeAt(i);
+    if (i < initiative.stages.length-1) {
 
       // Receive state equals previous stage, because can be different that the actual
-      stage.state = initiative.stages[i-1].state;
-      initiative.stages.insert(i-1, stage);
+      stage.state = initiative.stages[i+1].state;
+
+      initiative.stages.removeAt(i);
+
+      initiative.stages.insert(i+1, stage);
     }
   }
 

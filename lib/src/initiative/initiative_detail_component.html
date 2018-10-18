@@ -48,23 +48,15 @@
         <div class="material-shadow-box-list" elevation="2">
             <material-input [(ngModel)]="stageEntry" floatingLabel [label]="stageLabel"></material-input>
             <material-dropdown-select [buttonText]="stateSingleSelectLabel"
-                                      [(selection)]="stateSingleSelectModel"
-                                      [(options)]="stateOptions"
+                                      [selection]="stateSingleSelectModel"
+                                      [options]="stateOptions"
                                       [itemRenderer]="stateItemRenderer"
                                       [factoryRenderer]="stateFactoryRenderer">
             </material-dropdown-select>
             <span>
-               <!-- material-fab *ngIf="selectedStage == null" [disabled]="!validStageInput" mini raised (trigger)="addStage()">
-                 <material-icon icon="add"></material-icon>
-               </material-fab -->
-
                 <material-button *ngIf="selectedStage == null" [disabled]="!validStageInput" icon (trigger)="addStage()">
                     <material-icon icon="add"></material-icon>
                 </material-button>
-
-              <!-- material-fab *ngIf="selectedStage != null"  [disabled]="!validStageInput" mini raised (trigger)="updateStage(selectedStage)">
-                 <material-icon icon="done"></material-icon>
-              </material-fab -->
 
                 <material-button *ngIf="selectedStage != null" [disabled]="!validStageInput" icon (trigger)="updateStage(selectedStage)">
                     <material-icon icon="done"></material-icon>
@@ -78,9 +70,6 @@
                 <material-list-item class="material-list-item" (trigger)="selectStage(stage)">
                     <span class="width-200">{{stage.name}}</span>
                     <span class="material-list-item-secondary">
-                        <!-- material-fab mini (trigger)="removeStage(stage)">
-                            <material-icon icon="clear"></material-icon>
-                        </material-fab -->
                         <material-button icon [disabled]="i == 0" (trigger)="moveUpStage(stage)">
                             <material-icon icon="arrow_drop_up"></material-icon>
                         </material-button>

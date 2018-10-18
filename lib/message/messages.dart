@@ -68,6 +68,7 @@ class AuthMessage {
   static userNotFoundMsg() => Intl.message("User account with the informed email not found.");
   static organizationNotFoundMsg() => Intl.message("An organization to user account not found.");
   static serverApiErrorMsg() => Intl.message("Server not available.");
+  static browserCompatibleErrorMsg() => Intl.message("Browser Compatible: Chrome");
 
 }
 
