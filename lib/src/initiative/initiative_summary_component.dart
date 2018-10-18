@@ -8,8 +8,6 @@ import 'package:auge_web/message/messages.dart';
 
 import 'package:auge_server/model/initiative/initiative.dart';
 
-import 'package:auge_web/services/common_service.dart' as common_service;
-
 @Component(
     selector: 'auge-initiative-summary',
     directives: const [

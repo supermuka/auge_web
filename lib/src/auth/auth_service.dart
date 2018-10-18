@@ -73,7 +73,7 @@ class AuthService  {
     _selectedOrganization = organization;
 
     if (authenticatedUser != null) {
-      if (authenticatedUser.userProfile?.isSuperAdmin) {
+      if (authenticatedUser.userProfile != null && authenticatedUser.userProfile.isSuperAdmin) {
         authorizedSystemRole = SystemRole.superAdmin;
       } else {
         authorizedSystemRole =

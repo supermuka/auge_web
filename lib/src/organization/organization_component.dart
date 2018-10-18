@@ -33,7 +33,6 @@ class OrganizationComponent extends Object with CanReuse implements OnActivate {
 
   final AuthService _authService;
   final AppLayoutService _appLayoutService;
-  final OrganizationService _organizationService;
   final Router _router;
 
   final Location _location;
@@ -43,7 +42,7 @@ class OrganizationComponent extends Object with CanReuse implements OnActivate {
   Organization selectedOrganization;
 
   OrganizationComponent(this._authService, this._appLayoutService,
-      this._organizationService, this._location, this._router) {
+       this._location, this._router) {
   }
 
   @override

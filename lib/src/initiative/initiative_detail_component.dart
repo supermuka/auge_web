@@ -259,11 +259,12 @@ class InitiativeDetailComponent implements OnInit {
   }
 
   void addStage() {
-    if (stateSingleSelectModel?.selectedValues?.isNotEmpty) {
+    if (stateSingleSelectModel != null && stateSingleSelectModel.selectedValues.isNotEmpty) {
       initiative.stages.add(new Stage()
         ..name = stageEntry
         ..state = stateSingleSelectModel.selectedValues?.first
         ..index = initiative.stages.length);
+
 
       initiative.stages.sort((a, b) =>
           a?.state?.index?.compareTo(b?.state?.index));
@@ -276,14 +277,16 @@ class InitiativeDetailComponent implements OnInit {
   }
 
   void updateStage(Stage e) {
-    if (stateSingleSelectModel?.selectedValues?.isNotEmpty) {
+    if (stateSingleSelectModel != null && stateSingleSelectModel.selectedValues.isNotEmpty) {
       initiative.stages.elementAt(initiative.stages.indexOf(e))
         ..name = stageEntry
         ..state = stateSingleSelectModel.selectedValues?.first;
       initiative.stages.sort((a, b) =>
           a?.state?.index?.compareTo(b?.state?.index));
       selectedStage = null;
+      stageEntry = '';
     }
+
   }
 
   FactoryRenderer get stateFactoryRenderer => (_) => initiative_detail_component.StateRendererComponentNgFactory;
@@ -327,14 +330,25 @@ class InitiativeDetailComponent implements OnInit {
 
   void moveUpStage(Stage stage) {
     int i = initiative.stages.indexOf(stage);
+
     if (i > 0) {
       initiative.stages.removeAt(i);
+
+      // Receive state equals previous stage, because can be different that the actual
+      stage.state = initiative.stages[i-1].state;
       initiative.stages.insert(i-1, stage);
     }
   }
 
   void moveDownStage(Stage stage) {
+    int i = initiative.stages.indexOf(stage);
+    if (i > 0) {
+      initiative.stages.removeAt(i);
 
+      // Receive state equals previous stage, because can be different that the actual
+      stage.state = initiative.stages[i-1].state;
+      initiative.stages.insert(i-1, stage);
+    }
   }
 
 }

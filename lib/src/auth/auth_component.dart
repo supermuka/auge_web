@@ -187,7 +187,7 @@ class AuthComponent extends Object with OnActivate  {
     organizationSingleSelectModel =
     new SelectionModel.single()
       ..selectionChanges.listen((d) async {
-        if (d?.isNotEmpty && d.first?.added.isNotEmpty) {
+        if (d != null && d.isNotEmpty && d.first != null && d.first.added != null && d.first.added.isNotEmpty) {
           if (_authService.selectedOrganization !=
               d?.first?.added?.first?.organization) {
 
@@ -221,8 +221,8 @@ class AuthComponent extends Object with OnActivate  {
   }
 
   bool get validInput {
-    return (eMail?.trim()?.isNotEmpty
-        && passwordStr?.trim()?.isNotEmpty) ?? false;
+    return (eMail != null && eMail.trim().isNotEmpty
+        && passwordStr != null && passwordStr.trim().isNotEmpty) ?? false;
   }
 
   ItemRenderer get itemRenderer => (dynamic item) => item.name;

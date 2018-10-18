@@ -86,7 +86,7 @@ class MeasuresComponent extends Object {
   }
 
   int progress(Measure measure) {
-    return measure?.currentValue == null || measure?.currentValue == 0 ? 0 :  (measure?.currentValue / (measure?.startValue + measure?.endValue) * 100).toInt() ;
+    return measure == null || measure.currentValue == null || measure.currentValue == 0 ? 0 :  (measure.currentValue ~/ (measure.startValue + measure.endValue) * 100);
   }
 
   void updateMeasure(Measure measure, num value) {

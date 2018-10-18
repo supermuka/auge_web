@@ -81,10 +81,10 @@
                         <!-- material-fab mini (trigger)="removeStage(stage)">
                             <material-icon icon="clear"></material-icon>
                         </material-fab -->
-                        <material-button icon (trigger)="moveUpStage(stage)">
+                        <material-button icon [disabled]="i == 0" (trigger)="moveUpStage(stage)">
                             <material-icon icon="arrow_drop_up"></material-icon>
                         </material-button>
-                        <material-button icon (trigger)="moveDownStage(stage)">
+                        <material-button icon [disabled]="i == initiative.stages.length-1" (trigger)="moveDownStage(stage)">
                             <material-icon icon="arrow_drop_down"></material-icon>
                         </material-button>
                         <material-button icon (trigger)="removeStage(stage)">

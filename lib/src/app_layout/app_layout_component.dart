@@ -201,8 +201,8 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
     // Model Listening
     userProfileLogoutSingleSelectModel =
     new SelectionModel.single()..selectionChanges.listen((d) async {
-      if (d?.isNotEmpty && d.first.added.isNotEmpty) {
-        if (d?.first?.added?.first?.routeUrl != null) {
+      if (d != null && d.isNotEmpty && d.first.added.isNotEmpty) {
+        if (d.first?.added?.first?.routeUrl != null) {
           await goTo(d.first.added.first.routeUrl, reload: true);
         } else if (d?.first?.added?.first?.viewComponent != null) {
           d?.first?.added?.first?.viewComponent(true);

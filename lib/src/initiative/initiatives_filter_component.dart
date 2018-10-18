@@ -7,26 +7,19 @@ import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:angular_router/angular_router.dart';
 
-import 'package:auge_server/model/user.dart';
-import 'package:auge_server/model/initiative/initiative.dart';
-import 'package:auge_server/model/initiative/stage.dart';
-import 'package:auge_server/model/initiative/state.dart';
 import 'package:auge_server/model/objective/objective.dart';
-import 'package:auge_server/model/group.dart';
 
 import 'package:auge_web/message/messages.dart';
 
-import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
-import 'package:auge_web/src/initiative/initiative_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/group/group_service.dart';
 
 import 'package:angular_components/model/ui/has_factory.dart';
 
 // ignore_for_file: uri_has_not_been_generated
-import 'initiative_detail_component.template.dart' as initiative_detail_component;
+// import 'initiative_detail_component.template.dart' as initiative_detail_component;
 
 @Component(
   selector: 'auge-initiatives-filter',

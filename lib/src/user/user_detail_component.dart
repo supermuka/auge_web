@@ -19,7 +19,7 @@ import 'package:auge_web/message/messages.dart';
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
 import 'dart:convert' show base64;
-import 'dart:typed_data' show Uint8List, ByteBuffer;
+import 'dart:typed_data' show Uint8List;
 import 'package:crypto/crypto.dart' show sha256;
 
 import 'package:auge_web/services/common_service.dart' as common_service;
@@ -62,8 +62,6 @@ class UserDetailComponent extends Object implements OnInit {
 
   final AuthService _authService;
   final UserService _userService;
-  final Router _router;
-  final Location _location;
 
  //  final SelectionModel selectionModelUserAuthorization = new SelectionModel.multi();
   String _passwordOrigin;
@@ -80,7 +78,7 @@ class UserDetailComponent extends Object implements OnInit {
   /// When it exists, the error/exception message is presented into dialog view.
   String dialogError;
 
-  UserDetailComponent(this._authService, this._userService, this._router, this._location) {
+  UserDetailComponent(this._authService, this._userService) {
     userAuthorizationOptions = List<Option>();
 
     //UserAuthorization.values.forEach((f) => userAuthorizationOptions.add(new Option(f.index, UserMessage.label(f.toString()) /* , false, false */) ));
