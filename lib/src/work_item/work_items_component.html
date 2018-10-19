@@ -22,7 +22,7 @@
             <auge-work-items-list [fowardAddWorkItem]="fowardAddWorkItem" [initiative]="initiative" (closeDetail)="viewFowardDetail(false)"></auge-work-items-list>
         </div>
         <div *ngIf="selectedView == 'kanban'">
-            <auge-work-items-kanban [initiative]="initiative"></auge-work-items-kanban>
+            <auge-work-items-kanban [fowardAddWorkItem]="fowardAddWorkItem" [initiative]="initiative" (closeDetail)="viewFowardDetail(false)"></auge-work-items-kanban>
         </div>
     </material-expansionpanel>
 </div>

@@ -22,6 +22,8 @@ import 'package:auge_web/message/messages.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/work_item/work_item_service.dart';
 
+import 'package:auge_web/src/work_item/work_item_detail_component.dart';
+
 @Component(
     selector: 'auge-work-items-kanban',
     providers: const [WorkItemService],
@@ -29,6 +31,7 @@ import 'package:auge_web/src/work_item/work_item_service.dart';
       coreDirectives,
       routerDirectives,
       materialDirectives,
+      WorkItemDetailComponent,
     ],
     pipes: const [commonPipes],
     templateUrl: 'work_items_kanban_component.html',
@@ -54,7 +57,7 @@ class WorkItemsKanbanComponent extends Object implements OnInit {
   @Output()
   Stream<void> get closeDetail => _closeController.stream;
 
-  bool detailVisible;
+  bool detailVisible  = false;
 
   WorkItem selectedWorkItem;
   List<KanbanColumn> kanbanColumns;
