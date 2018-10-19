@@ -8,7 +8,7 @@
     </span>
     <material-tooltip-card [for]="clickableRef">
         <div *ngFor="let istage of initiative.stageWorkItemsCount.keys; let iee = index">
-            <div *ngIf="iee == 0 || initiative.stageWorkItemsCount.keys.elementAt(iee-1).state != initiative.stageWorkItemsCount.keys.elementAt(iee).state">
+            <div *ngIf="iee == 0 || initiative.stageWorkItemsCount.keys.elementAt(iee-1).state.id != initiative.stageWorkItemsCount.keys.elementAt(iee).state.id">
                 <br/>
                 <div class="tooltip-card-bar" [style.background-color]="'hsl(' + istage.state.colorHue + ', ' + istage.state.colorSaturation + '%, ' + istage.state.colorLightness + '%)'">
                 </div>&nbsp;<strong>{{istage.state.name}}</strong><br/>

@@ -142,11 +142,11 @@ class InitiativeDetailComponent implements OnInit {
     // stateOptions = new SelectionOptions.fromList(_states);
     stateOptions = new StringSelectionOptions<State>(
         _states, toFilterableString: (State state) => state.name);
-/*
+
     if (stateOptions.optionsList.isNotEmpty) {
        stateSingleSelectModel.select(stateOptions.optionsList.first);
     }
-    */
+
 
 
     // Leader
@@ -261,13 +261,12 @@ class InitiativeDetailComponent implements OnInit {
 
     selectedStage = e;
     stageEntry = e.name;
-/*
+
     if (e.state != null) {
       stateSingleSelectModel.select(
           stateOptions.optionsList.singleWhere((s) => s.id == e.state.id));
     }
 
-*/
   }
 
   void addStage() {

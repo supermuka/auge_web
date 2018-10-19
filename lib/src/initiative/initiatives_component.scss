@@ -11,7 +11,8 @@ material-fab {
 }
 
 .custom-expansionpanel-panel-specific-name-width {
-  width: 400px;
+  /* width: 400px; */
+  min-width: 400px;
 }
 
 .expansionpanel-wide-true {
@@ -26,6 +27,11 @@ material-fab {
   margin-right: calc(-50vw + 5%);
 
   height: calc(100vh - 5%);
+/*
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  */
 }
 
 .text-group-letter {
