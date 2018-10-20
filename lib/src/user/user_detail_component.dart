@@ -84,8 +84,6 @@ class UserDetailComponent extends Object implements OnInit {
     //UserAuthorization.values.forEach((f) => userAuthorizationOptions.add(new Option(f.index, UserMessage.label(f.toString()) /* , false, false */) ));
   }
 
-  bool get authenticatedUserIsSuperAdmin => _authService.authenticatedUser.userProfile.isSuperAdmin;
-
   // Define messages and labels
   static final String requiredValueMsg = CommonMessage.requiredValueMsg();
 
@@ -96,7 +94,6 @@ class UserDetailComponent extends Object implements OnInit {
   static final String passwordLabel =  UserMessage.label('Password');
   static final String authorizationLabel = UserMessage.label('Authorization');
   static final String photoLabel = UserMessage.label('Photo');
-  static final String superAdminLabel = UserMessage.label('Super Admin');
   static final String idiomLabel = UserMessage.label('Idiom');
 
   static final String uploadButtonLabel = CommonMessage.buttonLabel('Upload');

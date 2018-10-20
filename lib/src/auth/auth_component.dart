@@ -147,9 +147,6 @@ class AuthComponent extends Object with OnActivate  {
     return _authService?.selectedOrganization;
   }
 
-  bool get isSuperAdmin {
-    return _authService.isSuperAdmin;
-  }
 
   void configOrganizationSeletion() {
 
@@ -176,16 +173,6 @@ class AuthComponent extends Object with OnActivate  {
     List<AppLayoutOrganizationSelectOption> adms = new List();
 
     String admGroupLabel = AuthMessage.label('Super Admin');
-
-    if (isSuperAdmin) {
-      adms.add(new AppLayoutOrganizationSelectOption()
-        ..group = admGroupLabel
-        ..name = AuthMessage.label('All Organizations')
-        ..organization = null);
-
-      organizationGroupOptions.add(
-          new OptionGroup.withLabel(adms, admGroupLabel));
-    }
 
     organizationOptions =
     new SelectionOptions.withOptionGroups(organizationGroupOptions);

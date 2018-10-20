@@ -152,11 +152,7 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
   static final String organizationLabel = AppLayoutMessage.label('Organization');
   static final String usersLabel = AppLayoutMessage.label('Users');
   static final String adminLabel = AppLayoutMessage.label('Admin');
-  static final String leaderLabel = AppLayoutMessage.label('Leader');
   static final String groupsLabel = AppLayoutMessage.label('Groups');
-  static final String superAdminLabel = AppLayoutMessage.label('Super Admin');
-  static final String allOrganizationsLabel = AppLayoutMessage.label('All Organizations');
-  static final String allUsersLabel = AppLayoutMessage.label('All Users');
 
   @override
   onActivate(previous, current)  {
@@ -210,10 +206,6 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
       }
       userProfileLogoutSingleSelectModel.clear();
   });
-  }
-
-  bool get isSuperAdmin {
-    return _authService?.isSuperAdmin;
   }
 
   bool get isAdmin {

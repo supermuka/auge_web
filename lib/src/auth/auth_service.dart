@@ -73,14 +73,10 @@ class AuthService  {
     _selectedOrganization = organization;
 
     if (authenticatedUser != null) {
-      if (authenticatedUser.userProfile != null && authenticatedUser.userProfile.isSuperAdmin) {
-        authorizedSystemRole = SystemRole.superAdmin;
-      } else {
         authorizedSystemRole =
         SystemRole.values[authorizedOrganizations
             .singleWhere((o) => o.organization.id == selectedOrganization.id)
             .authorizationRole];
-      }
     }
   }
 
@@ -92,9 +88,6 @@ class AuthService  {
     }
   }
 
-  bool get isSuperAdmin {
-    return (authenticatedUser?.userProfile?.isSuperAdmin == true);
-  }
 
   bool get isAdmin {
     UserProfileOrganization userOrganization = authorizedOrganizations?.firstWhere((o) => o.organization.id == selectedOrganization?.id, orElse: () => null);

@@ -6,7 +6,7 @@
     <span *ngFor="let istate of initiative.stateWorkItemsCount.keys">
         <span [style.background-color]="'hsl(' + istate?.colorHue + ', ' + istate?.colorSaturation + '%, ' + istate?.colorLightness + '%)'" [style.width]="widthState(initiative?.workItemsCount, initiative?.stateWorkItemsCount[istate], progressBarWidth) + 'px'">&nbsp;</span>
     </span>
-    <material-tooltip-card [for]="clickableRef">
+    <material-tooltip-card [for]="clickableRef" [preferredPositions]="preferredTooltipPositions">
         <div *ngFor="let istage of initiative.stageWorkItemsCount.keys; let iee = index">
             <div *ngIf="iee == 0 || initiative.stageWorkItemsCount.keys.elementAt(iee-1).state.id != initiative.stageWorkItemsCount.keys.elementAt(iee).state.id">
                 <br/>

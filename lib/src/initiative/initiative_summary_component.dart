@@ -21,6 +21,7 @@ import 'package:auge_server/model/initiative/initiative.dart';
 class InitiativeSummaryComponent extends Object {
 
   static final int progressBarWidth = 360;
+  final preferredTooltipPositions = const [RelativePosition.OffsetBottomLeft, RelativePosition.OffsetBottomRight];
 
   @Input()
   Initiative initiative;
