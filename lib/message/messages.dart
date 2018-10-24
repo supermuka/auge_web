@@ -356,3 +356,31 @@ class InsightMessage {
   );
 
 }
+
+/// Specific messages and label for [Insight]
+class ObjectiveTimelineMessage {
+
+  /// Label for Insight
+  static label(String actionCode) => Intl.message(
+    "${Intl.select(actionCode, {
+      'Objectives Overall': 'Objectives Overall',
+      'Objectives': 'Objectives',
+      'Objectives Achieved': 'Objectives Achieved',
+      'Objectives Requiring Attention': 'Objectives Requiring Attention',
+      'Measures': 'Measures',
+      'Measures Achieved': 'Measures Achieved',
+      'Measures Requiring Attention': 'Measures Requiring Attention',
+      'Initiatives': 'Initiatives',
+      'Initiatives Completed': 'Initiatives Completed',
+      'Initiatives Requiring Attention': 'Initiatives Requiring Attention',
+      'Work Items': 'Work Items',
+      'Work Items Completed': 'Work Items Completed',
+      'Work Items Requiring Attention': 'Work Items Requiring Attention',
+      'other': 'Not Defined'})}",
+    name: "insightLabel",
+    args: [label],
+    // locale: "en",
+    desc: "Insight labels",
+  );
+
+}

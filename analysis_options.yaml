@@ -1,6 +1,6 @@
-#analyzer:
-#  plugins:
-#    - angular
+analyzer:
+  plugins:
+    - angular
 #  strong-mode: true
 #   exclude:
 #     - path/to/excluded/files/**
@@ -17,3 +17,5 @@ linter:
     - test_types_in_equals
     - unrelated_type_equality_checks
     - valid_regexps
+
+

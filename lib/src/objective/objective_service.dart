@@ -5,7 +5,9 @@ import 'package:angular/core.dart';
 import 'package:auge_web/services/augeapi_service.dart';
 
 import 'package:auge_server/message_type/id_message.dart';
+import 'package:auge_server/message_type/datetime_message.dart';
 import 'package:auge_server/model/objective/objective.dart';
+import 'package:auge_server/model/objective/timeline_item.dart';
 
 @Injectable()
 class ObjectiveService {
@@ -15,10 +17,10 @@ class ObjectiveService {
   ObjectiveService(this._augeApiService);
 
   /// Return a list of [Objective]
-  Future<List<Objective>> getObjectives(String organizationId, {bool withMeasures = false, bool withProfile = false}) async {
+  Future<List<Objective>> getObjectives(String organizationId, {bool withMeasures = false, bool withProfile = false, bool withTimeline = false}) async {
     // return await _augeApiService.objectiveAugeApi.getObjectives(organizationId, withMeasures: withMeasures);
 
-    return await _augeApiService.objectiveAugeApi.getObjectives(organizationId, withMeasures: withMeasures, withProfile: withProfile);
+    return await _augeApiService.objectiveAugeApi.getObjectives(organizationId, withMeasures: withMeasures, withProfile: withProfile, withTimeline: withTimeline);
 
   }
 
@@ -59,6 +61,31 @@ class ObjectiveService {
       } else {
         await _augeApiService.objectiveAugeApi.updateObjective(objective);
       }
+    } catch (e) {
+      print('${e.runtimeType}, ${e}');
+      rethrow;
+    }
+  }
+
+  /// Save (create) an [TimelineItem] of the [Objective]
+  void saveTimelineItem(String objectiveId, TimelineItem timelineItem) async {
+    try {
+      IdMessage idMessage = await _augeApiService.objectiveAugeApi
+          .createTimelineItem(timelineItem, objectiveId);
+
+      // ID - primary key generated on server-side.
+      timelineItem.id = idMessage?.id;
+    } catch (e) {
+      print('${e.runtimeType}, ${e}');
+      rethrow;
+    }
+  }
+
+  /// Return DateTime from Application Server
+  Future<DateTime> getDateTime(bool isUtc) async {
+    try {
+      DateTimeMessage dateTimeMessage =  await _augeApiService.augeApi.getDateTime(isUtc: isUtc);
+      return dateTimeMessage.dateTime;
     } catch (e) {
       print('${e.runtimeType}, ${e}');
       rethrow;

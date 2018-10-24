@@ -1,14 +1,17 @@
 // Copyright (c) 2017, Levius.
 
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:angular_components/model/ui/has_factory.dart';
 
 import 'package:auge_server/model/objective/objective.dart';
+import 'package:auge_server/model/objective/timeline_item.dart';
 import 'package:auge_server/model/user.dart';
 import 'package:auge_server/model/group.dart';
+import 'package:auge_server/model/authorization.dart';
 
 import 'package:auge_web/message/messages.dart';
 
@@ -185,16 +188,26 @@ class ObjectiveDetailComponent extends Object implements OnInit {
       groupSingleSelectModel.select(objective.group);
   }
 
-  void saveObjective() {
+  void saveObjective() async {
     try {
-      _objectiveService.saveObjective(objective);
+
+      await _objectiveService.saveObjective(objective);
+
+      // Timeline item definition
+      TimelineItem timelineItem = TimelineItem()
+        ..user = _authService.authenticatedUser
+       // ..dateTime = DateTime.now() // Keep the server update data time to utc
+        ..systemFunctionIndex = objective.id == null ? SystemFunction.create.index : SystemFunction.update.index
+        ..dataChanged = json.encode(objective.differenceComparedTo(selectedObjective));
+
+      _objectiveService.saveTimelineItem(objective.id, timelineItem);
+
       _saveController.add(objective);
       closeDetail();
     } catch (e) {
       dialogError = e.toString();
       rethrow;
     }
-
   }
 
   void closeDetail() {

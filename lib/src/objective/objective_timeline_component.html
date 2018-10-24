@@ -1,0 +1,19 @@
+<div class="container-list custom-container-list">
+    <material-expansionpanel disabled
+                             [alwaysHideExpandIcon]="true"
+                             [expanded]="true"
+                             [showSaveCancel]="false">
+        <div name>
+            <span><strong>Timeline</strong></span>
+        </div>
+        <div class="timeline-vertical-size" *deferredContent>
+            <div class="timeline-vertical-size" *ngFor="let timelineItem of timeline">
+
+                <span class="avatar" [style.background-image]="'url(' + userUrlImage(timelineItem.user) + ')'"></span>
+                <span>{{systemFunctionName(timelineItem.systemFunctionIndex)}}</span>
+
+                <span>{{elapsedTime(timelineItem.dateTime)}}</span>
+            </div>
+        </div>
+    </material-expansionpanel>
+</div>

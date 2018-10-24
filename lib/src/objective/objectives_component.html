@@ -19,11 +19,6 @@
                     [showSaveCancel]="false"
                     [expanded]="expandedControl[iObjective]"
                     (expandedChange)="expandedControl[iObjective] = $event">
-
-                    <!-- [expanded]="expandedControl[i]"
-                    (expandedChange)="expandedControl[i] = $event" -->
-                    <!-- [expanded]="expandedInitial(iObjective)" -->
-
                 <div name class="custom-material-expansionpanel-name">
                     <span class="c100 p{{iObjective.progress}} small">
                         <span>{{iObjective.progress}}%</span>
@@ -37,18 +32,23 @@
                         <div>{{iObjective.startDate | date}}<span>&nbsp;·&nbsp;</span>{{iObjective.endDate | date}}</div>
                     </div>
                 </div>
-                <div value class="right">
-                    <span class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjective?.leader?.userProfile?.image) + ')'" [materialTooltip]="leaderLabel + ': ' + iObjective?.leader?.name"></span>
+                <div *ngIf="iObjective.leader != null" value class="right" >
+                    <span class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjective.leader?.userProfile.image) + ')'" [materialTooltip]="leaderLabel + ': ' + iObjective.leader.name"></span>
                 </div>
                 <div action>
                     <material-menu [menu]="menuModel" (click)="selectObjective(iObjective)">
                     </material-menu>
                 </div>
-                <div>
-                    <hr>
-                    <span><strong>{{alignedToLabel}}:</strong> {{iObjective?.alignedTo?.name}}</span>
-                    <auge-measures [objective]="iObjective"></auge-measures>
-                    <auge-initiatives-summary [objective]="iObjective"></auge-initiatives-summary>
+                <hr>
+                <span><strong>{{alignedToLabel}}</strong> {{iObjective?.alignedTo?.name}}</span>
+                <div class="w3-row">
+                    <div class="w3-col m9">
+                        <auge-measures [objective]="iObjective"></auge-measures>
+                        <auge-initiatives-summary [objectiveId]="iObjective.id"></auge-initiatives-summary>
+                    </div>
+                    <div class="w3-col m3">
+                        <auge-objective-timeline [objective]="iObjective"></auge-objective-timeline>
+                    </div>
                 </div>
             </material-expansionpanel>
         </div>

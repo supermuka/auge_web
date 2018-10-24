@@ -14,6 +14,8 @@ import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_web/message/messages.dart';
 
 import 'package:auge_web/src/objective/objective_detail_component.dart';
+import 'package:auge_web/src/objective/objective_timeline_component.dart';
+
 import 'package:auge_web/src/measure/measures_component.dart';
 import 'package:auge_web/src/initiative/initiatives_summary_component.dart';
 
@@ -33,6 +35,7 @@ import 'package:auge_web/services/app_routes.dart';
       routerDirectives,
       materialDirectives,
       ObjectiveDetailComponent,
+      ObjectiveTimelineComponent,
       MeasuresComponent,
       InitiativesSummaryComponent,
     ],
@@ -88,7 +91,7 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
     try {
 
       List<Objective> objectivesAux = await _objectiveService.getObjectives(
-          _authService.selectedOrganization.id, withMeasures: true, withProfile: true);
+          _authService.selectedOrganization.id, withMeasures: true, withProfile: true, withTimeline: true);
 
       _sortObjectivesOrderByGroup(objectivesAux);
 

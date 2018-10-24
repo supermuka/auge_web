@@ -6,7 +6,6 @@ import 'package:angular_router/angular_router.dart';
 import 'package:angular_components/angular_components.dart';
 
 import 'package:auge_server/model/initiative/initiative.dart';
-import 'package:auge_server/model/objective/objective.dart';
 
 import 'package:auge_web/message/messages.dart';
 
@@ -24,6 +23,7 @@ import 'package:auge_web/services/app_routes.dart';
     providers: const [InitiativeService],
     directives: const [
       coreDirectives,
+      DeferredContentDirective,
       routerDirectives,
       materialDirectives,
       InitiativeSummaryComponent,
@@ -41,7 +41,7 @@ class InitiativesSummaryComponent extends Object implements OnInit {
   final AppLayoutService _appLayoutService;
 
   @Input()
-  Objective objective;
+  String objectiveId;
 
   List<Initiative> initiatives = [];
 
@@ -78,9 +78,9 @@ class InitiativesSummaryComponent extends Object implements OnInit {
   @override
   ngOnInit() async {
     try {
-      if (objective?.id != null) {
+      if (objectiveId != null) {
         initiatives = await _initiativeService.getInitiatives(
-            _authService.selectedOrganization?.id, objectiveId: objective.id,
+            _authService.selectedOrganization?.id, objectiveId: objectiveId,
             withWorkItems: true, withProfile: true);
       }
     } catch (e) {
@@ -90,7 +90,7 @@ class InitiativesSummaryComponent extends Object implements OnInit {
   }
 
   void goToInitiatives() {
-    _router.navigate(AppRoutes.initiativesByObjectiveRoute.toUrl(parameters: { AppRoutes.objectiveIdParameter: objective.id}));
+    _router.navigate(AppRoutes.initiativesByObjectiveRoute.toUrl(parameters: { AppRoutes.objectiveIdParameter:objectiveId}));
   }
 
   String userUrlImage(String userProfileImage) {

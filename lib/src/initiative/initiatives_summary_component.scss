@@ -4,16 +4,15 @@
   width: 400px;
 }
 
-.expansionpanel-wide-true {
+.initiatives-vertical-size {
+  max-height: calc(25vh - 48px);
+  overflow-y: auto;
+}
 
- /*Reference: https://css-tricks.com/full-width-containers-limited-width-parents/*/
 
-  position: relative;
-  width: calc(100vw - 5%);
-  left: 50%;
-  right: 50%;
-  margin-left: calc(-50vw + 5%);
-  margin-right: calc(-50vw + 5%);
-
-  height: calc(100vh - 5%);
+.custom-container-list {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-top: 0px;
+  padding-bottom: 0px;
 }

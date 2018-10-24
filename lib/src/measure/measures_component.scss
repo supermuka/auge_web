@@ -28,3 +28,15 @@ material-fab {
   margin-left: 16px;
   width-min: 90px;
 }
+
+.measures-vertical-size {
+  max-height: calc(25vh - 48px);
+  overflow-y: auto;
+}
+
+.custom-container-list {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}

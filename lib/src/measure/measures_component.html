@@ -1,4 +1,4 @@
-<div class="container-list">
+<div class="container-list custom-container-list">
     <material-expansionpanel disabled
             [alwaysHideExpandIcon]="true"
             [expanded]="true"
@@ -12,34 +12,34 @@
             </material-button>
         </div>
         <material-expansionpanel-set>
-            <br/>
-            <div *ngFor="let iMeasure of measures">
-                <material-expansionpanel disabled
-                                         [expanded]="false"
-                                         [hideExpandedHeader]="false"
-                                         [showSaveCancel]="false">
-                    <div name class="truncate-ellipsed-parent custom-expansionpanel-panel-specific-name-width">
-                        <span class="truncate-ellipsed">{{iMeasure.name}}</span>
-                    </div>
-                    <div value class="custom-slider">
-                        <!--material-progress materialTooltip="{{progressLabel + ' ' + iMeasure.progress.toString() + '%'}}" [activeProgress]="iMeasure.progress"></material-progress-->
-                        <!-- material-slider [(value)]="iMeasure.currentValueInt"  [min]="iMeasure.startValueInt" [max]="iMeasure.endValueInt" (valueChange)="updateMeasure($event)"></material-slider -->
-                        <material-slider [disabled]="iMeasure.minValue == null && iMeasure.maxValue == null" [value]="iMeasure.valueRelatedMinMax" [step]="iMeasure.stepValue" [min]="iMeasure.minValue" [max]="iMeasure.maxValue" (valueChange)="updateMeasure(iMeasure, $event)" materialTooltip="{{progressLabel + ' ' + iMeasure.progress.toString() + '%'}}"></material-slider>
-                        <div class="width-flex">
-                            <span materialTooltip="{{startValueLabel}}">{{iMeasure.startValue | number:'.' + iMeasure?.decimalsNumber?.toString()}}</span>
-                            <span materialTooltip="{{currentValueLabel}}">{{iMeasure.currentValue | number:'.' + iMeasure?.decimalsNumber?.toString()}}</span>
-                            <span materialTooltip="{{endValueLabel}}">{{iMeasure.endValue | number:'.' + iMeasure?.decimalsNumber?.toString()}}</span>
+            <div class="measures-vertical-size" *deferredContent>
+                <div  *ngFor="let iMeasure of measures">
+                    <material-expansionpanel disabled
+                                             [expanded]="false"
+                                             [hideExpandedHeader]="false"
+                                             [showSaveCancel]="false">
+                        <div name class="truncate-ellipsed-parent custom-expansionpanel-panel-specific-name-width">
+                            <span class="truncate-ellipsed">{{iMeasure.name}}</span>
                         </div>
+                        <div value class="custom-slider">
+                            <!--material-progress materialTooltip="{{progressLabel + ' ' + iMeasure.progress.toString() + '%'}}" [activeProgress]="iMeasure.progress"></material-progress-->
+                            <!-- material-slider [(value)]="iMeasure.currentValueInt"  [min]="iMeasure.startValueInt" [max]="iMeasure.endValueInt" (valueChange)="updateMeasure($event)"></material-slider -->
+                            <material-slider [disabled]="iMeasure.minValue == null && iMeasure.maxValue == null" [value]="iMeasure.valueRelatedMinMax" [step]="iMeasure.stepValue" [min]="iMeasure.minValue" [max]="iMeasure.maxValue" (valueChange)="updateMeasure(iMeasure, $event)" materialTooltip="{{progressLabel + ' ' + iMeasure.progress.toString() + '%'}}"></material-slider>
+                            <div class="width-flex">
+                                <span materialTooltip="{{startValueLabel}}">{{iMeasure.startValue | number:'.' + iMeasure?.decimalsNumber?.toString()}}</span>
+                                <span materialTooltip="{{currentValueLabel}}">{{iMeasure.currentValue | number:'.' + iMeasure?.decimalsNumber?.toString()}}</span>
+                                <span materialTooltip="{{endValueLabel}}">{{iMeasure.endValue | number:'.' + iMeasure?.decimalsNumber?.toString()}}</span>
+                            </div>
 
-                    </div>
-                    <div action>
-                        <div>
-                            <material-menu [menu]="menuModel" (click)="selectMeasure(iMeasure)">
-                            </material-menu>
                         </div>
-                    </div>
-
-                </material-expansionpanel>
+                        <div action>
+                            <div>
+                                <material-menu [menu]="menuModel" (click)="selectMeasure(iMeasure)">
+                                </material-menu>
+                            </div>
+                        </div>
+                    </material-expansionpanel>
+                </div>
             </div>
         </material-expansionpanel-set>
     </material-expansionpanel>
