@@ -203,7 +203,7 @@ class ObjectiveDetailComponent extends Object implements OnInit {
         ..className = 'Objective'
         ..changedData = json.encode(objective.differenceComparedTo(selectedObjective));
 
-      _objectiveService.saveTimelineItem(objective.id, timelineItem);
+      await _objectiveService.saveTimelineItem(objective.id, timelineItem);
 
       objective.timeline.insert(0, timelineItem);
 

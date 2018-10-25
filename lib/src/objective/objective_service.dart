@@ -27,6 +27,7 @@ class ObjectiveService {
   /// Return an [Objective] by Id
   Future<Objective> getObjectiveById(String id, {bool withMeasures = false}) async {
     try {
+
       return await _augeApiService.objectiveAugeApi.getObjectiveById(id, withMeasures: withMeasures);
     } on DetailedApiRequestError catch (e) {
       if (e.status == 404 && e.errors.firstWhere((ed) => ed.reason == RpcErrorDetailMessage.objectiveDataNotFoundReason, orElse: null ) != null)
@@ -42,7 +43,9 @@ class ObjectiveService {
 
   /// Delete an [Objective]
   Future deleteObjective(String id) async {
+
     try {
+
       await _augeApiService.objectiveAugeApi.deleteObjective(id);
     } catch (e) {
       rethrow;
@@ -61,6 +64,8 @@ class ObjectiveService {
       } else {
         await _augeApiService.objectiveAugeApi.updateObjective(objective);
       }
+
+
     } catch (e) {
       print('${e.runtimeType}, ${e}');
       rethrow;
@@ -75,6 +80,9 @@ class ObjectiveService {
 
       // ID - primary key generated on server-side.
       timelineItem.id = createdMessage?.id;
+      timelineItem.dateTime = createdMessage?.dataTime;
+
+
     } catch (e) {
       print('${e.runtimeType}, ${e}');
       rethrow;
