@@ -4,7 +4,7 @@ import 'package:angular/core.dart';
 
 import 'package:auge_web/services/augeapi_service.dart';
 
-import 'package:auge_server/message_type/id_message.dart';
+import 'package:auge_server/message_type/created_message.dart';
 import 'package:auge_server/message_type/datetime_message.dart';
 import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/objective/timeline_item.dart';
@@ -53,11 +53,11 @@ class ObjectiveService {
   void saveObjective(Objective objective) async {
     try {
       if (objective.id == null) {
-        IdMessage idMessage = await _augeApiService.objectiveAugeApi
+        CreatedMessage createdMessage = await _augeApiService.objectiveAugeApi
             .createObjective(objective);
 
         // ID - primary key generated on server-side.
-        objective.id = idMessage?.id;
+        objective.id = createdMessage?.id;
       } else {
         await _augeApiService.objectiveAugeApi.updateObjective(objective);
       }
@@ -70,11 +70,11 @@ class ObjectiveService {
   /// Save (create) an [TimelineItem] of the [Objective]
   void saveTimelineItem(String objectiveId, TimelineItem timelineItem) async {
     try {
-      IdMessage idMessage = await _augeApiService.objectiveAugeApi
+      CreatedMessage createdMessage = await _augeApiService.objectiveAugeApi
           .createTimelineItem(timelineItem, objectiveId);
 
       // ID - primary key generated on server-side.
-      timelineItem.id = idMessage?.id;
+      timelineItem.id = createdMessage?.id;
     } catch (e) {
       print('${e.runtimeType}, ${e}');
       rethrow;

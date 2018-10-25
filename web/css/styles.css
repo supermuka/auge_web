@@ -29,7 +29,7 @@ body {
   margin-right: auto;
 
   /* material design specification - large = initial */
-  max-width: 1280px;
+  max-width: 1600px; /*1280px*/
   width: 100%;
 
   padding: 4px;

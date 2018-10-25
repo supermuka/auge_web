@@ -191,16 +191,21 @@ class ObjectiveDetailComponent extends Object implements OnInit {
   void saveObjective() async {
     try {
 
+      int functionIndex = objective.id == null ?  SystemFunction.create.index : SystemFunction.update.index;
+
       await _objectiveService.saveObjective(objective);
 
       // Timeline item definition
       TimelineItem timelineItem = TimelineItem()
         ..user = _authService.authenticatedUser
        // ..dateTime = DateTime.now() // Keep the server update data time to utc
-        ..systemFunctionIndex = objective.id == null ? SystemFunction.create.index : SystemFunction.update.index
-        ..dataChanged = json.encode(objective.differenceComparedTo(selectedObjective));
+        ..systemFunctionIndex = functionIndex
+        ..className = 'Objective'
+        ..changedData = json.encode(objective.differenceComparedTo(selectedObjective));
 
       _objectiveService.saveTimelineItem(objective.id, timelineItem);
+
+      objective.timeline.insert(0, timelineItem);
 
       _saveController.add(objective);
       closeDetail();

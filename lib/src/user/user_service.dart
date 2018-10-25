@@ -7,7 +7,7 @@ import 'package:angular/core.dart';
 
 import 'package:auge_server/model/user.dart';
 import 'package:auge_server/model/user_profile_organization.dart';
-import 'package:auge_server/message_type/id_message.dart';
+import 'package:auge_server/message_type/created_message.dart';
 
 import 'package:auge_web/services/augeapi_service.dart';
 
@@ -37,10 +37,10 @@ class UserService {
 
     try {
       if (user.id == null) {
-        IdMessage idMessage = await _augeApiService.augeApi.createUser(user);
+        CreatedMessage createdMessage = await _augeApiService.augeApi.createUser(user);
 
         // ID - primary key generated on server-side.
-        user.id = idMessage?.id;
+        user.id = createdMessage?.id;
       } else {
         await _augeApiService.augeApi.updateUser(user);
       }
@@ -53,10 +53,10 @@ class UserService {
   void saveUserProfileOrganization(UserProfileOrganization userProfileOrganization) async {
     try {
       if (userProfileOrganization.id == null) {
-        IdMessage idMessage = await _augeApiService.augeApi
+        CreatedMessage createdMessage = await _augeApiService.augeApi
             .createUserProfileOrganization(userProfileOrganization);
 
-        userProfileOrganization.id = idMessage.id;
+        userProfileOrganization.id = createdMessage.id;
       } else {
         await _augeApiService.augeApi.updateUserProfileOrganization(
             userProfileOrganization);

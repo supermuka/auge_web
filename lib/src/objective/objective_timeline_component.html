@@ -8,11 +8,23 @@
         </div>
         <div class="timeline-vertical-size" *deferredContent>
             <div class="timeline-vertical-size" *ngFor="let timelineItem of timeline">
+                <div>
+                    <span class="avatar" [style.background-image]="'url(' + userUrlImage(timelineItem.user) + ')'"></span>
+                    <span>{{systemFunctionInPastLabel(timelineItem.systemFunctionIndex)}} the {{timelineItem.className}}</span>
+                </div>
 
-                <span class="avatar" [style.background-image]="'url(' + userUrlImage(timelineItem.user) + ')'"></span>
-                <span>{{systemFunctionName(timelineItem.systemFunctionIndex)}}</span>
-
-                <span>{{elapsedTime(timelineItem.dateTime)}}</span>
+                <div>
+                    <span>{{elapsedTime(timelineItem.dateTime)}}</span>
+                    <span>
+                        <material-button (trigger)="collapseExpandControl(timelineItem)">
+                            <material-icon *ngIf="expandedControl[timelineItem] == null || !expandedControl[timelineItem]" icon="unfold_more"></material-icon>
+                            <material-icon *ngIf="expandedControl[timelineItem] != null && expandedControl[timelineItem]" icon="unfold_less"></material-icon>
+                        </material-button>
+                    </span>
+                </div>
+                <div *ngIf="expandedControl[timelineItem] != null && expandedControl[timelineItem]">
+                    {{formatChangedData(timelineItem)}}
+                </div>
             </div>
         </div>
     </material-expansionpanel>

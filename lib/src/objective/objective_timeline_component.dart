@@ -16,13 +16,18 @@ import 'package:auge_server/model/authorization.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
 
+import 'package:auge_web/message/messages.dart';
+
 
 @Component(
     selector: 'auge-objective-timeline',
     providers: const [],
     directives: const [
       coreDirectives,
-      materialDirectives,
+      /* materialDirectives, */
+      MaterialExpansionPanel,
+      MaterialButtonComponent,
+      MaterialIconComponent,
       DatePipe,
       DeferredContentDirective,
     ],
@@ -35,6 +40,7 @@ import 'package:auge_web/services/common_service.dart' as common_service;
 
 class ObjectiveTimelineComponent extends Object with OnInit {
 
+
   final ObjectiveService _objectiveService;
 
   DateTime currentDateTime;
@@ -43,6 +49,8 @@ class ObjectiveTimelineComponent extends Object with OnInit {
 
   @Input()
   Objective objective;
+
+  Map<TimelineItem, bool> expandedControl = Map();
 
   @override
   void ngOnInit() async {
@@ -57,8 +65,8 @@ class ObjectiveTimelineComponent extends Object with OnInit {
     return common_service.userUrlImage(user?.userProfile?.image);
   }
 
-  String systemFunctionName(int systemFunctionIndex) {
-    return SystemFunction.values[systemFunctionIndex].toString();
+  String systemFunctionInPastLabel(int systemFunctionIndex) {
+    return SystemFunctionMessage.InPastLabel(SystemFunction.values[systemFunctionIndex].toString());
   }
 
   String elapsedTime(DateTime timelineItemDateTime) {
@@ -94,4 +102,30 @@ class ObjectiveTimelineComponent extends Object with OnInit {
     }
     return elapsedTime;
   }
+
+  String formatChangedData(TimelineItem timelineItem) {
+
+    Map mapChangedData = json.decode(timelineItem.changedData);
+
+    StringBuffer formatChangedData = StringBuffer();
+
+    mapChangedData.forEach((k, v) {
+      formatChangedData.write(k);
+      formatChangedData.write(': ');
+      formatChangedData.write(v.values.first);
+      if (v.values.length > 1) {
+        formatChangedData.write(' to ');
+        formatChangedData.write(v.values.last);
+      }
+      formatChangedData.writeln();
+    });
+
+    return formatChangedData.toString();
+
+  }
+
+  void collapseExpandControl(TimelineItem timelineItem) {
+    expandedControl[timelineItem] = expandedControl[timelineItem] == null ? true :  !expandedControl[timelineItem];
+  }
+
 }

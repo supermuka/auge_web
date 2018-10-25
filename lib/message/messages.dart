@@ -354,31 +354,20 @@ class InsightMessage {
     // locale: "en",
     desc: "Insight labels",
   );
-
 }
 
 /// Specific messages and label for [Insight]
-class ObjectiveTimelineMessage {
+class SystemFunctionMessage {
 
   /// Label for Insight
-  static label(String actionCode) => Intl.message(
-    "${Intl.select(actionCode, {
-      'Objectives Overall': 'Objectives Overall',
-      'Objectives': 'Objectives',
-      'Objectives Achieved': 'Objectives Achieved',
-      'Objectives Requiring Attention': 'Objectives Requiring Attention',
-      'Measures': 'Measures',
-      'Measures Achieved': 'Measures Achieved',
-      'Measures Requiring Attention': 'Measures Requiring Attention',
-      'Initiatives': 'Initiatives',
-      'Initiatives Completed': 'Initiatives Completed',
-      'Initiatives Requiring Attention': 'Initiatives Requiring Attention',
-      'Work Items': 'Work Items',
-      'Work Items Completed': 'Work Items Completed',
-      'Work Items Requiring Attention': 'Work Items Requiring Attention',
-      'other': 'Not Defined'})}",
+  static InPastLabel(String functionName) => Intl.message(
+    "${Intl.select(functionName, {
+      'SystemFunction.create': 'Created',
+      'SystemFunction.update': 'Updated',
+      'SystemFunction.delete': 'Deleted',
+      'SystemFunction.read': 'Read',})}",
     name: "insightLabel",
-    args: [label],
+    args: [functionName],
     // locale: "en",
     desc: "Insight labels",
   );

@@ -5,7 +5,7 @@ import 'dart:async';
 
 import 'package:angular/core.dart';
 
-import 'package:auge_server/message_type/id_message.dart';
+import 'package:auge_server/message_type/created_message.dart';
 import 'package:auge_server/model/organization.dart';
 
 import 'package:auge_web/services/augeapi_service.dart';
@@ -26,11 +26,11 @@ class OrganizationService {
   void saveOrganization(Organization organization) async {
     try {
       if (organization.id == null) {
-        IdMessage idMessage = await _augeApiService.augeApi.createOrganization(
+        CreatedMessage createdMessage = await _augeApiService.augeApi.createOrganization(
             organization);
 
         // ID - primary key generated on server-side.
-        organization.id = idMessage?.id;
+        organization.id = createdMessage?.id;
       } else {
         await _augeApiService.augeApi.updateOrganization(organization);
       }

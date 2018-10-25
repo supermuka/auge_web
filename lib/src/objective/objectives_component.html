@@ -4,7 +4,7 @@
     </material-fab>
     <br/>
     <material-expansionpanel-set>
-        <div *ngFor="let iObjective of objectives;let i = index">
+        <div *ngFor="let iObjective of objectives;let i = index" >
             <h4 *ngIf="i == 0 || objectives[i-1]?.group?.id != objectives[i]?.group?.id">
                 <span class="avatar avatar-border" [style.background-color]="colorFromUuid(iObjective?.group?.id)" [materialTooltip]="groupLabel">
                     <span class="text-group-letter">{{firstLetter(iObjective?.group?.name)}}</span>
@@ -41,7 +41,7 @@
                 </div>
                 <hr>
                 <span><strong>{{alignedToLabel}}</strong> {{iObjective?.alignedTo?.name}}</span>
-                <div class="w3-row">
+                <div class="w3-row" >
                     <div class="w3-col m9">
                         <auge-measures [objective]="iObjective"></auge-measures>
                         <auge-initiatives-summary [objectiveId]="iObjective.id"></auge-initiatives-summary>
