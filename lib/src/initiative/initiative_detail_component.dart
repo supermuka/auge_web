@@ -4,8 +4,33 @@
 import 'dart:async';
 
 import 'package:angular/angular.dart';
-import 'package:angular_components/angular_components.dart';
 import 'package:angular_router/angular_router.dart';
+//import 'package:angular_forms/angular_forms.dart';
+/* import 'package:angular_components/angular_components.dart'; */
+import 'package:angular_components/focus/focus.dart';
+import 'package:angular_components/laminate/components/modal/modal.dart';
+import 'package:angular_components/laminate/overlay/module.dart';
+import 'package:angular_components/material_dialog/material_dialog.dart';
+
+import 'package:angular_components/material_button/material_button.dart';
+import 'package:angular_components/material_icon/material_icon.dart';
+
+import 'package:angular_components/material_input/material_auto_suggest_input.dart';
+import 'package:angular_components/material_input/material_input.dart';
+import 'package:angular_components/material_select/material_dropdown_select.dart';
+import 'package:angular_components/model/selection/selection_model.dart';
+import 'package:angular_components/model/selection/selection_options.dart';
+import 'package:angular_components/model/selection/string_selection_options.dart';
+// import 'package:angular_components/model/ui/has_factory.dart';
+
+import 'package:angular_components/material_select/dropdown_button.dart';
+import 'package:angular_components/material_select/material_dropdown_select_accessor.dart';
+
+import 'package:angular_components/focus/focus_item.dart';
+import 'package:angular_components/focus/focus_list.dart';
+import 'package:angular_components/material_list/material_list.dart';
+import 'package:angular_components/material_list/material_list_item.dart';
+import 'package:angular_components/material_select/material_select_item.dart';
 
 import 'package:auge_server/model/user.dart';
 import 'package:auge_server/model/initiative/initiative.dart';
@@ -30,15 +55,33 @@ import 'initiative_detail_component.template.dart' as initiative_detail_componen
 
 @Component(
   selector: 'auge-initiative-detail',
-  providers: const [ObjectiveService, UserService, GroupService],
+  providers: const [overlayBindings, ObjectiveService, UserService, GroupService],
   directives: const [
     coreDirectives,
     routerDirectives,
-    materialDirectives,
-    /*
     materialInputDirectives,
+    //formDirectives,
+
+    /* materialDirectives, */
+    AutoFocusDirective,
+    MaterialDialogComponent,
+    ModalComponent,
+
+    MaterialIconComponent,
+    MaterialButtonComponent,
+
+    MaterialAutoSuggestInputComponent,
+
     MaterialDropdownSelectComponent,
-    DropdownSelectValueAccessor, */
+    DropdownSelectValueAccessor,
+    DropdownButtonComponent,
+
+    FocusItemDirective,
+    FocusListDirective,
+    MaterialListComponent,
+    MaterialListItemComponent,
+    MaterialSelectItemComponent,
+
   ],
   templateUrl: 'initiative_detail_component.html',
   styleUrls: const [

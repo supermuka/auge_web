@@ -6,8 +6,23 @@ import 'dart:async';
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
-import 'package:angular_components/angular_components.dart';
-import 'package:angular_forms/angular_forms.dart';
+/* import 'package:angular_components/angular_components.dart'; */
+/* import 'package:angular_forms/angular_forms.dart'; */
+
+import 'package:angular_components/focus/focus.dart';
+import 'package:angular_components/laminate/components/modal/modal.dart';
+import 'package:angular_components/laminate/overlay/module.dart';
+import 'package:angular_components/material_dialog/material_dialog.dart';
+
+import 'package:angular_components/material_input/material_input.dart';
+
+import 'package:angular_components/material_radio/material_radio_group.dart';
+import 'package:angular_components/material_radio/material_radio.dart';
+
+import 'package:angular_components/material_button/material_button.dart';
+import 'package:angular_components/material_icon/material_icon.dart';
+
+import 'package:angular_components/material_tooltip/material_tooltip.dart';
 
 import 'package:intl/intl.dart';
 
@@ -29,12 +44,25 @@ import 'package:image/image.dart';
 
 @Component(
     selector: 'auge-user-detail',
-    providers: const [UserService],
+    providers: const [overlayBindings, UserService],
     directives: const [
       coreDirectives,
       routerDirectives,
-      materialDirectives,
-      formDirectives,
+      materialInputDirectives,
+
+      AutoFocusDirective,
+      MaterialDialogComponent,
+      ModalComponent,
+
+      MaterialRadioGroupComponent,
+      MaterialRadioComponent,
+
+      MaterialButtonComponent,
+      MaterialIconComponent,
+      MaterialTooltipDirective,
+
+      /* materialDirectives, */
+      /* formDirectives, */
     ],
     templateUrl: 'user_detail_component.html',
     styleUrls: const [

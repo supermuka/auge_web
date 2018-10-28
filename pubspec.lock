@@ -14,7 +14,7 @@ packages:
       name: analyzer
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.33.0"
+    version: "0.33.1"
   angular:
     dependency: "direct main"
     description:
@@ -231,7 +231,7 @@ packages:
       name: discoveryapis_generator
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.9.9"
+    version: "0.9.10"
   fixnum:
     dependency: transitive
     description:
@@ -245,7 +245,7 @@ packages:
       name: front_end
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.6"
+    version: "0.1.6+1"
   gcloud:
     dependency: transitive
     description:
@@ -266,14 +266,14 @@ packages:
       name: googleapis
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.52.0"
+    version: "0.52.0+1"
   googleapis_beta:
     dependency: transitive
     description:
       name: googleapis_beta
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.47.0"
+    version: "0.47.0+1"
   graphs:
     dependency: transitive
     description:
@@ -350,7 +350,7 @@ packages:
       name: kernel
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.6"
+    version: "0.3.6+1"
   logging:
     dependency: transitive
     description:

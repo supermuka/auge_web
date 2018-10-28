@@ -3,8 +3,18 @@
 
 import 'dart:async';
 import 'package:angular/angular.dart';
-import 'package:angular_components/angular_components.dart';
+/* import 'package:angular_components/angular_components.dart'; */
 import 'package:angular_router/angular_router.dart';
+
+import 'package:angular_components/focus/focus.dart';
+import 'package:angular_components/laminate/components/modal/modal.dart';
+import 'package:angular_components/laminate/overlay/module.dart';
+import 'package:angular_components/material_dialog/material_dialog.dart';
+
+import 'package:angular_components/material_button/material_button.dart';
+import 'package:angular_components/material_icon/material_icon.dart';
+
+import 'package:angular_components/material_input/material_input.dart';
 
 import 'package:auge_server/model/organization.dart';
 import 'package:auge_web/message/messages.dart';
@@ -13,11 +23,21 @@ import 'package:auge_web/src/organization/organization_service.dart';
 
 @Component(
   selector: 'auge-organization-detail',
-  providers: const <dynamic>[materialProviders, OrganizationService],
+  providers: const <dynamic>[/* materialProviders, */ overlayBindings, OrganizationService],
   directives: const [
     coreDirectives,
     routerDirectives,
-    materialDirectives,
+
+    materialInputDirectives,
+    //formDirectives,
+
+    /* materialDirectives, */
+    AutoFocusDirective,
+    MaterialDialogComponent,
+    ModalComponent,
+
+    MaterialIconComponent,
+    MaterialButtonComponent,
   ],
   templateUrl: 'organization_detail_component.html',
   styleUrls: const [

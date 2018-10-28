@@ -9,8 +9,16 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
-import 'package:angular_components/angular_components.dart';
+/* import 'package:angular_components/angular_components.dart'; */
+import 'package:angular_components/material_expansionpanel/material_expansionpanel_set.dart';
+import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
+import 'package:angular_components/material_tooltip/material_tooltip.dart';
+import 'package:angular_components/material_slider/material_slider.dart';
+import 'package:angular_components/material_checkbox/material_checkbox.dart';
 import 'package:angular_components/model/menu/menu.dart';
+import 'package:angular_components/model/ui/icon.dart';
+import 'package:angular_components/content/deferred_content.dart';
+import 'package:angular_components/material_menu/material_menu.dart';
 
 import 'package:auge_server/model/user.dart';
 import 'package:auge_server/model/initiative/initiative.dart';
@@ -30,7 +38,14 @@ import 'package:auge_web/src/work_item/work_item_detail_component.dart';
     directives: const [
       coreDirectives,
       routerDirectives,
-      materialDirectives,
+      /* materialDirectives, */
+      MaterialExpansionPanelSet,
+      MaterialExpansionPanel,
+      MaterialTooltipDirective,
+      MaterialSliderComponent,
+      MaterialCheckboxComponent,
+      DeferredContentDirective,
+      MaterialMenuComponent,
       WorkItemDetailComponent,
     ],
     pipes: const [commonPipes],

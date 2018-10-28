@@ -13,10 +13,14 @@ String userUrlImage(String userProfileImage) {
 }
 
 /// Handle Timeout
-const timeout = const Duration(seconds: 5);
-const ms = const Duration(milliseconds: 1);
+const int durationSeconds = 5;
 
-startTimeout(Function handleTimeout, [int milliseconds] ) {
-  var duration = milliseconds == null ? timeout : ms * milliseconds;
+Timer startTimeoutTimer(Function handleTimeout, [int seconds] ) {
+  Duration duration = Duration(seconds: seconds == null ? durationSeconds : seconds);
   return new Timer(duration, handleTimeout);
+}
+
+Timer repeatingTimer(Function handleTimeout, [int seconds] ) {
+  Duration duration = Duration(seconds: seconds == null ? durationSeconds : seconds);
+  return new Timer.periodic(duration, handleTimeout);
 }

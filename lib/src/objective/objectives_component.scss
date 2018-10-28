@@ -11,7 +11,7 @@ material-fab {
 
 .custom-material-expansionpanel-name {
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: min-content auto;
 }
 
 .truncate-ellipsed-parent {
@@ -22,6 +22,7 @@ material-fab {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+  /* text-align: left; */
 }
 
 .right {

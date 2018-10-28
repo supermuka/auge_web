@@ -7,6 +7,7 @@ import 'package:auge_web/services/augeapi_service.dart';
 
 import 'package:auge_server/message_type/created_message.dart';
 import 'package:auge_server/model/objective/measure.dart';
+import 'package:auge_server/model/objective/timeline_item.dart';
 
 import 'package:auge_web/message/messages.dart';
 
@@ -67,6 +68,22 @@ class MeasureService {
             measure, objectiveId);
       }
     } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Save (create) an [TimelineItem] of the [Measure]
+  void saveTimelineItem(String objectiveId, TimelineItem timelineItem) async {
+    try {
+      CreatedMessage createdMessage = await _augeApiService.objectiveAugeApi
+          .createTimelineItem(timelineItem, objectiveId);
+
+      // ID - primary key generated on server-side.
+      timelineItem.id = createdMessage?.id;
+      timelineItem.dateTime = createdMessage?.dataTime;
+
+    } catch (e) {
+      print('${e.runtimeType}, ${e}');
       rethrow;
     }
   }

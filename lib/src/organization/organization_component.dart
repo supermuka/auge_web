@@ -3,7 +3,7 @@
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
-import 'package:angular_components/angular_components.dart';
+/* import 'package:angular_components/angular_components.dart'; */
 
 import 'package:auge_server/model/organization.dart';
 
@@ -23,7 +23,7 @@ import 'package:auge_web/src/app_layout/app_layout_service.dart';
   directives: const [
     coreDirectives,
     routerDirectives,
-    materialDirectives,
+    /* materialDirectives, */
     OrganizationDetailComponent,
   ],
   templateUrl: 'organization_component.html',

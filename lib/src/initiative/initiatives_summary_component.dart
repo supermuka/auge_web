@@ -3,7 +3,15 @@
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
-import 'package:angular_components/angular_components.dart';
+/* import 'package:angular_components/angular_components.dart';  */
+import 'package:angular_components/content/deferred_content.dart';
+import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
+import 'package:angular_components/material_expansionpanel/material_expansionpanel_set.dart';
+
+import 'package:angular_components/material_button/material_button.dart';
+import 'package:angular_components/material_icon/material_icon.dart';
+
+import 'package:angular_components/material_tooltip/material_tooltip.dart';
 
 import 'package:auge_server/model/initiative/initiative.dart';
 
@@ -23,10 +31,17 @@ import 'package:auge_web/services/app_routes.dart';
     providers: const [InitiativeService],
     directives: const [
       coreDirectives,
-      DeferredContentDirective,
       routerDirectives,
-      materialDirectives,
+      /* materialDirectives, */
+
+      DeferredContentDirective,
+      MaterialButtonComponent,
+      MaterialIconComponent,
+      MaterialTooltipDirective,
+      MaterialExpansionPanelSet,
+      MaterialExpansionPanel,
       InitiativeSummaryComponent,
+
     ],
     templateUrl: 'initiatives_summary_component.html',
     styleUrls: const [

@@ -1,7 +1,6 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
-
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
 

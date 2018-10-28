@@ -27,10 +27,10 @@
                             <div class="fill"></div>
                         </div>
                     </span>
-                    <div class="truncate-ellipsed-parent">
+                    <span class="truncate-ellipsed-parent">
                         <h4 class="truncate-ellipsed">{{iObjective.name}}</h4>
                         <div>{{iObjective.startDate | date}}<span>&nbsp;·&nbsp;</span>{{iObjective.endDate | date}}</div>
-                    </div>
+                    </span>
                 </div>
                 <div *ngIf="iObjective.leader != null" value class="right" >
                     <span class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjective.leader?.userProfile.image) + ')'" [materialTooltip]="leaderLabel + ': ' + iObjective.leader.name"></span>

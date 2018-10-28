@@ -1,11 +1,33 @@
 // Copyright (c) 2017, Levius.
 
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:angular/angular.dart';
-import 'package:angular_components/angular_components.dart';
+/* import 'package:angular_components/angular_components.dart'; */
+
+import 'package:angular_components/focus/focus.dart';
+import 'package:angular_components/laminate/components/modal/modal.dart';
+import 'package:angular_components/laminate/overlay/module.dart';
+import 'package:angular_components/material_dialog/material_dialog.dart';
 import 'package:angular_components/model/ui/has_factory.dart';
+
+import 'package:angular_components/material_input/material_input.dart';
+
+import 'package:angular_components/material_button/material_button.dart';
+import 'package:angular_components/material_icon/material_icon.dart';
+
+import 'package:angular_components/material_input/material_auto_suggest_input.dart';
+import 'package:angular_components/material_select/material_dropdown_select.dart';
+import 'package:angular_components/model/selection/selection_model.dart';
+import 'package:angular_components/model/selection/selection_options.dart';
+import 'package:angular_components/model/selection/string_selection_options.dart';
+import 'package:angular_components/model/ui/has_factory.dart';
+
+import 'package:angular_components/material_datepicker/module.dart';
+import 'package:angular_components/model/date/date.dart';
+import 'package:angular_components/utils/browser/window/module.dart';
+
+import 'package:angular_components/material_datepicker/material_datepicker.dart';
 
 import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/objective/timeline_item.dart';
@@ -26,10 +48,21 @@ import 'objective_detail_component.template.dart' as objective_detail_component;
 
 @Component(
     selector: 'auge-objective-detail',
-    providers: const [UserService, GroupService],
+    providers: const [overlayBindings, windowBindings, datepickerBindings,UserService, GroupService],
     directives: const [
       coreDirectives,
-      materialDirectives,
+      materialInputDirectives,
+      /* materialDirectives, */
+      AutoFocusDirective,
+      MaterialDialogComponent,
+      MaterialAutoSuggestInputComponent,
+      MaterialDropdownSelectComponent,
+      ModalComponent,
+
+      MaterialButtonComponent,
+      MaterialIconComponent,
+
+      MaterialDatepickerComponent,
     ],
     templateUrl: 'objective_detail_component.html',
     styleUrls: const [
@@ -143,14 +176,12 @@ class ObjectiveDetailComponent extends Object implements OnInit {
 
     alignedToSingleSelectModel.selectionChanges.listen((alignedTo) {
 
-
       if (alignedTo.isNotEmpty && alignedTo.first.added != null && alignedTo.first.added.length != 0 && alignedTo.first.added?.first != null) {
         objective.alignedTo = alignedTo.first.added.first;
       } else {
         objective.alignedTo = null;
       }
 
-      print(objective.alignedTo);
     });
 
     if (objective.alignedTo != null)
@@ -201,7 +232,7 @@ class ObjectiveDetailComponent extends Object implements OnInit {
        // ..dateTime = DateTime.now() // Keep the server update data time to utc
         ..systemFunctionIndex = functionIndex
         ..className = 'Objective'
-        ..changedData = json.encode(objective.differenceComparedTo(selectedObjective));
+        ..changedData = ObjectiveFacilities.differenceToJson(objective, selectedObjective);
 
       await _objectiveService.saveTimelineItem(objective.id, timelineItem);
 

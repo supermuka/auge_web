@@ -356,7 +356,7 @@ class InsightMessage {
   );
 }
 
-/// Specific messages and label for [Insight]
+/// Specific messages and label for [SystemFunction]
 class SystemFunctionMessage {
 
   /// Label for Insight
@@ -365,11 +365,54 @@ class SystemFunctionMessage {
       'SystemFunction.create': 'Created',
       'SystemFunction.update': 'Updated',
       'SystemFunction.delete': 'Deleted',
-      'SystemFunction.read': 'Read',})}",
-    name: "insightLabel",
+      'SystemFunction.read': 'Read',
+      'other': 'Not Defined'})}",
+    name: "systemFunctionLabel",
     args: [functionName],
     // locale: "en",
-    desc: "Insight labels",
+    desc: "System Function labels",
+  );
+}
+
+/// Specific messages and label for [Objective] class field
+class ObjectiveFieldMessage {
+
+  /// Label for Insight
+  static label(String fieldName) => Intl.message(
+    "${Intl.select(fieldName, {
+      'name': 'Name',
+      'description': 'Description',
+      'leader': 'Leader',
+      'startDate': 'Start Date',
+      'endDate': 'End Date',
+      'other': 'Not Defined'})}",
+    name: "objectiveFieldLabel",
+    args: [fieldName],
+    // locale: "en",
+    desc: "Objective class field labels",
+  );
+
+}
+
+/// Specific messages and label for [TimelineItem] class field
+class TimelineItemdMessage {
+
+  /// Label for Insight
+  static label(String fieldName) => Intl.message(
+    "${Intl.select(fieldName, {
+      'day ago': 'day ago',
+      'days ago': 'days ago',
+      'hour ago': 'hour ago',
+      'hours ago': 'hours ago',
+      'minute ago': 'minutes ago',
+      'minutes ago': 'minutes ago',
+      'second ago': 'second ago',
+      'seconds ago': 'seconds ago',
+      'other': 'Not Defined'})}",
+    name: "labelLabel",
+    args: [fieldName],
+    // locale: "en",
+    desc: "TimelineItem labels",
   );
 
 }

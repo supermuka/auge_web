@@ -3,7 +3,11 @@
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
-import 'package:angular_components/angular_components.dart';
+/* import 'package:angular_components/angular_components.dart'; */
+import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
+import 'package:angular_components/material_button/material_button.dart';
+import 'package:angular_components/material_icon/material_icon.dart';
+
 import 'package:auge_server/model/initiative/initiative.dart';
 import 'package:auge_web/message/messages.dart';
 
@@ -18,7 +22,10 @@ import 'package:auge_web/src/work_item/work_items_list_component.dart';
     directives: const [
       coreDirectives,
       routerDirectives,
-      materialDirectives,
+      /* materialDirectives, */
+      MaterialExpansionPanel,
+      MaterialButtonComponent,
+      MaterialIconComponent,
       WorkItemsListComponent,
       WorkItemsKanbanComponent,
     ],

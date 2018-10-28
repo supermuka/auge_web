@@ -20,7 +20,7 @@ class AppLayoutService {
 
     // Start a timeout to after to clear the error.
     // The error is presented just some seconds.
-    startTimeout(() { _error = null; });
+    startTimeoutTimer(() { _error = null; });
   }
 
 }

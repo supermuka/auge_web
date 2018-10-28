@@ -4,21 +4,55 @@
 import 'dart:async';
 
 import 'package:angular/angular.dart';
-import 'package:angular_components/angular_components.dart';
+// import 'package:angular_forms/angular_forms.dart';
+
+/* import 'package:angular_components/angular_components.dart'; */
+import 'package:angular_components/focus/focus.dart';
+import 'package:angular_components/laminate/components/modal/modal.dart';
+import 'package:angular_components/laminate/overlay/module.dart';
+import 'package:angular_components/material_dialog/material_dialog.dart';
 import 'package:angular_components/model/ui/has_factory.dart';
+
+import 'package:angular_components/material_button/material_button.dart';
+import 'package:angular_components/material_icon/material_icon.dart';
+
+import 'package:angular_components/material_input/material_input.dart';
+
+import 'package:angular_components/material_select/material_dropdown_select.dart';
+import 'package:angular_components/material_select/material_dropdown_select_accessor.dart';
+import 'package:angular_components/model/selection/selection_model.dart';
+import 'package:angular_components/model/selection/selection_options.dart';
+import 'package:angular_components/model/ui/has_renderer.dart';
 
 import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/objective/measure.dart';
+import 'package:auge_server/model/authorization.dart';
+import 'package:auge_server/model/objective/timeline_item.dart';
+
 
 import 'package:auge_web/message/messages.dart';
 
+import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/measure/measure_service.dart';
 
 @Component(
     selector: 'auge-measure-detail',
+    providers: [overlayBindings],
     directives: const [
       coreDirectives,
-      materialDirectives,
+      //formDirectives,
+
+      materialInputDirectives,
+      AutoFocusDirective,
+      MaterialDialogComponent,
+      ModalComponent,
+      MaterialDropdownSelectComponent,
+      DropdownSelectValueAccessor,
+
+      MaterialButtonComponent,
+      MaterialIconComponent,
+
+      /* materialDirectives, */
     ],
     templateUrl: 'measure_detail_component.html',
     styleUrls: const [
@@ -27,6 +61,7 @@ import 'package:auge_web/src/measure/measure_service.dart';
 
 class MeasureDetailComponent extends Object implements OnInit {
 
+  final AuthService _authService;
   final MeasureService _measureService;
 
   @Input()
@@ -63,7 +98,7 @@ class MeasureDetailComponent extends Object implements OnInit {
  // List errorControl = [];
  // bool validInput = false;
 
-  MeasureDetailComponent(this._measureService) {
+  MeasureDetailComponent(this._authService, this._measureService) {
     measureUnitSingleSelectModel = SelectionModel.single();
   }
 
@@ -119,9 +154,24 @@ class MeasureDetailComponent extends Object implements OnInit {
     }
   }
 
-  void saveMeasure() {
+  void saveMeasure() async {
     try {
-      _measureService.saveMeasure(objective.id, measure);
+      int functionIndex = objective.id == null ?  SystemFunction.create.index : SystemFunction.update.index;
+
+      await _measureService.saveMeasure(objective.id, measure);
+
+      // Timeline item definition
+      TimelineItem timelineItem = TimelineItem()
+        ..user = _authService.authenticatedUser
+      // ..dateTime = DateTime.now() // Keep the server update data time to utc
+        ..systemFunctionIndex = functionIndex
+        ..className = 'Measure'
+        ..changedData = MeasureFacilities.differenceToJson(measure, selectedMeasure);
+
+      //await _objectiveService.saveTimelineItem(objective.id, timelineItem);
+
+      objective.timeline.insert(0, timelineItem);
+
       _saveController.add(measure);
       closeDetail();
     } catch (e) {
@@ -268,9 +318,10 @@ class MeasureDetailComponent extends Object implements OnInit {
 
   }
 
-
   String get unitLeadingText => measure?.measureUnit == null ? null : measure.measureUnit.symbol.contains(r'$') ? measure.measureUnit.symbol : null;
 
   String get unitTrailingText => measure?.measureUnit == null ? null : !measure.measureUnit.symbol.contains(r'$') ? measure.measureUnit.symbol : null;
+
+
 
 }

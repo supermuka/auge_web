@@ -2,7 +2,13 @@
 // Author: Samuel C. Schwebel.
 
 import 'package:angular/angular.dart';
-import 'package:angular_components/angular_components.dart';
+/* import 'package:angular_components/angular_components.dart'; */
+
+
+import 'package:angular_components/focus/keyboard_only_focus_indicator.dart';
+import 'package:angular_components/laminate/enums/alignment.dart';
+import 'package:angular_components/material_tooltip/material_tooltip.dart';
+
 
 import 'package:auge_web/message/messages.dart';
 
@@ -12,7 +18,11 @@ import 'package:auge_server/model/initiative/initiative.dart';
     selector: 'auge-initiative-summary',
     directives: const [
       coreDirectives,
-      materialDirectives,
+      /* materialDirectives, */
+      ClickableTooltipTargetDirective,
+      KeyboardOnlyFocusIndicatorDirective,
+      MaterialTooltipDirective,
+      MaterialPaperTooltipComponent,
     ],
     templateUrl: 'initiative_summary_component.html',
     styleUrls: const [

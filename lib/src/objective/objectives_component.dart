@@ -6,9 +6,16 @@ import 'dart:async';
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
 
-import 'package:angular_components/angular_components.dart';
-import 'package:angular_components/model/menu/menu.dart';
+/* import 'package:angular_components/angular_components.dart'; */
+import 'package:angular_components/material_button/material_fab.dart';
+import 'package:angular_components/material_icon/material_icon.dart';
+import 'package:angular_components/material_menu/material_menu.dart';
 import 'package:angular_components/model/ui/icon.dart';
+import 'package:angular_components/model/menu/menu.dart';
+
+import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
+import 'package:angular_components/material_expansionpanel/material_expansionpanel_set.dart';
+import 'package:angular_components/material_tooltip/material_tooltip.dart';
 
 import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_web/message/messages.dart';
@@ -33,7 +40,13 @@ import 'package:auge_web/services/app_routes.dart';
     directives: const [
       coreDirectives,
       routerDirectives,
-      materialDirectives,
+      /* materialDirectives, */
+      MaterialFabComponent,
+      MaterialIconComponent,
+      MaterialExpansionPanel,
+      MaterialExpansionPanelSet,
+      MaterialTooltipDirective,
+      MaterialMenuComponent,
       ObjectiveDetailComponent,
       ObjectiveTimelineComponent,
       MeasuresComponent,

@@ -5,9 +5,16 @@ import 'dart:async';
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
-import 'package:angular_components/angular_components.dart';
+/* import 'package:angular_components/angular_components.dart'; */
 
+import 'package:angular_components/material_button/material_fab.dart';
+import 'package:angular_components/material_icon/material_icon.dart';
+import 'package:angular_components/material_menu/material_menu.dart';
+import 'package:angular_components/model/ui/icon.dart';
 import 'package:angular_components/model/menu/menu.dart';
+
+import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
+import 'package:angular_components/material_expansionpanel/material_expansionpanel_set.dart';
 
 import 'package:auge_server/model/user.dart';
 import 'package:auge_web/message/messages.dart';
@@ -27,7 +34,13 @@ import 'package:auge_web/services/common_service.dart' as common_service;
     directives: const [
       coreDirectives,
       routerDirectives,
-      materialDirectives,
+      /* materialDirectives, */
+      MaterialFabComponent,
+      MaterialIconComponent,
+      MaterialExpansionPanel,
+      MaterialExpansionPanelSet,
+      MaterialMenuComponent,
+
       UserDetailComponent,
     ],
     templateUrl: 'users_component.html',

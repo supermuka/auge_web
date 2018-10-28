@@ -14,6 +14,7 @@ import 'package:angular_components/material_stepper/material_step.dart';
 import 'package:angular_components/material_stepper/material_stepper.dart';
 import 'package:angular_components/model/action/async_action.dart';
 import 'package:angular_components/utils/angular/scroll_host/angular_2.dart';
+
 import 'package:angular_components/material_select/material_dropdown_select.dart';
 import 'package:angular_components/material_select/material_dropdown_select_accessor.dart';
 import 'package:angular_components/model/selection/selection_model.dart';
@@ -37,7 +38,7 @@ import 'package:auge_web/services/app_routes.dart';
   selector: 'auge-auth',
   providers: const [scrollHostProviders],
   directives: const [
-    coreDirectives,
+    /* coreDirectives, */
     routerDirectives,
     materialInputDirectives,
     MaterialDialogComponent,
@@ -45,6 +46,7 @@ import 'package:auge_web/services/app_routes.dart';
     StepDirective,
     SummaryDirective,
     MaterialButtonComponent,
+
 
     MaterialDropdownSelectComponent,
     DropdownSelectValueAccessor,

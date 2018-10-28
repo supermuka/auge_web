@@ -4,8 +4,23 @@
 import 'dart:async';
 
 import 'package:angular/angular.dart';
-import 'package:angular_components/angular_components.dart';
 import 'package:angular_router/angular_router.dart';
+
+/*import 'package:angular_components/angular_components.dart';*/
+
+import 'package:angular_components/focus/focus.dart';
+import 'package:angular_components/laminate/components/modal/modal.dart';
+import 'package:angular_components/laminate/overlay/module.dart';
+import 'package:angular_components/material_dialog/material_dialog.dart';
+
+import 'package:angular_components/material_button/material_button.dart';
+import 'package:angular_components/material_icon/material_icon.dart';
+
+import 'package:angular_components/material_input/material_auto_suggest_input.dart';
+import 'package:angular_components/model/selection/selection_model.dart';
+import 'package:angular_components/model/selection/selection_options.dart';
+import 'package:angular_components/model/selection/string_selection_options.dart';
+import 'package:angular_components/model/ui/has_factory.dart';
 
 import 'package:auge_server/model/objective/objective.dart';
 
@@ -23,11 +38,21 @@ import 'package:angular_components/model/ui/has_factory.dart';
 
 @Component(
   selector: 'auge-initiatives-filter',
-  providers: const [ObjectiveService, UserService, GroupService],
+  providers: const [overlayBindings, ObjectiveService, UserService, GroupService],
   directives: const [
     coreDirectives,
     routerDirectives,
-    materialDirectives,
+    /* materialDirectives, */
+    AutoFocusDirective,
+    MaterialDialogComponent,
+    ModalComponent,
+
+    MaterialIconComponent,
+    MaterialButtonComponent,
+
+    MaterialAutoSuggestInputComponent,
+
+
   ],
   templateUrl: 'initiatives_filter_component.html',
   styleUrls: const [

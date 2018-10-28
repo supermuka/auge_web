@@ -5,7 +5,6 @@ import 'package:angular/core.dart';
 import 'package:auge_web/services/augeapi_service.dart';
 
 import 'package:auge_server/message_type/created_message.dart';
-import 'package:auge_server/message_type/datetime_message.dart';
 import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/objective/timeline_item.dart';
 
@@ -14,13 +13,23 @@ class ObjectiveService {
 
   final AugeApiService _augeApiService;
 
+  DateTime currentDateTime;
+
   ObjectiveService(this._augeApiService);
+
+  Future<DateTime> getDateTime() async {
+    return (await _augeApiService.augeApi.getDateTime(isUtc: true))?.dateTime;
+  }
 
   /// Return a list of [Objective]
   Future<List<Objective>> getObjectives(String organizationId, {bool withMeasures = false, bool withProfile = false, bool withTimeline = false}) async {
     // return await _augeApiService.objectiveAugeApi.getObjectives(organizationId, withMeasures: withMeasures);
 
-    return await _augeApiService.objectiveAugeApi.getObjectives(organizationId, withMeasures: withMeasures, withProfile: withProfile, withTimeline: withTimeline);
+    List<Objective> objectives = await _augeApiService.objectiveAugeApi.getObjectives(organizationId, withMeasures: withMeasures, withProfile: withProfile, withTimeline: withTimeline);
+
+    currentDateTime ??= await getDateTime();
+
+    return objectives;
 
   }
 
@@ -28,7 +37,12 @@ class ObjectiveService {
   Future<Objective> getObjectiveById(String id, {bool withMeasures = false}) async {
     try {
 
-      return await _augeApiService.objectiveAugeApi.getObjectiveById(id, withMeasures: withMeasures);
+      Objective objective = await _augeApiService.objectiveAugeApi.getObjectiveById(id, withMeasures: withMeasures);
+
+      currentDateTime ??= await getDateTime();
+
+      return objective;
+
     } on DetailedApiRequestError catch (e) {
       if (e.status == 404 && e.errors.firstWhere((ed) => ed.reason == RpcErrorDetailMessage.objectiveDataNotFoundReason, orElse: null ) != null)
         return null;
@@ -43,10 +57,10 @@ class ObjectiveService {
 
   /// Delete an [Objective]
   Future deleteObjective(String id) async {
-
     try {
 
       await _augeApiService.objectiveAugeApi.deleteObjective(id);
+      currentDateTime = await getDateTime();
     } catch (e) {
       rethrow;
     }
@@ -61,10 +75,10 @@ class ObjectiveService {
 
         // ID - primary key generated on server-side.
         objective.id = createdMessage?.id;
+        currentDateTime = createdMessage?.dataTime;
       } else {
         await _augeApiService.objectiveAugeApi.updateObjective(objective);
       }
-
 
     } catch (e) {
       print('${e.runtimeType}, ${e}');
@@ -82,18 +96,8 @@ class ObjectiveService {
       timelineItem.id = createdMessage?.id;
       timelineItem.dateTime = createdMessage?.dataTime;
 
+      currentDateTime = createdMessage?.dataTime;
 
-    } catch (e) {
-      print('${e.runtimeType}, ${e}');
-      rethrow;
-    }
-  }
-
-  /// Return DateTime from Application Server
-  Future<DateTime> getDateTime(bool isUtc) async {
-    try {
-      DateTimeMessage dateTimeMessage =  await _augeApiService.augeApi.getDateTime(isUtc: isUtc);
-      return dateTimeMessage.dateTime;
     } catch (e) {
       print('${e.runtimeType}, ${e}');
       rethrow;

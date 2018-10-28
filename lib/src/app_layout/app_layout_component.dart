@@ -5,7 +5,22 @@ import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
 import 'package:angular_forms/angular_forms.dart';
 
-import 'package:angular_components/angular_components.dart';
+/* import 'package:angular_components/angular_components.dart'; */
+import 'package:angular_components/app_layout/material_persistent_drawer.dart';
+import 'package:angular_components/app_layout/material_temporary_drawer.dart';
+import 'package:angular_components/content/deferred_content.dart';
+
+import 'package:angular_components/material_list/material_list.dart';
+import 'package:angular_components/material_list/material_list_item.dart';
+
+import 'package:angular_components/material_button/material_button.dart';
+import 'package:angular_components/material_icon/material_icon.dart';
+
+import 'package:angular_components/material_select/material_dropdown_select.dart';
+import 'package:angular_components/material_select/material_dropdown_select_accessor.dart';
+import 'package:angular_components/model/selection/selection_model.dart';
+import 'package:angular_components/model/selection/selection_options.dart';
+import 'package:angular_components/model/ui/has_factory.dart';
 
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/search/search_component.dart';
@@ -40,8 +55,17 @@ import 'package:auge_web/src/group/groups_component.template.dart' as groups_com
     directives: const [
       coreDirectives,
       routerDirectives,
-      materialDirectives,
       formDirectives,
+      /* materialDirectives, */
+      DeferredContentDirective,
+      MaterialButtonComponent,
+      MaterialIconComponent,
+      MaterialPersistentDrawerDirective,
+      MaterialTemporaryDrawerComponent,
+      MaterialListComponent,
+      MaterialListItemComponent,
+      MaterialDropdownSelectComponent,
+      DropdownSelectValueAccessor,
       SearchComponent,
       UserDetailComponent,
     ],
