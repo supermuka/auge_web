@@ -70,7 +70,6 @@ class MeasureService {
             measure, objectiveId);
 
       }
-
     } catch (e) {
       rethrow;
     }

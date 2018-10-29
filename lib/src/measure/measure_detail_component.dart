@@ -201,7 +201,6 @@ class MeasureDetailComponent extends Object implements OnInit {
   }
 
   ItemRenderer get measureUnitItemRenderer => (dynamic unit) => unit.name + (unit.symbol == null || unit.symbol.trim().length == 0 ? '' : ' (' + unit.symbol + ')');
-
   /*
   double lowerBound() {
     print('lowerBound()');
