@@ -33,10 +33,10 @@ class WorkItemService {
   void saveWorkItem(String initiativeId, WorkItem workItem) async {
     try {
       if (workItem.id == null) {
-        CreatedMessage createdMessage = await _augeApiService.initiativeAugeApi
+        IdMessage idMessage = await _augeApiService.initiativeAugeApi
             .createWorkItem(workItem, initiativeId);
 
-        workItem.id = createdMessage?.id;
+        workItem.id = idMessage?.id;
       } else {
         await _augeApiService.initiativeAugeApi.updateWorkItem(
             workItem, initiativeId);
@@ -46,6 +46,4 @@ class WorkItemService {
       rethrow;
     }
   }
-
-
 }

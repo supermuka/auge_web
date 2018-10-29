@@ -37,10 +37,10 @@ class UserService {
 
     try {
       if (user.id == null) {
-        CreatedMessage createdMessage = await _augeApiService.augeApi.createUser(user);
+        IdMessage idMessage = await _augeApiService.augeApi.createUser(user);
 
         // ID - primary key generated on server-side.
-        user.id = createdMessage?.id;
+        user.id = idMessage?.id;
       } else {
         await _augeApiService.augeApi.updateUser(user);
       }
@@ -53,10 +53,10 @@ class UserService {
   void saveUserProfileOrganization(UserProfileOrganization userProfileOrganization) async {
     try {
       if (userProfileOrganization.id == null) {
-        CreatedMessage createdMessage = await _augeApiService.augeApi
+        IdMessage idMessage = await _augeApiService.augeApi
             .createUserProfileOrganization(userProfileOrganization);
 
-        userProfileOrganization.id = createdMessage.id;
+        userProfileOrganization.id = idMessage.id;
       } else {
         await _augeApiService.augeApi.updateUserProfileOrganization(
             userProfileOrganization);

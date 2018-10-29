@@ -52,11 +52,11 @@ class InitiativeService {
   void saveInitiative(Initiative initiative) async {
     try {
       if (initiative.id == null) {
-        CreatedMessage createdMessage = await _augeApiService.initiativeAugeApi
+        IdMessage idMessage = await _augeApiService.initiativeAugeApi
             .createInitiative(initiative);
 
         // ID - primary key generated on server-side.
-        initiative.id = createdMessage?.id;
+        initiative.id = idMessage?.id;
       } else {
         await _augeApiService.initiativeAugeApi.updateInitiative(initiative);
       }

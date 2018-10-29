@@ -37,10 +37,10 @@ class GroupService {
   void saveObjective(Group group) async {
     try {
       if (group.id == null) {
-        CreatedMessage createdMessage = await _augeApiService.augeApi.createGroup(group);
+        IdMessage idMessage = await _augeApiService.augeApi.createGroup(group);
 
         // ID - primary key generated on server-side.
-        group.id = createdMessage?.id;
+        group.id = idMessage?.id;
       } else {
         await _augeApiService.augeApi.updateGroup(group);
       }

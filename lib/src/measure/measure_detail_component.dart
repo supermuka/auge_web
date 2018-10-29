@@ -17,6 +17,7 @@ import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
 
 import 'package:angular_components/material_input/material_input.dart';
+import 'package:angular_components/material_input/material_number_accessor.dart';
 
 import 'package:angular_components/material_select/material_dropdown_select.dart';
 import 'package:angular_components/material_select/material_dropdown_select_accessor.dart';
@@ -34,6 +35,7 @@ import 'package:auge_web/message/messages.dart';
 
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/measure/measure_service.dart';
+import 'package:auge_web/src/objective/objective_service.dart';
 
 @Component(
     selector: 'auge-measure-detail',
@@ -43,6 +45,7 @@ import 'package:auge_web/src/measure/measure_service.dart';
       //formDirectives,
 
       materialInputDirectives,
+      materialNumberInputDirectives,
       AutoFocusDirective,
       MaterialDialogComponent,
       ModalComponent,
@@ -63,6 +66,7 @@ class MeasureDetailComponent extends Object implements OnInit {
 
   final AuthService _authService;
   final MeasureService _measureService;
+  final ObjectiveService _objectiveService;
 
   @Input()
   Objective objective;
@@ -98,7 +102,7 @@ class MeasureDetailComponent extends Object implements OnInit {
  // List errorControl = [];
  // bool validInput = false;
 
-  MeasureDetailComponent(this._authService, this._measureService) {
+  MeasureDetailComponent(this._authService, this._objectiveService, this._measureService) {
     measureUnitSingleSelectModel = SelectionModel.single();
   }
 
@@ -168,7 +172,7 @@ class MeasureDetailComponent extends Object implements OnInit {
         ..className = 'Measure'
         ..changedData = MeasureFacilities.differenceToJson(measure, selectedMeasure);
 
-      //await _objectiveService.saveTimelineItem(objective.id, timelineItem);
+      await _objectiveService.saveTimelineItem(objective.id, timelineItem);
 
       objective.timeline.insert(0, timelineItem);
 

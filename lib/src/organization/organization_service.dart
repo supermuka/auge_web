@@ -26,11 +26,11 @@ class OrganizationService {
   void saveOrganization(Organization organization) async {
     try {
       if (organization.id == null) {
-        CreatedMessage createdMessage = await _augeApiService.augeApi.createOrganization(
+        IdMessage idMessage = await _augeApiService.augeApi.createOrganization(
             organization);
 
         // ID - primary key generated on server-side.
-        organization.id = createdMessage?.id;
+        organization.id = idMessage?.id;
       } else {
         await _augeApiService.augeApi.updateOrganization(organization);
       }

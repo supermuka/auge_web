@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:angular/core.dart';
 
-
 import 'package:auge_web/services/augeapi_service.dart';
+import 'package:auge_web/src/objective/objective_service.dart';
 
 import 'package:auge_server/message_type/created_message.dart';
 import 'package:auge_server/model/objective/measure.dart';
@@ -15,8 +15,9 @@ import 'package:auge_web/message/messages.dart';
 class MeasureService {
 
   final AugeApiService _augeApiService;
+  final ObjectiveService _objectiveService;
 
-  MeasureService(this._augeApiService);
+  MeasureService(this._augeApiService, this._objectiveService);
 
   /// Delete a [Measure]
   Future deleteMeasure(String id) async {
@@ -58,15 +59,18 @@ class MeasureService {
   void saveMeasure(String objectiveId, Measure measure) async {
     try {
       if (measure.id == null) {
-        CreatedMessage createdMessage = await _augeApiService.objectiveAugeApi
+        IdMessage idMessage = await _augeApiService.objectiveAugeApi
             .createMeasure(measure, objectiveId);
 
         // ID - primary key generated on server-side.
-        measure.id = createdMessage?.id;
+        measure.id = idMessage?.id;
+
       } else {
         await _augeApiService.objectiveAugeApi.updateMeasure(
             measure, objectiveId);
+
       }
+
     } catch (e) {
       rethrow;
     }
@@ -75,12 +79,15 @@ class MeasureService {
   /// Save (create) an [TimelineItem] of the [Measure]
   void saveTimelineItem(String objectiveId, TimelineItem timelineItem) async {
     try {
-      CreatedMessage createdMessage = await _augeApiService.objectiveAugeApi
+      IdDateTimeMessage idDateTimeMessage = await _augeApiService.objectiveAugeApi
           .createTimelineItem(timelineItem, objectiveId);
 
       // ID - primary key generated on server-side.
-      timelineItem.id = createdMessage?.id;
-      timelineItem.dateTime = createdMessage?.dataTime;
+      timelineItem.id = idDateTimeMessage?.id;
+      timelineItem.dateTime = idDateTimeMessage?.dataTime;
+
+      _objectiveService.currentDateTime = idDateTimeMessage.dataTime;
+      print(idDateTimeMessage.dataTime);
 
     } catch (e) {
       print('${e.runtimeType}, ${e}');

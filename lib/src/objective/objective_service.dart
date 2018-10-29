@@ -70,12 +70,12 @@ class ObjectiveService {
   void saveObjective(Objective objective) async {
     try {
       if (objective.id == null) {
-        CreatedMessage createdMessage = await _augeApiService.objectiveAugeApi
+        IdMessage idMessage = await _augeApiService.objectiveAugeApi
             .createObjective(objective);
 
         // ID - primary key generated on server-side.
-        objective.id = createdMessage?.id;
-        currentDateTime = createdMessage?.dataTime;
+        objective.id = idMessage?.id;
+
       } else {
         await _augeApiService.objectiveAugeApi.updateObjective(objective);
       }
@@ -89,14 +89,14 @@ class ObjectiveService {
   /// Save (create) an [TimelineItem] of the [Objective]
   void saveTimelineItem(String objectiveId, TimelineItem timelineItem) async {
     try {
-      CreatedMessage createdMessage = await _augeApiService.objectiveAugeApi
+      IdDateTimeMessage idDateTimeMessage = await _augeApiService.objectiveAugeApi
           .createTimelineItem(timelineItem, objectiveId);
 
       // ID - primary key generated on server-side.
-      timelineItem.id = createdMessage?.id;
-      timelineItem.dateTime = createdMessage?.dataTime;
+      timelineItem.id = idDateTimeMessage?.id;
+      timelineItem.dateTime = idDateTimeMessage?.dataTime;
 
-      currentDateTime = createdMessage?.dataTime;
+      currentDateTime = idDateTimeMessage?.dataTime;
 
     } catch (e) {
       print('${e.runtimeType}, ${e}');
