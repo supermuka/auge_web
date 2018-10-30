@@ -5,7 +5,7 @@ import 'dart:async';
 
 import 'package:angular/core.dart';
 
-import 'package:auge_server/message_type/created_message.dart';
+import 'package:auge_server/message/created_message.dart';
 import 'package:auge_server/model/organization.dart';
 
 import 'package:auge_web/services/augeapi_service.dart';

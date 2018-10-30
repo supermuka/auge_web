@@ -71,15 +71,15 @@ class OrganizationDetailComponent extends Object implements OnInit {
   OrganizationDetailComponent(this._organizationService);
 
   // Define messages and labels
-  static final String requiredValueMsg = CommonMessage.requiredValueMsg();
-  static final String addOrganizationLabel =  OrganizationMessage.label('Add Organization');
-  static final String editOrganizationLabel =  OrganizationMessage.label('Edit Organization');
+  static final String requiredValueMsg = CommonMsg.requiredValueMsg();
+  static final String addOrganizationLabel =  OrganizationMsg.label('Add Organization');
+  static final String editOrganizationLabel =  OrganizationMsg.label('Edit Organization');
 
-  static final String nameLabel =  OrganizationMessage.label('Name');
-  static final String codeLabel =  OrganizationMessage.label('Code');
+  static final String nameLabel =  OrganizationMsg.label('Name');
+  static final String codeLabel =  OrganizationMsg.label('Code');
 
-  static final String saveButtonLabel = CommonMessage.buttonLabel('Save');
-  static final String closeButtonLabel = CommonMessage.buttonLabel('Close');
+  static final String saveButtonLabel = CommonMsg.buttonLabel('Save');
+  static final String closeButtonLabel = CommonMsg.buttonLabel('Close');
 
   @override
   void ngOnInit() {

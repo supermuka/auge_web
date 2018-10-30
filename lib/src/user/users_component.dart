@@ -68,7 +68,7 @@ class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
   MenuModel<MenuItem> menuModel;
 
   UsersComponent(this._authService, this._appLayoutService, this._searchService, this._userService, this._router) {
-    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMessage.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)), new MenuItem(CommonMessage.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
+    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
   }
 
   @override
@@ -76,7 +76,7 @@ class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
     if (this._authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
     }
-    _appLayoutService.headerTitle = UserMessage.label('Users');
+    _appLayoutService.headerTitle = UserMsg.label('Users');
     _appLayoutService.enabledSearch = true;
 
     try {

@@ -47,19 +47,19 @@ class InsightsComponent implements OnActivate  {
   InsightsComponent(this._authService, this._appLayoutService, this._objectiveService, this._initiativeService, this._router);
 
   // Define messages and labels
-  static final String objectivesOverallLabel = InsightMessage.label('Objectives Overall');
-  static final String objectivesLabel =  InsightMessage.label('Objectives');
-  static final String objectivesAchievedLabel =  InsightMessage.label('Objectives Achieved');
-  static final String objectivesRequiringAttentionLabel =  InsightMessage.label('Objectives Requiring Attention');
-  static final String measuresLabel =  InsightMessage.label('Measures');
-  static final String measuresAchievedLabel =  InsightMessage.label('Measures Achieved');
-  static final String measuresRequiringAttentionLabel =  InsightMessage.label('Measures Requiring Attention');
-  static final String initiativesLabel =  InsightMessage.label('Initiatives');
-  static final String initiativesCompletedLabel =  InsightMessage.label('Initiatives Completed');
-  static final String initiativesRequiringAttentionLabel =  InsightMessage.label('Initiatives Requiring Attention');
-  static final String workItemsLabel =  InsightMessage.label('Work Items');
-  static final String workItemsCompletedLabel =  InsightMessage.label('Work Items Completed');
-  static final String workItemsRequiringAttentionLabel =  InsightMessage.label('Work Items Requiring Attention');
+  static final String objectivesOverallLabel = InsightMsg.label('Objectives Overall');
+  static final String objectivesLabel =  InsightMsg.label('Objectives');
+  static final String objectivesAchievedLabel =  InsightMsg.label('Objectives Achieved');
+  static final String objectivesRequiringAttentionLabel =  InsightMsg.label('Objectives Requiring Attention');
+  static final String measuresLabel =  InsightMsg.label('Measures');
+  static final String measuresAchievedLabel =  InsightMsg.label('Measures Achieved');
+  static final String measuresRequiringAttentionLabel =  InsightMsg.label('Measures Requiring Attention');
+  static final String initiativesLabel =  InsightMsg.label('Initiatives');
+  static final String initiativesCompletedLabel =  InsightMsg.label('Initiatives Completed');
+  static final String initiativesRequiringAttentionLabel =  InsightMsg.label('Initiatives Requiring Attention');
+  static final String workItemsLabel =  InsightMsg.label('Work Items');
+  static final String workItemsCompletedLabel =  InsightMsg.label('Work Items Completed');
+  static final String workItemsRequiringAttentionLabel =  InsightMsg.label('Work Items Requiring Attention');
 
   @override
   void onActivate(RouterState previous, RouterState current) async {
@@ -69,7 +69,7 @@ class InsightsComponent implements OnActivate  {
     }
 
     _appLayoutService.enabledSearch = false;
-    _appLayoutService.headerTitle = AppLayoutMessage.label('Insights');
+    _appLayoutService.headerTitle = AppLayoutMsg.label('Insights');
 
     try {
       if (_authService.selectedOrganization != null) {

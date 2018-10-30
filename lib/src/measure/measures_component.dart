@@ -66,14 +66,14 @@ class MeasuresComponent extends Object {
   MenuModel<MenuItem> menuModel;
   MeasuresComponent(this._measureService) {
 
-    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMessage.buttonLabel('Edit'), icon: new Icon('edit') , action: () => detailVisible = true), new MenuItem(CommonMessage.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
+    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => detailVisible = true), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
   }
 
   // Define messages and labels
-  static final String progressLabel =  MeasureMessage.label('Progress');
-  static final String startValueLabel =  MeasureMessage.label('Start Value');
-  static final String currentValueLabel =  MeasureMessage.label('Current Value');
-  static final String endValueLabel =  MeasureMessage.label('End Value');
+  static final String progressLabel =  MeasureMsg.label('Progress');
+  static final String startValueLabel =  MeasureMsg.label('Start Value');
+  static final String currentValueLabel =  MeasureMsg.label('Current Value');
+  static final String endValueLabel =  MeasureMsg.label('End Value');
 
   void selectMeasure(Measure measure) {
     selectedMeasure = measure;

@@ -77,10 +77,10 @@ class WorkItemsListComponent extends Object /* with CanReuse implements OnActiva
   WorkItemsListComponent(this._workItemService) {
     initializeDateFormatting(Intl.defaultLocale);
 
-    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMessage.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)), new MenuItem(CommonMessage.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
+    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
   }
 
-  String label(String label) =>  WorkItemMessage.label(label);
+  String label(String label) =>  WorkItemMsg.label(label);
 
   void selectWorkItem(WorkItem workItem) => this.selectedWorkItem = workItem;
 

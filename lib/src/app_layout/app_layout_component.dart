@@ -166,17 +166,17 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
   }
 
   // Define messages and labels
-  String label(String label) =>  AppLayoutMessage.label(label);
+  String label(String label) =>  AppLayoutMsg.label(label);
 
   /// Messages and labels
-  static final String insightsLabel = AppLayoutMessage.label('Insights');
-  static final String objectivesMapLabel = AppLayoutMessage.label('Objectives Map');
-  static final String objectivesLabel = AppLayoutMessage.label('Objectives');
-  static final String initiativesLabel = AppLayoutMessage.label('Initiatives');
-  static final String organizationLabel = AppLayoutMessage.label('Organization');
-  static final String usersLabel = AppLayoutMessage.label('Users');
-  static final String adminLabel = AppLayoutMessage.label('Admin');
-  static final String groupsLabel = AppLayoutMessage.label('Groups');
+  static final String insightsLabel = AppLayoutMsg.label('Insights');
+  static final String objectivesMapLabel = AppLayoutMsg.label('Objectives Map');
+  static final String objectivesLabel = AppLayoutMsg.label('Objectives');
+  static final String initiativesLabel = AppLayoutMsg.label('Initiatives');
+  static final String organizationLabel = AppLayoutMsg.label('Organization');
+  static final String usersLabel = AppLayoutMsg.label('Users');
+  static final String adminLabel = AppLayoutMsg.label('Admin');
+  static final String groupsLabel = AppLayoutMsg.label('Groups');
 
   @override
   onActivate(previous, current)  {
@@ -199,7 +199,7 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
     List<AppLayoutSettingSelectOption> userDetailOptions = new List();
     userDetailOptions.add(new AppLayoutSettingSelectOption()
       ..group = null
-      ..name = AppLayoutMessage.label('User Detail')
+      ..name = AppLayoutMsg.label('User Detail')
       ..viewComponent = (bool userDetailVisible) { this.userDetailVisible = userDetailVisible; }
       ..routeUrl = null
 
@@ -211,7 +211,7 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
     List<AppLayoutSettingSelectOption> logout = new List();
     logout.add(new AppLayoutSettingSelectOption()
       ..group = null
-      ..name = AppLayoutMessage.label('Logout')
+      ..name = AppLayoutMsg.label('Logout')
       ..routeUrl = AppRoutes.authRoute.toUrl());
 
     userProfileLogoutGroupOptions.add(new OptionGroup.withLabel(logout, null));

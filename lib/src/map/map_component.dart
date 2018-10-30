@@ -52,7 +52,7 @@ class MapComponent implements OnActivate {
       _router.navigate(AppRoutes.authRoute.toUrl());
     }
 
-    _appLayoutService.headerTitle = ObjectiveHierarchyMessage.label('Objectives Map');
+    _appLayoutService.headerTitle = ObjectiveHierarchyMsg.label('Objectives Map');
 
     _appLayoutService.enabledSearch = false;
 

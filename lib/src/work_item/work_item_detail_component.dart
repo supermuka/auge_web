@@ -160,21 +160,21 @@ class WorkItemDetailComponent implements OnInit  {
   }
 
   // Define messages and labels
-  static final String requiredValueMsg =  CommonMessage.requiredValueMsg();
-  static final String addWorkItemLabel =  WorkItemMessage.label('Add Work Item');
-  static final String editWorkItemLabel =  WorkItemMessage.label('Edit Work Item');
+  static final String requiredValueMsg =  CommonMsg.requiredValueMsg();
+  static final String addWorkItemLabel =  WorkItemMsg.label('Add Work Item');
+  static final String editWorkItemLabel =  WorkItemMsg.label('Edit Work Item');
 
-  static final String nameLabel =  WorkItemMessage.label('Name');
-  static final String descriptionLabel =  WorkItemMessage.label('Description');
-  static final String dueDateLabel =  WorkItemMessage.label('Due Date');
-  static final String completedLabel =  WorkItemMessage.label('Completed');
-  static final String stageLabel =  WorkItemMessage.label('Stage');
-  static final String noMatchLabel =  WorkItemMessage.label('No Match');
-  static final String assignedToLabel =  WorkItemMessage.label('Assigned To');
-  static final String checkItemLabel =  WorkItemMessage.label('Check Item');
+  static final String nameLabel =  WorkItemMsg.label('Name');
+  static final String descriptionLabel =  WorkItemMsg.label('Description');
+  static final String dueDateLabel =  WorkItemMsg.label('Due Date');
+  static final String completedLabel =  WorkItemMsg.label('Completed');
+  static final String stageLabel =  WorkItemMsg.label('Stage');
+  static final String noMatchLabel =  WorkItemMsg.label('No Match');
+  static final String assignedToLabel =  WorkItemMsg.label('Assigned To');
+  static final String checkItemLabel =  WorkItemMsg.label('Check Item');
 
-  static final String saveButtonLabel = CommonMessage.buttonLabel('Save');
-  static final String closeButtonLabel = CommonMessage.buttonLabel('Close');
+  static final String saveButtonLabel = CommonMsg.buttonLabel('Save');
+  static final String closeButtonLabel = CommonMsg.buttonLabel('Close');
 
   @override
   void ngOnInit() async {
@@ -298,7 +298,7 @@ class WorkItemDetailComponent implements OnInit  {
 
         nameLabel = stageSingleSelectModel.selectedValues.first?.name;
     } else {
-      nameLabel = WorkItemMessage.label('Select a value');
+      nameLabel = WorkItemMsg.label('Select a value');
     }
     return nameLabel ;
   }

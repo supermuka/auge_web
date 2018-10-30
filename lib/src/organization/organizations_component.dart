@@ -68,7 +68,7 @@ class OrganizationsComponent extends Object implements OnActivate, OnDestroy  {
 
   OrganizationsComponent(this._authService, this._appLayoutService, this._organizationService, this._searchService, this._router) {
 
-    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMessage.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)), new MenuItem(CommonMessage.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
+    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
   }
 
   @override
@@ -79,7 +79,7 @@ class OrganizationsComponent extends Object implements OnActivate, OnDestroy  {
     }
 
     _appLayoutService.headerTitle =
-         OrganizationMessage.label('Organizations');
+         OrganizationMsg.label('Organizations');
 
     try {
       _organizations = await _organizationService.getOrganizations();

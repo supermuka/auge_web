@@ -46,7 +46,7 @@ class WorkItemsComponent extends Object {
 
   WorkItemsComponent();
 
-  String label(String label) =>  InitiativeMessage.label(label);
+  String label(String label) =>  InitiativeMsg.label(label);
 
 
   String circleColor(Initiative initiative)  {

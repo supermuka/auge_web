@@ -4,7 +4,7 @@ import 'package:angular/core.dart';
 
 import 'package:auge_web/services/augeapi_service.dart';
 
-import 'package:auge_server/message_type/created_message.dart';
+import 'package:auge_server/message/created_message.dart';
 import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/objective/timeline_item.dart';
 
@@ -67,17 +67,21 @@ class ObjectiveService {
   }
 
   /// Save (create or update) an [Objective]
-  void saveObjective(Objective objective) async {
+  Future<Objective> saveObjective(Objective objective) async {
     try {
       if (objective.id == null) {
-        IdMessage idMessage = await _augeApiService.objectiveAugeApi
-            .createObjective(objective);
+
+       // IdMessage idMessage = await _augeApiService.objectiveAugeApi
+       //     .createObjective( ObjectiveFacilities.objectiveMessageFrom(objective) );
 
         // ID - primary key generated on server-side.
-        objective.id = idMessage?.id;
+        //objective.id = idMessage?.id;
+
+        return await _augeApiService.objectiveAugeApi
+             .createObjective( ObjectiveFacilities.objectiveMessageFrom(objective) );
 
       } else {
-        await _augeApiService.objectiveAugeApi.updateObjective(objective);
+        await _augeApiService.objectiveAugeApi.updateObjective(ObjectiveFacilities.objectiveMessageFrom(objective));
       }
 
     } catch (e) {
@@ -87,6 +91,7 @@ class ObjectiveService {
   }
 
   /// Save (create) an [TimelineItem] of the [Objective]
+  /*
   void saveTimelineItem(String objectiveId, TimelineItem timelineItem) async {
     try {
       IdDateTimeMessage idDateTimeMessage = await _augeApiService.objectiveAugeApi
@@ -103,4 +108,5 @@ class ObjectiveService {
       rethrow;
     }
   }
+  */
 }

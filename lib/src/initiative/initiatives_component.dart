@@ -90,13 +90,13 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
   MenuModel<MenuItem> menuModel;
   InitiativesComponent(this._authService, this._appLayoutService, this._initiativeService, this._objectiveService, this._searchService, this._router) {
     initiativesFilterParam = InitiativesFilterParam();
-    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMessage.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)), new MenuItem(CommonMessage.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
+    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
   }
 
   // Define messages and labels
-  static final String objectiveLabel =  InitiativeMessage.label('Objective');
-  static final String groupLabel =  InitiativeMessage.label('Group');
-  static final String leaderLabel =  InitiativeMessage.label('Leader');
+  static final String objectiveLabel =  InitiativeMsg.label('Objective');
+  static final String groupLabel =  InitiativeMsg.label('Group');
+  static final String leaderLabel =  InitiativeMsg.label('Leader');
 
   @override
   Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
@@ -105,7 +105,7 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
       _router.navigate(AppRoutes.authRoute.toUrl());
     }
     
-    _appLayoutService.headerTitle = InitiativeMessage.label('Initiatives');
+    _appLayoutService.headerTitle = InitiativeMsg.label('Initiatives');
 
     if (routerStateCurrent.parameters.containsKey(AppRoutes.objectiveIdParameter)) {
         String objectiveId = routerStateCurrent.parameters[AppRoutes

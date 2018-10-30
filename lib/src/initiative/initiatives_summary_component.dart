@@ -87,8 +87,8 @@ class InitiativesSummaryComponent extends Object implements OnInit {
 
   }
 
-  static final String groupLabel =  InitiativeMessage.label('Group');
-  static final String leaderLabel =  InitiativeMessage.label('Leader');
+  static final String groupLabel =  InitiativeMsg.label('Group');
+  static final String leaderLabel =  InitiativeMsg.label('Leader');
 
   @override
   ngOnInit() async {

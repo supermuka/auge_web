@@ -77,12 +77,12 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
   MenuModel<MenuItem> menuModel;
 
   // Define messages and labels
-  static final String alignedToLabel =  ObjectiveMessage.label('Aligned To');
-  static final String leaderLabel =  ObjectiveMessage.label('Leader');
-  static final String groupLabel =  ObjectiveMessage.label('Group');
+  static final String alignedToLabel =  ObjectiveMsg.label('Aligned To');
+  static final String leaderLabel =  ObjectiveMsg.label('Leader');
+  static final String groupLabel =  ObjectiveMsg.label('Group');
 
   ObjectivesComponent(this._authService, this._appLayoutService, this._objectiveService, this._searchService, this._router) {
-    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMessage.buttonLabel('Edit'), icon: new Icon('edit') , action: () => detailVisible = true), new MenuItem(CommonMessage.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
+    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => detailVisible = true), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
   }
 
   @override
@@ -92,7 +92,7 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
       _router.navigate(AppRoutes.authRoute.toUrl());
     }
 
-    _appLayoutService.headerTitle = ObjectiveMessage.label('Objectives');
+    _appLayoutService.headerTitle = ObjectiveMsg.label('Objectives');
 
     _appLayoutService.enabledSearch = true;
 

@@ -125,30 +125,32 @@ class ObjectiveDetailComponent extends Object implements OnInit {
   }
 
   // Define messages and labels
-  static final String requiredValueMsg = CommonMessage.requiredValueMsg();
+  static final String requiredValueMsg = CommonMsg.requiredValueMsg();
 
-  static final String addObjectiveLabel =  ObjectiveMessage.label('Add Objective');
-  static final String editObjectiveLabel =  ObjectiveMessage.label('Edit Objective');
-  static final String nameLabel =  ObjectiveMessage.label('Name');
-  static final String descriptionLabel =  ObjectiveMessage.label('Description');
-  static final String groupLabel =  ObjectiveMessage.label('Group');
-  static final String noMatchLabel =  ObjectiveMessage.label('No Match');
-  static final String leaderLabel =  ObjectiveMessage.label('Leader');
-  static final String stageLabel =  ObjectiveMessage.label('Stage');
-  static final String objectiveLabel =  ObjectiveMessage.label('Objective');
+  static final String addObjectiveLabel =  ObjectiveMsg.label('Add Objective');
+  static final String editObjectiveLabel =  ObjectiveMsg.label('Edit Objective');
+  static final String nameLabel =  ObjectiveMsg.label('Name');
+  static final String descriptionLabel =  ObjectiveMsg.label('Description');
+  static final String groupLabel =  ObjectiveMsg.label('Group');
+  static final String noMatchLabel =  ObjectiveMsg.label('No Match');
+  static final String leaderLabel =  ObjectiveMsg.label('Leader');
+  static final String stageLabel =  ObjectiveMsg.label('Stage');
+  static final String objectiveLabel =  ObjectiveMsg.label('Objective');
 
-  static final String startDateLabel =  ObjectiveMessage.label('Start Date');
-  static final String endDateLabel =  ObjectiveMessage.label('End Date');
-  static final String alignedToLabel =  ObjectiveMessage.label('Aligned To');
+  static final String startDateLabel =  ObjectiveMsg.label('Start Date');
+  static final String endDateLabel =  ObjectiveMsg.label('End Date');
+  static final String alignedToLabel =  ObjectiveMsg.label('Aligned To');
 
-  static final String saveButtonLabel = CommonMessage.buttonLabel('Save');
-  static final String closeButtonLabel = CommonMessage.buttonLabel('Close');
+  static final String saveButtonLabel = CommonMsg.buttonLabel('Save');
+  static final String closeButtonLabel = CommonMsg.buttonLabel('Close');
 
   @override
   void ngOnInit() async {
 
     if (selectedObjective != null) {
       // Clone objective
+     // objective = selectedObjective.clone();
+      // objective = await _objectiveService.getObjectiveById(selectedObjective.id);
       objective = selectedObjective.clone();
 
     } else {
@@ -169,7 +171,7 @@ class ObjectiveDetailComponent extends Object implements OnInit {
     // Aligned to Objectives
     // Remove the current object
 
-    _alignedToObjectives.removeWhere((testObjective) => testObjective.id == objective.id);
+    _alignedToObjectives.removeWhere((testObjective) => objective != null && testObjective.id == objective.id);
 
     alignedToOptions = new StringSelectionOptions<Objective>(
         _alignedToObjectives, toFilterableString: (Objective obj) => obj.name);
@@ -224,21 +226,22 @@ class ObjectiveDetailComponent extends Object implements OnInit {
 
       int functionIndex = objective.id == null ?  SystemFunction.create.index : SystemFunction.update.index;
 
-      await _objectiveService.saveObjective(objective);
-
       // Timeline item definition
-      TimelineItem timelineItem = TimelineItem()
+      objective.lastTimelineItem = TimelineItem()
         ..user = _authService.authenticatedUser
-       // ..dateTime = DateTime.now() // Keep the server update data time to utc
+      // ..dateTime = DateTime.now() // Keep the server update data time to utc
         ..systemFunctionIndex = functionIndex
-        ..className = 'Objective'
+        ..className = objective.runtimeType.toString()
         ..changedData = ObjectiveFacilities.differenceToJson(objective, selectedObjective);
 
-      await _objectiveService.saveTimelineItem(objective.id, timelineItem);
+      Objective objectiveNew = await _objectiveService.saveObjective(objective);
 
-      objective.timeline.insert(0, timelineItem);
+     // await _objectiveService.saveTimelineItem(objective.id, timelineItem);
 
-      _saveController.add(objective);
+      //objective.timeline.insert(0, objective.lastTimelineItem);
+
+      // _saveController.add(objective);
+      _saveController.add(objectiveNew);
       closeDetail();
     } catch (e) {
       dialogError = e.toString();

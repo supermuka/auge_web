@@ -5,7 +5,7 @@ import 'package:angular/core.dart';
 import 'package:auge_web/services/augeapi_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 
-import 'package:auge_server/message_type/created_message.dart';
+import 'package:auge_server/message/created_message.dart';
 import 'package:auge_server/model/objective/measure.dart';
 import 'package:auge_server/model/objective/timeline_item.dart';
 
@@ -47,7 +47,7 @@ class MeasureService {
       List<MeasureUnit> measureUnits =  await _augeApiService.objectiveAugeApi.getMeasureUnits();
 
       // Translate name
-      measureUnits.forEach((f) => f.name = MeasureMessage.measureUnitLabel(f.name));
+      measureUnits.forEach((f) => f.name = MeasureMsg.measureUnitLabel(f.name));
       return measureUnits;
 
     // Translate name
@@ -74,7 +74,7 @@ class MeasureService {
       rethrow;
     }
   }
-
+/*
   /// Save (create) an [TimelineItem] of the [Measure]
   void saveTimelineItem(String objectiveId, TimelineItem timelineItem) async {
     try {
@@ -93,4 +93,5 @@ class MeasureService {
       rethrow;
     }
   }
+  */
 }

@@ -37,7 +37,7 @@ class InitiativeSummaryComponent extends Object {
   Initiative initiative;
 
   // Define messages and labels
-  static final String workItemsOverDueLabel =  InitiativeMessage.label('Work Items Over Due');
+  static final String workItemsOverDueLabel =  InitiativeMsg.label('Work Items Over Due');
 
   String circleColor(Initiative initiative)  {
     String color;

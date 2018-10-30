@@ -2,7 +2,7 @@ import 'package:intl/intl.dart';
 
 // import 'package:auge_web/message/i18n/messages_all.dart';
 
-class CommonMessage {
+class CommonMsg {
 
   /// Commum Label
   static label(String label) => Intl.message(
@@ -43,7 +43,7 @@ class CommonMessage {
 
 
 /// Specific messages and labels for [Authentication and Authorization]
-class AuthMessage {
+class AuthMsg {
 
   /// Label for [Auth]
   static label(String label) => Intl.message(
@@ -73,7 +73,7 @@ class AuthMessage {
 }
 
 /// Specific messages and labels for [AppLayout]
-class AppLayoutMessage {
+class AppLayoutMsg {
 
   /// Label for [AppLayout]
   static label(String label) => Intl.message(
@@ -100,7 +100,7 @@ class AppLayoutMessage {
 
 
 /// Specific messages and label for [Organization]
-class OrganizationMessage {
+class OrganizationMsg {
 
   /// Label for organization
   static label(String label) => Intl.message(
@@ -120,7 +120,7 @@ class OrganizationMessage {
 }
 
 /// Specific messages and label for [User]
-class UserMessage {
+class UserMsg {
 
   /// Label for user
   static label(String label) => Intl.message(
@@ -149,7 +149,7 @@ class UserMessage {
 
 
 /// Specific messages and label for [Initiative]
-class InitiativeMessage {
+class InitiativeMsg {
 
   /// Label for initiative
   static label(String label) => Intl.message(
@@ -177,7 +177,7 @@ class InitiativeMessage {
 }
 
 /// Specific messages and label for [WorkItem]
-class WorkItemMessage {
+class WorkItemMsg {
 
   /// Label for workitem
   static label(String label) => Intl.message(
@@ -205,7 +205,7 @@ class WorkItemMessage {
 }
 
 /// Specific messages and label for [Objective]
-class ObjectiveMessage {
+class ObjectiveMsg {
 
   /// Label for initiative
   static label(String label) => Intl.message(
@@ -232,7 +232,7 @@ class ObjectiveMessage {
 }
 
 /// Specific messages and label for [Measure]
-class MeasureMessage {
+class MeasureMsg {
 
   /// Label for Measure
   static label(String label) => Intl.message(
@@ -273,7 +273,7 @@ class MeasureMessage {
 }
 
 /// Specific messages and label for [ObjectiveHierarchy]
-class ObjectiveHierarchyMessage {
+class ObjectiveHierarchyMsg {
 
   /// Label for initiative
   static label(String label) => Intl.message(
@@ -330,7 +330,7 @@ class GroupMsg {
 }
 
 /// Specific messages and label for [Insight]
-class InsightMessage {
+class InsightMsg {
 
   /// Label for Insight
   static label(String label) => Intl.message(
@@ -357,7 +357,7 @@ class InsightMessage {
 }
 
 /// Specific messages and label for [SystemFunction]
-class SystemFunctionMessage {
+class SystemFunctionMsg {
 
   /// Label for Insight
   static InPastLabel(String functionName) => Intl.message(
@@ -375,7 +375,7 @@ class SystemFunctionMessage {
 }
 
 /// Specific messages and label for [Objective] class field
-class ObjectiveFieldMessage {
+class ObjectiveFieldMsg {
 
   /// Label for Insight
   static label(String fieldName) => Intl.message(
@@ -395,7 +395,7 @@ class ObjectiveFieldMessage {
 }
 
 /// Specific messages and label for [TimelineItem] class field
-class TimelineItemdMessage {
+class TimelineItemdMsg {
 
   /// Label for Insight
   static label(String fieldName) => Intl.message(

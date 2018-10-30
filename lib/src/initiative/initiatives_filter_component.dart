@@ -88,11 +88,11 @@ class InitiativesFilterComponent implements OnInit {
 
   // Define messages and labels
 
-  static final String filterInitiativesLabel =  InitiativeMessage.label('Filter Initiatives');
-  static final String noMatchLabel =  InitiativeMessage.label('No Match');
-  static final String objectiveLabel =  InitiativeMessage.label('Objective');
-  static final String clearButtonLabel = CommonMessage.buttonLabel('Clear');
-  static final String applyButtonLabel = CommonMessage.buttonLabel('Apply');
+  static final String filterInitiativesLabel =  InitiativeMsg.label('Filter Initiatives');
+  static final String noMatchLabel =  InitiativeMsg.label('No Match');
+  static final String objectiveLabel =  InitiativeMsg.label('Objective');
+  static final String clearButtonLabel = CommonMsg.buttonLabel('Clear');
+  static final String applyButtonLabel = CommonMsg.buttonLabel('Apply');
 
   @override
   void ngOnInit() async {

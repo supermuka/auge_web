@@ -129,7 +129,7 @@ class GroupDetailComponent extends Object implements OnInit {
   }
 
   // Define messages and labels
-  static final String requiredValueMsg =  CommonMessage.requiredValueMsg();
+  static final String requiredValueMsg =  CommonMsg.requiredValueMsg();
   static final String addGroupLabel =  GroupMsg.label('Add Group');
   static final String editGroupLabel =  GroupMsg.label('Edit Group');
   static final String nameLabel =  GroupMsg.label('Name');
@@ -140,8 +140,8 @@ class GroupDetailComponent extends Object implements OnInit {
   static final String noMatchLabel =  GroupMsg.label('No Match');
   static final String membersLabel =  GroupMsg.label('Members');
 
-  static final String saveButtonLabel = CommonMessage.buttonLabel('Save');
-  static final String closeButtonLabel = CommonMessage.buttonLabel('Close');
+  static final String saveButtonLabel = CommonMsg.buttonLabel('Save');
+  static final String closeButtonLabel = CommonMsg.buttonLabel('Close');
 
 
   @override

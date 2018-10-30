@@ -78,15 +78,15 @@ class AuthComponent extends Object with OnActivate  {
   AuthComponent(this._authService, this._router);
 
   /// Messages and labels
-  static final String headerTitleLabel = CommonMessage.label('AUGE');
-  static final String headerSubtitleLabel = CommonMessage.label('Objectives and Initiatives');
-  static final String loginButtonLabel = CommonMessage.buttonLabel('Login');
-  static final String requiredValueMsg = CommonMessage.requiredValueMsg();
+  static final String headerTitleLabel = CommonMsg.label('AUGE');
+  static final String headerSubtitleLabel = CommonMsg.label('Objectives and Initiatives');
+  static final String loginButtonLabel = CommonMsg.buttonLabel('Login');
+  static final String requiredValueMsg = CommonMsg.requiredValueMsg();
 
-  static final String eMailLabel = AuthMessage.label('eMail');
-  static final String passwordLabel = AuthMessage.label('Password');
+  static final String eMailLabel = AuthMsg.label('eMail');
+  static final String passwordLabel = AuthMsg.label('Password');
 
-  static String organizationSingleSelectLabel = AuthMessage.label('Select');
+  static String organizationSingleSelectLabel = AuthMsg.label('Select');
 
   void onActivate(RouterState previous, RouterState current) {
 
@@ -97,7 +97,7 @@ class AuthComponent extends Object with OnActivate  {
     _authService.authorizedSystemRole = null;
 
     if (!browser.isChrome) {
-      dialogError = AuthMessage.browserCompatibleErrorMsg();
+      dialogError = AuthMsg.browserCompatibleErrorMsg();
     }
 
   }
@@ -107,14 +107,14 @@ class AuthComponent extends Object with OnActivate  {
     action.cancelIf( Future.sync(
             () async  {
       if (eMail.isEmpty || passwordStr.isEmpty) {
-        dialogError = AuthMessage.informEMailPasswordCorrectlyMsg();
+        dialogError = AuthMsg.informEMailPasswordCorrectlyMsg();
       } else {
         try {
 
           _authService.authenticatedUser =
               await _authService.getAuthenticatedUserWithEmail(eMail, passwordStr);
           if (_authService.authenticatedUser == null) {
-            dialogError = AuthMessage.userNotFoundMsg();
+            dialogError = AuthMsg.userNotFoundMsg();
           } else {
 
         
@@ -124,7 +124,7 @@ class AuthComponent extends Object with OnActivate  {
             // (TODO) Treating the super admin
             if (_authService.authorizedOrganizations == null ||
                 _authService.authorizedOrganizations.length == 0) {
-              dialogError = AuthMessage.organizationNotFoundMsg();
+              dialogError = AuthMsg.organizationNotFoundMsg();
             } else {
 
               configOrganizationSeletion();
@@ -133,7 +133,7 @@ class AuthComponent extends Object with OnActivate  {
             }
           }
         } catch (e) {
-          dialogError = AuthMessage.serverApiErrorMsg();
+          dialogError = AuthMsg.serverApiErrorMsg();
           rethrow;
         }
       }
@@ -158,7 +158,7 @@ class AuthComponent extends Object with OnActivate  {
     // Organizations
     List<AppLayoutOrganizationSelectOption> orgs = new List();
 
-    String orgGroupLabel = AuthMessage.label('Organization');
+    String orgGroupLabel = AuthMsg.label('Organization');
 
     if (_authService.authorizedOrganizations != null &&
         _authService.authorizedOrganizations.isNotEmpty) {
@@ -174,7 +174,7 @@ class AuthComponent extends Object with OnActivate  {
     // Super Administration
     List<AppLayoutOrganizationSelectOption> adms = new List();
 
-    String admGroupLabel = AuthMessage.label('Super Admin');
+    String admGroupLabel = AuthMsg.label('Super Admin');
 
     organizationOptions =
     new SelectionOptions.withOptionGroups(organizationGroupOptions);
@@ -192,7 +192,7 @@ class AuthComponent extends Object with OnActivate  {
 
               organizationSingleSelectLabel =
                 d.first.added.first.name ??
-                  AuthMessage.label('Select');
+                  AuthMsg.label('Select');
           }
         }
       });

@@ -107,22 +107,22 @@ class MeasureDetailComponent extends Object implements OnInit {
   }
 
   // Define messages and labels
-  static final String requiredValueMsg = CommonMessage.requiredValueMsg();
-  static final String valueErrorMsg =  MeasureMessage.valueErrorMsg();
-  static final String decimalNumberErrorMsg = MeasureMessage.decimalNumberErrorMsg();
+  static final String requiredValueMsg = CommonMsg.requiredValueMsg();
+  static final String valueErrorMsg =  MeasureMsg.valueErrorMsg();
+  static final String decimalNumberErrorMsg = MeasureMsg.decimalNumberErrorMsg();
 
-  static final String addMeasureLabel =  MeasureMessage.label('Add Measure');
-  static final String editMeasureLabel =  MeasureMessage.label('Edit Measure');
-  static final String nameLabel =  MeasureMessage.label('Name');
-  static final String descriptionLabel =  MeasureMessage.label('Description');
-  static final String metricLabel =  MeasureMessage.label('Metric');
-  static final String decimalsNumberLabel = MeasureMessage.label('Decimals');
-  static final String startValueLabel =  MeasureMessage.label('Start Value');
-  static final String currentValueLabel =  MeasureMessage.label('Current Value');
-  static final String endValueLabel =  MeasureMessage.label('End Value');
+  static final String addMeasureLabel =  MeasureMsg.label('Add Measure');
+  static final String editMeasureLabel =  MeasureMsg.label('Edit Measure');
+  static final String nameLabel =  MeasureMsg.label('Name');
+  static final String descriptionLabel =  MeasureMsg.label('Description');
+  static final String metricLabel =  MeasureMsg.label('Metric');
+  static final String decimalsNumberLabel = MeasureMsg.label('Decimals');
+  static final String startValueLabel =  MeasureMsg.label('Start Value');
+  static final String currentValueLabel =  MeasureMsg.label('Current Value');
+  static final String endValueLabel =  MeasureMsg.label('End Value');
 
-  static final String saveButtonLabel = CommonMessage.buttonLabel('Save');
-  static final String closeButtonLabel = CommonMessage.buttonLabel('Close');
+  static final String saveButtonLabel = CommonMsg.buttonLabel('Save');
+  static final String closeButtonLabel = CommonMsg.buttonLabel('Close');
 
   @override
   void ngOnInit() async {
@@ -162,6 +162,7 @@ class MeasureDetailComponent extends Object implements OnInit {
     try {
       int functionIndex = objective.id == null ?  SystemFunction.create.index : SystemFunction.update.index;
 
+
       await _measureService.saveMeasure(objective.id, measure);
 
       // Timeline item definition
@@ -172,7 +173,7 @@ class MeasureDetailComponent extends Object implements OnInit {
         ..className = 'Measure'
         ..changedData = MeasureFacilities.differenceToJson(measure, selectedMeasure);
 
-      await _objectiveService.saveTimelineItem(objective.id, timelineItem);
+     // await _objectiveService.saveTimelineItem(objective.id, timelineItem);
 
       objective.timeline.insert(0, timelineItem);
 
@@ -324,7 +325,5 @@ class MeasureDetailComponent extends Object implements OnInit {
   String get unitLeadingText => measure?.measureUnit == null ? null : measure.measureUnit.symbol.contains(r'$') ? measure.measureUnit.symbol : null;
 
   String get unitTrailingText => measure?.measureUnit == null ? null : !measure.measureUnit.symbol.contains(r'$') ? measure.measureUnit.symbol : null;
-
-
 
 }

@@ -57,18 +57,18 @@ class ObjectiveTimelineComponent extends Object {
     initializeDateFormatting(Intl.defaultLocale , null);
   }
 
-  static final String dayAgoLabel =  TimelineItemdMessage.label('day ago');
-  static final String daysAgoLabel =  TimelineItemdMessage.label('days ago');
-  static final String hourAgoLabel =  TimelineItemdMessage.label('hour ago');
-  static final String hoursAgoLabel =  TimelineItemdMessage.label('hours ago');
-  static final String minuteAgoLabel =  TimelineItemdMessage.label('minute ago');
-  static final String minutesAgoLabel =  TimelineItemdMessage.label('minutes ago');
-  static final String secondAgoLabel =  TimelineItemdMessage.label('second ago');
-  static final String secondsAgoLabel =  TimelineItemdMessage.label('seconds ago');
+  static final String dayAgoLabel =  TimelineItemdMsg.label('day ago');
+  static final String daysAgoLabel =  TimelineItemdMsg.label('days ago');
+  static final String hourAgoLabel =  TimelineItemdMsg.label('hour ago');
+  static final String hoursAgoLabel =  TimelineItemdMsg.label('hours ago');
+  static final String minuteAgoLabel =  TimelineItemdMsg.label('minute ago');
+  static final String minutesAgoLabel =  TimelineItemdMsg.label('minutes ago');
+  static final String secondAgoLabel =  TimelineItemdMsg.label('second ago');
+  static final String secondsAgoLabel =  TimelineItemdMsg.label('seconds ago');
 
   // List<TimelineItem> get timeline => objective.timeline;
 
-  String objectiveFieldLabel(String fieldName) => ObjectiveFieldMessage.label(fieldName);
+  String objectiveFieldLabel(String fieldName) => ObjectiveFieldMsg.label(fieldName);
 
   // List<TimelineItem> get timeline => objective.timeline;
 
@@ -77,7 +77,7 @@ class ObjectiveTimelineComponent extends Object {
   }
 
   String systemFunctionInPastLabel(int systemFunctionIndex) {
-    return SystemFunctionMessage.InPastLabel(SystemFunction.values[systemFunctionIndex].toString());
+    return SystemFunctionMsg.InPastLabel(SystemFunction.values[systemFunctionIndex].toString());
   }
 
   DateTime get currentDateTime => _objectiveService.currentDateTime;

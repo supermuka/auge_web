@@ -144,21 +144,21 @@ class InitiativeDetailComponent implements OnInit {
   }
 
   // Define messages and labels
-  static final String requiredValueMsg = CommonMessage.requiredValueMsg();
+  static final String requiredValueMsg = CommonMsg.requiredValueMsg();
 
-  static final String addInitiativeLabel =  InitiativeMessage.label('Add Initiative');
-  static final String editInitiativeLabel =  InitiativeMessage.label('Edit Initiative');
-  static final String nameLabel =  InitiativeMessage.label('Name');
-  static final String descriptionLabel =  InitiativeMessage.label('Description');
-  static final String groupLabel =  InitiativeMessage.label('Group');
-  static final String noMatchLabel =  InitiativeMessage.label('No Match');
-  static final String leaderLabel =  InitiativeMessage.label('Leader');
-  static final String stageLabel =  InitiativeMessage.label('Stage');
-  static final String objectiveLabel =  InitiativeMessage.label('Objective');
-  static final String selectLabel =  InitiativeMessage.label('Select');
+  static final String addInitiativeLabel =  InitiativeMsg.label('Add Initiative');
+  static final String editInitiativeLabel =  InitiativeMsg.label('Edit Initiative');
+  static final String nameLabel =  InitiativeMsg.label('Name');
+  static final String descriptionLabel =  InitiativeMsg.label('Description');
+  static final String groupLabel =  InitiativeMsg.label('Group');
+  static final String noMatchLabel =  InitiativeMsg.label('No Match');
+  static final String leaderLabel =  InitiativeMsg.label('Leader');
+  static final String stageLabel =  InitiativeMsg.label('Stage');
+  static final String objectiveLabel =  InitiativeMsg.label('Objective');
+  static final String selectLabel =  InitiativeMsg.label('Select');
 
-  static final String saveButtonLabel = CommonMessage.buttonLabel('Save');
-  static final String closeButtonLabel = CommonMessage.buttonLabel('Close');
+  static final String saveButtonLabel = CommonMsg.buttonLabel('Save');
+  static final String closeButtonLabel = CommonMsg.buttonLabel('Close');
 
   @override
   void ngOnInit() async {

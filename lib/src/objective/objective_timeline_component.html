@@ -22,20 +22,17 @@
                         </material-button>
                     </span>
                 </div>
-
-                <!--
-<div *ngIf="expandedControl[timelineItem] != null && expandedControl[timelineItem]">
-    <div *ngFor="let key of timelineItem.changedDataToMap['changedData']?.keys">
-        <span><strong>{{objectiveFieldLabel(key)}}</strong></span>
-        <span> value </span>
-        <span><strong>{{formatData(timelineItem.changedDataToMap['changedData'][key].values.first)}}</strong></span>
-        <div *ngIf="timelineItem.changedDataToMap['changedData'][key].values.length > 1">
-            <span> changed from </span>
-            <span><strong>{{formatData(timelineItem.changedDataToMap['changedData'][key].values.last)}}</strong></span>
-        </div>
-    </div>
-</div>
--->
+                <div *ngIf="expandedControl[timelineItem] != null && expandedControl[timelineItem]">
+                    <div *ngFor="let key of timelineItem.changedDataToMap['changedData']?.keys">
+                        <span><strong>{{objectiveFieldLabel(key)}}</strong></span>
+                        <span> value </span>
+                        <span><strong>{{formatData(timelineItem.changedDataToMap['changedData'][key].values.first)}}</strong></span>
+                        <div *ngIf="timelineItem.changedDataToMap['changedData'][key].values.length > 1">
+                            <span> changed from </span>
+                            <span><strong>{{formatData(timelineItem.changedDataToMap['changedData'][key].values.last)}}</strong></span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </material-expansionpanel>

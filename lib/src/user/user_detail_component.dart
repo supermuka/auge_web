@@ -113,21 +113,21 @@ class UserDetailComponent extends Object implements OnInit {
   }
 
   // Define messages and labels
-  static final String requiredValueMsg = CommonMessage.requiredValueMsg();
+  static final String requiredValueMsg = CommonMsg.requiredValueMsg();
 
-  static final String addUserLabel =  UserMessage.label('Add User');
-  static final String editUserLabel =  UserMessage.label('Edit User');
-  static final String nameLabel =  UserMessage.label('Name');
-  static final String emailLabel =  UserMessage.label('e-Mail');
-  static final String passwordLabel =  UserMessage.label('Password');
-  static final String authorizationLabel = UserMessage.label('Authorization');
-  static final String photoLabel = UserMessage.label('Photo');
-  static final String idiomLabel = UserMessage.label('Idiom');
+  static final String addUserLabel =  UserMsg.label('Add User');
+  static final String editUserLabel =  UserMsg.label('Edit User');
+  static final String nameLabel =  UserMsg.label('Name');
+  static final String emailLabel =  UserMsg.label('e-Mail');
+  static final String passwordLabel =  UserMsg.label('Password');
+  static final String authorizationLabel = UserMsg.label('Authorization');
+  static final String photoLabel = UserMsg.label('Photo');
+  static final String idiomLabel = UserMsg.label('Idiom');
 
-  static final String uploadButtonLabel = CommonMessage.buttonLabel('Upload');
-  static final String clearButtonLabel = CommonMessage.buttonLabel('Clear');
-  static final String saveButtonLabel = CommonMessage.buttonLabel('Save');
-  static final String closeButtonLabel = CommonMessage.buttonLabel('Close');
+  static final String uploadButtonLabel = CommonMsg.buttonLabel('Upload');
+  static final String clearButtonLabel = CommonMsg.buttonLabel('Clear');
+  static final String saveButtonLabel = CommonMsg.buttonLabel('Save');
+  static final String closeButtonLabel = CommonMsg.buttonLabel('Close');
 
   @override
   void ngOnInit() async {
@@ -159,7 +159,7 @@ class UserDetailComponent extends Object implements OnInit {
       if (role != SystemRole.superAdmin) {
         userAuthorizationOptions.add(new Option(
             role.index,
-            UserMessage.label(role.toString()), _authService.isAuthorizedForAtuhorizatedRole(
+            UserMsg.label(role.toString()), _authService.isAuthorizedForAtuhorizatedRole(
             SystemModule.users, systemFunction: user.id == null ?  SystemFunction.create : SystemFunction.update,
             systemConstraint: role
         )));
