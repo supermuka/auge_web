@@ -24,3 +24,11 @@ Timer repeatingTimer(Function handleTimeout, [int seconds] ) {
   Duration duration = Duration(seconds: seconds == null ? durationSeconds : seconds);
   return new Timer.periodic(duration, handleTimeout);
 }
+
+String colorFromUuid(String id) {
+  return id == null ? '#ffffff' : '#' + id.substring(0, 6);
+}
+
+String firstLetter(String name) {
+  return name == null ? 'G' : name.substring(0, 1).toUpperCase();
+}

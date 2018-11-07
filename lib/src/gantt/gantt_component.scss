@@ -36,7 +36,11 @@ $red: #ff6252;
 	border: 0;
 	border-radius: 5px; /* 12px; */
 	position: relative;
-	overflow: hidden;
+	/* overflow: hidden; */
+	max-height: calc(100vh - 20%);
+	height: 100%;
+    overflow-y: auto;
+
 	@include material-shadow();
 	/* box-sizing: border-box; */
 /*	box-shadow: 0 75px 125px -57px #7e8f94; */
@@ -116,7 +120,7 @@ $red: #ff6252;
         }
 		&--months {
 			color: #fff;
-			background-color: #3367d6 !important;
+			background-color: #0a3444 !important; /* #3367d6 */
 			border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 			grid-template-columns: 150px repeat(24, 1fr);
 			.gantt__row-first {
@@ -151,6 +155,10 @@ $red: #ff6252;
 			grid-gap: 8px 0;
 			border-top: 1px solid rgba(221, 221, 221, 0.8);
 			li {
+			    /*start*/
+                display: grid;
+                grid-template-columns: min-content auto;
+                /*end*/
 				font-weight: 500;
 				text-align: left;
 				font-size: 14px;
@@ -187,3 +195,20 @@ $red: #ff6252;
 	}
 }
 
+.text-group-letter {
+    color: white; /* foi preciso colocar, senão não funcionava o mix-blend-mode */
+    mix-blend-mode: difference;
+    line-height: 40px; /* same height to parent - class avatar*/
+}
+
+div.sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    z-index: 3;
+    top: 0;
+/*
+    background-color: yellow;
+    padding: 50px;
+    font-size: 20px;
+    */
+}

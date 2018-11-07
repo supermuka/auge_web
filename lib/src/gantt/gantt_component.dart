@@ -8,6 +8,9 @@ import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
 
 import 'package:angular_components/material_button/material_button.dart';
+import 'package:angular_components/material_tooltip/material_tooltip.dart';
+import 'package:angular_components/focus/keyboard_only_focus_indicator.dart';
+import 'package:angular_components/laminate/enums/alignment.dart';
 
 import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/user.dart';
@@ -26,20 +29,29 @@ import 'package:auge_web/services/app_routes.dart';
 @Component(
   selector: 'auge-gantt',
   providers: const [GanttService, ObjectiveService],
-  styleUrls: const ['gantt_component.css'],
-  templateUrl: 'gantt_component.html',
+
+
 
   directives: const [
     coreDirectives,
     routerDirectives,
     MaterialButtonComponent,
-
+    MaterialTooltipDirective,
+    ClickableTooltipTargetDirective,
+    KeyboardOnlyFocusIndicatorDirective,
+    MaterialTooltipDirective,
+    MaterialPaperTooltipComponent,
 
     /* materialDirectives, */
   ],
+  styleUrls: const ['gantt_component.css'],
+  templateUrl: 'gantt_component.html',
+  pipes: const [commonPipes],
 )
 
 class GanttComponent implements OnActivate {
+
+  final preferredTooltipPositions = const [RelativePosition.OffsetBottomLeft, RelativePosition.OffsetBottomRight];
 
   final AuthService _authService;
   final AppLayoutService _appLayoutService;
@@ -56,6 +68,9 @@ class GanttComponent implements OnActivate {
   GanttComponent(this._authService, this._appLayoutService, this._ganttService, this._router) {
     initializeDateFormatting(Intl.defaultLocale , null);
   }
+
+  // Define messages and labels
+  static final String groupLabel =  GanttMsg.label('Group');
 
   @override
   Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
@@ -167,9 +182,26 @@ class GanttComponent implements OnActivate {
       endMonth = endYearDiff * 12 + endMonthDiff;
     }
 
-    return '${startMonth+1}/${endMonth+2}';
+    const int initOffset = 1;
+    const int finalOffset = 2;
+
+    return '${startMonth+initOffset}/${endMonth+finalOffset}';
 
   }
+
+  String barColor(Objective objective) {
+    return objective.progress < 30 ? '#db4437' : '#0f9d58'; // Material Color - $mat-red / $mat-green
+
+  }
+
+  String colorFromUuid(String id) {
+    return common_service.colorFromUuid(id);
+  }
+
+  String firstLetter(String name) {
+    return common_service.firstLetter(name);
+  }
+
 }
 
 class YearMonth {

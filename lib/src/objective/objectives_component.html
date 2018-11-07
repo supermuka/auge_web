@@ -33,7 +33,7 @@
                     </span>
                 </div>
                 <div *ngIf="iObjective.leader != null" value class="right" >
-                    <span class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjective.leader?.userProfile.image) + ')'" [materialTooltip]="leaderLabel + ': ' + iObjective.leader.name"></span>
+                    <span class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjective.leader?.userProfile.image) + ')'" [materialTooltip]="leaderLabel + ' ' + iObjective.leader.name"></span>
                 </div>
                 <div action>
                     <material-menu [menu]="menuModel" (click)="selectObjective(iObjective)">

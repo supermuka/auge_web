@@ -232,6 +232,22 @@ class ObjectiveMsg {
   );
 }
 
+/// Specific messages and label for [Group]
+class GanttMsg {
+
+  /// Label for initiative
+  static label(String label) => Intl.message(
+      "${Intl.select(label, {
+        'Group': 'Group',
+        'other': 'Not Defined'})}",
+      name: "groupLabel",
+      args: [label],
+      // locale: "en",
+      desc: "Group Gantt labels",
+      examples: const {"Group": "Group"}
+  );
+}
+
 /// Specific messages and label for [Measure]
 class MeasureMsg {
 

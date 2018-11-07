@@ -22,7 +22,7 @@
                             <span class="truncate-ellipsed-parent">
                                 <span class="truncate-ellipsed">{{iInitiative.name}}</span>
                             </span>
-                            <div class="w3-right avatar" [style.background-image]="'url(' +  userUrlImage(iInitiative?.leader?.userProfile?.image) + ')'" [materialTooltip]="leaderLabel + ': ' + iInitiative?.leader?.name"></div>
+                            <div class="w3-right avatar" [style.background-image]="'url(' +  userUrlImage(iInitiative?.leader?.userProfile?.image) + ')'" [materialTooltip]="leaderLabel + ' ' + iInitiative?.leader?.name"></div>
                         </div>
                         <div value>
                             <auge-initiative-summary [initiative]="iInitiative"></auge-initiative-summary>
