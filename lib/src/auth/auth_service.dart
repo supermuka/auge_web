@@ -72,10 +72,21 @@ class AuthService  {
 
     _selectedOrganization = organization;
 
-    if (authenticatedUser != null) {
+    print('authorizedOrganizations');
+    authorizedOrganizations?.forEach((f) => print(f.id));
+    print('selectedOrganization');
+    print(_selectedOrganization?.id);
+
+    if (authenticatedUser != null && authorizedOrganizations != null && _selectedOrganization != null) {
+      print('authorizedOrganizations DENTRO');
+      authorizedOrganizations?.forEach((f) => print(f.id));
+
+      print('selectedOrganization DENTRO ');
+      print(_selectedOrganization.id);
+
         authorizedSystemRole =
         SystemRole.values[authorizedOrganizations
-            .singleWhere((o) => o.organization.id == selectedOrganization.id)
+            .singleWhere((o) => o.organization.id == _selectedOrganization.id)
             .authorizationRole];
     }
   }

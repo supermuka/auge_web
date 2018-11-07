@@ -216,7 +216,7 @@ class GroupDetailComponent extends Object implements OnInit {
 
         if (member.isNotEmpty && member.first.added != null && member.first.added.length != 0 && member.first.added?.first != null) {
           if (!group.members.contains(member.first.added.first)) {
-            group.members.add(member.first.added.first);
+            group.members.add(member.first.added.first as User);
           }
         }
       });
@@ -230,7 +230,7 @@ class GroupDetailComponent extends Object implements OnInit {
 
   void saveGroup() {
     try {
-      _groupService.saveObjective(group);
+      _groupService.saveGroup(group);
       _saveController.add(group);
       closeDetail();
     } catch (e) {

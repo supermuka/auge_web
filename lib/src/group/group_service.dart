@@ -1,10 +1,16 @@
 import 'dart:async';
 
+import 'dart:convert';
+import 'package:auge_server/client/augeapi.dart';
+
 import 'package:angular/core.dart';
 import 'package:auge_web/services/augeapi_service.dart';
 
 import 'package:auge_server/message/created_message.dart';
 import 'package:auge_server/model/group.dart';
+import 'package:auge_server/model/user.dart';
+
+
 
 import 'package:auge_web/message/messages.dart';
 
@@ -34,9 +40,12 @@ class GroupService {
   }
 
   /// Save (create or update) an [Group]
-  void saveObjective(Group group) async {
+  void saveGroup(Group group) async {
     try {
+
       if (group.id == null) {
+
+        //print(GroupMessageFactory.toJson(GroupFacilities.messageFrom(group)));
         IdMessage idMessage = await _augeApiService.augeApi.createGroup(group);
 
         // ID - primary key generated on server-side.

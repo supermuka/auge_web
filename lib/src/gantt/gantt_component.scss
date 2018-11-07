@@ -1,0 +1,189 @@
+// Original from https://codepen.io/ph1p/pen/JBBjNy
+
+@import url("https://fonts.googleapis.com/css?family=Roboto:100,400,700");
+@import 'package:angular_components/css/material/material';
+@import 'package:angular_components/css/material/shadow';
+@import 'package:angular_components/material_button/mixins';
+
+@mixin colorize($selector, $color) {
+  $raised: $selector + '[raised]';
+  @include button-background-color($raised, $color);
+  @include button-color($raised, $mat-white);
+
+  $not-raised: $selector + ':not([raised])';
+  @include button-color($not-raised, $color);
+}
+
+:host {
+  font-family: Roboto,"Helvetica Neue",Arial,Helvetica,sans-serif;
+
+  @include colorize("material-button.red--true", $mat-red);
+  @include colorize("material-button.blue--true", $mat-blue);
+}
+
+$red: #ff6252;
+
+.wrapper {
+	display: grid;
+	max-width: 1600px;
+	min-width: 700px;
+	margin: 0 auto;
+	padding: 40px;
+
+}
+.gantt {
+	display: grid;
+	border: 0;
+	border-radius: 5px; /* 12px; */
+	position: relative;
+	overflow: hidden;
+	@include material-shadow();
+	/* box-sizing: border-box; */
+/*	box-shadow: 0 75px 125px -57px #7e8f94; */
+
+	&__row {
+		display: grid;
+		grid-template-columns: 150px 1fr;
+		background-color: #fff;
+		&--center {
+		   text-align: center;
+
+		}
+		&:nth-child(odd) {
+			background-color: #f5f5f5;
+			.gantt__row-first {
+				background-color: #f5f5f5;
+			}
+		}
+		&:nth-child(3) {
+			.gantt__row-bars {
+				border-top: 0;
+			}
+			.gantt__row-first {
+				border-top: 0;
+			}
+		}
+		&--empty {
+			background-color: lighten($red, 25%) !important;
+			z-index: 1;
+			.gantt__row-first {
+				border-width: 1px 1px 0 0;
+			}
+		}
+		&--lines {
+			position: absolute;
+			height: 100%;
+			width: 100%;
+			background-color: transparent !important;
+			grid-template-columns: 150px repeat(24, 1fr);
+			span {
+				display: block;
+                &:not(:last-child) {
+                              border-right: 1px solid rgba(0, 0, 0, 0.1);
+                            }
+				&.marker-true {
+					background-color: rgba(10, 52, 68, 0.13);
+					z-index: 2;
+				}
+			}
+			&:after {
+				grid-row: 1;
+				grid-column: 0;
+				background-color: #1688b345;
+				z-index: 2;
+				height: 100%;
+			}
+		}
+        &--years {
+            color: #fff;
+            background-color: #0a3444 !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        	grid-template-columns: 150px repeat(2, 1fr);
+        	justify-items: center;
+        	align-items: center;
+            .gantt__row-first {
+              border-top: 0 !important;
+              background-color: #0a3444 !important;
+            }
+            span {
+                text-align: center;
+                font-size: 13px;
+                align-self: center;
+                justify-self: center;
+                font-weight: bold;
+                padding: 20px 0;
+            }
+        }
+		&--months {
+			color: #fff;
+			background-color: #3367d6 !important;
+			border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+			grid-template-columns: 150px repeat(24, 1fr);
+			.gantt__row-first {
+				border-top: 0 !important;
+			  background-color: #0a3444 !important;
+			}
+			span {
+				text-align: center;
+				font-size: 13px;
+				align-self: center;
+				font-weight: bold;
+				padding: 20px 0;
+			}
+		}
+		&-first {
+			background-color: #fff;
+			border-width: 1px 0 0 0;
+			border-color: rgba(0, 0, 0, 0.1);
+			border-style: solid;
+			padding: 15px 0;
+			font-size: 13px;
+			font-weight: bold;
+			text-align: center;
+		}
+		&-bars {
+			list-style: none;
+			display: grid;
+			padding: 9px 0;
+			margin: 0;
+			/* grid-template-columns: repeat(12, 1fr); */
+			grid-template-columns: repeat(24, 1fr);
+			grid-gap: 8px 0;
+			border-top: 1px solid rgba(221, 221, 221, 0.8);
+			li {
+				font-weight: 500;
+				text-align: left;
+				font-size: 14px;
+				min-height: 15px;
+				background-color: #55de84;
+				padding: 5px 12px;
+				color: #fff;
+				overflow: hidden;
+				position: relative;
+				cursor: pointer;
+				border-radius: 5px; /* 20px; */
+
+				&.stripes {
+					background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,.1) 5px, rgba(255,255,255,.1) 12px);
+				}
+
+				&:before,
+				&:after {
+					content: "";
+					height: 100%;
+					top: 0;
+					z-index: 4;
+					position: absolute;
+					background-color: rgba(0, 0, 0, 0.3);
+				}
+				&:before {
+					left: 0;
+				}
+				&:after {
+					right: 0;
+				}
+			}
+		}
+	}
+}
+

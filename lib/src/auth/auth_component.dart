@@ -63,6 +63,7 @@ class AuthComponent extends Object with OnActivate  {
   String appLayoutRoute = AppRoutes.appLayoutRoute.toUrl();
 
   final AuthService _authService;
+  final Router _router;
 
   String eMail = "demo@levius.com.br";
   String passwordStr = "1234567";
@@ -72,8 +73,6 @@ class AuthComponent extends Object with OnActivate  {
   List<OptionGroup<AppLayoutOrganizationSelectOption>> organizationGroupOptions = new List();
   SelectionOptions organizationOptions;
   SelectionModel organizationSingleSelectModel;
-
-  Router _router;
 
   AuthComponent(this._authService, this._router);
 
@@ -121,7 +120,8 @@ class AuthComponent extends Object with OnActivate  {
             _authService.authorizedOrganizations =
             await _authService.getAuthorizedOrganizationsByUserId(
                 _authService.authenticatedUser.id);
-            // (TODO) Treating the super admin
+
+
             if (_authService.authorizedOrganizations == null ||
                 _authService.authorizedOrganizations.length == 0) {
               dialogError = AuthMsg.organizationNotFoundMsg();
@@ -184,6 +184,9 @@ class AuthComponent extends Object with OnActivate  {
     new SelectionModel.single()
       ..selectionChanges.listen((d) async {
         if (d != null && d.isNotEmpty && d.first != null && d.first.added != null && d.first.added.isNotEmpty) {
+          print('selectionChanges');
+          print(d.first?.added.first.organization);
+
           if (_authService.selectedOrganization !=
               d.first?.added.first.organization) {
 

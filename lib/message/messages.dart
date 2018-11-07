@@ -87,6 +87,7 @@ class AppLayoutMsg {
         'Initiatives': 'Initiatives',
         'Objectives': 'Objectives',
         'Objectives Map': 'Objectives Map',
+        'Objectives Gantt': 'Objectives Gantt',
         'Users': 'Users',
         'Groups': 'Groups',
         'other': 'Not Defined'})}",
@@ -273,12 +274,13 @@ class MeasureMsg {
 }
 
 /// Specific messages and label for [ObjectiveHierarchy]
-class ObjectiveHierarchyMsg {
+class ObjectiveViewsMsg {
 
   /// Label for initiative
   static label(String label) => Intl.message(
       "${Intl.select(label, {
         'Objectives Map': 'Objectives Map',
+        'Objectives Gantt': 'Objectives Gantt',
         'other': 'Not Defined'})}",
       name: "objectiveMapLabel",
       args: [label],

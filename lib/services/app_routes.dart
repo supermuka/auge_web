@@ -33,6 +33,10 @@ class AppRoutes {
       path: 'map',
       parent: appLayoutRoute
   );
+  static final ganttRoute = new RoutePath(
+      path: 'gantt',
+      parent: appLayoutRoute
+  );
   static final initiativesRoute = new RoutePath(
     path: 'initiatives',
     parent: appLayoutRoute

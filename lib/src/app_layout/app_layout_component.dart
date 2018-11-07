@@ -45,6 +45,7 @@ import 'package:auge_web/src/user/users_component.template.dart' as users_compon
 import 'package:auge_web/src/initiative/initiatives_component.template.dart' as initiatives_component;
 import 'package:auge_web/src/work_item/work_items_component.template.dart' as work_items_component;
 import 'package:auge_web/src/map/map_component.template.dart' as map_component;
+import 'package:auge_web/src/gantt/gantt_component.template.dart' as gantt_component;
 import 'package:auge_web/src/objective/objectives_component.template.dart' as objectives_component;
 import 'package:auge_web/src/measure/measures_component.template.dart' as measures_component;
 import 'package:auge_web/src/group/groups_component.template.dart' as groups_component;
@@ -85,6 +86,7 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
 
   String get insightsRouteUrl => AppRoutes.insightslRoute.toUrl();
   String get mapRouteUrl => AppRoutes.mapRoute.toUrl();
+  String get ganttRouteUrl => AppRoutes.ganttRoute.toUrl();
   String get objectivesRouteUrl => AppRoutes.objectivesRoute.toUrl();
   String get initiativesRouteUrl => AppRoutes.initiativesRoute.toUrl();
   String get organizationRouteUrl =>  AppRoutes.organizationRoute.toUrl(parameters: { AppRoutes.organizationIdParameter: this._authService.selectedOrganization?.id });
@@ -130,6 +132,10 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
       component: map_component.MapComponentNgFactory,
     ),
     new RouteDefinition(
+      routePath: AppRoutes.ganttRoute,
+      component: gantt_component.GanttComponentNgFactory,
+    ),
+    new RouteDefinition(
       routePath: AppRoutes.objectivesRoute,
       component: objectives_component.ObjectivesComponentNgFactory,
     ),
@@ -171,6 +177,7 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
   /// Messages and labels
   static final String insightsLabel = AppLayoutMsg.label('Insights');
   static final String objectivesMapLabel = AppLayoutMsg.label('Objectives Map');
+  static final String objectivesGanttLabel = AppLayoutMsg.label('Objectives Gantt');
   static final String objectivesLabel = AppLayoutMsg.label('Objectives');
   static final String initiativesLabel = AppLayoutMsg.label('Initiatives');
   static final String organizationLabel = AppLayoutMsg.label('Organization');

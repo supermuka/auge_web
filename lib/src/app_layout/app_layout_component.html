@@ -10,6 +10,9 @@
             <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(mapRouteUrl)">
                 <material-icon icon="map"></material-icon>{{objectivesMapLabel}}
             </material-list-item>
+            <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(ganttRouteUrl)">
+                <material-icon icon="schedule"></material-icon>{{objectivesGanttLabel}}
+            </material-list-item>
             <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(objectivesRouteUrl)">
                 <material-icon icon="visibility"></material-icon>{{objectivesLabel}}
             </material-list-item>

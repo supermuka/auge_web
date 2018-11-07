@@ -12,11 +12,11 @@ body {
 * {
   font-family: Roboto, Helvetica, Arial, sans-serif;
 }
-
+/*
 .shadow-box {
   @include material-shadow();
 }
-
+*/
 .container {
   display: flex;
   justify-content: center;

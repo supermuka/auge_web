@@ -65,6 +65,9 @@
 .c100.small {
   font-size: 80px;
 }
+.c100.tiny {
+  font-size: 50px;
+}
 .c100 > span {
   position: absolute;
   width: 100%;

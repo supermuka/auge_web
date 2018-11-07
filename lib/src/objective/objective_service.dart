@@ -78,10 +78,10 @@ class ObjectiveService {
         //objective.id = idMessage?.id;
 
         return await _augeApiService.objectiveAugeApi
-             .createObjective( ObjectiveFacilities.objectiveMessageFrom(objective) );
+             .createObjective(objective);
 
       } else {
-        await _augeApiService.objectiveAugeApi.updateObjective(ObjectiveFacilities.objectiveMessageFrom(objective));
+        await _augeApiService.objectiveAugeApi.updateObjective(objective);
       }
 
     } catch (e) {
