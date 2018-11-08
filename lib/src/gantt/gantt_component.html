@@ -42,11 +42,11 @@
                          size="medium"
                          #clickableRef="tooltipTarget">{{iObjective.name}}</span>
                    <material-tooltip-card [for]="clickableRef" [preferredPositions]="preferredTooltipPositions">
-                       <div>Start Date</div>
+                       <div>{{startDateLabel}}</div>
                        <div><strong>{{iObjective.startDate | date}}</strong></div>
-                       <div>End Date</div>
+                       <div>{{endDateLabel}}</div>
                        <div><strong>{{iObjective.endDate | date}}</strong></div>
-                       <div>Leader</div>
+                       <div>{{leaderLabel}}</div>
                        <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjective?.leader) + ')'"></div><span> <strong>{{iObjective?.leader.name}}</strong></span>
                    </material-tooltip-card>
                </li>

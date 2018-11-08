@@ -29,6 +29,8 @@ import 'package:angular_components/utils/browser/window/module.dart';
 
 import 'package:angular_components/material_datepicker/material_datepicker.dart';
 
+import 'package:angular_components/material_checkbox/material_checkbox.dart';
+
 import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/objective/timeline_item.dart';
 import 'package:auge_server/model/user.dart';
@@ -61,6 +63,7 @@ import 'objective_detail_component.template.dart' as objective_detail_component;
 
       MaterialButtonComponent,
       MaterialIconComponent,
+      MaterialCheckboxComponent,
 
       MaterialDatepickerComponent,
     ],
@@ -140,6 +143,7 @@ class ObjectiveDetailComponent extends Object implements OnInit {
   static final String startDateLabel =  ObjectiveMsg.label('Start Date');
   static final String endDateLabel =  ObjectiveMsg.label('End Date');
   static final String alignedToLabel =  ObjectiveMsg.label('Aligned To');
+  static final String archivedLabel =  ObjectiveMsg.label('Archived');
 
   static final String saveButtonLabel = CommonMsg.buttonLabel('Save');
   static final String closeButtonLabel = CommonMsg.buttonLabel('Close');
@@ -156,6 +160,7 @@ class ObjectiveDetailComponent extends Object implements OnInit {
     } else {
 
       objective = Objective()..organization = _authService.selectedOrganization;
+      objective.archived = false;
     }
 
     try {
@@ -236,11 +241,6 @@ class ObjectiveDetailComponent extends Object implements OnInit {
 
       Objective objectiveNew = await _objectiveService.saveObjective(objective);
 
-     // await _objectiveService.saveTimelineItem(objective.id, timelineItem);
-
-      //objective.timeline.insert(0, objective.lastTimelineItem);
-
-      // _saveController.add(objective);
       _saveController.add(objectiveNew);
       closeDetail();
     } catch (e) {

@@ -81,7 +81,7 @@ class ObjectiveService {
              .createObjective(objective);
 
       } else {
-        await _augeApiService.objectiveAugeApi.updateObjective(objective);
+        return await _augeApiService.objectiveAugeApi.updateObjective(objective);
       }
 
     } catch (e) {

@@ -86,7 +86,7 @@
                                          [limit]="10">
             </material-auto-suggest-input>
         </div>
-
+        <material-checkbox [(ngModel)]="objective.archived" [label]="archivedLabel"></material-checkbox>
         <div footer>
             <material-button [disabled]="!validInput" (trigger)="saveObjective()">{{saveButtonLabel}}
                 <material-icon icon="save"></material-icon>

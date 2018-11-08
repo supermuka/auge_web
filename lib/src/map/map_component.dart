@@ -46,6 +46,9 @@ class MapComponent implements OnActivate {
 
   MapComponent(this._authService, this._appLayoutService, this._mapService, this._router);
 
+  // Define messages and labels
+  static final String leaderLabel =  MapMsg.label('Leader');
+
   @override
   Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
     if (this._authService.authenticatedUser == null) {

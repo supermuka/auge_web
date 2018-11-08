@@ -222,6 +222,7 @@ class ObjectiveMsg {
         'Leader': 'Leader',
         'Progress': 'Progress',
         'Group': 'Group',
+        'Archived': 'Archived',
         'No Match': 'No Match',
         'other': 'Not Defined'})}",
       name: "objectiveLabel",
@@ -232,18 +233,37 @@ class ObjectiveMsg {
   );
 }
 
-/// Specific messages and label for [Group]
+/// Specific messages and label for [Map]
+class MapMsg {
+
+  /// Label for initiative
+  static label(String label) => Intl.message(
+      "${Intl.select(label, {
+        'Leader': 'Leader',
+        'other': 'Not Defined'})}",
+      name: "mapLabel",
+      args: [label],
+      // locale: "en",
+      desc: "Map labels",
+      examples: const {"Leader": "Leader"}
+  );
+}
+
+/// Specific messages and label for [Gantt]
 class GanttMsg {
 
   /// Label for initiative
   static label(String label) => Intl.message(
       "${Intl.select(label, {
         'Group': 'Group',
+        'Start Date': 'Start Date',
+        'End Date': 'End Date',
+        'Leader': 'Leader',
         'other': 'Not Defined'})}",
-      name: "groupLabel",
+      name: "ganttLabel",
       args: [label],
       // locale: "en",
-      desc: "Group Gantt labels",
+      desc: "Gantt labels",
       examples: const {"Group": "Group"}
   );
 }

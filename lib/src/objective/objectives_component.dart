@@ -151,13 +151,17 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
 
   void changeListItem(Objective objetive) {
 
-    if (selectedObjective == null) {
+    if (selectedObjective == null && !objetive.archived) {
       objectives.add(objetive);
       expandedControl[objetive] = true;
 
     } else {
-      objetive.cloneTo(objectives[objectives.indexOf(selectedObjective)]);
-
+      if (objetive.archived) {
+        expandedControl.remove(selectedObjective);
+        objectives.remove(selectedObjective);
+      } else {
+        objetive.cloneTo(objectives[objectives.indexOf(selectedObjective)]);
+      }
     }
 
     _sortObjectivesOrderByGroup(objectives);

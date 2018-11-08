@@ -71,6 +71,9 @@ class GanttComponent implements OnActivate {
 
   // Define messages and labels
   static final String groupLabel =  GanttMsg.label('Group');
+  static final String startDateLabel =  GanttMsg.label('Start Date');
+  static final String endDateLabel =  GanttMsg.label('End Date');
+  static final String leaderLabel =  GanttMsg.label('Leader');
 
   @override
   Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
