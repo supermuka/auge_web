@@ -167,7 +167,7 @@ class GanttComponent implements OnActivate {
   }
 
   String gridColumnFromStartAndEndDate(Objective objective) {
-    int startMonth = 1;
+    int startMonth = 0;
     if (objective.startDate != null) {
       int startYearDiff = objective.startDate.year -
           yearsMonthsInterval.first.year;
@@ -176,7 +176,8 @@ class GanttComponent implements OnActivate {
 
       startMonth = startYearDiff * 12 + startMonthDiff;
     }
-    int endMonth = 1;
+
+    int endMonth = startMonth;
     if (objective.endDate != null) {
       int endYearDiff = objective.endDate.year - yearsMonthsInterval.first.year;
       int endMonthDiff = objective.endDate.month -
@@ -193,8 +194,32 @@ class GanttComponent implements OnActivate {
   }
 
   String barColor(Objective objective) {
-    return objective.progress < 30 ? '#db4437' : '#0f9d58'; // Material Color - $mat-red / $mat-green
+   // return objective.progress < 30 ? '#db4437' : '#0f9d58'; // Material Color - $mat-red / $mat-green
+    DateTime currentDateTime = DateTime.now();
 
+    currentDateTime.millisecondsSinceEpoch;
+    int expetedProgressInTime;
+    if (objective.startDate != null && objective.endDate != null) {
+      if (objective.startDate.millisecondsSinceEpoch > currentDateTime.millisecondsSinceEpoch) {
+        expetedProgressInTime = 0;
+      } else if (objective.endDate.millisecondsSinceEpoch < currentDateTime.millisecondsSinceEpoch) {
+        expetedProgressInTime = 100;
+      } else {
+        expetedProgressInTime = currentDateTime.millisecondsSinceEpoch ~/ objective.endDate.millisecondsSinceEpoch * 100;
+      }
+    }
+
+    String color;
+    if (expetedProgressInTime == null)
+      color = '#9e9e9e';
+    else if ( objective.progress > expetedProgressInTime * 0.7)
+      color =  '#0f9d58'; // $mat-green-500: #0f9d58; // 'hsl(120, 100%, 50%)';
+    else if (objective.progress < expetedProgressInTime * 0.3)
+      color = '#db4437'; // $mat-red-500: #db4437; // 'hsl(0, 100%, 50%)';
+     else
+      color = '#ffc107'; // $mat-amber-500: #ffc107; // 'hsl(45, 100%, 50%)';
+
+    return color;
   }
 
   String colorFromUuid(String id) {

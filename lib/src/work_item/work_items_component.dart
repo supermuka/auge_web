@@ -48,7 +48,7 @@ class WorkItemsComponent extends Object {
 
   String label(String label) =>  InitiativeMsg.label(label);
 
-
+/*
   String circleColor(Initiative initiative)  {
     String color;
     int workItemsOverDueCount =  initiative.workItemsOverDueCount;
@@ -63,6 +63,7 @@ class WorkItemsComponent extends Object {
     }
     return color;
   }
+  */
 
   String widthState(int workItemsCount, int stateWorkItemsCount, int withTotal) {
     return (stateWorkItemsCount / workItemsCount * withTotal).toString();

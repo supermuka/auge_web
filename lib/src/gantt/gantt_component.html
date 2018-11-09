@@ -36,11 +36,13 @@
                             <div class="fill"></div>
                         </div>
                    </span>
-                   <span clickableTooltipTarget
-                         keyboardOnlyFocusIndicator
-                         tabindex="0"
-                         size="medium"
-                         #clickableRef="tooltipTarget">{{iObjective.name}}</span>
+                   <span class="truncate-ellipsed-parent">
+                       <span class="truncate-ellipsed" clickableTooltipTarget
+                             keyboardOnlyFocusIndicator
+                             tabindex="0"
+                             size="medium"
+                             #clickableRef="tooltipTarget">{{iObjective.name}}</span>
+                   </span>
                    <material-tooltip-card [for]="clickableRef" [preferredPositions]="preferredTooltipPositions">
                        <div>{{startDateLabel}}</div>
                        <div><strong>{{iObjective.startDate | date}}</strong></div>

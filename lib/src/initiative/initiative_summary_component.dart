@@ -45,11 +45,11 @@ class InitiativeSummaryComponent extends Object {
     int workItemsCount = initiative.workItemsCount;
 
     if (workItemsOverDueCount == 0) {
-      color = 'hsl(120, 100%, 50%)';
+      color =  '#0f9d58'; // $mat-green-500: #0f9d58; // 'hsl(120, 100%, 50%)';
     } else if (workItemsOverDueCount < workItemsCount)
-      color = 'hsl(45, 100%, 50%)';
+      color = '#ffc107'; // $mat-amber-500: #ffc107; // 'hsl(45, 100%, 50%)';
     else {
-      color = 'hsl(0, 100%, 50%)';
+      color = '#db4437'; // $mat-red-500: #db4437; // 'hsl(0, 100%, 50%)';
     }
     return color;
   }

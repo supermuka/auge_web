@@ -1,7 +1,6 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
-
 import 'dart:async';
 
 /// Return an image uri for user

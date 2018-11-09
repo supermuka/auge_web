@@ -241,6 +241,8 @@ class ObjectiveDetailComponent extends Object implements OnInit {
 
       Objective objectiveNew = await _objectiveService.saveObjective(objective);
 
+      _objectiveService.currentDateTime = objectiveNew.lastTimelineItem.dateTime;
+
       _saveController.add(objectiveNew);
       closeDetail();
     } catch (e) {

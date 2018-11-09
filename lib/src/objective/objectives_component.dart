@@ -164,6 +164,8 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
       }
     }
 
+
+
     _sortObjectivesOrderByGroup(objectives);
   }
 
