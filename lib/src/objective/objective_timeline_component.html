@@ -12,7 +12,6 @@
                     <span class="avatar" [style.background-image]="'url(' + userUrlImage(timelineItem.user) + ')'"></span>
                     <span>{{systemFunctionInPastLabel(timelineItem.systemFunctionIndex)}} the {{timelineItem.className}} <strong>{{timelineItem.changedDataToMap['identification']['name']}}</strong></span>
                 </div>
-
                 <div>
                     <span>{{elapsedTime(timelineItem.dateTime, currentDateTime)}}</span>
                     <span class="w3-right">

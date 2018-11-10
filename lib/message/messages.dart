@@ -239,6 +239,9 @@ class MapMsg {
   /// Label for initiative
   static label(String label) => Intl.message(
       "${Intl.select(label, {
+        'Group': 'Group',
+        'Start Date': 'Start Date',
+        'End Date': 'End Date',
         'Leader': 'Leader',
         'other': 'Not Defined'})}",
       name: "mapLabel",

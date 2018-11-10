@@ -5,6 +5,8 @@ import 'package:angular_router/angular_router.dart';
 /* import 'package:angular_components/angular_components.dart'; */
 
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
+import 'package:angular_components/focus/keyboard_only_focus_indicator.dart';
+import 'package:angular_components/laminate/enums/alignment.dart';
 
 import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/user.dart';
@@ -25,17 +27,23 @@ import 'package:auge_web/services/app_routes.dart';
   providers: const [MapService, ObjectiveService],
   styleUrls: const ['map_component.css'],
   templateUrl: 'map_component.html',
+  pipes: [commonPipes],
 
   directives: const [
     coreDirectives,
     routerDirectives,
     MaterialTooltipDirective,
+    ClickableTooltipTargetDirective,
+    KeyboardOnlyFocusIndicatorDirective,
+    MaterialPaperTooltipComponent,
 
     /* materialDirectives, */
   ],
 )
 
 class MapComponent implements OnActivate {
+
+  final preferredTooltipPositions = const [RelativePosition.OffsetBottomLeft, RelativePosition.OffsetBottomRight];
 
   final AuthService _authService;
   final AppLayoutService _appLayoutService;
@@ -48,6 +56,9 @@ class MapComponent implements OnActivate {
 
   // Define messages and labels
   static final String leaderLabel =  MapMsg.label('Leader');
+  static final String groupLabel =  MapMsg.label('Group');
+  static final String startDateLabel =  MapMsg.label('Start Date');
+  static final String endDateLabel =  MapMsg.label('End Date');
 
   @override
   Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
@@ -76,5 +87,13 @@ class MapComponent implements OnActivate {
   void goToObjectives(Objective objective) async {
     _router.navigateByUrl(AppRoutes.objectivesRoute.toUrl(queryParameters: { AppRoutes.objectiveIdParameter: objective.id }));
 
+  }
+
+  String colorFromUuid(String id) {
+    return common_service.colorFromUuid(id);
+  }
+
+  String firstLetter(String name) {
+    return common_service.firstLetter(name);
   }
 }

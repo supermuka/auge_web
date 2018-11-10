@@ -9,7 +9,6 @@ import 'package:auge_server/model/objective/objective.dart';
 @Injectable()
 class MapService {
 
-
   final AugeApiService _augeApiService;
 
   MapService(this._augeApiService);
@@ -17,8 +16,6 @@ class MapService {
   /// Return a list of the [Objectives] in hierarchy form with yours children
   Future<List<Objective>> getObjectivesMap(String organizationId) async {
       return  _augeApiService.objectiveAugeApi.getObjectives(
-          organizationId, treeAlignedWithChildren: true, withProfile: true);
-
-
+          organizationId, treeAlignedWithChildren: true, withProfile: true, withMeasures: true);
   }
 }

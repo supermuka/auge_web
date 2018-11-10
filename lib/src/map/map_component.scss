@@ -84,11 +84,11 @@ $reverse: false;
 }
 
 .tree li a {
-	border: $border-width solid #ccc;
-	padding: .5em .75em;
-	text-decoration: none;
-	display: inline-block;
-	border-radius: 5px;
+  border: $border-width solid #ccc;
+  padding: .5em .75em;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 5px;
   color: #333;
   position: relative;
   top: $border-width;
@@ -111,6 +111,21 @@ $reverse: false;
 	border-color:  #e9453f;
 }
 
-.avatar {
-  margin-left: 4px !important;
+.text-group-letter {
+    color: white; /* foi preciso colocar, senão não funcionava o mix-blend-mode */
+    mix-blend-mode: difference;
+    line-height: 40px; /* same height to parent - class avatar*/
+}
+
+.custom_row {
+    display: inline-block;
+    vertical-align: middle;
+    height: 1em;
+}
+
+.custom-name {
+   min-width: 200px;
+   max-width: 400px;
+   width: 400px;
+   text-align: left;
 }

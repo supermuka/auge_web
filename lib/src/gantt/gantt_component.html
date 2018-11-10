@@ -28,7 +28,11 @@
                 </span>
             </div>
             <ul class="gantt__row-bars" >
-               <li *ngFor="let iObjective of objectivesByGroup[iObjectivesGroupKey]" [style.grid-column]="gridColumnFromStartAndEndDate(iObjective)" [style.background-color]="barColor(iObjective)" (click)="goToObjectives(iObjective)">
+               <li clickableTooltipTarget
+                   keyboardOnlyFocusIndicator
+                   tabindex="0"
+                   size="medium"
+                   #clickableRef="tooltipTarget" *ngFor="let iObjective of objectivesByGroup[iObjectivesGroupKey]" [style.grid-column]="gridColumnFromStartAndEndDate(iObjective)" [style.background-color]="barColor(iObjective)" (click)="goToObjectives(iObjective)">
                    <span class="c100 p{{iObjective.progress}} tiny">
                         <span>{{iObjective.progress}}%</span>
                         <div class="slice">
@@ -37,11 +41,7 @@
                         </div>
                    </span>
                    <span class="truncate-ellipsed-parent">
-                       <span class="truncate-ellipsed" clickableTooltipTarget
-                             keyboardOnlyFocusIndicator
-                             tabindex="0"
-                             size="medium"
-                             #clickableRef="tooltipTarget">{{iObjective.name}}</span>
+                       <span class="truncate-ellipsed">{{iObjective.name}}</span>
                    </span>
                    <material-tooltip-card [for]="clickableRef" [preferredPositions]="preferredTooltipPositions">
                        <div>{{startDateLabel}}</div>

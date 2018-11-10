@@ -30,8 +30,6 @@ import 'package:auge_web/services/app_routes.dart';
   selector: 'auge-gantt',
   providers: const [GanttService, ObjectiveService],
 
-
-
   directives: const [
     coreDirectives,
     routerDirectives,
@@ -39,7 +37,6 @@ import 'package:auge_web/services/app_routes.dart';
     MaterialTooltipDirective,
     ClickableTooltipTargetDirective,
     KeyboardOnlyFocusIndicatorDirective,
-    MaterialTooltipDirective,
     MaterialPaperTooltipComponent,
 
     /* materialDirectives, */
@@ -198,23 +195,25 @@ class GanttComponent implements OnActivate {
     DateTime currentDateTime = DateTime.now();
 
     currentDateTime.millisecondsSinceEpoch;
-    int expetedProgressInTime;
+    int expectedProgressInTime;
     if (objective.startDate != null && objective.endDate != null) {
       if (objective.startDate.millisecondsSinceEpoch > currentDateTime.millisecondsSinceEpoch) {
-        expetedProgressInTime = 0;
+        expectedProgressInTime = 0;
       } else if (objective.endDate.millisecondsSinceEpoch < currentDateTime.millisecondsSinceEpoch) {
-        expetedProgressInTime = 100;
+        expectedProgressInTime = 100;
       } else {
-        expetedProgressInTime = currentDateTime.millisecondsSinceEpoch ~/ objective.endDate.millisecondsSinceEpoch * 100;
+        expectedProgressInTime = (currentDateTime.millisecondsSinceEpoch -
+            objective.startDate.millisecondsSinceEpoch) * 100 ~/(objective.endDate.millisecondsSinceEpoch -
+            objective.startDate.millisecondsSinceEpoch);
       }
     }
 
     String color;
-    if (expetedProgressInTime == null)
+    if (expectedProgressInTime == null)
       color = '#9e9e9e';
-    else if ( objective.progress > expetedProgressInTime * 0.7)
+    else if ( objective.progress > expectedProgressInTime * 0.7)
       color =  '#0f9d58'; // $mat-green-500: #0f9d58; // 'hsl(120, 100%, 50%)';
-    else if (objective.progress < expetedProgressInTime * 0.3)
+    else if (objective.progress < expectedProgressInTime * 0.3)
       color = '#db4437'; // $mat-red-500: #db4437; // 'hsl(0, 100%, 50%)';
      else
       color = '#ffc107'; // $mat-amber-500: #ffc107; // 'hsl(45, 100%, 50%)';

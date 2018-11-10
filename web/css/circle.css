@@ -47,7 +47,7 @@
   border-radius: 50%;
   /* float: left; --- original */
   display: block;
-  margin: 0 0.1em 0.1em 0;
+  margin: 0.1em 0.1em 0.1em 0.1em;/* 0 0.1em 0.1em 0; */
   background-color: #cccccc;
 }
 .c100 *, .c100 *:before, .c100 *:after {
@@ -66,7 +66,7 @@
   font-size: 80px;
 }
 .c100.tiny {
-  font-size: 40px;
+  font-size: 48px;
 }
 .c100 > span {
   position: absolute;
