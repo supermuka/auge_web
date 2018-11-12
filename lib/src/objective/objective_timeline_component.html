@@ -6,7 +6,7 @@
         <div name>
             <span><strong>Timeline</strong></span>
         </div>
-        <div *deferredContent>
+        <div class="timeline-vertical-size" *deferredContent>
             <div class="timeline-vertical-size" *ngFor="let timelineItem of objective.timeline">
                 <div>
                     <span class="avatar" [style.background-image]="'url(' + userUrlImage(timelineItem.user) + ')'"></span>

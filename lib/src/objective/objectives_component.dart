@@ -2,6 +2,7 @@
 // Author: Samuel C. Schwebel.
 
 import 'dart:async';
+import 'dart:html';
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
@@ -58,7 +59,7 @@ import 'package:auge_web/services/app_routes.dart';
       'objectives_component.css'
     ])
 
-class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
+class ObjectivesComponent extends Object implements  AfterViewInit, OnActivate, OnDestroy {
 
   final AuthService _authService;
   final AppLayoutService _appLayoutService;
@@ -85,10 +86,11 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => detailVisible = true), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
   }
 
+
   @override
   Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
 
-    if (this._authService.authenticatedUser == null) {
+    if (_authService.selectedOrganization == null || _authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
     }
 
@@ -110,18 +112,26 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
 
       _objectives = objectivesAux;
 
-
       if (initialObjectiveId != null) {
         Objective initialObjective = _objectives.singleWhere((o) => o.id == initialObjectiveId);
-        if (initialObjective != null) {
-          expandedControl[initialObjective] = true;
-        }
+        expandedControl[initialObjective] = true;
+
+
       }
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;
     }
   }
+
+  void ngAfterViewInit() {
+    if (initialObjectiveId != null) {
+    Element e = document.querySelector('#initial-objective');
+    if (e != null)
+    e.scrollIntoView(ScrollAlignment.TOP);
+    }
+  }
+
 
   List<Objective> get objectives {
     return _searchService?.searchTerm.toString().isEmpty ? _objectives : _objectives.where((t) => t.name.contains(_searchService.searchTerm)).toList();
@@ -189,4 +199,20 @@ class ObjectivesComponent extends Object implements OnActivate, OnDestroy {
   void _sortObjectivesOrderByGroup(List<Objective> objectives) {
     objectives.sort((a, b) => a?.group == null || b?.group == null ? -1 : a.group.name.compareTo(b.group.name));
   }
+
+  void scrollInit(bool event, HtmlElement element) {
+    if (event && initialObjectiveId != null) {
+      if (element != null) {
+        common_service.startTimeoutTimer(() {
+          // Needs include timer to wait angular componentes to render the components before to scroll.
+          element.scrollIntoView(ScrollAlignment.TOP);
+          initialObjectiveId = null;
+          }, 300);
+
+      }
+    }
+  }
+
+
+
 }

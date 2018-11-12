@@ -12,15 +12,15 @@ String userUrlImage(String userProfileImage) {
 }
 
 /// Handle Timeout
-const int durationSeconds = 5;
+const int durationMilliseconds = 5000;
 
-Timer startTimeoutTimer(Function handleTimeout, [int seconds] ) {
-  Duration duration = Duration(seconds: seconds == null ? durationSeconds : seconds);
+Timer startTimeoutTimer(Function handleTimeout, [int milliseconds] ) {
+  Duration duration = Duration(milliseconds:  milliseconds == null ? durationMilliseconds : milliseconds);
   return new Timer(duration, handleTimeout);
 }
 
-Timer repeatingTimer(Function handleTimeout, [int seconds] ) {
-  Duration duration = Duration(seconds: seconds == null ? durationSeconds : seconds);
+Timer repeatingTimer(Function handleTimeout, [int milliseconds] ) {
+  Duration duration = Duration(milliseconds: milliseconds == null ? durationMilliseconds : milliseconds);
   return new Timer.periodic(duration, handleTimeout);
 }
 
