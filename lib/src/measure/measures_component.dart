@@ -18,6 +18,7 @@ import 'package:angular_components/laminate/components/modal/modal.dart';
 import 'package:angular_components/model/ui/icon.dart';
 import 'package:angular_components/model/menu/menu.dart';
 import 'package:angular_components/content/deferred_content.dart';
+import 'package:angular_components/model/action/async_action.dart';
 
 import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/objective/measure.dart';
@@ -33,6 +34,7 @@ import 'package:auge_web/src/measure/measure_service.dart';
     providers: [MeasureService],
     directives: const [
       coreDirectives,
+      materialInputDirectives,
       // materialDirectives,
       MaterialSliderComponent,
       MaterialExpansionPanel,
@@ -62,10 +64,10 @@ class MeasuresComponent extends Object {
   Measure selectedMeasure;
 
   bool detailVisible;
+  Map<Measure, bool> expandedControl = Map();
 
   MenuModel<MenuItem> menuModel;
   MeasuresComponent(this._measureService) {
-
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => detailVisible = true), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
   }
 
@@ -92,7 +94,7 @@ class MeasuresComponent extends Object {
     return measure == null || measure.currentValue == null || measure.currentValue == 0 ? 0 :  (measure.currentValue ~/ (measure.startValue + measure.endValue) * 100);
   }
 
-  void updateMeasure(Measure measure, num value) {
+  void changeCurrentValue(Measure measure, num value) {
     // measure.currentValue = value;
 
     // Treat invert slider value, when applied;
@@ -101,8 +103,64 @@ class MeasuresComponent extends Object {
           ? measure.currentValue = value
           : measure.currentValue =
           measure.startValue + measure.endValue - value;
-      _measureService.saveMeasure(objective.id, measure);
+     // _measureService.saveMeasure(objective.id, measure);
     }
+  }
+
+  void cancelCurrentValue(Measure measure, AsyncAction event, int i) async {
+
+      try {
+
+        Measure measureNew = await _measureService.getMeasureById(measure.id);
+        expandedControl.remove(measure);
+        print(measure.currentValue);
+        print(measureNew.currentValue);
+        measure = measureNew;
+        measures[i] = measureNew;
+
+      } on Exception {
+        event.cancel();
+      }
+
+  }
+
+  void saveCurrentValue(Measure measure,  AsyncAction event) {
+    try {
+      if (measure.startValue != null || measure?.endValue != null) {
+        measure.startValue <= measure.endValue
+            ? measure.currentValue = measure.currentValue
+            : measure.currentValue =
+            measure.startValue + measure.endValue - measure.currentValue;
+
+        MeasureProgress measureProgress = MeasureProgress();
+        measureProgress.currentValue = measure.currentValue;
+        _measureService.saveMeasureProgress(measure.id, measureProgress);
+        expandedControl[measure] = false;
+      }
+    } on Exception {
+      event.cancel();
+    }
+
+  }
+
+
+  void saveMeasureProgress(Measure measure, num value) {
+    // measure.currentValue = value;
+
+
+     // Treat invert slider value, when applied;
+
+     if (measure.startValue != null || measure?.endValue != null) {
+      measure.startValue <= measure.endValue
+          ? measure.currentValue = value
+          : measure.currentValue =
+          measure.startValue + measure.endValue - value;
+
+      MeasureProgress measureProgress = MeasureProgress();
+      measureProgress.currentValue = measure.currentValue;
+      _measureService.saveMeasureProgress(measure.id, measureProgress);
+    }
+
   }
 
   toInt(double value) => value?.toInt();
@@ -117,5 +175,9 @@ class MeasuresComponent extends Object {
     } else {
       measure.cloneTo(measures[measures.indexOf(selectedMeasure)]);
     }
+  }
+
+  void teste(bool b) {
+    print('teste ${b}');
   }
 }

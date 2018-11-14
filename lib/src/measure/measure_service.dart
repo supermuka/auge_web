@@ -29,14 +29,25 @@ class MeasureService {
   }
 
 
-  /// Return a [Measure] by Id
-  /*
-  Future<Measure> getMeasureById(id) async {
-    List<Measure> measures;
-    measures = await _augeApiService.objectiveAugeApi.getMeasures(id: id);
-    //return await _augeApiService.objectiveAugeApi.getMeasureById(id);
+  /// Return an [Measure] by Id
+  Future<Measure> getMeasureById(String id) async {
+    try {
+
+      Measure measure = await _augeApiService.objectiveAugeApi.getMeasureById(id);
+
+      return measure;
+
+    } on DetailedApiRequestError catch (e) {
+      if (e.status == 404 && e.errors.firstWhere((ed) => ed.reason == RpcErrorDetailMessage.measureUnitsDataNotFoundReason, orElse: null ) != null)
+        return null;
+      else {
+        rethrow;
+      }
+    }
+
+    // return await _augeApiService.objectiveAugeApi.getObjectives(organizationId, id: id, withMeasures: withMeasures);
   }
-  */
+
 
 
   /// Return [MeasureUnit] list
@@ -74,24 +85,20 @@ class MeasureService {
       rethrow;
     }
   }
-/*
-  /// Save (create) an [TimelineItem] of the [Measure]
-  void saveTimelineItem(String objectiveId, TimelineItem timelineItem) async {
+
+  /// Save (create or update) an [MeasureProgress]
+  void saveMeasureProgress(String measureId, MeasureProgress measureProgress) async {
     try {
-      IdDateTimeMessage idDateTimeMessage = await _augeApiService.objectiveAugeApi
-          .createTimelineItem(timelineItem, objectiveId);
+      if (measureProgress.id == null) {
+        IdMessage idMessage = await _augeApiService.objectiveAugeApi
+            .createMeasureProgress(measureProgress, measureId);
 
-      // ID - primary key generated on server-side.
-      timelineItem.id = idDateTimeMessage?.id;
-      timelineItem.dateTime = idDateTimeMessage?.dataTime;
+        // ID - primary key generated on server-side.
+        measureProgress.id = idMessage?.id;
 
-      _objectiveService.currentDateTime = idDateTimeMessage.dataTime;
-      print(idDateTimeMessage.dataTime);
-
+      }
     } catch (e) {
-      print('${e.runtimeType}, ${e}');
       rethrow;
     }
   }
-  */
 }

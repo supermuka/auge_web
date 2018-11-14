@@ -13,24 +13,26 @@
         </div>
         <material-expansionpanel-set>
             <div class="measures-vertical-size" *deferredContent>
-                <div  *ngFor="let iMeasure of measures">
+                <div  *ngFor="let iMeasure of measures; let i = index">
                     <material-expansionpanel disabled
-                                             [expanded]="false"
+                                             [expanded]="expandedControl[iMeasure] == true"
                                              [hideExpandedHeader]="false"
-                                             [showSaveCancel]="false">
+                                             [showSaveCancel]="expandedControl[iMeasure] == true"
+                                             (cancel)="cancelCurrentValue(iMeasure, $event, i)"
+                                             (save)="saveCurrentValue(iMeasure, $event)">
                         <div name class="truncate-ellipsed-parent custom-expansionpanel-panel-specific-name-width">
                             <span class="truncate-ellipsed">{{iMeasure.name}}</span>
                         </div>
                         <div value class="custom-slider">
                             <!--material-progress materialTooltip="{{progressLabel + ' ' + iMeasure.progress.toString() + '%'}}" [activeProgress]="iMeasure.progress"></material-progress-->
                             <!-- material-slider [(value)]="iMeasure.currentValueInt"  [min]="iMeasure.startValueInt" [max]="iMeasure.endValueInt" (valueChange)="updateMeasure($event)"></material-slider -->
-                            <material-slider [disabled]="iMeasure.minValue == null && iMeasure.maxValue == null" [value]="iMeasure.valueRelatedMinMax" [step]="iMeasure.stepValue" [min]="iMeasure.minValue" [max]="iMeasure.maxValue" (valueChange)="updateMeasure(iMeasure, $event)" materialTooltip="{{progressLabel + ' ' + iMeasure.progress.toString() + '%'}}"></material-slider>
+                            <material-slider [disabled]="iMeasure.minValue == null && iMeasure.maxValue == null" [value]="iMeasure.valueRelatedMinMax" [step]="iMeasure.stepValue" [min]="iMeasure.minValue" [max]="iMeasure.maxValue" (valueChange)="changeCurrentValue(iMeasure, $event)" (click)="expandedControl[iMeasure] = true" materialTooltip="{{progressLabel + ' ' + iMeasure.progress.toString() + '%'}}"></material-slider>
                             <div class="width-flex">
                                 <span materialTooltip="{{startValueLabel}}">{{iMeasure.startValue | number:'.' + iMeasure?.decimalsNumber?.toString()}}</span>
                                 <span materialTooltip="{{currentValueLabel}}">{{iMeasure.currentValue | number:'.' + iMeasure?.decimalsNumber?.toString()}}</span>
                                 <span materialTooltip="{{endValueLabel}}">{{iMeasure.endValue | number:'.' + iMeasure?.decimalsNumber?.toString()}}</span>
                             </div>
-
+                            <material-input *ngIf="expandedControl[iMeasure] == true" floatingLabel multiline rows="3" [label]="'Comment'" [(ngModel)]="iMeasure.description" style="width: 100%;"></material-input>
                         </div>
                         <div action>
                             <div>
@@ -46,4 +48,3 @@
     <auge-measure-detail *ngIf="detailVisible == true" [objective]="objective" [selectedMeasure]="selectedMeasure" (save)="changeListItem($event)" (close)="detailVisible = false">
     </auge-measure-detail>
 </div>
-
