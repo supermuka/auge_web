@@ -13,9 +13,7 @@
                 <span class="avatar avatar-border" [style.background-color]="colorFromUuid(iInitiative?.group?.id)" [materialTooltip]="groupLabel">
                     <span class="text-group-letter">{{firstLetter(iInitiative?.group?.name)}}</span>
                 </span>
-                <span class="truncate-ellipsed-parent">
-                    <span class="truncate-ellipsed">{{iInitiative?.group?.name}}</span>
-                </span>
+                <span>{{iInitiative?.group?.name}}</span>
             </h4>
             <material-expansionpanel
                     class="expansionpanel-wide-{{wideControl[iInitiative]}}"

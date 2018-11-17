@@ -2,6 +2,7 @@
 // Author: Samuel C. Schwebel.
 
 import 'package:angular/angular.dart';
+import 'package:angular_router/angular_router.dart';
 // import 'package:angular_components/angular_components.dart';
 
 import 'package:angular_components/material_slider/material_slider.dart';
@@ -26,8 +27,14 @@ import 'package:auge_server/model/objective/measure.dart';
 import 'package:auge_web/message/messages.dart';
 
 import 'package:auge_web/src/measure/measure_detail_component.dart';
+import 'package:auge_web/src/measure/measure_chart_component.dart';
 
 import 'package:auge_web/src/measure/measure_service.dart';
+
+import 'package:auge_web/services/app_routes.dart';
+
+// ignore_for_file: uri_has_not_been_generated
+import 'package:auge_web/src/measure/measure_chart_component.template.dart' as measure_chart_component;
 
 @Component(
     selector: 'auge-measures',
@@ -47,6 +54,7 @@ import 'package:auge_web/src/measure/measure_service.dart';
       NgModel,
       DeferredContentDirective,
       MeasureDetailComponent,
+      MeasureChartComponent,
     ],
     pipes: const [commonPipes],
     templateUrl: 'measures_component.html',
@@ -57,6 +65,7 @@ import 'package:auge_web/src/measure/measure_service.dart';
 class MeasuresComponent extends Object {
 
   final MeasureService _measureService;
+  final Router _router;
 
   @Input()
   Objective objective;
@@ -64,11 +73,15 @@ class MeasuresComponent extends Object {
   Measure selectedMeasure;
 
   bool detailVisible;
+  bool chartVisible;
   Map<Measure, bool> expandedControl = Map();
 
   MenuModel<MenuItem> menuModel;
-  MeasuresComponent(this._measureService) {
-    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => detailVisible = true), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
+  MeasuresComponent(this._measureService, this._router) {
+    menuModel = new MenuModel([new MenuItemGroup(
+        [new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => detailVisible = true),
+        new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete()),
+        new MenuItem('History Chart', icon: new Icon('show_chart'), action: () { print(chartVisible); chartVisible = true;}) ])], icon: new Icon('menu'));
   }
 
   // Define messages and labels
@@ -177,7 +190,4 @@ class MeasuresComponent extends Object {
     }
   }
 
-  void teste(bool b) {
-    print('teste ${b}');
-  }
 }

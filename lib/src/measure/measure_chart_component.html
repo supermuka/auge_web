@@ -1,0 +1,16 @@
+<modal [visible]="visibleModal">
+    <material-dialog headered class="headered-dialog">
+        <div header>
+            <h3>TESTE</h3>
+        </div>
+
+        <div class="wrapper">
+            <canvas id="canvas" height="600" width="800"></canvas>
+        </div>
+        <div footer>
+            <material-button autoFocus (trigger)="closeChart()">Close
+                <material-icon icon="close"></material-icon>
+            </material-button>
+        </div>
+    </material-dialog>
+</modal>

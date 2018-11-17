@@ -1,0 +1,23 @@
+@import 'package:angular_components/css/material/material';
+@import 'package:angular_components/material_dialog/mixins';
+
+material-button[raised] {
+  background: $mat-blue;
+  color: $mat-white;
+  margin: 0 $mat-grid $mat-grid 0;
+}
+
+.headered-dialog {
+  width: $mat-grid * 60;
+
+  [footer] material-button:not([disabled]) {
+    color: $mat-blue;
+  }
+}
+
+div.wrapper {
+    margin: 0 auto;
+    max-width: 800px;
+    text-align: center;
+    font-style: italic;
+}

@@ -15,9 +15,9 @@ import 'package:auge_web/message/messages.dart';
 class MeasureService {
 
   final AugeApiService _augeApiService;
-  final ObjectiveService _objectiveService;
 
-  MeasureService(this._augeApiService, this._objectiveService);
+
+  MeasureService(this._augeApiService);
 
   /// Delete a [Measure]
   Future deleteMeasure(String id) async {
@@ -48,6 +48,15 @@ class MeasureService {
     // return await _augeApiService.objectiveAugeApi.getObjectives(organizationId, id: id, withMeasures: withMeasures);
   }
 
+
+  /// Return an [MeasureProgress] by [Measure.id]
+  Future<List<MeasureProgress>> getMeasureProgress(String id) async {
+
+      return await _augeApiService.objectiveAugeApi.getMeasureProgress(id);
+
+
+    // return await _augeApiService.objectiveAugeApi.getObjectives(organizationId, id: id, withMeasures: withMeasures);
+  }
 
 
   /// Return [MeasureUnit] list

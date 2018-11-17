@@ -6,12 +6,12 @@
     <material-expansionpanel-set>
         <div #refMatExp *ngFor="let iObjective of objectives;let i = index" >
             <h4 *ngIf="i == 0 || objectives[i-1]?.group?.id != objectives[i]?.group?.id">
-                <span class="avatar avatar-border" [style.background-color]="colorFromUuid(iObjective?.group?.id)" [materialTooltip]="groupLabel">
-                    <span class="text-group-letter">{{firstLetter(iObjective?.group?.name)}}</span>
-                </span>
-                <span class="truncate-ellipsed-parent">
-                    <span class="truncate-ellipsed">{{iObjective?.group?.name}}</span>
-                </span>
+                <div>
+                    <span class="avatar avatar-border" [style.background-color]="colorFromUuid(iObjective?.group?.id)" [materialTooltip]="groupLabel">
+                        <span class="text-group-letter">{{firstLetter(iObjective?.group?.name)}}</span>
+                    </span>
+                    <span>{{iObjective?.group?.name}}</span>
+                </div>
             </h4>
             <material-expansionpanel [alwaysHideExpandIcon]="true"
                     [hideExpandedHeader]="false"

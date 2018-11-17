@@ -5,7 +5,6 @@ import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
 import 'package:angular_forms/angular_forms.dart';
 
-/* import 'package:angular_components/angular_components.dart'; */
 import 'package:angular_components/app_layout/material_persistent_drawer.dart';
 import 'package:angular_components/app_layout/material_temporary_drawer.dart';
 import 'package:angular_components/content/deferred_content.dart';
@@ -138,6 +137,10 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
     new RouteDefinition(
       routePath: AppRoutes.objectivesRoute,
       component: objectives_component.ObjectivesComponentNgFactory,
+    ),
+    new RouteDefinition(
+      routePath: AppRoutes.measuresRoute,
+      component: measures_component.MeasuresComponentNgFactory,
     ),
     new RouteDefinition(
       routePath: AppRoutes.measuresRoute,

@@ -7,7 +7,6 @@ class AppRoutes {
   static const initiativeIdParameter = 'initiative_id';
   static const objectiveIdParameter = 'objective_id';
 
-
   static final authRoute = new RoutePath(
     path: 'auth',
   );

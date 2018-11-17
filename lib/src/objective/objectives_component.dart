@@ -203,11 +203,21 @@ class ObjectivesComponent extends Object implements  AfterViewInit, OnActivate, 
   void scrollInit(bool event, HtmlElement element) {
     if (event && initialObjectiveId != null) {
       if (element != null) {
+
+        // Modal, needs to await the dom elements creation.
+        new Future.delayed(Duration.zero, () {
+
+            element.scrollIntoView(ScrollAlignment.TOP);
+            initialObjectiveId = null;
+
+        });
+        /*
         common_service.startTimeoutTimer(() {
           // Needs include timer to wait angular componentes to render the components before to scroll.
           element.scrollIntoView(ScrollAlignment.TOP);
           initialObjectiveId = null;
           }, 300);
+          */
 
       }
     }
