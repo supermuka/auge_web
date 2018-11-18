@@ -121,7 +121,7 @@ class GanttComponent implements OnActivate {
     if (minStartDateTime != null && maxEndDateTime != null && minStartDateTime?.year != maxEndDateTime?.year)
       yearsCount = yearsCount + maxEndDateTime?.year - minStartDateTime?.year;
 
-    int firstYear = minStartDateTime?.year ?? minStartDateTime?.year ?? DateTime.now().year;
+    int firstYear = minStartDateTime?.year ?? maxEndDateTime?.year ?? DateTime.now().year;
 
     List<int> _yearsInterval = [];
     for (int iYear = 0;iYear<yearsCount;iYear++) {

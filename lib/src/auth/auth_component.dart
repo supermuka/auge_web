@@ -184,8 +184,6 @@ class AuthComponent extends Object with OnActivate  {
     new SelectionModel.single()
       ..selectionChanges.listen((d) async {
         if (d != null && d.isNotEmpty && d.first != null && d.first.added != null && d.first.added.isNotEmpty) {
-          print('selectionChanges');
-          print(d.first?.added.first.organization);
 
           if (_authService.selectedOrganization !=
               d.first?.added.first.organization) {

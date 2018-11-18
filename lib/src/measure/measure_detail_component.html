@@ -1,5 +1,5 @@
 <modal [visible]="true">
-    <material-dialog headered class="headered-dialog" [error]="dialogError">
+    <material-dialog headered [error]="dialogError">
         <div header>
             <h3 *ngIf="measure.id == null">{{addMeasureLabel}}</h3>
             <h3 *ngIf="measure.id != null">{{editMeasureLabel}}</h3>

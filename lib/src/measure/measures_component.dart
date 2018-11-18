@@ -126,8 +126,7 @@ class MeasuresComponent extends Object {
 
         Measure measureNew = await _measureService.getMeasureById(measure.id);
         expandedControl.remove(measure);
-        print(measure.currentValue);
-        print(measureNew.currentValue);
+
         measure = measureNew;
         measures[i] = measureNew;
 

@@ -2,10 +2,12 @@
 // Author: Samuel C. Schwebel.
 
 import 'dart:html';
-import 'dart:math' as math;
 import 'dart:async';
 
 import 'package:chartjs/chartjs.dart';
+
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:angular/angular.dart';
 import 'package:angular_components/focus/focus.dart';
@@ -19,6 +21,7 @@ import 'package:angular_components/material_dialog/material_dialog.dart';
 import 'package:auge_web/src/measure/measure_service.dart';
 
 import 'package:auge_server/model/objective/measure.dart';
+import 'package:auge_server/model/objective/objective.dart';
 
 @Component(
     selector: 'auge-measure-chart',
@@ -37,11 +40,15 @@ import 'package:auge_server/model/objective/measure.dart';
       'measure_chart_component.css'
     ])
 
-class MeasureChartComponent implements OnInit, AfterViewInit {
+class MeasureChartComponent implements OnInit {
 
   final MeasureService _measureService;
   bool visibleModal = false;
 
+  @Input()
+  Objective objective;
+
+  @Input()
   Measure selectedMeasure;
   List<MeasureProgress> measureProgress;
 
@@ -51,41 +58,88 @@ class MeasureChartComponent implements OnInit, AfterViewInit {
   @Output()
   Stream<void> get close => _closeController.stream;
 
-  final _saveController = new StreamController<Measure>.broadcast(sync: true);
-
   MeasureChartComponent(this._measureService) {
-
+    initializeDateFormatting(Intl.defaultLocale , null);
   }
 
   void ngOnInit() async {
     if (selectedMeasure != null) {
       measureProgress = await _measureService.getMeasureProgress(selectedMeasure.id);
     }
-  }
 
-  void ngAfterViewInit() {
-    var rnd = new math.Random();
-    var months = <String>['January', 'February', 'March', 'April', 'May', 'June'];
+    List<String> months = [];
+    List<num> values = [];
+
+    int yearsCount = 1;
+    if (objective.startDate != null && objective.endDate != null && objective.startDate.year != objective.endDate.year)
+      yearsCount = yearsCount + objective.endDate.year - objective.startDate.year;
+
+    int firstYear = objective.startDate?.year ?? objective.endDate?.year ?? DateTime.now().year;
+
+    List<int> yearsInterval = [];
+    for (int iYear = 0;iYear<yearsCount;iYear++) {
+      yearsInterval.add((firstYear + iYear));
+    }
+
+    int iMesuareProgress;
+    String monthFormated;
+    for (int iYear = 0;iYear<yearsInterval.length;iYear++) {
+      for (int iMonth = 0; iMonth < DateTime.monthsPerYear; iMonth++) {
+        monthFormated =
+            DateFormat.yMMM().format(DateTime(yearsInterval[iYear], iMonth + 1));
+        iMesuareProgress =
+            measureProgress.indexWhere((mp) => DateFormat.yMMM().format(
+                mp.dateTime) == monthFormated);
+
+        if (iMesuareProgress != -1) {
+          for (int iiMeasureProgress = iMesuareProgress; iiMeasureProgress <
+              measureProgress.length; iiMeasureProgress++) {
+            if (monthFormated != DateFormat.yMMM().format(
+                measureProgress[iiMeasureProgress].dateTime)) break;
+            /*
+            if (iiMeasureProgress == iMesuareProgress) {
+              months.add(monthFormated);
+            } else {
+              months.insert(months.length-1, '');
+
+            }
+            */
+            months.add(DateFormat.yMMMd().format(
+                measureProgress[iiMeasureProgress].dateTime));
+            values.add(measureProgress[iiMeasureProgress].currentValue);
+          }
+        } else {
+          months.add(monthFormated);
+          values.add(null);
+        }
+      }
+    }
+    print('MONTHS');
+    print(months.length);
+    months.forEach((f) => print(f));
+    print('VALUES');
+    print(values.length);
+    values.forEach((f) => print(f));
+
     var data = new LinearChartData(labels: months, datasets: <ChartDataSets>[
       new ChartDataSets(
-          label: 'My First dataset',
+          label: 'Start to End Value',
           backgroundColor: 'rgba(220,220,220,0.2)',
           fill: false,
-          //data: months.map((_) => rnd.nextInt(100)).toList()
-          /*data: [0, 20, 40, 60, 80, 100]*/
-        /*  data: [{'x': months.first, 'y': 0}, {'x': months.last, 'y': 100}]  */
-          data: [ChartPoint(x: months.first, y: 0), ChartPoint(x: months.last, y: 100)]
+          data: [ChartPoint(x: months.first, y: selectedMeasure.startValue), ChartPoint(x: months.last, y: selectedMeasure.endValue)]
       ),
       new ChartDataSets(
-          label: 'My Second dataset',
+          label: 'Current Value Reviews',
           backgroundColor: 'rgba(151,187,205,0.2)',
-          data: months.map((_) => rnd.nextInt(100)).toList())
+          data: values
+        /* data: months.map((_) => rnd.nextInt(100)).toList()*/)
     ]);
 
     var config = new ChartConfiguration(
         type: 'line', data: data, options: new ChartOptions(responsive: true,
-        title: ChartTitleOptions(display: true, text: 'TITLE'),
-        /* scales: ChartScales(display: true, type: 'time') */));
+      title: ChartTitleOptions(display: true, text: 'Measure ' + selectedMeasure.name),
+
+    ));
 
     // Modal, needs to await the dom elements creation.
     new Future.delayed(Duration.zero, () {
@@ -99,6 +153,7 @@ class MeasureChartComponent implements OnInit, AfterViewInit {
       visibleModal = true;
     });
   }
+
 
   void closeChart() {
     _closeController.add(null);

@@ -50,9 +50,9 @@ class MeasureService {
 
 
   /// Return an [MeasureProgress] by [Measure.id]
-  Future<List<MeasureProgress>> getMeasureProgress(String id) async {
+  Future<List<MeasureProgress>> getMeasureProgress(String measureId) async {
 
-      return await _augeApiService.objectiveAugeApi.getMeasureProgress(id);
+      return await _augeApiService.objectiveAugeApi.getMeasureProgress(measureId);
 
 
     // return await _augeApiService.objectiveAugeApi.getObjectives(organizationId, id: id, withMeasures: withMeasures);

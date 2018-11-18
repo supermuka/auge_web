@@ -1,14 +1,10 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
-import 'dart:async';
-
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:angular/angular.dart';
-/* import 'package:angular_forms/angular_forms.dart'; */
-/* import 'package:angular_components/angular_components.dart'; */
 import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
 import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
