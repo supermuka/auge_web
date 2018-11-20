@@ -60,11 +60,11 @@ class MapComponent implements OnActivate {
   static final String startDateLabel =  MapMsg.label('Start Date');
   static final String endDateLabel =  MapMsg.label('End Date');
 
-  @override
-  Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
+  void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
 
-    if (this._authService.authenticatedUser == null) {
+    if (_authService.selectedOrganization == null || _authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
+      return;
     }
 
     _appLayoutService.headerTitle = ObjectiveViewsMsg.label('Objectives Map');

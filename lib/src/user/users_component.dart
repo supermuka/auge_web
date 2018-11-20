@@ -71,10 +71,10 @@ class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
   }
 
-  @override
-  Future onActivate(routeStateprevious, routeStatecurrent) async {
-    if (this._authService.authenticatedUser == null) {
+  void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
+    if (_authService.selectedOrganization == null || _authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
+      return;
     }
     _appLayoutService.headerTitle = UserMsg.label('Users');
     _appLayoutService.enabledSearch = true;

@@ -43,19 +43,17 @@ body {
 }
 
 .truncate-ellipsed {
-  display: block;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
 }
 
-
-/*
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-*/
+.truncate-ellipsed-block {
+  display: block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
 
 .avatar {
 

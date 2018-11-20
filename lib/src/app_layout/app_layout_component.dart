@@ -188,11 +188,12 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
   static final String adminLabel = AppLayoutMsg.label('Admin');
   static final String groupsLabel = AppLayoutMsg.label('Groups');
 
-  @override
-  onActivate(previous, current)  {
 
-    if (this._authService.authenticatedUser == null) {
+  void onActivate(RouterState previous, RouterState current)  {
+
+    if (_authService.selectedOrganization == null || _authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
+      return;
     }
 
     isAuthorizedToAccessUsers =_authService.isAuthorizedForAtuhorizatedRole(SystemModule.users);

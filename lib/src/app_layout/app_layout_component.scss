@@ -1,10 +1,15 @@
 @import 'package:angular_components/css/material/material';
 @import 'package:angular_components/material_select/mixins';
 
+
 :host {
   display: block;
-  height: 600px;
+  /* height: 100%; */ /* 480px; */
+  height: 516px;
   position: relative;
+  top: 0%;
+  clear: both;
+ /* overflow: hidden; */
 }
 
 .button-look {
@@ -22,7 +27,10 @@
 }
 
 .menu-drawer {
-  overflow: auto;
+  border: 1px;
+  border-style:  outset;
+  overflow-y: auto;
+ /*  overflow: auto; */
 }
 
 .material-content .header-panel {
@@ -45,24 +53,6 @@
     }
 }
 
-/*
-.error {
-  @include mat-type-body;
-  box-sizing: border-box;
-  flex-shrink: 0;
-  background: $mat-gray-200;
-  color: $mat-red-700;
-  padding: 0 $mat-grid * 3;
-  transition: padding $mat-transition $mat-transition-standard 0s;
-  width: 100%;
-
-  &.expanded {
-    border-bottom: 1px $mat-gray-300 solid;
-    border-top: 1px $mat-gray-300 solid;
-    padding: $mat-grid $mat-grid * 3;
-  }
-}
-*/
 
 /* copy from material-dialog */
 .error {

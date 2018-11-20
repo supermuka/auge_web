@@ -59,7 +59,7 @@ import 'package:auge_web/services/app_routes.dart';
       'objectives_component.css'
     ])
 
-class ObjectivesComponent extends Object implements  AfterViewInit, OnActivate, OnDestroy {
+class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, OnDestroy {
 
   final AuthService _authService;
   final AppLayoutService _appLayoutService;
@@ -87,11 +87,11 @@ class ObjectivesComponent extends Object implements  AfterViewInit, OnActivate, 
   }
 
 
-  @override
-  Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
+  void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
 
     if (_authService.selectedOrganization == null || _authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
+      return;
     }
 
     _appLayoutService.headerTitle = ObjectiveMsg.label('Objectives');
@@ -173,9 +173,6 @@ class ObjectivesComponent extends Object implements  AfterViewInit, OnActivate, 
         objetive.cloneTo(objectives[objectives.indexOf(selectedObjective)]);
       }
     }
-
-
-
     _sortObjectivesOrderByGroup(objectives);
   }
 

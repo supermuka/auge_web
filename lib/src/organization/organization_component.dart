@@ -45,10 +45,11 @@ class OrganizationComponent extends Object with CanReuse implements OnActivate {
        this._location, this._router) {
   }
 
-  @override
-  onActivate(RouterState routeStatePrevious, RouterState routeStateCurrent) async {
-    if (this._authService.authenticatedUser == null) {
+
+  void onActivate(RouterState routeStatePrevious, RouterState routeStateCurrent) async {
+    if (_authService.selectedOrganization == null || _authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
+      return;
     }
 
     _appLayoutService.headerTitle =

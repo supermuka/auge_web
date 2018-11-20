@@ -72,10 +72,10 @@ class GanttComponent implements OnActivate {
   static final String endDateLabel =  GanttMsg.label('End Date');
   static final String leaderLabel =  GanttMsg.label('Leader');
 
-  @override
-  Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
-    if (this._authService.authenticatedUser == null) {
+  void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
+    if (_authService.selectedOrganization == null || _authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
+      return;
     }
 
     _appLayoutService.headerTitle = ObjectiveViewsMsg.label('Objectives Gantt');

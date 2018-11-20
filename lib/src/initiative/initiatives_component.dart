@@ -98,11 +98,11 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
   static final String groupLabel =  InitiativeMsg.label('Group');
   static final String leaderLabel =  InitiativeMsg.label('Leader');
 
-  @override
-  Future onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
+  void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
 
-    if (this._authService.authenticatedUser == null) {
+    if (_authService.selectedOrganization == null || _authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
+      return;
     }
     
     _appLayoutService.headerTitle = InitiativeMsg.label('Initiatives');

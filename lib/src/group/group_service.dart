@@ -46,6 +46,7 @@ class GroupService {
       if (group.id == null) {
 
         //print(GroupMessageFactory.toJson(GroupFacilities.messageFrom(group)));
+
         IdMessage idMessage = await _augeApiService.augeApi.createGroup(group);
 
         // ID - primary key generated on server-side.

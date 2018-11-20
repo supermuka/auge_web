@@ -64,8 +64,9 @@ class InsightsComponent implements OnActivate  {
   @override
   void onActivate(RouterState previous, RouterState current) async {
 
-    if (this._authService.authenticatedUser == null) {
+    if (_authService.selectedOrganization == null || _authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
+      return;
     }
 
     _appLayoutService.enabledSearch = false;
