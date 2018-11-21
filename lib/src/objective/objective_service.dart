@@ -34,10 +34,10 @@ class ObjectiveService {
   }
 
   /// Return an [Objective] by Id
-  Future<Objective> getObjectiveById(String id, {bool withMeasures = false}) async {
+  Future<Objective> getObjectiveById(String id, {bool withMeasures = false, bool withProfile = false, bool withTimeline = false}) async {
     try {
 
-      Objective objective = await _augeApiService.objectiveAugeApi.getObjectiveById(id, withMeasures: withMeasures);
+      Objective objective = await _augeApiService.objectiveAugeApi.getObjectiveById(id, withMeasures: withMeasures, withProfile: withProfile, withTimeline: withTimeline);
 
       currentDateTime ??= await getDateTime();
 
@@ -67,21 +67,18 @@ class ObjectiveService {
   }
 
   /// Save (create or update) an [Objective]
-  Future<Objective> saveObjective(Objective objective) async {
+  void saveObjective(Objective objective) async {
     try {
       if (objective.id == null) {
 
-       // IdMessage idMessage = await _augeApiService.objectiveAugeApi
-       //     .createObjective( ObjectiveFacilities.objectiveMessageFrom(objective) );
+        IdMessage idMessage = await _augeApiService.objectiveAugeApi
+            .createObjective( objective );
 
         // ID - primary key generated on server-side.
-        //objective.id = idMessage?.id;
-
-        return await _augeApiService.objectiveAugeApi
-             .createObjective(objective);
+        objective.id = idMessage?.id;
 
       } else {
-        return await _augeApiService.objectiveAugeApi.updateObjective(objective);
+        await _augeApiService.objectiveAugeApi.updateObjective(objective);
       }
 
     } catch (e) {
@@ -109,4 +106,15 @@ class ObjectiveService {
     }
   }
   */
+
+  /// Return a list of [TimelineItem]
+  Future<List<TimelineItem>> getTimeline(String objectiveId) async {
+
+    List<TimelineItem> timeline = await _augeApiService.objectiveAugeApi.getTimeline(objectiveId);
+
+    currentDateTime ??= await getDateTime();
+
+    return timeline;
+
+  }
 }

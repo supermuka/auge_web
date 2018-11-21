@@ -30,8 +30,9 @@ import 'package:auge_web/src/measure/measure_detail_component.dart';
 import 'package:auge_web/src/measure/measure_chart_component.dart';
 
 import 'package:auge_web/src/measure/measure_service.dart';
+import 'package:auge_web/src/objective/objective_service.dart';
 
-import 'package:auge_web/services/app_routes.dart';
+
 
 // ignore_for_file: uri_has_not_been_generated
 import 'package:auge_web/src/measure/measure_chart_component.template.dart' as measure_chart_component;
@@ -65,7 +66,7 @@ import 'package:auge_web/src/measure/measure_chart_component.template.dart' as m
 class MeasuresComponent extends Object {
 
   final MeasureService _measureService;
-  final Router _router;
+  final ObjectiveService _objectiveService;
 
   @Input()
   Objective objective;
@@ -77,7 +78,7 @@ class MeasuresComponent extends Object {
   Map<Measure, bool> expandedControl = Map();
 
   MenuModel<MenuItem> menuModel;
-  MeasuresComponent(this._measureService, this._router) {
+  MeasuresComponent(this._measureService, this._objectiveService) {
     menuModel = new MenuModel([new MenuItemGroup(
         [new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => detailVisible = true),
         new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete()),
@@ -181,12 +182,20 @@ class MeasuresComponent extends Object {
     return objective?.measures;
   }
 
-  void changeListItem(Measure measure) {
+  void changeListItem(String measureId) async {
+
+    Measure newMeasure = await _measureService.getMeasureById(measureId);
+
     if (selectedMeasure == null) {
-      measures.add(measure);
+      measures.add(newMeasure);
     } else {
-      measure.cloneTo(measures[measures.indexOf(selectedMeasure)]);
+      measures[measures.indexOf(selectedMeasure)] = newMeasure;
+      //measure.cloneTo(measures[measures.indexOf(selectedMeasure)]);
     }
+
+    objective.timeline = await _objectiveService.getTimeline(objective.id);
+
+
   }
 
 }

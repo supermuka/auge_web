@@ -22,7 +22,6 @@ import 'package:angular_components/model/selection/selection_model.dart';
 import 'package:angular_components/model/selection/selection_options.dart';
 import 'package:angular_components/model/ui/has_renderer.dart';
 
-import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/objective/measure.dart';
 import 'package:auge_server/model/authorization.dart';
 import 'package:auge_server/model/objective/timeline_item.dart';
@@ -63,10 +62,9 @@ class MeasureDetailComponent extends Object implements OnInit {
 
   final AuthService _authService;
   final MeasureService _measureService;
-  final ObjectiveService _objectiveService;
 
   @Input()
-  Objective objective;
+  String objectiveId;
 
   @Input()
   Measure selectedMeasure;
@@ -77,13 +75,13 @@ class MeasureDetailComponent extends Object implements OnInit {
   @Output()
   Stream<void> get close => _closeController.stream;
 
-  final _saveController = new StreamController<Measure>.broadcast(sync: true);
+  final _saveController = new StreamController<String>.broadcast(sync: true);
 
   /// Publishes events when save.
   @Output()
-  Stream<Measure> get save => _saveController.stream;
+  Stream<String> get save => _saveController.stream;
 
-  Measure measure;
+  Measure measure = Measure();
 
   List<MeasureUnit> _measureUnits = [];
   SelectionOptions measureUnitOptions;
@@ -99,7 +97,7 @@ class MeasureDetailComponent extends Object implements OnInit {
  // List errorControl = [];
  // bool validInput = false;
 
-  MeasureDetailComponent(this._authService, this._objectiveService, this._measureService) {
+  MeasureDetailComponent(this._authService, this._measureService) {
     measureUnitSingleSelectModel = SelectionModel.single();
   }
 
@@ -138,11 +136,9 @@ class MeasureDetailComponent extends Object implements OnInit {
       rethrow;
     }
 
-
     measureUnitOptions = new SelectionOptions.fromList(_measureUnits);
 
     measureUnitSingleSelectModel.selectionChanges.listen((unit) {
-
         if (unit.isNotEmpty && unit.first.added != null && unit.first.added.length != 0 && unit.first.added?.first != null) {
           measure.measureUnit = unit.first.added.first;
         }
@@ -157,24 +153,20 @@ class MeasureDetailComponent extends Object implements OnInit {
 
   void saveMeasure() async {
     try {
-      int functionIndex = objective.id == null ?  SystemFunction.create.index : SystemFunction.update.index;
 
-
-      await _measureService.saveMeasure(objective.id, measure);
+      int functionIndex = objectiveId == null ?  SystemFunction.create.index : SystemFunction.update.index;
 
       // Timeline item definition
-      TimelineItem timelineItem = TimelineItem()
+      measure.lastTimelineItem = TimelineItem()
         ..user = _authService.authenticatedUser
       // ..dateTime = DateTime.now() // Keep the server update data time to utc
         ..systemFunctionIndex = functionIndex
-        ..className = 'Measure'
+        ..className = measure.runtimeType.toString()
         ..changedData = MeasureFacilities.differenceToJson(measure, selectedMeasure);
 
-     // await _objectiveService.saveTimelineItem(objective.id, timelineItem);
+      await _measureService.saveMeasure(objectiveId, measure);
 
-      objective.timeline.insert(0, timelineItem);
-
-      _saveController.add(measure);
+      _saveController.add(measure.id);
       closeDetail();
     } catch (e) {
       dialogError = e.toString();

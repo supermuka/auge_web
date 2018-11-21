@@ -88,13 +88,14 @@ class ObjectiveDetailComponent extends Object implements OnInit {
   @Output()
   Stream<void> get close => _closeController.stream;
 
-  final _saveController = new StreamController<Objective>.broadcast(sync: true);
+  final _saveController = new StreamController<String>.broadcast(sync: true);
 
   /// Publishes events when save.
   @Output()
-  Stream<Objective> get save => _saveController.stream;
+  Stream<String> get save => _saveController.stream;
 
-  Objective objective;
+  // It's needed to create an object before, even if later to get from server side. As server side as on the server side the response takes time, angular/html render first and the object doesn't to get null.
+  Objective objective = Objective();
 
   String groupInputText = '';
   String alignedToInputText = '';
@@ -154,12 +155,11 @@ class ObjectiveDetailComponent extends Object implements OnInit {
     if (selectedObjective != null) {
       // Clone objective
      // objective = selectedObjective.clone();
-      // objective = await _objectiveService.getObjectiveById(selectedObjective.id);
-      objective = selectedObjective.clone();
+       objective = await _objectiveService.getObjectiveById(selectedObjective.id);
+      //objective = selectedObjective.clone();
 
     } else {
-
-      objective = Objective()..organization = _authService.selectedOrganization;
+      objective.organization = _authService.selectedOrganization;
       objective.archived = false;
     }
 
@@ -239,11 +239,11 @@ class ObjectiveDetailComponent extends Object implements OnInit {
         ..className = objective.runtimeType.toString()
         ..changedData = ObjectiveFacilities.differenceToJson(objective, selectedObjective);
 
-      Objective objectiveNew = await _objectiveService.saveObjective(objective);
+       await _objectiveService.saveObjective(objective);
 
-      _objectiveService.currentDateTime = objectiveNew.lastTimelineItem.dateTime;
+      _objectiveService.currentDateTime = objective.lastTimelineItem.dateTime;
 
-      _saveController.add(objectiveNew);
+      _saveController.add(objective.id);
       closeDetail();
     } catch (e) {
       dialogError = e.toString();

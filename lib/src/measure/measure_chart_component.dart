@@ -114,12 +114,6 @@ class MeasureChartComponent implements OnInit {
         }
       }
     }
-    print('MONTHS');
-    print(months.length);
-    months.forEach((f) => print(f));
-    print('VALUES');
-    print(values.length);
-    values.forEach((f) => print(f));
 
     var data = new LinearChartData(labels: months, datasets: <ChartDataSets>[
       new ChartDataSets(

@@ -16,7 +16,6 @@ class MeasureService {
 
   final AugeApiService _augeApiService;
 
-
   MeasureService(this._augeApiService);
 
   /// Delete a [Measure]
@@ -28,6 +27,11 @@ class MeasureService {
     }
   }
 
+  /// Return a list of [Measure] by [objectiveId]
+  Future<List<Measure>> getMeasures(String objectiveId) async {
+    return await _augeApiService.objectiveAugeApi.getMeasures(objectiveId);
+    // return await _augeApiService.objectiveAugeApi.getObjectives(organizationId, id: id, withMeasures: withMeasures);
+  }
 
   /// Return an [Measure] by Id
   Future<Measure> getMeasureById(String id) async {

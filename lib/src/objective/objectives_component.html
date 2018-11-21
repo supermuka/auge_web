@@ -44,11 +44,11 @@
                 <span><strong>{{alignedToLabel}}</strong> {{iObjective?.alignedTo?.name}}</span>
                 <div class="w3-row" >
                     <div class="w3-col m9">
-                        <auge-measures [objective]="iObjective"></auge-measures>
-                        <auge-initiatives-summary [objectiveId]="iObjective.id"></auge-initiatives-summary>
+                        <auge-measures *ngIf="expandedControl[iObjective]" [objective]="iObjective"></auge-measures>
+                        <auge-initiatives-summary *ngIf="expandedControl[iObjective]" [objectiveId]="iObjective.id"></auge-initiatives-summary>
                     </div>
                     <div class="w3-col m3">
-                        <auge-objective-timeline [objective]="iObjective"></auge-objective-timeline>
+                        <auge-objective-timeline *ngIf="expandedControl[iObjective]" [objective]="iObjective"></auge-objective-timeline>
                     </div>
                 </div>
             </material-expansionpanel>

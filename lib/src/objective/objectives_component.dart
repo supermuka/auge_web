@@ -104,10 +104,8 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
     }
 
     try {
-
-      List<Objective> objectivesAux = await _objectiveService.getObjectives(
+      List<Objective> objectivesAux =  await _objectiveService.getObjectives(
           _authService.selectedOrganization.id, withMeasures: true, withProfile: true, withTimeline: true);
-
       _sortObjectivesOrderByGroup(objectivesAux);
 
       _objectives = objectivesAux;
@@ -159,18 +157,22 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
     }
   }
 
-  void changeListItem(Objective objetive) {
+  void changeListItem(String objetiveId) async {
 
-    if (selectedObjective == null && !objetive.archived) {
-      objectives.add(objetive);
-      expandedControl[objetive] = true;
+    Objective newObjective = await _objectiveService.getObjectiveById(objetiveId, withMeasures: true, withProfile: true, withTimeline: true);
+
+    if (selectedObjective == null && !newObjective.archived) {
+      objectives.add(newObjective);
+      expandedControl[newObjective] = true;
 
     } else {
-      if (objetive.archived) {
+      if (newObjective.archived) {
         expandedControl.remove(selectedObjective);
         objectives.remove(selectedObjective);
       } else {
-        objetive.cloneTo(objectives[objectives.indexOf(selectedObjective)]);
+        expandedControl[newObjective] = true;
+        objectives[objectives.indexOf(selectedObjective)] = newObjective;
+      //  newObjective.cloneTo(objectives[objectives.indexOf(selectedObjective)]);
       }
     }
     _sortObjectivesOrderByGroup(objectives);
