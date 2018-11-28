@@ -3,11 +3,9 @@ import 'dart:async';
 import 'package:angular/core.dart';
 
 import 'package:auge_web/services/augeapi_service.dart';
-import 'package:auge_web/src/objective/objective_service.dart';
 
 import 'package:auge_server/message/created_message.dart';
 import 'package:auge_server/model/objective/measure.dart';
-import 'package:auge_server/model/objective/timeline_item.dart';
 
 import 'package:auge_web/message/messages.dart';
 
@@ -19,9 +17,13 @@ class MeasureService {
   MeasureService(this._augeApiService);
 
   /// Delete a [Measure]
-  Future deleteMeasure(String id) async {
+  Future deleteMeasure(String objectiveId, Measure measure) async {
     try {
-      await _augeApiService.objectiveAugeApi.deleteMeasure(id);
+
+      // Used update instaed delete, because it´s need to create a Timeline, and DELETE doesn't have body (payload) option, to pass necessary date as a changedValue.
+      await _augeApiService.objectiveAugeApi.updateMeasure(measure, objectiveId);
+
+      //await _augeApiService.objectiveAugeApi.deleteMeasure(id);
     } catch (e) {
       rethrow;
     }
@@ -42,7 +44,7 @@ class MeasureService {
       return measure;
 
     } on DetailedApiRequestError catch (e) {
-      if (e.status == 404 && e.errors.firstWhere((ed) => ed.reason == RpcErrorDetailMessage.measureUnitsDataNotFoundReason, orElse: null ) != null)
+      if (e.status == 204 && e.errors.firstWhere((ed) => ed.reason == RpcErrorDetailMessage.measureUnitsDataNotFoundReason, orElse: null ) != null)
         return null;
       else {
         rethrow;

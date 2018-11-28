@@ -39,7 +39,6 @@ import 'package:auge_web/src/objective/objective_service.dart';
     directives: const [
       coreDirectives,
       //formDirectives,
-
       materialInputDirectives,
       materialNumberInputDirectives,
       AutoFocusDirective,
@@ -47,7 +46,6 @@ import 'package:auge_web/src/objective/objective_service.dart';
       ModalComponent,
       MaterialDropdownSelectComponent,
       DropdownSelectValueAccessor,
-
       MaterialButtonComponent,
       MaterialIconComponent,
 
@@ -154,7 +152,16 @@ class MeasureDetailComponent extends Object implements OnInit {
   void saveMeasure() async {
     try {
 
-      int functionIndex = objectiveId == null ?  SystemFunction.create.index : SystemFunction.update.index;
+      int functionIndex;
+      if (measure.id == null) {
+         functionIndex = SystemFunction.create.index;
+         measure.audit.createdBy = _authService.authenticatedUser;
+
+      } else {
+         functionIndex =  SystemFunction.update.index;
+         measure.audit.updatedBy = _authService.authenticatedUser;
+      }
+      measure.isDeleted = false;
 
       // Timeline item definition
       measure.lastTimelineItem = TimelineItem()
@@ -162,6 +169,7 @@ class MeasureDetailComponent extends Object implements OnInit {
       // ..dateTime = DateTime.now() // Keep the server update data time to utc
         ..systemFunctionIndex = functionIndex
         ..className = measure.runtimeType.toString()
+        ..description = measure.name
         ..changedData = MeasureFacilities.differenceToJson(measure, selectedMeasure);
 
       await _measureService.saveMeasure(objectiveId, measure);
@@ -297,8 +305,6 @@ class MeasureDetailComponent extends Object implements OnInit {
 
   }
   */
-
-
 
   bool get validInput {
     if ((measure?.name != null && measure.name.isEmpty)

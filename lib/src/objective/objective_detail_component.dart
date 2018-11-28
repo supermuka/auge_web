@@ -237,6 +237,7 @@ class ObjectiveDetailComponent extends Object implements OnInit {
       // ..dateTime = DateTime.now() // Keep the server update data time to utc
         ..systemFunctionIndex = functionIndex
         ..className = objective.runtimeType.toString()
+        ..description = objective.name
         ..changedData = ObjectiveFacilities.differenceToJson(objective, selectedObjective);
 
        await _objectiveService.saveObjective(objective);

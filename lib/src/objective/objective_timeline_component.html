@@ -4,13 +4,13 @@
                              [expanded]="true"
                              [showSaveCancel]="false">
         <div name>
-            <span><strong>Timeline</strong></span>
+            <span><strong>{{timelineLabel}}</strong></span>
         </div>
         <div class="timeline-vertical-size" *deferredContent>
             <div class="timeline-vertical-size" *ngFor="let timelineItem of objective.timeline">
                 <div>
                     <span class="avatar" [style.background-image]="'url(' + userUrlImage(timelineItem.user) + ')'"></span>
-                    <span>{{systemFunctionInPastLabel(timelineItem.systemFunctionIndex)}} the {{timelineItem.className}} <strong>{{timelineItem.changedDataToMap['identification']['name']}}</strong></span>
+                    <span>{{systemFunctionInPastLabel(timelineItem.systemFunctionIndex)}} {{theLabel}} {{timelineItem.className}} <strong>{{timelineItem.description}}</strong></span>
                 </div>
                 <div>
                     <span>{{elapsedTime(timelineItem.dateTime, currentDateTime)}}</span>
@@ -22,13 +22,13 @@
                     </span>
                 </div>
                 <div *ngIf="expandedControl[timelineItem] != null && expandedControl[timelineItem]">
-                    <div *ngFor="let key of timelineItem.changedDataToMap['changedData']?.keys">
-                        <span><strong>{{objectiveFieldLabel(key)}}</strong></span>
-                        <span> value </span>
-                        <span><strong>{{formatData(timelineItem.changedDataToMap['changedData'][key].values.first)}}</strong></span>
-                        <div *ngIf="timelineItem.changedDataToMap['changedData'][key].values.length > 1">
-                            <span> changed from </span>
-                            <span><strong>{{formatData(timelineItem.changedDataToMap['changedData'][key].values.last)}}</strong></span>
+                    <div *ngFor="let key of timelineItem.changedDataToMap['values']?.keys">
+                        <span><strong>{{fieldLabel(timelineItem.className, key)}}</strong></span>
+                        <span> {{valueLabel}} </span>
+                        <span><strong>{{formatData(timelineItem.changedDataToMap['values'][key].values.first)}}</strong></span>
+                        <div *ngIf="timelineItem.changedDataToMap['values'][key].values.length > 1">
+                            <span> {{changedFromLabel}} </span>
+                            <span><strong>{{formatData(timelineItem.changedDataToMap['values'][key].values.last)}}</strong></span>
                         </div>
                     </div>
                 </div>

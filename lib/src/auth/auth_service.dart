@@ -56,7 +56,7 @@ class AuthService  {
           user = await _augeApiService.augeApi.getAuthenticatedUserWithEmail(
               eMail, password, withProfile: true);
         } on DetailedApiRequestError catch (e) {
-          if (e.status == 404 && e.errors.firstWhere((ed) => ed.reason == RpcErrorDetailMessage.userDataNotFoundReason, orElse: null ) != null)
+          if (e.status == 204 && e.errors.firstWhere((ed) => ed.reason == RpcErrorDetailMessage.userDataNotFoundReason, orElse: null ) != null)
             user = null;
           else {
             rethrow;

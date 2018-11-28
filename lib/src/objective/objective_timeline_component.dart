@@ -21,6 +21,7 @@ import 'package:auge_server/model/authorization.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
 
 import 'package:auge_web/message/messages.dart';
+import 'package:auge_web/message/field_messages.dart';
 
 @Component(
     selector: 'auge-objective-timeline',
@@ -40,7 +41,7 @@ import 'package:auge_web/message/messages.dart';
       'objective_timeline_component.css'
     ])
 
-class ObjectiveTimelineComponent extends Object {
+class ObjectiveTimelineComponent extends Object implements OnInit {
 
   final ObjectiveService _objectiveService;
 
@@ -53,6 +54,7 @@ class ObjectiveTimelineComponent extends Object {
     initializeDateFormatting(Intl.defaultLocale , null);
   }
 
+  static final String timelineLabel = TimelineItemdMsg.label('Timeline');
   static final String dayAgoLabel =  TimelineItemdMsg.label('day ago');
   static final String daysAgoLabel =  TimelineItemdMsg.label('days ago');
   static final String hourAgoLabel =  TimelineItemdMsg.label('hour ago');
@@ -61,12 +63,29 @@ class ObjectiveTimelineComponent extends Object {
   static final String minutesAgoLabel =  TimelineItemdMsg.label('minutes ago');
   static final String secondAgoLabel =  TimelineItemdMsg.label('second ago');
   static final String secondsAgoLabel =  TimelineItemdMsg.label('seconds ago');
+  static final String theLabel = TimelineItemdMsg.label('the');
+  static final String valueLabel =  TimelineItemdMsg.label('value');
+  static final String changedFromLabel =  TimelineItemdMsg.label('changed from');
+
+  void ngOnInit() async {
+    if (objective.id != null) {
+      objective.timeline = await _objectiveService.getTimeline(objective.id);
+    } else {
+      objective.timeline = null;
+    }
+  }
 
   // List<TimelineItem> get timeline => objective.timeline;
 
-  String objectiveFieldLabel(String fieldName) => ObjectiveFieldMsg.label(fieldName);
-
-  // List<TimelineItem> get timeline => objective.timeline;
+  String fieldLabel(String className, String fieldName) {
+    if (className == 'Objective')  {
+      return ObjectiveFieldMsg.label(fieldName);
+    }
+    else if (className == 'Measure') {
+      return MeasuereFieldMsg.label(fieldName);
+    }
+  }
+    // List<TimelineItem> get timeline => objective.timeline;
 
   String userUrlImage(User user) {
     return common_service.userUrlImage(user?.userProfile?.image);
@@ -111,35 +130,12 @@ class ObjectiveTimelineComponent extends Object {
     }
     return elapsedTime;
   }
-/*
-  String formatChangedData(TimelineItem timelineItem) {
 
-    Map mapChangedData = json.decode(timelineItem.changedData);
-
-    StringBuffer formatChangedData = StringBuffer();
-
-    mapChangedData.forEach((k, v) {
-      formatChangedData.write(k);
-      formatChangedData.write(': ');
-      formatChangedData.write('<strong>');
-      formatChangedData.write(v.values.first);
-      formatChangedData.write('</strong>');
-      if (v.values.length > 1) {
-        formatChangedData.write(' to ');
-        formatChangedData.write(v.values.last);
-      }
-      formatChangedData.writeln();
-    });
-
-    return formatChangedData.toString();
-
-  }
-*/
   void collapseExpandControl(TimelineItem timelineItem) {
     expandedControl[timelineItem] = expandedControl[timelineItem] == null ? true :  !expandedControl[timelineItem];
   }
 
-  String formatData(dynamic data) {
+  dynamic formatData(dynamic data) {
     if (data is DateTime) {
       //return DateFormat.yMMMd().add_Hms().format(data);
       return DateFormat.yMMMd().format(data);
@@ -147,5 +143,4 @@ class ObjectiveTimelineComponent extends Object {
       return data;
     }
   }
-
 }

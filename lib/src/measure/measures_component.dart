@@ -2,8 +2,7 @@
 // Author: Samuel C. Schwebel.
 
 import 'package:angular/angular.dart';
-import 'package:angular_router/angular_router.dart';
-// import 'package:angular_components/angular_components.dart';
+
 
 import 'package:angular_components/material_slider/material_slider.dart';
 
@@ -23,6 +22,7 @@ import 'package:angular_components/model/action/async_action.dart';
 
 import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/objective/measure.dart';
+import 'package:auge_server/model/objective/timeline_item.dart';
 
 import 'package:auge_web/message/messages.dart';
 
@@ -31,6 +31,7 @@ import 'package:auge_web/src/measure/measure_chart_component.dart';
 
 import 'package:auge_web/src/measure/measure_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
+import 'package:auge_web/src/auth/auth_service.dart';
 
 
 
@@ -65,6 +66,7 @@ import 'package:auge_web/src/measure/measure_chart_component.template.dart' as m
 
 class MeasuresComponent extends Object {
 
+  final AuthService _authService;
   final MeasureService _measureService;
   final ObjectiveService _objectiveService;
 
@@ -78,7 +80,7 @@ class MeasuresComponent extends Object {
   Map<Measure, bool> expandedControl = Map();
 
   MenuModel<MenuItem> menuModel;
-  MeasuresComponent(this._measureService, this._objectiveService) {
+  MeasuresComponent(this._authService, this._measureService, this._objectiveService) {
     menuModel = new MenuModel([new MenuItemGroup(
         [new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => detailVisible = true),
         new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete()),
@@ -97,8 +99,27 @@ class MeasuresComponent extends Object {
 
   void delete() async {
     try {
-      await _measureService.deleteMeasure(selectedMeasure.id);
+
+      // Create just to pass instânce to TimelineItem. No addition data is need, just [id].
+      Measure measureDeleted = new Measure();
+      measureDeleted.id = selectedMeasure.id;
+      measureDeleted.isDeleted = true;
+      measureDeleted.audit.deletedBy = _authService.authenticatedUser;
+
+      // Timeline item definition
+      measureDeleted.lastTimelineItem = TimelineItem()
+        ..user = _authService.authenticatedUser
+        ..description = selectedMeasure.name
+      // ..dateTime = DateTime.now() // Keep the server update data time to utc
+        ..systemFunctionIndex = SystemFunction.delete.index
+        ..className = measureDeleted.runtimeType.toString()
+        ..changedData = MeasureFacilities.differenceToJson(measureDeleted, selectedMeasure);
+
+
+      await _measureService.deleteMeasure(objective.id, measureDeleted);
       objective.measures.remove(selectedMeasure);
+      objective.timeline = await _objectiveService.getTimeline(objective.id);
+
     } catch (e) {
       rethrow;
     }
@@ -194,7 +215,6 @@ class MeasuresComponent extends Object {
     }
 
     objective.timeline = await _objectiveService.getTimeline(objective.id);
-
 
   }
 

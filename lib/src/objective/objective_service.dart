@@ -27,7 +27,7 @@ class ObjectiveService {
 
     List<Objective> objectives = await _augeApiService.objectiveAugeApi.getObjectives(organizationId, withMeasures: withMeasures, withProfile: withProfile, withTimeline: withTimeline);
 
-    currentDateTime ??= await getDateTime();
+   // currentDateTime ??= await getDateTime();
 
     return objectives;
 
@@ -39,12 +39,12 @@ class ObjectiveService {
 
       Objective objective = await _augeApiService.objectiveAugeApi.getObjectiveById(id, withMeasures: withMeasures, withProfile: withProfile, withTimeline: withTimeline);
 
-      currentDateTime ??= await getDateTime();
+     // currentDateTime ??= await getDateTime();
 
       return objective;
 
     } on DetailedApiRequestError catch (e) {
-      if (e.status == 404 && e.errors.firstWhere((ed) => ed.reason == RpcErrorDetailMessage.objectiveDataNotFoundReason, orElse: null ) != null)
+      if (e.status == 204 && e.errors.firstWhere((ed) => ed.reason == RpcErrorDetailMessage.objectiveDataNotFoundReason, orElse: null ) != null)
         return null;
       else {
         rethrow;
@@ -60,7 +60,7 @@ class ObjectiveService {
     try {
 
       await _augeApiService.objectiveAugeApi.deleteObjective(id);
-      currentDateTime = await getDateTime();
+    //  currentDateTime = await getDateTime();
     } catch (e) {
       rethrow;
     }
@@ -112,7 +112,7 @@ class ObjectiveService {
 
     List<TimelineItem> timeline = await _augeApiService.objectiveAugeApi.getTimeline(objectiveId);
 
-    currentDateTime ??= await getDateTime();
+    currentDateTime = await getDateTime();
 
     return timeline;
 
