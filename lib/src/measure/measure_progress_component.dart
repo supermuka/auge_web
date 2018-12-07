@@ -99,6 +99,7 @@ class MeasureProgressComponent implements OnInit {
   DateRange limitToDateRange =
   new DateRange(new Date.today().add(years: -1), new Date.today().add(years: 10));
 
+
   MeasureProgressComponent(this._authService, this._measureService) {
     initializeDateFormatting(Intl.defaultLocale , null);
     menuModel = new MenuModel([new MenuItemGroup(
@@ -107,6 +108,8 @@ class MeasureProgressComponent implements OnInit {
         ])], icon: new Icon('menu'));
 
   }
+
+
 
   // Define messages and labels
   static final String progressLabel =  MeasureMsg.label('Progress');
@@ -224,6 +227,8 @@ class MeasureProgressComponent implements OnInit {
   void saveMeasureProgress() async {
     try {
 
+      print('audit.version');
+      print(selectedMeasure.audit.version);
       if (selectedMeasure.startValue != null || selectedMeasure?.endValue != null) {
 
         selectedMeasure.startValue <= selectedMeasure.endValue
@@ -246,6 +251,7 @@ class MeasureProgressComponent implements OnInit {
         }
 
         // Returns a new instance to get the generated data on the server side as well as having the last update.
+        print(measureProgressId);
         measureProgress = await _measureService.getMeasureProgressById(measureProgressId);
 
       }
@@ -342,6 +348,25 @@ class MeasureProgressComponent implements OnInit {
 
   //String get unitTrailingText => measure?.measureUnit == null ? null :  measure.measureUnit.symbol;
   String get unitTrailingText => selectedMeasure?.measureUnit?.symbol == null ? null : !selectedMeasure.measureUnit.symbol.contains(r'$') ? selectedMeasure.measureUnit.symbol : null;
+
+
+
+  Date getDate(MeasureProgress measureProgress) {
+    Date _date;
+    if (measureProgress.date != null) {
+      _date = new Date.fromTime(measureProgress.date);
+    }
+    return _date;
+  }
+
+  setDate(MeasureProgress measureProgress, Date _date)  {
+    if (_date == null) {
+      measureProgress.date = null;
+    } else {
+      measureProgress.date = _date.asUtcTime();
+    }
+  }
+
 
   Date get date {
     Date _date;
