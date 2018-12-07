@@ -31,7 +31,6 @@ import 'package:auge_web/message/messages.dart';
 
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/measure/measure_service.dart';
-import 'package:auge_web/src/objective/objective_service.dart';
 
 @Component(
     selector: 'auge-measure-detail',
@@ -317,8 +316,10 @@ class MeasureDetailComponent extends Object implements OnInit {
 
   }
 
-  String get unitLeadingText => measure?.measureUnit == null ? null : measure.measureUnit.symbol.contains(r'$') ? measure.measureUnit.symbol : null;
+  // String get unitLeadingText => measure?.measureUnit == null ? null : measure.measureUnit.symbol;
+  String get unitLeadingText => measure?.measureUnit?.symbol == null ? null : measure.measureUnit.symbol.contains(r'$') ? measure.measureUnit.symbol : null;
 
-  String get unitTrailingText => measure?.measureUnit == null ? null : !measure.measureUnit.symbol.contains(r'$') ? measure.measureUnit.symbol : null;
+  //String get unitTrailingText => measure?.measureUnit == null ? null :  measure.measureUnit.symbol;
+  String get unitTrailingText => measure?.measureUnit?.symbol == null ? null : !measure.measureUnit.symbol.contains(r'$') ? measure.measureUnit.symbol : null;
 
 }

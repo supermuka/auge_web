@@ -12,22 +12,21 @@ import 'package:auge_web/message/messages.dart';
 @Injectable()
 class MeasureService {
 
+
   final AugeApiService _augeApiService;
 
   MeasureService(this._augeApiService);
 
   /// Delete a [Measure]
+  /*
   Future deleteMeasure(String objectiveId, Measure measure) async {
     try {
-
-      // Used update instaed delete, because it´s need to create a Timeline, and DELETE doesn't have body (payload) option, to pass necessary date as a changedValue.
-      await _augeApiService.objectiveAugeApi.updateMeasure(measure, objectiveId);
-
-      //await _augeApiService.objectiveAugeApi.deleteMeasure(id);
+      await _augeApiService.objectiveAugeApi.deleteMeasure(id);
     } catch (e) {
       rethrow;
     }
   }
+  */
 
   /// Return a list of [Measure] by [objectiveId]
   Future<List<Measure>> getMeasures(String objectiveId) async {
@@ -54,12 +53,34 @@ class MeasureService {
     // return await _augeApiService.objectiveAugeApi.getObjectives(organizationId, id: id, withMeasures: withMeasures);
   }
 
-
   /// Return an [MeasureProgress] by [Measure.id]
   Future<List<MeasureProgress>> getMeasureProgress(String measureId) async {
 
-      return await _augeApiService.objectiveAugeApi.getMeasureProgress(measureId);
+    return await _augeApiService.objectiveAugeApi.getMeasureProgress(measureId);
 
+
+    // return await _augeApiService.objectiveAugeApi.getObjectives(organizationId, id: id, withMeasures: withMeasures);
+  }
+
+
+
+
+  /// Return an [MeasureProgress] by id [MeasureProgress.id]
+  Future<MeasureProgress> getMeasureProgressById(String measureProgressId) async {
+
+      try {
+
+        MeasureProgress measureProgress = await _augeApiService.objectiveAugeApi.getMeasureProgressById(measureProgressId);
+
+        return measureProgress;
+
+      } on DetailedApiRequestError catch (e) {
+        if (e.status == 204 && e.errors.firstWhere((ed) => ed.reason == RpcErrorDetailMessage.measureUnitsDataNotFoundReason, orElse: null ) != null)
+          return null;
+        else {
+          rethrow;
+        }
+      }
 
     // return await _augeApiService.objectiveAugeApi.getObjectives(organizationId, id: id, withMeasures: withMeasures);
   }
@@ -101,17 +122,28 @@ class MeasureService {
     }
   }
 
-  /// Save (create or update) an [MeasureProgress]
-  void saveMeasureProgress(String measureId, MeasureProgress measureProgress) async {
+  /// Save (create) a [MeasureProgress]
+  Future<String> createMeasureProgress(String measureId, int measureVersion, MeasureProgress measureProgress) async {
     try {
-      if (measureProgress.id == null) {
         IdMessage idMessage = await _augeApiService.objectiveAugeApi
-            .createMeasureProgress(measureProgress, measureId);
+            .createMeasureProgress(measureProgress, measureId, measureVersion);
 
         // ID - primary key generated on server-side.
-        measureProgress.id = idMessage?.id;
+        print(' ID - primary key generated on server-side.');
+        print(idMessage?.id);
+        return idMessage?.id;
 
-      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Save (update) a [MeasureProgress]
+  void updateMeasureProgress(String measureId, int measureVersion, MeasureProgress measureProgress) async {
+    try {
+       await _augeApiService.objectiveAugeApi
+            .updateMeasureProgress(measureProgress, measureId, measureVersion);
+
     } catch (e) {
       rethrow;
     }

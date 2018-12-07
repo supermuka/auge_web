@@ -1,0 +1,80 @@
+<modal [visible]="visibleModal">
+    <material-dialog headered>
+        <div header>
+            <h3>Measure Progress</h3>
+        </div>
+        <div class="wrapper">
+            <canvas id="canvas" height="400" width="600"></canvas>
+        </div>
+        <material-expansionpanel disabled
+                                 [alwaysHideExpandIcon]="true"
+                                 [expanded]="true"
+                                 [showSaveCancel]="false">
+            <div name>
+                <span><strong>Current Values</strong></span>
+            </div>
+            <div action>
+                <material-button icon (trigger)="selectMeasureProgress(null);detailVisible = true">
+                    <material-icon icon="add"></material-icon>
+                </material-button>
+            </div>
+            <div *ngIf="detailVisible == true">
+                <div class="w3-row">
+                   <div class="w3-col l6">
+                    <label class="input-container">
+                        <span class="label-text">{{dateLabel}}</span>
+                        <material-datepicker [(date)]="date"
+                                             [minDate]="limitToDateRange.start"
+                                             [maxDate]="limitToDateRange.end"
+                                             [required]="true"
+                                             [supportsClearRange]="true">
+                        </material-datepicker>
+                    </label>
+                   </div>
+                    <div class="w3-col l6">
+                        <material-input type="number" [(ngModel)]="measureProgress.currentValue"  [rightAlign]="true" floatingLabel [label]="currentValueLabel" [error]="showCurrentValueErrorMsg" [leadingText]="unitLeadingText" [trailingText]="unitTrailingText" (change)="changedCurrentValue($event)"></material-input>
+                    </div>
+                </div>
+                <div class="w3-row">
+                    <div class="w3-col l12">
+                        <material-input floatingLabel multiline rows="2" [label]="'Comment'" [(ngModel)]="measureProgress.comment" style="width: 100%;"></material-input>
+                    </div>
+                </div>
+                <div class="w3-row w3-right">
+                    <material-button autoFocus (trigger)="saveMeasureProgress()">{{saveButtonLabel}}
+                        <!-- material-icon icon="save"></material-icon -->
+                    </material-button>
+                    <material-button (trigger)="cancelMeasureProgress()" >{{cancelButtonLabel}}
+                        <!-- material-icon icon="cancel"></material-icon -->
+                    </material-button>
+                </div>
+            </div>
+            <div  *ngFor="let iMeasureProgress of measureProgresses">
+                <material-expansionpanel disabled
+                                         [alwaysHideExpandIcon]="true"
+                                         [hideExpandedHeader]="false"
+                                         [showSaveCancel]="false"
+                                         [expanded]="false">
+                    <div name>
+                        <span>{{iMeasureProgress.date | date}}</span>
+                    </div>
+                    <div value>
+                        <span>{{iMeasureProgress.currentValue | number}}</span>
+                        <span>{{iMeasureProgress.comment}}</span>
+                    </div>
+                    <div action>
+                        <div>
+                            <material-menu [menu]="menuModel" (click)="selectMeasureProgress(iMeasureProgress)">
+                            </material-menu>
+                        </div>
+                    </div>
+                </material-expansionpanel>
+            </div>
+        </material-expansionpanel>
+        <div footer>
+            <material-button autoFocus (trigger)="closeChart()">Close
+                <material-icon icon="close"></material-icon>
+            </material-button>
+        </div>
+    </material-dialog>
+</modal>

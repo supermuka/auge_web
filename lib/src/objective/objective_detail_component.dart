@@ -3,7 +3,6 @@
 import 'dart:async';
 
 import 'package:angular/angular.dart';
-/* import 'package:angular_components/angular_components.dart'; */
 
 import 'package:angular_components/focus/focus.dart';
 import 'package:angular_components/laminate/components/modal/modal.dart';
@@ -21,7 +20,6 @@ import 'package:angular_components/material_select/material_dropdown_select.dart
 import 'package:angular_components/model/selection/selection_model.dart';
 import 'package:angular_components/model/selection/selection_options.dart';
 import 'package:angular_components/model/selection/string_selection_options.dart';
-import 'package:angular_components/model/ui/has_factory.dart';
 
 import 'package:angular_components/material_datepicker/module.dart';
 import 'package:angular_components/model/date/date.dart';
@@ -50,7 +48,7 @@ import 'objective_detail_component.template.dart' as objective_detail_component;
 
 @Component(
     selector: 'auge-objective-detail',
-    providers: const [overlayBindings, windowBindings, datepickerBindings,UserService, GroupService],
+    providers: const [overlayBindings, windowBindings, datepickerBindings, UserService, GroupService],
     directives: const [
       coreDirectives,
       materialInputDirectives,
@@ -228,8 +226,16 @@ class ObjectiveDetailComponent extends Object implements OnInit {
 
   void saveObjective() async {
     try {
+      int functionIndex;
+      if (objective.id == null) {
+        functionIndex = SystemFunction.create.index;
+        objective.audit.createdBy = _authService.authenticatedUser;
 
-      int functionIndex = objective.id == null ?  SystemFunction.create.index : SystemFunction.update.index;
+      } else {
+        functionIndex =  SystemFunction.update.index;
+        objective.audit.updatedBy = _authService.authenticatedUser;
+      }
+      objective.isDeleted = false;
 
       // Timeline item definition
       objective.lastTimelineItem = TimelineItem()

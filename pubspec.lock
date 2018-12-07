@@ -14,7 +14,7 @@ packages:
       name: analyzer
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.33.3+2"
+    version: "0.33.6"
   angular:
     dependency: "direct main"
     description:
@@ -133,7 +133,7 @@ packages:
       name: build_runner_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.0"
+    version: "1.1.1"
   build_web_compilers:
     dependency: "direct dev"
     description:
@@ -147,7 +147,7 @@ packages:
       name: built_collection
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.0"
+    version: "4.1.0"
   built_value:
     dependency: transitive
     description:
@@ -245,7 +245,7 @@ packages:
       name: front_end
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.6+5"
+    version: "0.1.6+8"
   gcloud:
     dependency: transitive
     description:
@@ -315,7 +315,7 @@ packages:
       name: image
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.4"
+    version: "2.0.5"
   intl:
     dependency: "direct main"
     description:
@@ -350,7 +350,7 @@ packages:
       name: kernel
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.6+5"
+    version: "0.3.6+8"
   logging:
     dependency: transitive
     description:
@@ -455,7 +455,7 @@ packages:
       name: protobuf
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.10.4"
+    version: "0.10.5"
   pub_semver:
     dependency: transitive
     description:

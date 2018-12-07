@@ -56,7 +56,9 @@ class ObjectiveService {
 
 
   /// Delete an [Objective]
+  /*
   Future deleteObjective(String id) async {
+
     try {
 
       await _augeApiService.objectiveAugeApi.deleteObjective(id);
@@ -65,6 +67,7 @@ class ObjectiveService {
       rethrow;
     }
   }
+  */
 
   /// Save (create or update) an [Objective]
   void saveObjective(Objective objective) async {
@@ -80,7 +83,14 @@ class ObjectiveService {
       } else {
         await _augeApiService.objectiveAugeApi.updateObjective(objective);
       }
-
+/*
+    } on DetailedApiRequestError catch (e) {
+      if (e.status == 412 && e.errors.firstWhere((ed) => ed.reason == RpcErrorDetailMessage.measureUpdatePreconditionFailed, orElse: null ) != null)
+        return null;
+      else {
+        rethrow;
+      }
+      */
     } catch (e) {
       print('${e.runtimeType}, ${e}');
       rethrow;
