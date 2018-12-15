@@ -31,3 +31,16 @@ String colorFromUuid(String id) {
 String firstLetter(String name) {
   return name == null ? 'G' : name.substring(0, 1).toUpperCase();
 }
+
+/// When it exists, shows up.
+String _error;
+
+String get error => _error;
+
+set error(String error) {
+  _error = error;
+
+  // Start a timeout to after to clear the error.
+  // The error is presented just some seconds.
+  startTimeoutTimer(() { _error = null; });
+}

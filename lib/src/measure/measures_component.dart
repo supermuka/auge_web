@@ -18,10 +18,8 @@ import 'package:angular_components/model/ui/icon.dart';
 import 'package:angular_components/model/menu/menu.dart';
 import 'package:angular_components/content/deferred_content.dart';
 
-
 import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/objective/measure.dart';
-import 'package:auge_server/model/objective/timeline_item.dart';
 
 import 'package:auge_web/message/messages.dart';
 
@@ -70,8 +68,10 @@ class MeasuresComponent extends Object {
 
   Measure selectedMeasure;
 
+
   bool detailVisible;
   bool progressVisible;
+  bool addMeasureProgress;
   //Map<Measure, bool> expandedControl = Map();
 
   MenuModel<MenuItem> menuModel;
@@ -79,7 +79,7 @@ class MeasuresComponent extends Object {
     menuModel = new MenuModel([new MenuItemGroup(
         [new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => detailVisible = true),
         new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete()),
-        new MenuItem('Progress History', icon: new Icon('show_chart'), action: () { progressVisible = true;}) ])], icon: new Icon('menu'));
+        new MenuItem('Progress History', icon: new Icon('show_chart'), action: () { progressVisible = true; addMeasureProgress = false;}) ])], icon: new Icon('menu'));
   }
 
   // Define messages and labels
@@ -100,21 +100,11 @@ class MeasuresComponent extends Object {
       Measure measureDeleted = new Measure();
       measureDeleted.id = selectedMeasure.id;
       measureDeleted.isDeleted = true;
-      measureDeleted.audit.updatedBy = _authService.authenticatedUser;
 
-      // Timeline item definition
-      measureDeleted.lastTimelineItem = TimelineItem()
-        ..user = _authService.authenticatedUser
-        ..description = selectedMeasure.name
-      // ..dateTime = DateTime.now() // Keep the server update data time to utc
-        ..systemFunctionIndex = SystemFunction.delete.index
-        ..className = measureDeleted.runtimeType.toString()
-        ..changedData = MeasureFacilities.differenceToJson(measureDeleted, selectedMeasure);
-
+      measureDeleted.lastHistoryItem.setClientSideValues(user: _authService.authenticatedUser, changedValues: MeasureFacilities.differenceToJson(measureDeleted, selectedMeasure));
 
       await _measureService.saveMeasure(objective.id, measureDeleted);
       objective.measures.remove(selectedMeasure);
-      objective.timeline = await _objectiveService.getTimeline(objective.id);
 
     } catch (e) {
       rethrow;
@@ -155,8 +145,14 @@ class MeasuresComponent extends Object {
       //measure.cloneTo(measures[measures.indexOf(selectedMeasure)]);
     }
 
-    objective.timeline = await _objectiveService.getTimeline(objective.id);
 
+  }
+
+  void closeProgress() async {
+    progressVisible = false;
+
+    // recovery the actual measture;
+    measures[measures.indexOf(selectedMeasure)] = await _measureService.getMeasureById(selectedMeasure.id);
   }
 
 }

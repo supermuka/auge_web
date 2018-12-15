@@ -6,7 +6,7 @@ import 'package:auge_web/services/augeapi_service.dart';
 
 import 'package:auge_server/message/created_message.dart';
 import 'package:auge_server/model/objective/objective.dart';
-import 'package:auge_server/model/objective/timeline_item.dart';
+import 'package:auge_server/model/history_item.dart';
 
 @Injectable()
 class ObjectiveService {
@@ -22,10 +22,10 @@ class ObjectiveService {
   }
 
   /// Return a list of [Objective]
-  Future<List<Objective>> getObjectives(String organizationId, {bool withMeasures = false, bool withProfile = false, bool withTimeline = false}) async {
+  Future<List<Objective>> getObjectives(String organizationId, {bool withMeasures = false, bool withProfile = false, bool withHistory = false}) async {
     // return await _augeApiService.objectiveAugeApi.getObjectives(organizationId, withMeasures: withMeasures);
 
-    List<Objective> objectives = await _augeApiService.objectiveAugeApi.getObjectives(organizationId, withMeasures: withMeasures, withProfile: withProfile, withTimeline: withTimeline);
+    List<Objective> objectives = await _augeApiService.objectiveAugeApi.getObjectives(organizationId, withMeasures: withMeasures, withProfile: withProfile, withHistory: withHistory);
 
    // currentDateTime ??= await getDateTime();
 
@@ -34,10 +34,10 @@ class ObjectiveService {
   }
 
   /// Return an [Objective] by Id
-  Future<Objective> getObjectiveById(String id, {bool withMeasures = false, bool withProfile = false, bool withTimeline = false}) async {
+  Future<Objective> getObjectiveById(String id, {bool withMeasures = false, bool withProfile = false, bool withHistory = false}) async {
     try {
 
-      Objective objective = await _augeApiService.objectiveAugeApi.getObjectiveById(id, withMeasures: withMeasures, withProfile: withProfile, withTimeline: withTimeline);
+      Objective objective = await _augeApiService.objectiveAugeApi.getObjectiveById(id, withMeasures: withMeasures, withProfile: withProfile, withHistory: withHistory);
 
      // currentDateTime ??= await getDateTime();
 
@@ -118,9 +118,9 @@ class ObjectiveService {
   */
 
   /// Return a list of [TimelineItem]
-  Future<List<TimelineItem>> getTimeline(String objectiveId) async {
+  Future<List<HistoryItem>> getHistory(String objectiveId) async {
 
-    List<TimelineItem> timeline = await _augeApiService.objectiveAugeApi.getTimeline(objectiveId);
+    List<HistoryItem> timeline = await _augeApiService.objectiveAugeApi.getHistory(objectiveId);
 
     currentDateTime = await getDateTime();
 

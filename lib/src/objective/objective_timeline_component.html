@@ -7,28 +7,28 @@
             <span><strong>{{timelineLabel}}</strong></span>
         </div>
         <div class="timeline-vertical-size" *deferredContent>
-            <div class="timeline-vertical-size" *ngFor="let timelineItem of objective.timeline">
+            <div class="timeline-vertical-size" *ngFor="let historyItem of objective.history">
                 <div>
-                    <span class="avatar" [style.background-image]="'url(' + userUrlImage(timelineItem.user) + ')'"></span>
-                    <span>{{systemFunctionInPastLabel(timelineItem.systemFunctionIndex)}} {{theLabel}} {{timelineItem.className}} <strong>{{timelineItem.description}}</strong></span>
+                    <span class="avatar" [style.background-image]="'url(' + userUrlImage(historyItem.user) + ')'"></span>
+                    <span>{{systemFunctionInPastLabel(historyItem.systemFunctionIndex)}} {{theLabel}} {{historyItem.objectClassName}} <strong>{{historyItem.description}}</strong></span>
                 </div>
                 <div>
-                    <span>{{elapsedTime(timelineItem.dateTime, currentDateTime)}}</span>
+                    <span>{{elapsedTime(historyItem.dateTime, currentDateTime)}}</span>
                     <span class="w3-right">
-                        <material-button icon (trigger)="collapseExpandControl(timelineItem)">
-                            <material-icon *ngIf="expandedControl[timelineItem] == null || !expandedControl[timelineItem]" icon="expand_more"></material-icon>
-                            <material-icon *ngIf="expandedControl[timelineItem] != null && expandedControl[timelineItem]" icon="expand_less"></material-icon>
+                        <material-button icon (trigger)="collapseExpandControl(historyItem)">
+                            <material-icon *ngIf="expandedControl[historyItem] == null || !expandedControl[historyItem]" icon="expand_more"></material-icon>
+                            <material-icon *ngIf="expandedControl[historyItem] != null && expandedControl[historyItem]" icon="expand_less"></material-icon>
                         </material-button>
                     </span>
                 </div>
-                <div *ngIf="expandedControl[timelineItem] != null && expandedControl[timelineItem]">
-                    <div *ngFor="let key of timelineItem.changedDataToMap['values']?.keys">
-                        <span><strong>{{fieldLabel(timelineItem.className, key)}}</strong></span>
+                <div *ngIf="expandedControl[historyItem] != null && expandedControl[historyItem]">
+                    <div *ngFor="let key of historyItem.changedValuesToMap['values']?.keys">
+                        <span><strong>{{fieldLabel(historyItem.objectClassName, key)}}</strong></span>
                         <span> {{valueLabel}} </span>
-                        <span><strong>{{formatData(timelineItem.changedDataToMap['values'][key].values.first)}}</strong></span>
-                        <div *ngIf="timelineItem.changedDataToMap['values'][key].values.length > 1">
+                        <span><strong>{{formatValue(historyItem.changedValuesToMap['values'][key].values.first)}}</strong></span>
+                        <div *ngIf="historyItem.changedValuesToMap['values'][key].values.length > 1">
                             <span> {{changedFromLabel}} </span>
-                            <span><strong>{{formatData(timelineItem.changedDataToMap['values'][key].values.last)}}</strong></span>
+                            <span><strong>{{formatValue(historyItem.changedValuesToMap['values'][key].values.last)}}</strong></span>
                         </div>
                     </div>
                 </div>

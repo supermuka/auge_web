@@ -13,7 +13,7 @@ class AppLayoutService {
   /// When it exists, shows up.
   String _error;
 
-  get error => _error;
+  String get error => _error;
 
   set error(String error) {
     _error = error;

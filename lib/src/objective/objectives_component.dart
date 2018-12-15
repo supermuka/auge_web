@@ -19,7 +19,6 @@ import 'package:angular_components/material_expansionpanel/material_expansionpan
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
 
 import 'package:auge_server/model/objective/objective.dart';
-import 'package:auge_server/model/objective/timeline_item.dart';
 import 'package:auge_web/message/messages.dart';
 
 import 'package:auge_web/src/objective/objective_detail_component.dart';
@@ -148,47 +147,21 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
 
   /// Call a soft (logic) delete
   void delete() async {
-    /*
-    try {
-      await _objectiveService.deleteObjective(selectedObjective.id);
-
-      expandedControl.remove(selectedObjective);
-      objectives.remove(selectedObjective);
-
-    } catch (e) {
-      _appLayoutService.error = e.toString();
-      rethrow;
-    }
-    */
-
     try {
 
       // Created to pass data to delete and instance from TimelineItem. No addition data is need, just [id, isDeleted and deletedBy].
       Objective objectiveDeleted = new Objective()
         ..id = selectedObjective.id
-        ..isDeleted = true
-        ..audit.updatedBy = _authService.authenticatedUser;
+        ..isDeleted = true;
 
-      // Timeline item definition
-      objectiveDeleted.lastTimelineItem = TimelineItem()
-        ..user = _authService.authenticatedUser
-        ..description = selectedObjective.name
-      // ..dateTime = DateTime.now() // Keep the server update data time to utc
-        ..systemFunctionIndex = SystemFunction.delete.index
-        ..className = objectiveDeleted.runtimeType.toString()
-        ..changedData = ObjectiveFacilities.differenceToJson(objectiveDeleted, selectedObjective);
-
+      objectiveDeleted.lastHistoryItem.setClientSideValues(user: _authService.authenticatedUser, description: selectedObjective.name, changedValues: ObjectiveFacilities.differenceToJson(objectiveDeleted, selectedObjective));
 
       await _objectiveService.saveObjective(objectiveDeleted);
       objectives.remove(selectedObjective);
       //objectives.timeline = await _objectiveService.getTimeline(objective.id);
-
     } catch (e) {
       rethrow;
     }
-
-
-
   }
 
   void changeListItem(String objetiveId) async {

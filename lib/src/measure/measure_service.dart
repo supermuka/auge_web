@@ -12,21 +12,11 @@ import 'package:auge_web/message/messages.dart';
 @Injectable()
 class MeasureService {
 
-
   final AugeApiService _augeApiService;
 
   MeasureService(this._augeApiService);
 
   /// Delete a [Measure]
-  /*
-  Future deleteMeasure(String objectiveId, Measure measure) async {
-    try {
-      await _augeApiService.objectiveAugeApi.deleteMeasure(id);
-    } catch (e) {
-      rethrow;
-    }
-  }
-  */
 
   /// Return a list of [Measure] by [objectiveId]
   Future<List<Measure>> getMeasures(String objectiveId) async {
@@ -50,7 +40,6 @@ class MeasureService {
       }
     }
 
-    // return await _augeApiService.objectiveAugeApi.getObjectives(organizationId, id: id, withMeasures: withMeasures);
   }
 
   /// Return an [MeasureProgress] by [Measure.id]
@@ -58,11 +47,7 @@ class MeasureService {
 
     return await _augeApiService.objectiveAugeApi.getMeasureProgress(measureId);
 
-
-    // return await _augeApiService.objectiveAugeApi.getObjectives(organizationId, id: id, withMeasures: withMeasures);
   }
-
-
 
 
   /// Return an [MeasureProgress] by id [MeasureProgress.id]
@@ -82,7 +67,6 @@ class MeasureService {
         }
       }
 
-    // return await _augeApiService.objectiveAugeApi.getObjectives(organizationId, id: id, withMeasures: withMeasures);
   }
 
 
@@ -123,14 +107,12 @@ class MeasureService {
   }
 
   /// Save (create) a [MeasureProgress]
-  Future<String> createMeasureProgress(String measureId, int measureVersion, MeasureProgress measureProgress) async {
+  Future<String> saveMeasureProgress(String measureId, MeasureProgress measureProgress) async {
     try {
         IdMessage idMessage = await _augeApiService.objectiveAugeApi
-            .createMeasureProgress(measureProgress, measureId, measureVersion);
+            .createMeasureProgress(measureProgress, measureId);
 
         // ID - primary key generated on server-side.
-        print(' ID - primary key generated on server-side.');
-        print(idMessage?.id);
         return idMessage?.id;
 
     } catch (e) {
@@ -139,10 +121,10 @@ class MeasureService {
   }
 
   /// Save (update) a [MeasureProgress]
-  void updateMeasureProgress(String measureId, int measureVersion, MeasureProgress measureProgress) async {
+  void updateMeasureProgress(String measureId, MeasureProgress measureProgress) async {
     try {
        await _augeApiService.objectiveAugeApi
-            .updateMeasureProgress(measureProgress, measureId, measureVersion);
+            .updateMeasureProgress(measureProgress, measureId);
 
     } catch (e) {
       rethrow;

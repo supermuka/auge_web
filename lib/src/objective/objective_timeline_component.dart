@@ -15,7 +15,7 @@ import 'package:auge_web/src/objective/objective_service.dart';
 
 import 'package:auge_server/model/user.dart';
 import 'package:auge_server/model/objective/objective.dart';
-import 'package:auge_server/model/objective/timeline_item.dart';
+import 'package:auge_server/model/history_item.dart';
 import 'package:auge_server/model/authorization.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
@@ -28,7 +28,6 @@ import 'package:auge_web/message/field_messages.dart';
     providers: const [],
     directives: const [
       coreDirectives,
-      /* materialDirectives, */
       MaterialExpansionPanel,
       MaterialButtonComponent,
       MaterialIconComponent,
@@ -48,7 +47,7 @@ class ObjectiveTimelineComponent extends Object implements OnInit {
   @Input()
   Objective objective;
 
-  Map<TimelineItem, bool> expandedControl = Map();
+  Map<HistoryItem, bool> expandedControl = Map();
 
   ObjectiveTimelineComponent(this._objectiveService) {
     initializeDateFormatting(Intl.defaultLocale , null);
@@ -69,9 +68,9 @@ class ObjectiveTimelineComponent extends Object implements OnInit {
 
   void ngOnInit() async {
     if (objective.id != null) {
-      objective.timeline = await _objectiveService.getTimeline(objective.id);
+      objective.history = await _objectiveService.getHistory(objective.id);
     } else {
-      objective.timeline = null;
+      objective.history = null;
     }
   }
 
@@ -131,16 +130,16 @@ class ObjectiveTimelineComponent extends Object implements OnInit {
     return elapsedTime;
   }
 
-  void collapseExpandControl(TimelineItem timelineItem) {
-    expandedControl[timelineItem] = expandedControl[timelineItem] == null ? true :  !expandedControl[timelineItem];
+  void collapseExpandControl(HistoryItem historyItem) {
+    expandedControl[historyItem] = expandedControl[historyItem] == null ? true :  !expandedControl[historyItem];
   }
 
-  dynamic formatData(dynamic data) {
-    if (data is DateTime) {
+  dynamic formatValue(dynamic value) {
+    if (value is DateTime) {
       //return DateFormat.yMMMd().add_Hms().format(data);
-      return DateFormat.yMMMd().format(data);
+      return DateFormat.yMMMd().format(value);
     } else {
-      return data;
+      return value;
     }
   }
 }

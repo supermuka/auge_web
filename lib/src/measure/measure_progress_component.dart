@@ -17,11 +17,12 @@ import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel_set.dart';
+import 'package:angular_components/material_expansionpanel/material_expansionpanel_auto_dismiss.dart';
 import 'package:angular_components/material_input/material_input.dart';
 import 'package:angular_components/material_input/material_number_accessor.dart';
 
-import 'package:angular_components/model/ui/icon.dart';
 import 'package:angular_components/model/menu/menu.dart';
+import 'package:angular_components/material_menu/material_menu.dart';
 
 import 'package:angular_components/material_datepicker/module.dart';
 import 'package:angular_components/model/date/date.dart';
@@ -30,6 +31,9 @@ import 'package:angular_components/utils/browser/window/module.dart';
 import 'package:angular_components/material_datepicker/material_datepicker.dart';
 
 import 'package:angular_components/material_dialog/material_dialog.dart';
+import 'package:angular_components/model/action/async_action.dart';
+
+import 'package:auge_web/services/common_service.dart';
 
 import 'package:auge_web/src/measure/measure_service.dart';
 import 'package:auge_web/src/auth/auth_service.dart';
@@ -47,6 +51,7 @@ import 'package:auge_web/message/messages.dart';
       materialNumberInputDirectives,
       MaterialExpansionPanel,
       MaterialExpansionPanelSet,
+      MaterialExpansionPanelAutoDismiss,
       NgModel,
       AutoFocusDirective,
       ModalComponent,
@@ -54,6 +59,7 @@ import 'package:auge_web/message/messages.dart';
       MaterialButtonComponent,
       MaterialIconComponent,
       MaterialDatepickerComponent,
+      MaterialMenuComponent,
     ],
     pipes: const [commonPipes],
     templateUrl: 'measure_progress_component.html',
@@ -66,6 +72,9 @@ class MeasureProgressComponent implements OnInit {
   final AuthService _authService;
   final MeasureService _measureService;
   bool visibleModal = false;
+
+  @Input()
+  bool addMeasureProgress;
 
   @Input()
   DateTime objectiveStartDate;
@@ -86,15 +95,14 @@ class MeasureProgressComponent implements OnInit {
   bool editable;
 
   MeasureProgress selectedMeasureProgress;
-  MeasureProgress measureProgress;
 
   String showStartValueErrorMsg;
   String showCurrentValueErrorMsg;
   String showEndValueErrorMsg;
 
-  MenuModel<MenuItem> menuModel;
 
-  bool detailVisible = false;
+
+  MenuModel<MenuItem> menuModel;
 
   DateRange limitToDateRange =
   new DateRange(new Date.today().add(years: -1), new Date.today().add(years: 10));
@@ -102,11 +110,12 @@ class MeasureProgressComponent implements OnInit {
 
   MeasureProgressComponent(this._authService, this._measureService) {
     initializeDateFormatting(Intl.defaultLocale , null);
+    /*
     menuModel = new MenuModel([new MenuItemGroup(
         [new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => editable = true),
         new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete()),
         ])], icon: new Icon('menu'));
-
+*/
   }
 
 
@@ -122,10 +131,16 @@ class MeasureProgressComponent implements OnInit {
   static final String cancelButtonLabel = CommonMsg.buttonLabel('Cancel');
 
   static final String valueErrorMsg =  MeasureMsg.valueErrorMsg();
+  static final String currentValueExistsAtDateMsg =  MeasureMsg.currentValueExistsAtDate();
 
   void ngOnInit() async {
     if (selectedMeasure != null) {
       measureProgresses = await _measureService.getMeasureProgress(selectedMeasure.id);
+    }
+
+    if (addMeasureProgress) {
+      measureProgresses.insert(0, MeasureProgress()..date = DateTime.now()..currentValue = selectedMeasure.currentValue);
+      selectedMeasureProgress = measureProgresses.first;
     }
 
     List<String> months = [];
@@ -214,94 +229,89 @@ class MeasureProgressComponent implements OnInit {
     _closeController.add(null);
   }
 
-  void cancelMeasureProgress() async {
+  void cancelMeasureProgress(MeasureProgress measureProgress, AsyncAction event) async {
 
     try {
-      measureProgress = null;
-      detailVisible = false;
+      if (measureProgress.id == null) {
+        measureProgresses.remove(measureProgress);        
+      } else {
+        measureProgresses[measureProgresses.indexOf(measureProgress)] = await _measureService.getMeasureProgressById(measureProgress.id);
+      }
     } on Exception {
+      event.cancel();
       rethrow;
     }
   }
 
-  void saveMeasureProgress() async {
-    try {
+  void saveMeasureProgress(MeasureProgress measureProgress, AsyncAction event) async {
 
-      print('audit.version');
-      print(selectedMeasure.audit.version);
-      if (selectedMeasure.startValue != null || selectedMeasure?.endValue != null) {
+    if (measureProgresses.indexWhere((mp) => mp.date == measureProgress.date) != -1) {
+      dialogError = currentValueExistsAtDateMsg;
+      event.cancel();
+    } else {
+      try {
+        if (selectedMeasure.startValue != null ||
+            selectedMeasure?.endValue != null) {
+          selectedMeasure.startValue <= selectedMeasure.endValue
+              ? selectedMeasure.currentValue = measureProgress.currentValue
+              : selectedMeasure.currentValue =
+              selectedMeasure.startValue + selectedMeasure.endValue -
+                  measureProgress.currentValue;
 
-        selectedMeasure.startValue <= selectedMeasure.endValue
-            ? selectedMeasure.currentValue = measureProgress.currentValue
-            : selectedMeasure.currentValue =
-            selectedMeasure.startValue + selectedMeasure.endValue - measureProgress.currentValue;
+          //MeasureProgress measureProgress = MeasureProgress();
+          // measureProgress.currentValue = selectedMeasure.currentValue;
 
-        //MeasureProgress measureProgress = MeasureProgress();
-        // measureProgress.currentValue = selectedMeasure.currentValue;
+          measureProgress.lastHistoryItem.setClientSideValues(
+              user: _authService.authenticatedUser,
+              description: null,
+              changedValues: MeasureProgressFacilities.differenceToJson(
+                  measureProgress, selectedMeasureProgress));
 
-        String measureProgressId;
-        if (measureProgress.id == null) {
-          measureProgress.audit.createdBy = _authService.authenticatedUser;
-          measureProgressId = await _measureService.createMeasureProgress(selectedMeasure.id, selectedMeasure.audit.version, measureProgress);
-
-        } else {
-          measureProgress.audit.updatedBy = _authService.authenticatedUser;
-          await _measureService.updateMeasureProgress(selectedMeasure.id, selectedMeasure.audit.version, measureProgress);
-          measureProgressId = measureProgress.id;
+          String measureProgressId = await _measureService.saveMeasureProgress(
+              selectedMeasure.id, measureProgress);
+          // Returns a new instance to get the generated data on the server side as well as having the last update.
+          measureProgress =
+          await _measureService.getMeasureProgressById(measureProgressId);
         }
 
-        // Returns a new instance to get the generated data on the server side as well as having the last update.
-        print(measureProgressId);
-        measureProgress = await _measureService.getMeasureProgressById(measureProgressId);
-
+        measureProgresses =
+        await _measureService.getMeasureProgress(selectedMeasure.id);
+      } catch (e) {
+        dialogError = e.toString();
+        event.cancel();
+        rethrow;
       }
-
-      measureProgresses = await _measureService.getMeasureProgress(selectedMeasure.id);
-
-      detailVisible = false;
-    } on Exception {
-       rethrow;
     }
   }
 
   void selectMeasureProgress(MeasureProgress measureProgress) async {
     if (measureProgress == null) {
-      this.measureProgress = MeasureProgress();
+      measureProgresses.insert(0, MeasureProgress());
+      selectedMeasureProgress = measureProgresses.first;
+      selectedMeasureProgress.date = DateTime.now();
     } else {
       // Get a new instance to doesn't referenced the other.
-      this.measureProgress = await _measureService.getMeasureProgressById(selectedMeasureProgress.id);
+      selectedMeasureProgress = measureProgress;
     }
   }
 
   /// Call a soft (logic) delete
-  void delete() async {
-    /*
+  void delete(MeasureProgress measureProgress) async {
+
     try {
 
       // Created just to pass instance from TimelineItem. No addition data is need, just [id, isDeleted and deletedBy].
-      Measure measureDeleted = new Measure();
-      measureDeleted.id = selectedMeasure.id;
-      measureDeleted.isDeleted = true;
-      measureDeleted.audit.deletedBy = _authService.authenticatedUser;
-
-      // Timeline item definition
-      measureDeleted.lastTimelineItem = TimelineItem()
-        ..user = _authService.authenticatedUser
-        ..description = selectedMeasure.name
-      // ..dateTime = DateTime.now() // Keep the server update data time to utc
-        ..systemFunctionIndex = SystemFunction.delete.index
-        ..className = measureDeleted.runtimeType.toString()
-        ..changedData = MeasureFacilities.differenceToJson(measureDeleted, selectedMeasure);
-
-
-      await _measureService.saveMeasure(objective.id, measureDeleted);
+      measureProgress.isDeleted = true;
+      measureProgress.lastHistoryItem.setClientSideValues(user: _authService.authenticatedUser, description: null, /* changedValues: MeasureProgressFacilities.differenceToJson(measureProgress, selectedMeasureProgress) */ );
+/*
+      await _measureService .saveMeasure(objective.id, measureDeleted);
       objective.measures.remove(selectedMeasure);
       objective.timeline = await _objectiveService.getTimeline(objective.id);
-
+*/
     } catch (e) {
       rethrow;
     }
-    */
+
   }
 
   bool validValue(double startValue, double currentValue, double endValue) {
@@ -353,7 +363,7 @@ class MeasureProgressComponent implements OnInit {
 
   Date getDate(MeasureProgress measureProgress) {
     Date _date;
-    if (measureProgress.date != null) {
+    if (measureProgress?.date != null) {
       _date = new Date.fromTime(measureProgress.date);
     }
     return _date;
@@ -367,7 +377,15 @@ class MeasureProgressComponent implements OnInit {
     }
   }
 
+  set dialogError(String errorMsg) {
+    error = errorMsg;
+  }
 
+  String get dialogError {
+    return error;
+  }
+
+/*
   Date get date {
     Date _date;
     if (measureProgress.date != null) {
@@ -383,5 +401,6 @@ class MeasureProgressComponent implements OnInit {
       measureProgress.date = _date.asUtcTime();
     }
   }
+  */
 
 }

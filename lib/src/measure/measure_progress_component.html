@@ -1,5 +1,5 @@
 <modal [visible]="visibleModal">
-    <material-dialog headered>
+    <material-dialog headered [error]="dialogError">
         <div header>
             <h3>Measure Progress</h3>
         </div>
@@ -14,44 +14,21 @@
                 <span><strong>Current Values</strong></span>
             </div>
             <div action>
-                <material-button icon (trigger)="selectMeasureProgress(null);detailVisible = true">
+                <material-button icon (trigger)="selectMeasureProgress(null)">
                     <material-icon icon="add"></material-icon>
                 </material-button>
             </div>
-            <!-- div *ngIf="detailVisible == true">
-                <div class="w3-row">
-                   <div class="w3-col l6">
-                    <label class="input-container">
-                        <span class="label-text">{{dateLabel}}</span>
-                        <material-datepicker [(date)]="date"
-                                             [minDate]="limitToDateRange.start"
-                                             [maxDate]="limitToDateRange.end"
-                                             [required]="true"
-                                             [supportsClearRange]="true">
-                        </material-datepicker>
-                    </label>
-                   </div>
-                    <div class="w3-col l6">
-                        <material-input type="number" [(ngModel)]="measureProgress.currentValue"  [rightAlign]="true" floatingLabel [label]="currentValueLabel" [error]="showCurrentValueErrorMsg" [leadingText]="unitLeadingText" [trailingText]="unitTrailingText" (change)="changedCurrentValue($event)"></material-input>
-                    </div>
-                </div>
-                <div class="w3-row">
-                    <div class="w3-col l12">
-                        <material-input floatingLabel multiline rows="2" [label]="'Comment'" [(ngModel)]="measureProgress.comment" style="width: 100%;"></material-input>
-                    </div>
-                </div>
-                <div class="w3-row w3-right">
-                    <material-button autoFocus (trigger)="saveMeasureProgress()">{{saveButtonLabel}}
-
-                    </material-button>
-                    <material-button (trigger)="cancelMeasureProgress()" >{{cancelButtonLabel}}
-                    </material-button>
-                </div>
-            </div-->
             <div  *ngFor="let iMeasureProgress of measureProgresses">
-                <material-expansionpanel [alwaysHideExpandIcon]="true"
+
+                <material-expansionpanel disabled
+                                         flat
+                                         [alwaysHideExpandIcon]="true"
                                          [hideExpandedHeader]="true"
-                                         [showSaveCancel]="true">
+                                         [showSaveCancel]="true"
+                                         [expanded]="iMeasureProgress == selectedMeasureProgress"
+                                         (save)="saveMeasureProgress(iMeasureProgress, $event)"
+                                         (cancel)="cancelMeasureProgress(iMeasureProgress, $event)"
+                                         expandIcon="edit">
                     <div name>
                         <span>{{iMeasureProgress.date | date}}</span>
                     </div>
@@ -60,10 +37,16 @@
                         <span>{{iMeasureProgress.comment}}</span>
                     </div>
                     <div action>
-                        <div>
+                        <material-button (trigger)="selectMeasureProgress(iMeasureProgress)">
+                            <material-icon icon="edit"></material-icon>
+                        </material-button>
+                        <material-button (trigger)="delete(iMeasureProgress)">
+                            <material-icon icon="delete"></material-icon>
+                        </material-button>
+                        <!-- div>
                             <material-menu [menu]="menuModel" (click)="selectMeasureProgress(iMeasureProgress)">
                             </material-menu>
-                        </div>
+                        </div -->
                     </div>
                     <div class="w3-row">
                        <div class="w3-col l6">

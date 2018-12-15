@@ -24,8 +24,6 @@ import 'package:angular_components/model/ui/has_renderer.dart';
 
 import 'package:auge_server/model/objective/measure.dart';
 import 'package:auge_server/model/authorization.dart';
-import 'package:auge_server/model/objective/timeline_item.dart';
-
 
 import 'package:auge_web/message/messages.dart';
 
@@ -151,25 +149,8 @@ class MeasureDetailComponent extends Object implements OnInit {
   void saveMeasure() async {
     try {
 
-      int functionIndex;
-      if (measure.id == null) {
-         functionIndex = SystemFunction.create.index;
-         measure.audit.createdBy = _authService.authenticatedUser;
-
-      } else {
-         functionIndex =  SystemFunction.update.index;
-         measure.audit.updatedBy = _authService.authenticatedUser;
-      }
       measure.isDeleted = false;
-
-      // Timeline item definition
-      measure.lastTimelineItem = TimelineItem()
-        ..user = _authService.authenticatedUser
-      // ..dateTime = DateTime.now() // Keep the server update data time to utc
-        ..systemFunctionIndex = functionIndex
-        ..className = measure.runtimeType.toString()
-        ..description = measure.name
-        ..changedData = MeasureFacilities.differenceToJson(measure, selectedMeasure);
+      measure.lastHistoryItem.setClientSideValues(user: _authService.authenticatedUser, description: measure.name, changedValues: MeasureFacilities.differenceToJson(measure, selectedMeasure));
 
       await _measureService.saveMeasure(objectiveId, measure);
 

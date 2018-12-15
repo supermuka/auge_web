@@ -30,7 +30,6 @@ import 'package:angular_components/material_datepicker/material_datepicker.dart'
 import 'package:angular_components/material_checkbox/material_checkbox.dart';
 
 import 'package:auge_server/model/objective/objective.dart';
-import 'package:auge_server/model/objective/timeline_item.dart';
 import 'package:auge_server/model/user.dart';
 import 'package:auge_server/model/group.dart';
 import 'package:auge_server/model/authorization.dart';
@@ -226,29 +225,12 @@ class ObjectiveDetailComponent extends Object implements OnInit {
 
   void saveObjective() async {
     try {
-      int functionIndex;
-      if (objective.id == null) {
-        functionIndex = SystemFunction.create.index;
-        objective.audit.createdBy = _authService.authenticatedUser;
 
-      } else {
-        functionIndex =  SystemFunction.update.index;
-        objective.audit.updatedBy = _authService.authenticatedUser;
-      }
       objective.isDeleted = false;
 
-      // Timeline item definition
-      objective.lastTimelineItem = TimelineItem()
-        ..user = _authService.authenticatedUser
-      // ..dateTime = DateTime.now() // Keep the server update data time to utc
-        ..systemFunctionIndex = functionIndex
-        ..className = objective.runtimeType.toString()
-        ..description = objective.name
-        ..changedData = ObjectiveFacilities.differenceToJson(objective, selectedObjective);
-
-       await _objectiveService.saveObjective(objective);
-
-      _objectiveService.currentDateTime = objective.lastTimelineItem.dateTime;
+      // History item definition
+      objective.lastHistoryItem.setClientSideValues(user: _authService.authenticatedUser, description: objective.name, changedValues: ObjectiveFacilities.differenceToJson(objective, selectedObjective));
+      await _objectiveService.saveObjective(objective);
 
       _saveController.add(objective.id);
       closeDetail();
