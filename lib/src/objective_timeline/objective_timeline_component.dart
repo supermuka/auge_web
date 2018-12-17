@@ -70,11 +70,11 @@ class ObjectiveTimelineComponent extends Object implements OnInit {
     if (objective.id != null) {
       objective.history = await _objectiveService.getHistory(objective.id);
     } else {
-      objective.history = null;
+       objective.history = null;
     }
   }
 
-  // List<TimelineItem> get timeline => objective.timeline;
+  List<HistoryItem> get history => objective.history;
 
   String fieldLabel(String className, String fieldName) {
     if (className == 'Objective')  {

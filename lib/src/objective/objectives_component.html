@@ -16,8 +16,9 @@
             <material-expansionpanel [alwaysHideExpandIcon]="true"
                     [hideExpandedHeader]="false"
                     [showSaveCancel]="false"
-                    [expanded]="expandedControl[iObjective]"
-                    (expandedChange)="scrollInit($event, refMatExp);expandedControl[iObjective] = $event">
+                    [expanded]="iObjective.id == expandedObjectiveId"
+                    (expandedChange)="scrollInit($event, refMatExp);setExpandedObjectiveId(iObjective.id, $event)">
+                <!-- [expanded]="expandedControl[iObjective]" -->
 
                 <!-- (expandedChange)="expandedControl[iObjective] = $event" -->
                 <div name class="custom-material-expansionpanel-name">
@@ -44,16 +45,16 @@
                 <span><strong>{{alignedToLabel}}</strong> {{iObjective?.alignedTo?.name}}</span>
                 <div class="w3-row" >
                     <div class="w3-col m9">
-                        <auge-measures *ngIf="expandedControl[iObjective]" [objective]="iObjective"></auge-measures>
-                        <auge-initiatives-summary *ngIf="expandedControl[iObjective]" [objectiveId]="iObjective.id"></auge-initiatives-summary>
+                        <auge-measures *ngIf="iObjective.id == expandedObjectiveId" [objective]="iObjective"></auge-measures>
+                        <auge-initiatives-summary *ngIf="iObjective.id == expandedObjectiveId" [objectiveId]="iObjective.id"></auge-initiatives-summary>
                     </div>
                     <div class="w3-col m3">
-                        <auge-objective-timeline *ngIf="expandedControl[iObjective]" [objective]="iObjective"></auge-objective-timeline>
+                        <auge-objective-timeline *ngIf="iObjective.id == expandedObjectiveId" [objective]="iObjective"></auge-objective-timeline>
                     </div>
                 </div>
             </material-expansionpanel>
         </div>
     </material-expansionpanel-set>
-    <auge-objective-detail *ngIf="detailVisible == true" [selectedObjective]="selectedObjective" (save)="changeListItem($event)" (close)="viewDetail(false)">
+    <auge-objective-detail *ngIf="detailVisible == true" [selectedObjective]="selectedObjective" (saved)="refreshList()" (closed)="viewDetail(false)">
     </auge-objective-detail>
 </div>

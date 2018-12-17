@@ -64,17 +64,17 @@ class MeasureDetailComponent extends Object implements OnInit {
   @Input()
   Measure selectedMeasure;
 
-  final _closeController = new StreamController<void>.broadcast(sync: true);
+  final _closedController = new StreamController<void>.broadcast(sync: true);
 
   /// Publishes events when close.
   @Output()
-  Stream<void> get close => _closeController.stream;
+  Stream<void> get close => _closedController.stream;
 
-  final _saveController = new StreamController<String>.broadcast(sync: true);
+  final _savedController = new StreamController<void>.broadcast(sync: true);
 
   /// Publishes events when save.
   @Output()
-  Stream<String> get save => _saveController.stream;
+  Stream<void> get save => _savedController.stream;
 
   Measure measure = Measure();
 
@@ -154,7 +154,9 @@ class MeasureDetailComponent extends Object implements OnInit {
 
       await _measureService.saveMeasure(objectiveId, measure);
 
-      _saveController.add(measure.id);
+      _savedController.add(null);
+
+      //_saveController.add(measure.id);
       closeDetail();
     } catch (e) {
       dialogError = e.toString();
@@ -163,7 +165,7 @@ class MeasureDetailComponent extends Object implements OnInit {
   }
 
   void closeDetail() {
-    _closeController.add(null);
+    _closedController.add(null);
   }
 
   // Label for the button for single selection.
@@ -179,32 +181,6 @@ class MeasureDetailComponent extends Object implements OnInit {
   }
 
   ItemRenderer get measureUnitItemRenderer => (dynamic unit) => unit.name + (unit.symbol == null || unit.symbol.trim().length == 0 ? '' : ' (' + unit.symbol + ')');
-  /*
-  double lowerBound() {
-    print('lowerBound()');
-    print(measure?.startValue);
-    print(measure?.endValue);
-    if (measure?.startValue == null || measure?.endValue == null) return measure?.currentValue;
-    if (measure.startValue < measure.endValue) {
-      return measure.startValue;
-    } else {
-      return measure.endValue;
-    }
-  }
-
-  double upperBound() {
-    print('upperBound()');
-    print(measure?.startValue);
-    print(measure?.endValue);
-    if (measure?.startValue == null || measure?.endValue == null) return measure?.currentValue;
-    if (measure.startValue > measure.endValue) {
-      return measure.startValue;
-    } else {
-      return measure.endValue;
-    }
-  }
-  */
-
 
   bool validValue(double startValue, double currentValue, double endValue) {
     if (startValue != null && currentValue != null && endValue != null) {
@@ -272,19 +248,6 @@ class MeasureDetailComponent extends Object implements OnInit {
     }
     //   validInput = errorControl.isEmpty;
   }
-
-  /*
-  void validName(var value) {
-
-    if (value.isEmpty) {
-      errorControl.add(validName);
-    } else {
-      errorControl.remove(validName);
-    }
-    validInput = errorControl.isEmpty;
-
-  }
-  */
 
   bool get validInput {
     if ((measure?.name != null && measure.name.isEmpty)

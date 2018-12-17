@@ -71,7 +71,6 @@ class MeasureProgressComponent implements OnInit {
 
   final AuthService _authService;
   final MeasureService _measureService;
-  bool visibleModal = false;
 
   @Input()
   bool addMeasureProgress;
@@ -90,7 +89,13 @@ class MeasureProgressComponent implements OnInit {
 
   /// Publishes events when close.
   @Output()
-  Stream<void> get close => _closeController.stream;
+  Stream<void> get closed => _closeController.stream;
+
+  final _savedController = new StreamController<void>.broadcast(sync: true);
+
+  /// Publishes events when save.
+  @Output()
+  Stream<void> get saved => _savedController.stream;
 
   bool editable;
 
@@ -100,13 +105,12 @@ class MeasureProgressComponent implements OnInit {
   String showCurrentValueErrorMsg;
   String showEndValueErrorMsg;
 
-
-
   MenuModel<MenuItem> menuModel;
 
   DateRange limitToDateRange =
   new DateRange(new Date.today().add(years: -1), new Date.today().add(years: 10));
 
+  Chart chart;
 
   MeasureProgressComponent(this._authService, this._measureService) {
     initializeDateFormatting(Intl.defaultLocale , null);
@@ -117,8 +121,6 @@ class MeasureProgressComponent implements OnInit {
         ])], icon: new Icon('menu'));
 */
   }
-
-
 
   // Define messages and labels
   static final String progressLabel =  MeasureMsg.label('Progress');
@@ -136,6 +138,7 @@ class MeasureProgressComponent implements OnInit {
   void ngOnInit() async {
     if (selectedMeasure != null) {
       measureProgresses = await _measureService.getMeasureProgress(selectedMeasure.id);
+      _sortMeasurePregressesOrderByDate(measureProgresses);
     }
 
     if (addMeasureProgress) {
@@ -145,7 +148,9 @@ class MeasureProgressComponent implements OnInit {
 
     List<String> months = [];
     List<num> values = [];
+    defineMonthsValuesProgress(months, values);
 
+/*
     int yearsCount = 1;
     if (objectiveStartDate != null && objectiveEndDate != null && objectiveStartDate.year != objectiveEndDate.year)
       yearsCount = yearsCount + objectiveEndDate.year - objectiveStartDate.year;
@@ -190,6 +195,7 @@ class MeasureProgressComponent implements OnInit {
         }
       }
     }
+*/
 
     var data = new LinearChartData(labels: months, datasets: <ChartDataSets>[
       new ChartDataSets(
@@ -217,13 +223,76 @@ class MeasureProgressComponent implements OnInit {
       CanvasElement ce = querySelector('#canvas') as CanvasElement;
 
       if (ce != null) {
-        new Chart(ce, config);
+        chart = new Chart(ce, config);
+
       }
 
-      visibleModal = true;
     });
   }
 
+
+
+  defineMonthsValuesProgress(List<String> months, List<num>values) {
+    int yearsCount = 1;
+    if (objectiveStartDate != null && objectiveEndDate != null && objectiveStartDate.year != objectiveEndDate.year)
+      yearsCount = yearsCount + objectiveEndDate.year - objectiveStartDate.year;
+
+    int firstYear = objectiveStartDate?.year ?? objectiveEndDate?.year ?? DateTime.now().year;
+
+    List<int> yearsInterval = [];
+    for (int iYear = 0;iYear<yearsCount;iYear++) {
+      yearsInterval.add((firstYear + iYear));
+    }
+
+    int iMesuareProgress;
+    String monthFormated;
+    for (int iYear = 0;iYear<yearsInterval.length;iYear++) {
+      for (int iMonth = 0; iMonth < DateTime.monthsPerYear; iMonth++) {
+        monthFormated =
+            DateFormat.yMMM().format(DateTime(yearsInterval[iYear], iMonth + 1));
+        iMesuareProgress =
+            measureProgresses.indexWhere((mp) => DateFormat.yMMM().format(
+                mp.date) == monthFormated);
+
+        if (iMesuareProgress != -1) {
+          for (int iiMeasureProgress = iMesuareProgress; iiMeasureProgress <
+              measureProgresses.length; iiMeasureProgress++) {
+            if (monthFormated != DateFormat.yMMM().format(
+                measureProgresses[iiMeasureProgress].date)) break;
+            /*
+            if (iiMeasureProgress == iMesuareProgress) {
+              months.add(monthFormated);
+            } else {
+              months.insert(months.length-1, '');
+
+            }
+            */
+            months.add(DateFormat.yMMMd().format(
+                measureProgresses[iiMeasureProgress].date));
+            values.add(measureProgresses[iiMeasureProgress].currentValue);
+          }
+        } else {
+          months.add(monthFormated);
+          values.add(null);
+        }
+      }
+
+    }
+
+  }
+
+  updateChart() {
+    if (chart != null) {
+      List<String> months = [];
+      List<num> values = [];
+      defineMonthsValuesProgress(months, values);
+      chart.data.labels = months;
+      chart.data.labels.forEach((f) => print(f as String));
+      chart.data.datasets[1].data = values;
+      //values.forEach((f) => print(f as num));
+      chart.update();
+    }
+  }
 
   void closeChart() {
     _closeController.add(null);
@@ -237,6 +306,8 @@ class MeasureProgressComponent implements OnInit {
       } else {
         measureProgresses[measureProgresses.indexOf(measureProgress)] = await _measureService.getMeasureProgressById(measureProgress.id);
       }
+      _sortMeasurePregressesOrderByDate(measureProgresses);
+      updateChart();
     } on Exception {
       event.cancel();
       rethrow;
@@ -245,7 +316,7 @@ class MeasureProgressComponent implements OnInit {
 
   void saveMeasureProgress(MeasureProgress measureProgress, AsyncAction event) async {
 
-    if (measureProgresses.indexWhere((mp) => mp.date == measureProgress.date) != -1) {
+    if (measureProgresses.indexWhere((mp) => mp.date == measureProgress.date && mp != measureProgress) != -1) {
       dialogError = currentValueExistsAtDateMsg;
       event.cancel();
     } else {
@@ -276,6 +347,9 @@ class MeasureProgressComponent implements OnInit {
 
         measureProgresses =
         await _measureService.getMeasureProgress(selectedMeasure.id);
+        _sortMeasurePregressesOrderByDate(measureProgresses);
+
+        _savedController.add(null);
       } catch (e) {
         dialogError = e.toString();
         event.cancel();
@@ -342,12 +416,14 @@ class MeasureProgressComponent implements OnInit {
 //    validInput = errorControl.isEmpty;
   }
 
-  void changedCurrentValue(var currentValue) {
+  void changedCurrentValue(MeasureProgress measureProgress, var currentValue) {
     if (!validValue(selectedMeasure?.startValue, double.tryParse(currentValue), selectedMeasure?.endValue)) {
       // errorControl.add(validCurrentValue);
       showCurrentValueErrorMsg = valueErrorMsg;
     } else {
       //  errorControl.remove(validCurrentValue);
+      measureProgress.currentValue = double.tryParse(currentValue);
+      updateChart();
       showCurrentValueErrorMsg = null;
     }
     //   validInput = errorControl.isEmpty;
@@ -374,6 +450,8 @@ class MeasureProgressComponent implements OnInit {
       measureProgress.date = null;
     } else {
       measureProgress.date = _date.asUtcTime();
+      _sortMeasurePregressesOrderByDate(measureProgresses);
+      updateChart();
     }
   }
 
@@ -383,6 +461,11 @@ class MeasureProgressComponent implements OnInit {
 
   String get dialogError {
     return error;
+  }
+
+  // Order by to date
+  void _sortMeasurePregressesOrderByDate(List<MeasureProgress> measureProgresses) {
+    measureProgresses.sort((a, b) => a?.date == null || b?.date == null ? -1 : a.date.compareTo(b.date));
   }
 
 /*

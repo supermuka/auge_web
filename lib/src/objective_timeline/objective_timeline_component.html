@@ -7,7 +7,7 @@
             <span><strong>{{timelineLabel}}</strong></span>
         </div>
         <div class="timeline-vertical-size" *deferredContent>
-            <div class="timeline-vertical-size" *ngFor="let historyItem of objective.history">
+            <div class="timeline-vertical-size" *ngFor="let historyItem of history">
                 <div>
                     <span class="avatar" [style.background-image]="'url(' + userUrlImage(historyItem.user) + ')'"></span>
                     <span>{{systemFunctionInPastLabel(historyItem.systemFunctionIndex)}} {{theLabel}} {{historyItem.objectClassName}} <strong>{{historyItem.description}}</strong></span>

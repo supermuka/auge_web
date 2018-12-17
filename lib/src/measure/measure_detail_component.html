@@ -27,7 +27,7 @@
         </div>
         <div class="w3-row">
             <material-input class="w3-col l4" type="number" [(ngModel)]="measure.startValue" [rightAlign]="true" floatingLabel [label]="startValueLabel" [error]="showStartValueErrorMsg" [leadingText]="unitLeadingText" [trailingText]="unitTrailingText" (change)="changedStartValue($event)"></material-input>
-            <material-input class="w3-col l4" type="number" [(ngModel)]="measure.currentValue"  [rightAlign]="true" floatingLabel [label]="currentValueLabel" [error]="showCurrentValueErrorMsg" [leadingText]="unitLeadingText" [trailingText]="unitTrailingText" (change)="changedCurrentValue($event)"></material-input>
+            <material-input class="w3-col l4" disabled type="number" [(ngModel)]="measure.currentValue"  [rightAlign]="true" floatingLabel [label]="currentValueLabel" [error]="showCurrentValueErrorMsg" [leadingText]="unitLeadingText" [trailingText]="unitTrailingText" (change)="changedCurrentValue($event)"></material-input>
             <material-input class="w3-col l4" type="number" [(ngModel)]="measure.endValue" [rightAlign]="true" floatingLabel [label]="endValueLabel" [error]="showEndValueErrorMsg" [leadingText]="unitLeadingText" [trailingText]="unitTrailingText" (change)="changedEndValue($event)"></material-input>
         </div>
         <div footer>

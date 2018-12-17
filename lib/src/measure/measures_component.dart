@@ -79,7 +79,7 @@ class MeasuresComponent extends Object {
     menuModel = new MenuModel([new MenuItemGroup(
         [new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => detailVisible = true),
         new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete()),
-        new MenuItem('Progress History', icon: new Icon('show_chart'), action: () { progressVisible = true; addMeasureProgress = false;}) ])], icon: new Icon('menu'));
+        new MenuItem('Progress History', icon: new Icon('show_chart'), action: () { addMeasureProgress = false; progressVisible = true; }) ])], icon: new Icon('menu'));
   }
 
   // Define messages and labels
@@ -134,8 +134,14 @@ class MeasuresComponent extends Object {
     return objective?.measures;
   }
 
-  void changeListItem(String measureId) async {
+  void refreshMeasures() async {
+      objective.measures = await _measureService.getMeasures(objective.id);
+      objective.history = await _objectiveService.getHistory(objective.id);
 
+
+
+
+    /*
     Measure newMeasure = await _measureService.getMeasureById(measureId);
 
     if (selectedMeasure == null) {
@@ -144,15 +150,15 @@ class MeasuresComponent extends Object {
       measures[measures.indexOf(selectedMeasure)] = newMeasure;
       //measure.cloneTo(measures[measures.indexOf(selectedMeasure)]);
     }
-
-
+    */
   }
 
   void closeProgress() async {
     progressVisible = false;
 
-    // recovery the actual measture;
-    measures[measures.indexOf(selectedMeasure)] = await _measureService.getMeasureById(selectedMeasure.id);
+    // recovery the actual measure;
+    if (selectedMeasure != null) {
+      measures[measures.indexOf(selectedMeasure)] = await _measureService.getMeasureById(selectedMeasure.id);
+    }
   }
-
 }

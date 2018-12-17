@@ -79,17 +79,17 @@ class ObjectiveDetailComponent extends Object implements OnInit {
   @Input()
   Objective selectedObjective;
 
-  final _closeController = new StreamController<void>.broadcast(sync: true);
+  final _closedController = new StreamController<void>.broadcast(sync: true);
 
   /// Publishes events when close.
   @Output()
-  Stream<void> get close => _closeController.stream;
+  Stream<void> get close => _closedController.stream;
 
-  final _saveController = new StreamController<String>.broadcast(sync: true);
+  final _savedController = new StreamController<String>.broadcast(sync: true);
 
   /// Publishes events when save.
   @Output()
-  Stream<String> get save => _saveController.stream;
+  Stream<String> get save => _savedController.stream;
 
   // It's needed to create an object before, even if later to get from server side. As server side as on the server side the response takes time, angular/html render first and the object doesn't to get null.
   Objective objective = Objective();
@@ -232,7 +232,7 @@ class ObjectiveDetailComponent extends Object implements OnInit {
       objective.lastHistoryItem.setClientSideValues(user: _authService.authenticatedUser, description: objective.name, changedValues: ObjectiveFacilities.differenceToJson(objective, selectedObjective));
       await _objectiveService.saveObjective(objective);
 
-      _saveController.add(objective.id);
+      _savedController.add(objective.id);
       closeDetail();
     } catch (e) {
       dialogError = e.toString();
@@ -241,7 +241,7 @@ class ObjectiveDetailComponent extends Object implements OnInit {
   }
 
   void closeDetail() {
-     _closeController.add(null);
+     _closedController.add(null);
   }
 
   String get alignedToLabelRenderer {

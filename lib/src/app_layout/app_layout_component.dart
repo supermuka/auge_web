@@ -46,7 +46,6 @@ import 'package:auge_web/src/work_item/work_items_component.template.dart' as wo
 import 'package:auge_web/src/map/map_component.template.dart' as map_component;
 import 'package:auge_web/src/gantt/gantt_component.template.dart' as gantt_component;
 import 'package:auge_web/src/objective/objectives_component.template.dart' as objectives_component;
-import 'package:auge_web/src/measure/measures_component.template.dart' as measures_component;
 import 'package:auge_web/src/group/groups_component.template.dart' as groups_component;
 
 @Component(
@@ -137,14 +136,6 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
     new RouteDefinition(
       routePath: AppRoutes.objectivesRoute,
       component: objectives_component.ObjectivesComponentNgFactory,
-    ),
-    new RouteDefinition(
-      routePath: AppRoutes.measuresRoute,
-      component: measures_component.MeasuresComponentNgFactory,
-    ),
-    new RouteDefinition(
-      routePath: AppRoutes.measuresRoute,
-      component: measures_component.MeasuresComponentNgFactory,
     ),
     new RouteDefinition(
       routePath: AppRoutes.groupsRoute,

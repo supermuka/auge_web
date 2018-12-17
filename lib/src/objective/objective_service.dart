@@ -17,10 +17,6 @@ class ObjectiveService {
 
   ObjectiveService(this._augeApiService);
 
-  Future<DateTime> getDateTime() async {
-    return (await _augeApiService.augeApi.getDateTime(isUtc: true))?.dateTime;
-  }
-
   /// Return a list of [Objective]
   Future<List<Objective>> getObjectives(String organizationId, {bool withMeasures = false, bool withProfile = false, bool withHistory = false}) async {
     // return await _augeApiService.objectiveAugeApi.getObjectives(organizationId, withMeasures: withMeasures);
@@ -83,39 +79,18 @@ class ObjectiveService {
       } else {
         await _augeApiService.objectiveAugeApi.updateObjective(objective);
       }
-/*
-    } on DetailedApiRequestError catch (e) {
-      if (e.status == 412 && e.errors.firstWhere((ed) => ed.reason == RpcErrorDetailMessage.measureUpdatePreconditionFailed, orElse: null ) != null)
-        return null;
-      else {
-        rethrow;
-      }
-      */
-    } catch (e) {
-      print('${e.runtimeType}, ${e}');
-      rethrow;
-    }
-  }
-
-  /// Save (create) an [TimelineItem] of the [Objective]
-  /*
-  void saveTimelineItem(String objectiveId, TimelineItem timelineItem) async {
-    try {
-      IdDateTimeMessage idDateTimeMessage = await _augeApiService.objectiveAugeApi
-          .createTimelineItem(timelineItem, objectiveId);
-
-      // ID - primary key generated on server-side.
-      timelineItem.id = idDateTimeMessage?.id;
-      timelineItem.dateTime = idDateTimeMessage?.dataTime;
-
-      currentDateTime = idDateTimeMessage?.dataTime;
 
     } catch (e) {
       print('${e.runtimeType}, ${e}');
       rethrow;
     }
   }
-  */
+
+
+
+  Future<DateTime> getDateTime() async {
+    return (await _augeApiService.augeApi.getDateTime(isUtc: true))?.dateTime;
+  }
 
   /// Return a list of [TimelineItem]
   Future<List<HistoryItem>> getHistory(String objectiveId) async {
@@ -127,4 +102,5 @@ class ObjectiveService {
     return timeline;
 
   }
+
 }

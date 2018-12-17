@@ -1,4 +1,4 @@
-<modal [visible]="visibleModal">
+<modal [visible]="true">
     <material-dialog headered [error]="dialogError">
         <div header>
             <h3>Measure Progress</h3>
@@ -19,13 +19,12 @@
                 </material-button>
             </div>
             <div  *ngFor="let iMeasureProgress of measureProgresses">
-
                 <material-expansionpanel disabled
                                          flat
                                          [alwaysHideExpandIcon]="true"
                                          [hideExpandedHeader]="true"
                                          [showSaveCancel]="true"
-                                         [expanded]="iMeasureProgress == selectedMeasureProgress"
+                                         [expanded]="iMeasureProgress != null && iMeasureProgress == selectedMeasureProgress"
                                          (save)="saveMeasureProgress(iMeasureProgress, $event)"
                                          (cancel)="cancelMeasureProgress(iMeasureProgress, $event)"
                                          expandIcon="edit">
@@ -43,10 +42,6 @@
                         <material-button (trigger)="delete(iMeasureProgress)">
                             <material-icon icon="delete"></material-icon>
                         </material-button>
-                        <!-- div>
-                            <material-menu [menu]="menuModel" (click)="selectMeasureProgress(iMeasureProgress)">
-                            </material-menu>
-                        </div -->
                     </div>
                     <div class="w3-row">
                        <div class="w3-col l6">
@@ -62,7 +57,7 @@
                         </label>
                        </div>
                        <div class="w3-col l6">
-                           <material-input type="number" [(ngModel)]="iMeasureProgress.currentValue"  [rightAlign]="true" floatingLabel [label]="currentValueLabel" [error]="showCurrentValueErrorMsg" [leadingText]="unitLeadingText" [trailingText]="unitTrailingText" (change)="changedCurrentValue($event)"></material-input>
+                           <material-input type="number" [ngModel]="iMeasureProgress.currentValue"  [rightAlign]="true" floatingLabel [label]="currentValueLabel" [error]="showCurrentValueErrorMsg" [leadingText]="unitLeadingText" [trailingText]="unitTrailingText" (change)="changedCurrentValue(iMeasureProgress, $event)"></material-input>
                        </div>
                     </div>
                     <div class="w3-row">
@@ -70,13 +65,6 @@
                             <material-input floatingLabel multiline rows="2" [label]="'Comment'" [(ngModel)]="iMeasureProgress.comment" style="width: 100%;"></material-input>
                         </div>
                     </div>
-                        <!--div class="w3-row w3-right">
-                            <material-button autoFocus (trigger)="saveMeasureProgress()">{{saveButtonLabel}}
-
-                            </material-button>
-                            <material-button (trigger)="cancelMeasureProgress()" >{{cancelButtonLabel}}
-                            </material-button>
-                        </div-->
                 </material-expansionpanel>
             </div>
         </material-expansionpanel>

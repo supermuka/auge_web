@@ -7,7 +7,6 @@ import 'dart:html';
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
 
-/* import 'package:angular_components/angular_components.dart'; */
 import 'package:angular_components/material_button/material_fab.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
 import 'package:angular_components/material_menu/material_menu.dart';
@@ -22,7 +21,7 @@ import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_web/message/messages.dart';
 
 import 'package:auge_web/src/objective/objective_detail_component.dart';
-import 'package:auge_web/src/objective/objective_timeline_component.dart';
+import 'package:auge_web/src/objective_timeline/objective_timeline_component.dart';
 
 import 'package:auge_web/src/measure/measures_component.dart';
 import 'package:auge_web/src/initiative/initiatives_summary_component.dart';
@@ -68,8 +67,9 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
   final Router _router;
 
   List<Objective> _objectives = List();
-  Map<Objective, bool> expandedControl = Map();
 
+  // Map<Objective, bool> expandedControl = Map();
+  String expandedObjectiveId;
   Objective selectedObjective;
   String initialObjectiveId;
 
@@ -104,22 +104,26 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
     }
 
     try {
-      List<Objective> objectivesAux =  await _objectiveService.getObjectives(
-          _authService.selectedOrganization.id, withMeasures: true, withProfile: true /*, withTimeline: true */);
-      _sortObjectivesOrderByGroup(objectivesAux);
-
-      _objectives = objectivesAux;
+      _objectives = await getObjetives();
 
       if (initialObjectiveId != null) {
         Objective initialObjective = _objectives.singleWhere((o) => o.id == initialObjectiveId);
-        expandedControl[initialObjective] = true;
 
+        expandedObjectiveId = initialObjective.id;
 
+        //expandedControl[initialObjective] = true;
       }
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;
     }
+  }
+
+  Future<List<Objective>> getObjetives() async {
+    List<Objective> objectivesAux =  await _objectiveService.getObjectives(
+        _authService.selectedOrganization.id, withMeasures: true, withProfile: true /*, withTimeline: true */);
+    _sortObjectivesOrderByGroup(objectivesAux);
+    return objectivesAux;
   }
 
   void ngAfterViewInit() {
@@ -164,8 +168,18 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
     }
   }
 
-  void changeListItem(String objetiveId) async {
+  void refreshList() async {
 
+    _objectives = await getObjetives();
+
+    if (expandedObjectiveId != null) {
+      Objective expandedObjective = _objectives.singleWhere((o) => o.id == expandedObjectiveId, orElse: null);
+      if (expandedObjective != null) {
+        expandedObjective.history = await _objectiveService.getHistory(expandedObjectiveId);
+      }
+    }
+
+    /*
     Objective newObjective = await _objectiveService.getObjectiveById(objetiveId, withMeasures: true, withProfile: true /*, withTimeline: true */);
 
     if (selectedObjective == null && !newObjective.archived) {
@@ -182,7 +196,9 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
       //  newObjective.cloneTo(objectives[objectives.indexOf(selectedObjective)]);
       }
     }
-    _sortObjectivesOrderByGroup(objectives);
+    */
+
+    //_sortObjectivesOrderByGroup(objectives);
   }
 
   void viewDetail(bool detailVisible) {
@@ -229,6 +245,11 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
     }
   }
 
-
-
+  setExpandedObjectiveId(String objectiveId, bool expanded) {
+    if (expanded) {
+      expandedObjectiveId = objectiveId;
+    } else {
+      expandedObjectiveId = null;
+    }
+  }
 }
