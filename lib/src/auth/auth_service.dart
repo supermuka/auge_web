@@ -48,8 +48,6 @@ class AuthService  {
           user_profile_organization_pbgrpc.UserProfileOrganizationGetRequest()
             ..userId = id);
 
-      print('DEBUG getUsersProfileOrganizations');
-
       // Create model from protobuf equivalent
       usersOrganizations = usersProfileOrganizationsResponse.usersProfileOrganizations.map((upo) => UserProfileOrganization()..readFromProtoBuf(upo)).toList();
 
@@ -74,17 +72,22 @@ class AuthService  {
           .bytes);
 
 
+     try {
+       user_profile_organization_pbgrpc
+           .UserProfileOrganization userProfileOrganization = await _userProfileOrganizationServiceClient
+           .getUserProfileOrganization(
+           user_profile_organization_pbgrpc.UserProfileOrganizationGetRequest()
+             ..eMail = eMail
+             ..password = password);
 
-      user_profile_organization_pbgrpc
-          .UserProfileOrganization userProfileOrganization = await _userProfileOrganizationServiceClient
-          .getUserProfileOrganization(
-          user_profile_organization_pbgrpc.UserProfileOrganizationGetRequest()
-            ..eMail = eMail
-            ..password = password);
-
-      if (userProfileOrganization != null) {
-        user = User()..readFromProtoBuf(userProfileOrganization.user);
-      }
+       if (userProfileOrganization != null) {
+         user = User()
+           ..readFromProtoBuf(userProfileOrganization.user);
+       }
+     } on GrpcError catch (e) {
+       print(e);
+       rethrow;
+     }
 
       /*--
         try {

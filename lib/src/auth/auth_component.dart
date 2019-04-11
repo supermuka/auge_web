@@ -92,8 +92,13 @@ class AuthComponent extends Object with OnActivate  {
   }
 
   void authenticateAuthorizate(AsyncAction<bool> action) async {
-
-    action.cancelIf( Future.sync(
+/*
+    action.cancelIf(Future<bool>.delayed(const Duration(seconds: 1), () {
+      // Don't cancel
+      return false;
+    }));
+*/
+    action.cancelIf( Future<bool>.sync(
             () async  {
       if (eMail.isEmpty || passwordStr.isEmpty) {
         dialogError = AuthMsg.informEMailPasswordCorrectlyMsg();
@@ -106,11 +111,10 @@ class AuthComponent extends Object with OnActivate  {
             dialogError = AuthMsg.userNotFoundMsg();
           } else {
 
-        
+
             _authService.authorizedOrganizations =
             await _authService.getAuthorizedOrganizationsByUserId(
                 _authService.authenticatedUser.id);
-
 
             if (_authService.authorizedOrganizations == null ||
                 _authService.authorizedOrganizations.length == 0) {
@@ -128,6 +132,17 @@ class AuthComponent extends Object with OnActivate  {
         }
       }
       return true;
+    }));
+
+  }
+
+  goToAppLayout(AsyncAction<bool> action) {
+
+    action.cancelIf(Future<bool>.sync(() {
+      _router.navigate(AppRoutes.appLayoutRoute.toUrl(), NavigationParams(reload: true));
+
+      // Don't cancel
+      return false;
     }));
   }
 
@@ -198,14 +213,7 @@ class AuthComponent extends Object with OnActivate  {
     return common_service.userUrlImage(user?.userProfile?.image);
   }
 
-  goToAppLayout(AsyncAction<bool> action) {
-    action.cancelIf(Future.sync(() {
-      _router.navigate(AppRoutes.appLayoutRoute.toUrl(), NavigationParams(reload: true));
 
-      // Don't cancel
-      return false;
-    }));
-  }
 
   bool get validInput {
     return (eMail != null && eMail.trim().isNotEmpty
