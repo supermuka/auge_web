@@ -1,8 +1,4 @@
 <div>
-   <!--
-   <material-icon icon="search" baseline></material-icon>
-   <input type="search" [(ngModel)]="termoBusca" placeholder="Buscar..."/>
-   -->
    <material-auto-suggest-input class="material-input-theme-search" [(inputText)]="searchTerm"
                                 [filterSuggestions]="false"
                                 [popupMatchInputWidth]="false"
@@ -11,10 +7,6 @@
                                 [label]="searchLabel"
                                 [selection]="searchSingleSelectModel"
                                 [selectionOptions]="searchOptions">
-       <!--                     [emptyPlaceholder]="searchEmptyPlaceholder"
-                                [itemRenderer]="searchItemRenderer"
-                                [factoryRenderer]="searchFactoryRenderer"
-                                [limit]="10" -->
    </material-auto-suggest-input>
    <material-button *ngIf="visibleFilter != null" (trigger)="viewFilter()">
       <material-icon icon="filter_list"></material-icon>

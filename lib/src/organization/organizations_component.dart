@@ -3,25 +3,22 @@
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
-/* import 'package:angular_components/angular_components.dart'; */
 
 import 'package:angular_components/material_button/material_fab.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
 import 'package:angular_components/material_menu/material_menu.dart';
 import 'package:angular_components/model/ui/icon.dart';
 import 'package:angular_components/model/menu/menu.dart';
-
 import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel_set.dart';
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
 
-import 'package:auge_server/model/organization.dart';
-import 'package:auge_web/message/messages.dart';
+import 'package:auge_server/model/general/organization.dart';
 
+import 'package:auge_web/message/messages.dart';
 import 'package:auge_web/src/organization/organization_detail_component.dart';
 import 'package:auge_web/src/organization/organization_service.dart';
 import 'package:auge_web/services/app_routes.dart';
-
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
@@ -32,7 +29,6 @@ import 'package:auge_web/src/search/search_service.dart';
     directives: const [
       coreDirectives,
       routerDirectives,
-      /* materialDirectives, */
       MaterialExpansionPanel,
       MaterialExpansionPanelSet,
       MaterialTooltipDirective,
@@ -65,7 +61,6 @@ class OrganizationsComponent extends Object implements OnActivate, OnDestroy  {
 
   MenuModel<MenuItem> menuModel;
 
-
   OrganizationsComponent(this._authService, this._appLayoutService, this._organizationService, this._searchService, this._router) {
 
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
@@ -89,7 +84,6 @@ class OrganizationsComponent extends Object implements OnActivate, OnDestroy  {
       rethrow;
     }
 
-
     // Enable Input Search on Header App
     _appLayoutService.enabledSearch = true;
   }
@@ -97,7 +91,6 @@ class OrganizationsComponent extends Object implements OnActivate, OnDestroy  {
   @override
   void ngOnDestroy() {
     _appLayoutService.enabledSearch = false;
-
   }
 
   /// Return [Organizations] that corresponds to Search Term
@@ -111,7 +104,7 @@ class OrganizationsComponent extends Object implements OnActivate, OnDestroy  {
 
   void delete() {
     try {
-      _organizationService.deleteOrganization(selectedOrganization.id);
+      _organizationService.deleteOrganization(selectedOrganization);
       _organizations.remove(selectedOrganization);
     } catch (e) {
       rethrow;
@@ -126,7 +119,7 @@ class OrganizationsComponent extends Object implements OnActivate, OnDestroy  {
     if (selectedOrganization == null) {
       organizations.add(organization);
     } else {
-      organization.cloneTo(organizations[organizations.indexOf(selectedOrganization)]);
+     // organization.cloneTo(organizations[organizations.indexOf(selectedOrganization)]);
     }
   }
 }

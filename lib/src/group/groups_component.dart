@@ -1,30 +1,24 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
-import 'dart:async';
-
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
-/* import 'package:angular_components/angular_components.dart'; */
 import 'package:angular_components/material_button/material_fab.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
 import 'package:angular_components/material_menu/material_menu.dart';
 import 'package:angular_components/model/ui/icon.dart';
 import 'package:angular_components/model/menu/menu.dart';
-
 import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel_set.dart';
 
-import 'package:auge_server/model/group.dart';
+import 'package:auge_server/model/general/group.dart';
+
 import 'package:auge_web/message/messages.dart';
-
 import 'package:auge_web/src/group/group_detail_component.dart';
-
 import 'package:auge_web/src/group/group_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
-
 import 'package:auge_web/services/app_routes.dart';
 
 @Component(
@@ -33,13 +27,11 @@ import 'package:auge_web/services/app_routes.dart';
     directives: const [
       coreDirectives,
       routerDirectives,
-      /* materialDirectives, */
       MaterialFabComponent,
       MaterialIconComponent,
       MaterialExpansionPanel,
       MaterialExpansionPanelSet,
       MaterialMenuComponent,
-
       GroupDetailComponent,
     ],
     templateUrl: 'groups_component.html',
@@ -48,7 +40,6 @@ import 'package:auge_web/services/app_routes.dart';
     ])
 
 class GroupsComponent extends Object /* with CanReuse */ implements OnActivate, OnDestroy {
-
   final AuthService _authService;
   final AppLayoutService _appLayoutService;
   final GroupService _groupService;
@@ -92,7 +83,6 @@ class GroupsComponent extends Object /* with CanReuse */ implements OnActivate, 
   @override
   ngOnDestroy() async {
     _appLayoutService.enabledSearch = false;
-
   }
 
   void selectGroup(Group group) {
@@ -110,15 +100,11 @@ class GroupsComponent extends Object /* with CanReuse */ implements OnActivate, 
   }
 
   String colorFromUuid(String id) {
-
     return id == null ? '#ffffff' : '#' + id.substring(0, 6);
-
   }
 
   String firstLetter(String name) {
-
     return name == null ? 'G' : name.substring(0, 1).toUpperCase();
-
   }
 
   void viewDetail(bool detailVisible) {
@@ -129,12 +115,11 @@ class GroupsComponent extends Object /* with CanReuse */ implements OnActivate, 
     if (selectedGroup == null) {
       groups.add(group);
     } else {
-      group.cloneTo(groups[groups.indexOf(selectedGroup)]);
+      // group.cloneTo(groups[groups.indexOf(selectedGroup)]);
     }
   }
 
   String groupActiveInactive(Group group) {
     return group.active ? GroupMsg.label('Active') : GroupMsg.label('Inactive');
   }
-
 }

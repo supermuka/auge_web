@@ -5,39 +5,33 @@ import 'dart:async';
 import 'dart:html';
 
 import 'package:angular/angular.dart';
+
 import 'package:angular_router/angular_router.dart';
-/* import 'package:angular_components/angular_components.dart'; */
+
 import 'package:angular_components/material_button/material_fab.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
 import 'package:angular_components/material_menu/material_menu.dart';
 import 'package:angular_components/model/ui/icon.dart';
 import 'package:angular_components/model/menu/menu.dart';
-
 import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel_set.dart';
-
 import 'package:angular_components/material_toggle/material_toggle.dart';
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
 
-import 'package:auge_web/message/messages.dart';
-
 import 'package:auge_server/model/initiative/initiative.dart';
 
+import 'package:auge_web/message/messages.dart';
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/initiative/initiative_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
-
 import 'package:auge_web/src/initiative/initiatives_filter_component.dart';
 import 'package:auge_web/src/initiative/initiative_summary_component.dart';
 import 'package:auge_web/src/initiative/initiative_detail_component.dart';
-
 import 'package:auge_web/src/work_item/work_items_component.dart';
 import 'package:auge_web/src/work_item/work_items_list_component.dart';
-
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
-
 import 'package:auge_web/services/app_routes.dart';
 
 @Component(
@@ -46,7 +40,6 @@ import 'package:auge_web/services/app_routes.dart';
     directives: const [
       coreDirectives,
       routerDirectives,
-      /* materialDirectives, */
       MaterialFabComponent,
       MaterialIconComponent,
       MaterialTooltipDirective,
@@ -59,7 +52,6 @@ import 'package:auge_web/services/app_routes.dart';
       InitiativeDetailComponent,
       WorkItemsComponent,
       WorkItemsListComponent,
-
     ],
     templateUrl: 'initiatives_component.html',
     styleUrls: const [
@@ -187,7 +179,7 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
       initiatives.add(initiative);
       expandedControl[initiative] = true;
     } else {
-      initiative.cloneTo(initiatives[initiatives.indexOf(selectedInitiative)]);
+      // initiative.cloneTo(initiatives[initiatives.indexOf(selectedInitiative)]);
     }
     _sortInitiativesOrderByGroup(initiatives);
   }

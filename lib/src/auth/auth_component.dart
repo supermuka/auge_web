@@ -14,7 +14,6 @@ import 'package:angular_components/material_stepper/material_step.dart';
 import 'package:angular_components/material_stepper/material_stepper.dart';
 import 'package:angular_components/model/action/async_action.dart';
 import 'package:angular_components/utils/angular/scroll_host/angular_2.dart';
-
 import 'package:angular_components/material_select/material_dropdown_select.dart';
 import 'package:angular_components/material_select/material_dropdown_select_accessor.dart';
 import 'package:angular_components/model/selection/selection_model.dart';
@@ -24,21 +23,17 @@ import 'package:angular_components/model/ui/has_renderer.dart';
 import 'auth_service.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
 
-import 'package:auge_server/model/user.dart';
-import 'package:auge_server/model/organization.dart';
+import 'package:auge_server/model/general/user.dart';
+import 'package:auge_server/model/general/organization.dart';
 
 import 'package:auge_web/message/messages.dart';
 
 import 'package:auge_web/services/app_routes.dart';
 
-// ignore_for_file: uri_has_not_been_generated
-// import 'package:auge_web/src/app_layout/app_layout_component.template.dart' as app_layout_component;
-
 @Component(
   selector: 'auge-auth',
   providers: const [scrollHostProviders],
   directives: const [
-    /* coreDirectives, */
     routerDirectives,
     materialInputDirectives,
     MaterialDialogComponent,
@@ -46,13 +41,8 @@ import 'package:auge_web/services/app_routes.dart';
     StepDirective,
     SummaryDirective,
     MaterialButtonComponent,
-
-
     MaterialDropdownSelectComponent,
     DropdownSelectValueAccessor,
-    /* DropdownButtonComponent, */
-
-    /* materialDirectives, */
   ],
   styleUrls: const ['auth_component.css'],
   templateUrl: 'auth_component.html',
@@ -172,9 +162,9 @@ class AuthComponent extends Object with OnActivate  {
         new OptionGroup.withLabel(orgs, orgGroupLabel));
 
     // Super Administration
-    List<AppLayoutOrganizationSelectOption> adms = new List();
+    //-- List<AppLayoutOrganizationSelectOption> adms = new List();
 
-    String admGroupLabel = AuthMsg.label('Super Admin');
+    //--String admGroupLabel = AuthMsg.label('Super Admin');
 
     organizationOptions =
     new SelectionOptions.withOptionGroups(organizationGroupOptions);
@@ -186,7 +176,7 @@ class AuthComponent extends Object with OnActivate  {
         if (d != null && d.isNotEmpty && d.first != null && d.first.added != null && d.first.added.isNotEmpty) {
 
           if (_authService.selectedOrganization !=
-              d.first?.added.first.organization) {
+              d.first.added.first.organization) {
 
               _authService.selectedOrganization =
                   d.first.added.first.organization;

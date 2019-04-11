@@ -4,20 +4,11 @@ $step-width: $mat-grid * 40;
 
 :host {
   .step-a {
-   /*  background-color: $mat-blue-200;
-    height: $step-height;
-    width: $step-width;
-    */
     margin-top: 32px;
     width: $step-width;
   }
 
   .step-b {
-  /*
-    background-color: $mat-green-200;
-    height: $step-height;
-    width: $step-width;
-    */
     margin-top: 32px;
     width: $step-width;
   }
@@ -44,5 +35,4 @@ material-input {
 
 h4 {
   color: $mat-blue-A100;
-  /* text-shadow: -0.5px 0 white, 0 0.5px white, 0.5px 0 white, 0 -0.5px white; */
 }

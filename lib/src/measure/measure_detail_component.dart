@@ -9,13 +9,10 @@ import 'package:angular_components/laminate/components/modal/modal.dart';
 import 'package:angular_components/laminate/overlay/module.dart';
 import 'package:angular_components/material_dialog/material_dialog.dart';
 import 'package:angular_components/model/ui/has_factory.dart';
-
 import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
-
 import 'package:angular_components/material_input/material_input.dart';
 import 'package:angular_components/material_input/material_number_accessor.dart';
-
 import 'package:angular_components/material_select/material_dropdown_select.dart';
 import 'package:angular_components/material_select/material_dropdown_select_accessor.dart';
 import 'package:angular_components/model/selection/selection_model.dart';
@@ -23,10 +20,8 @@ import 'package:angular_components/model/selection/selection_options.dart';
 import 'package:angular_components/model/ui/has_renderer.dart';
 
 import 'package:auge_server/model/objective/measure.dart';
-import 'package:auge_server/model/authorization.dart';
 
 import 'package:auge_web/message/messages.dart';
-
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/measure/measure_service.dart';
 
@@ -35,7 +30,6 @@ import 'package:auge_web/src/measure/measure_service.dart';
     providers: [overlayBindings],
     directives: const [
       coreDirectives,
-      //formDirectives,
       materialInputDirectives,
       materialNumberInputDirectives,
       AutoFocusDirective,
@@ -45,8 +39,6 @@ import 'package:auge_web/src/measure/measure_service.dart';
       DropdownSelectValueAccessor,
       MaterialButtonComponent,
       MaterialIconComponent,
-
-      /* materialDirectives, */
     ],
     templateUrl: 'measure_detail_component.html',
     styleUrls: const [
@@ -150,7 +142,7 @@ class MeasureDetailComponent extends Object implements OnInit {
     try {
 
       measure.isDeleted = false;
-      measure.lastHistoryItem.setClientSideValues(user: _authService.authenticatedUser, description: measure.name, changedValues: MeasureFacilities.differenceToJson(measure, selectedMeasure));
+      //--measure.lastHistoryItem.setClientSideValues(user: _authService.authenticatedUser, description: measure.name, changedValues: MeasureFacilities.differenceToJson(measure, selectedMeasure));
 
       await _measureService.saveMeasure(objectiveId, measure);
 
@@ -265,5 +257,4 @@ class MeasureDetailComponent extends Object implements OnInit {
 
   //String get unitTrailingText => measure?.measureUnit == null ? null :  measure.measureUnit.symbol;
   String get unitTrailingText => measure?.measureUnit?.symbol == null ? null : !measure.measureUnit.symbol.contains(r'$') ? measure.measureUnit.symbol : null;
-
 }

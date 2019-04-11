@@ -1,15 +1,16 @@
 // Copyright (c) 2017, Levius.
 
 import 'package:angular/angular.dart';
+
 import 'package:angular_router/angular_router.dart';
+
 import 'package:angular_components/angular_components.dart';
 
 import 'package:intl/intl.dart';
+
 import 'package:auge_web/message/i18n/messages_all.dart';
-
 import 'package:auge_web/services/app_routes.dart';
-
-import 'package:auge_web/services/augeapi_service.dart';
+import 'package:auge_web/services/auge_api_service.dart';
 import 'package:auge_web/src/auth/auth_service.dart';
 
 // ignore_for_file: uri_has_not_been_generated
@@ -18,7 +19,7 @@ import 'package:auge_web/src/app_layout/app_layout_component.template.dart' as a
 
 @Component(
     selector: 'auge-app-component',
-    providers: const <dynamic>[materialProviders, AuthService, AugeApiService],
+    providers: const <dynamic>[materialProviders, AugeApiService, AuthService],
     directives: const [
       coreDirectives,
       routerDirectives,
@@ -29,8 +30,6 @@ import 'package:auge_web/src/app_layout/app_layout_component.template.dart' as a
     ])
 
 class AppComponent extends Object with CanReuse {
-
-  // final Router _router;
 
   final List<RouteDefinition> routes = [
     new RouteDefinition(

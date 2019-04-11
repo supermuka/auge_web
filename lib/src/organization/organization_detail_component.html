@@ -1,6 +1,5 @@
 <modal [visible]="true">
     <material-dialog headered class="headered-dialog" [error]="dialogError">
-
         <div header>
             <h3 *ngIf="organization.id == null">{{addOrganizationLabel}}</h3>
             <h3 *ngIf="organization.id != null">{{editOrganizationLabel}}</h3>
@@ -18,6 +17,5 @@
                 <material-icon icon="close"></material-icon>
             </material-button>
         </div>
-
     </material-dialog>
 </modal>

@@ -22,13 +22,13 @@
                     </span>
                 </div>
                 <div *ngIf="expandedControl[historyItem] != null && expandedControl[historyItem]">
-                    <div *ngFor="let key of historyItem.changedValuesToMap['values']?.keys">
+                    <div *ngFor="let key of historyItem.changedValues['values']?.keys">
                         <span><strong>{{fieldLabel(historyItem.objectClassName, key)}}</strong></span>
                         <span> {{valueLabel}} </span>
-                        <span><strong>{{formatValue(historyItem.changedValuesToMap['values'][key].values.first)}}</strong></span>
-                        <div *ngIf="historyItem.changedValuesToMap['values'][key].values.length > 1">
+                        <span><strong>{{formatValue(historyItem.changedValues['values'][key].values.first)}}</strong></span>
+                        <div *ngIf="historyItem.changedValues['values'][key].values.length > 1">
                             <span> {{changedFromLabel}} </span>
-                            <span><strong>{{formatValue(historyItem.changedValuesToMap['values'][key].values.last)}}</strong></span>
+                            <span><strong>{{formatValue(historyItem.changedValues['values'][key].values.last)}}</strong></span>
                         </div>
                     </div>
                 </div>

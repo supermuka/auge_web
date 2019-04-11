@@ -1,6 +1,5 @@
 import 'package:intl/intl.dart';
 
-import 'package:auge_server/model/model_base.dart';
 import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/objective/measure.dart';
 
@@ -31,7 +30,7 @@ class MeasuereFieldMsg {
   /// Label for Measure
   static label(String fieldName) => Intl.message(
     "${Intl.select(fieldName, {
-      Base.idField: 'Id',
+      Measure.idField: 'Id',
       Measure.nameField: 'Name',
       Measure.descriptionField: 'Description',
       Measure.endValueField: 'End Value',

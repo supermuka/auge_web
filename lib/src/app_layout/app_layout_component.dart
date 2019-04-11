@@ -32,8 +32,9 @@ import 'package:auge_web/services/common_service.dart' as common_service;
 
 import 'package:auge_web/message/messages.dart';
 
-import 'package:auge_server/model/user.dart';
-import 'package:auge_server/model/organization.dart';
+import 'package:auge_server/model/general/authorization.dart';
+import 'package:auge_server/model/general/user.dart';
+import 'package:auge_server/model/general/organization.dart';
 
 // ignore_for_file: uri_has_not_been_generated
 import 'package:auge_web/src/app_layout/app_layout_component.template.dart' as app_layout_component;
@@ -55,7 +56,6 @@ import 'package:auge_web/src/group/groups_component.template.dart' as groups_com
       coreDirectives,
       routerDirectives,
       formDirectives,
-      /* materialDirectives, */
       DeferredContentDirective,
       MaterialButtonComponent,
       MaterialIconComponent,
@@ -75,11 +75,6 @@ import 'package:auge_web/src/group/groups_component.template.dart' as groups_com
     ])
 
 class AppLayoutComponent extends Object with CanReuse implements OnActivate {
-
-  /*
-  @ViewChild('drawer')
-  MaterialTemporaryDrawerComponent materialTemporaryDrawer;
-*/
   bool userDetailVisible = false;
 
   String get insightsRouteUrl => AppRoutes.insightslRoute.toUrl();
@@ -278,7 +273,7 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
   }
 
   void changeUserDetail(User user) {
-    user.cloneTo(_authService.authenticatedUser);
+    // user.cloneTo(_authService.authenticatedUser);
   }
 
   User get authenticatedUser {

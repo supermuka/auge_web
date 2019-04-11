@@ -3,22 +3,19 @@
 
 import 'dart:async';
 import 'package:angular/angular.dart';
-/* import 'package:angular_components/angular_components.dart'; */
 import 'package:angular_router/angular_router.dart';
 
 import 'package:angular_components/focus/focus.dart';
 import 'package:angular_components/laminate/components/modal/modal.dart';
 import 'package:angular_components/laminate/overlay/module.dart';
 import 'package:angular_components/material_dialog/material_dialog.dart';
-
 import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
-
 import 'package:angular_components/material_input/material_input.dart';
 
-import 'package:auge_server/model/organization.dart';
-import 'package:auge_web/message/messages.dart';
+import 'package:auge_server/model/general/organization.dart';
 
+import 'package:auge_web/message/messages.dart';
 import 'package:auge_web/src/organization/organization_service.dart';
 
 @Component(
@@ -27,15 +24,10 @@ import 'package:auge_web/src/organization/organization_service.dart';
   directives: const [
     coreDirectives,
     routerDirectives,
-
     materialInputDirectives,
-    //formDirectives,
-
-    /* materialDirectives, */
     AutoFocusDirective,
     MaterialDialogComponent,
     ModalComponent,
-
     MaterialIconComponent,
     MaterialButtonComponent,
   ],
@@ -85,7 +77,7 @@ class OrganizationDetailComponent extends Object implements OnInit {
   void ngOnInit() {
     if (selectedOrganization != null) {
       // Clone objective
-      organization = selectedOrganization.clone();
+      // organization = selectedOrganization.clone();
 
     } else {
       // objective.organization = _authService.selectedOrganization;
@@ -110,5 +102,4 @@ class OrganizationDetailComponent extends Object implements OnInit {
   void closeDetail() {
     _closeController.add(null);
   }
-
 }

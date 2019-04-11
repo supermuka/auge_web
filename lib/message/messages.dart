@@ -1,7 +1,5 @@
 import 'package:intl/intl.dart';
 
-// import 'package:auge_web/message/i18n/messages_all.dart';
-
 class CommonMsg {
 
   /// Commum Label
@@ -313,6 +311,7 @@ class MeasureMsg {
 
   static valueErrorMsg() => Intl.message("Current value should be between Start and End value.");
   static currentValueExistsAtDate() => Intl.message("Current value already exists at date informed.");
+  static currentDateNotBetweenStartEndDate(DateTime startDate, DateTime endDate) => Intl.message("Measure progress date should be between objective start date ${DateFormat.yMMMd().format(startDate)} and objective end date ${DateFormat.yMMMd().format(endDate)}.");
   static decimalNumberErrorMsg() => Intl.message("Decimal number should be between 0 and 5.");
 }
 
@@ -444,5 +443,4 @@ class TimelineItemdMsg {
     // locale: "en",
     desc: "TimelineItem labels",
   );
-
 }

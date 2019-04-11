@@ -10,18 +10,17 @@ import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
 import 'package:angular_components/content/deferred_content.dart';
 
+import 'package:auge_server/model/general/user.dart';
+import 'package:auge_server/model/objective/objective.dart';
+import 'package:auge_server/model/general/history_item.dart';
+import 'package:auge_server/model/general/authorization.dart';
+
+import 'package:auge_web/services/common_service.dart' as common_service;
+import 'package:auge_web/message/messages.dart';
+import 'package:auge_web/message/field_messages.dart';
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 
-import 'package:auge_server/model/user.dart';
-import 'package:auge_server/model/objective/objective.dart';
-import 'package:auge_server/model/history_item.dart';
-import 'package:auge_server/model/authorization.dart';
-
-import 'package:auge_web/services/common_service.dart' as common_service;
-
-import 'package:auge_web/message/messages.dart';
-import 'package:auge_web/message/field_messages.dart';
 
 @Component(
     selector: 'auge-objective-timeline',
@@ -87,7 +86,7 @@ class ObjectiveTimelineComponent extends Object implements OnInit {
     // List<TimelineItem> get timeline => objective.timeline;
 
   String userUrlImage(User user) {
-    return common_service.userUrlImage(user?.userProfile?.image);
+    return common_service.userUrlImage(user.userProfile?.image);
   }
 
   String systemFunctionInPastLabel(int systemFunctionIndex) {
@@ -139,7 +138,7 @@ class ObjectiveTimelineComponent extends Object implements OnInit {
       //return DateFormat.yMMMd().add_Hms().format(data);
       return DateFormat.yMMMd().format(value);
     } else {
-      return value;
+      return value.toString();
     }
   }
 }

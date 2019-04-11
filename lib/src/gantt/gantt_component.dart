@@ -1,6 +1,3 @@
-import 'dart:async';
-
-
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -13,23 +10,19 @@ import 'package:angular_components/focus/keyboard_only_focus_indicator.dart';
 import 'package:angular_components/laminate/enums/alignment.dart';
 
 import 'package:auge_server/model/objective/objective.dart';
-import 'package:auge_server/model/user.dart';
+import 'package:auge_server/model/general/user.dart';
 
 import 'package:auge_web/message/messages.dart';
-
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
-
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/gantt/gantt_service.dart';
-
 import 'package:auge_web/services/app_routes.dart';
 
 @Component(
   selector: 'auge-gantt',
   providers: const [GanttService, ObjectiveService],
-
   directives: const [
     coreDirectives,
     routerDirectives,
@@ -38,8 +31,6 @@ import 'package:auge_web/services/app_routes.dart';
     ClickableTooltipTargetDirective,
     KeyboardOnlyFocusIndicatorDirective,
     MaterialPaperTooltipComponent,
-
-    /* materialDirectives, */
   ],
   styleUrls: const ['gantt_component.css'],
   templateUrl: 'gantt_component.html',
@@ -47,7 +38,6 @@ import 'package:auge_web/services/app_routes.dart';
 )
 
 class GanttComponent implements OnActivate {
-
   final preferredTooltipPositions = const [RelativePosition.OffsetBottomLeft, RelativePosition.OffsetBottomRight];
 
   final AuthService _authService;
@@ -93,7 +83,6 @@ class GanttComponent implements OnActivate {
       _appLayoutService.error = e.toString();
       rethrow;
     }
-
   }
 
   String userUrlImage(User userMember) {
@@ -102,7 +91,6 @@ class GanttComponent implements OnActivate {
 
   void goToObjectives(Objective objective) async {
     _router.navigateByUrl(AppRoutes.objectivesRoute.toUrl(queryParameters: { AppRoutes.objectiveIdParameter: objective.id }));
-
   }
 
   getYearsInterval() {
@@ -187,7 +175,6 @@ class GanttComponent implements OnActivate {
     const int finalOffset = 2;
 
     return '${startMonth+initOffset}/${endMonth+finalOffset}';
-
   }
 
   String barColor(Objective objective) {

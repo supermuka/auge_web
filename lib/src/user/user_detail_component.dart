@@ -3,44 +3,33 @@
 
 import 'dart:html' as html;
 import 'dart:async';
+import 'dart:convert' show base64;
+import 'dart:typed_data' show Uint8List;
+
+import 'package:image/image.dart';
+import 'package:crypto/crypto.dart' show sha256;
+import 'package:intl/intl.dart';
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
-/* import 'package:angular_components/angular_components.dart'; */
-/* import 'package:angular_forms/angular_forms.dart'; */
-
 import 'package:angular_components/focus/focus.dart';
 import 'package:angular_components/laminate/components/modal/modal.dart';
 import 'package:angular_components/laminate/overlay/module.dart';
 import 'package:angular_components/material_dialog/material_dialog.dart';
-
 import 'package:angular_components/material_input/material_input.dart';
-
 import 'package:angular_components/material_radio/material_radio_group.dart';
 import 'package:angular_components/material_radio/material_radio.dart';
-
 import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
-
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
 
-import 'package:intl/intl.dart';
-
-import 'package:auge_server/model/user.dart';
-import 'package:auge_server/model/user_profile_organization.dart';
+import 'package:auge_server/model/general/user.dart';
+import 'package:auge_server/model/general/user_profile_organization.dart';
 
 import 'package:auge_web/message/messages.dart';
-
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
-import 'dart:convert' show base64;
-import 'dart:typed_data' show Uint8List;
-import 'package:crypto/crypto.dart' show sha256;
-
 import 'package:auge_web/services/common_service.dart' as common_service;
-
-
-import 'package:image/image.dart';
 
 @Component(
     selector: 'auge-user-detail',
@@ -49,20 +38,14 @@ import 'package:image/image.dart';
       coreDirectives,
       routerDirectives,
       materialInputDirectives,
-
       AutoFocusDirective,
       MaterialDialogComponent,
       ModalComponent,
-
       MaterialRadioGroupComponent,
       MaterialRadioComponent,
-
       MaterialButtonComponent,
       MaterialIconComponent,
       MaterialTooltipDirective,
-
-      /* materialDirectives, */
-      /* formDirectives, */
     ],
     templateUrl: 'user_detail_component.html',
     styleUrls: const [
@@ -133,7 +116,7 @@ class UserDetailComponent extends Object implements OnInit {
   void ngOnInit() async {
     if (selectedUser != null) {
       // Clone objective
-      user = selectedUser.clone();
+     // user = selectedUser.clone();
 
       try {
         List<UserProfileOrganization> userProfileOrganizations = await _userService.getUsersProfileOrganizations(user.id, _authService.selectedOrganization.id);

@@ -1,25 +1,24 @@
 import 'dart:async';
+import 'dart:convert' show base64;
 
 import 'package:angular/core.dart';
-
-import 'package:auge_server/model/user.dart';
-import 'package:auge_server/model/organization.dart';
-import 'package:auge_server/model/user_profile_organization.dart';
-
-import 'package:auge_server/shared/authorization_policy.dart';
-import 'package:auge_server/model/authorization.dart';
-export 'package:auge_server/model/authorization.dart';
-
-import 'package:auge_web/services/augeapi_service.dart';
-import 'dart:convert' show base64;
 import 'package:crypto/crypto.dart' show sha256;
 
+import 'package:auge_server/model/general/user.dart';
+import 'package:auge_server/model/general/organization.dart';
+import 'package:auge_server/model/general/user_profile_organization.dart';
+import 'package:auge_server/shared/authorization_policy.dart';
+import 'package:auge_server/model/general/authorization.dart';
+export 'package:auge_server/model/general/authorization.dart';
+
+import 'package:auge_server/src/protos/generated/general/user_profile_organization.pbgrpc.dart' as user_profile_organization_pbgrpc;
+
+import 'package:auge_web/services/auge_api_service.dart';
+
+import 'package:grpc/grpc_web.dart';
 
 @Injectable()
 class AuthService  {
-
- // static bool ehAdministrador = false;
-
   User authenticatedUser;
   List<UserProfileOrganization> authorizedOrganizations;
   AuthorizationPolicy _generalAuthorizationPolicy;
@@ -27,21 +26,42 @@ class AuthService  {
   SystemRole authorizedSystemRole;
 
   final AugeApiService _augeApiService;
+  user_profile_organization_pbgrpc.UserProfileOrganizationServiceClient _userProfileOrganizationServiceClient;
 
-  AuthService(this._augeApiService) {
+  AuthService(this._augeApiService)  {
     _generalAuthorizationPolicy = GeneralAuthorizationPolicy();
+ //   ClientConnection cc = await _augeApiService.channel.getConnection();
+
+    _userProfileOrganizationServiceClient =
+        user_profile_organization_pbgrpc.UserProfileOrganizationServiceClient(this._augeApiService.channel);
   }
 
   /// Return an [Organization] list for an eMail.
   Future<List<UserProfileOrganization>> getAuthorizedOrganizationsByUserId(String id) async {
     List<UserProfileOrganization> usersOrganizations;
-    if (id.isNotEmpty)
-      usersOrganizations = await _augeApiService.augeApi.getAuthorizedOrganizationsByUserId(id);
+    if (id.isNotEmpty) {
+
+      // Return a protobuf via grpc
+      user_profile_organization_pbgrpc
+          .UsersProfileOrganizationsResponse usersProfileOrganizationsResponse = await _userProfileOrganizationServiceClient
+          .getUsersProfileOrganizations(
+          user_profile_organization_pbgrpc.UserProfileOrganizationGetRequest()
+            ..userId = id);
+
+      print('DEBUG getUsersProfileOrganizations');
+
+      // Create model from protobuf equivalent
+      usersOrganizations = usersProfileOrganizationsResponse.usersProfileOrganizations.map((upo) => UserProfileOrganization()..readFromProtoBuf(upo)).toList();
+
+      //this.measureProgress = measurePb.measureProgress.map((u) => MeasureProgress()..readFromProtoBuf(u)).toList();
+    }
+
+     //-- usersOrganizations = await _augeApiService.augeApi.getAuthorizedOrganizationsByUserId(id);
     return usersOrganizations;
   }
 
   void close() async {
-    await _augeApiService.augeApi.closeConnection();
+    // await _augeApiService.augeApi.closeConnection();
     authenticatedUser = null;
     authorizedOrganizations = null;
   }
@@ -52,6 +72,21 @@ class AuthService  {
       String password = base64.encode(sha256
           .convert(passwordStr.codeUnits)
           .bytes);
+
+
+
+      user_profile_organization_pbgrpc
+          .UserProfileOrganization userProfileOrganization = await _userProfileOrganizationServiceClient
+          .getUserProfileOrganization(
+          user_profile_organization_pbgrpc.UserProfileOrganizationGetRequest()
+            ..eMail = eMail
+            ..password = password);
+
+      if (userProfileOrganization != null) {
+        user = User()..readFromProtoBuf(userProfileOrganization.user);
+      }
+
+      /*--
         try {
           user = await _augeApiService.augeApi.getAuthenticatedUserWithEmail(
               eMail, password, withProfile: true);
@@ -62,6 +97,8 @@ class AuthService  {
             rethrow;
           }
         }
+        */
+
       }
     return user;
   }

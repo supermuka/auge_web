@@ -2,17 +2,17 @@
 // Author: Samuel C. Schwebel.
 
 import 'package:angular/angular.dart';
+
 import 'package:angular_router/angular_router.dart';
-/* import 'package:angular_components/angular_components.dart'; */
+
 import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
 import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
 
 import 'package:auge_server/model/initiative/initiative.dart';
+
 import 'package:auge_web/message/messages.dart';
-
 import 'package:auge_web/src/work_item/work_item_service.dart';
-
 import 'package:auge_web/src/work_item/work_items_kanban_component.dart';
 import 'package:auge_web/src/work_item/work_items_list_component.dart';
 
@@ -22,7 +22,6 @@ import 'package:auge_web/src/work_item/work_items_list_component.dart';
     directives: const [
       coreDirectives,
       routerDirectives,
-      /* materialDirectives, */
       MaterialExpansionPanel,
       MaterialButtonComponent,
       MaterialIconComponent,
@@ -47,23 +46,6 @@ class WorkItemsComponent extends Object {
   WorkItemsComponent();
 
   String label(String label) =>  InitiativeMsg.label(label);
-
-/*
-  String circleColor(Initiative initiative)  {
-    String color;
-    int workItemsOverDueCount =  initiative.workItemsOverDueCount;
-    int workItemsCount =  initiative.workItemsCount;
-
-    if (workItemsOverDueCount == 0) {
-      color = 'hsl(120, 100%, 50%)';
-    } else if (workItemsOverDueCount < workItemsCount)
-      color = 'hsl(45, 100%, 50%)';
-    else {
-      color = 'hsl(0, 100%, 50%)';
-    }
-    return color;
-  }
-  */
 
   String widthState(int workItemsCount, int stateWorkItemsCount, int withTotal) {
     return (stateWorkItemsCount / workItemsCount * withTotal).toString();

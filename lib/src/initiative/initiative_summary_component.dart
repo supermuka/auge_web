@@ -2,23 +2,19 @@
 // Author: Samuel C. Schwebel.
 
 import 'package:angular/angular.dart';
-/* import 'package:angular_components/angular_components.dart'; */
-
 
 import 'package:angular_components/focus/keyboard_only_focus_indicator.dart';
 import 'package:angular_components/laminate/enums/alignment.dart';
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
 
+import 'package:auge_server/model/initiative/initiative.dart';
 
 import 'package:auge_web/message/messages.dart';
-
-import 'package:auge_server/model/initiative/initiative.dart';
 
 @Component(
     selector: 'auge-initiative-summary',
     directives: const [
       coreDirectives,
-      /* materialDirectives, */
       ClickableTooltipTargetDirective,
       KeyboardOnlyFocusIndicatorDirective,
       MaterialTooltipDirective,
@@ -57,9 +53,4 @@ class InitiativeSummaryComponent extends Object {
   String widthState(int workItemsCount, int stateWorkItemsCount, int widthTotal) {
     return (stateWorkItemsCount / workItemsCount * widthTotal).toString();
   }
-
-
-
-
-
 }

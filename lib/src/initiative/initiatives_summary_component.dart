@@ -2,28 +2,24 @@
 // Author: Samuel C. Schwebel.
 
 import 'package:angular/angular.dart';
+
 import 'package:angular_router/angular_router.dart';
-/* import 'package:angular_components/angular_components.dart';  */
+
 import 'package:angular_components/content/deferred_content.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel_set.dart';
-
 import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
-
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
 
 import 'package:auge_server/model/initiative/initiative.dart';
 
 import 'package:auge_web/message/messages.dart';
-
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/src/initiative/initiative_service.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
-
 import 'package:auge_web/src/initiative/initiative_summary_component.dart';
-
 import 'package:auge_web/services/app_routes.dart';
 
 @Component(
@@ -32,8 +28,6 @@ import 'package:auge_web/services/app_routes.dart';
     directives: const [
       coreDirectives,
       routerDirectives,
-      /* materialDirectives, */
-
       DeferredContentDirective,
       MaterialButtonComponent,
       MaterialIconComponent,
@@ -41,7 +35,6 @@ import 'package:auge_web/services/app_routes.dart';
       MaterialExpansionPanelSet,
       MaterialExpansionPanel,
       InitiativeSummaryComponent,
-
     ],
     templateUrl: 'initiatives_summary_component.html',
     styleUrls: const [
@@ -60,32 +53,7 @@ class InitiativesSummaryComponent extends Object implements OnInit {
 
   List<Initiative> initiatives = [];
 
-/*
-  final List<RouteDefinition> routes = [
-    new RouteDefinition(
-        routePath: AppRoutes.appLayoutHomeRoute,
-        component: app_layout_home.AppLayoutHomeComponentNgFactory,
-        useAsDefault: true,
-       ),
-    new RouteDefinition(
-      routePath: AppRoutes.initiativeDetailAddRoute,
-      component: initiative_detail_component.InitiativeDetailComponentNgFactory,
-      // useAsDefault: true
-    ),
-    new RouteDefinition(
-      routePath: AppRoutes.initiativeDetailRoute,
-      component: initiative_detail_component.InitiativeDetailComponentNgFactory,
-
-     // useAsDefault: true
-    ),
-
-
-  ];
-*/
-
-  InitiativesSummaryComponent( this._authService, this._appLayoutService, this._initiativeService,  this._router) {
-
-  }
+  InitiativesSummaryComponent( this._authService, this._appLayoutService, this._initiativeService,  this._router);
 
   static final String groupLabel =  InitiativeMsg.label('Group');
   static final String leaderLabel =  InitiativeMsg.label('Leader');
@@ -111,7 +79,4 @@ class InitiativesSummaryComponent extends Object implements OnInit {
   String userUrlImage(String userProfileImage) {
     return common_service.userUrlImage(userProfileImage);
   }
-
-
 }
-

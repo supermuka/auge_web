@@ -1,15 +1,12 @@
 @import 'package:angular_components/css/material/material';
 @import 'package:angular_components/material_select/mixins';
 
-
 :host {
   display: block;
-  /* height: 100%; */ /* 480px; */
   height: 516px;
   position: relative;
   top: 0%;
   clear: both;
- /* overflow: hidden; */
 }
 
 .button-look {
@@ -30,7 +27,6 @@
   border: 1px;
   border-style:  outset;
   overflow-y: auto;
- /*  overflow: auto; */
 }
 
 .material-content .header-panel {

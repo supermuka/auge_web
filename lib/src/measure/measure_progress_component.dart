@@ -20,26 +20,20 @@ import 'package:angular_components/material_expansionpanel/material_expansionpan
 import 'package:angular_components/material_expansionpanel/material_expansionpanel_auto_dismiss.dart';
 import 'package:angular_components/material_input/material_input.dart';
 import 'package:angular_components/material_input/material_number_accessor.dart';
-
 import 'package:angular_components/model/menu/menu.dart';
 import 'package:angular_components/material_menu/material_menu.dart';
-
 import 'package:angular_components/material_datepicker/module.dart';
 import 'package:angular_components/model/date/date.dart';
 import 'package:angular_components/utils/browser/window/module.dart';
-
 import 'package:angular_components/material_datepicker/material_datepicker.dart';
-
 import 'package:angular_components/material_dialog/material_dialog.dart';
 import 'package:angular_components/model/action/async_action.dart';
 
-import 'package:auge_web/services/common_service.dart';
-
-import 'package:auge_web/src/measure/measure_service.dart';
-import 'package:auge_web/src/auth/auth_service.dart';
-
 import 'package:auge_server/model/objective/measure.dart';
 
+import 'package:auge_web/services/common_service.dart';
+import 'package:auge_web/src/measure/measure_service.dart';
+import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/message/messages.dart';
 
 @Component(
@@ -114,20 +108,14 @@ class MeasureProgressComponent implements OnInit {
 
   MeasureProgressComponent(this._authService, this._measureService) {
     initializeDateFormatting(Intl.defaultLocale , null);
-    /*
-    menuModel = new MenuModel([new MenuItemGroup(
-        [new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => editable = true),
-        new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete()),
-        ])], icon: new Icon('menu'));
-*/
   }
 
   // Define messages and labels
-  static final String progressLabel =  MeasureMsg.label('Progress');
-  static final String startValueLabel =  MeasureMsg.label('Start Value');
-  static final String currentValueLabel =  MeasureMsg.label('Current Value');
-  static final String endValueLabel =  MeasureMsg.label('End Value');
-  static final String dateLabel =  MeasureMsg.label('Date');
+  static final String progressLabel = MeasureMsg.label('Progress');
+  static final String startValueLabel = MeasureMsg.label('Start Value');
+  static final String currentValueLabel = MeasureMsg.label('Current Value');
+  static final String endValueLabel = MeasureMsg.label('End Value');
+  static final String dateLabel = MeasureMsg.label('Date');
 
   static final String saveButtonLabel = CommonMsg.buttonLabel('Save');
   static final String cancelButtonLabel = CommonMsg.buttonLabel('Cancel');
@@ -149,53 +137,6 @@ class MeasureProgressComponent implements OnInit {
     List<String> months = [];
     List<num> values = [];
     defineMonthsValuesProgress(months, values);
-
-/*
-    int yearsCount = 1;
-    if (objectiveStartDate != null && objectiveEndDate != null && objectiveStartDate.year != objectiveEndDate.year)
-      yearsCount = yearsCount + objectiveEndDate.year - objectiveStartDate.year;
-
-    int firstYear = objectiveStartDate?.year ?? objectiveEndDate?.year ?? DateTime.now().year;
-
-    List<int> yearsInterval = [];
-    for (int iYear = 0;iYear<yearsCount;iYear++) {
-      yearsInterval.add((firstYear + iYear));
-    }
-
-    int iMesuareProgress;
-    String monthFormated;
-    for (int iYear = 0;iYear<yearsInterval.length;iYear++) {
-      for (int iMonth = 0; iMonth < DateTime.monthsPerYear; iMonth++) {
-        monthFormated =
-            DateFormat.yMMM().format(DateTime(yearsInterval[iYear], iMonth + 1));
-        iMesuareProgress =
-            measureProgresses.indexWhere((mp) => DateFormat.yMMM().format(
-                mp.date) == monthFormated);
-
-        if (iMesuareProgress != -1) {
-          for (int iiMeasureProgress = iMesuareProgress; iiMeasureProgress <
-              measureProgresses.length; iiMeasureProgress++) {
-            if (monthFormated != DateFormat.yMMM().format(
-                measureProgresses[iiMeasureProgress].date)) break;
-            /*
-            if (iiMeasureProgress == iMesuareProgress) {
-              months.add(monthFormated);
-            } else {
-              months.insert(months.length-1, '');
-
-            }
-            */
-            months.add(DateFormat.yMMMd().format(
-                measureProgresses[iiMeasureProgress].date));
-            values.add(measureProgresses[iiMeasureProgress].currentValue);
-          }
-        } else {
-          months.add(monthFormated);
-          values.add(null);
-        }
-      }
-    }
-*/
 
     var data = new LinearChartData(labels: months, datasets: <ChartDataSets>[
       new ChartDataSets(
@@ -226,11 +167,8 @@ class MeasureProgressComponent implements OnInit {
         chart = new Chart(ce, config);
 
       }
-
     });
   }
-
-
 
   defineMonthsValuesProgress(List<String> months, List<num>values) {
     int yearsCount = 1;
@@ -259,14 +197,7 @@ class MeasureProgressComponent implements OnInit {
               measureProgresses.length; iiMeasureProgress++) {
             if (monthFormated != DateFormat.yMMM().format(
                 measureProgresses[iiMeasureProgress].date)) break;
-            /*
-            if (iiMeasureProgress == iMesuareProgress) {
-              months.add(monthFormated);
-            } else {
-              months.insert(months.length-1, '');
 
-            }
-            */
             months.add(DateFormat.yMMMd().format(
                 measureProgresses[iiMeasureProgress].date));
             values.add(measureProgresses[iiMeasureProgress].currentValue);
@@ -276,9 +207,7 @@ class MeasureProgressComponent implements OnInit {
           values.add(null);
         }
       }
-
     }
-
   }
 
   updateChart() {
@@ -316,8 +245,12 @@ class MeasureProgressComponent implements OnInit {
 
   void saveMeasureProgress(MeasureProgress measureProgress, AsyncAction event) async {
 
-    if (measureProgresses.indexWhere((mp) => mp.date == measureProgress.date && mp != measureProgress) != -1) {
+   if (measureProgresses.indexWhere((mp) => mp.date == measureProgress.date && mp != measureProgress) != -1) {
       dialogError = currentValueExistsAtDateMsg;
+      event.cancel();
+    }
+    else if (objectiveStartDate != null && measureProgress.date.compareTo(objectiveStartDate) < 0 || objectiveEndDate != null && measureProgress.date.compareTo(objectiveEndDate) > 0) {
+      dialogError = MeasureMsg.currentDateNotBetweenStartEndDate(objectiveStartDate, objectiveEndDate);
       event.cancel();
     } else {
       try {
@@ -329,15 +262,15 @@ class MeasureProgressComponent implements OnInit {
               selectedMeasure.startValue + selectedMeasure.endValue -
                   measureProgress.currentValue;
 
-          //MeasureProgress measureProgress = MeasureProgress();
-          // measureProgress.currentValue = selectedMeasure.currentValue;
 
-          measureProgress.lastHistoryItem.setClientSideValues(
+
+          //--
+          /* measureProgress.lastHistoryItem.setClientSideValues(
               user: _authService.authenticatedUser,
               description: null,
               changedValues: MeasureProgressFacilities.differenceToJson(
                   measureProgress, selectedMeasureProgress));
-
+*/
           String measureProgressId = await _measureService.saveMeasureProgress(
               selectedMeasure.id, measureProgress);
           // Returns a new instance to get the generated data on the server side as well as having the last update.
@@ -376,16 +309,10 @@ class MeasureProgressComponent implements OnInit {
 
       // Created just to pass instance from TimelineItem. No addition data is need, just [id, isDeleted and deletedBy].
       measureProgress.isDeleted = true;
-      measureProgress.lastHistoryItem.setClientSideValues(user: _authService.authenticatedUser, description: null, /* changedValues: MeasureProgressFacilities.differenceToJson(measureProgress, selectedMeasureProgress) */ );
-/*
-      await _measureService .saveMeasure(objective.id, measureDeleted);
-      objective.measures.remove(selectedMeasure);
-      objective.timeline = await _objectiveService.getTimeline(objective.id);
-*/
+      //--measureProgress.lastHistoryItem.setClientSideValues(user: _authService.authenticatedUser, description: null, /* changedValues: MeasureProgressFacilities.differenceToJson(measureProgress, selectedMeasureProgress) */ );
     } catch (e) {
       rethrow;
     }
-
   }
 
   bool validValue(double startValue, double currentValue, double endValue) {
@@ -465,25 +392,7 @@ class MeasureProgressComponent implements OnInit {
 
   // Order by to date
   void _sortMeasurePregressesOrderByDate(List<MeasureProgress> measureProgresses) {
-    measureProgresses.sort((a, b) => a?.date == null || b?.date == null ? -1 : a.date.compareTo(b.date));
+    // measureProgresses.sort((a, b) => a?.date == null || b?.date == null ? -1 : a.date.compareTo(b.date));
+    measureProgresses.sort((a, b) => a.date.compareTo(b.date));
   }
-
-/*
-  Date get date {
-    Date _date;
-    if (measureProgress.date != null) {
-      _date = new Date.fromTime(measureProgress.date);
-    }
-    return _date;
-  }
-
-  set date(Date _date)  {
-    if (_date == null) {
-      measureProgress.date = null;
-    } else {
-      measureProgress.date = _date.asUtcTime();
-    }
-  }
-  */
-
 }

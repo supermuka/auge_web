@@ -3,19 +3,15 @@
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
-/* import 'package:angular_components/angular_components.dart'; */
 
-import 'package:auge_server/model/organization.dart';
+import 'package:auge_server/model/general/organization.dart';
 
 import 'package:auge_web/message/messages.dart';
-
 import 'package:auge_web/src/organization/organization_detail_component.dart';
 import 'package:auge_web/src/organization/organization_service.dart';
 import 'package:auge_web/services/app_routes.dart';
-
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
-
 
 @Component(
   selector: 'auge-organization',
@@ -23,7 +19,6 @@ import 'package:auge_web/src/app_layout/app_layout_service.dart';
   directives: const [
     coreDirectives,
     routerDirectives,
-    /* materialDirectives, */
     OrganizationDetailComponent,
   ],
   templateUrl: 'organization_component.html',
@@ -54,14 +49,6 @@ class OrganizationComponent extends Object with CanReuse implements OnActivate {
 
     _appLayoutService.headerTitle =
         OrganizationMsg.label('Organization');
-/*
-    if (routeStateCurrent.parameters.isNotEmpty) {
-      var uuid = routeStateCurrent.parameters[AppRoutes.organizationIdParameter];
-      if (uuid != null && uuid.isNotEmpty) {
-        selectedOrganization = await _organizationService.getOrganizationById(uuid);
-      }
-    }
-*/
     selectedOrganization = _authService.selectedOrganization;
 
     viewDetail(true);
@@ -72,7 +59,7 @@ class OrganizationComponent extends Object with CanReuse implements OnActivate {
     if (selectedOrganization == null) {
       selectedOrganization = organization;
     } else {
-      organization.cloneTo(selectedOrganization);
+      // organization.cloneTo(selectedOrganization);
     }
   }
 
@@ -81,5 +68,4 @@ class OrganizationComponent extends Object with CanReuse implements OnActivate {
     if (detailVisible == false)
        _location.back();
   }
-
 }

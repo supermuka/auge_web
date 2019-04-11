@@ -4,11 +4,9 @@
 import 'package:angular/angular.dart';
 
 import 'package:angular_components/material_slider/material_slider.dart';
-
 import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel_set.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
-
 import 'package:angular_components/material_input/material_input.dart';
 import 'package:angular_components/material_menu/material_menu.dart';
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
@@ -22,14 +20,11 @@ import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/objective/measure.dart';
 
 import 'package:auge_web/message/messages.dart';
-
 import 'package:auge_web/src/measure/measure_detail_component.dart';
 import 'package:auge_web/src/measure/measure_progress_component.dart';
-
 import 'package:auge_web/src/measure/measure_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/auth/auth_service.dart';
-
 
 @Component(
     selector: 'auge-measures',
@@ -37,7 +32,6 @@ import 'package:auge_web/src/auth/auth_service.dart';
     directives: const [
       coreDirectives,
       materialInputDirectives,
-      // materialDirectives,
       MaterialSliderComponent,
       MaterialExpansionPanel,
       MaterialExpansionPanelSet,
@@ -101,7 +95,7 @@ class MeasuresComponent extends Object {
       measureDeleted.id = selectedMeasure.id;
       measureDeleted.isDeleted = true;
 
-      measureDeleted.lastHistoryItem.setClientSideValues(user: _authService.authenticatedUser, changedValues: MeasureFacilities.differenceToJson(measureDeleted, selectedMeasure));
+      //--measureDeleted.lastHistoryItem.setClientSideValues(user: _authService.authenticatedUser, changedValues: MeasureFacilities.differenceToJson(measureDeleted, selectedMeasure));
 
       await _measureService.saveMeasure(objective.id, measureDeleted);
       objective.measures.remove(selectedMeasure);
@@ -137,20 +131,6 @@ class MeasuresComponent extends Object {
   void refreshMeasures() async {
       objective.measures = await _measureService.getMeasures(objective.id);
       objective.history = await _objectiveService.getHistory(objective.id);
-
-
-
-
-    /*
-    Measure newMeasure = await _measureService.getMeasureById(measureId);
-
-    if (selectedMeasure == null) {
-      measures.add(newMeasure);
-    } else {
-      measures[measures.indexOf(selectedMeasure)] = newMeasure;
-      //measure.cloneTo(measures[measures.indexOf(selectedMeasure)]);
-    }
-    */
   }
 
   void closeProgress() async {

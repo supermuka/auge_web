@@ -12,26 +12,22 @@ import 'package:angular_components/material_icon/material_icon.dart';
 import 'package:angular_components/material_menu/material_menu.dart';
 import 'package:angular_components/model/ui/icon.dart';
 import 'package:angular_components/model/menu/menu.dart';
-
 import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel_set.dart';
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
 
 import 'package:auge_server/model/objective/objective.dart';
-import 'package:auge_web/message/messages.dart';
 
+import 'package:auge_web/message/messages.dart';
 import 'package:auge_web/src/objective/objective_detail_component.dart';
 import 'package:auge_web/src/objective_timeline/objective_timeline_component.dart';
-
 import 'package:auge_web/src/measure/measures_component.dart';
 import 'package:auge_web/src/initiative/initiatives_summary_component.dart';
-
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
-
 import 'package:auge_web/services/app_routes.dart';
 
 @Component(
@@ -40,7 +36,6 @@ import 'package:auge_web/services/app_routes.dart';
     directives: const [
       coreDirectives,
       routerDirectives,
-      /* materialDirectives, */
       MaterialFabComponent,
       MaterialIconComponent,
       MaterialExpansionPanel,
@@ -85,7 +80,6 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
   ObjectivesComponent(this._authService, this._appLayoutService, this._objectiveService, this._searchService, this._router) {
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => detailVisible = true), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
   }
-
 
   void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
 
@@ -148,7 +142,6 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
     selectedObjective = objective;
   }
 
-
   /// Call a soft (logic) delete
   void delete() async {
     try {
@@ -158,7 +151,8 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
         ..id = selectedObjective.id
         ..isDeleted = true;
 
-      objectiveDeleted.lastHistoryItem.setClientSideValues(user: _authService.authenticatedUser, description: selectedObjective.name, changedValues: ObjectiveFacilities.differenceToJson(objectiveDeleted, selectedObjective));
+     //TODO mitration to grpc
+      // objectiveDeleted.lastHistoryItem.setClientSideValues(user: _authService.authenticatedUser, description: selectedObjective.name, changedValues: ObjectiveFacilities.differenceToJson(objectiveDeleted, selectedObjective));
 
       await _objectiveService.saveObjective(objectiveDeleted);
       objectives.remove(selectedObjective);
@@ -178,27 +172,6 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
         expandedObjective.history = await _objectiveService.getHistory(expandedObjectiveId);
       }
     }
-
-    /*
-    Objective newObjective = await _objectiveService.getObjectiveById(objetiveId, withMeasures: true, withProfile: true /*, withTimeline: true */);
-
-    if (selectedObjective == null && !newObjective.archived) {
-      objectives.add(newObjective);
-      expandedControl[newObjective] = true;
-
-    } else {
-      if (newObjective.archived) {
-        expandedControl.remove(selectedObjective);
-        objectives.remove(selectedObjective);
-      } else {
-        expandedControl[newObjective] = true;
-        objectives[objectives.indexOf(selectedObjective)] = newObjective;
-      //  newObjective.cloneTo(objectives[objectives.indexOf(selectedObjective)]);
-      }
-    }
-    */
-
-    //_sortObjectivesOrderByGroup(objectives);
   }
 
   void viewDetail(bool detailVisible) {
@@ -233,14 +206,6 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
             initialObjectiveId = null;
 
         });
-        /*
-        common_service.startTimeoutTimer(() {
-          // Needs include timer to wait angular componentes to render the components before to scroll.
-          element.scrollIntoView(ScrollAlignment.TOP);
-          initialObjectiveId = null;
-          }, 300);
-          */
-
       }
     }
   }

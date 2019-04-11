@@ -5,50 +5,41 @@ import 'dart:async';
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
-//import 'package:angular_forms/angular_forms.dart';
-/* import 'package:angular_components/angular_components.dart'; */
 import 'package:angular_components/focus/focus.dart';
 import 'package:angular_components/laminate/components/modal/modal.dart';
 import 'package:angular_components/laminate/overlay/module.dart';
 import 'package:angular_components/material_dialog/material_dialog.dart';
-
 import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
-
 import 'package:angular_components/material_input/material_auto_suggest_input.dart';
 import 'package:angular_components/material_input/material_input.dart';
 import 'package:angular_components/material_select/material_dropdown_select.dart';
 import 'package:angular_components/model/selection/selection_model.dart';
 import 'package:angular_components/model/selection/selection_options.dart';
 import 'package:angular_components/model/selection/string_selection_options.dart';
-// import 'package:angular_components/model/ui/has_factory.dart';
-
 import 'package:angular_components/material_select/dropdown_button.dart';
 import 'package:angular_components/material_select/material_dropdown_select_accessor.dart';
-
 import 'package:angular_components/focus/focus_item.dart';
 import 'package:angular_components/focus/focus_list.dart';
 import 'package:angular_components/material_list/material_list.dart';
 import 'package:angular_components/material_list/material_list_item.dart';
 import 'package:angular_components/material_select/material_select_item.dart';
+import 'package:angular_components/model/ui/has_factory.dart';
 
-import 'package:auge_server/model/user.dart';
+import 'package:auge_server/model/general/user.dart';
 import 'package:auge_server/model/initiative/initiative.dart';
 import 'package:auge_server/model/initiative/stage.dart';
 import 'package:auge_server/model/initiative/state.dart';
 import 'package:auge_server/model/objective/objective.dart';
-import 'package:auge_server/model/group.dart';
+import 'package:auge_server/model/general/group.dart';
 
 import 'package:auge_web/message/messages.dart';
-
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
 import 'package:auge_web/src/initiative/initiative_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/group/group_service.dart';
-
-import 'package:angular_components/model/ui/has_factory.dart';
 
 // ignore_for_file: uri_has_not_been_generated
 import 'initiative_detail_component.template.dart' as initiative_detail_component;
@@ -60,35 +51,26 @@ import 'initiative_detail_component.template.dart' as initiative_detail_componen
     coreDirectives,
     routerDirectives,
     materialInputDirectives,
-    //formDirectives,
-
-    /* materialDirectives, */
     AutoFocusDirective,
     MaterialDialogComponent,
     ModalComponent,
-
     MaterialIconComponent,
     MaterialButtonComponent,
-
     MaterialAutoSuggestInputComponent,
-
     MaterialDropdownSelectComponent,
     DropdownSelectValueAccessor,
     DropdownButtonComponent,
-
     FocusItemDirective,
     FocusListDirective,
     MaterialListComponent,
     MaterialListItemComponent,
     MaterialSelectItemComponent,
-
   ],
   templateUrl: 'initiative_detail_component.html',
   styleUrls: const [
     'initiative_detail_component.css'
   ])
 class InitiativeDetailComponent implements OnInit {
-
   /// Entry to edit data. If new, this should be null
   @Input()
   Initiative selectedInitiative;
@@ -164,7 +146,7 @@ class InitiativeDetailComponent implements OnInit {
   void ngOnInit() async {
     if (selectedInitiative != null) {
       // Clone objective
-      initiative = selectedInitiative.clone();
+      // initiative = selectedInitiative.clone();
     } else {
       initiative = Initiative();
       initiative.organization = _authService.selectedOrganization;
@@ -190,8 +172,6 @@ class InitiativeDetailComponent implements OnInit {
        stateSingleSelectModel.select(stateOptions.optionsList.first);
     }
 
-
-
     // Leader
    // List<User> users = await _userService.getUsers(_authService.selectedOrganization.id, withProfile: true);
     leaderOptions = new StringSelectionOptions<User>(
@@ -207,16 +187,6 @@ class InitiativeDetailComponent implements OnInit {
     groupOptions = new StringSelectionOptions<Group>(
         _groups, toFilterableString: (Group gru) => gru.name);
 
-    // Leader Select Model
-    //leaderSingleSelectModel = initiative.leader == null ? SelectionModel.single() : SelectionModel.single<User>(selected: initiative.leader);
-    /*
-    new SelectionModel.single(selected: initiative?.leader)
-      ..selectionChanges.listen((leader) {
-        if (leader.isNotEmpty && leader.first.added != null && leader.first.added.length != 0 && leader.first.added?.first != null) {
-          initiative.leader = leader.first.added.first;
-        }
-      });
-    */
     leaderSingleSelectModel.selectionChanges.listen((leader) {
       if (leader.isNotEmpty && leader.first.added != null && leader.first.added.length != 0 && leader.first.added?.first != null) {
         initiative.leader = leader.first.added.first;
@@ -309,7 +279,6 @@ class InitiativeDetailComponent implements OnInit {
       stateSingleSelectModel.select(
           stateOptions.optionsList.singleWhere((s) => s.id == e.state.id));
     }
-
   }
 
   void addStage() {
@@ -340,10 +309,7 @@ class InitiativeDetailComponent implements OnInit {
       selectedStage = null;
       stageEntry = '';
     }
-
   }
-
-
 
   // Label for the button for single selection.
   String get stateSingleSelectLabel {
@@ -370,7 +336,6 @@ class InitiativeDetailComponent implements OnInit {
 
       nameLabel = groupSingleSelectModel.selectedValues.first.name;
     }
-
     return nameLabel;
   }
 
@@ -388,10 +353,8 @@ class InitiativeDetailComponent implements OnInit {
     int i = initiative.stages.indexOf(stage);
 
     if (i > 0) {
-
       // Receive state equals previous stage, because can be different that the actual
       stage.state = initiative.stages[i-1].state;
-
       initiative.stages.removeAt(i);
       initiative.stages.insert(i-1, stage);
     }
@@ -409,7 +372,6 @@ class InitiativeDetailComponent implements OnInit {
       initiative.stages.insert(i+1, stage);
     }
   }
-
 }
 
 @Component(

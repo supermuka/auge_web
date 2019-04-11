@@ -9,31 +9,23 @@ import 'package:angular_components/laminate/components/modal/modal.dart';
 import 'package:angular_components/laminate/overlay/module.dart';
 import 'package:angular_components/material_dialog/material_dialog.dart';
 import 'package:angular_components/model/ui/has_factory.dart';
-
 import 'package:angular_components/material_input/material_input.dart';
-
 import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
-
 import 'package:angular_components/material_input/material_auto_suggest_input.dart';
 import 'package:angular_components/material_select/material_dropdown_select.dart';
 import 'package:angular_components/model/selection/selection_model.dart';
 import 'package:angular_components/model/selection/selection_options.dart';
 import 'package:angular_components/model/selection/string_selection_options.dart';
-
 import 'package:angular_components/material_datepicker/module.dart';
 import 'package:angular_components/model/date/date.dart';
 import 'package:angular_components/utils/browser/window/module.dart';
-
 import 'package:angular_components/material_datepicker/material_datepicker.dart';
-
 import 'package:angular_components/material_checkbox/material_checkbox.dart';
 
 import 'package:auge_server/model/objective/objective.dart';
-import 'package:auge_server/model/user.dart';
-import 'package:auge_server/model/group.dart';
-import 'package:auge_server/model/authorization.dart';
-
+import 'package:auge_server/model/general/user.dart';
+import 'package:auge_server/model/general/group.dart';
 import 'package:auge_web/message/messages.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
@@ -51,17 +43,14 @@ import 'objective_detail_component.template.dart' as objective_detail_component;
     directives: const [
       coreDirectives,
       materialInputDirectives,
-      /* materialDirectives, */
       AutoFocusDirective,
       MaterialDialogComponent,
       MaterialAutoSuggestInputComponent,
       MaterialDropdownSelectComponent,
       ModalComponent,
-
       MaterialButtonComponent,
       MaterialIconComponent,
       MaterialCheckboxComponent,
-
       MaterialDatepickerComponent,
     ],
     templateUrl: 'objective_detail_component.html',
@@ -83,13 +72,13 @@ class ObjectiveDetailComponent extends Object implements OnInit {
 
   /// Publishes events when close.
   @Output()
-  Stream<void> get close => _closedController.stream;
+  Stream<void> get closed => _closedController.stream;
 
   final _savedController = new StreamController<String>.broadcast(sync: true);
 
   /// Publishes events when save.
   @Output()
-  Stream<String> get save => _savedController.stream;
+  Stream<String> get saved => _savedController.stream;
 
   // It's needed to create an object before, even if later to get from server side. As server side as on the server side the response takes time, angular/html render first and the object doesn't to get null.
   Objective objective = Objective();
@@ -185,7 +174,6 @@ class ObjectiveDetailComponent extends Object implements OnInit {
       } else {
         objective.alignedTo = null;
       }
-
     });
 
     if (objective.alignedTo != null)
@@ -229,7 +217,7 @@ class ObjectiveDetailComponent extends Object implements OnInit {
       objective.isDeleted = false;
 
       // History item definition
-      objective.lastHistoryItem.setClientSideValues(user: _authService.authenticatedUser, description: objective.name, changedValues: ObjectiveFacilities.differenceToJson(objective, selectedObjective));
+      //TODO migration protobuf objective.lastHistoryItem.setClientSideValues(user: _authService.authenticatedUser, description: objective.name, changedValues: ObjectiveFacilities.differenceToJson(objective, selectedObjective));
       await _objectiveService.saveObjective(objective);
 
       _savedController.add(objective.id);

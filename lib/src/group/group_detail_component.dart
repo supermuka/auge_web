@@ -4,38 +4,29 @@
 import 'dart:async';
 
 import 'package:angular/angular.dart';
-/* import 'package:angular_forms/angular_forms.dart'; */
-/*import 'package:angular_components/angular_components.dart';*/
-/* import 'package:angular_components/angular_components.dart'; */
 
 import 'package:angular_components/focus/focus.dart';
 import 'package:angular_components/laminate/components/modal/modal.dart';
 import 'package:angular_components/laminate/overlay/module.dart';
 import 'package:angular_components/material_dialog/material_dialog.dart';
-
 import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
-
 import 'package:angular_components/material_checkbox/material_checkbox.dart';
-
 import 'package:angular_components/material_input/material_auto_suggest_input.dart';
 import 'package:angular_components/material_input/material_input.dart';
 import 'package:angular_components/model/selection/selection_model.dart';
 import 'package:angular_components/model/selection/selection_options.dart';
 import 'package:angular_components/model/selection/string_selection_options.dart';
 import 'package:angular_components/model/ui/has_factory.dart';
-
 import 'package:angular_components/material_chips/material_chip.dart';
 import 'package:angular_components/material_chips/material_chips.dart';
-
 import 'package:angular_components/material_radio/material_radio.dart';
 import 'package:angular_components/material_radio/material_radio_group.dart';
 
-import 'package:auge_server/model/group.dart';
-import 'package:auge_server/model/user.dart';
+import 'package:auge_server/model/general/group.dart';
+import 'package:auge_server/model/general/user.dart';
 
 import 'package:auge_web/message/messages.dart';
-
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
@@ -50,27 +41,18 @@ import 'group_detail_component.template.dart' as group_detail_component;
     directives: const [
       coreDirectives,
       materialInputDirectives,
-      /* formDirectives, */
       AutoFocusDirective,
       MaterialDialogComponent,
       ModalComponent,
-
       MaterialIconComponent,
       MaterialButtonComponent,
-
       MaterialAutoSuggestInputComponent,
       MaterialButtonComponent,
       MaterialCheckboxComponent,
-      //MaterialDropdownSelectComponent,
-
-
       MaterialRadioComponent,
       MaterialRadioGroupComponent,
-
       MaterialChipsComponent,
       MaterialChipComponent,
-
-      /* materialDirectives, */
     ],
     templateUrl: 'group_detail_component.html',
     styleUrls: const [
@@ -78,7 +60,6 @@ import 'group_detail_component.template.dart' as group_detail_component;
     ])
 
 class GroupDetailComponent extends Object implements OnInit {
-
   /// Entry to edit data. If new, this should be null
   @Input()
   Group selectedGroup;
@@ -148,7 +129,7 @@ class GroupDetailComponent extends Object implements OnInit {
   void ngOnInit() async {
       if (selectedGroup != null) {
       // Clone objective
-      group = selectedGroup.clone();
+      // group = selectedGroup.clone();
     } else {
       group = Group();
       group.organization = _authService.selectedOrganization;

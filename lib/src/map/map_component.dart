@@ -1,15 +1,15 @@
-import 'dart:async';
+// Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
+// Author: Samuel C. Schwebel.
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
-/* import 'package:angular_components/angular_components.dart'; */
 
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
 import 'package:angular_components/focus/keyboard_only_focus_indicator.dart';
 import 'package:angular_components/laminate/enums/alignment.dart';
 
 import 'package:auge_server/model/objective/objective.dart';
-import 'package:auge_server/model/user.dart';
+import 'package:auge_server/model/general/user.dart';
 
 import 'package:auge_web/message/messages.dart';
 
@@ -36,8 +36,6 @@ import 'package:auge_web/services/app_routes.dart';
     ClickableTooltipTargetDirective,
     KeyboardOnlyFocusIndicatorDirective,
     MaterialPaperTooltipComponent,
-
-    /* materialDirectives, */
   ],
 )
 
@@ -78,7 +76,6 @@ class MapComponent implements OnActivate {
       _appLayoutService.error = e.toString();
       rethrow;
     }
-
   }
 
   String userUrlImage(User userMember) {

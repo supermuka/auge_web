@@ -1,11 +1,8 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
-import 'dart:async';
-
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
-/* import 'package:angular_components/angular_components.dart'; */
 
 import 'package:angular_components/material_button/material_fab.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
@@ -16,15 +13,14 @@ import 'package:angular_components/model/menu/menu.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel_set.dart';
 
-import 'package:auge_server/model/user.dart';
-import 'package:auge_web/message/messages.dart';
+import 'package:auge_server/model/general/user.dart';
 
+import 'package:auge_web/message/messages.dart';
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
 import 'package:auge_web/src/user/user_detail_component.dart';
-
 import 'package:auge_web/services/app_routes.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
 
@@ -34,13 +30,11 @@ import 'package:auge_web/services/common_service.dart' as common_service;
     directives: const [
       coreDirectives,
       routerDirectives,
-      /* materialDirectives, */
       MaterialFabComponent,
       MaterialIconComponent,
       MaterialExpansionPanel,
       MaterialExpansionPanelSet,
       MaterialMenuComponent,
-
       UserDetailComponent,
     ],
     templateUrl: 'users_component.html',
@@ -95,7 +89,7 @@ class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
     try {
       _userService.deleteUserProfileOrganizationByUserId(selectedUser.id);
 
-      _userService.deleteUser(selectedUser.id);
+      _userService.deleteUser(selectedUser);
       users.remove(selectedUser);
     } catch (e) {
      // print('${e.runtimeType}, ${e}');
@@ -120,7 +114,7 @@ class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
     if (selectedUser == null) {
       _users.add(user);
     } else {
-      user.cloneTo(_users[_users.indexOf(selectedUser)]);
+     // user.cloneTo(_users[_users.indexOf(selectedUser)]);
     }
   }
 }

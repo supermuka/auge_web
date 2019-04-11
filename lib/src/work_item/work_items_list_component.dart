@@ -18,15 +18,14 @@ import 'package:angular_components/model/ui/icon.dart';
 import 'package:angular_components/content/deferred_content.dart';
 import 'package:angular_components/material_menu/material_menu.dart';
 
-import 'package:auge_server/model/user.dart';
+import 'package:auge_server/model/general/user.dart';
 import 'package:auge_server/model/initiative/initiative.dart';
 import 'package:auge_server/model/initiative/work_item.dart';
-import 'package:auge_web/message/messages.dart';
 
+import 'package:auge_web/message/messages.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/work_item/work_item_service.dart';
 import 'package:auge_web/src/initiative/initiative_service.dart';
-
 import 'package:auge_web/src/work_item/work_item_detail_component.dart';
 
 @Component(
@@ -35,7 +34,6 @@ import 'package:auge_web/src/work_item/work_item_detail_component.dart';
     directives: const [
       coreDirectives,
       routerDirectives,
-      /* materialDirectives, */
       MaterialExpansionPanelSet,
       MaterialExpansionPanel,
       MaterialTooltipDirective,
@@ -86,7 +84,7 @@ class WorkItemsListComponent extends Object /* with CanReuse implements OnActiva
 
   void delete() async {
     try {
-      await _workItemService.deleteWorkItem(selectedWorkItem.id);
+      await _workItemService.deleteWorkItem(selectedWorkItem);
       initiative.workItems.remove(selectedWorkItem);
     } catch (e) {
       rethrow;
@@ -128,11 +126,4 @@ class WorkItemsListComponent extends Object /* with CanReuse implements OnActiva
       workItem.cloneTo(workItems[workItems.indexOf(selectedWorkItem)]);
     }
   }
-
-/*
-  @override
-  Future<bool> canReuse(RouterState current, RouterState next) async {
-    return true;
-  }
-*/
 }

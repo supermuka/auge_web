@@ -4,18 +4,15 @@
 import 'dart:async';
 
 import 'package:angular/angular.dart';
-import 'package:angular_router/angular_router.dart';
 
-/*import 'package:angular_components/angular_components.dart';*/
+import 'package:angular_router/angular_router.dart';
 
 import 'package:angular_components/focus/focus.dart';
 import 'package:angular_components/laminate/components/modal/modal.dart';
 import 'package:angular_components/laminate/overlay/module.dart';
 import 'package:angular_components/material_dialog/material_dialog.dart';
-
 import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
-
 import 'package:angular_components/material_input/material_auto_suggest_input.dart';
 import 'package:angular_components/model/selection/selection_model.dart';
 import 'package:angular_components/model/selection/selection_options.dart';
@@ -25,16 +22,10 @@ import 'package:angular_components/model/ui/has_factory.dart';
 import 'package:auge_server/model/objective/objective.dart';
 
 import 'package:auge_web/message/messages.dart';
-
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/group/group_service.dart';
-
-import 'package:angular_components/model/ui/has_factory.dart';
-
-// ignore_for_file: uri_has_not_been_generated
-// import 'initiative_detail_component.template.dart' as initiative_detail_component;
 
 @Component(
   selector: 'auge-initiatives-filter',
@@ -42,17 +33,12 @@ import 'package:angular_components/model/ui/has_factory.dart';
   directives: const [
     coreDirectives,
     routerDirectives,
-    /* materialDirectives, */
     AutoFocusDirective,
     MaterialDialogComponent,
     ModalComponent,
-
     MaterialIconComponent,
     MaterialButtonComponent,
-
     MaterialAutoSuggestInputComponent,
-
-
   ],
   templateUrl: 'initiatives_filter_component.html',
   styleUrls: const [
@@ -143,7 +129,6 @@ class InitiativesFilterComponent implements OnInit {
   }
 
   ItemRenderer get objectiveItemRenderer => (dynamic objective) => objective.name;
-
 }
 
 class InitiativesFilterParam {

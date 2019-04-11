@@ -1,39 +1,50 @@
+// Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
+// Author: Samuel C. Schwebel.
+
 import 'dart:async';
 
-import 'dart:convert';
-import 'package:auge_server/client/augeapi.dart';
-
 import 'package:angular/core.dart';
-import 'package:auge_web/services/augeapi_service.dart';
 
-import 'package:auge_server/message/created_message.dart';
-import 'package:auge_server/model/group.dart';
-import 'package:auge_server/model/user.dart';
-
-
-
+import 'package:auge_web/services/auge_api_service.dart';
 import 'package:auge_web/message/messages.dart';
 
 
+import 'package:auge_server/model/general/group.dart';
+
+import 'package:auge_server/src/protos/generated/google/protobuf/empty.pb.dart' as empty_pb;
+import 'package:auge_server/src/protos/generated/general/common.pb.dart' as common_pb;
+import 'package:auge_server/src/protos/generated/general/group.pbgrpc.dart' as group_pbgrpc;
+
 @Injectable()
 class GroupService {
-
   final AugeApiService _augeApiService;
+  group_pbgrpc.GroupServiceClient _groupServiceClient;
 
-  GroupService(this._augeApiService);
+  GroupService(this._augeApiService) {
+    _groupServiceClient =
+        group_pbgrpc.GroupServiceClient(_augeApiService.channel);
+  }
 
   /// Return a list of [Group]
   Future<List<Group>> getGroups(String organizationId) async {
+   //--return _augeApiService.augeApi.getGroups(organizationId);
 
-   // return await _augeApiService.augeApi.getGroups(organizationId);
-   return _augeApiService.augeApi.getGroups(organizationId);
+    // Return a protobuf via grpc
+    group_pbgrpc
+        .GroupsResponse groupsResponse = await _groupServiceClient
+        .getGroups(
+        group_pbgrpc.GroupGetRequest()
+          ..organizationId = organizationId);
 
+    // Create model from protobuf equivalent
+    return groupsResponse.groups.map((g) => Group()..readFromProtoBuf(g)).toList();
   }
 
   /// Delete an [Group]
   Future deleteGroup(String id) async {
     try {
-      await _augeApiService.augeApi.deleteGroup(id);
+      //TODO need to pass group data to log history, when it will be implemented.
+      await _groupServiceClient.deleteGroup(group_pbgrpc.Group()..id = id);
     } catch (e) {
       rethrow;
     }
@@ -57,12 +68,12 @@ class GroupService {
         gp.organization = group.organization;
         gp.superGroup = group.superGroup;
 */
-        IdMessage idMessage = await _augeApiService.augeApi.createGroup(group);
+        common_pb.IdResponse idResponse = await _groupServiceClient.createGroup(group.writeToProtoBuf());
 
         // ID - primary key generated on server-side.
-        group.id = idMessage?.id;
+        group.id = idResponse?.id;
       } else {
-        await _augeApiService.augeApi.updateGroup(group);
+        await _groupServiceClient.updateGroup(group.writeToProtoBuf());
       }
     } catch (e) {
       rethrow;
@@ -71,8 +82,7 @@ class GroupService {
 
   /// Return a list of [GroupType]
   Future<List<GroupType>> getGroupTypes() async {
-    List<GroupType> groupTypes = await _augeApiService.augeApi.getGroupTypes();
-
+    List<GroupType> groupTypes =  (await _groupServiceClient.getGroupTypes(empty_pb.Empty())).groupTypes.map((upo) => GroupType()..readFromProtoBuf(upo)).toList();
     // Translate
     groupTypes.forEach((f) => f.name = GroupMsg.groupTypeLabel(f.name));
 

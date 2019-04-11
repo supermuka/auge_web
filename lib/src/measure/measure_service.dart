@@ -2,80 +2,108 @@ import 'dart:async';
 
 import 'package:angular/core.dart';
 
-import 'package:auge_web/services/augeapi_service.dart';
-
-import 'package:auge_server/message/created_message.dart';
 import 'package:auge_server/model/objective/measure.dart';
 
+import 'package:auge_web/services/auge_api_service.dart';
 import 'package:auge_web/message/messages.dart';
+
+import 'package:auge_server/src/protos/generated/google/protobuf/empty.pb.dart' as empty_pb;
+import 'package:auge_server/src/protos/generated/general/common.pb.dart' as common_pb;
+import 'package:auge_server/src/protos/generated/objective/measure.pbgrpc.dart' as measure_pbgrpc;
+import 'package:grpc/grpc_web.dart';
+
 
 @Injectable()
 class MeasureService {
 
   final AugeApiService _augeApiService;
+  measure_pbgrpc.MeasureServiceClient _measureServiceClient;
 
-  MeasureService(this._augeApiService);
+  MeasureService(this._augeApiService) {
+     _measureServiceClient = measure_pbgrpc.MeasureServiceClient(_augeApiService.channel);
+  }
 
   /// Delete a [Measure]
 
   /// Return a list of [Measure] by [objectiveId]
   Future<List<Measure>> getMeasures(String objectiveId) async {
-    return await _augeApiService.objectiveAugeApi.getMeasures(objectiveId);
-    // return await _augeApiService.objectiveAugeApi.getObjectives(organizationId, id: id, withMeasures: withMeasures);
+    return (await _measureServiceClient.getMeasures(
+        measure_pbgrpc.MeasureGetRequest()
+          ..objectiveId = objectiveId)).measures.map((m) =>
+    Measure()
+    ..readFromProtoBuf(m)).toList();
   }
 
   /// Return an [Measure] by Id
   Future<Measure> getMeasureById(String id) async {
     try {
+      //--Measure measure = await _augeApiService.objectiveAugeApi.getMeasureById(id);
 
-      Measure measure = await _augeApiService.objectiveAugeApi.getMeasureById(id);
+      measure_pbgrpc.Measure measure = await _measureServiceClient.getMeasure(
+          measure_pbgrpc.MeasureGetRequest()
+            ..id = id);
 
-      return measure;
+      return Measure()..readFromProtoBuf(measure);
 
-    } on DetailedApiRequestError catch (e) {
-      if (e.status == 204 && e.errors.firstWhere((ed) => ed.reason == RpcErrorDetailMessage.measureUnitsDataNotFoundReason, orElse: null ) != null)
+    } on GrpcError catch (e) {
+      /*--
+      if (e.status == 204 && e.errors.firstWhere((ed) => ed.reason == RpcErrorDetailMessage.measureDataNotFoundReason, orElse: null ) != null)
         return null;
       else {
         rethrow;
       }
-    }
+      */
 
+        print(e);
+        rethrow;
+      }
   }
 
   /// Return an [MeasureProgress] by [Measure.id]
   Future<List<MeasureProgress>> getMeasureProgress(String measureId) async {
+    measure_pbgrpc
+        .MeasureProgressesResponse measureProgressesResponsePb = await _measureServiceClient
+        .getMeasureProgresses(measure_pbgrpc.MeasureProgressGetRequest()
+      ..measureId = measureId);
 
-    return await _augeApiService.objectiveAugeApi.getMeasureProgress(measureId);
-
+    return measureProgressesResponsePb.measureProgresses.map((m) =>
+    MeasureProgress()
+    ..readFromProtoBuf(m)).toList();
   }
-
 
   /// Return an [MeasureProgress] by id [MeasureProgress.id]
   Future<MeasureProgress> getMeasureProgressById(String measureProgressId) async {
 
       try {
+        measure_pbgrpc.MeasureProgress measureProgressPb = await _measureServiceClient
+            .getMeasureProgress(measure_pbgrpc.MeasureProgressGetRequest()..id = measureProgressId);
 
-        MeasureProgress measureProgress = await _augeApiService.objectiveAugeApi.getMeasureProgressById(measureProgressId);
-
-        return measureProgress;
-
+        return MeasureProgress()..readFromProtoBuf(measureProgressPb);
+      } on GrpcError {
+        /*--
       } on DetailedApiRequestError catch (e) {
         if (e.status == 204 && e.errors.firstWhere((ed) => ed.reason == RpcErrorDetailMessage.measureUnitsDataNotFoundReason, orElse: null ) != null)
           return null;
         else {
           rethrow;
         }
+
+         */
       }
-
   }
-
 
   /// Return [MeasureUnit] list
   Future<List<MeasureUnit>> getMeasureUnits() async {
 
     // List<MeasureUnit> measureUnits = await _augeApiService.objectiveAugeApi.getMeasureUnits();
+    measure_pbgrpc.MeasureUnitsResponse measureUnitsResponsePb = await _measureServiceClient
+        .getMeasureUnits(empty_pb.Empty());
 
-      List<MeasureUnit> measureUnits =  await _augeApiService.objectiveAugeApi.getMeasureUnits();
+    List<MeasureUnit> measureUnits =  measureUnitsResponsePb.measureUnits.map((m) =>
+    MeasureUnit()
+      ..readFromProtoBuf(m)).toList();
+
+      //List<MeasureUnit> measureUnits =  await _augeApiService.objectiveAugeApi.getMeasureUnits();
 
       // Translate name
       measureUnits.forEach((f) => f.name = MeasureMsg.measureUnitLabel(f.name));
@@ -85,21 +113,21 @@ class MeasureService {
     // measureUnits.forEach((f) => f.name = MeasureMessage.measureUnitLabel(f.name));
   }
 
-
   /// Save (create or update) an [Measure]
   void saveMeasure(String objectiveId, Measure measure) async {
     try {
       if (measure.id == null) {
-        IdMessage idMessage = await _augeApiService.objectiveAugeApi
-            .createMeasure(measure, objectiveId);
+
+        common_pb.IdResponse idResponse = await _measureServiceClient
+        .createMeasure((measure.writeToProtoBuf())..objectiveId = objectiveId);
+
+        //.createMeasure(measure, objectiveId);
 
         // ID - primary key generated on server-side.
-        measure.id = idMessage?.id;
+        measure.id = idResponse?.id;
 
       } else {
-        await _augeApiService.objectiveAugeApi.updateMeasure(
-            measure, objectiveId);
-
+        await _measureServiceClient.updateMeasure((measure.writeToProtoBuf())..objectiveId = objectiveId);
       }
     } catch (e) {
       rethrow;
@@ -109,11 +137,11 @@ class MeasureService {
   /// Save (create) a [MeasureProgress]
   Future<String> saveMeasureProgress(String measureId, MeasureProgress measureProgress) async {
     try {
-        IdMessage idMessage = await _augeApiService.objectiveAugeApi
-            .createMeasureProgress(measureProgress, measureId);
+      common_pb.IdResponse idResponse = await _measureServiceClient
+            .createMeasureProgress((measureProgress.writeToProtoBuf())..measureId = measureId);
 
         // ID - primary key generated on server-side.
-        return idMessage?.id;
+        return idResponse?.id;
 
     } catch (e) {
       rethrow;
@@ -123,8 +151,8 @@ class MeasureService {
   /// Save (update) a [MeasureProgress]
   void updateMeasureProgress(String measureId, MeasureProgress measureProgress) async {
     try {
-       await _augeApiService.objectiveAugeApi
-            .updateMeasureProgress(measureProgress, measureId);
+       await _measureServiceClient
+            .updateMeasureProgress((measureProgress.writeToProtoBuf())..measureId = measureId);
 
     } catch (e) {
       rethrow;

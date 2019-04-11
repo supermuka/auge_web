@@ -2,21 +2,20 @@
 // Author: Samuel C. Schwebel.
 
 import 'package:angular/angular.dart';
+
 import 'package:angular_router/angular_router.dart';
 
 import 'package:angular_components/scorecard/scoreboard.dart';
 import 'package:angular_components/scorecard/scorecard.dart';
 
-import 'package:auge_web/message/messages.dart';
+import 'package:auge_server/model/objective/objective.dart';
+import 'package:auge_server/model/initiative/initiative.dart';
 
+import 'package:auge_web/message/messages.dart';
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/initiative/initiative_service.dart';
-
-import 'package:auge_server/model/objective/objective.dart';
-import 'package:auge_server/model/initiative/initiative.dart';
-
 import 'package:auge_web/services/app_routes.dart';
 
 @Component(
@@ -83,7 +82,6 @@ class InsightsComponent implements OnActivate  {
       _appLayoutService.error = e.toString();
       rethrow;
     }
-
   }
 
   /// Return overall progress
