@@ -81,6 +81,8 @@ class ObjectiveTimelineComponent extends Object implements OnInit {
     }
     else if (className == 'Measure') {
       return MeasuereFieldMsg.label(fieldName);
+    } else {
+      return '';
     }
   }
     // List<TimelineItem> get timeline => objective.timeline;

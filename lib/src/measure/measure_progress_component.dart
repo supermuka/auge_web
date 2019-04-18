@@ -33,7 +33,6 @@ import 'package:auge_server/model/objective/measure.dart';
 
 import 'package:auge_web/services/common_service.dart';
 import 'package:auge_web/src/measure/measure_service.dart';
-import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/message/messages.dart';
 
 @Component(
@@ -63,7 +62,6 @@ import 'package:auge_web/message/messages.dart';
 
 class MeasureProgressComponent implements OnInit {
 
-  final AuthService _authService;
   final MeasureService _measureService;
 
   @Input()
@@ -106,7 +104,7 @@ class MeasureProgressComponent implements OnInit {
 
   Chart chart;
 
-  MeasureProgressComponent(this._authService, this._measureService) {
+  MeasureProgressComponent(this._measureService) {
     initializeDateFormatting(Intl.defaultLocale , null);
   }
 

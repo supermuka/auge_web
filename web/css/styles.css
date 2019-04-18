@@ -57,27 +57,36 @@ body {
 
 .avatar {
 
-  /* vertical-align: middle; */
-  text-align: center;
+  vertical-align: middle;
+/*  text-align: center; */
 
   /* make a square container */
-  width: 40px;
-  height: 40px;
+
+  background-size: 32px 32px;
+
+  width: 32px;
+  height: 32px;
+    /*
   min-width: 40px;
   min-height: 40px;
+*/
+
 
   /* fill the container, preserving aspect ratio, and cropping to fit */
-  background-size: cover;
+/*  background-size: cover; */
 
   /* center the image vertically and horizontally */
+
   background-position: center;
 
   /* baseado no left-icon no material_chip */
+/*
   margin-top: 0px;
   margin-bottom: 0px;
   margin-left: -4px;
   margin-right: 4px;
   padding: 0px;
+*/
 
   /* round the edges to a circle with border radius 1/2 container size */
   border-radius: 50%;

@@ -1,9 +1,6 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel
 
-import 'dart:html';
-import 'dart:async';
-
 import 'package:angular/core.dart';
 
 import 'package:grpc/grpc_web.dart';

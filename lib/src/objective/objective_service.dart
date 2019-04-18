@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:angular/core.dart';
-import 'package:auge_server/model/general/history_item.dart' as prefix0;
 
 import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/general/history_item.dart';
@@ -9,7 +8,6 @@ import 'package:auge_server/model/general/authorization.dart';
 
 import 'package:auge_web/services/auge_api_service.dart';
 
-import 'package:auge_server/src/protos/generated/google/protobuf/empty.pb.dart' as empty_pb;
 import 'package:auge_server/src/protos/generated/general/common.pbgrpc.dart' as common_pbgrpc;
 import 'package:auge_server/src/protos/generated/general/history_item.pbgrpc.dart' as history_item_pbgrpc;
 import 'package:auge_server/src/protos/generated/objective/objective.pbgrpc.dart' as objective_pbgrpc;
@@ -38,6 +36,26 @@ class ObjectiveService {
   Future<List<Objective>> getObjectives(String organizationId, {bool withMeasures = false, bool withProfile = false, bool withHistory = false}) async {
 
     //List<Objective> objectives = await _augeApiService.objectiveAugeApi.getObjectives(organizationId, withMeasures: withMeasures, withProfile: withProfile, withHistory: withHistory);
+
+    /*
+    objective_pbgrpc.ObjectivesResponse objectivesResponse = await _objectiveServiceClient.getObjectives(
+        objective_pbgrpc.ObjectiveGetRequest()
+          ..organizationId = organizationId
+          ..withMeasures = withMeasures
+          ..withProfile = withProfile
+          ..withHistory = withHistory);
+          */
+    /*
+
+    if (objectivesResponse.objectives.isNotEmpty) {
+      return objectivesResponse.objectives.map((m) =>
+      Objective()
+        ..readFromProtoBuf(m)).toList();
+    } else {
+      return <Objective>[];
+    }
+*/
+
     return (await _objectiveServiceClient.getObjectives(
         objective_pbgrpc.ObjectiveGetRequest()
           ..organizationId = organizationId
@@ -114,12 +132,20 @@ class ObjectiveService {
   Future<List<HistoryItem>> getHistory(String objectiveId) async {
     currentDateTime = await getDateTime();
 
-    history_item_pbgrpc.HistoryResponse historyResponse = await _historyItemServiceClient.getHistory(history_item_pbgrpc.HistoryItemGetRequest()..systemModuleIndex = SystemModule.objectives.index );
-
+    //history_item_pbgrpc.HistoryResponse historyResponse = await _historyItemServiceClient.getHistory(history_item_pbgrpc.HistoryItemGetRequest()..systemModuleIndex = SystemModule.objectives.index );
 
     return ( await _historyItemServiceClient.getHistory(history_item_pbgrpc.HistoryItemGetRequest()..systemModuleIndex = SystemModule.objectives.index )).history.map((m) =>
     HistoryItem()
       ..readFromProtoBuf(m)).toList();
 
+  }
+
+  /// Soft Delete an [Objective]
+  void softDeleteObjective(Objective objective) async {
+    try {
+      await _objectiveServiceClient.softDeleteObjective(objective.writeToProtoBuf());
+    } catch (e) {
+      rethrow;
+    }
   }
 }

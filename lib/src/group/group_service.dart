@@ -21,8 +21,10 @@ class GroupService {
   group_pbgrpc.GroupServiceClient _groupServiceClient;
 
   GroupService(this._augeApiService) {
+
     _groupServiceClient =
         group_pbgrpc.GroupServiceClient(_augeApiService.channel);
+
   }
 
   /// Return a list of [Group]
@@ -41,6 +43,16 @@ class GroupService {
   }
 
   /// Delete an [Group]
+  Future softDeleteGroup(Group group) async {
+    try {
+      await _groupServiceClient.softDeleteGroup(group.writeToProtoBuf());
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Delete an [Group]
+/*
   Future deleteGroup(String id) async {
     try {
       //TODO need to pass group data to log history, when it will be implemented.
@@ -49,6 +61,7 @@ class GroupService {
       rethrow;
     }
   }
+ */
 
   /// Save (create or update) an [Group]
   void saveGroup(Group group) async {

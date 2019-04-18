@@ -14,6 +14,7 @@ import 'package:angular_components/laminate/components/modal/modal.dart';
 import 'package:angular_components/laminate/overlay/module.dart';
 import 'package:angular_components/material_dialog/material_dialog.dart';
 import 'package:angular_components/material_button/material_button.dart';
+import 'package:angular_components/material_button/material_fab.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
 import 'package:angular_components/material_select/material_dropdown_select.dart';
 import 'package:angular_components/model/selection/selection_model.dart';
@@ -26,6 +27,7 @@ import 'package:angular_components/material_datepicker/module.dart';
 import 'package:angular_components/model/date/date.dart';
 import 'package:angular_components/utils/browser/window/module.dart';
 import 'package:angular_components/material_input/material_input.dart';
+import 'package:angular_components/material_input/material_auto_suggest_input.dart';
 import 'package:angular_components/focus/focus_item.dart';
 import 'package:angular_components/focus/focus_list.dart';
 import 'package:angular_components/material_list/material_list.dart';
@@ -57,10 +59,12 @@ import 'work_item_detail_component.template.dart' as work_item_detail_component;
       coreDirectives,
       routerDirectives,
       materialInputDirectives,
+      MaterialAutoSuggestInputComponent,
       AutoFocusDirective,
       MaterialDialogComponent,
       ModalComponent,
       MaterialButtonComponent,
+      MaterialFabComponent,
       MaterialIconComponent,
       MaterialDropdownSelectComponent,
       DropdownSelectValueAccessor,

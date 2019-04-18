@@ -30,19 +30,32 @@ class InitiativeService {
   }
 
   /// Return a list of [Initiative]
-  Future<List<Initiative>> getInitiatives(String organizationId, {String objectiveId, bool withWorkItems, bool withProfile}) async {
+  Future<List<Initiative>> getInitiatives(String organizationId, {String objectiveId, bool withWorkItems = false, bool withProfile = false}) async {
     //-- return await _augeApiService.initiativeAugeApi.getInitiatives(organizationId, objectiveId: objectiveId, withWorkItems: withWorkItems);
-    return (await _initiativeServiceClient.getInitiatives(
-        initiative_pbgrpc.InitiativeGetRequest()
-          ..organizationId = organizationId
-          ..objectiveId = objectiveId
-          ..withWorkItems = withWorkItems
-          ..withProfile = withProfile)).initiatives.map((i) =>
+    initiative_pbgrpc.InitiativeGetRequest initiativeGetRequest = initiative_pbgrpc.InitiativeGetRequest();
+    initiativeGetRequest.organizationId = organizationId;
+    if (objectiveId != null) {
+      initiativeGetRequest.objectiveId = objectiveId;
+    }
+    initiativeGetRequest.withWorkItems = withWorkItems;
+    initiativeGetRequest.withProfile = withProfile;
+
+    return (await _initiativeServiceClient.getInitiatives(initiativeGetRequest)).initiatives.map((i) =>
     Initiative()
       ..readFromProtoBuf(i)).toList();
   }
 
   /// Delete an [Initiative]
+  void softDeleteInitiative(Initiative initiative) async {
+    try {
+      await _initiativeServiceClient.softDeleteInitiative(initiative.writeToProtoBuf());
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Delete an [Initiative]
+/*
   void deleteInitiative(String id) async {
     try {
       //TODO pass initiative instead id to log history, when it implemented.
@@ -51,6 +64,7 @@ class InitiativeService {
       rethrow;
     }
   }
+*/
 
   /// Return a list of [State]
   Future<List<State>> getStates() async {

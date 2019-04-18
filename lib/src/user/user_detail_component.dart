@@ -53,7 +53,7 @@ import 'package:auge_web/services/common_service.dart' as common_service;
     ])
 
 /// Component uses to add and edit an [User] and [UserProfile]
-class UserDetailComponent extends Object implements OnInit {
+class UserDetailComponent /*extends Object*/ implements OnInit {
 
   /// Entry user to edit. If new, this should be null
   @Input()
@@ -63,13 +63,13 @@ class UserDetailComponent extends Object implements OnInit {
 
   /// Publishes events when close.
   @Output()
-  Stream<void> get close => _closeController.stream;
+  Stream<void> get closed => _closeController.stream;
 
   final _saveController = new StreamController<User>.broadcast(sync: true);
 
   /// Publishes events when save.
   @Output()
-  Stream<User> get save => _saveController.stream;
+  Stream<User> get saved => _saveController.stream;
 
   final AuthService _authService;
   final UserService _userService;
@@ -114,12 +114,18 @@ class UserDetailComponent extends Object implements OnInit {
 
   @override
   void ngOnInit() async {
+
+    //created as new here, even if it is later replaced by a query, because the query may take a while and the Angular will continue to process, causing an exception if the object does not exist
+    user = User();
     if (selectedUser != null) {
       // Clone objective
      // user = selectedUser.clone();
 
       try {
-        List<UserProfileOrganization> userProfileOrganizations = await _userService.getUsersProfileOrganizations(user.id, _authService.selectedOrganization.id);
+
+        user = await _userService.getUser(selectedUser.id);
+
+        List<UserProfileOrganization> userProfileOrganizations = await _userService.getUsersProfileOrganizations(selectedUser.id, _authService.selectedOrganization.id);
 
         if (userProfileOrganizations.isNotEmpty) {
           userProfileOrganization = userProfileOrganizations.first;
@@ -129,7 +135,6 @@ class UserDetailComponent extends Object implements OnInit {
         rethrow;
       }
     } else {
-      user = User();
       user.userProfile.idiomLocale = Intl.defaultLocale;
 
       userProfileOrganization = UserProfileOrganization();

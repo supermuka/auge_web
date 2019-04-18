@@ -7,7 +7,6 @@ import 'package:angular/core.dart';
 
 import 'package:auge_server/model/general/user.dart';
 import 'package:auge_server/model/general/user_profile_organization.dart';
-import 'package:auge_server/message/created_message.dart';
 
 import 'package:auge_web/services/auge_api_service.dart';
 import 'package:auge_server/src/protos/generated/general/common.pbgrpc.dart' as common_pbgrpc;
@@ -27,12 +26,19 @@ class UserService {
   }
 
   /// Return [User] list by Organization [id]
-  Future<List<User>> getUsers(String organizationId, {bool withProfile}) async {
+  Future<List<User>> getUsers(String organizationId, {bool withProfile = false}) async {
     // return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
     return (await _userServiceClient.getUsers(
         user_pbgrpc.UserGetRequest()..organizationId = organizationId..withProfile = withProfile)).users.map((m) =>
     User()
       ..readFromProtoBuf(m)).toList();
+  }
+
+  /// Return [User] list by Organization [id]
+  Future<User> getUser(String id, {bool withProfile = false}) async {
+    // return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
+    return User()..readFromProtoBuf((await _userServiceClient.getUser(
+        user_pbgrpc.UserGetRequest()..id = id..withProfile = withProfile)));
   }
 
   Future<List<UserProfileOrganization>> getUsersProfileOrganizations(String userId, String organizationId) async {
@@ -83,15 +89,16 @@ class UserService {
     }
   }
 
-  /// Delete an [User]
-  void deleteUser(User user) async {
+  /// Soft Delete an [User]
+  void softDeleteUser(User user) async {
     try {
-      await _userServiceClient.deleteUser(user.writeToProtoBuf());
+        await _userServiceClient.softDeleteUser(user.writeToProtoBuf());
     } catch (e) {
       rethrow;
     }
   }
 
+  /*
   /// Delete an [UserProfileOrganization]
   void deleteUserProfileOrganization(UserProfileOrganization userProfileOrganization) async {
     try {
@@ -110,4 +117,6 @@ class UserService {
       rethrow;
     }
   }
+
+   */
 }

@@ -1,7 +1,6 @@
 import 'package:angular/core.dart';
 
 import 'package:auge_server/model/initiative/work_item.dart';
-import 'package:auge_server/message/created_message.dart';
 
 import 'package:auge_web/services/auge_api_service.dart';
 
@@ -19,10 +18,10 @@ class WorkItemService {
 
   }
 
-  /// Delete a [WorkItem]
-  void deleteWorkItem(WorkItem workItem) async {
+  /// Soft Delete a [WorkItem]
+  void softDeleteWorkItem(String initiativeId, WorkItem workItem) async {
     try {
-      await _workItemServiceClient.deleteWorkItem(workItem.writeToProtoBuf());
+      await _workItemServiceClient.softDeleteWorkItem(workItem.writeToProtoBuf()..initiativeId = initiativeId);
     } catch (e) {
 
       rethrow;

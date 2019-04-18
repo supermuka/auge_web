@@ -17,7 +17,6 @@
                                          [popupMatchInputWidth]="true"
                                          [trailingGlyph]="'search'"
                                          [rightAlign]="false"
-                                         [shouldClearOnSelection]="false"
                                          [label]="groupLabel"
                                          [floatingLabel]="true"
                                          [emptyPlaceholder]="noMatchLabel"
@@ -34,8 +33,7 @@
                     <material-datepicker [(date)]="startDate"
                                          [minDate]="limitToDateRange.start"
                                          [maxDate]="limitToDateRange.end"
-                                         [required]="false"
-                                         [supportsClearRange]="true">
+                                         [required]="false">
                     </material-datepicker>
                 </label>
             </div>
@@ -45,8 +43,7 @@
                     <material-datepicker [(date)]="endDate"
                                          [minDate]="limitToDateRange.start"
                                          [maxDate]="limitToDateRange.end"
-                                         [required]="false"
-                                         [supportsClearRange]="true">
+                                         [required]="false">
                     </material-datepicker>
                 </label>
             </div>
@@ -58,7 +55,6 @@
                                          [popupMatchInputWidth]="true"
                                          [trailingGlyph]="leadingGlyph"
                                          [rightAlign]="false"
-                                         [shouldClearOnSelection]="false"
                                          [label]="alignedToLabel"
                                          [floatingLabel]="true"
                                          [emptyPlaceholder]="noMatchLabel"
@@ -75,7 +71,6 @@
                                          [popupMatchInputWidth]="true"
                                          [trailingGlyph]="leadingGlyph"
                                          [rightAlign]="false"
-                                         [shouldClearOnSelection]="false"
                                          [label]="leaderLabel"
                                          [floatingLabel]="true"
                                          [emptyPlaceholder]="noMatchLabel"

@@ -22,7 +22,6 @@ import 'package:angular_components/model/ui/has_renderer.dart';
 import 'package:auge_server/model/objective/measure.dart';
 
 import 'package:auge_web/message/messages.dart';
-import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/measure/measure_service.dart';
 
 @Component(
@@ -47,7 +46,6 @@ import 'package:auge_web/src/measure/measure_service.dart';
 
 class MeasureDetailComponent extends Object implements OnInit {
 
-  final AuthService _authService;
   final MeasureService _measureService;
 
   @Input()
@@ -60,13 +58,13 @@ class MeasureDetailComponent extends Object implements OnInit {
 
   /// Publishes events when close.
   @Output()
-  Stream<void> get close => _closedController.stream;
+  Stream<void> get closed => _closedController.stream;
 
   final _savedController = new StreamController<void>.broadcast(sync: true);
 
   /// Publishes events when save.
   @Output()
-  Stream<void> get save => _savedController.stream;
+  Stream<void> get saved => _savedController.stream;
 
   Measure measure = Measure();
 
@@ -84,7 +82,7 @@ class MeasureDetailComponent extends Object implements OnInit {
  // List errorControl = [];
  // bool validInput = false;
 
-  MeasureDetailComponent(this._authService, this._measureService) {
+  MeasureDetailComponent(this._measureService) {
     measureUnitSingleSelectModel = SelectionModel.single();
   }
 

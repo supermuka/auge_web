@@ -104,23 +104,18 @@ class AuthComponent extends Object with OnActivate  {
         dialogError = AuthMsg.informEMailPasswordCorrectlyMsg();
       } else {
         try {
-
           _authService.authenticatedUser =
               await _authService.getAuthenticatedUserWithEmail(eMail, passwordStr);
           if (_authService.authenticatedUser == null) {
             dialogError = AuthMsg.userNotFoundMsg();
           } else {
-
-
             _authService.authorizedOrganizations =
             await _authService.getAuthorizedOrganizationsByUserId(
                 _authService.authenticatedUser.id);
-
             if (_authService.authorizedOrganizations == null ||
                 _authService.authorizedOrganizations.length == 0) {
               dialogError = AuthMsg.organizationNotFoundMsg();
             } else {
-
               configOrganizationSeletion();
               // Don't cancel
               return false;

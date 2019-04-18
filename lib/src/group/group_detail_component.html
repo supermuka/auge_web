@@ -25,7 +25,6 @@
                                          [popupMatchInputWidth]="true"
                                          [trailingGlyph]="'search'"
                                          [rightAlign]="false"
-                                         [shouldClearOnSelection]="false"
                                          [label]="superGroupLabel"
                                          [floatingLabel]="true"
                                          [emptyPlaceholder]="noMatchLabel"
@@ -42,7 +41,6 @@
                                          [popupMatchInputWidth]="true"
                                          [trailingGlyph]="'search'"
                                          [rightAlign]="false"
-                                         [shouldClearOnSelection]="false"
                                          [label]="leaderLabel"
                                          [floatingLabel]="true"
                                          [emptyPlaceholder]="noMatchLabel"
@@ -59,7 +57,6 @@
                                          [filterSuggestions]="true"
                                          [popupMatchInputWidth]="true"
                                          [leadingGlyph]="'search'"
-                                         [shouldClearOnSelection]="true"
                                          [label]="membersLabel"
                                          [emptyPlaceholder]="noMatchLabel"
                                          [selection]="memberSingleSelectModel"
@@ -70,7 +67,7 @@
             </material-auto-suggest-input>
         </div>
         <div class="w3-row">
-            <material-chips [removeable]="true" *ngFor="let member of group?.members">
+            <material-chips *ngFor="let member of group?.members">
                 <material-chip [hasLeftIcon]="true" (remove)="removeMember(member)">
                     <div left-icon class="avatar" [style.background-image]="'url(' +  userUrlImage(member)  + ')'"></div>
                     {{member?.name}}

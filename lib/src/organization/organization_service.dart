@@ -8,7 +8,6 @@ import 'package:angular/core.dart';
 import 'package:auge_server/model/general/organization.dart';
 
 import 'package:auge_web/services/auge_api_service.dart';
-import 'package:auge_server/src/protos/generated/google/protobuf/empty.pb.dart' as empty_pb;
 import 'package:auge_server/src/protos/generated/general/common.pbgrpc.dart' as common_pbgrpc;
 import 'package:auge_server/src/protos/generated/general/organization.pbgrpc.dart' as organization_pbgrpc;
 
@@ -52,6 +51,17 @@ class OrganizationService {
     }
   }
 
+  /// Soft Delete an [Organization]
+  void softDeleteOrganization(Organization organization) async {
+    try {
+      await _organizationServiceClient.softDeleteOrganization(organization.writeToProtoBuf());
+    } catch (e) {
+      print('${e.runtimeType}, ${e}');
+      rethrow;
+    }
+  }
+
+  /*
   /// Delete an [Organization]
   void deleteOrganization(Organization organization) async {
     try {
@@ -61,4 +71,5 @@ class OrganizationService {
       rethrow;
     }
   }
+  */
 }

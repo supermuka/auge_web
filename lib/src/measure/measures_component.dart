@@ -24,7 +24,6 @@ import 'package:auge_web/src/measure/measure_detail_component.dart';
 import 'package:auge_web/src/measure/measure_progress_component.dart';
 import 'package:auge_web/src/measure/measure_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
-import 'package:auge_web/src/auth/auth_service.dart';
 
 @Component(
     selector: 'auge-measures',
@@ -53,7 +52,6 @@ import 'package:auge_web/src/auth/auth_service.dart';
 
 class MeasuresComponent extends Object {
 
-  final AuthService _authService;
   final MeasureService _measureService;
   final ObjectiveService _objectiveService;
 
@@ -69,7 +67,7 @@ class MeasuresComponent extends Object {
   //Map<Measure, bool> expandedControl = Map();
 
   MenuModel<MenuItem> menuModel;
-  MeasuresComponent(this._authService, this._measureService, this._objectiveService) {
+  MeasuresComponent(this._measureService, this._objectiveService) {
     menuModel = new MenuModel([new MenuItemGroup(
         [new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => detailVisible = true),
         new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete()),
@@ -90,14 +88,7 @@ class MeasuresComponent extends Object {
   void delete() async {
     try {
 
-      // Created just to pass instance from TimelineItem. No addition data is need, just [id, isDeleted and deletedBy].
-      Measure measureDeleted = new Measure();
-      measureDeleted.id = selectedMeasure.id;
-      measureDeleted.isDeleted = true;
-
-      //--measureDeleted.lastHistoryItem.setClientSideValues(user: _authService.authenticatedUser, changedValues: MeasureFacilities.differenceToJson(measureDeleted, selectedMeasure));
-
-      await _measureService.saveMeasure(objective.id, measureDeleted);
+      await _measureService.softDeleteMeasure(objective.id, selectedMeasure);
       objective.measures.remove(selectedMeasure);
 
     } catch (e) {

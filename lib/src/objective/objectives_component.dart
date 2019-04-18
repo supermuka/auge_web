@@ -146,15 +146,7 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
   void delete() async {
     try {
 
-      // Created to pass data to delete and instance from TimelineItem. No addition data is need, just [id, isDeleted and deletedBy].
-      Objective objectiveDeleted = new Objective()
-        ..id = selectedObjective.id
-        ..isDeleted = true;
-
-     //TODO mitration to grpc
-      // objectiveDeleted.lastHistoryItem.setClientSideValues(user: _authService.authenticatedUser, description: selectedObjective.name, changedValues: ObjectiveFacilities.differenceToJson(objectiveDeleted, selectedObjective));
-
-      await _objectiveService.saveObjective(objectiveDeleted);
+      await _objectiveService.softDeleteObjective(selectedObjective);
       objectives.remove(selectedObjective);
       //objectives.timeline = await _objectiveService.getTimeline(objective.id);
     } catch (e) {

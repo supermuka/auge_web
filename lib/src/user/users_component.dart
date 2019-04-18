@@ -13,6 +13,8 @@ import 'package:angular_components/model/menu/menu.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel_set.dart';
 
+import 'package:angular_components/content/deferred_content.dart';
+
 import 'package:auge_server/model/general/user.dart';
 
 import 'package:auge_web/message/messages.dart';
@@ -26,7 +28,7 @@ import 'package:auge_web/services/common_service.dart' as common_service;
 
 @Component(
     selector: 'auge-users',
-    providers: const [UserService],
+    providers: const [DeferredContentDirective, UserService],
     directives: const [
       coreDirectives,
       routerDirectives,
@@ -87,9 +89,11 @@ class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
 
   void delete() {
     try {
-      _userService.deleteUserProfileOrganizationByUserId(selectedUser.id);
+    //  _userService.deleteUserProfileOrganizationByUserId(selectedUser.id);
 
-      _userService.deleteUser(selectedUser);
+      // Delete user and userProfileOrganization
+      _userService.softDeleteUser(selectedUser);
+
       users.remove(selectedUser);
     } catch (e) {
      // print('${e.runtimeType}, ${e}');
@@ -114,7 +118,8 @@ class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
     if (selectedUser == null) {
       _users.add(user);
     } else {
-     // user.cloneTo(_users[_users.indexOf(selectedUser)]);
+      _users[_users.indexOf(selectedUser)] = user;
+   //   user.cloneTo(_users[_users.indexOf(selectedUser)]);
     }
   }
 }

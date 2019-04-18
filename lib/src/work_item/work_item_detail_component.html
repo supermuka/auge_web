@@ -46,7 +46,6 @@
                     [filterSuggestions]="true"
                     [popupMatchInputWidth]="true"
                     [leadingGlyph]="leadingGlyph"
-                    [shouldClearOnSelection]="true"
                     [label]="assignedToLabel"
                     [emptyPlaceholder]="noMatchLabel"
                     [selection]="memberSingleSelectModel"
@@ -57,7 +56,7 @@
             </material-auto-suggest-input>
         </div>
         <div class="w3-row">
-            <material-chips [removeable]="true" *ngFor="let member of workItem?.assignedTo">
+            <material-chips *ngFor="let member of workItem?.assignedTo">
                 <material-chip [hasLeftIcon]="true" (remove)="removeMember(member)">
                     <div left-icon class="avatar" [style.background-image]="'url(' +  userUrlImage(member)  + ')'"></div>
                     {{member?.name}}

@@ -73,12 +73,11 @@ class MeasureService {
 
   /// Return an [MeasureProgress] by id [MeasureProgress.id]
   Future<MeasureProgress> getMeasureProgressById(String measureProgressId) async {
-
+    measure_pbgrpc.MeasureProgress measureProgressPb;
       try {
-        measure_pbgrpc.MeasureProgress measureProgressPb = await _measureServiceClient
+        measureProgressPb = await _measureServiceClient
             .getMeasureProgress(measure_pbgrpc.MeasureProgressGetRequest()..id = measureProgressId);
 
-        return MeasureProgress()..readFromProtoBuf(measureProgressPb);
       } on GrpcError {
         /*--
       } on DetailedApiRequestError catch (e) {
@@ -90,6 +89,7 @@ class MeasureService {
 
          */
       }
+      return MeasureProgress()..readFromProtoBuf(measureProgressPb);
   }
 
   /// Return [MeasureUnit] list
@@ -154,6 +154,15 @@ class MeasureService {
        await _measureServiceClient
             .updateMeasureProgress((measureProgress.writeToProtoBuf())..measureId = measureId);
 
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Soft Delete a [Measure]
+  void softDeleteMeasure(String objectiveId, Measure measure) async {
+    try {
+      await _measureServiceClient.softDeleteMeasure(measure.writeToProtoBuf()..objectiveId = objectiveId);
     } catch (e) {
       rethrow;
     }

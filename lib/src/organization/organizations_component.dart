@@ -104,7 +104,7 @@ class OrganizationsComponent extends Object implements OnActivate, OnDestroy  {
 
   void delete() {
     try {
-      _organizationService.deleteOrganization(selectedOrganization);
+      _organizationService.softDeleteOrganization(selectedOrganization);
       _organizations.remove(selectedOrganization);
     } catch (e) {
       rethrow;

@@ -9,6 +9,8 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
+import 'package:angular_forms/angular_forms.dart';
+
 import 'package:angular_components/material_expansionpanel/material_expansionpanel_set.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
@@ -43,6 +45,7 @@ import 'package:auge_web/src/work_item/work_item_detail_component.dart';
       DeferredContentDirective,
       MaterialMenuComponent,
       WorkItemDetailComponent,
+      NgModel
     ],
     pipes: const [commonPipes],
     templateUrl: 'work_items_kanban_component.html',
@@ -129,7 +132,7 @@ class WorkItemsKanbanComponent extends Object implements OnInit {
 
   void delete() async {
     try {
-      await _workItemService.deleteWorkItem(selectedWorkItem);
+      await _workItemService.softDeleteWorkItem(initiative.id, selectedWorkItem);
       initiative.workItems.remove(selectedWorkItem);
     } catch (e) {
       rethrow;
