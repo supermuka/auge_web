@@ -142,11 +142,11 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
     selectedObjective = objective;
   }
 
-  /// Call a soft (logic) delete
+  /// Call delete
   void delete() async {
     try {
 
-      await _objectiveService.softDeleteObjective(selectedObjective);
+      await _objectiveService.deleteObjective(selectedObjective);
       objectives.remove(selectedObjective);
       //objectives.timeline = await _objectiveService.getTimeline(objective.id);
     } catch (e) {

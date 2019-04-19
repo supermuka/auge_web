@@ -58,9 +58,9 @@ class GroupService {
   }
 
   /// Delete an [Group]
-  Future softDeleteGroup(Group group) async {
+  Future deleteGroup(Group group) async {
     try {
-      await _groupServiceClient.softDeleteGroup(group.writeToProtoBuf());
+      await _groupServiceClient.deleteGroup(group.writeToProtoBuf());
     } catch (e) {
       rethrow;
     }

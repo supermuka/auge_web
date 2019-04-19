@@ -92,7 +92,7 @@ class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
     //  _userService.deleteUserProfileOrganizationByUserId(selectedUser.id);
 
       // Delete user and userProfileOrganization
-      await _userService.softDeleteUser(selectedUser);
+      await _userService.deleteUser(selectedUser);
 
       users.remove(selectedUser);
     } catch (e) {

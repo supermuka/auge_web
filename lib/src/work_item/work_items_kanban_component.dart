@@ -132,7 +132,7 @@ class WorkItemsKanbanComponent extends Object implements OnInit {
 
   void delete() async {
     try {
-      await _workItemService.softDeleteWorkItem(initiative.id, selectedWorkItem);
+      await _workItemService.deleteWorkItem(initiative.id, selectedWorkItem);
       initiative.workItems.remove(selectedWorkItem);
     } catch (e) {
       rethrow;

@@ -214,8 +214,6 @@ class ObjectiveDetailComponent extends Object implements OnInit {
   void saveObjective() async {
     try {
 
-      objective.isDeleted = false;
-
       // History item definition
       //TODO migration protobuf objective.lastHistoryItem.setClientSideValues(user: _authService.authenticatedUser, description: objective.name, changedValues: ObjectiveFacilities.differenceToJson(objective, selectedObjective));
       await _objectiveService.saveObjective(objective);

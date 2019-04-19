@@ -49,13 +49,13 @@ class OrganizationDetailComponent extends Object implements OnInit {
 
   /// Publishes events when close.
   @Output()
-  Stream<void> get close => _closeController.stream;
+  Stream<void> get closed => _closeController.stream;
 
-  final _saveController = new StreamController<Organization>.broadcast(sync: true);
+  final _saveController = new StreamController<String>.broadcast(sync: true);
 
   /// Publishes events when save.
   @Output()
-  Stream<Organization> get save => _saveController.stream;
+  Stream<String> get saved => _saveController.stream;
 
   /// When it exists, the error/exception message is presented into dialog view.
   String dialogError;
@@ -74,20 +74,18 @@ class OrganizationDetailComponent extends Object implements OnInit {
   static final String closeButtonLabel = CommonMsg.buttonLabel('Close');
 
   @override
-  void ngOnInit() {
-    if (selectedOrganization != null) {
+  void ngOnInit() async {
+    if (selectedOrganization != null)  {
       // Clone objective
       // organization = selectedOrganization.clone();
-
-    } else {
-      // objective.organization = _authService.selectedOrganization;
+      organization = await _organizationService.getOrganization(selectedOrganization.id);
     }
   }
 
   void saveOrganization() {
     try {
       _organizationService.saveOrganization(organization);
-      _saveController.add(organization);
+      _saveController.add(organization.id);
       closeDetail();
     } catch (e) {
       dialogError = e.toString();

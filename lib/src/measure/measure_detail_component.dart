@@ -139,7 +139,6 @@ class MeasureDetailComponent extends Object implements OnInit {
   void saveMeasure() async {
     try {
 
-      measure.isDeleted = false;
       //--measure.lastHistoryItem.setClientSideValues(user: _authService.authenticatedUser, description: measure.name, changedValues: MeasureFacilities.differenceToJson(measure, selectedMeasure));
 
       await _measureService.saveMeasure(objectiveId, measure);

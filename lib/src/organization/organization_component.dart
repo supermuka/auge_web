@@ -9,9 +9,11 @@ import 'package:auge_server/model/general/organization.dart';
 import 'package:auge_web/message/messages.dart';
 import 'package:auge_web/src/organization/organization_detail_component.dart';
 import 'package:auge_web/src/organization/organization_service.dart';
-import 'package:auge_web/services/app_routes.dart';
+
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
+
+import 'package:auge_web/services/app_routes.dart';
 
 @Component(
   selector: 'auge-organization',
@@ -28,6 +30,7 @@ class OrganizationComponent extends Object with CanReuse implements OnActivate {
 
   final AuthService _authService;
   final AppLayoutService _appLayoutService;
+  final OrganizationService _organizationService;
   final Router _router;
 
   final Location _location;
@@ -36,10 +39,9 @@ class OrganizationComponent extends Object with CanReuse implements OnActivate {
 
   Organization selectedOrganization;
 
-  OrganizationComponent(this._authService, this._appLayoutService,
+  OrganizationComponent(this._authService, this._appLayoutService, this._organizationService,
        this._location, this._router) {
   }
-
 
   void onActivate(RouterState routeStatePrevious, RouterState routeStateCurrent) async {
     if (_authService.selectedOrganization == null || _authService.authenticatedUser == null) {
@@ -52,15 +54,11 @@ class OrganizationComponent extends Object with CanReuse implements OnActivate {
     selectedOrganization = _authService.selectedOrganization;
 
     viewDetail(true);
-
   }
 
-  void changeOrganizationDetail(Organization organization) {
-    if (selectedOrganization == null) {
-      selectedOrganization = organization;
-    } else {
-      // organization.cloneTo(selectedOrganization);
-    }
+  void changeOrganizationDetail(String organizationId) async {
+    selectedOrganization = await _organizationService.getOrganization(organizationId);
+    viewDetail(false);
   }
 
   void viewDetail(bool detailVisible) {

@@ -21,6 +21,13 @@ class OrganizationService {
     _organizationServiceClient = organization_pbgrpc.OrganizationServiceClient(_augeApiService.channel);
   }
 
+  /// Return an [Organization]
+  Future<Organization> getOrganization(String organizationId) async {
+    //return _augeApiService.augeApi.getOrganizations();
+    return (Organization()..readFromProtoBuf(await _organizationServiceClient.getOrganization(
+        organization_pbgrpc.OrganizationGetRequest()..id = organizationId)));
+  }
+
   /// Return a list of [Organization]
   Future<List<Organization>> getOrganizations() async {
     //return _augeApiService.augeApi.getOrganizations();
@@ -51,10 +58,10 @@ class OrganizationService {
     }
   }
 
-  /// Soft Delete an [Organization]
-  void softDeleteOrganization(Organization organization) async {
+  /// Delete an [Organization]
+  void deleteOrganization(Organization organization) async {
     try {
-      await _organizationServiceClient.softDeleteOrganization(organization.writeToProtoBuf());
+      await _organizationServiceClient.deleteOrganization(organization.writeToProtoBuf());
     } catch (e) {
       print('${e.runtimeType}, ${e}');
       rethrow;

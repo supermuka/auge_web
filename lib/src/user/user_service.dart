@@ -90,9 +90,9 @@ class UserService {
   }
 
   /// Soft Delete an [User]
-  void softDeleteUser(User user) async {
+  void deleteUser(User user) async {
     try {
-        await _userServiceClient.softDeleteUser(user.writeToProtoBuf());
+        await _userServiceClient.deleteUser(user.writeToProtoBuf());
     } catch (e) {
       rethrow;
     }

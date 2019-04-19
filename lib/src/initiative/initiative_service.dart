@@ -46,9 +46,9 @@ class InitiativeService {
   }
 
   /// Delete an [Initiative]
-  void softDeleteInitiative(Initiative initiative) async {
+  void deleteInitiative(Initiative initiative) async {
     try {
-      await _initiativeServiceClient.softDeleteInitiative(initiative.writeToProtoBuf());
+      await _initiativeServiceClient.deleteInitiative(initiative.writeToProtoBuf());
     } catch (e) {
       rethrow;
     }

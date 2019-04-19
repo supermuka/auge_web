@@ -18,10 +18,10 @@ class WorkItemService {
 
   }
 
-  /// Soft Delete a [WorkItem]
-  void softDeleteWorkItem(String initiativeId, WorkItem workItem) async {
+  /// Delete a [WorkItem]
+  void deleteWorkItem(String initiativeId, WorkItem workItem) async {
     try {
-      await _workItemServiceClient.softDeleteWorkItem(workItem.writeToProtoBuf()..initiativeId = initiativeId);
+      await _workItemServiceClient.deleteWorkItem(workItem.writeToProtoBuf()..initiativeId = initiativeId);
     } catch (e) {
 
       rethrow;

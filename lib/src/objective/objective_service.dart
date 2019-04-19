@@ -140,10 +140,10 @@ class ObjectiveService {
 
   }
 
-  /// Soft Delete an [Objective]
-  void softDeleteObjective(Objective objective) async {
+  /// Delete an [Objective]
+  void deleteObjective(Objective objective) async {
     try {
-      await _objectiveServiceClient.softDeleteObjective(objective.writeToProtoBuf());
+      await _objectiveServiceClient.deleteObjective(objective.writeToProtoBuf());
     } catch (e) {
       rethrow;
     }

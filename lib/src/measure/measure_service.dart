@@ -159,10 +159,10 @@ class MeasureService {
     }
   }
 
-  /// Soft Delete a [Measure]
-  void softDeleteMeasure(String objectiveId, Measure measure) async {
+  /// Delete a [Measure]
+  void deleteMeasure(String objectiveId, Measure measure) async {
     try {
-      await _measureServiceClient.softDeleteMeasure(measure.writeToProtoBuf()..objectiveId = objectiveId);
+      await _measureServiceClient.deleteMeasure(measure.writeToProtoBuf()..objectiveId = objectiveId);
     } catch (e) {
       rethrow;
     }

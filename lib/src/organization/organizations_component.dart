@@ -104,7 +104,7 @@ class OrganizationsComponent extends Object implements OnActivate, OnDestroy  {
 
   void delete() {
     try {
-      _organizationService.softDeleteOrganization(selectedOrganization);
+      _organizationService.deleteOrganization(selectedOrganization);
       _organizations.remove(selectedOrganization);
     } catch (e) {
       rethrow;
@@ -115,10 +115,12 @@ class OrganizationsComponent extends Object implements OnActivate, OnDestroy  {
     this.detailVisible = detailVisible;
   }
 
-  void changeListItemDetail(Organization organization) {
+  void changeListItemDetail(String organizationId) async {
+    Organization organization = await _organizationService.getOrganization(organizationId);
     if (selectedOrganization == null) {
       organizations.add(organization);
     } else {
+      organizations[organizations.indexOf(selectedOrganization)] = organization;
      // organization.cloneTo(organizations[organizations.indexOf(selectedOrganization)]);
     }
   }

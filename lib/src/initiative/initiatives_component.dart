@@ -160,7 +160,7 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
 
   void delete() async {
     try {
-      await _initiativeService.softDeleteInitiative(selectedInitiative);
+      await _initiativeService.deleteInitiative(selectedInitiative);
       expandedControl.remove(selectedInitiative);
       initiatives.remove(selectedInitiative);
 
