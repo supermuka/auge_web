@@ -65,11 +65,11 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
   @Output()
   Stream<void> get closed => _closeController.stream;
 
-  final _saveController = new StreamController<User>.broadcast(sync: true);
+  final _saveController = new StreamController<String>.broadcast(sync: true);
 
   /// Publishes events when save.
   @Output()
-  Stream<User> get saved => _saveController.stream;
+  Stream<String> get saved => _saveController.stream;
 
   final AuthService _authService;
   final UserService _userService;
@@ -165,7 +165,7 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
         await _userService.saveUserProfileOrganization(userProfileOrganization);
       }
 
-      _saveController.add(user);
+      _saveController.add(user.id);
       closeDetail();
     } catch (e) {
       dialogError = e.toString();

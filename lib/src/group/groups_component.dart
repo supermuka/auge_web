@@ -111,10 +111,14 @@ class GroupsComponent extends Object /* with CanReuse */ implements OnActivate, 
     this.detailVisible = detailVisible;
   }
 
-  void changeListItemWithDetail(Group group) {
+  void changeListItemWithDetail(String groupId) async {
     if (selectedGroup == null) {
-      groups.add(group);
+      // groups.add(group);
+      groups.add( await _groupService.getGroup(groupId) );
     } else {
+      groups[groups.indexOf(selectedGroup)] = await _groupService.getGroup(groupId);
+      // groups[groups.indexOf(selectedGroup)] = group;
+
       // group.cloneTo(groups[groups.indexOf(selectedGroup)]);
     }
   }

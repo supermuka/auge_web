@@ -87,12 +87,12 @@ class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
     return _searchService?.searchTerm.toString().isEmpty ? _users : _users.where((t) => t.name.contains(_searchService.searchTerm)).toList();
   }
 
-  void delete() {
+  void delete() async {
     try {
     //  _userService.deleteUserProfileOrganizationByUserId(selectedUser.id);
 
       // Delete user and userProfileOrganization
-      _userService.softDeleteUser(selectedUser);
+      await _userService.softDeleteUser(selectedUser);
 
       users.remove(selectedUser);
     } catch (e) {
@@ -114,11 +114,11 @@ class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
     this.detailVisible = detailVisible;
   }
 
-  void changeListItemDetail(User user) {
+  void changeListItemDetail(String userId) async {
     if (selectedUser == null) {
-      _users.add(user);
+      _users.add( await _userService.getUser(userId));
     } else {
-      _users[_users.indexOf(selectedUser)] = user;
+      _users[_users.indexOf(selectedUser)] = await _userService.getUser(userId);
    //   user.cloneTo(_users[_users.indexOf(selectedUser)]);
     }
   }

@@ -33,7 +33,7 @@
             </material-expansionpanel>
         </div>
     </material-expansionpanel-set>
-    <auge-group-detail *ngIf="detailVisible == true" [selectedGroup]="selectedGroup" (save)="changeListItemWithDetail($event)" (close)="viewDetail(false)">
+    <auge-group-detail *ngIf="detailVisible == true" [selectedGroup]="selectedGroup" (saved)="changeListItemWithDetail($event)" (closed)="viewDetail(false)">
     </auge-group-detail>
 </div>
 

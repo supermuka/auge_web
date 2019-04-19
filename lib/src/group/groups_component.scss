@@ -3,18 +3,18 @@
 
 material-fab {
     /* position: absolute; */
-    position: fixed !important;
-    z-index: 9999999;
-    background-color: $mat-red;
-    color: $mat-white;
-    float: right;
-    right: 32px;
+  position: fixed !important;
+  z-index: 9999999;
+  background-color: $mat-red;
+  color: $mat-white;
+  float: right;
+  right: 32px;
 }
 
 .text-group-letter {
-    color: white; /* foi preciso colocar, senão não funcionava o mix-blend-mode */
-    mix-blend-mode: difference;
-    line-height: 40px; /* same height to parent - class avatar*/
+  color: white; /* foi preciso colocar, senão não funcionava o mix-blend-mode */
+  mix-blend-mode: difference;
+  line-height: 32px; /* same height to parent - class avatar*/
 }
 
 .custom-expansionpanel-panel-specific-name-width {

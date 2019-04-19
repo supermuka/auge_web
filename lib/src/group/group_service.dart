@@ -28,6 +28,21 @@ class GroupService {
   }
 
   /// Return a list of [Group]
+  Future<Group> getGroup(String groupId) async {
+    //--return _augeApiService.augeApi.getGroups(organizationId);
+
+    // Return a protobuf via grpc
+    group_pbgrpc
+        .Group groupPb = await _groupServiceClient
+        .getGroup(
+        group_pbgrpc.GroupGetRequest()
+          ..id = groupId);
+
+    // Create model from protobuf equivalent
+    return Group()..readFromProtoBuf(groupPb);
+  }
+
+  /// Return a list of [Group]
   Future<List<Group>> getGroups(String organizationId) async {
    //--return _augeApiService.augeApi.getGroups(organizationId);
 

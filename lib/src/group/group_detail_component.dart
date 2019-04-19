@@ -64,17 +64,17 @@ class GroupDetailComponent extends Object implements OnInit {
   @Input()
   Group selectedGroup;
 
-  final _closeController = new StreamController<void>.broadcast(sync: true);
+  final _closedController = new StreamController<void>.broadcast(sync: true);
 
   /// Publishes events when close.
   @Output()
-  Stream<void> get close => _closeController.stream;
+  Stream<void> get closed => _closedController.stream;
 
-  final _saveController = new StreamController<Group>.broadcast(sync: true);
+  final _savedController = new StreamController<String>.broadcast(sync: true);
 
   /// Publishes events when save.
   @Output()
-  Stream<Group> get save => _saveController.stream;
+  Stream<String> get saved => _savedController.stream;
 
   final AuthService _authService;
   final UserService _userService;
@@ -127,11 +127,14 @@ class GroupDetailComponent extends Object implements OnInit {
 
   @override
   void ngOnInit() async {
-      if (selectedGroup != null) {
+    //created as new here, even if it is later replaced by a query, because the query may take a while and the Angular will continue to process, causing an exception if the object does not exist
+    group = Group();
+    if (selectedGroup != null) {
       // Clone objective
       // group = selectedGroup.clone();
+      group = await _groupService.getGroup(selectedGroup.id);
     } else {
-      group = Group();
+
       group.organization = _authService.selectedOrganization;
       group.active = true;
     }
@@ -209,10 +212,10 @@ class GroupDetailComponent extends Object implements OnInit {
     }
   }
 
-  void saveGroup() {
+  void saveGroup() async {
     try {
-      _groupService.saveGroup(group);
-      _saveController.add(group);
+      await _groupService.saveGroup(group);
+      _savedController.add(group.id);
       closeDetail();
     } catch (e) {
       dialogError = e.toString();
@@ -221,7 +224,7 @@ class GroupDetailComponent extends Object implements OnInit {
   }
 
   void closeDetail() {
-    _closeController.add(null);
+    _closedController.add(null);
   }
 
   String get superGroupLabelRenderer {
