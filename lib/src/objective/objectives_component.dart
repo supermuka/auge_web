@@ -150,6 +150,7 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
       objectives.remove(selectedObjective);
       //objectives.timeline = await _objectiveService.getTimeline(objective.id);
     } catch (e) {
+      _appLayoutService.error = e.toString();
       rethrow;
     }
   }

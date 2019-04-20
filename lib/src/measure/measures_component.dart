@@ -24,6 +24,7 @@ import 'package:auge_web/src/measure/measure_detail_component.dart';
 import 'package:auge_web/src/measure/measure_progress_component.dart';
 import 'package:auge_web/src/measure/measure_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
+import 'package:auge_web/src/app_layout/app_layout_service.dart';
 
 @Component(
     selector: 'auge-measures',
@@ -52,6 +53,7 @@ import 'package:auge_web/src/objective/objective_service.dart';
 
 class MeasuresComponent extends Object {
 
+  final AppLayoutService _appLayoutService;
   final MeasureService _measureService;
   final ObjectiveService _objectiveService;
 
@@ -67,7 +69,7 @@ class MeasuresComponent extends Object {
   //Map<Measure, bool> expandedControl = Map();
 
   MenuModel<MenuItem> menuModel;
-  MeasuresComponent(this._measureService, this._objectiveService) {
+  MeasuresComponent(this._appLayoutService, this._measureService, this._objectiveService) {
     menuModel = new MenuModel([new MenuItemGroup(
         [new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => detailVisible = true),
         new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete()),
@@ -92,6 +94,7 @@ class MeasuresComponent extends Object {
       objective.measures.remove(selectedMeasure);
 
     } catch (e) {
+      _appLayoutService.error = e.toString();
       rethrow;
     }
   }

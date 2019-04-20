@@ -80,7 +80,7 @@ class OrganizationsComponent extends Object implements OnActivate, OnDestroy  {
     try {
       _organizations = await _organizationService.getOrganizations();
     } catch (e) {
-      error = e.toString();
+      _appLayoutService.error = e.toString();
       rethrow;
     }
 
@@ -107,6 +107,7 @@ class OrganizationsComponent extends Object implements OnActivate, OnDestroy  {
       _organizationService.deleteOrganization(selectedOrganization);
       _organizations.remove(selectedOrganization);
     } catch (e) {
+      _appLayoutService.error = e.toString();
       rethrow;
     }
   }

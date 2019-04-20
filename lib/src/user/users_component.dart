@@ -53,7 +53,7 @@ class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
   final Router _router;
 
   // Errors, exceptions shows up
-  String error;
+ // String error;
 
   List<User> _users;
 
@@ -78,7 +78,8 @@ class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
     try {
       _users = await _userService.getUsers(_authService.selectedOrganization?.id, withProfile: true);
     } catch (e) {
-      error = e.toString();
+      _appLayoutService.error = e.toString();
+      rethrow;
     }
   }
 
@@ -97,7 +98,7 @@ class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
       users.remove(selectedUser);
     } catch (e) {
      // print('${e.runtimeType}, ${e}');
-      error = e.toString();
+      _appLayoutService.error = e.toString();
       rethrow;
     }
   }
@@ -115,10 +116,11 @@ class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
   }
 
   void changeListItemDetail(String userId) async {
+    User user = await _userService.getUser(userId, withProfile: true);
     if (selectedUser == null) {
-      _users.add( await _userService.getUser(userId));
+      _users.add(user);
     } else {
-      _users[_users.indexOf(selectedUser)] = await _userService.getUser(userId);
+      _users[_users.indexOf(selectedUser)] = user;
    //   user.cloneTo(_users[_users.indexOf(selectedUser)]);
     }
   }

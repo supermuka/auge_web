@@ -272,7 +272,8 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
     return common_service.userUrlImage(_authService.authenticatedUser?.userProfile?.image);
   }
 
-  void changeUserDetail(User user) {
+  void changeUserDetail(String userId) {
+    _authService.refreshAuthenticatedUserById(userId);
     // user.cloneTo(_authService.authenticatedUser);
   }
 

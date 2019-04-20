@@ -3,6 +3,7 @@
 
 import 'dart:async';
 
+import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -53,6 +54,7 @@ import 'package:auge_web/src/work_item/work_item_detail_component.dart';
     ])
 class WorkItemsListComponent extends Object /* with CanReuse implements OnActivate  */ {
 
+  final AppLayoutService _appLayoutService;
   final WorkItemService _workItemService;
 
   @Input()
@@ -75,7 +77,7 @@ class WorkItemsListComponent extends Object /* with CanReuse implements OnActiva
 
   MenuModel<MenuItem> menuModel;
 
-  WorkItemsListComponent(this._workItemService) {
+  WorkItemsListComponent(this._appLayoutService, this._workItemService) {
     initializeDateFormatting(Intl.defaultLocale);
 
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
@@ -90,6 +92,7 @@ class WorkItemsListComponent extends Object /* with CanReuse implements OnActiva
       await _workItemService.deleteWorkItem(initiative.id, selectedWorkItem);
       initiative.workItems.remove(selectedWorkItem);
     } catch (e) {
+      _appLayoutService.error = e.toString();
       rethrow;
     }
   }
@@ -102,7 +105,7 @@ class WorkItemsListComponent extends Object /* with CanReuse implements OnActiva
     try {
       _workItemService.saveWorkItem(initiative.id, workItem);
     } catch (e) {
-      print('${e.runtimeType}, ${e}');
+      _appLayoutService.error = e.toString();
       rethrow;
     }
   }

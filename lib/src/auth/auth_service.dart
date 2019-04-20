@@ -12,6 +12,7 @@ import 'package:auge_server/model/general/authorization.dart';
 export 'package:auge_server/model/general/authorization.dart';
 
 import 'package:auge_server/src/protos/generated/general/user_profile_organization.pbgrpc.dart' as user_profile_organization_pbgrpc;
+import 'package:auge_server/src/protos/generated/general/user.pbgrpc.dart' as user_pbgrpc;
 
 import 'package:auge_web/services/auge_api_service.dart';
 
@@ -27,6 +28,7 @@ class AuthService  {
 
   final AugeApiService _augeApiService;
   user_profile_organization_pbgrpc.UserProfileOrganizationServiceClient _userProfileOrganizationServiceClient;
+  user_pbgrpc.UserServiceClient _userServiceClient;
 
   AuthService(this._augeApiService)  {
     _generalAuthorizationPolicy = GeneralAuthorizationPolicy();
@@ -34,6 +36,9 @@ class AuthService  {
 
     _userProfileOrganizationServiceClient =
         user_profile_organization_pbgrpc.UserProfileOrganizationServiceClient(this._augeApiService.channel);
+
+    _userServiceClient =
+        user_pbgrpc.UserServiceClient(this._augeApiService.channel);
   }
 
   /// Return an [Organization] list for an eMail.
@@ -104,6 +109,10 @@ class AuthService  {
 
       }
     return user;
+  }
+
+  void refreshAuthenticatedUserById(String userId) async {
+    authenticatedUser = User()..readFromProtoBuf(await _userServiceClient.getUser(user_pbgrpc.UserGetRequest()..id = userId..withProfile = true));
   }
 
   Organization get selectedOrganization => _selectedOrganization;

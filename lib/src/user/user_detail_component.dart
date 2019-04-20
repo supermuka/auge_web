@@ -59,17 +59,17 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
   @Input()
   User selectedUser;
 
-  final _closeController = new StreamController<void>.broadcast(sync: true);
+  final _closedController = new StreamController<void>.broadcast(sync: true);
 
   /// Publishes events when close.
   @Output()
-  Stream<void> get closed => _closeController.stream;
+  Stream<void> get closed => _closedController.stream;
 
-  final _saveController = new StreamController<String>.broadcast(sync: true);
+  final _savedController = new StreamController<String>.broadcast(sync: true);
 
   /// Publishes events when save.
   @Output()
-  Stream<String> get saved => _saveController.stream;
+  Stream<String> get saved => _savedController.stream;
 
   final AuthService _authService;
   final UserService _userService;
@@ -123,7 +123,7 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
 
       try {
 
-        user = await _userService.getUser(selectedUser.id);
+        user = await _userService.getUser(selectedUser.id, withProfile: true);
 
         List<UserProfileOrganization> userProfileOrganizations = await _userService.getUsersProfileOrganizations(selectedUser.id, _authService.selectedOrganization.id);
 
@@ -157,6 +157,7 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
 
   void saveUser() async {
     try {
+
       await _userService.saveUser(user);
 
       if (userProfileOrganization != null) {
@@ -165,7 +166,7 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
         await _userService.saveUserProfileOrganization(userProfileOrganization);
       }
 
-      _saveController.add(user.id);
+      _savedController.add(user.id);
       closeDetail();
     } catch (e) {
       dialogError = e.toString();
@@ -230,7 +231,7 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
   }
 
   void closeDetail() {
-    _closeController.add(null);
+    _closedController.add(null);
   }
 }
 

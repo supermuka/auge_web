@@ -4,6 +4,7 @@
 import 'dart:html' as html;
 import 'dart:async';
 
+import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -55,6 +56,7 @@ import 'package:auge_web/src/work_item/work_item_detail_component.dart';
 
 class WorkItemsKanbanComponent extends Object implements OnInit {
 
+  final AppLayoutService _appLayoutService;
   final WorkItemService _workItemService;
 
   @Input()
@@ -83,7 +85,7 @@ class WorkItemsKanbanComponent extends Object implements OnInit {
   MenuModel<MenuItem> menuModel;
 
 
-  WorkItemsKanbanComponent(this._workItemService) {
+  WorkItemsKanbanComponent(this._appLayoutService, this._workItemService) {
     initializeDateFormatting(Intl.defaultLocale);
 
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
@@ -135,6 +137,7 @@ class WorkItemsKanbanComponent extends Object implements OnInit {
       await _workItemService.deleteWorkItem(initiative.id, selectedWorkItem);
       initiative.workItems.remove(selectedWorkItem);
     } catch (e) {
+      _appLayoutService.error = e.toString();
       rethrow;
     }
   }
