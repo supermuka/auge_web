@@ -5,9 +5,10 @@ import 'dart:async';
 
 import 'package:angular/core.dart';
 
+import 'package:auge_web/src/auth/auth_service.dart';
+
 import 'package:auge_web/services/auge_api_service.dart';
 import 'package:auge_web/message/messages.dart';
-
 
 import 'package:auge_server/model/general/group.dart';
 
@@ -17,15 +18,16 @@ import 'package:auge_server/src/protos/generated/general/group.pbgrpc.dart' as g
 
 @Injectable()
 class GroupService {
+  final AuthService _authService;
   final AugeApiService _augeApiService;
   group_pbgrpc.GroupServiceClient _groupServiceClient;
 
-  GroupService(this._augeApiService) {
-
+  GroupService(this._authService, this._augeApiService)  {
     _groupServiceClient =
         group_pbgrpc.GroupServiceClient(_augeApiService.channel);
-
   }
+
+  get authService => _authService;
 
   /// Return a list of [Group]
   Future<Group> getGroup(String groupId) async {
@@ -60,48 +62,29 @@ class GroupService {
   /// Delete an [Group]
   Future deleteGroup(Group group) async {
     try {
-      await _groupServiceClient.deleteGroup(group.writeToProtoBuf());
-    } catch (e) {
-      rethrow;
-    }
-  }
 
-  /// Delete an [Group]
-/*
-  Future deleteGroup(String id) async {
-    try {
-      //TODO need to pass group data to log history, when it will be implemented.
-      await _groupServiceClient.deleteGroup(group_pbgrpc.Group()..id = id);
+      group_pbgrpc.GroupRequest groupRequest = group_pbgrpc.GroupRequest()..group = group.writeToProtoBuf()..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
+
+
+      await _groupServiceClient.deleteGroup(groupRequest);
     } catch (e) {
       rethrow;
     }
   }
- */
 
   /// Save (create or update) an [Group]
   void saveGroup(Group group) async {
     try {
+      group_pbgrpc.GroupRequest groupRequest = group_pbgrpc.GroupRequest()..group = group.writeToProtoBuf()..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
 
       if (group.id == null) {
 
-        //print(GroupMessageFactory.toJson(GroupFacilities.messageFrom(group)));
-/*
-        GroupPersistent gp = GroupPersistent();
-        gp.id = group.id;
-        gp.name = group.name;
-        gp.leader = group.leader;
-        gp.groupType = group.groupType;
-        gp.active = group.active;
-        gp.members.addAll(group.members);
-        gp.organization = group.organization;
-        gp.superGroup = group.superGroup;
-*/
-        common_pb.IdResponse idResponse = await _groupServiceClient.createGroup(group.writeToProtoBuf());
+        common_pb.IdResponse idResponse = await _groupServiceClient.createGroup(groupRequest);
 
         // ID - primary key generated on server-side.
         group.id = idResponse?.id;
       } else {
-        await _groupServiceClient.updateGroup(group.writeToProtoBuf());
+        await _groupServiceClient.updateGroup(groupRequest);
       }
     } catch (e) {
       rethrow;

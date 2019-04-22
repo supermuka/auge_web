@@ -17,7 +17,6 @@ import 'package:auge_web/message/messages.dart';
 import 'package:auge_web/src/group/group_detail_component.dart';
 import 'package:auge_web/src/group/group_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
-import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/services/app_routes.dart';
 
@@ -40,7 +39,7 @@ import 'package:auge_web/services/app_routes.dart';
     ])
 
 class GroupsComponent extends Object /* with CanReuse */ implements OnActivate, OnDestroy {
-  final AuthService _authService;
+//  final AuthService _authService;
   final AppLayoutService _appLayoutService;
   final GroupService _groupService;
   final SearchService _searchService;
@@ -53,13 +52,13 @@ class GroupsComponent extends Object /* with CanReuse */ implements OnActivate, 
 
   MenuModel<MenuItem> menuModel;
 
-  GroupsComponent(this._authService, this._appLayoutService, this._groupService, this._searchService, this._router) {
+  GroupsComponent(/* this._authService, */ this._appLayoutService, this._groupService, this._searchService, this._router) {
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
   }
 
   void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
 
-    if (_authService.selectedOrganization == null || _authService.authenticatedUser == null) {
+    if (_groupService.authService.selectedOrganization == null || _groupService.authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
       return;
     }
@@ -69,7 +68,7 @@ class GroupsComponent extends Object /* with CanReuse */ implements OnActivate, 
     _appLayoutService.enabledSearch = true;
 
     try {
-      _groups = await _groupService.getGroups(_authService.selectedOrganization.id);
+      _groups = await _groupService.getGroups(_groupService.authService.selectedOrganization.id);
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;
@@ -91,7 +90,9 @@ class GroupsComponent extends Object /* with CanReuse */ implements OnActivate, 
 
   void delete() async {
     try {
-      await _groupService.deleteGroup(selectedGroup);
+
+
+      await _groupService.deleteGroup(selectedGroup, );
       groups.remove(selectedGroup);
     } catch (e) {
       _appLayoutService.error = e.toString();

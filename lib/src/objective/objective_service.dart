@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:angular/core.dart';
-
+import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/general/history_item.dart';
 import 'package:auge_server/model/general/authorization.dart';
@@ -16,7 +16,7 @@ import 'package:grpc/grpc_web.dart';
 
 @Injectable()
 class ObjectiveService {
-
+  final AuthService _authService;
   final AugeApiService _augeApiService;
   objective_pbgrpc.ObjectiveServiceClient _objectiveServiceClient;
   common_pbgrpc.CommonServiceClient _commonServiceClient;
@@ -24,12 +24,13 @@ class ObjectiveService {
 
   DateTime currentDateTime;
 
-  ObjectiveService(this._augeApiService) {
+  ObjectiveService(this._authService, this._augeApiService) {
     _objectiveServiceClient = objective_pbgrpc.ObjectiveServiceClient(_augeApiService.channel);
     _commonServiceClient = common_pbgrpc.CommonServiceClient(_augeApiService.channel);
     _historyItemServiceClient = history_item_pbgrpc.HistoryItemServiceClient(_augeApiService.channel);
   }
 
+  get authService => _authService;
 
 
   /// Return a list of [Objective]
@@ -99,17 +100,20 @@ class ObjectiveService {
 
   /// Save (create or update) an [Objective]
   void saveObjective(Objective objective) async {
+
+    objective_pbgrpc.ObjectiveRequest objectiveRequest = objective_pbgrpc.ObjectiveRequest()..objective = objective.writeToProtoBuf()..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
+
     try {
       if (objective.id == null) {
 
         common_pbgrpc.IdResponse idResponse= await _objectiveServiceClient
-            .createObjective((objective.writeToProtoBuf()));
+            .createObjective(objectiveRequest);
 
         // ID - primary key generated on server-side.
         objective.id = idResponse?.id;
 
       } else {
-        await _objectiveServiceClient.updateObjective(objective.writeToProtoBuf());
+        await _objectiveServiceClient.updateObjective(objectiveRequest);
       }
 
     } catch (e) {
@@ -143,7 +147,7 @@ class ObjectiveService {
   /// Delete an [Objective]
   void deleteObjective(Objective objective) async {
     try {
-      await _objectiveServiceClient.deleteObjective(objective.writeToProtoBuf());
+      await _objectiveServiceClient.deleteObjective(objective_pbgrpc.ObjectiveRequest()..objective = objective.writeToProtoBuf());
     } catch (e) {
       rethrow;
     }

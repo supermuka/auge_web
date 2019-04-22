@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:angular/core.dart';
 
+import 'package:auge_web/src/auth/auth_service.dart';
+
 import 'package:auge_server/model/objective/measure.dart';
 
 import 'package:auge_web/services/auge_api_service.dart';
@@ -10,16 +12,17 @@ import 'package:auge_web/message/messages.dart';
 import 'package:auge_server/src/protos/generated/google/protobuf/empty.pb.dart' as empty_pb;
 import 'package:auge_server/src/protos/generated/general/common.pb.dart' as common_pb;
 import 'package:auge_server/src/protos/generated/objective/measure.pbgrpc.dart' as measure_pbgrpc;
+
 import 'package:grpc/grpc_web.dart';
 
 
 @Injectable()
 class MeasureService {
-
+  final AuthService _authService;
   final AugeApiService _augeApiService;
   measure_pbgrpc.MeasureServiceClient _measureServiceClient;
 
-  MeasureService(this._augeApiService) {
+  MeasureService(this._authService, this._augeApiService) {
      _measureServiceClient = measure_pbgrpc.MeasureServiceClient(_augeApiService.channel);
   }
 
@@ -116,18 +119,22 @@ class MeasureService {
   /// Save (create or update) an [Measure]
   void saveMeasure(String objectiveId, Measure measure) async {
     try {
+
+      measure_pbgrpc.MeasureRequest measureRequest = measure_pbgrpc.MeasureRequest()
+        ..measure = measure.writeToProtoBuf()
+        ..objectiveId = objectiveId
+        ..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
+
       if (measure.id == null) {
 
         common_pb.IdResponse idResponse = await _measureServiceClient
-        .createMeasure((measure.writeToProtoBuf())..objectiveId = objectiveId);
-
-        //.createMeasure(measure, objectiveId);
+        .createMeasure(measureRequest);
 
         // ID - primary key generated on server-side.
         measure.id = idResponse?.id;
 
       } else {
-        await _measureServiceClient.updateMeasure((measure.writeToProtoBuf())..objectiveId = objectiveId);
+        await _measureServiceClient.updateMeasure(measureRequest);
       }
     } catch (e) {
       rethrow;
@@ -136,9 +143,15 @@ class MeasureService {
 
   /// Save (create) a [MeasureProgress]
   Future<String> saveMeasureProgress(String measureId, MeasureProgress measureProgress) async {
+
+    measure_pbgrpc.MeasureProgressRequest measureProgressRequest = measure_pbgrpc.MeasureProgressRequest()
+      ..measureProgress = measureProgress.writeToProtoBuf()
+      ..measureId = measureId
+      ..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
+
     try {
       common_pb.IdResponse idResponse = await _measureServiceClient
-            .createMeasureProgress((measureProgress.writeToProtoBuf())..measureId = measureId);
+            .createMeasureProgress(measureProgressRequest);
 
         // ID - primary key generated on server-side.
         return idResponse?.id;
@@ -150,9 +163,15 @@ class MeasureService {
 
   /// Save (update) a [MeasureProgress]
   void updateMeasureProgress(String measureId, MeasureProgress measureProgress) async {
+
+    measure_pbgrpc.MeasureProgressRequest measureProgressRequest = measure_pbgrpc.MeasureProgressRequest()
+      ..measureProgress = measureProgress.writeToProtoBuf()
+      ..measureId = measureId
+      ..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
+
     try {
        await _measureServiceClient
-            .updateMeasureProgress((measureProgress.writeToProtoBuf())..measureId = measureId);
+            .updateMeasureProgress(measureProgressRequest);
 
     } catch (e) {
       rethrow;
@@ -161,8 +180,14 @@ class MeasureService {
 
   /// Delete a [Measure]
   void deleteMeasure(String objectiveId, Measure measure) async {
+
+    measure_pbgrpc.MeasureRequest measureRequest = measure_pbgrpc.MeasureRequest()
+      ..measure = measure.writeToProtoBuf()
+      ..objectiveId = objectiveId
+      ..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
+
     try {
-      await _measureServiceClient.deleteMeasure(measure.writeToProtoBuf()..objectiveId = objectiveId);
+      await _measureServiceClient.deleteMeasure(measureRequest);
     } catch (e) {
       rethrow;
     }

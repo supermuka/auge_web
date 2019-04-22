@@ -4,7 +4,7 @@
 import 'dart:async';
 
 import 'package:angular/core.dart';
-
+import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_server/model/general/organization.dart';
 
 import 'package:auge_web/services/auge_api_service.dart';
@@ -13,11 +13,11 @@ import 'package:auge_server/src/protos/generated/general/organization.pbgrpc.dar
 
 @Injectable()
 class OrganizationService {
-
+  final AuthService _authService;
   final AugeApiService _augeApiService;
   organization_pbgrpc.OrganizationServiceClient _organizationServiceClient;
 
-  OrganizationService(this._augeApiService) {
+  OrganizationService(this._authService, this._augeApiService) {
     _organizationServiceClient = organization_pbgrpc.OrganizationServiceClient(_augeApiService.channel);
   }
 
@@ -39,6 +39,9 @@ class OrganizationService {
 
   /// Save (create or update)an [Organization]
   void saveOrganization(Organization organization) async {
+
+    organization_pbgrpc.OrganizationRequest organizationRequest = organization_pbgrpc.OrganizationRequest()..organization = organization.writeToProtoBuf()..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
+
     try {
       if (organization.id == null) {
 
@@ -46,12 +49,12 @@ class OrganizationService {
         //    organization);
 
         common_pbgrpc.IdResponse idResponse= await _organizationServiceClient
-            .createOrganization((organization.writeToProtoBuf()));
+            .createOrganization(organizationRequest);
 
         organization.id = idResponse.id;
 
       } else {
-        await _organizationServiceClient.updateOrganization((organization.writeToProtoBuf()));
+        await _organizationServiceClient.updateOrganization(organizationRequest);
       }
     } catch (e) {
       rethrow;
@@ -60,8 +63,11 @@ class OrganizationService {
 
   /// Delete an [Organization]
   void deleteOrganization(Organization organization) async {
+
+    organization_pbgrpc.OrganizationRequest organizationRequest = organization_pbgrpc.OrganizationRequest()..organization = organization.writeToProtoBuf()..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
+
     try {
-      await _organizationServiceClient.deleteOrganization(organization.writeToProtoBuf());
+      await _organizationServiceClient.deleteOrganization(organizationRequest);
     } catch (e) {
       print('${e.runtimeType}, ${e}');
       rethrow;

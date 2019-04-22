@@ -137,9 +137,10 @@ class AuthService  {
     }
   }
 
-
   bool get isAdmin {
     UserProfileOrganization userOrganization = authorizedOrganizations?.firstWhere((o) => o.organization.id == selectedOrganization?.id, orElse: () => null);
     return authorizedOrganizations != null && selectedOrganization != null && userOrganization != null && userOrganization?.authorizationRole == SystemRole.admin.index;
   }
+
+  bool get isAuthenticatedUserAndSelectedOrganization => authenticatedUser != null && selectedOrganization != null;
 }

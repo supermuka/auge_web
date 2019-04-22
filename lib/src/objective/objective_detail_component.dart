@@ -29,7 +29,7 @@ import 'package:auge_server/model/general/group.dart';
 import 'package:auge_web/message/messages.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
-import 'package:auge_web/src/auth/auth_service.dart';
+//import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/group/group_service.dart';
@@ -60,7 +60,6 @@ import 'objective_detail_component.template.dart' as objective_detail_component;
 
 class ObjectiveDetailComponent extends Object implements OnInit {
 
-  final AuthService _authService;
   final UserService _userService;
   final ObjectiveService _objectiveService;
   final GroupService _groupService;
@@ -108,7 +107,7 @@ class ObjectiveDetailComponent extends Object implements OnInit {
   /// When it exists, the error/exception message presented into dialog view.
   String dialogError;
 
-  ObjectiveDetailComponent(this._authService, this._userService, this._objectiveService, this._groupService) {
+  ObjectiveDetailComponent(this._userService, this._objectiveService, this._groupService) {
     groupSingleSelectModel = SelectionModel.single();
     alignedToSingleSelectModel = SelectionModel.single();
     leaderSingleSelectModel = SelectionModel.single();
@@ -145,14 +144,14 @@ class ObjectiveDetailComponent extends Object implements OnInit {
       //objective = selectedObjective.clone();
 
     } else {
-      objective.organization = _authService.selectedOrganization;
+      objective.organization = _objectiveService.authService.selectedOrganization;
       objective.archived = false;
     }
 
     try {
-      _alignedToObjectives = await _objectiveService.getObjectives(_authService.selectedOrganization.id);
-      _users = await _userService.getUsers(_authService.selectedOrganization.id, withProfile: true);
-      _groups = await _groupService.getGroups(_authService.selectedOrganization.id);
+      _alignedToObjectives = await _objectiveService.getObjectives(_objectiveService.authService.selectedOrganization.id);
+      _users = await _userService.getUsers(_objectiveService.authService.selectedOrganization.id, withProfile: true);
+      _groups = await _groupService.getGroups(_objectiveService.authService.selectedOrganization.id);
 
     } catch (e) {
       dialogError = e.toString();

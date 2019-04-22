@@ -26,7 +26,7 @@ import 'package:auge_web/src/initiative/initiatives_summary_component.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
-import 'package:auge_web/src/auth/auth_service.dart';
+//import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/services/app_routes.dart';
 
@@ -55,7 +55,6 @@ import 'package:auge_web/services/app_routes.dart';
 
 class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, OnDestroy {
 
-  final AuthService _authService;
   final AppLayoutService _appLayoutService;
   final ObjectiveService _objectiveService;
   final SearchService _searchService;
@@ -77,13 +76,13 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
   static final String leaderLabel =  ObjectiveMsg.label('Leader');
   static final String groupLabel =  ObjectiveMsg.label('Group');
 
-  ObjectivesComponent(this._authService, this._appLayoutService, this._objectiveService, this._searchService, this._router) {
+  ObjectivesComponent(this._appLayoutService, this._objectiveService, this._searchService, this._router) {
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => detailVisible = true), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
   }
 
   void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
 
-    if (_authService.selectedOrganization == null || _authService.authenticatedUser == null) {
+    if (_objectiveService.authService.selectedOrganization == null || _objectiveService.authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
       return;
     }
@@ -115,7 +114,7 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
 
   Future<List<Objective>> getObjetives() async {
     List<Objective> objectivesAux =  await _objectiveService.getObjectives(
-        _authService.selectedOrganization.id, withMeasures: true, withProfile: true /*, withTimeline: true */);
+        _objectiveService.authService.selectedOrganization.id, withMeasures: true, withProfile: true /*, withTimeline: true */);
     _sortObjectivesOrderByGroup(objectivesAux);
     return objectivesAux;
   }

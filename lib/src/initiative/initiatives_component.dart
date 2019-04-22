@@ -21,7 +21,7 @@ import 'package:angular_components/material_tooltip/material_tooltip.dart';
 import 'package:auge_server/model/initiative/initiative.dart';
 
 import 'package:auge_web/message/messages.dart';
-import 'package:auge_web/src/auth/auth_service.dart';
+//import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/initiative/initiative_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
@@ -65,7 +65,7 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
   final SearchService _searchService;
   final Router _router;
   final AppLayoutService _appLayoutService;
-  final AuthService _authService;
+ // final AuthService _authService;
 
   InitiativesFilterParam initiativesFilterParam;
 
@@ -80,9 +80,10 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
   Map<Initiative, bool> expandedControl = Map();
 
   MenuModel<MenuItem> menuModel;
-  InitiativesComponent(this._authService, this._appLayoutService, this._initiativeService, this._objectiveService, this._searchService, this._router) {
+  InitiativesComponent(this._appLayoutService, this._initiativeService, this._objectiveService, this._searchService, this._router) {
     initiativesFilterParam = InitiativesFilterParam();
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
+
   }
 
   // Define messages and labels
@@ -92,7 +93,7 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
 
   void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
 
-    if (_authService.selectedOrganization == null || _authService.authenticatedUser == null) {
+    if (_initiativeService.authService.selectedOrganization == null || _initiativeService.authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
       return;
     }
@@ -114,7 +115,7 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
       }
     }
 
-    List<Initiative> initiativesAux = await _initiativeService.getInitiatives(_authService.selectedOrganization?.id, withWorkItems: true, withProfile: true);
+    List<Initiative> initiativesAux = await _initiativeService.getInitiatives(_initiativeService.authService.selectedOrganization?.id, withWorkItems: true, withProfile: true);
 
     _sortInitiativesOrderByGroup(initiativesAux);
 
@@ -160,6 +161,7 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
 
   void delete() async {
     try {
+
       await _initiativeService.deleteInitiative(selectedInitiative);
       expandedControl.remove(selectedInitiative);
       initiatives.remove(selectedInitiative);

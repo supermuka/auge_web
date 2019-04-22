@@ -15,7 +15,7 @@ import 'package:angular_components/material_tooltip/material_tooltip.dart';
 import 'package:auge_server/model/initiative/initiative.dart';
 
 import 'package:auge_web/message/messages.dart';
-import 'package:auge_web/src/auth/auth_service.dart';
+// import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/src/initiative/initiative_service.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
@@ -45,7 +45,7 @@ class InitiativesSummaryComponent extends Object implements OnInit {
 
   final InitiativeService _initiativeService;
   final Router _router;
-  final AuthService _authService;
+ // final AuthService _authService;
   final AppLayoutService _appLayoutService;
 
   @Input()
@@ -53,7 +53,7 @@ class InitiativesSummaryComponent extends Object implements OnInit {
 
   List<Initiative> initiatives = [];
 
-  InitiativesSummaryComponent( this._authService, this._appLayoutService, this._initiativeService,  this._router);
+  InitiativesSummaryComponent(this._appLayoutService, this._initiativeService,  this._router);
 
   static final String groupLabel =  InitiativeMsg.label('Group');
   static final String leaderLabel =  InitiativeMsg.label('Leader');
@@ -63,7 +63,7 @@ class InitiativesSummaryComponent extends Object implements OnInit {
     try {
       if (objectiveId != null) {
         initiatives = await _initiativeService.getInitiatives(
-            _authService.selectedOrganization?.id, objectiveId: objectiveId,
+            this._initiativeService.authService.selectedOrganization?.id, objectiveId: objectiveId,
             withWorkItems: true, withProfile: true);
       }
     } catch (e) {

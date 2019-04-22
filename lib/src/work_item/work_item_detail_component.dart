@@ -45,7 +45,7 @@ import 'package:auge_server/model/general/user.dart';
 
 import 'package:auge_web/message/messages.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
-import 'package:auge_web/src/auth/auth_service.dart';
+//import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/work_item/work_item_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
 
@@ -87,7 +87,6 @@ import 'work_item_detail_component.template.dart' as work_item_detail_component;
 
 class WorkItemDetailComponent implements OnInit  {
 
-  final AuthService _authService;
   final UserService _userService;
   final WorkItemService _workItemService;
 
@@ -136,7 +135,7 @@ class WorkItemDetailComponent implements OnInit  {
   /// When it exists, the error/exception message presented into dialog view.
   String dialogError;
 
-  WorkItemDetailComponent(this._authService, this._userService, this._workItemService)  {
+  WorkItemDetailComponent(this._userService, this._workItemService)  {
 
     initializeDateFormatting(Intl.defaultLocale , null);
     memberSingleSelectModel = SelectionModel.single();
@@ -170,7 +169,7 @@ class WorkItemDetailComponent implements OnInit  {
 
     //List<User> users = await _userService.getUsers(_authService.selectedOrganization?.id, withProfile: true);
     try {
-      _users = await _userService.getUsers(_authService.selectedOrganization?.id, withProfile: true);
+      _users = await _userService.getUsers(_userService.authService.selectedOrganization.id, withProfile: true);
     } catch (e) {
       dialogError = e.toString();
       rethrow;

@@ -25,9 +25,10 @@ import 'package:angular_components/material_tooltip/material_tooltip.dart';
 
 import 'package:auge_server/model/general/user.dart';
 import 'package:auge_server/model/general/user_profile_organization.dart';
+import 'package:auge_server/model/general/authorization.dart';
 
 import 'package:auge_web/message/messages.dart';
-import 'package:auge_web/src/auth/auth_service.dart';
+//import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
 
@@ -71,7 +72,6 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
   @Output()
   Stream<String> get saved => _savedController.stream;
 
-  final AuthService _authService;
   final UserService _userService;
 
  //  final SelectionModel selectionModelUserAuthorization = new SelectionModel.multi();
@@ -89,7 +89,7 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
   /// When it exists, the error/exception message is presented into dialog view.
   String dialogError;
 
-  UserDetailComponent(this._authService, this._userService) {
+  UserDetailComponent(this._userService) {
     userAuthorizationOptions = List<Option>();
 
     //UserAuthorization.values.forEach((f) => userAuthorizationOptions.add(new Option(f.index, UserMessage.label(f.toString()) /* , false, false */) ));
@@ -125,7 +125,7 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
 
         user = await _userService.getUser(selectedUser.id, withProfile: true);
 
-        List<UserProfileOrganization> userProfileOrganizations = await _userService.getUsersProfileOrganizations(selectedUser.id, _authService.selectedOrganization.id);
+        List<UserProfileOrganization> userProfileOrganizations = await _userService.getUsersProfileOrganizations(selectedUser.id, _userService.authService.selectedOrganization.id);
 
         if (userProfileOrganizations.isNotEmpty) {
           userProfileOrganization = userProfileOrganizations.first;
@@ -140,14 +140,14 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
       userProfileOrganization = UserProfileOrganization();
 
       // Authorizated and selected organization
-      userProfileOrganization.organization = _authService.selectedOrganization;
+      userProfileOrganization.organization = _userService.authService.selectedOrganization;
     }
 
     SystemRole.values.forEach((role) {
       if (role != SystemRole.superAdmin) {
         userAuthorizationOptions.add(new Option(
             role.index,
-            UserMsg.label(role.toString()), _authService.isAuthorizedForAtuhorizatedRole(
+            UserMsg.label(role.toString()), _userService.authService.isAuthorizedForAtuhorizatedRole(
             SystemModule.users, systemFunction: user.id == null ?  SystemFunction.create : SystemFunction.update,
             systemConstraint: role
         )));
@@ -172,7 +172,6 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
       dialogError = e.toString();
       rethrow;
     }
-
   }
 
   void uploadImage() async {

@@ -22,7 +22,7 @@ import 'package:angular_components/model/ui/has_factory.dart';
 import 'package:auge_server/model/objective/objective.dart';
 
 import 'package:auge_web/message/messages.dart';
-import 'package:auge_web/src/auth/auth_service.dart';
+//import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/group/group_service.dart';
@@ -61,7 +61,7 @@ class InitiativesFilterComponent implements OnInit {
   @Output()
   Stream<void> get close => _closeController.stream;
 
-  final AuthService _authService;
+  //final AuthService _authService;
   final ObjectiveService _objectiveService;
 
   String objectiveInputText = '';
@@ -70,7 +70,7 @@ class InitiativesFilterComponent implements OnInit {
 
   SelectionModel objectiveSingleSelectModel;
 
-  InitiativesFilterComponent(this._authService, this._objectiveService);
+  InitiativesFilterComponent(this._objectiveService);
 
   // Define messages and labels
 
@@ -86,7 +86,7 @@ class InitiativesFilterComponent implements OnInit {
     try {
       // Objective
       List<Objective> objectives = await _objectiveService.getObjectives(
-          _authService.selectedOrganization.id, withMeasures: false);
+          _objectiveService.authService.selectedOrganization.id, withMeasures: false);
 
       objectiveOptions = new StringSelectionOptions<Objective>(
           objectives, toFilterableString: (Objective objective) => objective.name);

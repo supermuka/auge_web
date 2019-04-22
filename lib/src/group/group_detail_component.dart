@@ -28,7 +28,6 @@ import 'package:auge_server/model/general/user.dart';
 
 import 'package:auge_web/message/messages.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
-import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
 import 'package:auge_web/src/group/group_service.dart';
 
@@ -76,7 +75,7 @@ class GroupDetailComponent extends Object implements OnInit {
   @Output()
   Stream<String> get saved => _savedController.stream;
 
-  final AuthService _authService;
+  //final AuthService _authService;
   final UserService _userService;
   final GroupService _groupService;
 
@@ -103,7 +102,7 @@ class GroupDetailComponent extends Object implements OnInit {
   /// When it exists, the error/exception message presented into dialog view.
   String dialogError;
 
-  GroupDetailComponent(this._authService, this._userService, this._groupService) {
+  GroupDetailComponent(/*this._authService,*/ this._userService, this._groupService) {
     superGroupSingleSelectModel = SelectionModel.single();
     leaderSingleSelectModel = SelectionModel.single();
     memberSingleSelectModel = SelectionModel.single();
@@ -134,14 +133,13 @@ class GroupDetailComponent extends Object implements OnInit {
       // group = selectedGroup.clone();
       group = await _groupService.getGroup(selectedGroup.id);
     } else {
-
-      group.organization = _authService.selectedOrganization;
+      group.organization = _groupService.authService.selectedOrganization;
       group.active = true;
     }
 
     try {
-      _superGroups = await _groupService.getGroups(_authService.selectedOrganization.id);
-      _users = await _userService.getUsers(_authService.selectedOrganization.id, withProfile: true);
+      _superGroups = await _groupService.getGroups(_groupService.authService.selectedOrganization.id);
+      _users = await _userService.getUsers(_groupService.authService.selectedOrganization.id, withProfile: true);
       groupTypes = await _groupService.getGroupTypes();
     } catch (e) {
       dialogError = e.toString();
@@ -284,12 +282,10 @@ class GroupDetailComponent extends Object implements OnInit {
   bool get validInput {
     return group.name?.trim()?.isNotEmpty ?? false;
   }
-
 }
 
 @Component(
     selector: 'user-renderer',
-    //  template: '<material-icon icon="language"></material-icon>{{disPlayName}}',
     template: '<div left-icon class="avatar-icon" [style.background-image]="disPlayurl"></div>{{disPlayName}}',
 
     styles: const [

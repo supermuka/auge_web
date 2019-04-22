@@ -18,7 +18,7 @@ import 'package:angular_components/content/deferred_content.dart';
 import 'package:auge_server/model/general/user.dart';
 
 import 'package:auge_web/message/messages.dart';
-import 'package:auge_web/src/auth/auth_service.dart';
+//import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
@@ -46,7 +46,6 @@ import 'package:auge_web/services/common_service.dart' as common_service;
 
 class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
 
-  final AuthService _authService;
   final AppLayoutService _appLayoutService;
   final SearchService _searchService;
   final UserService _userService;
@@ -63,12 +62,12 @@ class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
 
   MenuModel<MenuItem> menuModel;
 
-  UsersComponent(this._authService, this._appLayoutService, this._searchService, this._userService, this._router) {
+  UsersComponent(this._appLayoutService, this._searchService, this._userService, this._router) {
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
   }
 
   void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
-    if (_authService.selectedOrganization == null || _authService.authenticatedUser == null) {
+    if (_userService.authService.selectedOrganization == null || _userService.authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
       return;
     }
@@ -76,7 +75,7 @@ class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
     _appLayoutService.enabledSearch = true;
 
     try {
-      _users = await _userService.getUsers(_authService.selectedOrganization?.id, withProfile: true);
+      _users = await _userService.getUsers(_userService.authService.selectedOrganization?.id, withProfile: true);
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;
@@ -90,7 +89,6 @@ class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
 
   void delete() async {
     try {
-    //  _userService.deleteUserProfileOrganizationByUserId(selectedUser.id);
 
       // Delete user and userProfileOrganization
       await _userService.deleteUser(selectedUser);

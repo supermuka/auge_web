@@ -35,7 +35,7 @@ import 'package:auge_server/model/general/group.dart';
 
 import 'package:auge_web/message/messages.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
-import 'package:auge_web/src/auth/auth_service.dart';
+//import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
 import 'package:auge_web/src/initiative/initiative_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
@@ -87,13 +87,15 @@ class InitiativeDetailComponent implements OnInit {
   @Output()
   Stream<Initiative> get save => _saveController.stream;
 
-  final AuthService _authService;
+ // final AuthService _authService;
   final InitiativeService _initiativeService;
   final ObjectiveService _objectiveService;
   final UserService _userService;
   final GroupService _groupService;
 
   Initiative initiative;
+
+  Map<String, dynamic> initiativeValuesPrevious;
   String stageEntry;
   Stage selectedStage = null;
 
@@ -118,7 +120,7 @@ class InitiativeDetailComponent implements OnInit {
   /// When it exists, the error/exception message presented into dialog view.
   String dialogError;
 
-  InitiativeDetailComponent(this._authService, this._initiativeService, this._objectiveService,  this._userService, this._groupService)  {
+  InitiativeDetailComponent(this._initiativeService, this._objectiveService,  this._userService, this._groupService)  {
     stateSingleSelectModel = SelectionModel.single();
     leaderSingleSelectModel = SelectionModel.single();
     objectiveSingleSelectModel = SelectionModel.single();
@@ -147,16 +149,20 @@ class InitiativeDetailComponent implements OnInit {
     if (selectedInitiative != null) {
       // Clone objective
       // initiative = selectedInitiative.clone();
+
+      initiative = await _initiativeService.getInitiative(selectedInitiative.id);
+
     } else {
       initiative = Initiative();
-      initiative.organization = _authService.selectedOrganization;
+
+      initiative.organization = _initiativeService.authService.selectedOrganization;
     }
 
     try {
       _states =  await _initiativeService.getStates();
-      _users = await _userService.getUsers(_authService.selectedOrganization.id, withProfile: true);
-      _objectives = await _objectiveService.getObjectives(_authService.selectedOrganization.id, withMeasures: false);
-      _groups = await _groupService.getGroups(_authService.selectedOrganization.id);
+      _users = await _userService.getUsers(_initiativeService.authService.selectedOrganization.id, withProfile: true);
+      _objectives = await _objectiveService.getObjectives(_initiativeService.authService.selectedOrganization.id, withMeasures: false);
+      _groups = await _groupService.getGroups(_initiativeService.authService.selectedOrganization.selectedOrganization.id);
 
     } catch (e) {
       dialogError = e.toString();
@@ -226,6 +232,7 @@ class InitiativeDetailComponent implements OnInit {
 
   void saveInitiative() {
     try {
+
       _initiativeService.saveInitiative(initiative);
       _saveController.add(initiative);
       closeDetail();

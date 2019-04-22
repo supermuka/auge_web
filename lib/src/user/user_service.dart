@@ -4,7 +4,7 @@
 import 'dart:async';
 
 import 'package:angular/core.dart';
-
+import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_server/model/general/user.dart';
 import 'package:auge_server/model/general/user_profile_organization.dart';
 
@@ -15,15 +15,18 @@ import 'package:auge_server/src/protos/generated/general/user_profile_organizati
 
 @Injectable()
 class UserService {
-
+  final AuthService _authService;
   final AugeApiService _augeApiService;
   user_pbgrpc.UserServiceClient _userServiceClient;
   user_profile_organization_pbgrpc.UserProfileOrganizationServiceClient _userProfileOrganizationServiceClient;
 
-  UserService(this._augeApiService) {
+  UserService(this._authService, this._augeApiService) {
     _userServiceClient = user_pbgrpc.UserServiceClient(_augeApiService.channel);
     _userProfileOrganizationServiceClient = user_profile_organization_pbgrpc.UserProfileOrganizationServiceClient(_augeApiService.channel);
   }
+
+  AuthService get authService => _authService;
+
 
   /// Return [User] list by Organization [id]
   Future<List<User>> getUsers(String organizationId, {bool withProfile = false}) async {
@@ -57,14 +60,16 @@ class UserService {
   /// Save (create or update) an [User]
   void saveUser(User user) async {
 
+    user_pbgrpc.UserRequest userRequest = user_pbgrpc.UserRequest()..user = user.writeToProtoBuf()..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
+
     try {
       if (user.id == null) {
-        common_pbgrpc.IdResponse idResponse = await _userServiceClient.createUser(user.writeToProtoBuf());
+        common_pbgrpc.IdResponse idResponse = await _userServiceClient.createUser(userRequest);
 
         // ID - primary key generated on server-side.
         user.id = idResponse.id;
       } else {
-        await _userServiceClient.updateUser(user.writeToProtoBuf());
+        await _userServiceClient.updateUser(userRequest);
       }
     } catch (e) {
       rethrow;
@@ -73,15 +78,18 @@ class UserService {
 
   /// Save (create or update) an [UserProfileOrganization]
   void saveUserProfileOrganization(UserProfileOrganization userProfileOrganization) async {
+
+    user_profile_organization_pbgrpc.UserProfileOrganizationRequest userProfileOrganizationRequest = user_profile_organization_pbgrpc.UserProfileOrganizationRequest()
+      ..userProfileOrganization = userProfileOrganization.writeToProtoBuf()..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
     try {
       if (userProfileOrganization.id == null) {
         common_pbgrpc.IdResponse idResponse = await _userProfileOrganizationServiceClient
-            .createUserProfileOrganization(userProfileOrganization.writeToProtoBuf());
+            .createUserProfileOrganization(userProfileOrganizationRequest);
 
         userProfileOrganization.id = idResponse.id;
       } else {
         await _userProfileOrganizationServiceClient.updateUserProfileOrganization(
-            userProfileOrganization.writeToProtoBuf());
+            userProfileOrganizationRequest);
       }
     } catch (e) {
       print(e);
@@ -91,32 +99,14 @@ class UserService {
 
   /// Soft Delete an [User]
   void deleteUser(User user) async {
+
+    user_pbgrpc.UserRequest userRequest = user_pbgrpc.UserRequest()..user = user.writeToProtoBuf()..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
+
     try {
-        await _userServiceClient.deleteUser(user.writeToProtoBuf());
+        await _userServiceClient.deleteUser(userRequest);
     } catch (e) {
       rethrow;
     }
   }
 
-  /*
-  /// Delete an [UserProfileOrganization]
-  void deleteUserProfileOrganization(UserProfileOrganization userProfileOrganization) async {
-    try {
-      await _userProfileOrganizationServiceClient.deleteUserProfileOrganization(userProfileOrganization.writeToProtoBuf());
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  /// Delete an [UserProfileOrganization]
-  void deleteUserProfileOrganizationByUserId(String userId) async {
-    try {
-      //TODO é realmente necessário ser por usuário?
-      //await _augeApiService.augeApi.deleteUserProfileOrganizationByUserId(userId);
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-   */
 }
