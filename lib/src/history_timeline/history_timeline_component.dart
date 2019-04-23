@@ -83,8 +83,8 @@ class HistoryTimelineComponent /* extends Object */ implements OnInit {
       return '';
     }
   }
-    // List<TimelineItem> get timeline => objective.timeline;
 
+  // List<TimelineItem> get timeline => objective.timeline;
   String userUrlImage(User user) {
     return common_service.userUrlImage(user.userProfile?.image);
   }
