@@ -6,15 +6,16 @@
 @import 'package:angular_components/css/material/material';
 @import 'package:angular_components/material_expansionpanel/mixins';
 
-.material-fab-add {
-   position: fixed !important;
-   z-index: 9999;
-   float: right;
-      /* top: 96px; */
-   bottom: 64px;
-   right: 64px;
-   background-color: $mat-red;
-   color: $mat-white;
+.timeline-vertical-size {
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.custom-container-list {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-top: 0px;
+  padding-bottom: 0px;
 }
 
 .expansionpanel-no-padding-margin {

@@ -32,7 +32,8 @@ body {
   max-width: 1600px; /*1280px*/
   width: 100%;
 
-  padding: 4px;
+  padding-top: 8px;
+  padding-bottom: 8px;
 
   /* material design spectification - xsmal/large = initial*/
   /* min-width: 400px; */

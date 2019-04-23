@@ -74,8 +74,9 @@ import 'package:auge_web/src/group/groups_component.template.dart' as groups_com
       'package:angular_components/app_layout/layout.scss.css',
     ])
 
-class AppLayoutComponent extends Object with CanReuse implements OnActivate {
+class AppLayoutComponent /* extends Object */ with CanReuse implements OnActivate {
   bool userDetailVisible = false;
+
 
   String get insightsRouteUrl => AppRoutes.insightslRoute.toUrl();
   String get mapRouteUrl => AppRoutes.mapRoute.toUrl();
@@ -264,7 +265,7 @@ class AppLayoutComponent extends Object with CanReuse implements OnActivate {
 
   ItemRenderer get itemRenderer => (dynamic item) => item.name;
 
-  get enabledSearch {
+  bool get enabledSearch {
     return _appLayoutService.enabledSearch;
   }
 

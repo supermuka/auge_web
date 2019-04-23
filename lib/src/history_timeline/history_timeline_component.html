@@ -1,0 +1,41 @@
+<div class="w3-row">
+    <div class="w3-col">
+        <material-expansionpanel class="expansionpanel-no-padding-margin" disabled
+                                 [alwaysHideExpandIcon]="true"
+                                 [hideExpandedHeader]="true"
+                                 [expanded]="true"
+                                 [showSaveCancel]="false">
+            <!-- div name>
+                <span><strong>{{timelineLabel}}</strong></span>
+            </div -->
+            <div class="timeline-vertical-size" *deferredContent>
+                <div *ngFor="let historyItem of history">
+                    <div>
+                        <span class="avatar" [style.background-image]="'url(' + userUrlImage(historyItem.user) + ')'"></span>
+                        <span>{{systemFunctionInPastLabel(historyItem.systemFunctionIndex)}} {{theLabel}} {{historyItem.objectClassName}} <strong>{{historyItem.description}}</strong></span>
+                    </div>
+                    <div>
+                        <span>{{elapsedTime(historyItem.dateTime, currentDateTime)}}</span>
+                        <span class="w3-right">
+                            <material-button icon (trigger)="collapseExpandControl(historyItem)">
+                                <material-icon *ngIf="expandedControl[historyItem] == null || !expandedControl[historyItem]" icon="expand_more"></material-icon>
+                                <material-icon *ngIf="expandedControl[historyItem] != null && expandedControl[historyItem]" icon="expand_less"></material-icon>
+                            </material-button>
+                        </span>
+                    </div>
+                    <div *ngIf="expandedControl[historyItem] != null && expandedControl[historyItem]">
+                        <div *ngFor="let key of mergeChangedValuesKeys(historyItem.changedValuesPrevious, historyItem.changedValuesCurrent)"> <!-- Premissa: changedValuesPrevious e ChangedValuesCurrrent foram gravados com os mesmos keys -->
+                            <span><strong>{{fieldLabel(historyItem.objectClassName, key)}}</strong></span>
+                            <span> {{valueLabel}} </span>
+                            <span><strong>{{formatValue(historyItem.changedValuesPrevious[key])}}</strong></span>
+                            <div *ngIf="historyItem.changedValuesCurrent[key].values.length > 1">
+                                <span> {{changedFromLabel}} </span>
+                                <span><strong>{{formatValue(historyItem.changedValuesCurrent[key])}}</strong></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </material-expansionpanel>
+    </div>
+</div>

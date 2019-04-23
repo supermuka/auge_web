@@ -436,6 +436,7 @@ class TimelineItemdMsg {
       'second ago': 'second ago',
       'seconds ago': 'seconds ago',
       'value': 'value',
+      'the': 'the',
       'changed from': 'changed from',
       'other': 'Not Defined'})}",
     name: "labelLabel",

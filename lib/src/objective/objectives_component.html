@@ -49,7 +49,7 @@
                         <auge-initiatives-summary *ngIf="iObjective.id == expandedObjectiveId" [objectiveId]="iObjective.id"></auge-initiatives-summary>
                     </div>
                     <div class="w3-col m3">
-                        <auge-objective-timeline *ngIf="iObjective.id == expandedObjectiveId" [objective]="iObjective"></auge-objective-timeline>
+                        <auge-history-timeline *ngIf="iObjective.id == expandedObjectiveId" [systemModuleIndex]="systemModuleIndex"></auge-history-timeline>
                     </div>
                 </div>
             </material-expansionpanel>

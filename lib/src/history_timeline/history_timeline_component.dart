@@ -11,7 +11,6 @@ import 'package:angular_components/material_icon/material_icon.dart';
 import 'package:angular_components/content/deferred_content.dart';
 
 import 'package:auge_server/model/general/user.dart';
-import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/general/history_item.dart';
 import 'package:auge_server/model/general/authorization.dart';
 
@@ -19,12 +18,11 @@ import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/message/messages.dart';
 import 'package:auge_web/message/field_messages.dart';
 import 'package:auge_web/src/auth/auth_service.dart';
-import 'package:auge_web/src/objective/objective_service.dart';
-
+import 'package:auge_web/src/history_timeline/history_timeline_service.dart';
 
 @Component(
-    selector: 'auge-objective-timeline',
-    providers: const [],
+    selector: 'auge-history-timeline',
+    providers: const [HistoryTimelineService],
     directives: const [
       coreDirectives,
       MaterialExpansionPanel,
@@ -33,22 +31,24 @@ import 'package:auge_web/src/objective/objective_service.dart';
       DeferredContentDirective,
     ],
     pipes:   const [DatePipe],
-    templateUrl: 'objective_timeline_component.html',
+    templateUrl: 'history_timeline_component.html',
 
     styleUrls: const [
-      'objective_timeline_component.css'
+      'history_timeline_component.css'
     ])
 
-class ObjectiveTimelineComponent extends Object implements OnInit {
+class HistoryTimelineComponent /* extends Object */ implements OnInit {
 
-  final ObjectiveService _objectiveService;
+  final HistoryTimelineService _historyTimelineService;
 
   @Input()
-  Objective objective;
+  int systemModuleIndex;
+
+  List<HistoryItem> history;
 
   Map<HistoryItem, bool> expandedControl = Map();
 
-  ObjectiveTimelineComponent(this._objectiveService) {
+  HistoryTimelineComponent(this._historyTimelineService) {
     initializeDateFormatting(Intl.defaultLocale , null);
   }
 
@@ -66,14 +66,12 @@ class ObjectiveTimelineComponent extends Object implements OnInit {
   static final String changedFromLabel =  TimelineItemdMsg.label('changed from');
 
   void ngOnInit() async {
-    if (objective.id != null) {
-      objective.history = await _objectiveService.getHistory(objective.id);
+    if (systemModuleIndex != null) {
+      history = await _historyTimelineService.getHistory(systemModuleIndex);
     } else {
-       objective.history = null;
+      history = null;
     }
   }
-
-  List<HistoryItem> get history => objective.history;
 
   String fieldLabel(String className, String fieldName) {
     if (className == 'Objective')  {
@@ -95,7 +93,7 @@ class ObjectiveTimelineComponent extends Object implements OnInit {
     return SystemFunctionMsg.InPastLabel(SystemFunction.values[systemFunctionIndex].toString());
   }
 
-  DateTime get currentDateTime => _objectiveService.currentDateTime;
+  DateTime get currentDateTime => _historyTimelineService.currentDateTime;
 
   String elapsedTime(DateTime timelineItemDateTime, DateTime currentDateTime) {
     String elapsedTime;
@@ -136,11 +134,19 @@ class ObjectiveTimelineComponent extends Object implements OnInit {
   }
 
   dynamic formatValue(dynamic value) {
+
     if (value is DateTime) {
       //return DateFormat.yMMMd().add_Hms().format(data);
       return DateFormat.yMMMd().format(value);
     } else {
       return value.toString();
     }
+  }
+
+  Set<String> mergeChangedValuesKeys(Map<String, dynamic> changedValuesA, Map<String, dynamic> changedValuesB) {
+    Set<String> merge = {};
+    if (changedValuesA != null) merge.addAll(changedValuesA.keys);
+    if (changedValuesB != null) merge.addAll(changedValuesB.keys);
+    return merge;
   }
 }

@@ -16,17 +16,17 @@ import 'package:angular_components/material_expansionpanel/material_expansionpan
 import 'package:angular_components/material_expansionpanel/material_expansionpanel_set.dart';
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
 
+import 'package:auge_server/model/general/authorization.dart';
 import 'package:auge_server/model/objective/objective.dart';
 
 import 'package:auge_web/message/messages.dart';
 import 'package:auge_web/src/objective/objective_detail_component.dart';
-import 'package:auge_web/src/objective_timeline/objective_timeline_component.dart';
+import 'package:auge_web/src/history_timeline/history_timeline_component.dart';
 import 'package:auge_web/src/measure/measures_component.dart';
 import 'package:auge_web/src/initiative/initiatives_summary_component.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
-//import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/services/app_routes.dart';
 
@@ -43,7 +43,7 @@ import 'package:auge_web/services/app_routes.dart';
       MaterialTooltipDirective,
       MaterialMenuComponent,
       ObjectiveDetailComponent,
-      ObjectiveTimelineComponent,
+      HistoryTimelineComponent,
       MeasuresComponent,
       InitiativesSummaryComponent,
     ],
@@ -70,6 +70,8 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
   bool detailVisible = false;
 
   MenuModel<MenuItem> menuModel;
+
+  static final systemModuleIndex =  SystemModule.objectives.index;
 
   // Define messages and labels
   static final String alignedToLabel =  ObjectiveMsg.label('Aligned To');
@@ -161,7 +163,7 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
     if (expandedObjectiveId != null) {
       Objective expandedObjective = _objectives.singleWhere((o) => o.id == expandedObjectiveId, orElse: null);
       if (expandedObjective != null) {
-        expandedObjective.history = await _objectiveService.getHistory(expandedObjectiveId);
+     // TODO   expandedObjective.history = await _objectiveService.getHistory(expandedObjectiveId);
       }
     }
   }

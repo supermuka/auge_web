@@ -1,29 +1,58 @@
 <div class="container-list">
+    <div class="w3-row-padding">
+        <div class="w3-col">
+            <material-toggle class="w3-right" label="Timeline" (checkedChange)="timelineVisible = $event"></material-toggle>
+        </div>
+    </div>
+    <div class="w3-row-padding">
+        <div class="w3-col" style="width:{{mainColWidth}}">
+            <material-expansionpanel-set>
+                <div *ngFor="let userItem of users">
+                    <material-expansionpanel class="expansionpanel-no-padding-margin"
+                                             disabled
+                                             [alwaysHideExpandIcon]="true"
+                                             [hideExpandedHeader]="false"
+                                             [showSaveCancel]="false">
+                        <!-- class="w3-container w3-sand w3-center" style="width:80%;margin:auto;" -->
+                        <div name>
+                            <span class="avatar" [style.background-image]="'url(' + userUrlImage(userItem) + ')'"></span><span><strong>{{userItem.name}}</strong></span>
+                        </div>
+                        <div value>
+                            {{userItem.eMail}}
+                        </div>
+                        <div action>
+                            <material-menu [menu]="menuModel" (click)="selectUser(userItem)">
+                            </material-menu>
+                        </div>
+                    </material-expansionpanel>
+                </div>
+            </material-expansionpanel-set>
+        </div>
+        <div *ngIf="timelineVisible == true" class="w3-col" style="width:25%">
+
+            <!--material-expansionpanel class="expansionpanel-no-padding-margin-"
+                                     disabled
+                                     [alwaysHideExpandIcon]="true"
+                                     [hideExpandedHeader]="false"
+                                     [showSaveCancel]="false">
+                <div name>
+                    teste 1
+                </div>
+                <div value>
+                    teste 2
+                </div>
+                <div action>
+                    <material-menu [menu]="menuModel">
+                    </material-menu>
+                </div>
+            </material-expansionpanel -->
+
+            <auge-history-timeline [systemModuleIndex]="systemModuleIndex"></auge-history-timeline>
+        </div>
+    </div>
     <material-fab class="material-fab-add" raised (trigger)="selectUser(null);viewDetail(true)">
         <material-icon icon="add"></material-icon>
     </material-fab>
-    <br/>
-    <material-expansionpanel-set>
-        <div *ngFor="let userItem of users">
-            <material-expansionpanel
-                    disabled
-                    [alwaysHideExpandIcon]="true"
-                    [hideExpandedHeader]="false"
-                    [showSaveCancel]="false">
-                <!-- class="w3-container w3-sand w3-center" style="width:80%;margin:auto;" -->
-                <div name>
-                    <span class="avatar" [style.background-image]="'url(' + userUrlImage(userItem) + ')'"></span><span><strong>{{userItem.name}}</strong></span>
-                </div>
-                <div value>
-                    {{userItem.eMail}}
-                </div>
-                <div action>
-                    <material-menu [menu]="menuModel" (click)="selectUser(userItem)">
-                    </material-menu>
-                </div>
-            </material-expansionpanel>
-        </div>
-    </material-expansionpanel-set>
     <auge-user-detail *ngIf="detailVisible == true" [selectedUser]="selectedUser" (saved)="changeListItemDetail($event)" (closed)="viewDetail(false)">
     </auge-user-detail>
 </div>
