@@ -14,6 +14,7 @@ import 'package:auge_server/model/general/group.dart';
 
 import 'package:auge_server/src/protos/generated/google/protobuf/empty.pb.dart' as empty_pb;
 import 'package:auge_server/src/protos/generated/general/common.pb.dart' as common_pb;
+
 import 'package:auge_server/src/protos/generated/general/group.pbgrpc.dart' as group_pbgrpc;
 
 @Injectable()
@@ -63,7 +64,9 @@ class GroupService {
   Future deleteGroup(Group group) async {
     try {
 
-      group_pbgrpc.GroupRequest groupRequest = group_pbgrpc.GroupRequest()..group = group.writeToProtoBuf()..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
+      group_pbgrpc.GroupRequest groupRequest = group_pbgrpc.GroupRequest()
+        ..group = group.writeToProtoBuf()
+        ..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
 
 
       await _groupServiceClient.deleteGroup(groupRequest);

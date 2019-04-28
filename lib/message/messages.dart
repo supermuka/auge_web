@@ -145,6 +145,27 @@ class UserMsg {
       desc: "Organization labels",
       examples: const {"Name": "Name"}
   );
+
+
+  /// Field Label for user
+  static fieldLabel(String label) => Intl.message(
+      "${Intl.select(label, {
+        'name': 'Name',
+        'eMail': 'e-Mail',
+        'password': 'Password',
+        'authorization': 'Authorization',
+        'authorizationRole.admin': 'Admin',
+        'authorizationRole.leader': 'Leader',
+        'authorizationRole.standard': 'Standard',
+        'photo': 'Photo',
+        'idiom': 'Idiom',
+        'other': 'Not Defined'})}",
+      name: "userLabel",
+      args: [label],
+      // locale: "en",
+      desc: "Organization labels",
+      examples: const {"Name": "Name"}
+  );
 }
 
 

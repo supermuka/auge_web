@@ -269,7 +269,7 @@ class AppLayoutComponent /* extends Object */ with CanReuse implements OnActivat
     return _appLayoutService.enabledSearch;
   }
 
-  String userUrlImage() {
+   userUrlImage() {
     return common_service.userUrlImage(_authService.authenticatedUser?.userProfile?.image);
   }
 

@@ -28,28 +28,11 @@ class HistoryTimelineService {
 
   /// Return a list of [TimelineItem]
   Future<List<HistoryItem>> getHistory(int systemModuleIndex) async {
-
-
-    history_item_pbgrpc.HistoryItem historyItem = history_item_pbgrpc.HistoryItem();
-
-    historyItem.id = '123';
-    historyItem.systemModuleIndex = 0;
-    historyItem.description = '123123';
-
-
-    print('DEBUG A');
-    print(historyItem.writeToJson());
-    print('DEBUG B');
-    print(historyItem.info_.fieldInfo);
-    print('DEBUG C');
-    print(historyItem.info_.fieldType(1));
-    print(historyItem.info_.fieldType(5));
-    print(historyItem.info_.fieldType(9));
     
     //history_item_pbgrpc.HistoryResponse historyResponse = await _historyItemServiceClient.getHistory(history_item_pbgrpc.HistoryItemGetRequest()..systemModuleIndex = SystemModule.objectives.index );
     currentDateTime = await getDateTime();
 
-    return ( await _historyItemServiceClient.getHistory(history_item_pbgrpc.HistoryItemGetRequest()..systemModuleIndex = systemModuleIndex )).history.map((m) =>
+    return ( await _historyItemServiceClient.getHistory(history_item_pbgrpc.HistoryItemGetRequest()..systemModuleIndex = systemModuleIndex)).history.map((m) =>
     HistoryItem()
       ..readFromProtoBuf(m)).toList();
 
@@ -65,4 +48,6 @@ class HistoryTimelineService {
 
   }
 
+
 }
+

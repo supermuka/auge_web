@@ -28,6 +28,8 @@ import 'package:auge_server/model/general/user_profile_organization.dart';
 import 'package:auge_server/model/general/authorization.dart';
 
 import 'package:auge_web/message/messages.dart';
+import 'package:auge_web/message/field_messages.dart';
+
 //import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
@@ -91,26 +93,24 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
 
   UserDetailComponent(this._userService) {
     userAuthorizationOptions = List<Option>();
-
-    //UserAuthorization.values.forEach((f) => userAuthorizationOptions.add(new Option(f.index, UserMessage.label(f.toString()) /* , false, false */) ));
   }
 
   // Define messages and labels
   static final String requiredValueMsg = CommonMsg.requiredValueMsg();
-
-  static final String addUserLabel =  UserMsg.label('Add User');
-  static final String editUserLabel =  UserMsg.label('Edit User');
-  static final String nameLabel =  UserMsg.label('Name');
-  static final String emailLabel =  UserMsg.label('e-Mail');
-  static final String passwordLabel =  UserMsg.label('Password');
-  static final String authorizationLabel = UserMsg.label('Authorization');
-  static final String photoLabel = UserMsg.label('Photo');
-  static final String idiomLabel = UserMsg.label('Idiom');
-
   static final String uploadButtonLabel = CommonMsg.buttonLabel('Upload');
   static final String clearButtonLabel = CommonMsg.buttonLabel('Clear');
   static final String saveButtonLabel = CommonMsg.buttonLabel('Save');
   static final String closeButtonLabel = CommonMsg.buttonLabel('Close');
+
+  static final String addUserLabel =  UserMsg.label('Add User');
+  static final String editUserLabel =  UserMsg.label('Edit User');
+
+  static final String nameLabel =  UserFieldMsg.label(User.nameField);
+  static final String emailLabel =  UserFieldMsg.label(User.eMailField);
+  static final String passwordLabel =  UserFieldMsg.label(User.passwordField);
+  static final String authorizationLabel = UserProfileFieldMsg.label('TODO');
+  static final String photoLabel = UserProfileFieldMsg.label(UserProfile.imageField);
+  static final String idiomLabel = UserMsg.label('Idiom');
 
   @override
   void ngOnInit() async {

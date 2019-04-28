@@ -16,7 +16,9 @@ import 'package:auge_server/model/general/authorization.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/message/messages.dart';
-import 'package:auge_web/message/field_messages.dart';
+
+import 'package:auge_web/src/history_timeline/history_item_timeline_detail_component.dart';
+
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/history_timeline/history_timeline_service.dart';
 
@@ -29,6 +31,7 @@ import 'package:auge_web/src/history_timeline/history_timeline_service.dart';
       MaterialButtonComponent,
       MaterialIconComponent,
       DeferredContentDirective,
+      HistoryItemTimelineDetailComponent,
     ],
     pipes:   const [DatePipe],
     templateUrl: 'history_timeline_component.html',
@@ -50,9 +53,11 @@ class HistoryTimelineComponent /* extends Object */ implements OnInit {
 
   HistoryTimelineComponent(this._historyTimelineService) {
     initializeDateFormatting(Intl.defaultLocale , null);
+
   }
 
   static final String timelineLabel = TimelineItemdMsg.label('Timeline');
+  static final String theLabel = TimelineItemdMsg.label('the');
   static final String dayAgoLabel =  TimelineItemdMsg.label('day ago');
   static final String daysAgoLabel =  TimelineItemdMsg.label('days ago');
   static final String hourAgoLabel =  TimelineItemdMsg.label('hour ago');
@@ -61,26 +66,12 @@ class HistoryTimelineComponent /* extends Object */ implements OnInit {
   static final String minutesAgoLabel =  TimelineItemdMsg.label('minutes ago');
   static final String secondAgoLabel =  TimelineItemdMsg.label('second ago');
   static final String secondsAgoLabel =  TimelineItemdMsg.label('seconds ago');
-  static final String theLabel = TimelineItemdMsg.label('the');
-  static final String valueLabel =  TimelineItemdMsg.label('value');
-  static final String changedFromLabel =  TimelineItemdMsg.label('changed from');
 
   void ngOnInit() async {
     if (systemModuleIndex != null) {
       history = await _historyTimelineService.getHistory(systemModuleIndex);
     } else {
       history = null;
-    }
-  }
-
-  String fieldLabel(String className, String fieldName) {
-    if (className == 'Objective')  {
-      return ObjectiveFieldMsg.label(fieldName);
-    }
-    else if (className == 'Measure') {
-      return MeasuereFieldMsg.label(fieldName);
-    } else {
-      return '';
     }
   }
 
@@ -133,20 +124,4 @@ class HistoryTimelineComponent /* extends Object */ implements OnInit {
     expandedControl[historyItem] = expandedControl[historyItem] == null ? true :  !expandedControl[historyItem];
   }
 
-  dynamic formatValue(dynamic value) {
-
-    if (value is DateTime) {
-      //return DateFormat.yMMMd().add_Hms().format(data);
-      return DateFormat.yMMMd().format(value);
-    } else {
-      return value.toString();
-    }
-  }
-
-  Set<String> mergeChangedValuesKeys(Map<String, dynamic> changedValuesA, Map<String, dynamic> changedValuesB) {
-    Set<String> merge = {};
-    if (changedValuesA != null) merge.addAll(changedValuesA.keys);
-    if (changedValuesB != null) merge.addAll(changedValuesB.keys);
-    return merge;
-  }
 }

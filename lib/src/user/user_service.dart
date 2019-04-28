@@ -60,7 +60,9 @@ class UserService {
   /// Save (create or update) an [User]
   void saveUser(User user) async {
 
-    user_pbgrpc.UserRequest userRequest = user_pbgrpc.UserRequest()..user = user.writeToProtoBuf()..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
+    user_pbgrpc.UserRequest userRequest = user_pbgrpc.UserRequest()
+      ..user = user.writeToProtoBuf()
+      ..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
 
     try {
       if (user.id == null) {
@@ -108,5 +110,6 @@ class UserService {
       rethrow;
     }
   }
+
 
 }

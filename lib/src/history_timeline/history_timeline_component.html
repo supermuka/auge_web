@@ -24,15 +24,7 @@
                         </span>
                     </div>
                     <div *ngIf="expandedControl[historyItem] != null && expandedControl[historyItem]">
-                        <div *ngFor="let key of mergeChangedValuesKeys(historyItem.changedValuesPrevious, historyItem.changedValuesCurrent)"> <!-- Premissa: changedValuesPrevious e ChangedValuesCurrrent foram gravados com os mesmos keys -->
-                            <span><strong>{{fieldLabel(historyItem.objectClassName, key)}}</strong></span>
-                            <span> {{valueLabel}} </span>
-                            <span><strong>{{formatValue(historyItem.changedValuesPrevious[key])}}</strong></span>
-                            <div *ngIf="historyItem.changedValuesCurrent[key].values.length > 1">
-                                <span> {{changedFromLabel}} </span>
-                                <span><strong>{{formatValue(historyItem.changedValuesCurrent[key])}}</strong></span>
-                            </div>
-                        </div>
+                        <auge-history-item-timeline-detail [objectClassName]="historyItem.objectClassName" [changedValuesPrevious]="historyItem.changedValuesPrevious"  [changedValuesCurrent]="historyItem.changedValuesCurrent"></auge-history-item-timeline-detail>
                     </div>
                 </div>
             </div>
