@@ -1,8 +1,6 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
-import 'dart:convert';
-
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 

@@ -21,10 +21,11 @@ import 'package:auge_web/src/history_timeline/history_item_timeline_detail_compo
 
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/history_timeline/history_timeline_service.dart';
+export 'package:auge_web/src/history_timeline/history_timeline_service.dart';
 
 @Component(
     selector: 'auge-history-timeline',
-    providers: const [HistoryTimelineService],
+    providers: const [],
     directives: const [
       coreDirectives,
       MaterialExpansionPanel,
@@ -40,21 +41,16 @@ import 'package:auge_web/src/history_timeline/history_timeline_service.dart';
       'history_timeline_component.css'
     ])
 
-class HistoryTimelineComponent /* extends Object */ implements OnInit {
+class HistoryTimelineComponent /* extends Object */ implements OnInit  {
 
   final HistoryTimelineService _historyTimelineService;
-
-  @Input()
-  int systemModuleIndex;
-
-  List<HistoryItem> history;
 
   Map<HistoryItem, bool> expandedControl = Map();
 
   HistoryTimelineComponent(this._historyTimelineService) {
     initializeDateFormatting(Intl.defaultLocale , null);
-
   }
+
 
   static final String timelineLabel = TimelineItemdMsg.label('Timeline');
   static final String theLabel = TimelineItemdMsg.label('the');
@@ -68,12 +64,10 @@ class HistoryTimelineComponent /* extends Object */ implements OnInit {
   static final String secondsAgoLabel =  TimelineItemdMsg.label('seconds ago');
 
   void ngOnInit() async {
-    if (systemModuleIndex != null) {
-      history = await _historyTimelineService.getHistory(systemModuleIndex);
-    } else {
-      history = null;
-    }
+
   }
+
+  get history => _historyTimelineService.history;
 
   // List<TimelineItem> get timeline => objective.timeline;
   String userUrlImage(User user) {
@@ -123,5 +117,4 @@ class HistoryTimelineComponent /* extends Object */ implements OnInit {
   void collapseExpandControl(HistoryItem historyItem) {
     expandedControl[historyItem] = expandedControl[historyItem] == null ? true :  !expandedControl[historyItem];
   }
-
 }

@@ -11,11 +11,15 @@ import 'package:auge_server/src/protos/generated/general/history_item.pbgrpc.dar
 
 @Injectable()
 class HistoryTimelineService {
+
   //final AuthService _authService;
   final AugeApiService _augeApiService;
 
   common_pbgrpc.CommonServiceClient _commonServiceClient;
   history_item_pbgrpc.HistoryItemServiceClient _historyItemServiceClient;
+
+  // Shared history on components related
+  List<HistoryItem> history;
 
   DateTime currentDateTime;
 
@@ -25,6 +29,10 @@ class HistoryTimelineService {
   }
 
   // get authService => _authService;
+
+  void refreshHistory(int systemModuleIndex) async {
+    history = await getHistory(systemModuleIndex);
+  }
 
   /// Return a list of [TimelineItem]
   Future<List<HistoryItem>> getHistory(int systemModuleIndex) async {

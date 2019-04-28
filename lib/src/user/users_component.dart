@@ -33,7 +33,7 @@ import 'package:auge_web/services/common_service.dart' as common_service;
 
 @Component(
     selector: 'auge-users',
-    providers: const [DeferredContentDirective, UserService],
+    providers: const [DeferredContentDirective, UserService, HistoryTimelineService],
     directives: const [
       coreDirectives,
       routerDirectives,
@@ -56,6 +56,7 @@ class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
   final AppLayoutService _appLayoutService;
   final SearchService _searchService;
   final UserService _userService;
+  final HistoryTimelineService _historyTimelineService;
   final Router _router;
 
   // Errors, exceptions shows up
@@ -69,24 +70,27 @@ class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
 
   String mainColWidth = '100%';
   bool _timelineVisible = false;
+
+  MenuModel<MenuItem> menuModel;
+
+
+  UsersComponent(this._appLayoutService, this._searchService, this._userService, this._historyTimelineService, this._router) {
+    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
+  }
+
   bool get timelineVisible {
-    (!_timelineVisible) ?mainColWidth = '100%' : mainColWidth = '75%';
     return _timelineVisible;
   }
   set timelineVisible(bool visible) {
     _timelineVisible = visible;
-   // (!_timelineVisible) ?mainColWidth = '100%' : mainColWidth = '75%';
+    if (_timelineVisible) {
+      mainColWidth = '75%';
+      _historyTimelineService.refreshHistory(SystemModule.users.index);
+    } else {
+      mainColWidth = '100%';
+    }
+    // (!_timelineVisible) ?mainColWidth = '100%' : mainColWidth = '75%';
   }
-
-  MenuModel<MenuItem> menuModel;
-
-  static final systemModuleIndex =  SystemModule.users.index;
-
-  UsersComponent(this._appLayoutService, this._searchService, this._userService, this._router) {
-    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
-  }
-
-
 
   void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
     if (_userService.authService.selectedOrganization == null || _userService.authService.authenticatedUser == null) {
@@ -105,7 +109,6 @@ class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
   }
 
   List<User> get users {
-
     return _searchService?.searchTerm.toString().isEmpty ? _users : _users.where((t) => t.name.contains(_searchService.searchTerm)).toList();
   }
 
@@ -116,6 +119,8 @@ class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
       await _userService.deleteUser(selectedUser);
 
       users.remove(selectedUser);
+      _historyTimelineService.refreshHistory(SystemModule.users.index);
+
     } catch (e) {
      // print('${e.runtimeType}, ${e}');
       _appLayoutService.error = e.toString();
@@ -135,7 +140,7 @@ class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
     this.detailVisible = detailVisible;
   }
 
-  void changeListItemDetail(String userId) async {
+  void refreshListItemDetail(String userId) async {
     User user = await _userService.getUser(userId, withProfile: true);
     if (selectedUser == null) {
       _users.add(user);
@@ -143,5 +148,8 @@ class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
       _users[_users.indexOf(selectedUser)] = user;
    //   user.cloneTo(_users[_users.indexOf(selectedUser)]);
     }
+    _historyTimelineService.refreshHistory(SystemModule.users.index);
   }
+
+
 }
