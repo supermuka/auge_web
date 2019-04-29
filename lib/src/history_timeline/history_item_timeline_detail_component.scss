@@ -21,3 +21,8 @@
 .expansionpanel-no-padding-margin {
   @include expansionpanel-open-panel-offset(0);
 }
+
+.font-size-small {
+  font-size: small;
+  color: $mat-text-secondary; /* $mat-gray-500; */
+}

@@ -55,7 +55,5 @@ class HistoryTimelineService {
             dateTimeResponse.dateTime.nanos ~/ 1000);
 
   }
-
-
 }
 

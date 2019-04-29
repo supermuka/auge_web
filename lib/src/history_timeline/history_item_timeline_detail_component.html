@@ -1,23 +1,26 @@
-<div *ngFor="let key of fieldsChangedValues?.keys">
+<div class="font-size-small" *ngFor="let key of fieldsChangedValues?.keys">
     <span>{{fieldsChangedValues[key][iFieldDescription]}}</span>
     <span *ngIf="fieldsChangedValues[key][iTypeToView] == typeToViewTextLeft">
-        <span><strong>{{fieldsChangedValues[key][iChangedValuesCurrent]}}</strong></span>
+        <span *ngIf="fieldsChangedValues[key][iChangedValuesCurrent] != null"><strong>{{fieldsChangedValues[key][iChangedValuesCurrent]}}</strong></span>
         <span *ngIf="fieldsChangedValues[key][iChangedValuesPrevious] != null">
-            <span> {{changedFromLabel}} </span>
+            <span *ngIf="fieldsChangedValues[key][iChangedValuesCurrent] != null"> {{changedFromLabel}} </span>
+            <span *ngIf="fieldsChangedValues[key][iChangedValuesCurrent] == null"> {{wasLabel}} </span>
             <span><strong>{{fieldsChangedValues[key][iChangedValuesPrevious]}}</strong></span>
         </span>
     </span>
     <span *ngIf="fieldsChangedValues[key][iTypeToView] == typeToViewTextRight">
-        <span class="w3-right"><strong>{{fieldsChangedValues[key][iChangedValuesCurrent]}}</strong></span>
+        <span *ngIf="fieldsChangedValues[key][iChangedValuesCurrent] != null" class="w3-right"><strong>{{fieldsChangedValues[key][iChangedValuesCurrent]}}</strong></span>
         <span *ngIf="fieldsChangedValues[key][iChangedValuesPrevious] != null">
-            <span> {{changedFromLabel}} </span>
+            <span *ngIf="fieldsChangedValues[key][iChangedValuesCurrent] != null"> {{changedFromLabel}} </span>
+            <span *ngIf="fieldsChangedValues[key][iChangedValuesCurrent] == null"> {{wasLabel}} </span>
             <span class="w3-right"><strong>{{fieldsChangedValues[key][iChangedValuesPrevious]}}</strong></span>
         </span>
     </span>
     <span *ngIf="fieldsChangedValues[key][iTypeToView] == typeToViewImageAvatar">
-        <span class="avatar" [style.background-image]="'url(' + userUrlImage(fieldsChangedValues[key][iChangedValuesCurrent]) + ')'"></span>
+        <span *ngIf="fieldsChangedValues[key][iChangedValuesCurrent] != null" class="avatar" [style.background-image]="'url(' + userUrlImage(fieldsChangedValues[key][iChangedValuesCurrent]) + ')'"></span>
         <span *ngIf="fieldsChangedValues[key][iChangedValuesPrevious] != null">
-            <span> {{changedFromLabel}} </span>
+            <span *ngIf="fieldsChangedValues[key][iChangedValuesCurrent] != null"> {{changedFromLabel}} </span>
+            <span *ngIf="fieldsChangedValues[key][iChangedValuesCurrent] == null"> {{wasLabel}} </span>
             <span class="avatar" [style.background-image]="'url(' + userUrlImage(fieldsChangedValues[key][iChangedValuesPrevious]) + ')'"></span>
         </span>
     </span>

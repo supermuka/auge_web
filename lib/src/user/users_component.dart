@@ -150,6 +150,4 @@ class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
     }
     _historyTimelineService.refreshHistory(SystemModule.users.index);
   }
-
-
 }

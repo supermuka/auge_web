@@ -67,6 +67,7 @@ class HistoryItemTimelineDetailComponent /* extends Object */ implements OnInit 
   static final String theLabel = TimelineItemdMsg.label('the');
   static final String valueLabel =  TimelineItemdMsg.label('value');
   static final String changedFromLabel =  TimelineItemdMsg.label('changed from');
+  static final String wasLabel =  TimelineItemdMsg.label('was');
 
   void ngOnInit() async {
 

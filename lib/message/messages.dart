@@ -459,6 +459,7 @@ class TimelineItemdMsg {
       'value': 'value',
       'the': 'the',
       'changed from': 'changed from',
+      'was': 'was',
       'other': 'Not Defined'})}",
     name: "labelLabel",
     args: [fieldName],
