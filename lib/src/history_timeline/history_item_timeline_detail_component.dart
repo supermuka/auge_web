@@ -120,7 +120,7 @@ class UserChangedValues {
         fieldsChangedValues.putIfAbsent(k, () => [_typeToViewTextLeft, UserFieldMsg.label(k), null, null]);
         fieldsChangedValues[k][iPreviousCurrent] = '***';
       } else {
-        if (k != User.idField) {
+        if (k != User.idField && k != User.versionField) {
           fieldsChangedValues.putIfAbsent(k, () => [_typeToViewTextLeft, UserFieldMsg.label(k), null, null]);
           fieldsChangedValues[k][iPreviousCurrent] = v;
         }
