@@ -170,7 +170,7 @@ class WorkItemsKanbanComponent extends Object implements OnInit {
       kanbanColumns.singleWhere((ik) => ik.stage.id == workItem.stage.id).columnWorkItems.add(workItem);
     } else {
       List<WorkItem> workItems = kanbanColumns.singleWhere((ik) => ik.stage.id == workItem.stage.id).columnWorkItems;
-      workItem.cloneTo(workItems[workItems.indexOf(selectedWorkItem)]);
+      //TODO workItem.cloneTo(workItems[workItems.indexOf(selectedWorkItem)]);
     }
   }
 }

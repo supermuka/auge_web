@@ -125,11 +125,14 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
 
         user = await _userService.getUser(selectedUser.id, withProfile: true);
 
+        userProfileOrganization = await _userService.getUserProfileOrganization(selectedUser.id, _userService.authService.selectedOrganization.id);
+/*
         List<UserProfileOrganization> userProfileOrganizations = await _userService.getUsersProfileOrganizations(selectedUser.id, _userService.authService.selectedOrganization.id);
 
         if (userProfileOrganizations.isNotEmpty) {
           userProfileOrganization = userProfileOrganizations.first;
         }
+*/
       } catch (e) {
         dialogError = e.toString();
         rethrow;

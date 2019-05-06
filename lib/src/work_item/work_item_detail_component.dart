@@ -164,7 +164,7 @@ class WorkItemDetailComponent implements OnInit  {
 
     // Clone the object to have an intermediate
     if (selectedWorkItem != null) {
-      workItem = selectedWorkItem.clone();
+      //TODO workItem = selectedWorkItem.clone();
     }
 
     //List<User> users = await _userService.getUsers(_authService.selectedOrganization?.id, withProfile: true);

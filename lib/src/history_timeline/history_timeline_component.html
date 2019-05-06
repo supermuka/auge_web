@@ -5,9 +5,6 @@
                                  [hideExpandedHeader]="true"
                                  [expanded]="true"
                                  [showSaveCancel]="false">
-            <!-- div name>
-                <span><strong>{{timelineLabel}}</strong></span>
-            </div -->
             <div class="timeline-vertical-size" *deferredContent>
                 <div *ngFor="let historyItem of history">
                     <div>
@@ -24,7 +21,7 @@
                         </span>
                     </div>
                     <div *ngIf="expandedControl[historyItem] != null && expandedControl[historyItem]">
-                        <auge-history-item-timeline-detail [objectClassName]="historyItem.objectClassName" [changedValuesPrevious]="historyItem.changedValuesPrevious"  [changedValuesCurrent]="historyItem.changedValuesCurrent"></auge-history-item-timeline-detail>
+                        <auge-history-item-timeline-detail [objectClassName]="historyItem.objectClassName" [changedValues]="historyItem.changedValues"></auge-history-item-timeline-detail>
                     </div>
                 </div>
             </div>

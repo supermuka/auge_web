@@ -1,27 +1,28 @@
 <div class="font-size-small" *ngFor="let key of fieldsChangedValues?.keys">
-    <span>{{fieldsChangedValues[key][iFieldDescription]}}</span>
-    <span *ngIf="fieldsChangedValues[key][iTypeToView] == typeToViewTextLeft">
-        <span *ngIf="fieldsChangedValues[key][iChangedValuesCurrent] != null"><strong>{{fieldsChangedValues[key][iChangedValuesCurrent]}}</strong></span>
-        <span *ngIf="fieldsChangedValues[key][iChangedValuesPrevious] != null">
-            <span *ngIf="fieldsChangedValues[key][iChangedValuesCurrent] != null"> {{changedFromLabel}} </span>
-            <span *ngIf="fieldsChangedValues[key][iChangedValuesCurrent] == null"> {{wasLabel}} </span>
-            <span><strong>{{fieldsChangedValues[key][iChangedValuesPrevious]}}</strong></span>
+    <span>{{fieldsChangedValues[key][fieldDescriptionKey]}}</span>
+    <span *ngIf="fieldsChangedValues[key][typeToViewKey] == typeToViewTextLeft">
+        <span *ngIf="fieldsChangedValues[key][currentKey] != null"><strong>{{fieldsChangedValues[key][currentKey]}}</strong></span>
+        <span *ngIf="fieldsChangedValues[key][previousKey] != null">
+            <span *ngIf="fieldsChangedValues[key][currentKey] != null"> {{changedFromLabel}} </span>
+            <span *ngIf="fieldsChangedValues[key][currentKey] == null"> {{wasLabel}} </span>
+            <span><strong>{{fieldsChangedValues[key][previousKey]}}</strong></span>
         </span>
     </span>
-    <span *ngIf="fieldsChangedValues[key][iTypeToView] == typeToViewTextRight">
-        <span *ngIf="fieldsChangedValues[key][iChangedValuesCurrent] != null" class="w3-right"><strong>{{fieldsChangedValues[key][iChangedValuesCurrent]}}</strong></span>
-        <span *ngIf="fieldsChangedValues[key][iChangedValuesPrevious] != null">
-            <span *ngIf="fieldsChangedValues[key][iChangedValuesCurrent] != null"> {{changedFromLabel}} </span>
-            <span *ngIf="fieldsChangedValues[key][iChangedValuesCurrent] == null"> {{wasLabel}} </span>
-            <span class="w3-right"><strong>{{fieldsChangedValues[key][iChangedValuesPrevious]}}</strong></span>
+    <span *ngIf="fieldsChangedValues[key][typeToViewKey] == typeToViewTextRight">
+        <span *ngIf="fieldsChangedValues[key][currentKey] != null" class="w3-right"><strong>{{fieldsChangedValues[key][currentKey]}}</strong></span>
+        <span *ngIf="fieldsChangedValues[key][previousKey] != null">
+            <span *ngIf="fieldsChangedValues[key][currentKey] != null"> {{changedFromLabel}} </span>
+            <span *ngIf="fieldsChangedValues[key][currentKey] == null"> {{wasLabel}} </span>
+            <span class="w3-right"><strong>{{fieldsChangedValues[key][previousKey]}}</strong></span>
         </span>
     </span>
-    <span *ngIf="fieldsChangedValues[key][iTypeToView] == typeToViewImageAvatar">
-        <span *ngIf="fieldsChangedValues[key][iChangedValuesCurrent] != null" class="avatar" [style.background-image]="'url(' + userUrlImage(fieldsChangedValues[key][iChangedValuesCurrent]) + ')'"></span>
-        <span *ngIf="fieldsChangedValues[key][iChangedValuesPrevious] != null">
-            <span *ngIf="fieldsChangedValues[key][iChangedValuesCurrent] != null"> {{changedFromLabel}} </span>
-            <span *ngIf="fieldsChangedValues[key][iChangedValuesCurrent] == null"> {{wasLabel}} </span>
-            <span class="avatar" [style.background-image]="'url(' + userUrlImage(fieldsChangedValues[key][iChangedValuesPrevious]) + ')'"></span>
+    <span *ngIf="fieldsChangedValues[key][typeToViewKey] == typeToViewImageAvatar">
+        <span *ngIf="fieldsChangedValues[key][currentKey] != null" class="avatar" [style.background-image]="'url(' + userUrlImage(fieldsChangedValues[key][currentKey]) + ')'"></span>
+        <span *ngIf="fieldsChangedValues[key][previousKey] != null">
+            <span *ngIf="fieldsChangedValues[key][currentKey] != null"> {{changedFromLabel}} </span>
+            <span *ngIf="fieldsChangedValues[key][currentKey] == null"> {{wasLabel}} </span>
+            <span class="avatar" [style.background-image]="'url(' + userUrlImage(fieldsChangedValues[key][previousKey]) + ')'"></span>
         </span>
     </span>
 </div>
+

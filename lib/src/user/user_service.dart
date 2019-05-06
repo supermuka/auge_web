@@ -57,6 +57,17 @@ class UserService {
     }
   }
 
+  Future<UserProfileOrganization> getUserProfileOrganization(String userId, String organizationId) async {
+    try {
+      //  return await _augeApiService.augeApi.getUsersProfileOrganizations(
+      //      userId: userId, organizationId: organizationId);
+      return UserProfileOrganization()..readFromProtoBuf(await _userProfileOrganizationServiceClient.getUserProfileOrganization(
+          user_profile_organization_pbgrpc.UserProfileOrganizationGetRequest()..userId = userId..organizationId = organizationId));
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   /// Save (create or update) an [User]
   void saveUser(User user) async {
 
@@ -93,6 +104,22 @@ class UserService {
         await _userProfileOrganizationServiceClient.updateUserProfileOrganization(
             userProfileOrganizationRequest);
       }
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  /// Delete (create or update) an [UserProfileOrganization]
+  void deleteUserProfileOrganization(UserProfileOrganization userProfileOrganization) async {
+
+    user_profile_organization_pbgrpc.UserProfileOrganizationRequest userProfileOrganizationRequest = user_profile_organization_pbgrpc.UserProfileOrganizationRequest()
+      ..userProfileOrganization = userProfileOrganization.writeToProtoBuf()..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
+    try {
+
+        await _userProfileOrganizationServiceClient
+            .deleteUserProfileOrganization(userProfileOrganizationRequest);
+
     } catch (e) {
       print(e);
       rethrow;

@@ -1,38 +1,49 @@
 <div class="container-list">
-    <material-fab raised (trigger)="selectGroup(null);viewDetail(true)">
+    <div class="w3-row-padding">
+        <div class="w3-col">
+            <material-toggle class="w3-right" label="Timeline" (checkedChange)="timelineVisible = $event"></material-toggle>
+        </div>
+    </div>
+    <div class="w3-row-padding">
+        <div class="w3-col" style="width:{{mainColWidth}}">
+            <material-expansionpanel-set>
+                <div *ngFor="let iGroup of groups">
+                    <material-expansionpanel
+                            disabled
+                            [alwaysHideExpandIcon]="true"
+                            [hideExpandedHeader]="false"
+                            [showSaveCancel]="false">
+                        <div name class="custom-expansionpanel-panel-specific-name-width">
+                            <span class="avatar avatar-border" [style.background-color]="colorFromUuid(iGroup.id)">
+                                <span class="text-group-letter">{{firstLetter(iGroup.name)}}</span>
+                            </span>
+                            <span class="truncate-ellipsed-parent">
+                                <span class="truncate-ellipsed">{{iGroup.name}}</span>
+                            </span>
+                        </div>
+                        <div value>
+                            <div class="w3-col l8">
+                               {{iGroup.leader == null ? "(-)" : iGroup.leader.name}}
+                            </div>
+                            <div class="w3-col l4">
+                               {{groupActiveInactive(iGroup)}}
+                            </div>
+                        </div>
+                        <div action>
+                            <material-menu [menu]="menuModel" (click)="selectGroup(iGroup)">
+                            </material-menu>
+                        </div>
+                    </material-expansionpanel>
+                </div>
+            </material-expansionpanel-set>
+        </div>
+        <div *ngIf="timelineVisible == true" class="w3-col" style="width:25%">
+            <auge-history-timeline></auge-history-timeline>
+        </div>
+    </div>
+    <material-fab class="material-fab-add" raised (trigger)="selectGroup(null);viewDetail(true)">
         <material-icon icon="add"></material-icon>
     </material-fab>
-    <br/>
-    <material-expansionpanel-set>
-        <div *ngFor="let iGroup of groups">
-            <material-expansionpanel
-                    disabled
-                    [alwaysHideExpandIcon]="true"
-                    [hideExpandedHeader]="false"
-                    [showSaveCancel]="false">
-                <div name class="custom-expansionpanel-panel-specific-name-width">
-                    <span class="avatar avatar-border" [style.background-color]="colorFromUuid(iGroup.id)">
-                        <span class="text-group-letter">{{firstLetter(iGroup.name)}}</span>
-                    </span>
-                    <span class="truncate-ellipsed-parent">
-                        <span class="truncate-ellipsed">{{iGroup.name}}</span>
-                    </span>
-                </div>
-                <div value>
-                    <div class="w3-col l8">
-                       {{iGroup.leader == null ? "(-)" : iGroup.leader.name}}
-                    </div>
-                    <div class="w3-col l4">
-                       {{groupActiveInactive(iGroup)}}
-                    </div>
-                </div>
-                <div action>
-                    <material-menu [menu]="menuModel" (click)="selectGroup(iGroup)">
-                    </material-menu>
-                </div>
-            </material-expansionpanel>
-        </div>
-    </material-expansionpanel-set>
     <auge-group-detail *ngIf="detailVisible == true" [selectedGroup]="selectedGroup" (saved)="changeListItemWithDetail($event)" (closed)="viewDetail(false)">
     </auge-group-detail>
 </div>

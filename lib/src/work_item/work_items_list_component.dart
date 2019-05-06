@@ -129,7 +129,7 @@ class WorkItemsListComponent extends Object /* with CanReuse implements OnActiva
     if (selectedWorkItem == null) {
       workItems.add(workItem);
     } else {
-      workItem.cloneTo(workItems[workItems.indexOf(selectedWorkItem)]);
+      //TODO workItem.cloneTo(workItems[workItems.indexOf(selectedWorkItem)]);
     }
   }
 }

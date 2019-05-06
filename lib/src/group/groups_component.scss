@@ -1,14 +1,14 @@
 @import 'package:angular_components/css/material/material';
 @import 'package:angular_components/material_expansionpanel/mixins';
 
-material-fab {
-    /* position: absolute; */
-  position: fixed !important;
-  z-index: 9999999;
-  background-color: $mat-red;
-  color: $mat-white;
-  float: right;
-  right: 32px;
+.material-fab-add {
+   position: fixed !important;
+   z-index: 9999;
+   float: right;
+   bottom: 64px;
+   right: 64px;
+   background-color: $mat-red;
+   color: $mat-white;
 }
 
 .text-group-letter {

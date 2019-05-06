@@ -1,9 +1,26 @@
 import 'package:intl/intl.dart';
 
 import 'package:auge_server/model/general/user.dart';
+import 'package:auge_server/model/general/group.dart';
 import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/objective/measure.dart';
 
+
+/// Specific messages and label for [User] class field
+class CommonFieldAndValuesMsg {
+
+  /// Label for Field User
+  static labelAndValue(dynamic fieldName) => Intl.message(
+    "${Intl.select(fieldName, {
+      true: 'Yes',
+      false: 'No',
+      'other': 'Not Defined'})}",
+    name: "commonFieldAndValuesLabel",
+    args: [fieldName],
+    // locale: "en",
+    desc: "Common form field labels and values",
+  );
+}
 
 /// Specific messages and label for [User] class field
 class UserFieldMsg {
@@ -36,6 +53,23 @@ class UserProfileFieldMsg {
     args: [fieldName],
     // locale: "en",
     desc: "User Profile form field labels",
+  );
+}
+
+/// Specific messages and label for [Group] class field
+class GroupFieldMsg {
+
+  /// Label for Field User
+  static label(String fieldName) => Intl.message(
+    "${Intl.select(fieldName, {
+      Group.nameField: 'Name',
+      Group.activeField: 'Active',
+      Group.leaderField: 'Leader',
+      'other': 'Not Defined'})}",
+    name: "groupFieldLabel",
+    args: [fieldName],
+    // locale: "en",
+    desc: "Group form field labels",
   );
 }
 

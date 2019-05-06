@@ -108,7 +108,8 @@ class MeasureDetailComponent extends Object implements OnInit {
   void ngOnInit() async {
 
     if (selectedMeasure != null) {
-      measure = selectedMeasure.clone();
+
+      //TODO  measure = selectedMeasure.clone();
     } else {
       measure = new Measure();
       measure.decimalsNumber = 0;

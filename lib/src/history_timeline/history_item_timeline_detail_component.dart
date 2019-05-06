@@ -17,15 +17,15 @@ import 'package:auge_web/message/messages.dart';
 import 'package:auge_web/message/field_messages.dart';
 
 // Const to format html types
-const _typeToViewTextLeft = 0;
-const _typeToViewTextRight = 1;
-const _typeToViewImageAvatar = 2;
+const _typeToViewTextLeft = '0';
+const _typeToViewTextRight = '1';
+const _typeToViewImageAvatar = '2';
 
 // Const index to formated changed values
-const _iTypeToView = 0;
-const _iFieldDescription = 1;
-const _iChangedValuesPrevious = 2;
-const _iChangedValuesCurrent = 3;
+const _typeToViewKey = 't';
+const _fieldDescriptionKey = 'd';
+const _previousKey = 'p';
+const _currentKey = 'c';
 
 @Component(
     selector: 'auge-history-item-timeline-detail',
@@ -50,14 +50,10 @@ class HistoryItemTimelineDetailComponent /* extends Object */ implements OnInit 
   String objectClassName;
 
   @Input()
-  dynamic changedValuesPrevious;
-
-  @Input()
-  dynamic changedValuesCurrent;
-
+  Map<String, dynamic> changedValues;
 
   // List with String representation, formated when necessary, to present on web.
-  Map<String, List<dynamic>> fieldsChangedValues;
+  Map<String, Map<dynamic, dynamic>> fieldsChangedValues;
 
   HistoryItemTimelineDetailComponent() {
     initializeDateFormatting(Intl.defaultLocale , null);
@@ -69,9 +65,18 @@ class HistoryItemTimelineDetailComponent /* extends Object */ implements OnInit 
   static final String changedFromLabel =  TimelineItemdMsg.label('changed from');
   static final String wasLabel =  TimelineItemdMsg.label('was');
 
+  final typeToViewTextLeft =  _typeToViewTextLeft;
+  final typeToViewTextRight = _typeToViewTextRight;
+  final typeToViewImageAvatar = _typeToViewImageAvatar;
+
+  final typeToViewKey = _typeToViewKey;
+  final fieldDescriptionKey = _fieldDescriptionKey;
+  final previousKey = _previousKey;
+  final currentKey = _currentKey;
+
   void ngOnInit() async {
 
-    fieldsChangedValues = getViewToChangedValues(objectClassName, changedValuesPrevious, changedValuesCurrent);
+    fieldsChangedValues = getViewToChangedValues(objectClassName, changedValues);
 
   }
 
@@ -91,84 +96,143 @@ class HistoryItemTimelineDetailComponent /* extends Object */ implements OnInit 
   }
 
   // Format data type to web presentation
-  Map<String, List<dynamic>> getViewToChangedValues(String objectClassName, Map<String, dynamic> changedValuesPrevious, Map<String, dynamic> changedValuesCurrent) {
-    Map<String, List<dynamic>> viewToChangedValues;
+  Map<String, Map<dynamic, dynamic>> getViewToChangedValues(String objectClassName, Map<String, dynamic> changedValues) {
+    Map<String, Map<dynamic, dynamic>> viewToChangedValues;
     if (objectClassName == 'User') {
-      viewToChangedValues = UserChangedValues.getViewToChangedValues(objectClassName, changedValuesPrevious, changedValuesCurrent);
+      viewToChangedValues = UserChangedValues().getViewToChangedValues(changedValues);
+    } else if (objectClassName == 'Group') {
+ //     viewToChangedValues = GroupChangedValues().getViewToChangedValues(changedValues);
     }
     return viewToChangedValues;
   }
 
-  int get typeToViewTextLeft => _typeToViewTextLeft;
-  int get typeToViewTextRight => _typeToViewTextRight;
-  int get typeToViewImageAvatar => _typeToViewImageAvatar;
 
-  int get iTypeToView => _iTypeToView;
-  int get iFieldDescription => _iFieldDescription;
-  int get iChangedValuesPrevious => _iChangedValuesPrevious;
-  int get iChangedValuesCurrent => _iChangedValuesCurrent;
 
 }
 
-class UserChangedValues {
+class BaseChangedValues {
+  Map<String, Map<dynamic, dynamic>> getViewToChangedValues(Map<String, dynamic> changedValues) {
+    Map<String, Map<dynamic, dynamic>> _fieldsChangedValues = {};
 
-  static constructViewToFieldsChangedValues(Map<String, List<dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues, int iPreviousCurrent) {
+    constructViewToFieldsChangedValues(_fieldsChangedValues, changedValues);
 
+    return _fieldsChangedValues;
+  }
+
+  constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {}
+}
+
+/// USERS
+class UserChangedValues extends BaseChangedValues {
+
+  static const className = 'User';
+
+  @override
+  constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
     changedValues?.forEach((k, v) {
-      if (k == User.userProfileField) {
-        UserProfileChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues, v, iPreviousCurrent);
-      } else if (k == User.passwordField) {
-        fieldsChangedValues.putIfAbsent(k, () => [_typeToViewTextLeft, UserFieldMsg.label(k), null, null]);
-        fieldsChangedValues[k][iPreviousCurrent] = '***';
+      if (k != User.idField && k != User.versionField) {
+        if (k == User.userProfileField) {
+            UserProfileChangedValues().constructViewToFieldsChangedValues(
+               fieldsChangedValues, v);
+        } else if (k == User.passwordField) {
+          fieldsChangedValues.putIfAbsent('${className}.${k}', () =>
+          {
+            _typeToViewKey: _typeToViewTextLeft,
+            _fieldDescriptionKey: UserFieldMsg.label(k)});
+          if (v.containsKey(_previousKey)) fieldsChangedValues['${className}.${k}'][_previousKey] = '***';
+          if (v.containsKey(_currentKey)) fieldsChangedValues['${className}.${k}'][_currentKey] = '***';
+        } else if (v is Map && (v.containsKey(_previousKey) || v.containsKey(_currentKey))) {
+          fieldsChangedValues.putIfAbsent('${className}.${k}', () =>
+          {
+            _typeToViewKey: _typeToViewTextLeft,
+            _fieldDescriptionKey: UserFieldMsg.label(k)});
+          if (v.containsKey(_previousKey))
+            fieldsChangedValues['${className}.${k}'][_previousKey] =
+            v[_previousKey];
+          if (v.containsKey(_currentKey))
+            fieldsChangedValues['${className}.${k}'][_currentKey] =
+            v[_currentKey];
+        }
+      }
+    });
+    return fieldsChangedValues;
+  }
+}
+
+class UserProfileChangedValues extends BaseChangedValues {
+
+  static const className = 'UserProfile';
+
+  @override
+  Map<String, Map<dynamic, dynamic>> constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
+    changedValues?.forEach((k, v) {
+      if (k != User.idField) {
+        if (k == UserProfile.idiomLocaleField) {} else
+        if (k == UserProfile.imageField) {
+          fieldsChangedValues.putIfAbsent('${className}.${k}', () =>
+          {
+            _typeToViewKey: _typeToViewImageAvatar,
+            _fieldDescriptionKey: UserFieldMsg.label(k)});
+          if (v.containsKey[_previousKey]) fieldsChangedValues['${className}.${k}'][_previousKey] = '***';
+          if (v.containsKey[_currentKey]) fieldsChangedValues['${className}.${k}'][_currentKey] = '***';
+        }
+        else if (v is Map && (v.containsKey(_previousKey) || v.containsKey(_currentKey))) {
+          fieldsChangedValues.putIfAbsent('${className}.${k}', () =>
+          {
+            _typeToViewKey: _typeToViewTextLeft,
+            _fieldDescriptionKey: UserProfileFieldMsg.label(k)});
+          if (v.containsKey(_previousKey))
+            fieldsChangedValues['${className}.${k}'][_previousKey] =
+            v[_previousKey];
+          if (v.containsKey(_currentKey))
+            fieldsChangedValues['${className}.${k}'][_currentKey] =
+            v[_currentKey];
+        }
+      }
+    });
+    return fieldsChangedValues;
+  }
+}
+/*
+/// GROUPS
+class GroupChangedValues extends BaseChangedValues {
+
+  static const className = 'Group';
+
+  @override
+  constructViewToFieldsChangedValues(Map<String, List<dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues, Map<String, String> onlyFields,  int iPreviousCurrent) {
+    changedValues?.forEach((k, v) {
+
+      if (k == Group.activeField) {
+        fieldsChangedValues.putIfAbsent(
+            '${className}.${k}', () => [_typeToViewTextLeft, GroupFieldMsg.label(k), null, null]);
+        fieldsChangedValues['${className}.${k}'][iPreviousCurrent] =
+            CommonFieldAndValuesMsg.labelAndValue(v);
+      } else if (k == Group.leaderField) {
+        /*
+        fieldsChangedValues.putIfAbsent(
+            k, () => [_typeToViewImageAvatar, GroupFieldMsg.label(k), null, null]);
+*/
+       // fieldsChangedValues[k][iPreviousCurrent] = v['profile']['image'];
+        UserChangedValues().constructViewToFieldsChangedValues(
+            fieldsChangedValues, v, {User.nameField: GroupFieldMsg.label(k)}, iPreviousCurrent);
+
+      } else if (k == Group.groupTypeField) {
+        //TODO  GroupTypeChangedValues().constructViewToFieldsChangedValues(fieldsChangedValues, v, iPreviousCurrent);
+      } else if (k == Group.superGroupField) {
+        GroupChangedValues().constructViewToFieldsChangedValues(fieldsChangedValues, changedValues, {Group.nameField: GroupFieldMsg.label(k)}, iPreviousCurrent);
+      } else if (k == Group.membersField && v is List && v.isNotEmpty) {
+        v.forEach((v) => UserChangedValues().constructViewToFieldsChangedValues(
+            fieldsChangedValues, v, {Group.membersField: GroupFieldMsg.label(k)}, iPreviousCurrent));
       } else {
-        if (k != User.idField && k != User.versionField) {
-          fieldsChangedValues.putIfAbsent(k, () => [_typeToViewTextLeft, UserFieldMsg.label(k), null, null]);
-          fieldsChangedValues[k][iPreviousCurrent] = v;
+        if (k != Group.idField && k != Group.versionField && k != Group.organizationField) {
+          fieldsChangedValues.putIfAbsent('${className}.${k}', () => [_typeToViewTextLeft, UserFieldMsg.label(k), null, null]);
+          fieldsChangedValues['${className}.${k}'][iPreviousCurrent] = v;
         }
       }
     });
-
-    return fieldsChangedValues;
-  }
-
-  static Map<String, List<dynamic>> getViewToChangedValues(String objectClassName, Map<String, dynamic> changedValuesPrevious, Map<String, dynamic> changedValuesCurrent) {
-    Map<String, List<dynamic>> fieldsChangedValues = {};
-
-    constructViewToFieldsChangedValues(fieldsChangedValues, changedValuesPrevious, _iChangedValuesPrevious);
-    constructViewToFieldsChangedValues(fieldsChangedValues, changedValuesCurrent, _iChangedValuesCurrent);
-
     return fieldsChangedValues;
   }
 }
+*/
 
-class UserProfileChangedValues {
-
-  static Map<String, List<dynamic>>  constructViewToFieldsChangedValues(Map<String, List<dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues, int iPreviousCurrent) {
-
-    changedValues?.forEach((k, v) {
-      if (k == UserProfile.idiomLocaleField) {
-
-      } else if (k == UserProfile.imageField) {
-        fieldsChangedValues.putIfAbsent(k, () => [_typeToViewImageAvatar, UserProfileFieldMsg.label(k), null, null]);
-        fieldsChangedValues[k][iPreviousCurrent] = v;
-      }
-      else {
-        if (k != User.idField) {
-          fieldsChangedValues.putIfAbsent(k, () => [_typeToViewTextLeft, UserProfileFieldMsg.label(k), null, null]);
-          fieldsChangedValues[k][iPreviousCurrent] = v;
-        }
-      }
-    });
-
-    return fieldsChangedValues;
-  }
-
-  static Map<String, List<dynamic>> getViewToChangedValues(String objectClassName, Map<String, dynamic> changedValuesPrevious, Map<String, dynamic> changedValuesCurrent) {
-    Map<String, List<dynamic>> fieldsChangedValues = {};
-
-    constructViewToFieldsChangedValues(fieldsChangedValues, changedValuesPrevious, _iChangedValuesPrevious);
-    constructViewToFieldsChangedValues(fieldsChangedValues, changedValuesCurrent, _iChangedValuesCurrent);
-
-    return fieldsChangedValues;
-  }
-}
