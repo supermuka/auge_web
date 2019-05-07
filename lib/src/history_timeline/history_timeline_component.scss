@@ -7,7 +7,7 @@
 @import 'package:angular_components/material_expansionpanel/mixins';
 
 .timeline-vertical-size {
-  max-height: 50vh;
+  max-height: calc(100vh - 192px);  // minus header, margin, padding and another components height
   overflow-y: auto;
 }
 

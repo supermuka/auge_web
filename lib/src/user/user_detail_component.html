@@ -31,13 +31,13 @@
         </div>
         <div class="w3-row">
             <material-radio-group [(ngModel)]="user.userProfile.idiomLocale">
-                <material-radio [value]="pt_BRvalueLabel" no-ink>
+                <material-radio [value]="pt_BRsymbol" no-ink>
                     <span class="avatar-icon" [style.background-image]="'url(' + getBrFlag + ')'" [materialTooltip]="pt_BRvalueLabel"></span>Português
                 </material-radio>
-                <material-radio [value]="en_USvalueLabel" no-ink>
+                <material-radio [value]="en_USsymbol" no-ink>
                     <span class="avatar-icon" [style.background-image]="'url(' + getUsFlag + ')'" [materialTooltip]="en_USvalueLabel"></span>English
                 </material-radio>
-                <material-radio [value]="es_ESvalueLabel" no-ink>
+                <material-radio [value]="es_ESsymbol" no-ink>
                     <span class="avatar-icon" [style.background-image]="'url(' + getEsFlag + ')'" [materialTooltip]="es_ESvalueLabel"></span>Español
                 </material-radio>
             </material-radio-group>

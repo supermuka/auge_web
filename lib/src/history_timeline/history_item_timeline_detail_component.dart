@@ -184,9 +184,9 @@ class UserProfileChangedValues extends BaseChangedValues {
           fieldsChangedValues.putIfAbsent('${className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewImageAvatar,
-            _fieldDescriptionKey: UserFieldMsg.label(k)});
-          if (v.containsKey[_previousKey]) fieldsChangedValues['${className}.${k}'][_previousKey] = '***';
-          if (v.containsKey[_currentKey]) fieldsChangedValues['${className}.${k}'][_currentKey] = '***';
+            _fieldDescriptionKey: UserProfileFieldMsg.label(k)});
+          if (v.containsKey(_previousKey)) fieldsChangedValues['${className}.${k}'][_previousKey] = v[_previousKey];
+          if (v.containsKey(_currentKey)) fieldsChangedValues['${className}.${k}'][_currentKey] = v[_currentKey];
         }
         else if (v is Map && (v.containsKey(_previousKey) || v.containsKey(_currentKey))) {
           fieldsChangedValues.putIfAbsent('${className}.${k}', () =>

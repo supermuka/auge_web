@@ -112,9 +112,13 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
   static final String photoLabel = UserProfileFieldMsg.label(UserProfile.imageField);
   static final String idiomLabel = UserMsg.label('Idiom');
 
-  static final String pt_BRvalueLabel = UserProfileFieldMsg.valueLabel('pt_BR');
-  static final String en_USvalueLabel = UserProfileFieldMsg.valueLabel('en_US');
-  static final String es_ESvalueLabel = UserProfileFieldMsg.valueLabel('es_ES');
+  static final String pt_BRsymbol = 'pt_BR';
+  static final String en_USsymbol = 'en_US';
+  static final String es_ESsymbol = 'es_ES';
+
+  static final String pt_BRvalueLabel = UserProfileFieldMsg.valueLabel(pt_BRsymbol);
+  static final String en_USvalueLabel = UserProfileFieldMsg.valueLabel(en_USsymbol);
+  static final String es_ESvalueLabel = UserProfileFieldMsg.valueLabel(es_ESsymbol);
 
   @override
   void ngOnInit() async {
