@@ -54,6 +54,21 @@ class UserProfileFieldMsg {
     // locale: "en",
     desc: "User Profile form field labels",
   );
+
+  /// Static value for User
+  static valueLabel(String valueName) => Intl.message(
+    "${Intl.select(valueName, {
+      'pt_BR': 'Português - Brasil',
+      'en_US': 'English - USA',
+      'es_ES': 'Español - España',
+      'other': 'Not Defined'})}",
+    name: "userProfileFieldLabel",
+    args: [valueName],
+    // locale: "en",
+    desc: "User Profile values labels",
+  );
+
+
 }
 
 /// Specific messages and label for [Group] class field

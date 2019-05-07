@@ -112,6 +112,10 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
   static final String photoLabel = UserProfileFieldMsg.label(UserProfile.imageField);
   static final String idiomLabel = UserMsg.label('Idiom');
 
+  static final String pt_BRvalueLabel = UserProfileFieldMsg.valueLabel('pt_BR');
+  static final String en_USvalueLabel = UserProfileFieldMsg.valueLabel('en_US');
+  static final String es_ESvalueLabel = UserProfileFieldMsg.valueLabel('es_ES');
+
   @override
   void ngOnInit() async {
 
@@ -145,7 +149,6 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
       // Authorizated and selected organization
       userProfileOrganization.organization = _userService.authService.selectedOrganization;
     }
-
     SystemRole.values.forEach((role) {
       if (role != SystemRole.superAdmin) {
         userAuthorizationOptions.add(new Option(

@@ -18,7 +18,6 @@ import 'package:angular_components/content/deferred_content.dart';
 
 import 'package:auge_server/model/general/authorization.dart';
 import 'package:auge_server/model/general/user.dart';
-import 'package:auge_server/model/general/user_profile_organization.dart';
 
 import 'package:auge_web/message/messages.dart';
 import 'package:auge_web/src/user/user_service.dart';
@@ -114,7 +113,6 @@ class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
 
   void delete() async {
     try {
-
       // Delete user
       //TODO futuramente avaliar este delete em uma única transação. Observar as limitações do .proto de recursividade.
       await _userService.deleteUserProfileOrganization(await _userService.getUserProfileOrganization(selectedUser.id, _userService.authService.selectedOrganization.id));
