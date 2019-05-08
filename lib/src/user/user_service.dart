@@ -44,12 +44,15 @@ class UserService {
         user_pbgrpc.UserGetRequest()..id = id..withProfile = withProfile)));
   }
 
-  Future<List<UserProfileOrganization>> getUsersProfileOrganizations(String userId, String organizationId) async {
+  Future<List<UserProfileOrganization>> getUsersProfileOrganizations(String organizationId, {String userId, bool withUserProfile}) async {
     try {
     //  return await _augeApiService.augeApi.getUsersProfileOrganizations(
     //      userId: userId, organizationId: organizationId);
-      return (await _userProfileOrganizationServiceClient.getUsersProfileOrganizations(
-          user_profile_organization_pbgrpc.UserProfileOrganizationGetRequest()..userId = userId..organizationId = organizationId)).usersProfileOrganizations.map((m) =>
+      user_profile_organization_pbgrpc.UserProfileOrganizationGetRequest userProfileOrganizationGetRequest =  user_profile_organization_pbgrpc.UserProfileOrganizationGetRequest();
+      if (userId != null) userProfileOrganizationGetRequest.userId = userId;
+      if (organizationId != null) userProfileOrganizationGetRequest.organizationId = organizationId;
+      if (withUserProfile != null) userProfileOrganizationGetRequest.withUserProfile = withUserProfile;
+      return (await _userProfileOrganizationServiceClient.getUsersProfileOrganizations(userProfileOrganizationGetRequest)).usersProfileOrganizations.map((m) =>
       UserProfileOrganization()
         ..readFromProtoBuf(m)).toList();
     } catch (e) {
@@ -57,12 +60,16 @@ class UserService {
     }
   }
 
-  Future<UserProfileOrganization> getUserProfileOrganization(String userId, String organizationId) async {
+  Future<UserProfileOrganization> getUserProfileOrganization(String id, {String userId, String organizationId, bool withProfile = false}) async {
     try {
       //  return await _augeApiService.augeApi.getUsersProfileOrganizations(
       //      userId: userId, organizationId: organizationId);
-      return UserProfileOrganization()..readFromProtoBuf(await _userProfileOrganizationServiceClient.getUserProfileOrganization(
-          user_profile_organization_pbgrpc.UserProfileOrganizationGetRequest()..userId = userId..organizationId = organizationId));
+      user_profile_organization_pbgrpc.UserProfileOrganizationGetRequest userProfileOrganizationGetRequest =  user_profile_organization_pbgrpc.UserProfileOrganizationGetRequest();
+      if (id != null) userProfileOrganizationGetRequest.id = id;
+      if (userId != null) userProfileOrganizationGetRequest.userId = userId;
+      if (organizationId != null) userProfileOrganizationGetRequest.organizationId = organizationId;
+
+      return UserProfileOrganization()..readFromProtoBuf(await _userProfileOrganizationServiceClient.getUserProfileOrganization(userProfileOrganizationGetRequest));
     } catch (e) {
       rethrow;
     }
@@ -92,8 +99,8 @@ class UserService {
   /// Save (create or update) an [UserProfileOrganization]
   void saveUserProfileOrganization(UserProfileOrganization userProfileOrganization) async {
 
-    user_profile_organization_pbgrpc.UserProfileOrganizationRequest userProfileOrganizationRequest = user_profile_organization_pbgrpc.UserProfileOrganizationRequest()
-      ..userProfileOrganization = userProfileOrganization.writeToProtoBuf()..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
+    user_profile_organization_pbgrpc.UserProfileOrganizationRequest userProfileOrganizationRequest = (user_profile_organization_pbgrpc.UserProfileOrganizationRequest()
+      ..userProfileOrganization = userProfileOrganization.writeToProtoBuf()..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf()..withUserProfile = true);
     try {
       if (userProfileOrganization.id == null) {
         common_pbgrpc.IdResponse idResponse = await _userProfileOrganizationServiceClient

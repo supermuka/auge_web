@@ -60,7 +60,7 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
 
   /// Entry user to edit. If new, this should be null
   @Input()
-  User selectedUser;
+  UserProfileOrganization selectedUserProfileOrganization;
 
   final _closedController = new StreamController<void>.broadcast(sync: true);
 
@@ -79,7 +79,6 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
  //  final SelectionModel selectionModelUserAuthorization = new SelectionModel.multi();
   String _passwordOrigin;
 
-  User user;
   UserProfileOrganization userProfileOrganization;
 
   List<Option> userAuthorizationOptions;
@@ -124,16 +123,15 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
   void ngOnInit() async {
 
     //created as new here, even if it is later replaced by a query, because the query may take a while and the Angular will continue to process, causing an exception if the object does not exist
-    user = User();
-    if (selectedUser != null) {
+    userProfileOrganization = UserProfileOrganization();
+    if (selectedUserProfileOrganization != null) {
       // Clone objective
      // user = selectedUser.clone();
 
       try {
 
-        user = await _userService.getUser(selectedUser.id, withProfile: true);
+        userProfileOrganization = await _userService.getUserProfileOrganization(selectedUserProfileOrganization.id, withProfile: true);
 
-        userProfileOrganization = await _userService.getUserProfileOrganization(selectedUser.id, _userService.authService.selectedOrganization.id);
 /*
         List<UserProfileOrganization> userProfileOrganizations = await _userService.getUsersProfileOrganizations(selectedUser.id, _userService.authService.selectedOrganization.id);
 
@@ -146,9 +144,7 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
         rethrow;
       }
     } else {
-      user.userProfile.idiomLocale = Intl.defaultLocale;
-
-      userProfileOrganization = UserProfileOrganization();
+      userProfileOrganization.user.userProfile.idiomLocale = Intl.defaultLocale;
 
       // Authorizated and selected organization
       userProfileOrganization.organization = _userService.authService.selectedOrganization;
@@ -158,7 +154,7 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
         userAuthorizationOptions.add(new Option(
             role.index,
             UserMsg.label(role.toString()), _userService.authService.isAuthorizedForAtuhorizatedRole(
-            SystemModule.users, systemFunction: user.id == null ?  SystemFunction.create : SystemFunction.update,
+            SystemModule.users, systemFunction: userProfileOrganization.id == null ?  SystemFunction.create : SystemFunction.update,
             systemConstraint: role
         )));
       }
@@ -168,15 +164,9 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
   void saveUser() async {
     try {
 
-      await _userService.saveUser(user);
+      await _userService.saveUserProfileOrganization(userProfileOrganization);
 
-      if (userProfileOrganization != null) {
-        userProfileOrganization.user = user;
-
-        await _userService.saveUserProfileOrganization(userProfileOrganization);
-      }
-
-      _savedController.add(user.id);
+      _savedController.add(userProfileOrganization.id);
       closeDetail();
     } catch (e) {
       dialogError = e.toString();
@@ -201,7 +191,7 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
 
         Image thumbnail = copyResize(image, 120, 120);
 
-        user.userProfile.image = base64.encode(encodePng(thumbnail));
+        userProfileOrganization.user.userProfile.image = base64.encode(encodePng(thumbnail));
 
       });
 
@@ -214,7 +204,7 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
   }
 
   void clearImage() {
-    user.userProfile.image = null;
+    userProfileOrganization.user.userProfile.image = null;
   }
 
   String userUrlImage(User user) {
@@ -224,7 +214,7 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
   set passwordSecure(String password) {
     _passwordOrigin = password;
 
-    user.password = base64.encode(sha256
+    userProfileOrganization.user.password = base64.encode(sha256
         .convert(password.codeUnits)
         .bytes);
   }
@@ -236,7 +226,7 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
   }
 
   bool get validInput {
-    return (user?.name?.trim()?.isNotEmpty ?? false) && (user?.eMail?.trim()?.isNotEmpty ?? false);
+    return (userProfileOrganization.user?.name?.trim()?.isNotEmpty ?? false) && (userProfileOrganization.user?.eMail?.trim()?.isNotEmpty ?? false);
   }
 
   void closeDetail() {

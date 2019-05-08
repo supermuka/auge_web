@@ -18,6 +18,7 @@ import 'package:angular_components/content/deferred_content.dart';
 
 import 'package:auge_server/model/general/authorization.dart';
 import 'package:auge_server/model/general/user.dart';
+import 'package:auge_server/model/general/user_profile_organization.dart';
 
 import 'package:auge_web/message/messages.dart';
 import 'package:auge_web/src/user/user_service.dart';
@@ -61,9 +62,10 @@ class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
   // Errors, exceptions shows up
  // String error;
 
-  List<User> _users;
+  //List<User> _users;
+  List<UserProfileOrganization> _usersProfileOrganizations;
 
-  User selectedUser;
+  UserProfileOrganization selectedUserProfileOrganization;
 
   bool detailVisible = false;
 
@@ -100,26 +102,24 @@ class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
     _appLayoutService.enabledSearch = true;
 
     try {
-      _users = await _userService.getUsers(_userService.authService.selectedOrganization?.id, withProfile: true);
+      // _users = await _userService.getUsers(_userService.authService.selectedOrganization?.id, withProfile: true);
+      _usersProfileOrganizations = await _userService.getUsersProfileOrganizations(_userService.authService.selectedOrganization?.id, withUserProfile: true);
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;
     }
   }
 
-  List<User> get users {
-    return _searchService?.searchTerm.toString().isEmpty ? _users : _users.where((t) => t.name.contains(_searchService.searchTerm)).toList();
+  List<UserProfileOrganization> get usersProfileOrganizations {
+    return _searchService?.searchTerm.toString().isEmpty ? _usersProfileOrganizations : _usersProfileOrganizations.where((t) => t.user.name.contains(_searchService.searchTerm)).toList();
   }
 
   void delete() async {
     try {
       // Delete user
-      //TODO futuramente avaliar este delete em uma única transação. Observar as limitações do .proto de recursividade.
-      await _userService.deleteUserProfileOrganization(await _userService.getUserProfileOrganization(selectedUser.id, _userService.authService.selectedOrganization.id));
+      await _userService.deleteUserProfileOrganization(selectedUserProfileOrganization);
 
-      await _userService.deleteUser(selectedUser);
-
-      users.remove(selectedUser);
+      usersProfileOrganizations.remove(selectedUserProfileOrganization);
       _historyTimelineService.refreshHistory(SystemModule.users.index);
 
     } catch (e) {
@@ -129,8 +129,8 @@ class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
     }
   }
 
-  void selectUser(User user) {
-    selectedUser = user;
+  void selectUserProfileOrganization(UserProfileOrganization userProfileOrganization) {
+    selectedUserProfileOrganization = userProfileOrganization;
   }
 
   String userUrlImage(User user) {
@@ -142,12 +142,11 @@ class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
   }
 
   void refreshListItemDetail(String userId) async {
-    User user = await _userService.getUser(userId, withProfile: true);
-    if (selectedUser == null) {
-      _users.add(user);
+    UserProfileOrganization userProfileOrganization = await _userService.getUserProfileOrganization(userId, withProfile: true);
+    if (selectedUserProfileOrganization == null) {
+      _usersProfileOrganizations.add(userProfileOrganization);
     } else {
-      _users[_users.indexOf(selectedUser)] = user;
-   //   user.cloneTo(_users[_users.indexOf(selectedUser)]);
+      _usersProfileOrganizations[_usersProfileOrganizations.indexOf(selectedUserProfileOrganization)] = userProfileOrganization;
     }
     _historyTimelineService.refreshHistory(SystemModule.users.index);
   }

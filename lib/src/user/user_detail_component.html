@@ -1,14 +1,14 @@
 <modal [visible]="true">
     <material-dialog headered class="headered-dialog" [error]="dialogError">
         <div header>
-            <h3 *ngIf="user.id == null">{{addUserLabel}}</h3>
-            <h3 *ngIf="user.id != null">{{editUserLabel}}</h3>
+            <h3 *ngIf="userProfileOrganization.id == null">{{addUserLabel}}</h3>
+            <h3 *ngIf="userProfileOrganization.id != null">{{editUserLabel}}</h3>
         </div>
         <div class="w3-row">
-           <material-input class="w3-col l12" [(ngModel)]="user.name" floatingLabel [label]="nameLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
+           <material-input class="w3-col l12" [(ngModel)]="userProfileOrganization.user.name" floatingLabel [label]="nameLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
         </div>
         <div class="w3-row">
-           <material-input class="w3-col l12" [(ngModel)]="user.eMail" floatingLabel [label]="emailLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
+           <material-input class="w3-col l12" [(ngModel)]="userProfileOrganization.user.eMail" floatingLabel [label]="emailLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
         </div>
         <div class="w3-row">
            <material-input class="w3-col l12"  type="password" [(ngModel)]="passwordSecure" floatingLabel [label]="passwordLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
@@ -17,12 +17,12 @@
           <label class="w3-col l12">{{photoLabel}}</label>
         </div>
         <div class="w3-row-padding">
-            <span class="avatar" [style.background-image]="'url(' + userUrlImage(user) + ')'"></span>
+            <span class="avatar" [style.background-image]="'url(' + userUrlImage(userProfileOrganization.user) + ')'"></span>
             <input type="file" id="upload_image" accept="image/png,image/jpg,image/jpeg,capture=camera">
             <material-button icon (trigger)="uploadImage()">{{uploadButtonLabel}}
                 <material-icon icon="done"></material-icon>
             </material-button>
-            <material-button icon [disabled]="user.userProfile.image == null" (trigger)="clearImage()">{{clearButtonLabel}}
+            <material-button icon [disabled]="userProfileOrganization.user.userProfile.image == null" (trigger)="clearImage()">{{clearButtonLabel}}
                 <material-icon icon="clear"></material-icon>
             </material-button>
         </div>
@@ -30,15 +30,15 @@
             <label>{{idiomLabel}}</label>
         </div>
         <div class="w3-row">
-            <material-radio-group [(ngModel)]="user.userProfile.idiomLocale">
+            <material-radio-group [(ngModel)]="userProfileOrganization.user.userProfile.idiomLocale">
                 <material-radio [value]="pt_BRsymbol" no-ink>
-                    <span class="avatar-icon" [style.background-image]="'url(' + getBrFlag + ')'" [materialTooltip]="pt_BRvalueLabel"></span>Português
+                    <span class="avatar-icon" [style.background-image]="'url(' + getBrFlag + ')'" [materialTooltip]="pt_BRvalueLabel"></span>pt_BRvalueLabel
                 </material-radio>
                 <material-radio [value]="en_USsymbol" no-ink>
-                    <span class="avatar-icon" [style.background-image]="'url(' + getUsFlag + ')'" [materialTooltip]="en_USvalueLabel"></span>English
+                    <span class="avatar-icon" [style.background-image]="'url(' + getUsFlag + ')'" [materialTooltip]="en_USvalueLabel"></span>en_USvalueLabel
                 </material-radio>
                 <material-radio [value]="es_ESsymbol" no-ink>
-                    <span class="avatar-icon" [style.background-image]="'url(' + getEsFlag + ')'" [materialTooltip]="es_ESvalueLabel"></span>Español
+                    <span class="avatar-icon" [style.background-image]="'url(' + getEsFlag + ')'" [materialTooltip]="es_ESvalueLabel"></span>es_ESvalueLabel
                 </material-radio>
             </material-radio-group>
         </div>

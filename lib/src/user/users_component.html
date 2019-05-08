@@ -7,20 +7,20 @@
     <div class="w3-row-padding">
         <div class="w3-col" style="width:{{mainColWidth}}">
             <material-expansionpanel-set>
-                <div *ngFor="let userItem of users">
+                <div *ngFor="let userProfileOrganization of usersProfileOrganizations">
                     <material-expansionpanel class="expansionpanel-no-padding-margin"
                                              disabled
                                              [alwaysHideExpandIcon]="true"
                                              [hideExpandedHeader]="false"
                                              [showSaveCancel]="false">
                         <div name>
-                            <span class="avatar" [style.background-image]="'url(' + userUrlImage(userItem) + ')'"></span><span><strong>{{userItem.name}}</strong></span>
+                            <span class="avatar" [style.background-image]="'url(' + userUrlImage(userProfileOrganization.user) + ')'"></span><span><strong>{{userProfileOrganization.user.name}}</strong></span>
                         </div>
                         <div value>
-                            {{userItem.eMail}}
+                            {{userProfileOrganization.user.eMail}}
                         </div>
                         <div action>
-                            <material-menu [menu]="menuModel" (click)="selectUser(userItem)">
+                            <material-menu [menu]="menuModel" (click)="selectUserProfileOrganization(userProfileOrganization)">
                             </material-menu>
                         </div>
                     </material-expansionpanel>
@@ -31,9 +31,9 @@
             <auge-history-timeline></auge-history-timeline>
         </div>
     </div>
-    <material-fab class="material-fab-add" raised (trigger)="selectUser(null);viewDetail(true)">
+    <material-fab class="material-fab-add" raised (trigger)="selectUserProfileOrganization(null);viewDetail(true)">
         <material-icon icon="add"></material-icon>
     </material-fab>
-    <auge-user-detail *ngIf="detailVisible == true" [selectedUser]="selectedUser" (saved)="refreshListItemDetail($event)" (closed)="viewDetail(false)">
+    <auge-user-detail *ngIf="detailVisible == true" [selectedUser]="selectedUserProfileOrganization" (saved)="refreshListItemDetail($event)" (closed)="viewDetail(false)">
     </auge-user-detail>
 </div>
