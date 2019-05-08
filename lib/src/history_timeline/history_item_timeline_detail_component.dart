@@ -100,15 +100,13 @@ class HistoryItemTimelineDetailComponent /* extends Object */ implements OnInit 
   // Format data type to web presentation
   Map<String, Map<dynamic, dynamic>> getViewToChangedValues(String objectClassName, Map<String, dynamic> changedValues) {
     Map<String, Map<dynamic, dynamic>> viewToChangedValues;
-    if (objectClassName == UserProfile.className) {
-      viewToChangedValues = UserChangedValues().getViewToChangedValues(changedValues);
+    if (objectClassName == UserProfileOrganization.className) {
+      viewToChangedValues = UserProfileOrganizationChangedValues().getViewToChangedValues(changedValues);
     } else if (objectClassName == Group.className) {
       viewToChangedValues = GroupChangedValues().getViewToChangedValues(changedValues);
     }
     return viewToChangedValues;
   }
-
-
 
 }
 
@@ -127,8 +125,6 @@ class BaseChangedValues {
 /// USERS
 class UserChangedValues extends BaseChangedValues {
 
-  static const className = 'User';
-
   @override
   constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
     changedValues?.forEach((k, v) {
@@ -137,22 +133,22 @@ class UserChangedValues extends BaseChangedValues {
             UserProfileChangedValues().constructViewToFieldsChangedValues(
                fieldsChangedValues, v);
         } else if (k == User.passwordField) {
-          fieldsChangedValues.putIfAbsent('${className}.${k}', () =>
+          fieldsChangedValues.putIfAbsent('${User.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewTextLeft,
             _fieldDescriptionKey: UserFieldMsg.label(k)});
-          if (v.containsKey(_pKey)) fieldsChangedValues['${className}.${k}'][_pKey] = '***';
-          if (v.containsKey(_cKey)) fieldsChangedValues['${className}.${k}'][_cKey] = '***';
+          if (v.containsKey(_pKey)) fieldsChangedValues['${User.className}.${k}'][_pKey] = '***';
+          if (v.containsKey(_cKey)) fieldsChangedValues['${User.className}.${k}'][_cKey] = '***';
         } else if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
-          fieldsChangedValues.putIfAbsent('${className}.${k}', () =>
+          fieldsChangedValues.putIfAbsent('${User.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewTextLeft,
             _fieldDescriptionKey: UserFieldMsg.label(k)});
           if (v.containsKey(_pKey))
-            fieldsChangedValues['${className}.${k}'][_pKey] =
+            fieldsChangedValues['${User.className}.${k}'][_pKey] =
             v[_pKey];
           if (v.containsKey(_cKey))
-            fieldsChangedValues['${className}.${k}'][_cKey] =
+            fieldsChangedValues['${User.className}.${k}'][_cKey] =
             v[_cKey];
         }
       }
@@ -163,41 +159,39 @@ class UserChangedValues extends BaseChangedValues {
 
 class UserProfileChangedValues extends BaseChangedValues {
 
-  static const className = 'UserProfile';
-
   @override
   Map<String, Map<dynamic, dynamic>> constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
     changedValues?.forEach((k, v) {
       if (k == UserProfile.idiomLocaleField) {
-        fieldsChangedValues.putIfAbsent('${className}.${k}', () =>
+        fieldsChangedValues.putIfAbsent('${UserProfile.className}.${k}', () =>
         {
           _typeToViewKey: _typeToViewTextLeft,
           _fieldDescriptionKey: UserProfileFieldMsg.label(k)});
         if (v.containsKey(_pKey))
-          fieldsChangedValues['${className}.${k}'][_pKey] =
+          fieldsChangedValues['${UserProfile.className}.${k}'][_pKey] =
           UserProfileFieldMsg.valueLabel(v[_pKey]);
         if (v.containsKey(_cKey))
-          fieldsChangedValues['${className}.${k}'][_cKey] =
+          fieldsChangedValues['${UserProfile.className}.${k}'][_cKey] =
           UserProfileFieldMsg.valueLabel(v[_cKey]);
 
       } else if (k == UserProfile.imageField) {
-        fieldsChangedValues.putIfAbsent('${className}.${k}', () =>
+        fieldsChangedValues.putIfAbsent('${UserProfile.className}.${k}', () =>
         {
           _typeToViewKey: _typeToViewImageAvatar,
           _fieldDescriptionKey: UserProfileFieldMsg.label(k)});
-        if (v.containsKey(_pKey)) fieldsChangedValues['${className}.${k}'][_pKey] = v[_pKey];
-        if (v.containsKey(_cKey)) fieldsChangedValues['${className}.${k}'][_cKey] = v[_cKey];
+        if (v.containsKey(_pKey)) fieldsChangedValues['${UserProfile.className}.${k}'][_pKey] = v[_pKey];
+        if (v.containsKey(_cKey)) fieldsChangedValues['${UserProfile.className}.${k}'][_cKey] = v[_cKey];
       }
       else if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
-        fieldsChangedValues.putIfAbsent('${className}.${k}', () =>
+        fieldsChangedValues.putIfAbsent('${UserProfile.className}.${k}', () =>
         {
           _typeToViewKey: _typeToViewTextLeft,
           _fieldDescriptionKey: UserProfileFieldMsg.label(k)});
         if (v.containsKey(_pKey))
-          fieldsChangedValues['${className}.${k}'][_pKey] =
+          fieldsChangedValues['${UserProfile.className}.${k}'][_pKey] =
           v[_pKey];
         if (v.containsKey(_cKey))
-          fieldsChangedValues['${className}.${k}'][_cKey] =
+          fieldsChangedValues['${UserProfile.className}.${k}'][_cKey] =
           v[_cKey];
       }
     });
@@ -206,8 +200,6 @@ class UserProfileChangedValues extends BaseChangedValues {
 }
 
 class UserProfileOrganizationChangedValues extends BaseChangedValues {
-
-  static const className = 'UserProfileOrganization';
 
   @override
   Map<String, Map<dynamic, dynamic>> constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
@@ -221,15 +213,15 @@ class UserProfileOrganizationChangedValues extends BaseChangedValues {
          //     fieldsChangedValues, v);
         }
         else if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
-          fieldsChangedValues.putIfAbsent('${className}.${k}', () =>
+          fieldsChangedValues.putIfAbsent('${UserProfileOrganization.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewTextLeft,
             _fieldDescriptionKey: UserProfileFieldMsg.label(k)});
           if (v.containsKey(_pKey))
-            fieldsChangedValues['${className}.${k}'][_pKey] =
+            fieldsChangedValues['${UserProfileOrganization.className}.${k}'][_pKey] =
             v[_pKey];
           if (v.containsKey(_cKey))
-            fieldsChangedValues['${className}.${k}'][_cKey] =
+            fieldsChangedValues['${UserProfileOrganization.className}.${k}'][_cKey] =
             v[_cKey];
         }
       }
@@ -241,20 +233,18 @@ class UserProfileOrganizationChangedValues extends BaseChangedValues {
 /// GROUPS
 class GroupChangedValues extends BaseChangedValues {
 
-  static const className = 'Group';
-
   @override
   Map<String, Map<dynamic, dynamic>> constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
     changedValues?.forEach((k, v) {
       if (k != Group.idField) {
         if (k == Group.activeField) {
           fieldsChangedValues.putIfAbsent(
-              '${className}.${k}', () => {_typeToViewKey: _typeToViewTextLeft, _fieldDescriptionKey: GroupFieldMsg.label(k)});
-          fieldsChangedValues['${className}.${k}'][_pKey] = CommonFieldAndValuesMsg.labelAndValue(v[_pKey]);
-          fieldsChangedValues['${className}.${k}'][_cKey] = CommonFieldAndValuesMsg.labelAndValue(v[_cKey]);
+              '${Group.className}.${k}', () => {_typeToViewKey: _typeToViewTextLeft, _fieldDescriptionKey: GroupFieldMsg.label(k)});
+          fieldsChangedValues['${Group.className}.${k}'][_pKey] = CommonFieldAndValuesMsg.labelAndValue(v[_pKey]);
+          fieldsChangedValues['${Group.className}.${k}'][_cKey] = CommonFieldAndValuesMsg.labelAndValue(v[_cKey]);
         } else if (k == Group.leaderField) {
           fieldsChangedValues.putIfAbsent(
-              '${className}.${k}', () => {_typeToViewKey: _typeToViewTextLeft, _fieldDescriptionKey: GroupFieldMsg.label(k)});
+              '${Group.className}.${k}', () => {_typeToViewKey: _typeToViewTextLeft, _fieldDescriptionKey: GroupFieldMsg.label(k)});
           UserChangedValues().constructViewToFieldsChangedValues(fieldsChangedValues, v);
         } else if (k == Group.groupTypeField) {
           //TODO  GroupTypeChangedValues().constructViewToFieldsChangedValues(fieldsChangedValues, v, iPreviousCurrent);
@@ -264,14 +254,14 @@ class GroupChangedValues extends BaseChangedValues {
           v.forEach((v) => UserChangedValues().constructViewToFieldsChangedValues(
               fieldsChangedValues, v));
         } else if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
-          fieldsChangedValues.putIfAbsent('${className}.${k}', () => {
+          fieldsChangedValues.putIfAbsent('${Group.className}.${k}', () => {
             _typeToViewKey: _typeToViewTextLeft,
             _fieldDescriptionKey: UserProfileFieldMsg.label(k)});
           if (v.containsKey(_pKey))
-            fieldsChangedValues['${className}.${k}'][_pKey] =
+            fieldsChangedValues['${Group.className}.${k}'][_pKey] =
             v[_pKey];
           if (v.containsKey(_cKey))
-            fieldsChangedValues['${className}.${k}'][_cKey] =
+            fieldsChangedValues['${Group.className}.${k}'][_cKey] =
             v[_cKey];
         }
       }
