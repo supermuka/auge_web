@@ -27,6 +27,8 @@ import 'package:auge_server/model/general/group.dart';
 import 'package:auge_server/model/general/user.dart';
 
 import 'package:auge_web/message/messages.dart';
+import 'package:auge_web/message/model_messages.dart';
+
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/user/user_service.dart';
 import 'package:auge_web/src/group/group_service.dart';
@@ -109,20 +111,20 @@ class GroupDetailComponent extends Object implements OnInit {
   }
 
   // Define messages and labels
-  static final String requiredValueMsg =  CommonMsg.requiredValueMsg();
-  static final String addGroupLabel =  GroupMsg.label('Add Group');
-  static final String editGroupLabel =  GroupMsg.label('Edit Group');
-  static final String nameLabel =  GroupMsg.label('Name');
-  static final String superGroupLabel =  GroupMsg.label('Super Group');
-  static final String groupTypeLabel = GroupMsg.label('Group Type');
-  static final String leaderLabel =  GroupMsg.label('Leader');
-  static final String activeLabel =  GroupMsg.label('Active');
-  static final String noMatchLabel =  GroupMsg.label('No Match');
-  static final String membersLabel =  GroupMsg.label('Members');
-
   static final String saveButtonLabel = CommonMsg.buttonLabel('Save');
   static final String closeButtonLabel = CommonMsg.buttonLabel('Close');
 
+  static final String requiredValueMsg =  CommonMsg.requiredValueMsg();
+  static final String addGroupLabel =  GroupMsg.label('Add Group');
+  static final String editGroupLabel =  GroupMsg.label('Edit Group');
+  static final String noMatchLabel =  GroupMsg.label('No Match');
+
+  static final String nameLabel =  GroupFieldMsg.label(Group.nameField);
+  static final String superGroupLabel =  GroupFieldMsg.label(Group.superGroupField);
+  static final String groupTypeLabel = GroupFieldMsg.label(Group.groupTypeField);
+  static final String leaderLabel =  GroupFieldMsg.label(Group.leaderField);
+  static final String activeLabel =  GroupFieldMsg.label(Group.activeField);
+  static final String membersLabel =  GroupFieldMsg.label(Group.membersField);
 
   @override
   void ngOnInit() async {

@@ -57,7 +57,10 @@ class OrganizationComponent extends Object with CanReuse implements OnActivate {
   }
 
   void changeOrganizationDetail(String organizationId) async {
+    print('****');
+    print(organizationId);
     selectedOrganization = await _organizationService.getOrganization(organizationId);
+    print(selectedOrganization);
     viewDetail(false);
   }
 
@@ -65,5 +68,6 @@ class OrganizationComponent extends Object with CanReuse implements OnActivate {
     this.detailVisible = detailVisible;
     if (detailVisible == false)
        _location.back();
+
   }
 }

@@ -1,10 +1,10 @@
 import 'package:intl/intl.dart';
 
 import 'package:auge_server/model/general/user.dart';
+import 'package:auge_server/model/general/user_profile_organization.dart';
 import 'package:auge_server/model/general/group.dart';
 import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/objective/measure.dart';
-
 
 /// Specific messages and label for [User] class field
 class CommonFieldAndValuesMsg {
@@ -19,6 +19,23 @@ class CommonFieldAndValuesMsg {
     args: [fieldName],
     // locale: "en",
     desc: "Common form field labels and values",
+  );
+}
+
+class ClassNameMsg {
+
+  /// Label for Field User
+  static label(String className) => Intl.message(
+    "${Intl.select(className, {
+      User.className: 'User',
+      UserProfile.className: 'User Profile',
+      UserProfileOrganization.className: 'User and Profiles',
+      Group.className: 'Group',
+      'other': 'Not Defined'})}",
+    name: "classNameLabel",
+    args: [className],
+    // locale: "en",
+    desc: "Model class name labels",
   );
 }
 
@@ -39,8 +56,21 @@ class UserFieldMsg {
   );
 }
 
-/// Specific messages and label for [UserProfile] class field
+/// Specific messages and label for [UserProfile] model field and class
 class UserProfileFieldMsg {
+
+  /// Label for Class Name User
+  static classNameLabel(String className) => Intl.message(
+    "${Intl.select(className, {
+      UserProfile.isSuperAdminField: 'Super Admin',
+      UserProfile.imageField: 'Image',
+      UserProfile.idiomLocaleField: 'Idioma',
+      'other': 'Not Defined'})}",
+    name: "userProfileClassNameLabel",
+    args: [className],
+    // locale: "en",
+    desc: "User Profile form field labels",
+  );
 
   /// Label for Field User
   static label(String fieldName) => Intl.message(
@@ -67,8 +97,34 @@ class UserProfileFieldMsg {
     // locale: "en",
     desc: "User Profile values labels",
   );
+}
 
+/// Specific messages and label for [UserProfileOrganization] class field
+class UserProfileOrganizationFieldMsg {
 
+  /// Label for Field User
+  static label(String fieldName) => Intl.message(
+    "${Intl.select(fieldName, {
+      UserProfileOrganization.authorizationRoleField: 'Authorization',
+      'other': 'Not Defined'})}",
+    name: "userProfileFieldLabel",
+    args: [fieldName],
+    // locale: "en",
+    desc: "User Profile form field labels",
+  );
+
+  /// Static value for User
+  static valueLabel(String valueName) => Intl.message(
+    "${Intl.select(valueName, {
+      'pt_BR': 'Português - Brasil',
+      'en_US': 'English - USA',
+      'es_ES': 'Español - España',
+      'other': 'Not Defined'})}",
+    name: "userProfileFieldLabel",
+    args: [valueName],
+    // locale: "en",
+    desc: "User Profile values labels",
+  );
 }
 
 /// Specific messages and label for [Group] class field
@@ -80,6 +136,11 @@ class GroupFieldMsg {
       Group.nameField: 'Name',
       Group.activeField: 'Active',
       Group.leaderField: 'Leader',
+      Group.groupTypeField: 'Group Type',
+      Group.superGroupField: 'Super Group',
+      Group.leaderField: 'Leader',
+      Group.activeField: 'Active',
+      Group.membersField: 'Members',
       'other': 'Not Defined'})}",
     name: "groupFieldLabel",
     args: [fieldName],

@@ -20,7 +20,7 @@ import 'package:auge_web/src/organization/organization_service.dart';
 
 @Component(
   selector: 'auge-organization-detail',
-  providers: const <dynamic>[/* materialProviders, */ overlayBindings, OrganizationService],
+  providers: const <dynamic>[overlayBindings, OrganizationService],
   directives: const [
     coreDirectives,
     routerDirectives,
@@ -86,7 +86,7 @@ class OrganizationDetailComponent extends Object implements OnInit {
     try {
       _organizationService.saveOrganization(organization);
       _saveController.add(organization.id);
-      closeDetail();
+      //closeDetail();
     } catch (e) {
       dialogError = e.toString();
       rethrow;

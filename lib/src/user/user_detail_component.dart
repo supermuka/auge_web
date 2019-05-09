@@ -21,14 +21,13 @@ import 'package:angular_components/material_radio/material_radio_group.dart';
 import 'package:angular_components/material_radio/material_radio.dart';
 import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
-import 'package:angular_components/material_tooltip/material_tooltip.dart';
 
 import 'package:auge_server/model/general/user.dart';
 import 'package:auge_server/model/general/user_profile_organization.dart';
 import 'package:auge_server/model/general/authorization.dart';
 
 import 'package:auge_web/message/messages.dart';
-import 'package:auge_web/message/field_messages.dart';
+import 'package:auge_web/message/model_messages.dart';
 
 //import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
@@ -36,7 +35,7 @@ import 'package:auge_web/services/common_service.dart' as common_service;
 
 @Component(
     selector: 'auge-user-detail',
-    providers: const [overlayBindings, UserService],
+    providers: const <dynamic>[overlayBindings, UserService],
     directives: const [
       coreDirectives,
       routerDirectives,
@@ -48,7 +47,6 @@ import 'package:auge_web/services/common_service.dart' as common_service;
       MaterialRadioComponent,
       MaterialButtonComponent,
       MaterialIconComponent,
-      MaterialTooltipDirective,
     ],
     templateUrl: 'user_detail_component.html',
     styleUrls: const [
@@ -107,9 +105,9 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
   static final String nameLabel =  UserFieldMsg.label(User.nameField);
   static final String emailLabel =  UserFieldMsg.label(User.eMailField);
   static final String passwordLabel =  UserFieldMsg.label(User.passwordField);
-  static final String authorizationLabel = UserProfileFieldMsg.label('TODO');
+  static final String authorizationLabel = UserProfileOrganizationFieldMsg.label(UserProfileOrganization.authorizationRoleField);
   static final String photoLabel = UserProfileFieldMsg.label(UserProfile.imageField);
-  static final String idiomLabel = UserMsg.label('Idiom');
+  static final String idiomLabel = UserProfileFieldMsg.label(UserProfile.idiomLocaleField);
 
   static final String pt_BRsymbol = 'pt_BR';
   static final String en_USsymbol = 'en_US';
@@ -124,21 +122,12 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
 
     //created as new here, even if it is later replaced by a query, because the query may take a while and the Angular will continue to process, causing an exception if the object does not exist
     userProfileOrganization = UserProfileOrganization();
+
     if (selectedUserProfileOrganization != null) {
-      // Clone objective
-     // user = selectedUser.clone();
-
       try {
-
         userProfileOrganization = await _userService.getUserProfileOrganization(selectedUserProfileOrganization.id, withProfile: true);
 
-/*
-        List<UserProfileOrganization> userProfileOrganizations = await _userService.getUsersProfileOrganizations(selectedUser.id, _userService.authService.selectedOrganization.id);
 
-        if (userProfileOrganizations.isNotEmpty) {
-          userProfileOrganization = userProfileOrganizations.first;
-        }
-*/
       } catch (e) {
         dialogError = e.toString();
         rethrow;

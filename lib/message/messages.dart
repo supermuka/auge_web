@@ -361,18 +361,8 @@ class GroupMsg {
         'Groups': 'Groups',
         'Edit Group': 'Edit Group',
         'Add Group': 'Add Group',
-        'Name': 'Name',
-        'Description': 'Description',
-        'Start Date': 'Start Date',
-        'End Date': 'End Date',
-        'Group Type': 'Group Type',
-        'Super Group': 'Super Group',
-        'Leader': 'Leader',
-        'Active': 'Active',
-        'Inactive': 'Inactive',
-        'Group': 'Group',
         'No Match': 'No Match',
-        'Members': 'Members',
+        'Active': 'Inactive',
         'other': 'Not Defined'})}",
       name: "groupLabel",
       args: [label],
@@ -425,7 +415,7 @@ class InsightMsg {
 class SystemFunctionMsg {
 
   /// Label for Insight
-  static InPastLabel(String functionName) => Intl.message(
+  static inPastLabel(String functionName) => Intl.message(
     "${Intl.select(functionName, {
       'SystemFunction.create': 'Created',
       'SystemFunction.update': 'Updated',
@@ -438,7 +428,6 @@ class SystemFunctionMsg {
     desc: "System Function labels",
   );
 }
-
 
 
 /// Specific messages and label for [TimelineItem] class field

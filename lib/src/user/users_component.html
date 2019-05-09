@@ -34,6 +34,6 @@
     <material-fab class="material-fab-add" raised (trigger)="selectUserProfileOrganization(null);viewDetail(true)">
         <material-icon icon="add"></material-icon>
     </material-fab>
-    <auge-user-detail *ngIf="detailVisible == true" [selectedUser]="selectedUserProfileOrganization" (saved)="refreshListItemDetail($event)" (closed)="viewDetail(false)">
+    <auge-user-detail *ngIf="detailVisible == true" [selectedUserProfileOrganization]="selectedUserProfileOrganization" (saved)="refreshListItemDetail($event)" (closed)="viewDetail(false)">
     </auge-user-detail>
 </div>

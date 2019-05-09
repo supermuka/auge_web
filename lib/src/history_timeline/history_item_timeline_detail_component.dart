@@ -16,7 +16,7 @@ import 'package:auge_server/model/general/group.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/message/messages.dart';
-import 'package:auge_web/message/field_messages.dart';
+import 'package:auge_web/message/model_messages.dart';
 
 // Const to format html types
 const _typeToViewTextLeft = '0';
@@ -129,13 +129,13 @@ class UserChangedValues extends BaseChangedValues {
   constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
     changedValues?.forEach((k, v) {
       if (k != User.idField && k != User.versionField) {
+        print('AAA ${v}');
         if (k == User.userProfileField) {
             UserProfileChangedValues().constructViewToFieldsChangedValues(
                fieldsChangedValues, v);
         } else if (k == User.passwordField) {
           fieldsChangedValues.putIfAbsent('${User.className}.${k}', () =>
-          {
-            _typeToViewKey: _typeToViewTextLeft,
+          { _typeToViewKey: _typeToViewTextLeft,
             _fieldDescriptionKey: UserFieldMsg.label(k)});
           if (v.containsKey(_pKey)) fieldsChangedValues['${User.className}.${k}'][_pKey] = '***';
           if (v.containsKey(_cKey)) fieldsChangedValues['${User.className}.${k}'][_cKey] = '***';
@@ -144,12 +144,16 @@ class UserChangedValues extends BaseChangedValues {
           {
             _typeToViewKey: _typeToViewTextLeft,
             _fieldDescriptionKey: UserFieldMsg.label(k)});
-          if (v.containsKey(_pKey))
+
+          if (v.containsKey(_pKey)) {
             fieldsChangedValues['${User.className}.${k}'][_pKey] =
             v[_pKey];
-          if (v.containsKey(_cKey))
+          }
+
+          if (v.containsKey(_cKey)) {
             fieldsChangedValues['${User.className}.${k}'][_cKey] =
             v[_cKey];
+          }
         }
       }
     });
@@ -236,27 +240,74 @@ class GroupChangedValues extends BaseChangedValues {
   @override
   Map<String, Map<dynamic, dynamic>> constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
     changedValues?.forEach((k, v) {
-      if (k != Group.idField) {
+      if (k != Group.idField && k != Group.versionField) {
         if (k == Group.activeField) {
           fieldsChangedValues.putIfAbsent(
-              '${Group.className}.${k}', () => {_typeToViewKey: _typeToViewTextLeft, _fieldDescriptionKey: GroupFieldMsg.label(k)});
-          fieldsChangedValues['${Group.className}.${k}'][_pKey] = CommonFieldAndValuesMsg.labelAndValue(v[_pKey]);
-          fieldsChangedValues['${Group.className}.${k}'][_cKey] = CommonFieldAndValuesMsg.labelAndValue(v[_cKey]);
+              '${Group.className}.${k}', () =>
+          {
+            _typeToViewKey: _typeToViewTextLeft,
+            _fieldDescriptionKey: GroupFieldMsg.label(k)
+          });
+          if (v.containsKey(_pKey))
+            fieldsChangedValues['${Group.className}.${k}'][_pKey] =
+                CommonFieldAndValuesMsg.labelAndValue(v[_pKey]);
+          if (v.containsKey(_cKey))
+            fieldsChangedValues['${Group.className}.${k}'][_cKey] =
+                CommonFieldAndValuesMsg.labelAndValue(v[_cKey]);
         } else if (k == Group.leaderField) {
           fieldsChangedValues.putIfAbsent(
-              '${Group.className}.${k}', () => {_typeToViewKey: _typeToViewTextLeft, _fieldDescriptionKey: GroupFieldMsg.label(k)});
-          UserChangedValues().constructViewToFieldsChangedValues(fieldsChangedValues, v);
+              '${Group.className}.${k}', () =>
+          {
+            _typeToViewKey: _typeToViewTextLeft,
+            _fieldDescriptionKey: GroupFieldMsg.label(k)
+          });
+
+          if (v.containsKey(User.nameField) &&
+              v[User.nameField].containsKey(_pKey))
+            fieldsChangedValues['${Group.className}.${k}'][_pKey] =
+            v[User.nameField][_pKey];
+          if (v.containsKey(User.nameField) &&
+              v[User.nameField].containsKey(_cKey))
+            fieldsChangedValues['${Group.className}.${k}'][_cKey] =
+            v[User.nameField][_cKey];
+
+          // UserChangedValues().constructViewToFieldsChangedValues(fieldsChangedValues, v);
+
         } else if (k == Group.groupTypeField) {
           //TODO  GroupTypeChangedValues().constructViewToFieldsChangedValues(fieldsChangedValues, v, iPreviousCurrent);
         } else if (k == Group.superGroupField) {
-          GroupChangedValues().constructViewToFieldsChangedValues(fieldsChangedValues, v);
-        } else if (k == Group.membersField && v is List && v.isNotEmpty) {
-          v.forEach((v) => UserChangedValues().constructViewToFieldsChangedValues(
-              fieldsChangedValues, v));
-        } else if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
-          fieldsChangedValues.putIfAbsent('${Group.className}.${k}', () => {
+          GroupChangedValues().constructViewToFieldsChangedValues(
+              fieldsChangedValues, v);
+        } else if (k == Group.membersField) {
+          fieldsChangedValues.putIfAbsent(
+              '${Group.className}.${k}', () =>
+          {
             _typeToViewKey: _typeToViewTextLeft,
-            _fieldDescriptionKey: UserProfileFieldMsg.label(k)});
+            _fieldDescriptionKey: GroupFieldMsg.label(k)
+          });
+
+          if (v.containsKey(_pKey) && v[_pKey] is List) {
+            StringBuffer sb = new StringBuffer();
+            v[_pKey].forEach((l) {
+              if (sb.isNotEmpty) sb.write(', ');
+              sb.write(l[User.nameField]);
+            });
+            fieldsChangedValues['${Group.className}.${k}'][_pKey] = sb.toString();
+          }
+          if (v.containsKey(_cKey) && v[_cKey] is List) {
+            StringBuffer sb = new StringBuffer();
+            v[_cKey].forEach((l) {
+              if (sb.isNotEmpty) sb.write(', ');;
+              sb.write(l[User.nameField]);
+            });
+            fieldsChangedValues['${Group.className}.${k}'][_cKey] = sb.toString();
+          }
+        }
+        else if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
+          fieldsChangedValues.putIfAbsent('${Group.className}.${k}', () =>
+          {
+            _typeToViewKey: _typeToViewTextLeft,
+            _fieldDescriptionKey: GroupFieldMsg.label(k)});
           if (v.containsKey(_pKey))
             fieldsChangedValues['${Group.className}.${k}'][_pKey] =
             v[_pKey];

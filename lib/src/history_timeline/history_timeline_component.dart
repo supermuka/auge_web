@@ -1,6 +1,7 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
+import 'package:auge_web/message/model_messages.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -75,7 +76,11 @@ class HistoryTimelineComponent /* extends Object */ implements OnInit  {
   }
 
   String systemFunctionInPastLabel(int systemFunctionIndex) {
-    return SystemFunctionMsg.InPastLabel(SystemFunction.values[systemFunctionIndex].toString());
+    return SystemFunctionMsg.inPastLabel(SystemFunction.values[systemFunctionIndex].toString());
+  }
+
+  String classNameLabel(String className) {
+    return ClassNameMsg.label(className);
   }
 
   DateTime get currentDateTime => _historyTimelineService.currentDateTime;
