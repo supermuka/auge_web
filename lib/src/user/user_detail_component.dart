@@ -102,20 +102,20 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
   static final String addUserLabel =  UserMsg.label('Add User');
   static final String editUserLabel =  UserMsg.label('Edit User');
 
-  static final String nameLabel =  UserFieldMsg.label(User.nameField);
-  static final String emailLabel =  UserFieldMsg.label(User.eMailField);
-  static final String passwordLabel =  UserFieldMsg.label(User.passwordField);
-  static final String authorizationLabel = UserProfileOrganizationFieldMsg.label(UserProfileOrganization.authorizationRoleField);
-  static final String photoLabel = UserProfileFieldMsg.label(UserProfile.imageField);
-  static final String idiomLabel = UserProfileFieldMsg.label(UserProfile.idiomLocaleField);
+  static final String nameLabel =  FieldMsg.label('${User.className}.${User.nameField}');
+  static final String emailLabel =  FieldMsg.label('${User.className}.${User.eMailField}');
+  static final String passwordLabel =  FieldMsg.label('${User.className}.${User.passwordField}');
+  static final String authorizationLabel = FieldMsg.label('${UserProfileOrganization.className}.${UserProfileOrganization.authorizationRoleField}');
+  static final String photoLabel = FieldMsg.label('${UserProfile.className}.${UserProfile.imageField}');
+  static final String idiomLabel = FieldMsg.label('${UserProfile.className}.${UserProfile.idiomLocaleField}');
 
   static final String pt_BRsymbol = 'pt_BR';
   static final String en_USsymbol = 'en_US';
   static final String es_ESsymbol = 'es_ES';
 
-  static final String pt_BRvalueLabel = UserProfileFieldMsg.valueLabel(pt_BRsymbol);
-  static final String en_USvalueLabel = UserProfileFieldMsg.valueLabel(en_USsymbol);
-  static final String es_ESvalueLabel = UserProfileFieldMsg.valueLabel(es_ESsymbol);
+  static final String pt_BRvalueLabel = UserProfileValueMsg.label(pt_BRsymbol);
+  static final String en_USvalueLabel = UserProfileValueMsg.label(en_USsymbol);
+  static final String es_ESvalueLabel = UserProfileValueMsg.label(es_ESsymbol);
 
   @override
   void ngOnInit() async {

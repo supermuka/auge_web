@@ -38,7 +38,7 @@ class MeasureService {
   }
 
   /// Return an [Measure] by Id
-  Future<Measure> getMeasureById(String id) async {
+  Future<Measure> getMeasure(String id) async {
     try {
       //--Measure measure = await _augeApiService.objectiveAugeApi.getMeasureById(id);
 
@@ -64,6 +64,7 @@ class MeasureService {
 
   /// Return an [MeasureProgress] by [Measure.id]
   Future<List<MeasureProgress>> getMeasureProgress(String measureId) async {
+    print('DEBUG getMeasureProgress ${measureId}');
     measure_pbgrpc
         .MeasureProgressesResponse measureProgressesResponsePb = await _measureServiceClient
         .getMeasureProgresses(measure_pbgrpc.MeasureProgressGetRequest()
@@ -150,11 +151,18 @@ class MeasureService {
       ..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
 
     try {
-      common_pb.IdResponse idResponse = await _measureServiceClient
+
+      if (measureProgress.id == null) {
+        common_pb.IdResponse idResponse = await _measureServiceClient
             .createMeasureProgress(measureProgressRequest);
 
         // ID - primary key generated on server-side.
         return idResponse?.id;
+      } else {
+
+       await _measureServiceClient
+            .updateMeasureProgress(measureProgressRequest);
+      }
 
     } catch (e) {
       rethrow;

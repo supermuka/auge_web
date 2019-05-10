@@ -37,7 +37,7 @@ import 'package:auge_web/message/messages.dart';
 
 @Component(
     selector: 'auge-measure-progress',
-    providers: [overlayBindings, windowBindings, datepickerBindings, MeasureService, overlayBindings],
+    providers: [overlayBindings, windowBindings, datepickerBindings, MeasureService],
     directives: const [
       coreDirectives,
       materialInputDirectives,
@@ -75,6 +75,7 @@ class MeasureProgressComponent implements OnInit {
 
   @Input()
   Measure selectedMeasure;
+
   List<MeasureProgress> measureProgresses;
 
   final _closeController = new StreamController<void>.broadcast(sync: true);
@@ -214,9 +215,7 @@ class MeasureProgressComponent implements OnInit {
       List<num> values = [];
       defineMonthsValuesProgress(months, values);
       chart.data.labels = months;
-      chart.data.labels.forEach((f) => print(f as String));
       chart.data.datasets[1].data = values;
-      //values.forEach((f) => print(f as num));
       chart.update();
     }
   }
@@ -243,7 +242,8 @@ class MeasureProgressComponent implements OnInit {
 
   void saveMeasureProgress(MeasureProgress measureProgress, AsyncAction event) async {
 
-   if (measureProgresses.indexWhere((mp) => mp.date == measureProgress.date && mp != measureProgress) != -1) {
+
+   if (measureProgresses.indexWhere((mp) => mp.date == measureProgress.date && mp.id != measureProgress.id) != -1) {
       dialogError = currentValueExistsAtDateMsg;
       event.cancel();
     }
@@ -260,15 +260,6 @@ class MeasureProgressComponent implements OnInit {
               selectedMeasure.startValue + selectedMeasure.endValue -
                   measureProgress.currentValue;
 
-
-
-          //--
-          /* measureProgress.lastHistoryItem.setClientSideValues(
-              user: _authService.authenticatedUser,
-              description: null,
-              changedValues: MeasureProgressFacilities.differenceToJson(
-                  measureProgress, selectedMeasureProgress));
-*/
           String measureProgressId = await _measureService.saveMeasureProgress(
               selectedMeasure.id, measureProgress);
           // Returns a new instance to get the generated data on the server side as well as having the last update.

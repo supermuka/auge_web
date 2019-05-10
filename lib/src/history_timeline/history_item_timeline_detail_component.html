@@ -1,19 +1,11 @@
 <div class="font-size-small" *ngFor="let key of fieldsChangedValues?.keys">
     <span>{{fieldsChangedValues[key][fieldDescriptionKey]}}</span>
-    <span *ngIf="fieldsChangedValues[key][typeToViewKey] == typeToViewTextLeft">
+    <span *ngIf="fieldsChangedValues[key][typeToViewKey] == typeToViewText">
         <span *ngIf="fieldsChangedValues[key][cKey] != null"><strong>{{fieldsChangedValues[key][cKey]}}</strong></span>
         <span *ngIf="fieldsChangedValues[key][pKey] != null">
             <span *ngIf="fieldsChangedValues[key][cKey] != null"> {{changedFromLabel}} </span>
             <span *ngIf="fieldsChangedValues[key][cKey] == null"> {{wasLabel}} </span>
             <span><strong>{{fieldsChangedValues[key][pKey]}}</strong></span>
-        </span>
-    </span>
-    <span *ngIf="fieldsChangedValues[key][typeToViewKey] == typeToViewTextRight">
-        <span *ngIf="fieldsChangedValues[key][cKey] != null" class="w3-right"><strong>{{fieldsChangedValues[key][cKey]}}</strong></span>
-        <span *ngIf="fieldsChangedValues[key][pKey] != null">
-            <span *ngIf="fieldsChangedValues[key][cKey] != null"> {{changedFromLabel}} </span>
-            <span *ngIf="fieldsChangedValues[key][cKey] == null"> {{wasLabel}} </span>
-            <span class="w3-right"><strong>{{fieldsChangedValues[key][pKey]}}</strong></span>
         </span>
     </span>
     <span *ngIf="fieldsChangedValues[key][typeToViewKey] == typeToViewImageAvatar">
@@ -24,5 +16,12 @@
             <span class="avatar" [style.background-image]="'url(' + userUrlImage(fieldsChangedValues[key][pKey]) + ')'"></span>
         </span>
     </span>
+    <span *ngIf="fieldsChangedValues[key][typeToViewKey] == typeToViewDateTime">
+        <span *ngIf="fieldsChangedValues[key][cKey] != null"><strong>{{fieldsChangedValues[key][cKey] | date}}</strong></span>
+        <span *ngIf="fieldsChangedValues[key][pKey] != null">
+            <span *ngIf="fieldsChangedValues[key][cKey] != null"> {{changedFromLabel}} </span>
+            <span *ngIf="fieldsChangedValues[key][cKey] == null"> {{wasLabel}} </span>
+            <span><strong>{{fieldsChangedValues[key][pKey] | date}}</strong></span>
+        </span>
+    </span>
 </div>
-

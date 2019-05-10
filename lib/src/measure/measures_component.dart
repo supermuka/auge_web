@@ -122,7 +122,6 @@ class MeasuresComponent extends Object {
 
   void refreshMeasures() async {
       objective.measures = await _measureService.getMeasures(objective.id);
-     // TODO objective.history = await _objectiveService.getHistory(objective.id);
   }
 
   void closeProgress() async {
@@ -130,7 +129,7 @@ class MeasuresComponent extends Object {
 
     // recovery the actual measure;
     if (selectedMeasure != null) {
-      measures[measures.indexOf(selectedMeasure)] = await _measureService.getMeasureById(selectedMeasure.id);
+      measures[measures.indexOf(selectedMeasure)] = await _measureService.getMeasure(selectedMeasure.id);
     }
   }
 }

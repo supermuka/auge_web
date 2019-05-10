@@ -32,6 +32,8 @@ class ClassNameMsg {
       UserProfileOrganization.className: 'User and Profiles',
       Group.className: 'Group',
       Objective.className: 'Objective',
+      Measure.className: 'Measure',
+      MeasureProgress.className: 'Measure Progress',
       'other': 'Not Defined'})}",
     name: "classNameLabel",
     args: [className],
@@ -41,155 +43,66 @@ class ClassNameMsg {
 }
 
 /// Specific messages and label for [User] class field
-class UserFieldMsg {
+class FieldMsg {
 
   /// Label for Field User
-  static label(String fieldName) => Intl.message(
-    "${Intl.select(fieldName, {
-      User.nameField: 'Name',
-      User.eMailField: 'e-Mail',
-      User.passwordField: 'Password',
+  static label(String classAndFieldName) => Intl.message(
+    "${Intl.select(classAndFieldName, {
+       //USER
+      '${User.className}.${User.nameField}': 'Name',
+      '${User.className}.${User.eMailField}': 'e-Mail',
+      '${User.className}.${User.passwordField}': 'Password',
+      //USERPROFILE
+      '${UserProfile.className}.${UserProfile.isSuperAdminField}':'Super Admin',
+      '${UserProfile.className}.${UserProfile.imageField}':'Image',
+      '${UserProfile.className}.${UserProfile.idiomLocaleField}':'Idioma',
+      //USERPROFILEORGANIZATION
+      '${UserProfileOrganization.className}.${UserProfileOrganization.authorizationRoleField}':'Authorization',
+      //GROUP
+      '${Group.className}.${Group.nameField}':'Name',
+      '${Group.className}.${Group.activeField}':'Active',
+      '${Group.className}.${Group.leaderField}':'Leader',
+      '${Group.className}.${Group.groupTypeField}':'Group Type',
+      '${Group.className}.${Group.superGroupField}':'Super Group',
+      '${Group.className}.${Group.leaderField}':'Leader',
+      '${Group.className}.${Group.membersField}':'Members',
+      //OBJECTIVE
+      '${Objective.className}.${Objective.nameField}':'Name',
+      '${Objective.className}.${Objective.descriptionField}':'Description',
+      '${Objective.className}.${Objective.leaderField}':'Leader',
+      '${Objective.className}.${Objective.startDateField}':'Start Date',
+      '${Objective.className}.${Objective.endDateField}':'End Date',
+      '${Objective.className}.${Objective.archivedField}':'Archived',
+      //MEASURE
+      '${Measure.className}.${Measure.nameField}':'Name',
+      '${Measure.className}.${Measure.descriptionField}':'Description',
+      '${Measure.className}.${Measure.endValueField}':'End Value',
+      '${Measure.className}.${Measure.startValueField}':'Start Value',
+      '${Measure.className}.${Measure.currentValueField}':'Current Value',
+      '${Measure.className}.${Measure.decimalsNumberField}':'Decimals Number',
+      '${Measure.className}.${Measure.measureUnitField}':'Unit',
+      '${Measure.className}.${Measure.metricField}':'Metric',
       'other': 'Not Defined'})}",
-    name: "userFieldLabel",
-    args: [fieldName],
+    name: "FieldLabel",
+    args: [classAndFieldName],
     // locale: "en",
     desc: "User form field labels",
   );
 }
 
 /// Specific messages and label for [UserProfile] model field and class
-class UserProfileFieldMsg {
-
-  /// Label for Class Name User
-  static classNameLabel(String className) => Intl.message(
-    "${Intl.select(className, {
-      UserProfile.isSuperAdminField: 'Super Admin',
-      UserProfile.imageField: 'Image',
-      UserProfile.idiomLocaleField: 'Idioma',
-      'other': 'Not Defined'})}",
-    name: "userProfileClassNameLabel",
-    args: [className],
-    // locale: "en",
-    desc: "User Profile form field labels",
-  );
-
-  /// Label for Field User
-  static label(String fieldName) => Intl.message(
-    "${Intl.select(fieldName, {
-      UserProfile.isSuperAdminField: 'Super Admin',
-      UserProfile.imageField: 'Image',
-      UserProfile.idiomLocaleField: 'Idioma',
-      'other': 'Not Defined'})}",
-    name: "userProfileFieldLabel",
-    args: [fieldName],
-    // locale: "en",
-    desc: "User Profile form field labels",
-  );
+class UserProfileValueMsg {
 
   /// Static value for User
-  static valueLabel(String valueName) => Intl.message(
+  static label(String valueName) => Intl.message(
     "${Intl.select(valueName, {
       'pt_BR': 'Português - Brasil',
       'en_US': 'English - USA',
-      'es_ES': 'Español - España',
+      'es_ES': 'Espanhol - España',
       'other': 'Not Defined'})}",
     name: "userProfileFieldLabel",
     args: [valueName],
     // locale: "en",
     desc: "User Profile values labels",
   );
-}
-
-/// Specific messages and label for [UserProfileOrganization] class field
-class UserProfileOrganizationFieldMsg {
-
-  /// Label for Field User
-  static label(String fieldName) => Intl.message(
-    "${Intl.select(fieldName, {
-      UserProfileOrganization.authorizationRoleField: 'Authorization',
-      'other': 'Not Defined'})}",
-    name: "userProfileFieldLabel",
-    args: [fieldName],
-    // locale: "en",
-    desc: "User Profile form field labels",
-  );
-
-  /// Static value for User
-  static valueLabel(String valueName) => Intl.message(
-    "${Intl.select(valueName, {
-      'pt_BR': 'Português - Brasil',
-      'en_US': 'English - USA',
-      'es_ES': 'Español - España',
-      'other': 'Not Defined'})}",
-    name: "userProfileFieldLabel",
-    args: [valueName],
-    // locale: "en",
-    desc: "User Profile values labels",
-  );
-}
-
-/// Specific messages and label for [Group] class field
-class GroupFieldMsg {
-
-  /// Label for Field User
-  static label(String fieldName) => Intl.message(
-    "${Intl.select(fieldName, {
-      Group.nameField: 'Name',
-      Group.activeField: 'Active',
-      Group.leaderField: 'Leader',
-      Group.groupTypeField: 'Group Type',
-      Group.superGroupField: 'Super Group',
-      Group.leaderField: 'Leader',
-      Group.activeField: 'Active',
-      Group.membersField: 'Members',
-      'other': 'Not Defined'})}",
-    name: "groupFieldLabel",
-    args: [fieldName],
-    // locale: "en",
-    desc: "Group form field labels",
-  );
-}
-
-/// Specific messages and label for [Objective] class field
-class ObjectiveFieldMsg {
-
-  /// Label for Insight
-  static label(String fieldName) => Intl.message(
-    "${Intl.select(fieldName, {
-      Objective.idField: 'Id',
-      Objective.nameField: 'Name',
-      Objective.descriptionField: 'Description',
-      Objective.leaderField: 'Leader',
-      Objective.startDateField: 'Start Date',
-      Objective.endDateField: 'End Date',
-      'other': 'Not Defined'})}",
-    name: "objectiveFieldLabel",
-    args: [fieldName],
-    // locale: "en",
-    desc: "Objective class field labels",
-  );
-}
-
-/// Specific messages and label for [Measure] class field
-class MeasuereFieldMsg {
-
-  /// Label for Measure
-  static label(String fieldName) => Intl.message(
-    "${Intl.select(fieldName, {
-      Measure.idField: 'Id',
-      Measure.nameField: 'Name',
-      Measure.descriptionField: 'Description',
-      Measure.endValueField: 'End Value',
-      Measure.startValueField: 'Start Value',
-      Measure.currentValueField: 'Current Value',
-      Measure.decimalsNumberField: 'Decimals Number',
-      Measure.measureUnitField: 'Unit',
-      Measure.metricField: 'Metric',
-      'other': 'Not Defined'})}",
-    name: "measureFieldLabel",
-    args: [fieldName],
-    // locale: "en",
-    desc: "Measure class field labels",
-  );
-
 }

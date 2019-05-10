@@ -153,7 +153,7 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
 
   Future<List<Objective>> getObjetives() async {
     List<Objective> objectivesAux =  await _objectiveService.getObjectives(
-        _objectiveService.authService.selectedOrganization.id, withMeasures: true, withProfile: true /*, withTimeline: true */);
+        _objectiveService.authService.selectedOrganization.id, withMeasures: true, withProfile: true);
    // _sortObjectives(objectivesAux );
     return objectivesAux;
   }

@@ -119,12 +119,12 @@ class GroupDetailComponent extends Object implements OnInit {
   static final String editGroupLabel =  GroupMsg.label('Edit Group');
   static final String noMatchLabel =  GroupMsg.label('No Match');
 
-  static final String nameLabel =  GroupFieldMsg.label(Group.nameField);
-  static final String superGroupLabel =  GroupFieldMsg.label(Group.superGroupField);
-  static final String groupTypeLabel = GroupFieldMsg.label(Group.groupTypeField);
-  static final String leaderLabel =  GroupFieldMsg.label(Group.leaderField);
-  static final String activeLabel =  GroupFieldMsg.label(Group.activeField);
-  static final String membersLabel =  GroupFieldMsg.label(Group.membersField);
+  static final String nameLabel =  FieldMsg.label('${Group.className}.${Group.nameField}');
+  static final String superGroupLabel =  FieldMsg.label('${Group.className}.${Group.superGroupField}');
+  static final String groupTypeLabel = FieldMsg.label('${Group.className}.${Group.groupTypeField}');
+  static final String leaderLabel =  FieldMsg.label('${Group.className}.${Group.leaderField}');
+  static final String activeLabel =  FieldMsg.label('${Group.className}.${Group.activeField}');
+  static final String membersLabel =  FieldMsg.label('${Group.className}.${Group.membersField}');
 
   @override
   void ngOnInit() async {

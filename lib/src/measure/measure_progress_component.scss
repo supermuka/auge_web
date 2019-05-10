@@ -1,9 +1,11 @@
-div.wrapper {
-  margin: 0 auto;
-  max-width: 1200px;
-  width: 600px;
-  height: 400px;
-  text-align: center;
-  font-style: italic;
-}
+@import 'package:angular_components/css/material/material';
+@import 'package:angular_components/material_button/mixins';
 
+div.wrapper {
+  padding: 0 4px;
+  max-width: 1200px;
+  height: 400px;
+  width: 600px;
+  /*text-align: center;
+  font-style: italic;*/
+}
