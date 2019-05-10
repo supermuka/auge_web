@@ -129,7 +129,6 @@ class UserChangedValues extends BaseChangedValues {
   constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
     changedValues?.forEach((k, v) {
       if (k != User.idField && k != User.versionField) {
-        print('AAA ${v}');
         if (k == User.userProfileField) {
             UserProfileChangedValues().constructViewToFieldsChangedValues(
                fieldsChangedValues, v);

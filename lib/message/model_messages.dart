@@ -31,6 +31,7 @@ class ClassNameMsg {
       UserProfile.className: 'User Profile',
       UserProfileOrganization.className: 'User and Profiles',
       Group.className: 'Group',
+      Objective.className: 'Objective',
       'other': 'Not Defined'})}",
     name: "classNameLabel",
     args: [className],

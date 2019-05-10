@@ -245,6 +245,7 @@ class ObjectiveMsg {
         'Group': 'Group',
         'Archived': 'Archived',
         'No Match': 'No Match',
+        'Sorted By': 'Sorted By',
         'other': 'Not Defined'})}",
       name: "objectiveLabel",
       args: [label],

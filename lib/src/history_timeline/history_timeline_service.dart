@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:angular/core.dart';
 
 import 'package:auge_server/model/general/history_item.dart';
+import 'package:auge_server/shared/common_utils.dart';
 
 import 'package:auge_web/services/auge_api_service.dart';
 
@@ -50,10 +51,13 @@ class HistoryTimelineService {
     common_pbgrpc.DateTimeResponse dateTimeResponse = await _commonServiceClient.getDateTime(common_pbgrpc.DateTimeGetRequest()..isUtc = true);
 
     // Convert Protobuf timestamp to Dart DateTime
-    return DateTime.fromMicrosecondsSinceEpoch(
+    return CommonUtils.dateTimeFromTimestamp(dateTimeResponse.dateTime);
+
+    /*
+    DateTime.fromMicrosecondsSinceEpoch(
         dateTimeResponse.dateTime.seconds.toInt() * 1000000 +
             dateTimeResponse.dateTime.nanos ~/ 1000);
-
+*/
   }
 }
 

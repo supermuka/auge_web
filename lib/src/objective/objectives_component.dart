@@ -12,6 +12,8 @@ import 'package:angular_components/material_icon/material_icon.dart';
 import 'package:angular_components/material_menu/material_menu.dart';
 import 'package:angular_components/model/ui/icon.dart';
 import 'package:angular_components/model/menu/menu.dart';
+import 'package:angular_components/material_select/material_dropdown_select.dart';
+import 'package:angular_components/material_toggle/material_toggle.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel_set.dart';
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
@@ -32,12 +34,14 @@ import 'package:auge_web/services/app_routes.dart';
 
 @Component(
     selector: 'auge-objectives',
-    providers: const [ObjectiveService],
+    providers: const [ObjectiveService, HistoryTimelineService],
     directives: const [
       coreDirectives,
       routerDirectives,
       MaterialFabComponent,
       MaterialIconComponent,
+      MaterialDropdownSelectComponent,
+      MaterialToggleComponent,
       MaterialExpansionPanel,
       MaterialExpansionPanelSet,
       MaterialTooltipDirective,
@@ -58,6 +62,7 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
   final AppLayoutService _appLayoutService;
   final ObjectiveService _objectiveService;
   final SearchService _searchService;
+  final HistoryTimelineService _historyTimelineService;
   final Router _router;
 
   List<Objective> _objectives = List();
@@ -68,18 +73,49 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
   String initialObjectiveId;
 
   bool detailVisible = false;
+  String mainColWidth = '100%';
+  bool _timelineVisible = false;
+
 
   MenuModel<MenuItem> menuModel;
 
-  static final systemModuleIndex =  SystemModule.objectives.index;
-
-  // Define messages and labels
+    // Define messages and labels
+  static final String sortedByLabel = ObjectiveMsg.label('Sorted By');
+  static final String nameLabel = ObjectiveMsg.label('Name');
   static final String alignedToLabel =  ObjectiveMsg.label('Aligned To');
   static final String leaderLabel =  ObjectiveMsg.label('Leader');
   static final String groupLabel =  ObjectiveMsg.label('Group');
+  static final String startDateLabel =  ObjectiveMsg.label('Start Date');
+  static final String endDateLabel =  ObjectiveMsg.label('End Date');
 
-  ObjectivesComponent(this._appLayoutService, this._objectiveService, this._searchService, this._router) {
+  final objectivesSortedByOptions = [nameLabel, groupLabel, leaderLabel, startDateLabel, endDateLabel];
+
+  String _sortedBy = nameLabel;
+
+  ObjectivesComponent(this._appLayoutService, this._objectiveService, this._searchService, this._historyTimelineService, this._router) {
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => detailVisible = true), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
+  }
+
+  set sortedBy(String sortedBy) {
+    _sortedBy = sortedBy;
+    _sortObjectives();
+  }
+
+  get sortedBy => _sortedBy;
+
+
+  bool get timelineVisible {
+    return _timelineVisible;
+  }
+  set timelineVisible(bool visible) {
+    _timelineVisible = visible;
+    if (_timelineVisible) {
+      mainColWidth = '75%';
+      _historyTimelineService.refreshHistory(SystemModule.objectives.index);
+    } else {
+      mainColWidth = '100%';
+    }
+    // (!_timelineVisible) ?mainColWidth = '100%' : mainColWidth = '75%';
   }
 
   void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
@@ -100,6 +136,7 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
 
     try {
       _objectives = await getObjetives();
+      _sortObjectives();
 
       if (initialObjectiveId != null) {
         Objective initialObjective = _objectives.singleWhere((o) => o.id == initialObjectiveId);
@@ -117,7 +154,7 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
   Future<List<Objective>> getObjetives() async {
     List<Objective> objectivesAux =  await _objectiveService.getObjectives(
         _objectiveService.authService.selectedOrganization.id, withMeasures: true, withProfile: true /*, withTimeline: true */);
-    _sortObjectivesOrderByGroup(objectivesAux);
+   // _sortObjectives(objectivesAux );
     return objectivesAux;
   }
 
@@ -150,6 +187,8 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
       await _objectiveService.deleteObjective(selectedObjective);
       objectives.remove(selectedObjective);
       //objectives.timeline = await _objectiveService.getTimeline(objective.id);
+      _historyTimelineService.refreshHistory(SystemModule.objectives.index);
+
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;
@@ -159,13 +198,16 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
   void refreshList() async {
 
     _objectives = await getObjetives();
+    _sortObjectives();
 
     if (expandedObjectiveId != null) {
       Objective expandedObjective = _objectives.singleWhere((o) => o.id == expandedObjectiveId, orElse: null);
       if (expandedObjective != null) {
-     // TODO   expandedObjective.history = await _objectiveService.getHistory(expandedObjectiveId);
+        _historyTimelineService.refreshHistory(SystemModule.objectives.index);
       }
     }
+
+    _historyTimelineService.getHistory(SystemModule.objectives.index);
   }
 
   void viewDetail(bool detailVisible) {
@@ -184,9 +226,22 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
     return common_service.firstLetter(name);
   }
 
-  // Order by to group
-  void _sortObjectivesOrderByGroup(List<Objective> objectives) {
-    objectives.sort((a, b) => a?.group == null || b?.group == null ? -1 : a.group.name.compareTo(b.group.name));
+  // Sorted by
+  void _sortObjectives() {
+    if (_sortedBy == nameLabel) {
+      _objectives.sort((a, b) => a?.name == null || b?.name == null ? -1 : a.name.compareTo(b.name));
+    } else if (_sortedBy == groupLabel) {
+      _objectives.sort((a, b) => a?.group == null || b?.group == null ? -1 : a.group.name.compareTo(b.group.name));
+    } else if (_sortedBy == leaderLabel) {
+      _objectives.sort((a, b) => a?.leader == null || b?.leader == null ? -1 : a.leader.name.compareTo(b.leader.name));
+    } else if (_sortedBy == startDateLabel) {
+      _objectives.sort((a, b) => a?.startDate == null || b?.startDate == null ? -1 : a.startDate.compareTo(b.startDate));
+    } else if (_sortedBy == endDateLabel) {
+      _objectives.sort((a, b) =>
+      a?.endDate == null || b?.endDate == null
+          ? -1
+          : a.endDate.compareTo(b.endDate));
+    }
   }
 
   void scrollInit(bool event, HtmlElement element) {
@@ -211,4 +266,9 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
       expandedObjectiveId = null;
     }
   }
+
+  composeTooltip(String label, String name) {
+    return label + ' ' + ((name == null) ? '(-)' : name);
+  }
+
 }

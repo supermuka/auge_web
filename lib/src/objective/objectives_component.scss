@@ -1,40 +1,35 @@
 @import 'package:angular_components/css/material/material';
 
-material-fab {
-    position: fixed !important;
-    z-index: 9999999;
-    background-color: $mat-red;
-    color: $mat-white;
-    float: right;
-    right: 32px;
+.material-fab-add {
+   position: fixed !important;
+   z-index: 9999;
+   float: right;
+   bottom: 64px;
+   right: 64px;
+   background-color: $mat-red;
+   color: $mat-white;
 }
 
-.custom-material-expansionpanel-name {
+.custom-grid {
   display: grid;
+  /* grid-template-columns: min-content auto; */
   grid-template-columns: min-content auto;
 }
 
-.truncate-ellipsed-parent {
+.truncate-parent {
   min-width: 0;
-}
-
-.truncate-ellipsed-x {
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-
-.right {
- text-align: right;
 }
 
 .text-group-letter {
     color: white; /* foi preciso colocar, senão não funcionava o mix-blend-mode */
     mix-blend-mode: difference;
-    line-height: 40px; /* same height to parent - class avatar*/
+    line-height: 32px; /* same height to parent - class avatar*/
 }
 
-.detail-vertical-size {
-  max-height: 70vh;
-  overflow-y: auto;
+.margin-bottom {
+  margin-bottom: 2px;
+}
+
+.margin-top {
+  margin-top: 2px;
 }

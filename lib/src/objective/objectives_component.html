@@ -1,60 +1,68 @@
 <div class="container-list">
-    <material-fab raised (trigger)="selectObjective(null);viewDetail(true)">
+    <div class="w3-row-padding">
+        <div class="w3-col">
+            <label>{{sortedByLabel}}</label>
+            <material-dropdown-select class="w3-margin-left"
+                    buttonText="{{sortedBy}}"
+                    [(selection)]="sortedBy"
+                    [options]="objectivesSortedByOptions">
+            </material-dropdown-select>
+            <material-toggle class="w3-right" label="Timeline" (checkedChange)="timelineVisible = $event"></material-toggle>
+        </div>
+    </div>
+    <div class="w3-row-padding">
+        <div class="w3-col" style="width:{{mainColWidth}}">
+            <material-expansionpanel-set>
+                <div #refMatExp *ngFor="let iObjective of objectives;let i = index" >
+                    <material-expansionpanel [alwaysHideExpandIcon]="true"
+                            [hideExpandedHeader]="false"
+                            [showSaveCancel]="false"
+                            [expanded]="iObjective.id == expandedObjectiveId"
+                            (expandedChange)="scrollInit($event, refMatExp);setExpandedObjectiveId(iObjective.id, $event)">
+                        <div name class="custom-grid">
+                            <span class="c100 p{{iObjective.progress}} small">
+                                <span>{{iObjective.progress}}%</span>
+                                <div class="slice">
+                                    <div class="bar"></div>
+                                    <div class="fill"></div>
+                                </div>
+                            </span>
+                            <span class="truncate-parent">
+                                <h4 class="truncate-ellipsed">{{iObjective.name}}</h4>
+                                <div>{{iObjective.startDate | date}}<span>&nbsp;·&nbsp;</span>{{iObjective.endDate | date}}</div>
+                            </span>
+                        </div>
+                        <div value class="custom-grid w3-right">
+                            <div class="truncate-parent">
+                                <div *ngIf="iObjective.group != null" class="avatar avatar-border margin-bottom" [style.background-color]="colorFromUuid(iObjective.group?.id)" [materialTooltip]="composeTooltip(groupLabel, iObjective.group?.name)">
+                                    <span class="text-group-letter">{{firstLetter(iObjective.group?.name)}}</span>
+                                </div>
+                                <div *ngIf="iObjective.group == null" class="avatar margin-bottom"></div>
+                                <div *ngIf="iObjective.leader != null" class="avatar margin-top" [style.background-image]="'url(' +  userUrlImage(iObjective.leader?.userProfile.image) + ')'" [materialTooltip]="composeTooltip(leaderLabel, iObjective.leader?.name)"></div>
+                                <div *ngIf="iObjective.leader == null" class="avatar margin-top"></div>
+                            </div>
+                        </div>
+                        <div action>
+                            <material-menu [menu]="menuModel" (click)="selectObjective(iObjective)">
+                            </material-menu>
+                        </div>
+                        <hr>
+                        <span><strong>{{alignedToLabel}}</strong> {{iObjective?.alignedTo?.name}}</span>
+                        <div class="w3-row-padding" >
+                            <auge-measures *ngIf="iObjective.id == expandedObjectiveId" [objective]="iObjective"></auge-measures>
+                            <auge-initiatives-summary *ngIf="iObjective.id == expandedObjectiveId" [objectiveId]="iObjective.id"></auge-initiatives-summary>
+                        </div>
+                    </material-expansionpanel>
+                </div>
+            </material-expansionpanel-set>
+        </div>
+        <div *ngIf="timelineVisible == true" class="w3-col" style="width:25%">
+            <auge-history-timeline></auge-history-timeline>
+        </div>
+    </div>
+    <material-fab class="material-fab-add" raised (trigger)="selectObjective(null);viewDetail(true)">
         <material-icon icon="add"></material-icon>
     </material-fab>
-    <br/>
-    <material-expansionpanel-set>
-        <div #refMatExp *ngFor="let iObjective of objectives;let i = index" >
-            <h4 *ngIf="i == 0 || objectives[i-1]?.group?.id != objectives[i]?.group?.id">
-                <div>
-                    <span class="avatar avatar-border" [style.background-color]="colorFromUuid(iObjective?.group?.id)" [materialTooltip]="groupLabel">
-                        <span class="text-group-letter">{{firstLetter(iObjective?.group?.name)}}</span>
-                    </span>
-                    <span>{{iObjective?.group?.name}}</span>
-                </div>
-            </h4>
-            <material-expansionpanel [alwaysHideExpandIcon]="true"
-                    [hideExpandedHeader]="false"
-                    [showSaveCancel]="false"
-                    [expanded]="iObjective.id == expandedObjectiveId"
-                    (expandedChange)="scrollInit($event, refMatExp);setExpandedObjectiveId(iObjective.id, $event)">
-                <!-- [expanded]="expandedControl[iObjective]" -->
-
-                <!-- (expandedChange)="expandedControl[iObjective] = $event" -->
-                <div name class="custom-material-expansionpanel-name">
-                    <span class="c100 p{{iObjective.progress}} small">
-                        <span>{{iObjective.progress}}%</span>
-                        <div class="slice">
-                            <div class="bar"></div>
-                            <div class="fill"></div>
-                        </div>
-                    </span>
-                    <span class="truncate-ellipsed-parent">
-                        <h4 class="truncate-ellipsed">{{iObjective.name}}</h4>
-                        <div>{{iObjective.startDate | date}}<span>&nbsp;·&nbsp;</span>{{iObjective.endDate | date}}</div>
-                    </span>
-                </div>
-                <div *ngIf="iObjective.leader != null" value class="right" >
-                    <span class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjective.leader?.userProfile.image) + ')'" [materialTooltip]="leaderLabel + ' ' + iObjective.leader.name"></span>
-                </div>
-                <div action>
-                    <material-menu [menu]="menuModel" (click)="selectObjective(iObjective)">
-                    </material-menu>
-                </div>
-                <hr>
-                <span><strong>{{alignedToLabel}}</strong> {{iObjective?.alignedTo?.name}}</span>
-                <div class="w3-row" >
-                    <div class="w3-col m9">
-                        <auge-measures *ngIf="iObjective.id == expandedObjectiveId" [objective]="iObjective"></auge-measures>
-                        <auge-initiatives-summary *ngIf="iObjective.id == expandedObjectiveId" [objectiveId]="iObjective.id"></auge-initiatives-summary>
-                    </div>
-                    <div class="w3-col m3">
-                        <auge-history-timeline *ngIf="iObjective.id == expandedObjectiveId" [systemModuleIndex]="systemModuleIndex"></auge-history-timeline>
-                    </div>
-                </div>
-            </material-expansionpanel>
-        </div>
-    </material-expansionpanel-set>
     <auge-objective-detail *ngIf="detailVisible == true" [selectedObjective]="selectedObjective" (saved)="refreshList()" (closed)="viewDetail(false)">
     </auge-objective-detail>
 </div>
