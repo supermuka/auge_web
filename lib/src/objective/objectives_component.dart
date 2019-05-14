@@ -22,6 +22,8 @@ import 'package:auge_server/model/general/authorization.dart';
 import 'package:auge_server/model/objective/objective.dart';
 
 import 'package:auge_web/message/messages.dart';
+import 'package:auge_web/message/model_messages.dart';
+
 import 'package:auge_web/src/objective/objective_detail_component.dart';
 import 'package:auge_web/src/history_timeline/history_timeline_component.dart';
 import 'package:auge_web/src/measure/measures_component.dart';
@@ -76,17 +78,17 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
   String mainColWidth = '100%';
   bool _timelineVisible = false;
 
-
   MenuModel<MenuItem> menuModel;
 
     // Define messages and labels
   static final String sortedByLabel = ObjectiveMsg.label('Sorted By');
-  static final String nameLabel = ObjectiveMsg.label('Name');
-  static final String alignedToLabel =  ObjectiveMsg.label('Aligned To');
-  static final String leaderLabel =  ObjectiveMsg.label('Leader');
-  static final String groupLabel =  ObjectiveMsg.label('Group');
-  static final String startDateLabel =  ObjectiveMsg.label('Start Date');
-  static final String endDateLabel =  ObjectiveMsg.label('End Date');
+
+  static final String nameLabel = FieldMsg.label('${Objective.className}.${Objective.nameField}');
+  static final String alignedToLabel =  FieldMsg.label('${Objective.className}.${Objective.alignedToField}');
+  static final String leaderLabel =  FieldMsg.label('${Objective.className}.${Objective.leaderField}');
+  static final String groupLabel =  FieldMsg.label('${Objective.className}.${Objective.groupField}');
+  static final String startDateLabel =  FieldMsg.label('${Objective.className}.${Objective.startDateField}');
+  static final String endDateLabel =  FieldMsg.label('${Objective.className}.${Objective.endDateField}');
 
   final objectivesSortedByOptions = [nameLabel, groupLabel, leaderLabel, startDateLabel, endDateLabel];
 

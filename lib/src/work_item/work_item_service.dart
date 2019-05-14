@@ -23,15 +23,16 @@ class WorkItemService {
   AuthService get authService => _authService;
 
   /// Delete a [WorkItem]
-  void deleteWorkItem(String initiativeId, WorkItem workItem) async {
+  void deleteWorkItem(WorkItem workItem) async {
 
-    work_item_pbgrpc.WorkItemRequest workItemRequest = work_item_pbgrpc.WorkItemRequest()
-      ..workItem = workItem.writeToProtoBuf()
-      ..initiativeId = initiativeId
-      ..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
+    work_item_pbgrpc.WorkItemDeleteRequest workItemDeleteRequest = work_item_pbgrpc.WorkItemDeleteRequest()
+      ..workItemId = workItem.id
+      ..workItemVersion = workItem.version
+      ..authenticatedOrganizationId = _authService.selectedOrganization.id
+      ..authenticatedUserId = _authService.authenticatedUser.id;
 
     try {
-      await _workItemServiceClient.deleteWorkItem(workItemRequest);
+      await _workItemServiceClient.deleteWorkItem(workItemDeleteRequest);
     } catch (e) {
 
       rethrow;
@@ -44,7 +45,8 @@ class WorkItemService {
     work_item_pbgrpc.WorkItemRequest workItemRequest = work_item_pbgrpc.WorkItemRequest()
       ..workItem = workItem.writeToProtoBuf()
       ..initiativeId = initiativeId
-      ..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
+      ..authenticatedOrganizationId = _authService.selectedOrganization.id
+      ..authenticatedUserId = _authService.authenticatedUser.id;
 
     try {
       if (workItem.id == null) {
@@ -60,4 +62,12 @@ class WorkItemService {
       rethrow;
     }
   }
+
+  /// Return [Workitem] by id
+  Future<WorkItem> getWorkItem(String id) async {
+    // return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
+    return WorkItem()..readFromProtoBuf((await _workItemServiceClient.getWorkItem(
+        work_item_pbgrpc.WorkItemGetRequest()..id = id)));
+  }
+
 }

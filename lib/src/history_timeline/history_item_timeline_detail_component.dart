@@ -1,8 +1,6 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
-import 'dart:html';
-
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -123,14 +121,14 @@ class BaseChangedValues {
     return _fieldsChangedValues;
   }
 
-  constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {}
+  void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {}
 }
 
 /// USERS
 class UserChangedValues extends BaseChangedValues {
 
   @override
-  constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
+  void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
     changedValues?.forEach((k, v) {
       if (k != User.idField && k != User.versionField) {
         if (k == User.userProfileField) {
@@ -160,14 +158,13 @@ class UserChangedValues extends BaseChangedValues {
         }
       }
     });
-    return fieldsChangedValues;
   }
 }
 
 class UserProfileChangedValues extends BaseChangedValues {
 
   @override
-  Map<String, Map<dynamic, dynamic>> constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
+  void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
     changedValues?.forEach((k, v) {
       if (k == UserProfile.idiomLocaleField) {
         fieldsChangedValues.putIfAbsent('${UserProfile.className}.${k}', () =>
@@ -202,14 +199,13 @@ class UserProfileChangedValues extends BaseChangedValues {
           v[_cKey];
       }
     });
-    return fieldsChangedValues;
   }
 }
 
 class UserProfileOrganizationChangedValues extends BaseChangedValues {
 
   @override
-  Map<String, Map<dynamic, dynamic>> constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
+  void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
     changedValues?.forEach((k, v) {
       if (k != UserProfileOrganization.idField && k != UserProfileOrganization.versionField) {
         if (k == UserProfileOrganization.userField) {
@@ -233,7 +229,6 @@ class UserProfileOrganizationChangedValues extends BaseChangedValues {
         }
       }
     });
-    return fieldsChangedValues;
   }
 }
 
@@ -241,7 +236,7 @@ class UserProfileOrganizationChangedValues extends BaseChangedValues {
 class GroupChangedValues extends BaseChangedValues {
 
   @override
-  Map<String, Map<dynamic, dynamic>> constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
+  void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
     changedValues?.forEach((k, v) {
       if (k != Group.idField && k != Group.versionField) {
         if (k == Group.activeField) {
@@ -281,9 +276,6 @@ class GroupChangedValues extends BaseChangedValues {
         } else if (k == Group.groupTypeField) {
           GroupTypeChangedValues().constructViewToFieldsChangedValues(
               fieldsChangedValues, {Group.groupTypeField: v});
-        } else if (k == Group.superGroupField) {
-          GroupChangedValues().constructViewToFieldsChangedValues(
-              fieldsChangedValues, v);
         } else if (k == Group.membersField) {
           fieldsChangedValues.putIfAbsent(
               '${Group.className}.${k}', () =>
@@ -323,13 +315,12 @@ class GroupChangedValues extends BaseChangedValues {
         }
       }
     });
-    return fieldsChangedValues;
   }
 }
 
 class GroupTypeChangedValues extends BaseChangedValues {
   @override
-  Map<String, Map<dynamic, dynamic>> constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
+  void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
     changedValues?.forEach((k, v) {
      // if (k != Group.idField && k != Group.versionField) {
       if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
@@ -351,7 +342,7 @@ class GroupTypeChangedValues extends BaseChangedValues {
 
 class ObjectiveChangedValues extends BaseChangedValues {
   @override
-  Map<String, Map<dynamic, dynamic>> constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
+  void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
 
     changedValues?.forEach((k, v) {
       if (k != Objective.idField && k != Objective.versionField) {

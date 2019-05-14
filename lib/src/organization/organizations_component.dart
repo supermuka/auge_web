@@ -66,7 +66,6 @@ class OrganizationsComponent extends Object implements OnActivate, OnDestroy  {
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
   }
 
-
   void onActivate(RouterState previous, RouterState current) async {
 
     if (_authService.selectedOrganization == null || _authService.authenticatedUser == null) {

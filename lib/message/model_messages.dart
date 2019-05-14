@@ -3,8 +3,11 @@ import 'package:intl/intl.dart';
 import 'package:auge_server/model/general/user.dart';
 import 'package:auge_server/model/general/user_profile_organization.dart';
 import 'package:auge_server/model/general/group.dart';
+import 'package:auge_server/model/general/organization.dart';
 import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/objective/measure.dart';
+import 'package:auge_server/model/initiative/initiative.dart';
+import 'package:auge_server/model/initiative/work_item.dart';
 
 /// Specific messages and label for [User] class field
 class CommonFieldAndValuesMsg {
@@ -58,6 +61,7 @@ class FieldMsg {
       '${UserProfile.className}.${UserProfile.idiomLocaleField}':'Idioma',
       //USERPROFILEORGANIZATION
       '${UserProfileOrganization.className}.${UserProfileOrganization.authorizationRoleField}':'Authorization',
+
       //GROUP
       '${Group.className}.${Group.nameField}':'Name',
       '${Group.className}.${Group.activeField}':'Active',
@@ -82,6 +86,24 @@ class FieldMsg {
       '${Measure.className}.${Measure.decimalsNumberField}':'Decimals Number',
       '${Measure.className}.${Measure.measureUnitField}':'Unit',
       '${Measure.className}.${Measure.metricField}':'Metric',
+      //ORGANIZATION
+      '${Organization.className}.${Organization.nameField}':'Name',
+      '${Organization.className}.${Organization.codeField}':'EIN',
+      //INITIATIVE
+      '${Initiative.className}.${Initiative.nameField}':'Name',
+      '${Initiative.className}.${Initiative.descriptionField}':'Description',
+      '${Initiative.className}.${Initiative.groupField}':'Group',
+      '${Initiative.className}.${Initiative.leaderField}':'Leader',
+      '${Initiative.className}.${Initiative.stagesField}':'Stage',
+      '${Initiative.className}.${Initiative.objectiveField}':'Objective',
+      //WORK ITEMS
+      '${WorkItem.className}.${WorkItem.nameField}':'Name',
+      '${WorkItem.className}.${WorkItem.descriptionField}':'Description',
+      '${WorkItem.className}.${WorkItem.dueDateField}':'Due Date',
+      '${WorkItem.className}.${WorkItem.completedField}':'Completed',
+      '${WorkItem.className}.${WorkItem.stageField}':'Stage',
+      '${WorkItem.className}.${WorkItem.assignedToField}':'Assigned To',
+      '${WorkItem.className}.${WorkItem.checkItemsField}':'Check Items',
       'other': 'Not Defined'})}",
     name: "FieldLabel",
     args: [classAndFieldName],

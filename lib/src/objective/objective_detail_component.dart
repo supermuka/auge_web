@@ -26,7 +26,9 @@ import 'package:angular_components/material_checkbox/material_checkbox.dart';
 import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/general/user.dart';
 import 'package:auge_server/model/general/group.dart';
+
 import 'package:auge_web/message/messages.dart';
+import 'package:auge_web/message/model_messages.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
 //import 'package:auge_web/src/auth/auth_service.dart';
@@ -65,7 +67,7 @@ class ObjectiveDetailComponent extends Object implements OnInit {
   final GroupService _groupService;
 
   @Input()
-  Objective selectedObjective;
+  String selectedObjectiveId;
 
   final _closedController = new StreamController<void>.broadcast(sync: true);
 
@@ -115,32 +117,29 @@ class ObjectiveDetailComponent extends Object implements OnInit {
 
   // Define messages and labels
   static final String requiredValueMsg = CommonMsg.requiredValueMsg();
+  static final String closeButtonLabel = CommonMsg.buttonLabel('Close');
+  static final String saveButtonLabel = CommonMsg.buttonLabel('Save');
 
   static final String addObjectiveLabel =  ObjectiveMsg.label('Add Objective');
   static final String editObjectiveLabel =  ObjectiveMsg.label('Edit Objective');
-  static final String nameLabel =  ObjectiveMsg.label('Name');
-  static final String descriptionLabel =  ObjectiveMsg.label('Description');
-  static final String groupLabel =  ObjectiveMsg.label('Group');
   static final String noMatchLabel =  ObjectiveMsg.label('No Match');
-  static final String leaderLabel =  ObjectiveMsg.label('Leader');
-  static final String stageLabel =  ObjectiveMsg.label('Stage');
-  static final String objectiveLabel =  ObjectiveMsg.label('Objective');
 
-  static final String startDateLabel =  ObjectiveMsg.label('Start Date');
-  static final String endDateLabel =  ObjectiveMsg.label('End Date');
-  static final String alignedToLabel =  ObjectiveMsg.label('Aligned To');
-  static final String archivedLabel =  ObjectiveMsg.label('Archived');
-
-  static final String saveButtonLabel = CommonMsg.buttonLabel('Save');
-  static final String closeButtonLabel = CommonMsg.buttonLabel('Close');
+  static final String nameLabel =  FieldMsg.label('${Objective.className}.${Objective.nameField}');
+  static final String descriptionLabel =  FieldMsg.label('${Objective.className}.${Objective.descriptionField}');
+  static final String groupLabel =  FieldMsg.label('${Objective.className}.${Objective.groupField}');
+  static final String leaderLabel =  FieldMsg.label('${Objective.className}.${Objective.leaderField}');
+  static final String startDateLabel =  FieldMsg.label('${Objective.className}.${Objective.startDateField}');
+  static final String endDateLabel =  FieldMsg.label('${Objective.className}.${Objective.endDateField}');
+  static final String alignedToLabel =  FieldMsg.label('${Objective.className}.${Objective.alignedToField}');
+  static final String archivedLabel =  FieldMsg.label('${Objective.className}.${Objective.archivedField}');
 
   @override
   void ngOnInit() async {
 
-    if (selectedObjective != null) {
+    if (selectedObjectiveId != null) {
       // Clone objective
      // objective = selectedObjective.clone();
-       objective = await _objectiveService.getObjectiveById(selectedObjective.id);
+       objective = await _objectiveService.getObjectiveById(selectedObjectiveId);
       //objective = selectedObjective.clone();
 
     } else {

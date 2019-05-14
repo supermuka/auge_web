@@ -40,13 +40,13 @@ class OrganizationService {
   /// Save (create or update)an [Organization]
   void saveOrganization(Organization organization) async {
 
-    organization_pbgrpc.OrganizationRequest organizationRequest = organization_pbgrpc.OrganizationRequest()..organization = organization.writeToProtoBuf()..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
+    organization_pbgrpc.OrganizationRequest organizationRequest = organization_pbgrpc.OrganizationRequest()
+      ..organization = organization.writeToProtoBuf()
+      ..authenticatedOrganizationId = _authService.selectedOrganization.id
+      ..authenticatedUserId = _authService.authenticatedUser.id;
 
     try {
       if (organization.id == null) {
-
-      //  organization = await _augeApiService.augeApi.createOrganization(
-        //    organization);
 
         common_pbgrpc.IdResponse idResponse= await _organizationServiceClient
             .createOrganization(organizationRequest);
@@ -64,10 +64,14 @@ class OrganizationService {
   /// Delete an [Organization]
   void deleteOrganization(Organization organization) async {
 
-    organization_pbgrpc.OrganizationRequest organizationRequest = organization_pbgrpc.OrganizationRequest()..organization = organization.writeToProtoBuf()..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
+    organization_pbgrpc.OrganizationDeleteRequest organizationDeleteRequest = organization_pbgrpc.OrganizationDeleteRequest()
+      ..organizationId = organization.id
+      ..organizationVersion = organization.version
+      ..authenticatedOrganizationId = _authService.selectedOrganization.id
+      ..authenticatedUserId = _authService.authenticatedUser.id;
 
     try {
-      await _organizationServiceClient.deleteOrganization(organizationRequest);
+      await _organizationServiceClient.deleteOrganization(organizationDeleteRequest);
     } catch (e) {
       print('${e.runtimeType}, ${e}');
       rethrow;

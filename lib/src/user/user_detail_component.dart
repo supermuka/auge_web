@@ -58,7 +58,7 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
 
   /// Entry user to edit. If new, this should be null
   @Input()
-  UserProfileOrganization selectedUserProfileOrganization;
+  String selectedUserProfileOrganizationId;
 
   final _closedController = new StreamController<void>.broadcast(sync: true);
 
@@ -123,9 +123,9 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
     //created as new here, even if it is later replaced by a query, because the query may take a while and the Angular will continue to process, causing an exception if the object does not exist
     userProfileOrganization = UserProfileOrganization();
 
-    if (selectedUserProfileOrganization != null) {
+    if (selectedUserProfileOrganizationId != null) {
       try {
-        userProfileOrganization = await _userService.getUserProfileOrganization(selectedUserProfileOrganization.id, withProfile: true);
+        userProfileOrganization = await _userService.getUserProfileOrganization(selectedUserProfileOrganizationId, withProfile: true);
 
 
       } catch (e) {
@@ -150,7 +150,7 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
     });
   }
 
-  void saveUser() async {
+  void saveUserProfileOrganization() async {
     try {
 
       await _userService.saveUserProfileOrganization(userProfileOrganization);

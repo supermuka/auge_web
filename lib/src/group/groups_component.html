@@ -44,7 +44,7 @@
     <material-fab class="material-fab-add" raised (trigger)="selectGroup(null);viewDetail(true)">
         <material-icon icon="add"></material-icon>
     </material-fab>
-    <auge-group-detail *ngIf="detailVisible == true" [selectedGroup]="selectedGroup" (saved)="changeListItemWithDetail($event)" (closed)="viewDetail(false)">
+    <auge-group-detail *ngIf="detailVisible == true" [selectedGroupId]="selectedGroup.id" (saved)="changeListItemWithDetail($event)" (closed)="viewDetail(false)">
     </auge-group-detail>
 </div>
 

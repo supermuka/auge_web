@@ -65,7 +65,7 @@
         <div class="error" [class.expanded]="error != null">{{error}}</div>
     </div>
     <div class="main">
-        <auge-user-detail *ngIf="userDetailVisible == true" [selectedUser]="authenticatedUser" (saved)="changeUserDetail($event)" (closed)="userDetailVisible = false">
+        <auge-user-detail *ngIf="userDetailVisible == true" [selectedUserProfileOrganizationId]="authenticatedUser.id" (saved)="changeUserDetail($event)" (closed)="userDetailVisible = false">
         </auge-user-detail>
         <router-outlet [routes]="routes"></router-outlet>
     </div>

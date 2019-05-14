@@ -44,6 +44,8 @@ import 'package:auge_server/model/initiative/work_item.dart';
 import 'package:auge_server/model/general/user.dart';
 
 import 'package:auge_web/message/messages.dart';
+import 'package:auge_web/message/model_messages.dart';
+
 import 'package:auge_web/services/common_service.dart' as common_service;
 //import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/work_item/work_item_service.dart';
@@ -94,7 +96,7 @@ class WorkItemDetailComponent implements OnInit  {
   Initiative initiative;
 
   @Input()
-  WorkItem selectedWorkItem;
+  String selectedWorkItemId;
 
   final _closeController = new StreamController<void>.broadcast(sync: true);
 
@@ -144,27 +146,26 @@ class WorkItemDetailComponent implements OnInit  {
 
   // Define messages and labels
   static final String requiredValueMsg =  CommonMsg.requiredValueMsg();
-  static final String addWorkItemLabel =  WorkItemMsg.label('Add Work Item');
-  static final String editWorkItemLabel =  WorkItemMsg.label('Edit Work Item');
-
-  static final String nameLabel =  WorkItemMsg.label('Name');
-  static final String descriptionLabel =  WorkItemMsg.label('Description');
-  static final String dueDateLabel =  WorkItemMsg.label('Due Date');
-  static final String completedLabel =  WorkItemMsg.label('Completed');
-  static final String stageLabel =  WorkItemMsg.label('Stage');
-  static final String noMatchLabel =  WorkItemMsg.label('No Match');
-  static final String assignedToLabel =  WorkItemMsg.label('Assigned To');
-  static final String checkItemLabel =  WorkItemMsg.label('Check Item');
-
   static final String saveButtonLabel = CommonMsg.buttonLabel('Save');
   static final String closeButtonLabel = CommonMsg.buttonLabel('Close');
+  static final String addWorkItemLabel =  WorkItemMsg.label('Add Work Item');
+  static final String editWorkItemLabel =  WorkItemMsg.label('Edit Work Item');
+  static final String noMatchLabel =  WorkItemMsg.label('No Match');
+
+  static final String nameLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.nameField}');
+  static final String descriptionLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.descriptionField}');
+  static final String dueDateLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.dueDateField}');
+  static final String completedLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.completedField}');
+  static final String stageLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.stageField}');
+  static final String assignedToLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.assignedToField}');
+  static final String checkItemLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.checkItemsField}');
 
   @override
   void ngOnInit() async {
 
     // Clone the object to have an intermediate
-    if (selectedWorkItem != null) {
-      //TODO workItem = selectedWorkItem.clone();
+    if (selectedWorkItemId != null) {
+      workItem = await _workItemService.getWorkItem(selectedWorkItemId);
     }
 
     //List<User> users = await _userService.getUsers(_authService.selectedOrganization?.id, withProfile: true);

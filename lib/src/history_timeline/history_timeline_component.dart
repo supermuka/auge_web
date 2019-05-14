@@ -42,7 +42,7 @@ export 'package:auge_web/src/history_timeline/history_timeline_service.dart';
       'history_timeline_component.css'
     ])
 
-class HistoryTimelineComponent /* extends Object */ implements OnInit  {
+class HistoryTimelineComponent /* extends Object implements OnInit  */ {
 
   final HistoryTimelineService _historyTimelineService;
 
@@ -51,7 +51,6 @@ class HistoryTimelineComponent /* extends Object */ implements OnInit  {
   HistoryTimelineComponent(this._historyTimelineService) {
     initializeDateFormatting(Intl.defaultLocale , null);
   }
-
 
   static final String timelineLabel = TimelineItemdMsg.label('Timeline');
   static final String theLabel = TimelineItemdMsg.label('the');
@@ -63,10 +62,6 @@ class HistoryTimelineComponent /* extends Object */ implements OnInit  {
   static final String minutesAgoLabel =  TimelineItemdMsg.label('minutes ago');
   static final String secondAgoLabel =  TimelineItemdMsg.label('second ago');
   static final String secondsAgoLabel =  TimelineItemdMsg.label('seconds ago');
-
-  void ngOnInit() async {
-
-  }
 
   get history => _historyTimelineService.history;
 

@@ -72,7 +72,10 @@ class ObjectiveService {
   /// Save (create or update) an [Objective]
   void saveObjective(Objective objective) async {
 
-    objective_pbgrpc.ObjectiveRequest objectiveRequest = (objective_pbgrpc.ObjectiveRequest()..objective = objective.writeToProtoBuf()..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf());
+    objective_pbgrpc.ObjectiveRequest objectiveRequest = (objective_pbgrpc.ObjectiveRequest()
+      ..objective = objective.writeToProtoBuf()
+      ..authenticatedOrganizationId = _authService.selectedOrganization.id
+      ..authenticatedUserId = _authService.authenticatedUser.id);
 
     try {
       if (objective.id == null) {
@@ -97,7 +100,11 @@ class ObjectiveService {
   /// Delete an [Objective]
   void deleteObjective(Objective objective) async {
     try {
-      await _objectiveServiceClient.deleteObjective(objective_pbgrpc.ObjectiveRequest()..objective = objective.writeToProtoBuf()..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf());
+      await _objectiveServiceClient.deleteObjective(objective_pbgrpc.ObjectiveDeleteRequest()
+        ..objectiveId = objective.id
+        ..objectiveVersion = objective.version
+        ..authenticatedUserId = _authService.authenticatedUser.id
+        ..authenticatedOrganizationId = _authService.selectedOrganization.id);
     } catch (e) {
       rethrow;
     }

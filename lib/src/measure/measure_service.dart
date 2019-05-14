@@ -124,7 +124,8 @@ class MeasureService {
       measure_pbgrpc.MeasureRequest measureRequest = measure_pbgrpc.MeasureRequest()
         ..measure = measure.writeToProtoBuf()
         ..objectiveId = objectiveId
-        ..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
+        ..authenticatedOrganizationId = _authService.selectedOrganization.id
+        ..authenticatedUserId = _authService.authenticatedUser.id;
 
       if (measure.id == null) {
 
@@ -148,7 +149,8 @@ class MeasureService {
     measure_pbgrpc.MeasureProgressRequest measureProgressRequest = measure_pbgrpc.MeasureProgressRequest()
       ..measureProgress = measureProgress.writeToProtoBuf()
       ..measureId = measureId
-      ..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
+      ..authenticatedOrganizationId = _authService.selectedOrganization.id
+      ..authenticatedUserId = _authService.authenticatedUser.id;
 
     try {
 
@@ -162,6 +164,8 @@ class MeasureService {
 
        await _measureServiceClient
             .updateMeasureProgress(measureProgressRequest);
+
+       return measureProgressRequest.measureProgress.id;
       }
 
     } catch (e) {
@@ -175,7 +179,8 @@ class MeasureService {
     measure_pbgrpc.MeasureProgressRequest measureProgressRequest = measure_pbgrpc.MeasureProgressRequest()
       ..measureProgress = measureProgress.writeToProtoBuf()
       ..measureId = measureId
-      ..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
+      ..authenticatedOrganizationId = _authService.selectedOrganization.id
+      ..authenticatedUserId = _authService.authenticatedUser.id;
 
     try {
        await _measureServiceClient
@@ -187,15 +192,15 @@ class MeasureService {
   }
 
   /// Delete a [Measure]
-  void deleteMeasure(String objectiveId, Measure measure) async {
+  void deleteMeasure(Measure measure) async {
 
-    measure_pbgrpc.MeasureRequest measureRequest = measure_pbgrpc.MeasureRequest()
-      ..measure = measure.writeToProtoBuf()
-      ..objectiveId = objectiveId
-      ..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
-
+    measure_pbgrpc.MeasureDeleteRequest measureDeleteRequest = measure_pbgrpc.MeasureDeleteRequest()
+      ..measureId = measure.id
+      ..measureVersion = measure.version
+      ..authenticatedOrganizationId = _authService.selectedOrganization.id
+      ..authenticatedUserId = _authService.authenticatedUser.id;
     try {
-      await _measureServiceClient.deleteMeasure(measureRequest);
+      await _measureServiceClient.deleteMeasure(measureDeleteRequest);
     } catch (e) {
       rethrow;
     }

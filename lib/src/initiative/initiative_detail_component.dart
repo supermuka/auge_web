@@ -34,6 +34,8 @@ import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/general/group.dart';
 
 import 'package:auge_web/message/messages.dart';
+import 'package:auge_web/message/model_messages.dart';
+
 import 'package:auge_web/services/common_service.dart' as common_service;
 //import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
@@ -73,7 +75,7 @@ import 'initiative_detail_component.template.dart' as initiative_detail_componen
 class InitiativeDetailComponent implements OnInit {
   /// Entry to edit data. If new, this should be null
   @Input()
-  Initiative selectedInitiative;
+  String selectedInitiativeId;
 
   final _closeController = new StreamController<void>.broadcast(sync: true);
 
@@ -128,29 +130,30 @@ class InitiativeDetailComponent implements OnInit {
   }
 
   // Define messages and labels
+  static final String saveButtonLabel = CommonMsg.buttonLabel('Save');
+  static final String closeButtonLabel = CommonMsg.buttonLabel('Close');
   static final String requiredValueMsg = CommonMsg.requiredValueMsg();
 
   static final String addInitiativeLabel =  InitiativeMsg.label('Add Initiative');
   static final String editInitiativeLabel =  InitiativeMsg.label('Edit Initiative');
-  static final String nameLabel =  InitiativeMsg.label('Name');
-  static final String descriptionLabel =  InitiativeMsg.label('Description');
-  static final String groupLabel =  InitiativeMsg.label('Group');
   static final String noMatchLabel =  InitiativeMsg.label('No Match');
-  static final String leaderLabel =  InitiativeMsg.label('Leader');
-  static final String stageLabel =  InitiativeMsg.label('Stage');
-  static final String objectiveLabel =  InitiativeMsg.label('Objective');
   static final String selectLabel =  InitiativeMsg.label('Select');
 
-  static final String saveButtonLabel = CommonMsg.buttonLabel('Save');
-  static final String closeButtonLabel = CommonMsg.buttonLabel('Close');
+  static final String nameLabel =  FieldMsg.label('Name');
+  static final String descriptionLabel =  FieldMsg.label('Description');
+  static final String groupLabel =  FieldMsg.label('Group');
+  static final String leaderLabel =  FieldMsg.label('Leader');
+  static final String stageLabel =  FieldMsg.label('Stage');
+  static final String objectiveLabel =  FieldMsg.label('Objective');
+
 
   @override
   void ngOnInit() async {
-    if (selectedInitiative != null) {
+    if (selectedInitiativeId != null) {
       // Clone objective
       // initiative = selectedInitiative.clone();
 
-      initiative = await _initiativeService.getInitiative(selectedInitiative.id);
+      initiative = await _initiativeService.getInitiative(selectedInitiativeId);
 
     } else {
       initiative = Initiative();

@@ -63,7 +63,7 @@ import 'group_detail_component.template.dart' as group_detail_component;
 class GroupDetailComponent extends Object implements OnInit {
   /// Entry to edit data. If new, this should be null
   @Input()
-  Group selectedGroup;
+  String selectedGroupId;
 
   final _closedController = new StreamController<void>.broadcast(sync: true);
 
@@ -130,10 +130,10 @@ class GroupDetailComponent extends Object implements OnInit {
   void ngOnInit() async {
     //created as new here, even if it is later replaced by a query, because the query may take a while and the Angular will continue to process, causing an exception if the object does not exist
     group = Group();
-    if (selectedGroup != null) {
+    if (selectedGroupId != null) {
       // Clone objective
       // group = selectedGroup.clone();
-      group = await _groupService.getGroup(selectedGroup.id);
+      group = await _groupService.getGroup(selectedGroupId);
     } else {
       group.organization = _groupService.authService.selectedOrganization;
       group.active = true;

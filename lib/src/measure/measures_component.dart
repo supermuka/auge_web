@@ -88,7 +88,7 @@ class MeasuresComponent extends Object {
   void delete() async {
     try {
 
-      await _measureService.deleteMeasure(objective.id, selectedMeasure);
+      await _measureService.deleteMeasure(selectedMeasure);
       objective.measures.remove(selectedMeasure);
 
     } catch (e) {

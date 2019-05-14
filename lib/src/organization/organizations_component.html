@@ -23,6 +23,6 @@
            </material-expansionpanel>
         </div>
     </material-expansionpanel-set>
-    <auge-organization-detail *ngIf="detailVisible == true" [selectedOrganization]="selectedOrganization" (saved)="changeListItemDetail($event)" (closed)="viewDetail(false)">
+    <auge-organization-detail *ngIf="detailVisible == true" [selectedOrganizationId]="selectedOrganization.id" (saved)="changeListItemDetail($event)" (closed)="viewDetail(false)">
     </auge-organization-detail>
 </div>

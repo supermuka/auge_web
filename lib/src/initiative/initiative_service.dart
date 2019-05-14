@@ -67,7 +67,11 @@ class InitiativeService {
   void saveInitiative(Initiative initiative) async {
     try {
 
-      initiative_pbgrpc.InitiativeRequest initiativeRequest = initiative_pbgrpc.InitiativeRequest()..initiative = initiative.writeToProtoBuf()..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
+      initiative_pbgrpc.InitiativeRequest initiativeRequest = initiative_pbgrpc.InitiativeRequest()
+        ..initiative = initiative.writeToProtoBuf()
+        ..authenticatedUserId = _authService.authenticatedUser.id
+        ..authenticatedOrganizationId = _authService.selectedOrganization.id;
+
 
       if (initiative.id == null) {
         common_pb.IdResponse idResponse = await _initiativeServiceClient
@@ -88,9 +92,13 @@ class InitiativeService {
   void deleteInitiative(Initiative initiative) async {
     try {
 
-      initiative_pbgrpc.InitiativeRequest initiativeRequest = initiative_pbgrpc.InitiativeRequest()..initiative = initiative.writeToProtoBuf()..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
+      initiative_pbgrpc.InitiativeDeleteRequest initiativeDeleteRequest = initiative_pbgrpc.InitiativeDeleteRequest()
+        ..initiativeId = initiative.id
+        ..initiativeVersion = initiative.version
+        ..authenticatedOrganizationId = _authService.selectedOrganization.id
+        ..authenticatedUserId = _authService.authenticatedUser.id;
 
-      await _initiativeServiceClient.deleteInitiative(initiativeRequest);
+      await _initiativeServiceClient.deleteInitiative(initiativeDeleteRequest);
     } catch (e) {
       rethrow;
     }

@@ -115,7 +115,7 @@ class GroupsComponent extends Object /* with CanReuse */ implements OnActivate, 
 
   void delete() async {
     try {
-      await _groupService.deleteGroup(selectedGroup, );
+      await _groupService.deleteGroup(selectedGroup);
       groups.remove(selectedGroup);
       _historyTimelineService.refreshHistory(SystemModule.groups.index);
     } catch (e) {

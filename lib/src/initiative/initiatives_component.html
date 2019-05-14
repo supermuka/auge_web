@@ -46,6 +46,6 @@
             </material-expansionpanel>
         </div>
     </material-expansionpanel-set>
-    <auge-initiative-detail *ngIf="detailVisible == true" [selectedInitiative]="selectedInitiative" (save)="changeListItem($event)" (close)="viewDetail(false)">
+    <auge-initiative-detail *ngIf="detailVisible == true" [selectedInitiativeId]="selectedInitiative.id" (save)="changeListItem($event)" (close)="viewDetail(false)">
     </auge-initiative-detail>
 </div>

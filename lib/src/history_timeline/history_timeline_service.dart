@@ -5,6 +5,7 @@ import 'package:angular/core.dart';
 import 'package:auge_server/model/general/history_item.dart';
 import 'package:auge_server/shared/common_utils.dart';
 
+import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/services/auge_api_service.dart';
 
 import 'package:auge_server/src/protos/generated/general/common.pbgrpc.dart' as common_pbgrpc;
@@ -13,7 +14,7 @@ import 'package:auge_server/src/protos/generated/general/history_item.pbgrpc.dar
 @Injectable()
 class HistoryTimelineService {
 
-  //final AuthService _authService;
+  final AuthService _authService;
   final AugeApiService _augeApiService;
 
   common_pbgrpc.CommonServiceClient _commonServiceClient;
@@ -24,7 +25,7 @@ class HistoryTimelineService {
 
   DateTime currentDateTime;
 
-  HistoryTimelineService(this._augeApiService) {
+  HistoryTimelineService(this._authService, this._augeApiService) {
     _commonServiceClient = common_pbgrpc.CommonServiceClient(_augeApiService.channel);
     _historyItemServiceClient = history_item_pbgrpc.HistoryItemServiceClient(_augeApiService.channel);
   }
@@ -41,7 +42,7 @@ class HistoryTimelineService {
     //history_item_pbgrpc.HistoryResponse historyResponse = await _historyItemServiceClient.getHistory(history_item_pbgrpc.HistoryItemGetRequest()..systemModuleIndex = SystemModule.objectives.index );
     currentDateTime = await getDateTime();
 
-    return ( await _historyItemServiceClient.getHistory(history_item_pbgrpc.HistoryItemGetRequest()..systemModuleIndex = systemModuleIndex)).history.map((m) =>
+    return ( await _historyItemServiceClient.getHistory(history_item_pbgrpc.HistoryItemGetRequest()..organizationId = _authService.selectedOrganization.id ..systemModuleIndex = systemModuleIndex)).history.map((m) =>
     HistoryItem()
       ..readFromProtoBuf(m)).toList();
 

@@ -64,12 +64,13 @@ class GroupService {
   Future deleteGroup(Group group) async {
     try {
 
-      group_pbgrpc.GroupRequest groupRequest = group_pbgrpc.GroupRequest()
-        ..group = group.writeToProtoBuf()
-        ..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
+      group_pbgrpc.GroupDeleteRequest groupDeleteRequest = group_pbgrpc.GroupDeleteRequest()
+        ..groupId = group.id
+        ..groupVersion = group.version
+        ..authenticatedOrganizationId = _authService.selectedOrganization.id
+        ..authenticatedUserId = _authService.authenticatedUser.id;
 
-
-      await _groupServiceClient.deleteGroup(groupRequest);
+      await _groupServiceClient.deleteGroup(groupDeleteRequest);
     } catch (e) {
       rethrow;
     }
@@ -78,7 +79,13 @@ class GroupService {
   /// Save (create or update) an [Group]
   void saveGroup(Group group) async {
     try {
-      group_pbgrpc.GroupRequest groupRequest = group_pbgrpc.GroupRequest()..group = group.writeToProtoBuf()..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
+      group_pbgrpc.GroupRequest groupRequest = group_pbgrpc.GroupRequest()
+        ..group = group.writeToProtoBuf()
+        ..authenticatedOrganizationId = _authService.selectedOrganization.id
+        ..authenticatedUserId = _authService.authenticatedUser.id;
+
+
+      //= group.writeToProtoBuf()..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
 
       if (group.id == null) {
 

@@ -89,7 +89,7 @@ class WorkItemsListComponent extends Object /* with CanReuse implements OnActiva
 
   void delete() async {
     try {
-      await _workItemService.deleteWorkItem(initiative.id, selectedWorkItem);
+      await _workItemService.deleteWorkItem(selectedWorkItem);
       initiative.workItems.remove(selectedWorkItem);
     } catch (e) {
       _appLayoutService.error = e.toString();

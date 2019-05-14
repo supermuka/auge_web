@@ -75,12 +75,13 @@ class UserService {
     }
   }
 
+  /*
   /// Save (create or update) an [User]
   void saveUser(User user) async {
 
     user_pbgrpc.UserRequest userRequest = user_pbgrpc.UserRequest()
       ..user = user.writeToProtoBuf()
-      ..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
+      ..authenticatedUserId = _authService.authenticatedUser.id;
 
     try {
       if (user.id == null) {
@@ -95,12 +96,16 @@ class UserService {
       rethrow;
     }
   }
+*/
 
   /// Save (create or update) an [UserProfileOrganization]
   void saveUserProfileOrganization(UserProfileOrganization userProfileOrganization) async {
 
     user_profile_organization_pbgrpc.UserProfileOrganizationRequest userProfileOrganizationRequest = (user_profile_organization_pbgrpc.UserProfileOrganizationRequest()
-      ..userProfileOrganization = userProfileOrganization.writeToProtoBuf()..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf()..withUserProfile = true);
+      ..userProfileOrganization = userProfileOrganization.writeToProtoBuf()
+      ..authenticatedOrganizationId = _authService.selectedOrganization.id
+      ..authenticatedUserId = _authService.authenticatedUser.id
+      ..withUserProfile = true);
     try {
       if (userProfileOrganization.id == null) {
         common_pbgrpc.IdResponse idResponse = await _userProfileOrganizationServiceClient
@@ -120,12 +125,15 @@ class UserService {
   /// Delete (create or update) an [UserProfileOrganization]
   void deleteUserProfileOrganization(UserProfileOrganization userProfileOrganization) async {
 
-    user_profile_organization_pbgrpc.UserProfileOrganizationRequest userProfileOrganizationRequest = user_profile_organization_pbgrpc.UserProfileOrganizationRequest()
-      ..userProfileOrganization = userProfileOrganization.writeToProtoBuf()..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
+    user_profile_organization_pbgrpc.UserProfileOrganizationDeleteRequest userProfileOrganizationDeleteRequest = user_profile_organization_pbgrpc.UserProfileOrganizationDeleteRequest()
+      ..userProfileOrganizationId = userProfileOrganization.id
+      ..userProfileOrganizationVersion = userProfileOrganization.version
+      ..authenticatedOrganizationId = _authService.selectedOrganization.id
+      ..authenticatedUserId = _authService.authenticatedUser.id;
     try {
 
         await _userProfileOrganizationServiceClient
-            .deleteUserProfileOrganization(userProfileOrganizationRequest);
+            .deleteUserProfileOrganization(userProfileOrganizationDeleteRequest);
 
     } catch (e) {
       print(e);
@@ -134,6 +142,7 @@ class UserService {
   }
 
   /// Soft Delete an [User]
+ /*
   void deleteUser(User user) async {
 
     user_pbgrpc.UserRequest userRequest = user_pbgrpc.UserRequest()..user = user.writeToProtoBuf()..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
@@ -144,6 +153,8 @@ class UserService {
       rethrow;
     }
   }
+  */
+
 
 
 }
