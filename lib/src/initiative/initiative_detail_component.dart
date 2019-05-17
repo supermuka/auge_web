@@ -139,13 +139,12 @@ class InitiativeDetailComponent implements OnInit {
   static final String noMatchLabel =  InitiativeMsg.label('No Match');
   static final String selectLabel =  InitiativeMsg.label('Select');
 
-  static final String nameLabel =  FieldMsg.label('Name');
-  static final String descriptionLabel =  FieldMsg.label('Description');
-  static final String groupLabel =  FieldMsg.label('Group');
-  static final String leaderLabel =  FieldMsg.label('Leader');
-  static final String stageLabel =  FieldMsg.label('Stage');
-  static final String objectiveLabel =  FieldMsg.label('Objective');
-
+  static final String nameLabel =  FieldMsg.label('${Initiative.className}.${Initiative.nameField}');
+  static final String descriptionLabel =  FieldMsg.label('${Initiative.className}.${Initiative.descriptionField}');
+  static final String groupLabel =  FieldMsg.label('${Initiative.className}.${Initiative.groupField}');
+  static final String leaderLabel =  FieldMsg.label('${Initiative.className}.${Initiative.leaderField}');
+  static final String objectiveLabel =  FieldMsg.label('${Initiative.className}.${Initiative.objectiveField}');
+  static final String stageLabel =  FieldMsg.label('${Stage.className}.${Stage.nameField}');
 
   @override
   void ngOnInit() async {
@@ -165,7 +164,7 @@ class InitiativeDetailComponent implements OnInit {
       _states =  await _initiativeService.getStates();
       _users = await _userService.getUsers(_initiativeService.authService.selectedOrganization.id, withProfile: true);
       _objectives = await _objectiveService.getObjectives(_initiativeService.authService.selectedOrganization.id, withMeasures: false);
-      _groups = await _groupService.getGroups(_initiativeService.authService.selectedOrganization.selectedOrganization.id);
+      _groups = await _groupService.getGroups(_initiativeService.authService.selectedOrganization.id);
 
     } catch (e) {
       dialogError = e.toString();

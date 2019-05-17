@@ -77,6 +77,34 @@ material-input {
 .label-text {
   /* transform: translateY(-100%) translateY(-$mat-grid); */
   font-size: $mat-font-size-caption;
+  margin-top: -4px;
+  margin-bottom: -4px;
+  padding-top: 0px;
+  padding-bottom: -4px;
+}
+
+.input-container  {
+   display: inline-block;
+   padding-top: 0px;
+   padding-bottom: 0px;
+
+   & label {
+      display: block;
+      font-size: $mat-font-size-caption;
+      color: $mat-light-transparent-black;
+      margin-top: -4px;
+   }
+
+   & material-datepicker {
+      display: block;
+      margin-top: 4px;
+
+   }
+
+  & material-dropdown-select {
+      display: block;
+      margin-top: 4px;
+  }
 }
 
 .material-shadow-box-list {

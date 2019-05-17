@@ -106,6 +106,8 @@ class HistoryItemTimelineDetailComponent /* extends Object */ implements OnInit 
       viewToChangedValues = GroupChangedValues().getViewToChangedValues(changedValues);
     } else if (objectClassName == Objective.className) {
       viewToChangedValues = ObjectiveChangedValues().getViewToChangedValues(changedValues);
+    } else {
+      viewToChangedValues = GenericChangedValues().getViewToChangedValues(changedValues);
     }
     return viewToChangedValues;
   }
@@ -122,6 +124,34 @@ class BaseChangedValues {
   }
 
   void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {}
+}
+
+/// GENERIC
+class GenericChangedValues extends BaseChangedValues {
+
+  @override
+  void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
+    changedValues?.forEach((k, v) {
+      if (k != User.idField && k != User.versionField) {
+        if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
+          fieldsChangedValues.putIfAbsent('${User.className}.${k}', () =>
+          {
+            _typeToViewKey: _typeToViewText,
+            _fieldDescriptionKey: FieldMsg.label('${User.className}.${k}')});
+
+          if (v.containsKey(_pKey)) {
+            fieldsChangedValues['${User.className}.${k}'][_pKey] =
+            v[_pKey];
+          }
+
+          if (v.containsKey(_cKey)) {
+            fieldsChangedValues['${User.className}.${k}'][_cKey] =
+            v[_cKey];
+          }
+        }
+      }
+    });
+  }
 }
 
 /// USERS

@@ -1,51 +1,73 @@
 <div class="container-list">
-    <material-fab raised (trigger)="selectInitiative(null);viewDetail(true)">
-        <material-icon icon="add"></material-icon>
-    </material-fab>
-    <br/>
     <!-- filter called by search component -->
     <div *ngIf="visibleFilter == true">
         <auge-initiatives-filter [initiativesFilterParam]="initiativesFilterParam" (close)="visibleFilter = false"></auge-initiatives-filter>
     </div>
-    <material-expansionpanel-set>
-        <div *ngFor="let iInitiative of initiatives;let i = index">
-            <h4 *ngIf="i == 0 || initiatives[i-1]?.group?.id != initiatives[i]?.group?.id">
-                <span class="avatar avatar-border" [style.background-color]="colorFromUuid(iInitiative?.group?.id)" [materialTooltip]="groupLabel">
-                    <span class="text-group-letter">{{firstLetter(iInitiative?.group?.name)}}</span>
-                </span>
-                <span>{{iInitiative?.group?.name}}</span>
-            </h4>
-            <material-expansionpanel
-                    class="expansionpanel-wide-{{wideControl[iInitiative]}}"
-                    [alwaysHideExpandIcon]="true"
-                    [hideExpandedHeader]="false"
-                    [showSaveCancel]="false"
-                    (expandedChange)="expandedChange(iInitiative, $event)">
-                <div name class="custom-expansionpanel-panel-specific-name-width">
-                    <span class="truncate-ellipsed-parent">
-                        <span class="truncate-ellipsed"><strong>{{iInitiative.name}}</strong></span>
-                        <!-- div class="truncate-ellipsed">{{iInitiative.description}}</div -->
-                    </span>
-                    <span class="w3-right">
-                        <span class="avatar" [style.background-image]="'url(' +  userUrlImage(iInitiative?.leader?.userProfile?.image) + ')'" [materialTooltip]="leaderLabel + ' ' + iInitiative?.leader?.name"></span>
-                    </span>
-                </div>
-                <div value>
-                    <auge-initiative-summary [initiative]="iInitiative"></auge-initiative-summary>
-                </div>
-                <div action>
-                    <material-toggle [disabled]="expandedControl[iInitiative] != null && !expandedControl[iInitiative]" [(checked)]="wideControl[iInitiative]"></material-toggle>
-                    <material-menu [menu]="menuModel" (click)="selectInitiative(iInitiative)">
-                    </material-menu>
-                </div>
-                <div>
-                    <hr>
-                    <span><strong>{{objectiveLabel}}:</strong> {{iInitiative?.objective?.name}}</span>
-                    <auge-work-items [initiative]="iInitiative"></auge-work-items>
-                </div>
-            </material-expansionpanel>
+    <div class="w3-row-padding">
+        <div class="w3-col">
+            <label>{{sortedByLabel}}</label>
+            <material-dropdown-select class="w3-margin-left"
+                                      buttonText="{{sortedBy}}"
+                                      [(selection)]="sortedBy"
+                                      [options]="objectivesSortedByOptions">
+            </material-dropdown-select>
+            <material-toggle class="w3-right" label="Timeline" (checkedChange)="timelineVisible = $event"></material-toggle>
         </div>
-    </material-expansionpanel-set>
-    <auge-initiative-detail *ngIf="detailVisible == true" [selectedInitiativeId]="selectedInitiative.id" (save)="changeListItem($event)" (close)="viewDetail(false)">
+    </div>
+    <div class="w3-row-padding">
+        <div class="w3-col" style="width:{{mainColWidth}}">
+            <material-expansionpanel-set>
+                <div *ngFor="let iInitiative of initiatives;let i = index">
+                    <material-expansionpanel
+                            class="expansionpanel-wide-{{wideControl[iInitiative]}}"
+                            [alwaysHideExpandIcon]="true"
+                            [hideExpandedHeader]="false"
+                            [showSaveCancel]="false"
+                            (expandedChange)="expandedChange(iInitiative, $event)">
+                        <div name class="custom-expansionpanel-panel-specific-name-width">
+                            <span class="truncate-ellipsed-parent">
+                                <span class="truncate-ellipsed"><strong>{{iInitiative.name}}</strong></span>
+                                <div class="truncate-ellipsed">{{iInitiative.description}}</div>
+                            </span>
+                        </div>
+                        <div class="w3-row" value>
+                            <div class="w3-col m9">
+                                <auge-initiative-summary [initiative]="iInitiative"></auge-initiative-summary>
+                            </div>
+                            <div class="w3-col m3">
+                                <div class="custom-grid w3-right">
+                                    <div class="truncate-parent">
+                                        <div *ngIf="iInitiative.group != null" class="avatar avatar-border margin-top margin-bottom" [style.background-color]="colorFromUuid(iInitiative.group?.id)" [materialTooltip]="composeTooltip(groupLabel, iInitiative.group?.name)">
+                                            <span class="text-group-letter">{{firstLetter(iInitiative.group?.name)}}</span>
+                                        </div>
+                                        <div *ngIf="iInitiative.group == null" class="avatar margin-bottom"></div>
+                                        <div *ngIf="iInitiative.leader != null" class="avatar margin-bottom margin-top" [style.background-image]="'url(' +  userUrlImage(iInitiative.leader?.userProfile.image) + ')'" [materialTooltip]="composeTooltip(leaderLabel, iInitiative.leader?.name)"></div>
+                                        <div *ngIf="iInitiative.leader == null" class="avatar margin-top"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div action>
+                            <!-- material-toggle [disabled]="expandedControl[iInitiative] != null && !expandedControl[iInitiative]" [(checked)]="wideControl[iInitiative]"></material-toggle -->
+                            <material-menu [menu]="menuModel" (click)="selectInitiative(iInitiative)">
+                            </material-menu>
+                        </div>
+                        <hr>
+                        <span *ngIf="iInitiative.objective != null"><strong>{{objectiveLabel}}:</strong> {{iInitiative.objective?.name}}</span>
+                        <div class="w3-row-padding" >
+                            <auge-work-items [initiative]="iInitiative"></auge-work-items>
+                        </div>
+                    </material-expansionpanel>
+                </div>
+            </material-expansionpanel-set>
+        </div>
+        <div *ngIf="timelineVisible == true" class="w3-col" style="width:25%">
+            <auge-history-timeline></auge-history-timeline>
+        </div>
+    </div>
+    <material-fab class="material-fab-add" raised (trigger)="selectInitiative(null);viewDetail(true)">
+        <material-icon icon="add"></material-icon>
+    </material-fab>
+    <auge-initiative-detail *ngIf="detailVisible == true" [selectedInitiativeId]="selectedInitiative?.id" (save)="changeListItem($event)" (close)="viewDetail(false)">
     </auge-initiative-detail>
 </div>

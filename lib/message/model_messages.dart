@@ -73,6 +73,7 @@ class FieldMsg {
       //OBJECTIVE
       '${Objective.className}.${Objective.nameField}':'Name',
       '${Objective.className}.${Objective.descriptionField}':'Description',
+      '${Objective.className}.${Objective.alignedToField}':'Aligned To',
       '${Objective.className}.${Objective.leaderField}':'Leader',
       '${Objective.className}.${Objective.startDateField}':'Start Date',
       '${Objective.className}.${Objective.endDateField}':'End Date',
@@ -94,7 +95,7 @@ class FieldMsg {
       '${Initiative.className}.${Initiative.descriptionField}':'Description',
       '${Initiative.className}.${Initiative.groupField}':'Group',
       '${Initiative.className}.${Initiative.leaderField}':'Leader',
-      '${Initiative.className}.${Initiative.stagesField}':'Stage',
+      '${Initiative.className}.${Initiative.stagesField}':'Stages',
       '${Initiative.className}.${Initiative.objectiveField}':'Objective',
       //WORK ITEMS
       '${WorkItem.className}.${WorkItem.nameField}':'Name',

@@ -17,17 +17,22 @@ import 'package:angular_components/material_expansionpanel/material_expansionpan
 import 'package:angular_components/material_expansionpanel/material_expansionpanel_set.dart';
 import 'package:angular_components/material_toggle/material_toggle.dart';
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
+import 'package:angular_components/material_select/material_dropdown_select.dart';
 
 import 'package:auge_server/model/initiative/initiative.dart';
+import 'package:auge_server/model/general/authorization.dart';
 
 import 'package:auge_web/message/messages.dart';
+import 'package:auge_web/message/model_messages.dart';
 //import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/initiative/initiative_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
+import 'package:auge_web/src/history_timeline/history_timeline_service.dart';
 import 'package:auge_web/src/initiative/initiatives_filter_component.dart';
 import 'package:auge_web/src/initiative/initiative_summary_component.dart';
+import 'package:auge_web/src/history_timeline/history_timeline_component.dart';
 import 'package:auge_web/src/initiative/initiative_detail_component.dart';
 import 'package:auge_web/src/work_item/work_items_component.dart';
 import 'package:auge_web/src/work_item/work_items_list_component.dart';
@@ -36,12 +41,13 @@ import 'package:auge_web/services/app_routes.dart';
 
 @Component(
     selector: 'auge-initiatives',
-    providers: const [InitiativeService, ObjectiveService],
+    providers: const [InitiativeService, ObjectiveService, HistoryTimelineService],
     directives: const [
       coreDirectives,
       routerDirectives,
       MaterialFabComponent,
       MaterialIconComponent,
+      MaterialDropdownSelectComponent,
       MaterialTooltipDirective,
       MaterialExpansionPanel,
       MaterialExpansionPanelSet,
@@ -52,6 +58,7 @@ import 'package:auge_web/services/app_routes.dart';
       InitiativeDetailComponent,
       WorkItemsComponent,
       WorkItemsListComponent,
+      HistoryTimelineComponent,
     ],
     templateUrl: 'initiatives_component.html',
     styleUrls: const [
@@ -63,6 +70,7 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
   final InitiativeService _initiativeService;
   final ObjectiveService _objectiveService;
   final SearchService _searchService;
+  final HistoryTimelineService _historyTimelineService;
   final Router _router;
   final AppLayoutService _appLayoutService;
  // final AuthService _authService;
@@ -70,6 +78,9 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
   InitiativesFilterParam initiativesFilterParam;
 
   bool detailVisible = false;
+  String mainColWidth = '100%';
+  bool _timelineVisible = false;
+
   List<Initiative> _initiatives = new List();
   Initiative selectedInitiative;
 
@@ -80,16 +91,47 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
   Map<Initiative, bool> expandedControl = Map();
 
   MenuModel<MenuItem> menuModel;
-  InitiativesComponent(this._appLayoutService, this._initiativeService, this._objectiveService, this._searchService, this._router) {
+
+  // Define messages and labels
+  static final String sortedByLabel = InitiativeMsg.label('Sorted By');
+  static final String objectiveLabel =  InitiativeMsg.label('Objective');
+
+  static final String nameLabel =  FieldMsg.label('${Initiative.className}.${Initiative.nameField}');
+  static final String groupLabel = FieldMsg.label('${Initiative.className}.${Initiative.groupField}');
+  static final String leaderLabel =  FieldMsg.label('${Initiative.className}.${Initiative.leaderField}');
+
+
+  final objectivesSortedByOptions = [nameLabel, groupLabel, leaderLabel];
+
+  String _sortedBy = nameLabel;
+
+  InitiativesComponent(this._appLayoutService, this._initiativeService, this._objectiveService, this._searchService, this._historyTimelineService, this._router) {
     initiativesFilterParam = InitiativesFilterParam();
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
 
   }
 
-  // Define messages and labels
-  static final String objectiveLabel =  InitiativeMsg.label('Objective');
-  static final String groupLabel =  InitiativeMsg.label('Group');
-  static final String leaderLabel =  InitiativeMsg.label('Leader');
+  set sortedBy(String sortedBy) {
+    _sortedBy = sortedBy;
+    _sortInitiatives();
+  }
+
+  get sortedBy => _sortedBy;
+
+
+  bool get timelineVisible {
+    return _timelineVisible;
+  }
+  set timelineVisible(bool visible) {
+    _timelineVisible = visible;
+    if (_timelineVisible) {
+      mainColWidth = '75%';
+      _historyTimelineService.refreshHistory(SystemModule.initiatives.index);
+    } else {
+      mainColWidth = '100%';
+    }
+    // (!_timelineVisible) ?mainColWidth = '100%' : mainColWidth = '75%';
+  }
 
   void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
 
@@ -115,7 +157,7 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
       }
     }
 
-    List<Initiative> initiativesAux = await _initiativeService.getInitiatives(_initiativeService.authService.selectedOrganization?.id, withWorkItems: true, withProfile: true);
+    List<Initiative> initiativesAux = await _initiativeService.getInitiatives(_initiativeService.authService.selectedOrganization.id, withWorkItems: true, withProfile: true);
 
     _sortInitiativesOrderByGroup(initiativesAux);
 
@@ -213,5 +255,20 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
 
   String userUrlImage(String userProfileImage) {
     return common_service.userUrlImage(userProfileImage);
+  }
+
+  String composeTooltip(String label, String name) {
+    return label + ' ' + ((name == null) ? '(-)' : name);
+  }
+
+  // Sorted by
+  void _sortInitiatives() {
+    if (_sortedBy == nameLabel) {
+      _initiatives.sort((a, b) => a?.name == null || b?.name == null ? -1 : a.name.compareTo(b.name));
+    } else if (_sortedBy == groupLabel) {
+      _initiatives.sort((a, b) => a?.group == null || b?.group == null ? -1 : a.group.name.compareTo(b.group.name));
+    } else if (_sortedBy == leaderLabel) {
+      _initiatives.sort((a, b) => a?.leader == null || b?.leader == null ? -1 : a.leader.name.compareTo(b.leader.name));
+    }
   }
 }

@@ -1,13 +1,14 @@
 @import 'package:angular_components/css/material/material';
 @import 'package:angular_components/material_button/mixins';
 
-material-fab {
-  position: fixed !important;
-  z-index: 9999999;
-  background-color: $mat-red;
-  color: $mat-white;
-  float: right;
-  right: 32px;
+.material-fab-add {
+   position: fixed !important;
+   z-index: 9999;
+   float: right;
+   bottom: 64px;
+   right: 64px;
+   background-color: $mat-red;
+   color: $mat-white;
 }
 
 .custom-expansionpanel-panel-specific-name-width {
@@ -38,4 +39,18 @@ material-fab {
     color: white; /* foi preciso colocar, senão não funcionava o mix-blend-mode */
     mix-blend-mode: difference;
     line-height: 40px; /* same height to parent - class avatar*/
+}
+
+.custom-grid {
+  display: grid;
+  /* grid-template-columns: min-content auto; */
+  grid-template-columns: min-content auto;
+}
+
+.margin-bottom {
+  margin-bottom: 2px;
+}
+
+.margin-top {
+  margin-top: 2px;
 }

@@ -269,7 +269,7 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
     }
   }
 
-  composeTooltip(String label, String name) {
+  String composeTooltip(String label, String name) {
     return label + ' ' + ((name == null) ? '(-)' : name);
   }
 

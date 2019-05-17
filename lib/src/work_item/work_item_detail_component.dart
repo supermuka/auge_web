@@ -28,6 +28,7 @@ import 'package:angular_components/model/date/date.dart';
 import 'package:angular_components/utils/browser/window/module.dart';
 import 'package:angular_components/material_input/material_input.dart';
 import 'package:angular_components/material_input/material_auto_suggest_input.dart';
+import 'package:angular_components/material_input/material_number_accessor.dart';
 import 'package:angular_components/focus/focus_item.dart';
 import 'package:angular_components/focus/focus_list.dart';
 import 'package:angular_components/material_list/material_list.dart';
@@ -40,14 +41,12 @@ import 'package:angular_components/material_datepicker/material_datepicker.dart'
 
 import 'package:auge_server/model/initiative/initiative.dart';
 import 'package:auge_server/model/initiative/work_item.dart';
-//import 'package:auge_server/model/initiative/work_item_check_item.dart';
 import 'package:auge_server/model/general/user.dart';
 
 import 'package:auge_web/message/messages.dart';
 import 'package:auge_web/message/model_messages.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
-//import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/work_item/work_item_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
 
@@ -61,6 +60,7 @@ import 'work_item_detail_component.template.dart' as work_item_detail_component;
       coreDirectives,
       routerDirectives,
       materialInputDirectives,
+      materialNumberInputDirectives,
       MaterialAutoSuggestInputComponent,
       AutoFocusDirective,
       MaterialDialogComponent,
@@ -76,7 +76,6 @@ import 'work_item_detail_component.template.dart' as work_item_detail_component;
       MaterialListComponent,
       MaterialListItemComponent,
       MaterialSelectItemComponent,
-
       MaterialCheckboxComponent,
       MaterialChipsComponent,
       MaterialChipComponent,
@@ -164,6 +163,7 @@ class WorkItemDetailComponent implements OnInit  {
   void ngOnInit() async {
 
     // Clone the object to have an intermediate
+    workItem = WorkItem(); // need to create, because the angular throws a exception if the query delay.
     if (selectedWorkItemId != null) {
       workItem = await _workItemService.getWorkItem(selectedWorkItemId);
     }

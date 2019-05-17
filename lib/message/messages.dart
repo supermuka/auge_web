@@ -144,8 +144,10 @@ class InitiativeMsg {
   static label(String label) => Intl.message(
       "${Intl.select(label, {
         'Initiatives': 'Initiatives',
+        'Sorted By': 'Sorted By',
         'Edit Initiative': 'Edit Initiative',
         'Add Initiative': 'Add Initiative',
+        'Objective': 'Objective',
         'Work Items Over Due': 'Work Items Over Due',
         'No Match': 'No Match',
         'Select': 'Select',
