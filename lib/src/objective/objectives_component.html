@@ -63,6 +63,6 @@
     <material-fab class="material-fab-add" raised (trigger)="selectObjective(null);viewDetail(true)">
         <material-icon icon="add"></material-icon>
     </material-fab>
-    <auge-objective-detail *ngIf="detailVisible == true" [selectedObjectiveId]="selectedObjective.id" (saved)="refreshList()" (closed)="viewDetail(false)">
+    <auge-objective-detail *ngIf="detailVisible == true" [selectedObjectiveId]="selectedObjective.id" (saved)="refreshList($event)" (closed)="viewDetail(false)">
     </auge-objective-detail>
 </div>

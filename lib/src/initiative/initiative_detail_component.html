@@ -1,5 +1,5 @@
 <modal [visible]="true">
-    <material-dialog headered class="headered-dialog" [error]="dialogError">
+    <material-dialog headered [error]="dialogError">
         <div header>
             <h3 *ngIf="initiative.id == null">{{addInitiativeLabel}}</h3>
             <h3 *ngIf="initiative.id != null">{{editInitiativeLabel}}</h3>
@@ -59,7 +59,6 @@
                 <material-button *ngIf="selectedStage != null" [disabled]="!validStageInput" icon (trigger)="updateStage(selectedStage)">
                     <material-icon icon="done"></material-icon>
                 </material-button>
-
             </span>
             <material-list *ngFor="let stage of initiative.stages;let i = index">
                 <div *ngIf="i == 0 || initiative.stages[i-1]?.state?.id != initiative.stages[i]?.state?.id" group>

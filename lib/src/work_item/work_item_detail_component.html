@@ -10,7 +10,6 @@
             </div>
             <div class="w3-col m4">
                 <div class="input-container">
-                    <!-- span class="label-text">{{dueDateLabel}}</span -->
                     <label>{{dueDateLabel}}</label>
                     <material-datepicker [(date)]="dueDate"
                                          [minDate]="limitToDueDateRange.start"
@@ -24,22 +23,21 @@
            <material-input type="text" [(ngModel)]="workItem.description" style="width:100%;height:100%" floatingLabel multiline rows="5" [label]="descriptionLabel"></material-input>
         </div>
         <div class="w3-row" >
-            <div class="w3-col m5" >
-                <material-input type="number" style="width: 100%" [(ngModel)]="completed" trailingText="%" [rightAlign]="true"  floatingLabel [label]="completedLabel" [error]="errorCompleted"></material-input>
-            </div>
-
-             <div class="w3-col m7" >
-                 <div class="input-container">
-                     <label>{{stageLabel}}</label>
-                    <material-dropdown-select style="width: 100%" [buttonText]="stageSingleSelectLabel"
+            <div class="w3-col m8">
+                <div class="input-container">
+                    <label>{{stageLabel}}</label>
+                    <material-dropdown-select [buttonText]="stageSingleSelectLabel"
                                               [selection]="stageSingleSelectModel"
                                               [options]="stageOptions"
                                               [itemRenderer]="stageItemRenderer">
                     </material-dropdown-select>
-                 </div>
-             </div>
+                </div>
+            </div>
+            <div class="w3-col m4">
+                <material-input class="w3-right" type="number" [(ngModel)]="completed" trailingText="%" [rightAlign]="true"  floatingLabel [label]="completedLabel" [error]="errorCompleted"></material-input>
+            </div>
         </div>
-        <div class="w3-row ">
+        <div class="w3-row">
             <material-auto-suggest-input style="width: 100%"
                     [(inputText)]="memberInputText"
                     [filterSuggestions]="true"
@@ -66,12 +64,13 @@
             <div class="material-shadow-box-list" elevation="2">
                 <material-input [(ngModel)]="checkItemEntry" floatingLabel [label]="checkItemLabel"></material-input>
                 <span>
-                    <material-fab *ngIf="selectedCheckItem== null" mini raised (trigger)="addCheckItem()">
-                      <material-icon icon="add"></material-icon>
-                    </material-fab>
-                    <material-fab *ngIf="selectedCheckItem != null" mini raised (trigger)="updateCheckItem(selectedCheckItem)">
-                       <material-icon icon="done"></material-icon>
-                    </material-fab>
+                    <material-button *ngIf="selectedCheckItem == null" [disabled]="!validCheckItemInput" icon (trigger)="addCheckItem()">
+                        <material-icon icon="add"></material-icon>
+                    </material-button>
+
+                    <material-button *ngIf="selectedCheckItem != null" [disabled]="!validCheckItemInput" icon (trigger)="updateCheckItem(selectedCheckItem)">
+                        <material-icon icon="done"></material-icon>
+                    </material-button>
                 </span>
                 <material-list *ngFor="let iCheckItem of workItem.checkItems">
                     <material-list-item class="material-list-item" (trigger)="selectCheckItem(iCheckItem)">

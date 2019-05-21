@@ -1,5 +1,5 @@
 <modal [visible]="true">
-    <material-dialog headered class="headered-dialog" [error]="dialogError">
+    <material-dialog headered [error]="dialogError">
         <div header>
             <h3 *ngIf="objective.id == null">{{addObjectiveLabel}}</h3>
             <h3 *ngIf="objective.id != null">{{editObjectiveLabel}}</h3>

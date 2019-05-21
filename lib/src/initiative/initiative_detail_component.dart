@@ -77,17 +77,17 @@ class InitiativeDetailComponent implements OnInit {
   @Input()
   String selectedInitiativeId;
 
-  final _closeController = new StreamController<void>.broadcast(sync: true);
+  final _closedController = new StreamController<void>.broadcast(sync: true);
 
   /// Publishes events when close.
   @Output()
-  Stream<void> get close => _closeController.stream;
+  Stream<void> get closed => _closedController.stream;
 
-  final _saveController = new StreamController<Initiative>.broadcast(sync: true);
+  final _savedController = new StreamController<String>.broadcast(sync: true);
 
   /// Publishes events when save.
   @Output()
-  Stream<Initiative> get save => _saveController.stream;
+  Stream<String> get saved => _savedController.stream;
 
  // final AuthService _authService;
   final InitiativeService _initiativeService;
@@ -148,6 +148,8 @@ class InitiativeDetailComponent implements OnInit {
 
   @override
   void ngOnInit() async {
+
+    initiative = Initiative(); // Needs to create new here, even if it can be replaced later, because if get method to delay, Angular throws an error.
     if (selectedInitiativeId != null) {
       // Clone objective
       // initiative = selectedInitiative.clone();
@@ -155,7 +157,7 @@ class InitiativeDetailComponent implements OnInit {
       initiative = await _initiativeService.getInitiative(selectedInitiativeId);
 
     } else {
-      initiative = Initiative();
+
 
       initiative.organization = _initiativeService.authService.selectedOrganization;
     }
@@ -232,11 +234,11 @@ class InitiativeDetailComponent implements OnInit {
     }
   }
 
-  void saveInitiative() {
+  void saveInitiative() async {
     try {
 
-      _initiativeService.saveInitiative(initiative);
-      _saveController.add(initiative);
+      String id = await _initiativeService.saveInitiative(initiative);
+      _savedController.add(id);
       closeDetail();
     } catch (e) {
       dialogError = e.toString();
@@ -245,7 +247,7 @@ class InitiativeDetailComponent implements OnInit {
   }
 
   void closeDetail() {
-    _closeController.add(null);
+    _closedController.add(null);
   }
 
 

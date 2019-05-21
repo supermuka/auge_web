@@ -178,7 +178,7 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
 
         Image image = decodeImage(fileContent);
 
-        Image thumbnail = copyResize(image, 120, 120);
+        Image thumbnail = copyResize(image, width: 120, height: 120);
 
         userProfileOrganization.user.userProfile.image = base64.encode(encodePng(thumbnail));
 

@@ -10,10 +10,10 @@
 
 .progress-bar {
   display: flex;;
-  height: 16px;
-
+  height: 24px;
+  align-items: center;
   flex-wrap: nowrap;
-  justify-items: center;
+/*  justify-items: center; */
 
 }
 
@@ -26,9 +26,10 @@
   display: inline-block;
   border-radius: 50%;
   margin: 0 $mat-grid;
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   background-color: $mat-gray;
+  vertical-align: middle;
   /* width and height can be anything, as long as they're equal */
 }
 

@@ -19,11 +19,11 @@
             <material-expansionpanel-set>
                 <div *ngFor="let iInitiative of initiatives;let i = index">
                     <material-expansionpanel
-                            class="expansionpanel-wide-{{wideControl[iInitiative]}}"
                             [alwaysHideExpandIcon]="true"
                             [hideExpandedHeader]="false"
                             [showSaveCancel]="false"
-                            (expandedChange)="expandedChange(iInitiative, $event)">
+                            [expanded]="iInitiative.id == expandedInitiativeId"
+                            (expandedChange)="setExpandedInitiativeId(iInitiative.id, $event)">
                         <div name class="custom-expansionpanel-panel-specific-name-width">
                             <span class="truncate-ellipsed-parent">
                                 <span class="truncate-ellipsed"><strong>{{iInitiative.name}}</strong></span>
@@ -32,7 +32,9 @@
                         </div>
                         <div class="w3-row" value>
                             <div class="w3-col m9">
-                                <auge-initiative-summary [initiative]="iInitiative"></auge-initiative-summary>
+                                <div class="custom-grid-vertical">
+                                     <auge-initiative-summary [initiative]="iInitiative"></auge-initiative-summary>
+                                </div>
                             </div>
                             <div class="w3-col m3">
                                 <div class="custom-grid w3-right">
@@ -52,7 +54,7 @@
                             <material-menu [menu]="menuModel" (click)="selectInitiative(iInitiative)">
                             </material-menu>
                         </div>
-                        <hr>
+                        <hr class="hr-margin">
                         <span *ngIf="iInitiative.objective != null"><strong>{{objectiveLabel}}:</strong> {{iInitiative.objective?.name}}</span>
                         <div class="w3-row-padding" >
                             <auge-work-items [initiative]="iInitiative"></auge-work-items>
@@ -68,6 +70,6 @@
     <material-fab class="material-fab-add" raised (trigger)="selectInitiative(null);viewDetail(true)">
         <material-icon icon="add"></material-icon>
     </material-fab>
-    <auge-initiative-detail *ngIf="detailVisible == true" [selectedInitiativeId]="selectedInitiative?.id" (save)="changeListItem($event)" (close)="viewDetail(false)">
+    <auge-initiative-detail *ngIf="detailVisible == true" [selectedInitiativeId]="selectedInitiative?.id" (saved)="refreshList($event)" (closed)="viewDetail(false)">
     </auge-initiative-detail>
 </div>

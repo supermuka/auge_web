@@ -139,7 +139,7 @@ class ObjectiveDetailComponent extends Object implements OnInit {
     if (selectedObjectiveId != null) {
       // Clone objective
      // objective = selectedObjective.clone();
-       objective = await _objectiveService.getObjectiveById(selectedObjectiveId);
+       objective = await _objectiveService.getObjective(selectedObjectiveId);
       //objective = selectedObjective.clone();
 
     } else {

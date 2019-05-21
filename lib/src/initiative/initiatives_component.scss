@@ -54,3 +54,18 @@
 .margin-top {
   margin-top: 2px;
 }
+
+.hr-margin {
+   margin-top:2px;
+   margin-bottom:4px;
+}
+
+.custom-grid-vertical {
+  display: inline-grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
+ /* grid-gap: 3px; */
+  justify-items: center;
+  align-items: center;
+}
+

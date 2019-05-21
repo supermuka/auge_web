@@ -87,25 +87,34 @@ material-input {
    display: inline-block;
    padding-top: 0px;
    padding-bottom: 0px;
-
-   & label {
-      display: block;
-      font-size: $mat-font-size-caption;
-      color: $mat-light-transparent-black;
-      margin-top: -4px;
+   &:focus-within {
+      & label {
+         display: block;
+         font-size: $mat-font-size-caption;
+         color: $mat-blue-500;
+         margin-top: -4px;
+      }
+   }&:not(:focus-within) {
+      & label {
+         display: block;
+         font-size: $mat-font-size-caption;
+         color: $mat-light-transparent-black;
+         margin-top: -4px;
+      }
    }
 
    & material-datepicker {
       display: block;
       margin-top: 4px;
-
    }
 
-  & material-dropdown-select {
+   & material-dropdown-select {
       display: block;
       margin-top: 4px;
-  }
+   }
 }
+
+material-dropdown-select { width: 250px; min-width: 250px; }
 
 .material-shadow-box-list {
    @include material-shadow();

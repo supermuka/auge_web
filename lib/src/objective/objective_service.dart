@@ -40,14 +40,17 @@ class ObjectiveService {
   }
 
   /// Return an [Objective] by Id
-  Future<Objective> getObjectiveById(String id, {bool withMeasures = false, bool withProfile = false, bool withHistory = false}) async {
+  Future<Objective> getObjective(String id, {bool withMeasures = false, bool withProfile = false, bool withHistory = false}) async {
     try {
 
       // Objective objective = await _augeApiService.objectiveAugeApi.getObjectiveById(id, withMeasures: withMeasures, withProfile: withProfile, withHistory: withHistory);
 
       objective_pbgrpc.Objective objective = await _objectiveServiceClient.getObjective(
           objective_pbgrpc.ObjectiveGetRequest()
-            ..id = id);
+            ..id = id
+            ..withMeasures = withMeasures
+            ..withProfile = withProfile
+            ..withHistory = withHistory);
 
       return Objective()..readFromProtoBuf(objective);
 

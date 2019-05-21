@@ -83,12 +83,11 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
 
   List<Initiative> _initiatives = new List();
   Initiative selectedInitiative;
+  String expandedInitiativeId;
 
-  bool expanded = false;
   // List<bool> wideControl = new List();
   // List<bool> expandedControl = new List();
-  Map<Initiative, bool> wideControl = Map();
-  Map<Initiative, bool> expandedControl = Map();
+  //Map<Initiative, bool> wideControl = Map();
 
   MenuModel<MenuItem> menuModel;
 
@@ -113,7 +112,7 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
 
   set sortedBy(String sortedBy) {
     _sortedBy = sortedBy;
-    _sortInitiatives();
+    _sortInitiatives(_initiatives);
   }
 
   get sortedBy => _sortedBy;
@@ -148,7 +147,7 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
 
         try {
           if (objectiveId != null || objectiveId.isNotEmpty) {
-              initiativesFilterParam.objective = await _objectiveService.getObjectiveById(objectiveId, withMeasures: false);
+              initiativesFilterParam.objective = await _objectiveService.getObjective(objectiveId, withMeasures: false);
           }
 
        } catch (e) {
@@ -157,11 +156,8 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
       }
     }
 
-    List<Initiative> initiativesAux = await _initiativeService.getInitiatives(_initiativeService.authService.selectedOrganization.id, withWorkItems: true, withProfile: true);
 
-    _sortInitiativesOrderByGroup(initiativesAux);
-
-    _initiatives = initiativesAux;
+    _initiatives = await getInitiatives();
 
     // wideControl = new List<bool>.filled(_initiatives.length, false);
    // expandedControl = new List<bool>.filled(_initiatives.length, false);
@@ -181,6 +177,13 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
     initiativesFilter = initiativesFilterParam.objective == null ? _initiatives : _initiatives.where((t) => t.objective != null && t.objective.id == initiativesFilterParam.objective.id).toList();
 
     return _searchService?.searchTerm.toString().isEmpty ? initiativesFilter : initiativesFilter.where((t) => t.name.contains(_searchService.searchTerm)).toList();
+  }
+
+  Future<List<Initiative>> getInitiatives() async {
+    List<Initiative> initiativesAux = await _initiativeService.getInitiatives(_initiativeService.authService.selectedOrganization.id, withWorkItems: true, withProfile: true);
+
+    _sortInitiatives(initiativesAux);
+    return initiativesAux;
   }
 
   @override
@@ -205,7 +208,6 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
     try {
 
       await _initiativeService.deleteInitiative(selectedInitiative);
-      expandedControl.remove(selectedInitiative);
       initiatives.remove(selectedInitiative);
 
     } catch (e) {
@@ -218,7 +220,9 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
     this.detailVisible = detailVisible;
   }
 
-  void changeListItem(Initiative initiative) {
+  void refreshList(String initiativeId) async {
+/*
+
     if (selectedInitiative == null) {
       initiatives.add(initiative);
       expandedControl[initiative] = true;
@@ -226,13 +230,25 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
       // initiative.cloneTo(initiatives[initiatives.indexOf(selectedInitiative)]);
     }
     _sortInitiativesOrderByGroup(initiatives);
-  }
+*/
 
-  void expandedChange(Initiative initiative, bool expanded) {
-    expandedControl[initiative] = expanded;
-    if (!expanded) {
-      wideControl[initiative] = false;
+ //   _initiatives = await getInitiatives();
+
+    Initiative initiative = await _initiativeService.getInitiative(initiativeId, withWorkItems: true, withProfile: true);
+
+    if (selectedInitiative == null) {
+      _initiatives.add( initiative );
+    } else {
+      _initiatives[_initiatives.indexOf(selectedInitiative)] = initiative;
     }
+
+    _sortInitiatives(_initiatives);
+
+  //  _sortObjectives();
+    _historyTimelineService.refreshHistory(SystemModule.objectives.index);
+
+   // _historyTimelineService.getHistory(SystemModule.objectives.index);
+
   }
 
   @override
@@ -249,8 +265,18 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
   }
 
   // Order by to group
-  void _sortInitiativesOrderByGroup(List<Initiative> initiatives) {
-    initiatives.sort((a, b) => a?.group == null || b?.group == null ? -1 : a.group.name.compareTo(b.group.name));
+  void _sortInitiatives(List<Initiative> initiativesToSort) {
+
+    if (_sortedBy == nameLabel) {
+      initiativesToSort.sort((a, b) => a?.name == null || b?.name == null ? -1 : a.name.compareTo(b.name));
+    } else if (_sortedBy == groupLabel) {
+      initiativesToSort.sort((a, b) => a?.group == null || b?.group == null ? -1 : a.group.name.compareTo(b.group.name));
+    } else if (_sortedBy == leaderLabel) {
+      initiativesToSort.sort((a, b) =>
+      a?.leader == null || b?.leader == null
+          ? -1
+          : a.leader.name.compareTo(b.leader.name));
+    }
   }
 
   String userUrlImage(String userProfileImage) {
@@ -261,14 +287,13 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
     return label + ' ' + ((name == null) ? '(-)' : name);
   }
 
-  // Sorted by
-  void _sortInitiatives() {
-    if (_sortedBy == nameLabel) {
-      _initiatives.sort((a, b) => a?.name == null || b?.name == null ? -1 : a.name.compareTo(b.name));
-    } else if (_sortedBy == groupLabel) {
-      _initiatives.sort((a, b) => a?.group == null || b?.group == null ? -1 : a.group.name.compareTo(b.group.name));
-    } else if (_sortedBy == leaderLabel) {
-      _initiatives.sort((a, b) => a?.leader == null || b?.leader == null ? -1 : a.leader.name.compareTo(b.leader.name));
+
+
+  setExpandedInitiativeId(String initiativeId, bool expanded) {
+    if (expanded) {
+      expandedInitiativeId = initiativeId;
+    } else {
+      expandedInitiativeId = null;
     }
   }
 }

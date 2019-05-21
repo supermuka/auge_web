@@ -33,11 +33,11 @@ class HistoryTimelineService {
   // get authService => _authService;
 
   void refreshHistory(int systemModuleIndex) async {
-    history = await getHistory(systemModuleIndex);
+    history = await _getHistory(systemModuleIndex);
   }
 
   /// Return a list of [TimelineItem]
-  Future<List<HistoryItem>> getHistory(int systemModuleIndex) async {
+  Future<List<HistoryItem>> _getHistory(int systemModuleIndex) async {
     
     //history_item_pbgrpc.HistoryResponse historyResponse = await _historyItemServiceClient.getHistory(history_item_pbgrpc.HistoryItemGetRequest()..systemModuleIndex = SystemModule.objectives.index );
     currentDateTime = await getDateTime();

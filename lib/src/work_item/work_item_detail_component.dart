@@ -11,6 +11,7 @@ import 'package:angular_router/angular_router.dart';
 
 import 'package:angular_components/focus/focus.dart';
 import 'package:angular_components/laminate/components/modal/modal.dart';
+import 'package:angular_components/laminate/popup/module.dart';
 import 'package:angular_components/laminate/overlay/module.dart';
 import 'package:angular_components/material_dialog/material_dialog.dart';
 import 'package:angular_components/material_button/material_button.dart';
@@ -55,7 +56,7 @@ import 'work_item_detail_component.template.dart' as work_item_detail_component;
 
 @Component(
     selector: 'auge-work-item-detail',
-    providers: const [overlayBindings, windowBindings, datepickerBindings, WorkItemService, UserService],
+    providers: const [popupBindings, overlayBindings, windowBindings, datepickerBindings, WorkItemService, UserService],
     directives: const [
       coreDirectives,
       routerDirectives,
@@ -322,6 +323,10 @@ class WorkItemDetailComponent implements OnInit  {
 
   bool get validInput {
     return workItem.name?.trim()?.isNotEmpty ?? false;
+  }
+
+  bool get validCheckItemInput {
+    return (checkItemEntry != null && checkItemEntry.isNotEmpty);
   }
 }
 

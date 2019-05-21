@@ -49,10 +49,13 @@ class InitiativeService {
   }
 
   /// Return [User] list by Organization [id]
-  Future<Initiative> getInitiative(String id, {bool withProfile = false}) async {
+  Future<Initiative> getInitiative(String id, {bool withWorkItems = false, bool withProfile = false}) async {
     // return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
     return Initiative()..readFromProtoBuf((await _initiativeServiceClient.getInitiative(
-        initiative_pbgrpc.InitiativeGetRequest()..id = id)));
+        initiative_pbgrpc.InitiativeGetRequest()
+          ..id = id
+          ..withWorkItems = withWorkItems
+          ..withProfile = withProfile)));
   }
 
   /// Return a list of [State]
@@ -64,7 +67,7 @@ class InitiativeService {
   }
 
   /// Save (create or update)an [Initiative]
-  void saveInitiative(Initiative initiative) async {
+  Future<String> saveInitiative(Initiative initiative) async {
     try {
 
       initiative_pbgrpc.InitiativeRequest initiativeRequest = initiative_pbgrpc.InitiativeRequest()
@@ -86,6 +89,7 @@ class InitiativeService {
       print('${e.runtimeType}, ${e}');
       rethrow;
     }
+    return initiative.id;
   }
 
   /// Delete an [Initiative]

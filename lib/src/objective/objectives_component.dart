@@ -100,7 +100,7 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
 
   set sortedBy(String sortedBy) {
     _sortedBy = sortedBy;
-    _sortObjectives();
+    _sortObjectives(_objectives);
   }
 
   get sortedBy => _sortedBy;
@@ -138,7 +138,7 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
 
     try {
       _objectives = await getObjetives();
-      _sortObjectives();
+     // _sortObjectives();
 
       if (initialObjectiveId != null) {
         Objective initialObjective = _objectives.singleWhere((o) => o.id == initialObjectiveId);
@@ -157,6 +157,7 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
     List<Objective> objectivesAux =  await _objectiveService.getObjectives(
         _objectiveService.authService.selectedOrganization.id, withMeasures: true, withProfile: true);
    // _sortObjectives(objectivesAux );
+    _sortObjectives(objectivesAux);
     return objectivesAux;
   }
 
@@ -197,19 +198,30 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
     }
   }
 
-  void refreshList() async {
+  void refreshList(String objectiveId) async {
 
-    _objectives = await getObjetives();
-    _sortObjectives();
-
+   // _objectives = await getObjetives();
+   // _sortObjectives();
+/*
     if (expandedObjectiveId != null) {
       Objective expandedObjective = _objectives.singleWhere((o) => o.id == expandedObjectiveId, orElse: null);
       if (expandedObjective != null) {
         _historyTimelineService.refreshHistory(SystemModule.objectives.index);
       }
     }
+*/
 
-    _historyTimelineService.getHistory(SystemModule.objectives.index);
+    Objective objective = await _objectiveService.getObjective(objectiveId, withMeasures: true, withProfile: true);
+    if (selectedObjective == null) {
+      objectives.add( objective );
+    } else {
+      objectives[objectives.indexOf(selectedObjective)] = objective;
+    }
+
+    _sortObjectives(objectives);
+
+    _historyTimelineService.refreshHistory(SystemModule.objectives.index);
+    //_historyTimelineService.getHistory(SystemModule.objectives.index);
   }
 
   void viewDetail(bool detailVisible) {
@@ -229,17 +241,17 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
   }
 
   // Sorted by
-  void _sortObjectives() {
+  void _sortObjectives(List<Objective> objectivesToSort) {
     if (_sortedBy == nameLabel) {
-      _objectives.sort((a, b) => a?.name == null || b?.name == null ? -1 : a.name.compareTo(b.name));
+      objectivesToSort.sort((a, b) => a?.name == null || b?.name == null ? -1 : a.name.compareTo(b.name));
     } else if (_sortedBy == groupLabel) {
-      _objectives.sort((a, b) => a?.group == null || b?.group == null ? -1 : a.group.name.compareTo(b.group.name));
+      objectivesToSort.sort((a, b) => a?.group == null || b?.group == null ? -1 : a.group.name.compareTo(b.group.name));
     } else if (_sortedBy == leaderLabel) {
-      _objectives.sort((a, b) => a?.leader == null || b?.leader == null ? -1 : a.leader.name.compareTo(b.leader.name));
+      objectivesToSort.sort((a, b) => a?.leader == null || b?.leader == null ? -1 : a.leader.name.compareTo(b.leader.name));
     } else if (_sortedBy == startDateLabel) {
-      _objectives.sort((a, b) => a?.startDate == null || b?.startDate == null ? -1 : a.startDate.compareTo(b.startDate));
+      objectivesToSort.sort((a, b) => a?.startDate == null || b?.startDate == null ? -1 : a.startDate.compareTo(b.startDate));
     } else if (_sortedBy == endDateLabel) {
-      _objectives.sort((a, b) =>
+      objectivesToSort.sort((a, b) =>
       a?.endDate == null || b?.endDate == null
           ? -1
           : a.endDate.compareTo(b.endDate));
