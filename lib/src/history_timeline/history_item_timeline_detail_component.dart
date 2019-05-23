@@ -14,6 +14,8 @@ import 'package:auge_server/model/general/user.dart';
 import 'package:auge_server/model/general/user_profile_organization.dart';
 import 'package:auge_server/model/general/group.dart';
 import 'package:auge_server/model/objective/objective.dart';
+import 'package:auge_server/model/initiative/initiative.dart';
+import 'package:auge_server/model/initiative/stage.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/message/messages.dart';
@@ -99,21 +101,22 @@ class HistoryItemTimelineDetailComponent /* extends Object */ implements OnInit 
 
   // Format data type to web presentation
   Map<String, Map<dynamic, dynamic>> getViewToChangedValues(String objectClassName, Map<String, dynamic> changedValues) {
-    Map<String, Map<dynamic, dynamic>> viewToChangedValues;
-    if (objectClassName == UserProfileOrganization.className) {
-      viewToChangedValues = UserProfileOrganizationChangedValues().getViewToChangedValues(changedValues);
-    } else if (objectClassName == Group.className) {
-      viewToChangedValues = GroupChangedValues().getViewToChangedValues(changedValues);
-    } else if (objectClassName == Objective.className) {
-      viewToChangedValues = ObjectiveChangedValues().getViewToChangedValues(changedValues);
-    } else {
-      viewToChangedValues = GenericChangedValues().getViewToChangedValues(changedValues);
-    }
-    return viewToChangedValues;
-  }
 
+    Map<String, Map<dynamic, dynamic>> fieldsChangedValues = {};
+    if (objectClassName == UserProfileOrganization.className) {
+      UserProfileOrganizationChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues, changedValues);
+    } else if (objectClassName == Group.className) {
+      GroupChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues,changedValues);
+    } else if (objectClassName == Objective.className) {
+      ObjectiveChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues,changedValues);
+    } else if (objectClassName == Initiative.className) {
+      InitiativeChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues,changedValues);
+    }
+    return fieldsChangedValues;
+  }
 }
 
+/*
 class BaseChangedValues {
   Map<String, Map<dynamic, dynamic>> getViewToChangedValues(Map<String, dynamic> changedValues) {
     Map<String, Map<dynamic, dynamic>> _fieldsChangedValues = {};
@@ -125,44 +128,16 @@ class BaseChangedValues {
 
   void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {}
 }
-
-/// GENERIC
-class GenericChangedValues extends BaseChangedValues {
-
-  @override
-  void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
-    changedValues?.forEach((k, v) {
-      if (k != User.idField && k != User.versionField) {
-        if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
-          fieldsChangedValues.putIfAbsent('${User.className}.${k}', () =>
-          {
-            _typeToViewKey: _typeToViewText,
-            _fieldDescriptionKey: FieldMsg.label('${User.className}.${k}')});
-
-          if (v.containsKey(_pKey)) {
-            fieldsChangedValues['${User.className}.${k}'][_pKey] =
-            v[_pKey];
-          }
-
-          if (v.containsKey(_cKey)) {
-            fieldsChangedValues['${User.className}.${k}'][_cKey] =
-            v[_cKey];
-          }
-        }
-      }
-    });
-  }
-}
+*/
 
 /// USERS
-class UserChangedValues extends BaseChangedValues {
+class UserChangedValues {
 
-  @override
-  void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
+  static void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
     changedValues?.forEach((k, v) {
       if (k != User.idField && k != User.versionField) {
         if (k == User.userProfileField) {
-            UserProfileChangedValues().constructViewToFieldsChangedValues(
+            UserProfileChangedValues.constructViewToFieldsChangedValues(
                fieldsChangedValues, v);
         } else if (k == User.passwordField) {
           fieldsChangedValues.putIfAbsent('${User.className}.${k}', () =>
@@ -191,10 +166,9 @@ class UserChangedValues extends BaseChangedValues {
   }
 }
 
-class UserProfileChangedValues extends BaseChangedValues {
+class UserProfileChangedValues  {
 
-  @override
-  void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
+  static void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
     changedValues?.forEach((k, v) {
       if (k == UserProfile.idiomLocaleField) {
         fieldsChangedValues.putIfAbsent('${UserProfile.className}.${k}', () =>
@@ -232,14 +206,13 @@ class UserProfileChangedValues extends BaseChangedValues {
   }
 }
 
-class UserProfileOrganizationChangedValues extends BaseChangedValues {
+class UserProfileOrganizationChangedValues  {
 
-  @override
-  void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
+  static void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
     changedValues?.forEach((k, v) {
       if (k != UserProfileOrganization.idField && k != UserProfileOrganization.versionField) {
         if (k == UserProfileOrganization.userField) {
-          UserChangedValues().constructViewToFieldsChangedValues(
+          UserChangedValues.constructViewToFieldsChangedValues(
               fieldsChangedValues, v);
         } else if (k == UserProfileOrganization.organizationField) {
          // OrganizationChangedValues().constructViewToFieldsChangedValues(
@@ -263,10 +236,9 @@ class UserProfileOrganizationChangedValues extends BaseChangedValues {
 }
 
 /// GROUPS
-class GroupChangedValues extends BaseChangedValues {
+class GroupChangedValues {
 
-  @override
-  void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
+  static void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
     changedValues?.forEach((k, v) {
       if (k != Group.idField && k != Group.versionField) {
         if (k == Group.activeField) {
@@ -298,13 +270,15 @@ class GroupChangedValues extends BaseChangedValues {
               v[User.nameField].containsKey(_cKey))
             fieldsChangedValues['${Group.className}.${k}'][_cKey] =
             v[User.nameField][_cKey];
-          UserChangedValues().constructViewToFieldsChangedValues(
+          UserChangedValues.constructViewToFieldsChangedValues(
               fieldsChangedValues, {Group.groupTypeField: v});
         } else if (k == Group.superGroupField) {
-          GroupChangedValues().constructViewToFieldsChangedValues(
+
+          GroupChangedValues.constructViewToFieldsChangedValues(
               fieldsChangedValues, {Group.superGroupField: v});
+
         } else if (k == Group.groupTypeField) {
-          GroupTypeChangedValues().constructViewToFieldsChangedValues(
+          GroupTypeChangedValues.constructViewToFieldsChangedValues(
               fieldsChangedValues, {Group.groupTypeField: v});
         } else if (k == Group.membersField) {
           fieldsChangedValues.putIfAbsent(
@@ -332,6 +306,7 @@ class GroupChangedValues extends BaseChangedValues {
           }
         }
         else if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
+
           fieldsChangedValues.putIfAbsent('${Group.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewText,
@@ -343,14 +318,17 @@ class GroupChangedValues extends BaseChangedValues {
             fieldsChangedValues['${Group.className}.${k}'][_cKey] =
             v[_cKey];
         }
+
+
+
       }
     });
   }
 }
 
-class GroupTypeChangedValues extends BaseChangedValues {
-  @override
-  void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
+class GroupTypeChangedValues {
+
+  static void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
     changedValues?.forEach((k, v) {
      // if (k != Group.idField && k != Group.versionField) {
       if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
@@ -370,9 +348,10 @@ class GroupTypeChangedValues extends BaseChangedValues {
   }
 }
 
-class ObjectiveChangedValues extends BaseChangedValues {
-  @override
-  void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
+//OBJECTIVE
+class ObjectiveChangedValues {
+
+  static void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
 
     changedValues?.forEach((k, v) {
       if (k != Objective.idField && k != Objective.versionField) {
@@ -385,6 +364,7 @@ class ObjectiveChangedValues extends BaseChangedValues {
             fieldsChangedValues['${Objective.className}.${k}'][_pKey] = DateTime.parse(v[_pKey]);
           if (v.containsKey(_cKey))
             fieldsChangedValues['${Objective.className}.${k}'][_cKey] = DateTime.parse(v[_cKey]);
+
         } else if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
           fieldsChangedValues.putIfAbsent('${Objective.className}.${k}', () =>
           {
@@ -395,6 +375,93 @@ class ObjectiveChangedValues extends BaseChangedValues {
             v[_pKey];
           if (v.containsKey(_cKey))
             fieldsChangedValues['${Objective.className}.${k}'][_cKey] =
+            v[_cKey];
+        }
+      }
+    });
+  }
+}
+
+//INITIATIVE
+class InitiativeChangedValues {
+
+  static void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
+
+    changedValues?.forEach((k, v) {
+
+    if (k != Initiative.idField && k != Initiative.versionField) {
+      if (k == Initiative.stagesField) {
+        fieldsChangedValues.putIfAbsent(
+            '${Initiative.className}.${k}', () =>
+        {
+          _typeToViewKey: _typeToViewText,
+          _fieldDescriptionKey: FieldMsg.label('${Initiative.className}.${k}')
+        });
+
+        if (v.containsKey(_pKey) && v[_pKey] is List) {
+          StringBuffer sb = new StringBuffer();
+          v[_pKey].forEach((l) {
+            if (sb.isNotEmpty) sb.write(', ');
+            sb.write(l[Stage.nameField]);
+          });
+          fieldsChangedValues['${Initiative.className}.${k}'][_pKey] =
+              sb.toString();
+        }
+        if (v.containsKey(_cKey) && v[_cKey] is List) {
+          StringBuffer sb = new StringBuffer();
+          v[_cKey].forEach((l) {
+            if (sb.isNotEmpty) sb.write(', ');;
+            sb.write(l[Stage.nameField]);
+          });
+          fieldsChangedValues['${Initiative.className}.${k}'][_cKey] =
+              sb.toString();
+        }
+      } else if (k == Initiative.groupField) {
+
+        fieldsChangedValues.putIfAbsent('${Initiative.className}.${k}', () =>
+        {
+          _typeToViewKey: _typeToViewText,
+          _fieldDescriptionKey: FieldMsg.label('${Initiative.className}.${k}')});
+
+        if (v.containsKey(Group.nameField) && v[Group.nameField].containsKey(_pKey))
+          fieldsChangedValues['${Initiative.className}.${k}'][_pKey] = v[Group.nameField][_pKey];
+        if (v.containsKey(Group.nameField) && v[Group.nameField].containsKey(_cKey))
+          fieldsChangedValues['${Initiative.className}.${k}'][_cKey] = v[Group.nameField][_cKey];
+
+      } else if (k == Initiative.leaderField) {
+
+        fieldsChangedValues.putIfAbsent('${Initiative.className}.${k}', () =>
+        {
+          _typeToViewKey: _typeToViewText,
+          _fieldDescriptionKey: FieldMsg.label('${Initiative.className}.${k}')});
+
+        if (v.containsKey(User.nameField) && v[User.nameField].containsKey(_pKey))
+          fieldsChangedValues['${Initiative.className}.${k}'][_pKey] = v[User.nameField][_pKey];
+        if (v.containsKey(User.nameField) && v[User.nameField].containsKey(_cKey))
+          fieldsChangedValues['${Initiative.className}.${k}'][_cKey] = v[User.nameField][_cKey];
+
+      } else if (k == Initiative.objectiveField) {
+
+        fieldsChangedValues.putIfAbsent('${Initiative.className}.${k}', () =>
+        {
+          _typeToViewKey: _typeToViewText,
+          _fieldDescriptionKey: FieldMsg.label('${Initiative.className}.${k}')});
+
+        if (v.containsKey(Objective.nameField) && v[Objective.nameField].containsKey(_pKey))
+          fieldsChangedValues['${Initiative.className}.${k}'][_pKey] = v[User.nameField][_pKey];
+        if (v.containsKey(Objective.nameField) && v[Objective.nameField].containsKey(_cKey))
+          fieldsChangedValues['${Initiative.className}.${k}'][_cKey] = v[Objective.nameField][_cKey];
+
+      } else if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
+          fieldsChangedValues.putIfAbsent('${Initiative.className}.${k}', () =>
+          {
+            _typeToViewKey: _typeToViewText,
+            _fieldDescriptionKey: FieldMsg.label('${Initiative.className}.${k}')});
+          if (v.containsKey(_pKey))
+            fieldsChangedValues['${Initiative.className}.${k}'][_pKey] =
+            v[_pKey];
+          if (v.containsKey(_cKey))
+            fieldsChangedValues['${Initiative.className}.${k}'][_cKey] =
             v[_cKey];
         }
       }

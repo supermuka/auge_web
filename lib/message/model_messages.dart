@@ -37,6 +37,8 @@ class ClassNameMsg {
       Objective.className: 'Objective',
       Measure.className: 'Measure',
       MeasureProgress.className: 'Measure Progress',
+      Initiative.className: 'Initiative',
+      WorkItem.className: 'Work Item',
       'other': 'Not Defined'})}",
     name: "classNameLabel",
     args: [className],

@@ -34,6 +34,7 @@ import 'package:auge_web/src/initiative/initiatives_filter_component.dart';
 import 'package:auge_web/src/initiative/initiative_summary_component.dart';
 import 'package:auge_web/src/history_timeline/history_timeline_component.dart';
 import 'package:auge_web/src/initiative/initiative_detail_component.dart';
+import 'package:auge_web/src/initiative/initiative_stages_component.dart';
 import 'package:auge_web/src/work_item/work_items_component.dart';
 import 'package:auge_web/src/work_item/work_items_list_component.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
@@ -59,13 +60,14 @@ import 'package:auge_web/services/app_routes.dart';
       WorkItemsComponent,
       WorkItemsListComponent,
       HistoryTimelineComponent,
+      InitiativeStagesComponent,
     ],
     templateUrl: 'initiatives_component.html',
     styleUrls: const [
       'initiatives_component.css'
     ])
 
-class InitiativesComponent extends Object with CanReuse implements /* OnInit, */ OnActivate, OnDestroy {
+class InitiativesComponent extends Object /*with CanReuse*/ implements /* OnInit, */ OnActivate, OnDestroy {
 
   final InitiativeService _initiativeService;
   final ObjectiveService _objectiveService;
@@ -78,6 +80,7 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
   InitiativesFilterParam initiativesFilterParam;
 
   bool detailVisible = false;
+  bool stagesVisible = false;
   String mainColWidth = '100%';
   bool _timelineVisible = false;
 
@@ -95,18 +98,23 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
   static final String sortedByLabel = InitiativeMsg.label('Sorted By');
   static final String objectiveLabel =  InitiativeMsg.label('Objective');
 
+
   static final String nameLabel =  FieldMsg.label('${Initiative.className}.${Initiative.nameField}');
   static final String groupLabel = FieldMsg.label('${Initiative.className}.${Initiative.groupField}');
   static final String leaderLabel =  FieldMsg.label('${Initiative.className}.${Initiative.leaderField}');
+  static final String stagesLabel =  FieldMsg.label('${Initiative.className}.${Initiative.stagesField}');
 
 
-  final objectivesSortedByOptions = [nameLabel, groupLabel, leaderLabel];
+  final initiativesSortedByOptions = [nameLabel, groupLabel, leaderLabel];
 
   String _sortedBy = nameLabel;
 
   InitiativesComponent(this._appLayoutService, this._initiativeService, this._objectiveService, this._searchService, this._historyTimelineService, this._router) {
     initiativesFilterParam = InitiativesFilterParam();
-    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
+    menuModel = new MenuModel([new MenuItemGroup([
+      new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)),
+      new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete()),
+      new MenuItem(stagesLabel, icon: new Icon('view_week'), action: () { stagesVisible = true; }) ])], icon: new Icon('menu'));
 
   }
 
@@ -245,10 +253,19 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
     _sortInitiatives(_initiatives);
 
   //  _sortObjectives();
-    _historyTimelineService.refreshHistory(SystemModule.objectives.index);
+    _historyTimelineService.refreshHistory(SystemModule.initiatives.index);
 
    // _historyTimelineService.getHistory(SystemModule.objectives.index);
 
+  }
+
+  //TODO implement refresh
+  void refreshStages() {
+
+  }
+
+  void closeStages() {
+    stagesVisible = false;
   }
 
   @override

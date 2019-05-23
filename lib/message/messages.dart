@@ -161,6 +161,26 @@ class InitiativeMsg {
   );
 }
 
+
+/// Specific messages and label for [Stage]
+class StageMsg {
+
+  /// Label
+  static label(String label) => Intl.message(
+      "${Intl.select(label, {
+        'Stage': 'Stage',
+        'Select': 'Select',
+        'other': 'Not Defined'})}",
+      name: "stageLabel",
+      args: [label],
+      // locale: "en",
+      desc: "Stage labels"
+  );
+
+  static stateNotInfomedMsg() => Intl.message("State not informed.");
+
+}
+
 /// Specific messages and label for [WorkItem]
 class WorkItemMsg {
 

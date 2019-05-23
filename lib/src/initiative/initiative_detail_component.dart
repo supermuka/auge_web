@@ -14,11 +14,11 @@ import 'package:angular_components/material_icon/material_icon.dart';
 import 'package:angular_components/material_input/material_auto_suggest_input.dart';
 import 'package:angular_components/material_input/material_input.dart';
 import 'package:angular_components/material_select/material_dropdown_select.dart';
+import 'package:angular_components/material_select/dropdown_button.dart';
+import 'package:angular_components/material_select/material_dropdown_select_accessor.dart';
 import 'package:angular_components/model/selection/selection_model.dart';
 import 'package:angular_components/model/selection/selection_options.dart';
 import 'package:angular_components/model/selection/string_selection_options.dart';
-import 'package:angular_components/material_select/dropdown_button.dart';
-import 'package:angular_components/material_select/material_dropdown_select_accessor.dart';
 import 'package:angular_components/focus/focus_item.dart';
 import 'package:angular_components/focus/focus_list.dart';
 import 'package:angular_components/material_list/material_list.dart';
@@ -75,7 +75,7 @@ import 'initiative_detail_component.template.dart' as initiative_detail_componen
 class InitiativeDetailComponent implements OnInit {
   /// Entry to edit data. If new, this should be null
   @Input()
-  String selectedInitiativeId;
+  String initiativeId;
 
   final _closedController = new StreamController<void>.broadcast(sync: true);
 
@@ -107,6 +107,7 @@ class InitiativeDetailComponent implements OnInit {
 
   SelectionOptions stateOptions;
   SelectionModel<State> stateSingleSelectModel;
+
   SelectionOptions leaderOptions;
   SelectionModel<User> leaderSingleSelectModel;
   SelectionOptions objectiveOptions;
@@ -150,11 +151,11 @@ class InitiativeDetailComponent implements OnInit {
   void ngOnInit() async {
 
     initiative = Initiative(); // Needs to create new here, even if it can be replaced later, because if get method to delay, Angular throws an error.
-    if (selectedInitiativeId != null) {
+    if (initiativeId != null) {
       // Clone objective
       // initiative = selectedInitiative.clone();
 
-      initiative = await _initiativeService.getInitiative(selectedInitiativeId);
+      initiative = await _initiativeService.getInitiative(initiativeId);
 
     } else {
 

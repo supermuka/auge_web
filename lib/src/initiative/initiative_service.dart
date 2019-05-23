@@ -9,23 +9,29 @@ import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/services/auge_api_service.dart';
 
 import 'package:auge_server/model/initiative/initiative.dart';
+import 'package:auge_server/model/initiative/stage.dart';
 import 'package:auge_server/model/initiative/state.dart';
 
 import 'package:auge_server/src/protos/generated/google/protobuf/empty.pb.dart' as empty_pb;
 import 'package:auge_server/src/protos/generated/general/common.pb.dart' as common_pb;
 import 'package:auge_server/src/protos/generated/initiative/initiative.pbgrpc.dart' as initiative_pbgrpc;
+import 'package:auge_server/src/protos/generated/initiative/stage.pbgrpc.dart' as stage_pbgrpc;
 import 'package:auge_server/src/protos/generated/initiative/state.pbgrpc.dart' as state_pbgrpc;
 
 @Injectable()
 class InitiativeService {
   final AuthService _authService;
   final AugeApiService _augeApiService;
+
   initiative_pbgrpc.InitiativeServiceClient _initiativeServiceClient;
+  stage_pbgrpc.StageServiceClient _stageServiceClient;
   state_pbgrpc.StateServiceClient _stateServiceClient;
 
   InitiativeService(this._authService, this._augeApiService) {
     _initiativeServiceClient =
         initiative_pbgrpc.InitiativeServiceClient(_augeApiService.channel);
+    _stageServiceClient =
+        stage_pbgrpc.StageServiceClient(_augeApiService.channel);
     _stateServiceClient =
         state_pbgrpc.StateServiceClient(_augeApiService.channel);
   }
@@ -56,6 +62,21 @@ class InitiativeService {
           ..id = id
           ..withWorkItems = withWorkItems
           ..withProfile = withProfile)));
+  }
+
+  /// Return a list of [Stage]
+  Future<List<Stage>> getStages(String initiativeId) async {
+    return (await _stageServiceClient.getStages(stage_pbgrpc.StageGetRequest()..initiativeId = initiativeId)).stages.map((s) =>
+    Stage()
+      ..readFromProtoBuf(s)).toList();
+  }
+
+  /// Return [Stage] by Initiative [id]
+  Future<Stage> getStage(String id) async {
+    // return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
+    return Stage()..readFromProtoBuf((await _stageServiceClient.getStage(
+        stage_pbgrpc.StageGetRequest()
+          ..id = id)));
   }
 
   /// Return a list of [State]
@@ -92,6 +113,8 @@ class InitiativeService {
     return initiative.id;
   }
 
+
+
   /// Delete an [Initiative]
   void deleteInitiative(Initiative initiative) async {
     try {
@@ -103,6 +126,49 @@ class InitiativeService {
         ..authenticatedUserId = _authService.authenticatedUser.id;
 
       await _initiativeServiceClient.deleteInitiative(initiativeDeleteRequest);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Save (create or update)an [Stage]
+  Future<String> saveStage(String initiativeId, Stage stage) async {
+    try {
+
+      stage_pbgrpc.StageRequest stageRequest = stage_pbgrpc.StageRequest()
+        ..initiativeId = initiativeId
+        ..stage = stage.writeToProtoBuf()
+        ..authenticatedUserId = _authService.authenticatedUser.id
+        ..authenticatedOrganizationId = _authService.selectedOrganization.id;
+
+
+      if (stage.id == null) {
+        common_pb.IdResponse idResponse = await _stageServiceClient
+            .createStage(stageRequest);
+
+        // ID - primary key generated on server-side.
+        stage.id = idResponse?.id;
+      } else {
+        await _stageServiceClient.updateStage(stageRequest);
+      }
+    } catch (e) {
+      print('${e.runtimeType}, ${e}');
+      rethrow;
+    }
+    return stage.id;
+  }
+
+  /// Delete a [Stage]
+  void deleteStage(Stage stage) async {
+    try {
+
+      stage_pbgrpc.StageDeleteRequest stageDeleteRequest = stage_pbgrpc.StageDeleteRequest()
+        ..stageId = stage.id
+        ..stageVersion = stage.version
+        ..authenticatedOrganizationId = _authService.selectedOrganization.id
+        ..authenticatedUserId = _authService.authenticatedUser.id;
+
+      await _stageServiceClient.deleteStage(stageDeleteRequest);
     } catch (e) {
       rethrow;
     }
