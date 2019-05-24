@@ -73,7 +73,7 @@ class InitiativesSummaryComponent extends Object implements OnInit {
   }
 
   void goToInitiatives() {
-    _router.navigate(AppRoutes.initiativesByObjectiveRoute.toUrl(parameters: { AppRoutes.objectiveIdParameter:objectiveId}));
+    _router.navigate(AppRoutes.initiativesByObjectiveRoute.toUrl(parameters: { AppRoutesParam.objectiveIdParameter:objectiveId}));
   }
 
   String userUrlImage(String userProfileImage) {

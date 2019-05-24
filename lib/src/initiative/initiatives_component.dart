@@ -40,6 +40,9 @@ import 'package:auge_web/src/work_item/work_items_list_component.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/services/app_routes.dart';
 
+// ignore_for_file: uri_has_not_been_generated
+import 'package:auge_web/src/initiative/initiative_detail_component.template.dart' as initiative_detail_component;
+
 @Component(
     selector: 'auge-initiatives',
     providers: const [InitiativeService, ObjectiveService, HistoryTimelineService],
@@ -67,7 +70,7 @@ import 'package:auge_web/services/app_routes.dart';
       'initiatives_component.css'
     ])
 
-class InitiativesComponent extends Object /*with CanReuse*/ implements /* OnInit, */ OnActivate, OnDestroy {
+class InitiativesComponent extends Object with CanReuse implements /* OnInit, */ OnActivate, OnDestroy {
 
   final InitiativeService _initiativeService;
   final ObjectiveService _objectiveService;
@@ -109,10 +112,22 @@ class InitiativesComponent extends Object /*with CanReuse*/ implements /* OnInit
 
   String _sortedBy = nameLabel;
 
+  final List<RouteDefinition> routes = [
+    new RouteDefinition(
+      routePath: AppRoutes.initiativeAddRoute,
+      component: initiative_detail_component.InitiativeDetailComponentNgFactory,
+    ),
+    new RouteDefinition(
+      routePath: AppRoutes.initiativeEditRoute,
+      component: initiative_detail_component.InitiativeDetailComponentNgFactory,
+    ),
+  ];
+
+
   InitiativesComponent(this._appLayoutService, this._initiativeService, this._objectiveService, this._searchService, this._historyTimelineService, this._router) {
     initiativesFilterParam = InitiativesFilterParam();
     menuModel = new MenuModel([new MenuItemGroup([
-      new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)),
+      new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => goToDetail(selectedInitiative) /* viewDetail(true) */),
       new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete()),
       new MenuItem(stagesLabel, icon: new Icon('view_week'), action: () { stagesVisible = true; }) ])], icon: new Icon('menu'));
 
@@ -149,8 +164,8 @@ class InitiativesComponent extends Object /*with CanReuse*/ implements /* OnInit
     
     _appLayoutService.headerTitle = InitiativeMsg.label('Initiatives');
 
-    if (routerStateCurrent.parameters.containsKey(AppRoutes.objectiveIdParameter)) {
-        String objectiveId = routerStateCurrent.parameters[AppRoutes
+    if (routerStateCurrent.parameters.containsKey(AppRoutesParam.objectiveIdParameter)) {
+        String objectiveId = routerStateCurrent.parameters[AppRoutesParam
             .objectiveIdParameter];
 
         try {
@@ -200,8 +215,17 @@ class InitiativesComponent extends Object /*with CanReuse*/ implements /* OnInit
 
   }
 
+  void goToDetail(Initiative initiative) {
+    print(AppRoutes.initiativeAddRoute.toUrl());
+    if (initiative == null) {
+      _router.navigate(AppRoutes.initiativeAddRoute.toUrl());
+    } else {
+      _router.navigate(AppRoutes.initiativeEditRoute.toUrl(parameters: { AppRoutesParam.initiativeIdParameter: initiative.id }));
+    }
+  }
+
   void goToWorkItem(Initiative initiative) {
-    _router.navigate(AppRoutes.workItemsRoute.toUrl(parameters: { AppRoutes.initiativeIdParameter: initiative.id }));
+    _router.navigate(AppRoutes.workItemsRoute.toUrl(parameters: { AppRoutesParam.initiativeIdParameter: initiative.id }));
   }
 
   void stopPropagation(MouseEvent me) {

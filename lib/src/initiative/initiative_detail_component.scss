@@ -4,10 +4,12 @@
 @import 'package:angular_components/material_dialog/mixins';
 @import 'package:angular_components/material_expansionpanel/mixins';
 
+/*
 :host {
   @include button-background-color('material-button.blue', $mat-blue-500);
   @include button-color('material-button.blue', $mat-white);
 }
+*/
 
 material-fab {
     float: right;

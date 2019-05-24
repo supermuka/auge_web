@@ -83,7 +83,7 @@ class MapComponent implements OnActivate {
   }
 
   void goToObjectives(Objective objective) async {
-    _router.navigateByUrl(AppRoutes.objectivesRoute.toUrl(queryParameters: { AppRoutes.objectiveIdParameter: objective.id }));
+    _router.navigateByUrl(AppRoutes.objectivesRoute.toUrl(queryParameters: { AppRoutesParam.objectiveIdParameter: objective.id }));
 
   }
 

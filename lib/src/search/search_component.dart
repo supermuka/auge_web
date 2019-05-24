@@ -2,12 +2,14 @@
 // Author: Samuel C. Schwebel.
 
 import 'package:angular/angular.dart';
+import 'package:angular_router/angular_router.dart';
 
 import 'package:angular_components/material_input/material_auto_suggest_input.dart';
 import 'package:angular_components/model/selection/selection_model.dart';
 import 'package:angular_components/model/selection/selection_options.dart';
 import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
+
 
 import 'search_service.dart';
 
@@ -17,12 +19,13 @@ import 'search_service.dart';
   templateUrl: 'search_component.html',
   directives: const [
     coreDirectives,
+    routerDirectives,
     MaterialButtonComponent,
     MaterialIconComponent,
     MaterialAutoSuggestInputComponent,
   ],
 )
-class SearchComponent {
+class SearchComponent extends Object with CanReuse {
 
   final SearchService _searchService;
 

@@ -132,8 +132,8 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
     _appLayoutService.enabledSearch = true;
 
     // Expand panel whether [Id] objective is informed.
-    if (routerStateCurrent.queryParameters.containsKey(AppRoutes.objectiveIdParameter)) {
-      initialObjectiveId = routerStateCurrent.queryParameters[AppRoutes.objectiveIdParameter];
+    if (routerStateCurrent.queryParameters.containsKey(AppRoutesParam.objectiveIdParameter)) {
+      initialObjectiveId = routerStateCurrent.queryParameters[AppRoutesParam.objectiveIdParameter];
     }
 
     try {

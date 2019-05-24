@@ -1,0 +1,78 @@
+<modal [visible]="true">
+    <material-dialog headered [error]="dialogError">
+        <div header>
+            <h3>Initiative Stages</h3>
+        </div>
+        <material-expansionpanel style="min-width: 480px;" disabled
+                                 [alwaysHideExpandIcon]="true"
+                                 [expanded]="true"
+                                 [showSaveCancel]="false">
+            <div name>
+                <span><strong>{{stageLabel}}</strong></span>
+            </div>
+            <div action>
+                <material-button icon (trigger)="selectStage(null)">
+                    <material-icon icon="add"></material-icon>
+                </material-button>
+            </div>
+            <div *ngFor="let iStage of stages;let i = index">
+                <div class="group" *ngIf="i == 0 || stages[i-1]?.state?.id != stages[i]?.state?.id">
+                    <label><span *ngIf="iStage?.state?.colorHue != null" [style.background-color]="'hsl(' + iStage?.state?.colorHue + ', ' + iStage?.state?.colorSaturation + '%,' + iStage?.state?.colorLightness + '%)'">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;{{iStage?.state?.name}}</label>&nbsp;
+                </div>
+                <material-expansionpanel disabled
+                                         flat
+                                         [alwaysHideExpandIcon]="true"
+                                         [hideExpandedHeader]="true"
+                                         [showSaveCancel]="true"
+                                         [expanded]="iStage != null && iStage == selectedStage"
+                                         (save)="saveStage(iStage, $event)"
+                                         (cancel)="cancelStage(iStage, $event)"
+                                         expandIcon="edit">
+                    <div name>
+                        <span>{{iStage.name}}</span>
+                    </div>
+                    <div value>
+                        <span class="w3-right">{{iStage.index}}</span>
+                    </div>
+                    <div action>
+                        <material-button icon [disabled]="disableUp(iStage)" (trigger)="moveUpStage(iStage)">
+                            <material-icon icon="arrow_drop_up"></material-icon>
+                        </material-button>
+                        <material-button icon [disabled]="disableDown(iStage)" (trigger)="moveDownStage(iStage)">
+                            <material-icon icon="arrow_drop_down"></material-icon>
+                        </material-button>
+                        <material-button icon (trigger)="selectStage(iStage)">
+                            <material-icon icon="edit"></material-icon>
+                        </material-button>
+                        <material-button icon (trigger)="delete(iStage)">
+                            <material-icon icon="delete"></material-icon>
+                        </material-button>
+                    </div>
+                    <div class="w3-row-padding">
+                        <div class="w3-col l8">
+                            <material-input autoFocus [(ngModel)]="iStage.name" floatingLabel [label]="'Nome?'"></material-input>
+                        </div>
+                        <div class="w3-col l4">
+                            <div class="input-container w3-right">
+                                <label>{{stageLabel}}</label>
+                                <material-dropdown-select [buttonText]="stateSingleSelectLabel"
+                                                          [selection]="stateSingleSelectModel"
+                                                          [options]="stateOptions"
+                                                          [itemRenderer]="stateItemRenderer"
+                                                          [factoryRenderer]="stateFactoryRenderer">
+                                </material-dropdown-select>
+                            </div>
+                        </div>
+
+                    </div>
+                </material-expansionpanel>
+            </div>
+        </material-expansionpanel>
+
+        <div footer>
+            <material-button (trigger)="close()">Close
+                <material-icon icon="close"></material-icon>
+            </material-button>
+        </div>
+    </material-dialog>
+</modal>

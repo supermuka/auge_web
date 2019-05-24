@@ -5,6 +5,8 @@ import 'dart:async';
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
+import 'package:auge_web/services/app_routes.dart';
+
 import 'package:angular_components/focus/focus.dart';
 import 'package:angular_components/laminate/components/modal/modal.dart';
 import 'package:angular_components/laminate/overlay/module.dart';
@@ -72,7 +74,9 @@ import 'initiative_detail_component.template.dart' as initiative_detail_componen
   styleUrls: const [
     'initiative_detail_component.css'
   ])
-class InitiativeDetailComponent implements OnInit {
+class InitiativeDetailComponent implements  OnInit,  OnActivate, OnDeactivate {
+
+  bool modalVisible;
   /// Entry to edit data. If new, this should be null
   @Input()
   String initiativeId;
@@ -123,7 +127,9 @@ class InitiativeDetailComponent implements OnInit {
   /// When it exists, the error/exception message presented into dialog view.
   String dialogError;
 
-  InitiativeDetailComponent(this._initiativeService, this._objectiveService,  this._userService, this._groupService)  {
+  final Location _location;
+
+  InitiativeDetailComponent(this._initiativeService, this._objectiveService,  this._userService, this._groupService, this._location)  {
     stateSingleSelectModel = SelectionModel.single();
     leaderSingleSelectModel = SelectionModel.single();
     objectiveSingleSelectModel = SelectionModel.single();
@@ -148,9 +154,110 @@ class InitiativeDetailComponent implements OnInit {
   static final String stageLabel =  FieldMsg.label('${Stage.className}.${Stage.nameField}');
 
   @override
+  void onActivate(RouterState previous, RouterState current) async {
+
+    modalVisible = true;
+
+   // initiative = Initiative(); // Needs to create new here, even if it can be replaced later, because if get method to delay, Angular throws an error.
+
+    if (current.queryParameters.containsKey(AppRoutesParam.initiativeIdParameter)) {
+      initiativeId = current.queryParameters[AppRoutesParam.initiativeIdParameter];
+    }
+
+    if (initiativeId != null) {
+      // Clone objective
+      // initiative = selectedInitiative.clone();
+
+      initiative = await _initiativeService.getInitiative(initiativeId);
+
+    } else {
+
+      initiative.organization = _initiativeService.authService.selectedOrganization;
+    }
+
+    try {
+      _states =  await _initiativeService.getStates();
+      _users = await _userService.getUsers(_initiativeService.authService.selectedOrganization.id, withProfile: true);
+      _objectives = await _objectiveService.getObjectives(_initiativeService.authService.selectedOrganization.id, withMeasures: false);
+      _groups = await _groupService.getGroups(_initiativeService.authService.selectedOrganization.id);
+
+    } catch (e) {
+      dialogError = e.toString();
+      rethrow;
+    }
+
+    // List<State> states =  await _initiativeService.getStates();
+    // stateOptions = new SelectionOptions.fromList(_states);
+    stateOptions = new StringSelectionOptions<State>(
+        _states, toFilterableString: (State state) => state.name);
+
+    if (stateOptions.optionsList.isNotEmpty) {
+      stateSingleSelectModel.select(stateOptions.optionsList.first);
+    }
+
+    // Leader
+    // List<User> users = await _userService.getUsers(_authService.selectedOrganization.id, withProfile: true);
+    leaderOptions = new StringSelectionOptions<User>(
+        _users, toFilterableString: (User user) => user.name);
+
+    // Objective
+    // List<Objective> objectives = await _objectiveService.getObjectives(_authService.selectedOrganization.id, withMeasures: false);
+    objectiveOptions = new StringSelectionOptions<Objective>(
+        _objectives, toFilterableString: (Objective objective) => objective.name);
+
+    // List<Group> groups = await _groupService.getGroups(_authService.selectedOrganization.id);
+
+    groupOptions = new StringSelectionOptions<Group>(
+        _groups, toFilterableString: (Group gru) => gru.name);
+
+    leaderSingleSelectModel.selectionChanges.listen((leader) {
+      if (leader.isNotEmpty && leader.first.added != null && leader.first.added.length != 0 && leader.first.added?.first != null) {
+        initiative.leader = leader.first.added.first;
+      }
+    });
+
+    if (initiative.leader != null) {
+      // leaderSingleSelectModel.select(initiative.leader);
+      leaderSingleSelectModel.select(leaderOptions.optionsList.singleWhere((l) => l.id == initiative.leader.id));
+    }
+
+    // Objective Select Model
+    objectiveSingleSelectModel.selectionChanges.listen((objective) {
+      if (objective.isNotEmpty && objective.first.added != null && objective.first.added.length != 0 && objective.first.added?.first != null) {
+        initiative.objective = objective.first.added.first;
+      }
+    });
+
+    if (initiative.objective != null) {
+      objectiveSingleSelectModel.select(objectiveOptions.optionsList.singleWhere((o) => o.id == initiative.objective.id));
+      //objectiveSingleSelectModel.select(initiative.objective);
+
+    }
+
+    // Group
+    groupSingleSelectModel.selectionChanges.listen((groupEvent) {
+      if (groupEvent.isNotEmpty && groupEvent.first.added != null && groupEvent.first.added.length != 0 && groupEvent.first.added?.first != null) {
+        initiative.group = groupEvent.first.added.first;
+      }
+    });
+
+    if (initiative.group != null) {
+      groupSingleSelectModel.select(groupOptions.optionsList.singleWhere((g) => g.id == initiative.group.id));
+      //  groupSingleSelectModel.select(initiative.group);
+    }
+
+  }
+
+  @override
+  void onDeactivate(RouterState current, RouterState next) {
+    modalVisible = false;
+  }
+
+  @override
   void ngOnInit() async {
 
     initiative = Initiative(); // Needs to create new here, even if it can be replaced later, because if get method to delay, Angular throws an error.
+    /*
     if (initiativeId != null) {
       // Clone objective
       // initiative = selectedInitiative.clone();
@@ -233,6 +340,8 @@ class InitiativeDetailComponent implements OnInit {
       groupSingleSelectModel.select(groupOptions.optionsList.singleWhere((g) => g.id == initiative.group.id));
     //  groupSingleSelectModel.select(initiative.group);
     }
+
+     */
   }
 
   void saveInitiative() async {
@@ -248,7 +357,8 @@ class InitiativeDetailComponent implements OnInit {
   }
 
   void closeDetail() {
-    _closedController.add(null);
+    //_closedController.add(null);
+    _location.back();
   }
 
 

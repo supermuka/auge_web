@@ -41,6 +41,7 @@ class OrganizationComponent extends Object with CanReuse implements OnActivate {
 
   OrganizationComponent(this._authService, this._appLayoutService, this._organizationService,
        this._location, this._router) {
+
   }
 
   void onActivate(RouterState routeStatePrevious, RouterState routeStateCurrent) async {
