@@ -1,4 +1,4 @@
-<modal [visible]="true">
+<modal [visible]="modalVisible">
     <material-dialog headered [error]="dialogError">
         <div header>
             <h3 *ngIf="organization.id == null">{{addOrganizationLabel}}</h3>

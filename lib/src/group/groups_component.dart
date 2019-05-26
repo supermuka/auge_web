@@ -17,13 +17,15 @@ import 'package:auge_server/model/general/authorization.dart';
 import 'package:auge_server/model/general/group.dart';
 
 import 'package:auge_web/message/messages.dart';
-import 'package:auge_web/src/group/group_detail_component.dart';
 import 'package:auge_web/src/group/group_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/src/history_timeline/history_timeline_component.dart';
 
 import 'package:auge_web/services/app_routes.dart';
+
+// ignore_for_file: uri_has_not_been_generated
+import 'package:auge_web/src/group/group_detail_component.template.dart' as group_detail_component;
 
 @Component(
     selector: 'auge-groups',
@@ -37,7 +39,6 @@ import 'package:auge_web/services/app_routes.dart';
       MaterialExpansionPanelSet,
       MaterialToggleComponent,
       MaterialMenuComponent,
-      GroupDetailComponent,
       HistoryTimelineComponent,
     ],
     templateUrl: 'groups_component.html',
@@ -45,13 +46,24 @@ import 'package:auge_web/services/app_routes.dart';
       'groups_component.css'
     ])
 
-class GroupsComponent extends Object /* with CanReuse */ implements OnActivate, OnDestroy {
+class GroupsComponent with CanReuse implements OnActivate, OnDestroy {
 //  final AuthService _authService;
   final AppLayoutService _appLayoutService;
   final GroupService _groupService;
   final SearchService _searchService;
   final HistoryTimelineService _historyTimelineService;
   final Router _router;
+
+  final List<RouteDefinition> routes = [
+    new RouteDefinition(
+      routePath: AppRoutes.groupAddRoute,
+      component: group_detail_component.GroupDetailComponentNgFactory,
+    ),
+    new RouteDefinition(
+      routePath: AppRoutes.groupEditRoute,
+      component: group_detail_component.GroupDetailComponentNgFactory,
+    ),
+  ];
 
   List<Group> _groups = new List();
   Group selectedGroup;
@@ -64,7 +76,7 @@ class GroupsComponent extends Object /* with CanReuse */ implements OnActivate, 
   MenuModel<MenuItem> menuModel;
 
   GroupsComponent(/* this._authService, */ this._appLayoutService, this._groupService, this._searchService, this._historyTimelineService, this._router) {
-    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
+    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => goToDetail()), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
   }
 
   bool get timelineVisible {
@@ -132,20 +144,16 @@ class GroupsComponent extends Object /* with CanReuse */ implements OnActivate, 
     return name == null ? 'G' : name.substring(0, 1).toUpperCase();
   }
 
-  void viewDetail(bool detailVisible) {
-    this.detailVisible = detailVisible;
-  }
-
-  void changeListItemWithDetail(String groupId) async {
-    if (selectedGroup == null) {
-      groups.add( await _groupService.getGroup(groupId) );
-    } else {
-      groups[groups.indexOf(selectedGroup)] = await _groupService.getGroup(groupId);
-    }
-    _historyTimelineService.refreshHistory(SystemModule.groups.index);
-  }
-
   String groupActiveInactive(Group group) {
     return group.active ? GroupMsg.label('Active') : GroupMsg.label('Inactive');
+  }
+
+  void goToDetail() {
+    if (selectedGroup == null) {
+      _router.navigate(AppRoutes.groupAddRoute.toUrl());
+
+    } else {
+      _router.navigate(AppRoutes.groupEditRoute.toUrl(parameters: { AppRoutesParam.groupIdParameter: selectedGroup.id }));
+    }
   }
 }

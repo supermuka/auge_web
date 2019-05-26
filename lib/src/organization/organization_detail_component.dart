@@ -1,9 +1,9 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
-import 'dart:async';
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
+import 'package:auge_web/services/app_routes.dart';
 
 import 'package:angular_components/focus/focus.dart';
 import 'package:angular_components/laminate/components/modal/modal.dart';
@@ -38,31 +38,19 @@ import 'package:auge_web/src/organization/organization_service.dart';
     'organization_detail_component.css'
   ])
 
-class OrganizationDetailComponent extends Object implements OnInit {
-
-  @Input()
-  String selectedOrganizationId;
+class OrganizationDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
   final OrganizationService _organizationService;
+  final Location _location;
 
-  Organization organization = new Organization();
+  bool modalVisible = false;
 
-  final _closeController = new StreamController<void>.broadcast(sync: true);
-
-  /// Publishes events when close.
-  @Output()
-  Stream<void> get closed => _closeController.stream;
-
-  final _saveController = new StreamController<String>.broadcast(sync: true);
-
-  /// Publishes events when save.
-  @Output()
-  Stream<String> get saved => _saveController.stream;
+  Organization organization;
 
   /// When it exists, the error/exception message is presented into dialog view.
   String dialogError;
 
-  OrganizationDetailComponent(this._organizationService);
+  OrganizationDetailComponent(this._organizationService, this._location);
 
   // Define messages and labels
   static final String requiredValueMsg = CommonMsg.requiredValueMsg();
@@ -72,23 +60,39 @@ class OrganizationDetailComponent extends Object implements OnInit {
   static final String addOrganizationLabel =  OrganizationMsg.label('Add Organization');
   static final String editOrganizationLabel =  OrganizationMsg.label('Edit Organization');
 
-  static final String nameLabel =  FieldMsg.label(Organization.nameField);
-  static final String codeLabel =  FieldMsg.label(Organization.codeField);
+  static final String nameLabel =  FieldMsg.label('${Organization.className}.${Organization.nameField}');
+  static final String codeLabel =  FieldMsg.label('${Organization.className}.${Organization.codeField}');
 
   @override
   void ngOnInit() async {
-    if (selectedOrganizationId != null)  {
-      // Clone objective
-      // organization = selectedOrganization.clone();
-      organization = await _organizationService.getOrganization(selectedOrganizationId);
+
+    organization = Organization();
+  }
+
+  @override
+  void onActivate(RouterState previous, RouterState current) async {
+    modalVisible = true;
+
+    String id;
+    if (current.parameters.containsKey(AppRoutesParam.organizationIdParameter)) {
+      id = current.parameters[AppRoutesParam.organizationIdParameter];
     }
+
+    if (id != null) {
+      organization =
+      await _organizationService.getOrganization(id);
+    }
+  }
+
+  @override
+  void onDeactivate(RouterState current, RouterState next) {
+    modalVisible = false;
   }
 
   void saveOrganization() {
     try {
       _organizationService.saveOrganization(organization);
-      _saveController.add(organization.id);
-      //closeDetail();
+      closeDetail();
     } catch (e) {
       dialogError = e.toString();
       rethrow;
@@ -100,6 +104,6 @@ class OrganizationDetailComponent extends Object implements OnInit {
   }
 
   void closeDetail() {
-    _closeController.add(null);
+    _location.back();
   }
 }

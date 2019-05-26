@@ -3,6 +3,8 @@
 import 'dart:async';
 
 import 'package:angular/angular.dart';
+import 'package:angular_router/angular_router.dart';
+import 'package:auge_web/services/app_routes.dart';
 
 import 'package:angular_components/focus/focus.dart';
 import 'package:angular_components/laminate/components/modal/modal.dart';
@@ -60,29 +62,16 @@ import 'objective_detail_component.template.dart' as objective_detail_component;
       'objective_detail_component.css'
     ])
 
-class ObjectiveDetailComponent extends Object implements OnInit {
+class ObjectiveDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
   final UserService _userService;
   final ObjectiveService _objectiveService;
   final GroupService _groupService;
+  final Location _location;
 
-  @Input()
-  String selectedObjectiveId;
+  bool modalVisible = false;
 
-  final _closedController = new StreamController<void>.broadcast(sync: true);
-
-  /// Publishes events when close.
-  @Output()
-  Stream<void> get closed => _closedController.stream;
-
-  final _savedController = new StreamController<String>.broadcast(sync: true);
-
-  /// Publishes events when save.
-  @Output()
-  Stream<String> get saved => _savedController.stream;
-
-  // It's needed to create an object before, even if later to get from server side. As server side as on the server side the response takes time, angular/html render first and the object doesn't to get null.
-  Objective objective = Objective();
+  Objective objective;
 
   String groupInputText = '';
   String alignedToInputText = '';
@@ -109,7 +98,7 @@ class ObjectiveDetailComponent extends Object implements OnInit {
   /// When it exists, the error/exception message presented into dialog view.
   String dialogError;
 
-  ObjectiveDetailComponent(this._userService, this._objectiveService, this._groupService) {
+  ObjectiveDetailComponent(this._userService, this._objectiveService, this._groupService, this._location) {
     groupSingleSelectModel = SelectionModel.single();
     alignedToSingleSelectModel = SelectionModel.single();
     leaderSingleSelectModel = SelectionModel.single();
@@ -135,11 +124,23 @@ class ObjectiveDetailComponent extends Object implements OnInit {
 
   @override
   void ngOnInit() async {
+    // It's needed to create an object before, even if later to get from server side. As server side as on the server side the response takes time, angular/html render first and the object doesn't to get null.
+    objective = Objective();
+  }
 
-    if (selectedObjectiveId != null) {
+  @override
+  void onActivate(RouterState previous, RouterState current) async {
+    modalVisible = true;
+
+    String id;
+    if (current.parameters.containsKey(AppRoutesParam.groupIdParameter)) {
+      id = current.parameters[AppRoutesParam.groupIdParameter];
+    }
+
+    if (id != null) {
       // Clone objective
      // objective = selectedObjective.clone();
-       objective = await _objectiveService.getObjective(selectedObjectiveId);
+       objective = await _objectiveService.getObjective(id);
       //objective = selectedObjective.clone();
 
     } else {
@@ -209,13 +210,17 @@ class ObjectiveDetailComponent extends Object implements OnInit {
       groupSingleSelectModel.select(objective.group);
   }
 
+  @override
+  void onDeactivate(RouterState current, RouterState next) {
+    modalVisible = false;
+  }
+
   void saveObjective() async {
     try {
 
       // History item definition
        await _objectiveService.saveObjective(objective);
 
-      _savedController.add(objective.id);
       closeDetail();
     } catch (e) {
       dialogError = e.toString();
@@ -224,7 +229,7 @@ class ObjectiveDetailComponent extends Object implements OnInit {
   }
 
   void closeDetail() {
-     _closedController.add(null);
+    _location.back();
   }
 
   String get alignedToLabelRenderer {

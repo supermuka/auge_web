@@ -64,7 +64,7 @@ class MeasureService {
 
   /// Return an [MeasureProgress] by [Measure.id]
   Future<List<MeasureProgress>> getMeasureProgress(String measureId) async {
-    print('DEBUG getMeasureProgress ${measureId}');
+
     measure_pbgrpc
         .MeasureProgressesResponse measureProgressesResponsePb = await _measureServiceClient
         .getMeasureProgresses(measure_pbgrpc.MeasureProgressGetRequest()

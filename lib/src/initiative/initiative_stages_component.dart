@@ -4,6 +4,8 @@
 import 'dart:async';
 
 import 'package:angular/angular.dart';
+import 'package:angular_router/angular_router.dart';
+import 'package:auge_web/services/app_routes.dart';
 
 import 'package:angular_components/focus/focus.dart';
 import 'package:angular_components/laminate/components/modal/modal.dart';
@@ -53,23 +55,6 @@ import 'initiative_stages_component.template.dart' as initiative_stages_componen
       MaterialDropdownSelectComponent,
       DropdownSelectValueAccessor,
       DropdownButtonComponent,
-      /*
-      coreDirectives,
-      materialInputDirectives,
-      materialNumberInputDirectives,
-      AutoFocusDirective,
-      ModalComponent,
-      MaterialExpansionPanel,
-      MaterialExpansionPanelSet,
-      MaterialDialogComponent,
-      MaterialButtonComponent,
-      MaterialIconComponent,
-      MaterialMenuComponent,
-      MaterialDropdownSelectComponent,
-      DropdownSelectValueAccessor,
-      DropdownButtonComponent,
-      */
-
     ],
   /*  pipes: const [commonPipes], */
     templateUrl: 'initiative_stages_component.html',
@@ -77,26 +62,17 @@ import 'initiative_stages_component.template.dart' as initiative_stages_componen
       'initiative_stages_component.css'
     ])
 
-class InitiativeStagesComponent implements OnInit {
+class InitiativeStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
 
   final InitiativeService _initiativeService;
+  final Location _location;
 
-  @Input()
+  bool modalVisible = false;
+
+
+
   String initiativeId;
-
   List<Stage> stages;
-
-  final _closeController = new StreamController<void>.broadcast(sync: true);
-
-  /// Publishes events when close.
-  @Output()
-  Stream<void> get closed => _closeController.stream;
-
-  final _savedController = new StreamController<void>.broadcast(sync: true);
-
-  /// Publishes events when save.
-  @Output()
-  Stream<void> get saved => _savedController.stream;
 
   bool editable;
 
@@ -113,9 +89,9 @@ class InitiativeStagesComponent implements OnInit {
 
   List<State> _states;
 
-  InitiativeStagesComponent(this._initiativeService) {
+  InitiativeStagesComponent(this._initiativeService, this._location) {
    // initializeDateFormatting(Intl.defaultLocale , null);
-    /*
+
     stateSingleSelectModel = SelectionModel.single()
       ..selectionChanges.listen((es) {
         if (selectedStage != null && es.isNotEmpty && es.first.added != null &&
@@ -123,8 +99,6 @@ class InitiativeStagesComponent implements OnInit {
           selectedStage.state = es.first.added.first;
         }
       });
-
-     */
   }
 
   // Define messages and labels
@@ -136,24 +110,34 @@ class InitiativeStagesComponent implements OnInit {
 
   static final String stateNotInfomedMsg =  StageMsg.stateNotInfomedMsg();
 
-  void ngOnInit() async {
+  @override
+  void onActivate(RouterState previous, RouterState current) async {
+    modalVisible = true;
+
+    if (current.parameters.containsKey(AppRoutesParam.initiativeIdParameter)) {
+      initiativeId = current.parameters[AppRoutesParam.initiativeIdParameter];
+    }
     if (initiativeId != null) {
       stages = await _initiativeService.getStages(initiativeId);
-   //   _sortMeasurePregressesOrderByDate(stages);
     } else {
-      stages = [];
+      throw Exception('Initiative Id not found.');
     }
 
     _states =  await _initiativeService.getStates();
 
     // List<State> states =  await _initiativeService.getStates();
-    // stateOptions = new SelectionOptions.fromList(_states);
+
     stateOptions = new StringSelectionOptions<State>(
         _states, toFilterableString: (State state) => state.name);
 
     if (stateOptions.optionsList.isNotEmpty) {
       stateSingleSelectModel.select(stateOptions.optionsList.first);
     }
+  }
+
+  @override
+  void onDeactivate(RouterState current, RouterState next) {
+    modalVisible = false;
   }
 
   // Label for the button for single selection.
@@ -215,7 +199,6 @@ class InitiativeStagesComponent implements OnInit {
         // stages = await _initiativeService.getStages(selectedInitiative.id);
         _sortStages();
 
-        _savedController.add(null);
       } catch (e) {
         dialogError = e.toString();
         event.cancel();
@@ -331,7 +314,7 @@ class InitiativeStagesComponent implements OnInit {
   }
 
   void close() {
-    _closeController.add(null);
+    _location.back();
   }
 
   ItemRenderer get stateItemRenderer => (dynamic state) => state.name;

@@ -24,7 +24,6 @@ import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_web/message/messages.dart';
 import 'package:auge_web/message/model_messages.dart';
 
-import 'package:auge_web/src/objective/objective_detail_component.dart';
 import 'package:auge_web/src/history_timeline/history_timeline_component.dart';
 import 'package:auge_web/src/measure/measures_component.dart';
 import 'package:auge_web/src/initiative/initiatives_summary_component.dart';
@@ -33,6 +32,9 @@ import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/services/app_routes.dart';
+
+// ignore_for_file: uri_has_not_been_generated
+import 'package:auge_web/src/objective/objective_detail_component.template.dart' as objective_detail_component;
 
 @Component(
     selector: 'auge-objectives',
@@ -48,7 +50,6 @@ import 'package:auge_web/services/app_routes.dart';
       MaterialExpansionPanelSet,
       MaterialTooltipDirective,
       MaterialMenuComponent,
-      ObjectiveDetailComponent,
       HistoryTimelineComponent,
       MeasuresComponent,
       InitiativesSummaryComponent,
@@ -66,6 +67,17 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
   final SearchService _searchService;
   final HistoryTimelineService _historyTimelineService;
   final Router _router;
+
+  final List<RouteDefinition> routes = [
+    new RouteDefinition(
+      routePath: AppRoutes.groupAddRoute,
+      component: objective_detail_component.ObjectiveDetailComponentNgFactory,
+    ),
+    new RouteDefinition(
+      routePath: AppRoutes.groupEditRoute,
+      component: objective_detail_component.ObjectiveDetailComponentNgFactory,
+    ),
+  ];
 
   List<Objective> _objectives = List();
 
@@ -95,7 +107,7 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
   String _sortedBy = nameLabel;
 
   ObjectivesComponent(this._appLayoutService, this._objectiveService, this._searchService, this._historyTimelineService, this._router) {
-    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => detailVisible = true), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
+    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => goToDetail()), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
   }
 
   set sortedBy(String sortedBy) {
@@ -224,10 +236,6 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
     //_historyTimelineService.getHistory(SystemModule.objectives.index);
   }
 
-  void viewDetail(bool detailVisible) {
-    this.detailVisible = detailVisible;
-  }
-
   String userUrlImage(String userProfileImage) {
     return common_service.userUrlImage(userProfileImage);
   }
@@ -283,6 +291,15 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
 
   String composeTooltip(String label, String name) {
     return label + ' ' + ((name == null) ? '(-)' : name);
+  }
+
+  void goToDetail() {
+    if (selectedObjective == null) {
+      _router.navigate(AppRoutes.objectiveAddRoute.toUrl());
+
+    } else {
+      _router.navigate(AppRoutes.objectiveEditRoute.toUrl(parameters: { AppRoutesParam.objectiveIdParameter: selectedObjective.id }));
+    }
   }
 
 }

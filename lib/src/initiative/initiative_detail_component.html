@@ -1,5 +1,5 @@
 <modal [visible]="modalVisible">
-    <material-dialog headered [error]="dialogError">
+    <material-dialog headered class="dialog-custom" [error]="dialogError">
         <div header>
             <h3 *ngIf="initiative.id == null">{{addInitiativeLabel}}</h3>
             <h3 *ngIf="initiative.id != null">{{editInitiativeLabel}}</h3>
@@ -42,43 +42,6 @@
                                          [factoryRenderer]="leaderFactoryRenderer"
                                          [limit]="10">
             </material-auto-suggest-input>
-        </div>
-        <div class="material-shadow-box-list" elevation="2">
-            <material-input [(ngModel)]="stageEntry" floatingLabel [label]="stageLabel"></material-input>
-            <material-dropdown-select [buttonText]="stateSingleSelectLabel"
-                                      [selection]="stateSingleSelectModel"
-                                      [options]="stateOptions"
-                                      [itemRenderer]="stateItemRenderer"
-                                      [factoryRenderer]="stateFactoryRenderer">
-            </material-dropdown-select>
-            <span>
-                <material-button *ngIf="selectedStage == null" [disabled]="!validStageInput" icon (trigger)="addStage()">
-                    <material-icon icon="add"></material-icon>
-                </material-button>
-
-                <material-button *ngIf="selectedStage != null" [disabled]="!validStageInput" icon (trigger)="updateStage(selectedStage)">
-                    <material-icon icon="done"></material-icon>
-                </material-button>
-            </span>
-            <material-list *ngFor="let stage of initiative.stages;let i = index">
-                <div *ngIf="i == 0 || initiative.stages[i-1]?.state?.id != initiative.stages[i]?.state?.id" group>
-                    <span><span *ngIf="stage?.state?.colorHue != null" [style.background-color]="'hsl(' + stage?.state?.colorHue + ', ' + stage?.state?.colorSaturation + '%,' + stage?.state?.colorLightness + '%)'">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;{{stage?.state?.name}}&nbsp;</span>
-                </div>
-                <material-list-item class="material-list-item" (trigger)="selectStage(stage)">
-                    <span class="width-200">{{stage.name}}</span>
-                    <span class="material-list-item-secondary">
-                        <material-button icon [disabled]="i == 0" (trigger)="moveUpStage(stage)">
-                            <material-icon icon="arrow_drop_up"></material-icon>
-                        </material-button>
-                        <material-button icon [disabled]="i == initiative.stages.length-1" (trigger)="moveDownStage(stage)">
-                            <material-icon icon="arrow_drop_down"></material-icon>
-                        </material-button>
-                        <material-button icon (trigger)="removeStage(stage)">
-                            <material-icon icon="clear"></material-icon>
-                        </material-button>
-                    </span>
-                </material-list-item>
-            </material-list>
         </div>
         <div class="w3-row">
             <material-auto-suggest-input class="w3-col l12"

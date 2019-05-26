@@ -61,9 +61,8 @@
             <auge-history-timeline></auge-history-timeline>
         </div>
     </div>
-    <material-fab class="material-fab-add" raised (trigger)="selectObjective(null);viewDetail(true)">
+    <material-fab class="material-fab-add" raised (trigger)="selectObjective(null);goToDetail()">
         <material-icon icon="add"></material-icon>
     </material-fab>
-    <auge-objective-detail *ngIf="detailVisible == true" [selectedObjectiveId]="selectedObjective.id" (saved)="refreshList($event)" (closed)="viewDetail(false)">
-    </auge-objective-detail>
 </div>
+<router-outlet [routes]="routes"></router-outlet>

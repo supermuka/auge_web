@@ -40,7 +40,7 @@ import 'package:auge_server/model/general/organization.dart';
 import 'package:auge_web/src/app_layout/app_layout_component.template.dart' as app_layout_component;
 import 'package:auge_web/src/insight/insights_component.template.dart' as insights_component;
 import 'package:auge_web/src/organization/organizations_component.template.dart' as organizations_component;
-import 'package:auge_web/src/organization/organization_component.template.dart' as organization_component;
+import 'package:auge_web/src/organization/organization_detail_component.template.dart' as organization_detail_component;
 import 'package:auge_web/src/user/users_component.template.dart' as users_component;
 import 'package:auge_web/src/initiative/initiatives_component.template.dart' as initiatives_component;
 import 'package:auge_web/src/work_item/work_items_component.template.dart' as work_items_component;
@@ -83,7 +83,7 @@ class AppLayoutComponent /* extends Object */ with CanReuse implements OnActivat
   String get ganttRouteUrl => AppRoutes.ganttRoute.toUrl();
   String get objectivesRouteUrl => AppRoutes.objectivesRoute.toUrl();
   String get initiativesRouteUrl => AppRoutes.initiativesRoute.toUrl();
-  String get organizationRouteUrl =>  AppRoutes.organizationRoute.toUrl(parameters: { AppRoutesParam.organizationIdParameter: this._authService.selectedOrganization.id });
+  String get organizationRouteUrl =>  AppRoutes.organizationEditWithAppLayoutParentRoute.toUrl(parameters: { AppRoutesParam.organizationIdParameter: this._authService.selectedOrganization.id });
   String get organizationsRouteUrl => AppRoutes.organizationsRoute.toUrl();
   String get usersRouteUrl => AppRoutes.usersRoute.toUrl();
   String get groupsRouteUrl => AppRoutes.groupsRoute.toUrl();
@@ -102,8 +102,8 @@ class AppLayoutComponent /* extends Object */ with CanReuse implements OnActivat
       component: organizations_component.OrganizationsComponentNgFactory,
     ),
     new RouteDefinition(
-      routePath: AppRoutes.organizationRoute,
-      component: organization_component.OrganizationComponentNgFactory,
+      routePath: AppRoutes.organizationEditWithAppLayoutParentRoute,
+      component: organization_detail_component.OrganizationDetailComponentNgFactory,
     ),
     new RouteDefinition(
       routePath: AppRoutes.usersRoute,
@@ -188,7 +188,7 @@ class AppLayoutComponent /* extends Object */ with CanReuse implements OnActivat
     isAuthorizedToAccessGroups = _authService.isAuthorizedForAtuhorizatedRole(SystemModule.groups);
 
 
-    _appLayoutService.enabledSearch = false;
+   // _appLayoutService.enabledSearch = false;
 
     // RIGHT - SETTINGS *** Dropdown select to User Profile and Logout ***
     userProfileLogoutGroupOptions.clear();

@@ -16,12 +16,14 @@ import 'package:angular_components/material_tooltip/material_tooltip.dart';
 import 'package:auge_server/model/general/organization.dart';
 
 import 'package:auge_web/message/messages.dart';
-import 'package:auge_web/src/organization/organization_detail_component.dart';
 import 'package:auge_web/src/organization/organization_service.dart';
 import 'package:auge_web/services/app_routes.dart';
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
+
+// ignore_for_file: uri_has_not_been_generated
+import 'package:auge_web/src/organization/organization_detail_component.template.dart' as organization_detail_component;
 
 @Component(
     selector: 'auge-organizations',
@@ -35,7 +37,6 @@ import 'package:auge_web/src/search/search_service.dart';
       MaterialFabComponent,
       MaterialIconComponent,
       MaterialMenuComponent,
-      OrganizationDetailComponent,
     ],
     templateUrl: 'organizations_component.html',
     styleUrls: const [
@@ -50,6 +51,17 @@ class OrganizationsComponent extends Object implements OnActivate, OnDestroy  {
   final SearchService _searchService;
   final Router _router;
 
+  final List<RouteDefinition> routes = [
+    new RouteDefinition(
+      routePath: AppRoutes.groupAddRoute,
+      component: organization_detail_component.OrganizationDetailComponentNgFactory,
+    ),
+    new RouteDefinition(
+      routePath: AppRoutes.groupEditRoute,
+      component: organization_detail_component.OrganizationDetailComponentNgFactory,
+    ),
+  ];
+
   /// When it exists, the error/exception message presented into view.
   String error;
 
@@ -63,7 +75,7 @@ class OrganizationsComponent extends Object implements OnActivate, OnDestroy  {
 
   OrganizationsComponent(this._authService, this._appLayoutService, this._organizationService, this._searchService, this._router) {
 
-    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
+    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => goToDetail()), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
   }
 
   void onActivate(RouterState previous, RouterState current) async {
@@ -111,17 +123,13 @@ class OrganizationsComponent extends Object implements OnActivate, OnDestroy  {
     }
   }
 
-  void viewDetail(bool detailVisible) {
-    this.detailVisible = detailVisible;
-  }
-
-  void changeListItemDetail(String organizationId) async {
-    Organization organization = await _organizationService.getOrganization(organizationId);
+  void goToDetail() {
     if (selectedOrganization == null) {
-      organizations.add(organization);
+      _router.navigate(AppRoutes.organizationAddRoute.toUrl());
+
     } else {
-      organizations[organizations.indexOf(selectedOrganization)] = organization;
-     // organization.cloneTo(organizations[organizations.indexOf(selectedOrganization)]);
+      _router.navigate(AppRoutes.organizationEditRoute.toUrl(parameters: { AppRoutesParam.organizationIdParameter: selectedOrganization.id }));
     }
   }
+
 }

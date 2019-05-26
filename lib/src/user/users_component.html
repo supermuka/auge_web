@@ -31,9 +31,8 @@
             <auge-history-timeline></auge-history-timeline>
         </div>
     </div>
-    <material-fab class="material-fab-add" raised (trigger)="selectUserProfileOrganization(null);viewDetail(true)">
+    <material-fab class="material-fab-add" raised (trigger)="selectUserProfileOrganization(null);goToDetail()">
         <material-icon icon="add"></material-icon>
     </material-fab>
-    <auge-user-detail *ngIf="detailVisible == true" [selectedUserProfileOrganizationId]="selectedUserProfileOrganization.id" (saved)="refreshListItemDetail($event)" (closed)="viewDetail(false)">
-    </auge-user-detail>
 </div>
+<router-outlet [routes]="routes"></router-outlet>

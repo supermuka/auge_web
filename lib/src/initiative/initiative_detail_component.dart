@@ -1,8 +1,6 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
-import 'dart:async';
-
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
 import 'package:auge_web/services/app_routes.dart';
@@ -21,16 +19,10 @@ import 'package:angular_components/material_select/material_dropdown_select_acce
 import 'package:angular_components/model/selection/selection_model.dart';
 import 'package:angular_components/model/selection/selection_options.dart';
 import 'package:angular_components/model/selection/string_selection_options.dart';
-import 'package:angular_components/focus/focus_item.dart';
-import 'package:angular_components/focus/focus_list.dart';
-import 'package:angular_components/material_list/material_list.dart';
-import 'package:angular_components/material_list/material_list_item.dart';
-import 'package:angular_components/material_select/material_select_item.dart';
 import 'package:angular_components/model/ui/has_factory.dart';
 
 import 'package:auge_server/model/general/user.dart';
 import 'package:auge_server/model/initiative/initiative.dart';
-import 'package:auge_server/model/initiative/stage.dart';
 import 'package:auge_server/model/initiative/state.dart';
 import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/general/group.dart';
@@ -64,46 +56,26 @@ import 'initiative_detail_component.template.dart' as initiative_detail_componen
     MaterialDropdownSelectComponent,
     DropdownSelectValueAccessor,
     DropdownButtonComponent,
-    FocusItemDirective,
-    FocusListDirective,
-    MaterialListComponent,
-    MaterialListItemComponent,
-    MaterialSelectItemComponent,
   ],
   templateUrl: 'initiative_detail_component.html',
   styleUrls: const [
     'initiative_detail_component.css'
   ])
-class InitiativeDetailComponent implements  OnInit,  OnActivate, OnDeactivate {
+class InitiativeDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
   bool modalVisible;
-  /// Entry to edit data. If new, this should be null
-  @Input()
-  String initiativeId;
-
-  final _closedController = new StreamController<void>.broadcast(sync: true);
-
-  /// Publishes events when close.
-  @Output()
-  Stream<void> get closed => _closedController.stream;
-
-  final _savedController = new StreamController<String>.broadcast(sync: true);
-
-  /// Publishes events when save.
-  @Output()
-  Stream<String> get saved => _savedController.stream;
 
  // final AuthService _authService;
   final InitiativeService _initiativeService;
   final ObjectiveService _objectiveService;
   final UserService _userService;
   final GroupService _groupService;
+  final Location _location;
 
   Initiative initiative;
 
   Map<String, dynamic> initiativeValuesPrevious;
-  String stageEntry;
-  Stage selectedStage = null;
+//  Stage selectedStage = null;
 
   String groupInputText = '';
   String leaderInputText = '';
@@ -127,8 +99,6 @@ class InitiativeDetailComponent implements  OnInit,  OnActivate, OnDeactivate {
   /// When it exists, the error/exception message presented into dialog view.
   String dialogError;
 
-  final Location _location;
-
   InitiativeDetailComponent(this._initiativeService, this._objectiveService,  this._userService, this._groupService, this._location)  {
     stateSingleSelectModel = SelectionModel.single();
     leaderSingleSelectModel = SelectionModel.single();
@@ -151,7 +121,7 @@ class InitiativeDetailComponent implements  OnInit,  OnActivate, OnDeactivate {
   static final String groupLabel =  FieldMsg.label('${Initiative.className}.${Initiative.groupField}');
   static final String leaderLabel =  FieldMsg.label('${Initiative.className}.${Initiative.leaderField}');
   static final String objectiveLabel =  FieldMsg.label('${Initiative.className}.${Initiative.objectiveField}');
-  static final String stageLabel =  FieldMsg.label('${Stage.className}.${Stage.nameField}');
+//  static final String stageLabel =  FieldMsg.label('${Stage.className}.${Stage.nameField}');
 
   @override
   void onActivate(RouterState previous, RouterState current) async {
@@ -159,9 +129,9 @@ class InitiativeDetailComponent implements  OnInit,  OnActivate, OnDeactivate {
     modalVisible = true;
 
    // initiative = Initiative(); // Needs to create new here, even if it can be replaced later, because if get method to delay, Angular throws an error.
-
-    if (current.queryParameters.containsKey(AppRoutesParam.initiativeIdParameter)) {
-      initiativeId = current.queryParameters[AppRoutesParam.initiativeIdParameter];
+    String initiativeId;
+    if (current.parameters.containsKey(AppRoutesParam.initiativeIdParameter)) {
+      initiativeId = current.parameters[AppRoutesParam.initiativeIdParameter];
     }
 
     if (initiativeId != null) {
@@ -257,98 +227,11 @@ class InitiativeDetailComponent implements  OnInit,  OnActivate, OnDeactivate {
   void ngOnInit() async {
 
     initiative = Initiative(); // Needs to create new here, even if it can be replaced later, because if get method to delay, Angular throws an error.
-    /*
-    if (initiativeId != null) {
-      // Clone objective
-      // initiative = selectedInitiative.clone();
-
-      initiative = await _initiativeService.getInitiative(initiativeId);
-
-    } else {
-
-
-      initiative.organization = _initiativeService.authService.selectedOrganization;
-    }
-
-    try {
-      _states =  await _initiativeService.getStates();
-      _users = await _userService.getUsers(_initiativeService.authService.selectedOrganization.id, withProfile: true);
-      _objectives = await _objectiveService.getObjectives(_initiativeService.authService.selectedOrganization.id, withMeasures: false);
-      _groups = await _groupService.getGroups(_initiativeService.authService.selectedOrganization.id);
-
-    } catch (e) {
-      dialogError = e.toString();
-      rethrow;
-    }
-
-   // List<State> states =  await _initiativeService.getStates();
-    // stateOptions = new SelectionOptions.fromList(_states);
-    stateOptions = new StringSelectionOptions<State>(
-        _states, toFilterableString: (State state) => state.name);
-
-    if (stateOptions.optionsList.isNotEmpty) {
-       stateSingleSelectModel.select(stateOptions.optionsList.first);
-    }
-
-    // Leader
-   // List<User> users = await _userService.getUsers(_authService.selectedOrganization.id, withProfile: true);
-    leaderOptions = new StringSelectionOptions<User>(
-        _users, toFilterableString: (User user) => user.name);
-
-    // Objective
-    // List<Objective> objectives = await _objectiveService.getObjectives(_authService.selectedOrganization.id, withMeasures: false);
-    objectiveOptions = new StringSelectionOptions<Objective>(
-        _objectives, toFilterableString: (Objective objective) => objective.name);
-
-    // List<Group> groups = await _groupService.getGroups(_authService.selectedOrganization.id);
-
-    groupOptions = new StringSelectionOptions<Group>(
-        _groups, toFilterableString: (Group gru) => gru.name);
-
-    leaderSingleSelectModel.selectionChanges.listen((leader) {
-      if (leader.isNotEmpty && leader.first.added != null && leader.first.added.length != 0 && leader.first.added?.first != null) {
-        initiative.leader = leader.first.added.first;
-      }
-    });
-
-    if (initiative.leader != null) {
-     // leaderSingleSelectModel.select(initiative.leader);
-      leaderSingleSelectModel.select(leaderOptions.optionsList.singleWhere((l) => l.id == initiative.leader.id));
-    }
-
-    // Objective Select Model
-    objectiveSingleSelectModel.selectionChanges.listen((objective) {
-        if (objective.isNotEmpty && objective.first.added != null && objective.first.added.length != 0 && objective.first.added?.first != null) {
-          initiative.objective = objective.first.added.first;
-        }
-      });
-
-    if (initiative.objective != null) {
-      objectiveSingleSelectModel.select(objectiveOptions.optionsList.singleWhere((o) => o.id == initiative.objective.id));
-      //objectiveSingleSelectModel.select(initiative.objective);
-
-    }
-
-    // Group
-    groupSingleSelectModel.selectionChanges.listen((groupEvent) {
-        if (groupEvent.isNotEmpty && groupEvent.first.added != null && groupEvent.first.added.length != 0 && groupEvent.first.added?.first != null) {
-          initiative.group = groupEvent.first.added.first;
-        }
-      });
-
-    if (initiative.group != null) {
-      groupSingleSelectModel.select(groupOptions.optionsList.singleWhere((g) => g.id == initiative.group.id));
-    //  groupSingleSelectModel.select(initiative.group);
-    }
-
-     */
   }
 
   void saveInitiative() async {
     try {
-
-      String id = await _initiativeService.saveInitiative(initiative);
-      _savedController.add(id);
+      await _initiativeService.saveInitiative(initiative);
       closeDetail();
     } catch (e) {
       dialogError = e.toString();
@@ -357,10 +240,8 @@ class InitiativeDetailComponent implements  OnInit,  OnActivate, OnDeactivate {
   }
 
   void closeDetail() {
-    //_closedController.add(null);
     _location.back();
   }
-
 
   String get leaderLabelRenderer {
     String nameLabel;
@@ -392,64 +273,6 @@ class InitiativeDetailComponent implements  OnInit,  OnActivate, OnDeactivate {
 
   FactoryRenderer get leaderFactoryRenderer => (_) => initiative_detail_component.LeaderRendererComponentNgFactory;
 
-  void selectStage(Stage e) {
-
-    selectedStage = e;
-    stageEntry = e.name;
-
-    if (e.state != null) {
-      stateSingleSelectModel.select(
-          stateOptions.optionsList.singleWhere((s) => s.id == e.state.id));
-    }
-  }
-
-  void addStage() {
-    if (stateSingleSelectModel != null && stateSingleSelectModel.selectedValues.isNotEmpty) {
-      initiative.stages.add(new Stage()
-        ..name = stageEntry
-        ..state = stateSingleSelectModel.selectedValues?.first
-        ..index = initiative.stages.length);
-
-
-      initiative.stages.sort((a, b) =>
-          a?.state?.index?.compareTo(b?.state?.index));
-    }
-    stageEntry = '';
-  }
-
-  void removeStage(Stage e) {
-    initiative.stages.remove(e);
-  }
-
-  void updateStage(Stage e) {
-    if (stateSingleSelectModel != null && stateSingleSelectModel.selectedValues.isNotEmpty) {
-      initiative.stages.elementAt(initiative.stages.indexOf(e))
-        ..name = stageEntry
-        ..state = stateSingleSelectModel.selectedValues?.first;
-      initiative.stages.sort((a, b) =>
-          a?.state?.index?.compareTo(b?.state?.index));
-      selectedStage = null;
-      stageEntry = '';
-    }
-  }
-
-  // Label for the button for single selection.
-  String get stateSingleSelectLabel {
-    String nameLabel;
-    if ((stateSingleSelectModel != null) &&
-        (stateSingleSelectModel.selectedValues != null) &&
-        (stateSingleSelectModel.selectedValues.length > 0)) {
-      nameLabel = stateSingleSelectModel.selectedValues.first?.name;
-    } else {
-      nameLabel = selectLabel;
-    }
-    return nameLabel;
-  }
-
-  ItemRenderer get stateItemRenderer => (dynamic state) => state.name;
-
-  FactoryRenderer get stateFactoryRenderer => (_) => initiative_detail_component.StateRendererComponentNgFactory;
-
   String get groupLabelRenderer {
     String nameLabel;
     if ((groupSingleSelectModel != null &&
@@ -466,39 +289,10 @@ class InitiativeDetailComponent implements  OnInit,  OnActivate, OnDeactivate {
   bool get validInput {
     return initiative.name?.trim()?.isNotEmpty ?? false;
   }
-
-  bool get validStageInput {
-    return (stageEntry != null && stageEntry.isNotEmpty && stateSingleSelectModel != null && stateSingleSelectModel.selectedValues.isNotEmpty && stateSingleSelectModel.selectedValues.first.index != null);
-  }
-
-  void moveUpStage(Stage stage) {
-    int i = initiative.stages.indexOf(stage);
-
-    if (i > 0) {
-      // Receive state equals previous stage, because can be different that the actual
-      stage.state = initiative.stages[i-1].state;
-      initiative.stages.removeAt(i);
-      initiative.stages.insert(i-1, stage);
-    }
-  }
-
-  void moveDownStage(Stage stage) {
-    int i = initiative.stages.indexOf(stage);
-    if (i < initiative.stages.length-1) {
-
-      // Receive state equals previous stage, because can be different that the actual
-      stage.state = initiative.stages[i+1].state;
-
-      initiative.stages.removeAt(i);
-
-      initiative.stages.insert(i+1, stage);
-    }
-  }
 }
 
 @Component(
     selector: 'state-renderer',
-    //  template: '<material-icon icon="language"></material-icon>{{disPlayName}}',
     template: '<div><span [style.background-color]="disPlayCor">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;{{disPlayName}}</div>',
     styles: const [
       ''
@@ -519,7 +313,6 @@ class StateRendererComponent implements RendersValue {
 
 @Component(
     selector: 'leader-renderer',
-    //  template: '<material-icon icon="language"></material-icon>{{disPlayName}}',
     template: '<div left-icon class="avatar-icon" [style.background-image]="disPlayurl"></div>{{disPlayName}}',
 
     styles: const [

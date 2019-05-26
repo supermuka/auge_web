@@ -41,11 +41,8 @@
             <auge-history-timeline></auge-history-timeline>
         </div>
     </div>
-    <material-fab class="material-fab-add" raised (trigger)="selectGroup(null);viewDetail(true)">
+    <material-fab class="material-fab-add" raised (trigger)="selectGroup(null);goToDetail()">
         <material-icon icon="add"></material-icon>
     </material-fab>
-    <auge-group-detail *ngIf="detailVisible == true" [selectedGroupId]="selectedGroup.id" (saved)="changeListItemWithDetail($event)" (closed)="viewDetail(false)">
-    </auge-group-detail>
 </div>
-
-
+<router-outlet [routes]="routes"></router-outlet>

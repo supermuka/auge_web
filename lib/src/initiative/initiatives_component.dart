@@ -24,7 +24,7 @@ import 'package:auge_server/model/general/authorization.dart';
 
 import 'package:auge_web/message/messages.dart';
 import 'package:auge_web/message/model_messages.dart';
-//import 'package:auge_web/src/auth/auth_service.dart';
+
 import 'package:auge_web/src/initiative/initiative_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
@@ -42,7 +42,7 @@ import 'package:auge_web/services/app_routes.dart';
 
 // ignore_for_file: uri_has_not_been_generated
 import 'package:auge_web/src/initiative/initiative_detail_component.template.dart' as initiative_detail_component;
-
+import 'package:auge_web/src/initiative/initiative_stages_component.template.dart' as initiative_stages_component;
 @Component(
     selector: 'auge-initiatives',
     providers: const [InitiativeService, ObjectiveService, HistoryTimelineService],
@@ -70,15 +70,30 @@ import 'package:auge_web/src/initiative/initiative_detail_component.template.dar
       'initiatives_component.css'
     ])
 
-class InitiativesComponent extends Object with CanReuse implements /* OnInit, */ OnActivate, OnDestroy {
+class InitiativesComponent /* extends Object*/ with CanReuse implements OnActivate, OnDestroy {
 
   final InitiativeService _initiativeService;
   final ObjectiveService _objectiveService;
   final SearchService _searchService;
   final HistoryTimelineService _historyTimelineService;
-  final Router _router;
   final AppLayoutService _appLayoutService;
+  final Router _router;
  // final AuthService _authService;
+
+  final List<RouteDefinition> routes = [
+    new RouteDefinition(
+      routePath: AppRoutes.initiativeAddRoute,
+      component: initiative_detail_component.InitiativeDetailComponentNgFactory,
+    ),
+    new RouteDefinition(
+      routePath: AppRoutes.initiativeEditRoute,
+      component: initiative_detail_component.InitiativeDetailComponentNgFactory,
+    ),
+    new RouteDefinition(
+      routePath: AppRoutes.initiativeStagesRoute,
+      component: initiative_stages_component.InitiativeStagesComponentNgFactory,
+    ),
+  ];
 
   InitiativesFilterParam initiativesFilterParam;
 
@@ -112,16 +127,6 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
 
   String _sortedBy = nameLabel;
 
-  final List<RouteDefinition> routes = [
-    new RouteDefinition(
-      routePath: AppRoutes.initiativeAddRoute,
-      component: initiative_detail_component.InitiativeDetailComponentNgFactory,
-    ),
-    new RouteDefinition(
-      routePath: AppRoutes.initiativeEditRoute,
-      component: initiative_detail_component.InitiativeDetailComponentNgFactory,
-    ),
-  ];
 
 
   InitiativesComponent(this._appLayoutService, this._initiativeService, this._objectiveService, this._searchService, this._historyTimelineService, this._router) {
@@ -129,7 +134,7 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
     menuModel = new MenuModel([new MenuItemGroup([
       new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => goToDetail(selectedInitiative) /* viewDetail(true) */),
       new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete()),
-      new MenuItem(stagesLabel, icon: new Icon('view_week'), action: () { stagesVisible = true; }) ])], icon: new Icon('menu'));
+      new MenuItem(stagesLabel, icon: new Icon('view_week'), action: () => goToStages(selectedInitiative)) ])], icon: new Icon('menu'));
 
   }
 
@@ -216,11 +221,17 @@ class InitiativesComponent extends Object with CanReuse implements /* OnInit, */
   }
 
   void goToDetail(Initiative initiative) {
-    print(AppRoutes.initiativeAddRoute.toUrl());
     if (initiative == null) {
       _router.navigate(AppRoutes.initiativeAddRoute.toUrl());
+
     } else {
       _router.navigate(AppRoutes.initiativeEditRoute.toUrl(parameters: { AppRoutesParam.initiativeIdParameter: initiative.id }));
+    }
+  }
+
+  void goToStages(Initiative initiative) {
+    if (initiative != null) {
+      _router.navigate(AppRoutes.initiativeStagesRoute.toUrl(parameters: { AppRoutesParam.initiativeIdParameter: initiative.id }));
     }
   }
 

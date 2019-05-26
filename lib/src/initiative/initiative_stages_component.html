@@ -1,9 +1,9 @@
-<modal [visible]="true">
-    <material-dialog headered [error]="dialogError">
+<modal [visible]="modalVisible">
+    <material-dialog headered class="dialog-custom" [error]="dialogError">
         <div header>
             <h3>Initiative Stages</h3>
         </div>
-        <material-expansionpanel style="min-width: 480px;" disabled
+        <material-expansionpanel disabled
                                  [alwaysHideExpandIcon]="true"
                                  [expanded]="true"
                                  [showSaveCancel]="false">

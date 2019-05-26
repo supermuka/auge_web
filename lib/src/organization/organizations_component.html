@@ -1,5 +1,5 @@
 <div class="container-list">
-    <material-fab raised (trigger)="selectOrganization(null);viewDetail(true)">
+    <material-fab raised (trigger)="selectOrganization(null);goToDetail()">
         <material-icon icon="add"></material-icon>
     </material-fab>
     <br/>
@@ -23,6 +23,5 @@
            </material-expansionpanel>
         </div>
     </material-expansionpanel-set>
-    <auge-organization-detail *ngIf="detailVisible == true" [selectedOrganizationId]="selectedOrganization.id" (saved)="changeListItemDetail($event)" (closed)="viewDetail(false)">
-    </auge-organization-detail>
 </div>
+<router-outlet [routes]="routes"></router-outlet>

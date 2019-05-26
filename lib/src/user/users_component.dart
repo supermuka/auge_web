@@ -24,11 +24,13 @@ import 'package:auge_web/message/messages.dart';
 import 'package:auge_web/src/user/user_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
-import 'package:auge_web/src/user/user_detail_component.dart';
 import 'package:auge_web/src/history_timeline/history_timeline_component.dart';
 
 import 'package:auge_web/services/app_routes.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
+
+// ignore_for_file: uri_has_not_been_generated
+import 'package:auge_web/src/user/user_detail_component.template.dart' as user_detail_component;
 
 
 @Component(
@@ -43,7 +45,6 @@ import 'package:auge_web/services/common_service.dart' as common_service;
       MaterialExpansionPanelSet,
       MaterialMenuComponent,
       MaterialToggleComponent,
-      UserDetailComponent,
       HistoryTimelineComponent,
     ],
     templateUrl: 'users_component.html',
@@ -51,13 +52,24 @@ import 'package:auge_web/services/common_service.dart' as common_service;
       'users_component.css'
     ])
 
-class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
+class UsersComponent with CanReuse implements OnActivate {
 
   final AppLayoutService _appLayoutService;
   final SearchService _searchService;
   final UserService _userService;
   final HistoryTimelineService _historyTimelineService;
   final Router _router;
+
+  final List<RouteDefinition> routes = [
+    new RouteDefinition(
+      routePath: AppRoutes.userAddRoute,
+      component: user_detail_component.UserDetailComponentNgFactory,
+    ),
+    new RouteDefinition(
+      routePath: AppRoutes.userEditRoute,
+      component: user_detail_component.UserDetailComponentNgFactory,
+    ),
+  ];
 
   // Errors, exceptions shows up
  // String error;
@@ -76,7 +88,7 @@ class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
 
 
   UsersComponent(this._appLayoutService, this._searchService, this._userService, this._historyTimelineService, this._router) {
-    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
+    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => goToDetail()), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
   }
 
   bool get timelineVisible {
@@ -137,17 +149,11 @@ class UsersComponent extends Object /* with CanReuse */ implements OnActivate {
     return common_service.userUrlImage(user?.userProfile?.image);
   }
 
-  void viewDetail(bool detailVisible) {
-    this.detailVisible = detailVisible;
-  }
-
-  void refreshListItemDetail(String userId) async {
-    UserProfileOrganization userProfileOrganization = await _userService.getUserProfileOrganization(userId, withProfile: true);
+  void goToDetail() {
     if (selectedUserProfileOrganization == null) {
-      _usersProfileOrganizations.add(userProfileOrganization);
+      _router.navigate(AppRoutes.userAddRoute.toUrl());
     } else {
-      _usersProfileOrganizations[_usersProfileOrganizations.indexOf(selectedUserProfileOrganization)] = userProfileOrganization;
+      _router.navigate(AppRoutes.userEditRoute.toUrl(parameters: { AppRoutesParam.userProfileOrganizationIdParameter: selectedUserProfileOrganization.id }));
     }
-    _historyTimelineService.refreshHistory(SystemModule.users.index);
   }
 }

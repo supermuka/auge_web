@@ -1,9 +1,8 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
-import 'dart:async';
-
 import 'package:angular/angular.dart';
+import 'package:auge_web/services/app_routes.dart';
 
 import 'package:angular_components/focus/focus.dart';
 import 'package:angular_components/laminate/components/modal/modal.dart';
@@ -22,6 +21,7 @@ import 'package:angular_components/material_chips/material_chip.dart';
 import 'package:angular_components/material_chips/material_chips.dart';
 import 'package:angular_components/material_radio/material_radio.dart';
 import 'package:angular_components/material_radio/material_radio_group.dart';
+import 'package:angular_router/angular_router.dart';
 
 import 'package:auge_server/model/general/group.dart';
 import 'package:auge_server/model/general/user.dart';
@@ -60,26 +60,13 @@ import 'group_detail_component.template.dart' as group_detail_component;
       'group_detail_component.css'
     ])
 
-class GroupDetailComponent extends Object implements OnInit {
-  /// Entry to edit data. If new, this should be null
-  @Input()
-  String selectedGroupId;
+class GroupDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
-  final _closedController = new StreamController<void>.broadcast(sync: true);
-
-  /// Publishes events when close.
-  @Output()
-  Stream<void> get closed => _closedController.stream;
-
-  final _savedController = new StreamController<String>.broadcast(sync: true);
-
-  /// Publishes events when save.
-  @Output()
-  Stream<String> get saved => _savedController.stream;
-
-  //final AuthService _authService;
   final UserService _userService;
   final GroupService _groupService;
+  final Location _location;
+
+  bool modalVisible = false;
 
   Group group;
   List<GroupType> groupTypes = [];
@@ -104,7 +91,7 @@ class GroupDetailComponent extends Object implements OnInit {
   /// When it exists, the error/exception message presented into dialog view.
   String dialogError;
 
-  GroupDetailComponent(/*this._authService,*/ this._userService, this._groupService) {
+  GroupDetailComponent(this._userService, this._groupService, this._location) {
     superGroupSingleSelectModel = SelectionModel.single();
     leaderSingleSelectModel = SelectionModel.single();
     memberSingleSelectModel = SelectionModel.single();
@@ -130,10 +117,21 @@ class GroupDetailComponent extends Object implements OnInit {
   void ngOnInit() async {
     //created as new here, even if it is later replaced by a query, because the query may take a while and the Angular will continue to process, causing an exception if the object does not exist
     group = Group();
-    if (selectedGroupId != null) {
+  }
+
+  @override
+  void onActivate(RouterState previous, RouterState current) async {
+    modalVisible = true;
+
+    String id;
+    if (current.parameters.containsKey(AppRoutesParam.groupIdParameter)) {
+      id = current.parameters[AppRoutesParam.groupIdParameter];
+    }
+
+    if (id != null) {
       // Clone objective
       // group = selectedGroup.clone();
-      group = await _groupService.getGroup(selectedGroupId);
+      group = await _groupService.getGroup(id);
     } else {
       group.organization = _groupService.authService.selectedOrganization;
       group.active = true;
@@ -147,8 +145,6 @@ class GroupDetailComponent extends Object implements OnInit {
       dialogError = e.toString();
       rethrow;
     }
-
-
 
     // Super Group
    //  List<Group> superGroups = await _groupService.getGroups(_authService.selectedOrganization.id);
@@ -172,9 +168,6 @@ class GroupDetailComponent extends Object implements OnInit {
 
     if (group.superGroup != null)
       superGroupSingleSelectModel.select(group.superGroup);
-
-    // Leader
-    // List<User> users = await _userService.getUsers(_authService.selectedOrganization.id, withProfile: true);
 
 
     leaderSingleSelectModel.selectionChanges.listen((leaderEvent) {
@@ -212,10 +205,15 @@ class GroupDetailComponent extends Object implements OnInit {
     }
   }
 
+  @override
+  void onDeactivate(RouterState current, RouterState next) {
+    modalVisible = false;
+  }
+
   void saveGroup() async {
     try {
       await _groupService.saveGroup(group);
-      _savedController.add(group.id);
+
       closeDetail();
     } catch (e) {
       dialogError = e.toString();
@@ -224,7 +222,7 @@ class GroupDetailComponent extends Object implements OnInit {
   }
 
   void closeDetail() {
-    _closedController.add(null);
+    _location.back();
   }
 
   String get superGroupLabelRenderer {

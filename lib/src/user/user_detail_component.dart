@@ -2,7 +2,6 @@
 // Author: Samuel C. Schwebel.
 
 import 'dart:html' as html;
-import 'dart:async';
 import 'dart:convert' show base64;
 import 'dart:typed_data' show Uint8List;
 
@@ -12,6 +11,8 @@ import 'package:intl/intl.dart';
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
+import 'package:auge_web/services/app_routes.dart';
+
 import 'package:angular_components/focus/focus.dart';
 import 'package:angular_components/laminate/components/modal/modal.dart';
 import 'package:angular_components/laminate/overlay/module.dart';
@@ -54,25 +55,12 @@ import 'package:auge_web/services/common_service.dart' as common_service;
     ])
 
 /// Component uses to add and edit an [User] and [UserProfile]
-class UserDetailComponent /*extends Object*/ implements OnInit {
-
-  /// Entry user to edit. If new, this should be null
-  @Input()
-  String selectedUserProfileOrganizationId;
-
-  final _closedController = new StreamController<void>.broadcast(sync: true);
-
-  /// Publishes events when close.
-  @Output()
-  Stream<void> get closed => _closedController.stream;
-
-  final _savedController = new StreamController<String>.broadcast(sync: true);
-
-  /// Publishes events when save.
-  @Output()
-  Stream<String> get saved => _savedController.stream;
+class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
   final UserService _userService;
+  final Location _location;
+
+  bool modalVisible = false;
 
  //  final SelectionModel selectionModelUserAuthorization = new SelectionModel.multi();
   String _passwordOrigin;
@@ -88,7 +76,7 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
   /// When it exists, the error/exception message is presented into dialog view.
   String dialogError;
 
-  UserDetailComponent(this._userService) {
+  UserDetailComponent(this._userService, this._location) {
     userAuthorizationOptions = List<Option>();
   }
 
@@ -119,13 +107,24 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
 
   @override
   void ngOnInit() async {
-
     //created as new here, even if it is later replaced by a query, because the query may take a while and the Angular will continue to process, causing an exception if the object does not exist
     userProfileOrganization = UserProfileOrganization();
+  }
 
-    if (selectedUserProfileOrganizationId != null) {
+
+  @override
+  void onActivate(RouterState previous, RouterState current) async {
+    modalVisible = true;
+
+    String id;
+    if (current.parameters.containsKey(AppRoutesParam.userProfileOrganizationIdParameter)) {
+      id = current.parameters[AppRoutesParam.userProfileOrganizationIdParameter];
+    }
+
+    if (id != null) {
+
       try {
-        userProfileOrganization = await _userService.getUserProfileOrganization(selectedUserProfileOrganizationId, withProfile: true);
+        userProfileOrganization = await _userService.getUserProfileOrganization(id, withProfile: true);
 
 
       } catch (e) {
@@ -140,6 +139,7 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
     }
     SystemRole.values.forEach((role) {
       if (role != SystemRole.superAdmin) {
+        print(role.toString());
         userAuthorizationOptions.add(new Option(
             role.index,
             UserMsg.label(role.toString()), _userService.authService.isAuthorizedForAtuhorizatedRole(
@@ -150,12 +150,16 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
     });
   }
 
+  @override
+  void onDeactivate(RouterState current, RouterState next) {
+    modalVisible = false;
+  }
+
   void saveUserProfileOrganization() async {
     try {
 
       await _userService.saveUserProfileOrganization(userProfileOrganization);
 
-      _savedController.add(userProfileOrganization.id);
       closeDetail();
     } catch (e) {
       dialogError = e.toString();
@@ -219,7 +223,7 @@ class UserDetailComponent /*extends Object*/ implements OnInit {
   }
 
   void closeDetail() {
-    _closedController.add(null);
+    _location.back();
   }
 }
 
