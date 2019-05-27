@@ -5,7 +5,9 @@ class AppRoutesParam {
   static const organizationIdParameter = 'organization_id';
   static const userProfileOrganizationIdParameter = 'user_profile_organization_id';
   static const groupIdParameter = 'group_id';
+  static const measureIdParameter = 'measure_id';
   static const initiativeIdParameter = 'initiative_id';
+  static const workItemIdParameter = 'work_item_id';
   static const objectiveIdParameter = 'objective_id';
 }
 
@@ -66,24 +68,9 @@ class AppRoutes {
     parent: appLayoutRoute
   );
 
-  static final workItemsRoute = new RoutePath(
-    path: 'initiative/:${AppRoutesParam.initiativeIdParameter}/work_items',
-    parent: appLayoutRoute
-  );
-
-  static final workItemsListRoute = new RoutePath(
-      path: 'initiative/:${AppRoutesParam.initiativeIdParameter}/work_items_list',
-      parent: appLayoutRoute,
-     /* useAsDefault: true, */
-  );
-
-  static final workItemsKanbanRoute = new RoutePath(
-    path: 'initiative/:${AppRoutesParam.initiativeIdParameter}/work_items_kanban',
-    parent: workItemsRoute
-  );
   static final measuresRoute = new RoutePath(
-      path: 'objetivo/:${AppRoutesParam.objectiveIdParameter}/medidas',
-      parent: appLayoutRoute
+      path: 'objectives/:${AppRoutesParam.objectiveIdParameter}/measures',
+      parent: objectivesRoute
   );
   static final organizationRoute = new RoutePath(
      path: 'organization/:${AppRoutesParam.organizationIdParameter}',
@@ -101,6 +88,14 @@ class AppRoutes {
       path: ':${AppRoutesParam.groupIdParameter}/edit',
       parent: groupsRoute
   );
+  static final measureAddRoute = new RoutePath(
+      path: ':${AppRoutesParam.objectiveIdParameter}/measures/add',
+      parent: objectivesRoute
+  );
+  static final measureEditRoute = new RoutePath(
+      path: ':${AppRoutesParam.objectiveIdParameter}/measures/:${AppRoutesParam.measureIdParameter}/edit',
+      parent: objectivesRoute
+  );
   static final objectiveAddRoute = new RoutePath(
       path: 'add',
       parent: objectivesRoute
@@ -109,6 +104,14 @@ class AppRoutes {
       path: ':${AppRoutesParam.objectiveIdParameter}/edit',
       parent: objectivesRoute
   );
+  static final workItemAddRoute = new RoutePath(
+      path: ':${AppRoutesParam.initiativeIdParameter}/work_items/add',
+      parent: initiativesRoute
+  );
+  static final workItemEditRoute = new RoutePath(
+      path: ':${AppRoutesParam.initiativeIdParameter}/work_items/:${AppRoutesParam.workItemIdParameter}/edit',
+      parent: initiativesRoute
+  );
   static final userAddRoute = new RoutePath(
       path: 'add',
       parent: usersRoute
@@ -116,6 +119,10 @@ class AppRoutes {
   static final userEditRoute = new RoutePath(
       path: ':${AppRoutesParam.userProfileOrganizationIdParameter}/edit',
       parent: usersRoute
+  );
+  static final userEditWithAppLayoutParentRoute = new RoutePath(
+      path: 'users/:${AppRoutesParam.userProfileOrganizationIdParameter}/edit',
+      parent: appLayoutRoute
   );
   static final organizationAddRoute = new RoutePath(
       path: 'add',
@@ -126,7 +133,7 @@ class AppRoutes {
       parent: organizationsRoute
   );
   static final organizationEditWithAppLayoutParentRoute = new RoutePath(
-      path: ':${AppRoutesParam.organizationIdParameter}/edit',
+      path: 'organizations/:${AppRoutesParam.organizationIdParameter}/edit',
      parent: appLayoutRoute
   );
 

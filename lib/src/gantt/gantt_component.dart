@@ -63,7 +63,7 @@ class GanttComponent implements OnActivate {
   static final String leaderLabel =  GanttMsg.label('Leader');
 
   void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
-    if (_authService.selectedOrganization == null || _authService.authenticatedUser == null) {
+    if (_authService.authorizedOrganization == null || _authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
       return;
     }
@@ -73,7 +73,7 @@ class GanttComponent implements OnActivate {
     _appLayoutService.enabledSearch = false;
 
     try {
-       objectives = await _ganttService.getObjectivesGantt(_authService.selectedOrganization.id);
+       objectives = await _ganttService.getObjectivesGantt(_authService.authorizedOrganization.id);
 
        yearsInterval = getYearsInterval();
        yearsMonthsInterval = getYearsMonthsInterval();

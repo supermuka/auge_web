@@ -63,7 +63,7 @@ class InitiativesSummaryComponent extends Object implements OnInit {
     try {
       if (objectiveId != null) {
         initiatives = await _initiativeService.getInitiatives(
-            this._initiativeService.authService.selectedOrganization?.id, objectiveId: objectiveId,
+            this._initiativeService.authService.authorizedOrganization.id, objectiveId: objectiveId,
             withWorkItems: true, withProfile: true);
       }
     } catch (e) {

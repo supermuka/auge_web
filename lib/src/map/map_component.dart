@@ -60,7 +60,7 @@ class MapComponent implements OnActivate {
 
   void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
 
-    if (_authService.selectedOrganization == null || _authService.authenticatedUser == null) {
+    if (_authService.authorizedOrganization == null || _authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
       return;
     }
@@ -70,7 +70,7 @@ class MapComponent implements OnActivate {
     _appLayoutService.enabledSearch = false;
 
     try {
-      objectivesMap = await _mapService.getObjectivesMap(_authService.selectedOrganization.id);
+      objectivesMap = await _mapService.getObjectivesMap(_authService.authorizedOrganization.id);
 
     } catch (e) {
       _appLayoutService.error = e.toString();

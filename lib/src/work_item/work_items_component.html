@@ -7,21 +7,21 @@
             <span><strong>Work Items</strong></span>
         </div>
         <div action>
-            <material-button (trigger)="selectView('list')">
+            <material-button (trigger)="selectedView = 'list'">
                 <material-icon icon="view_list"></material-icon>
             </material-button>
-            <material-button (trigger)="selectView('kanban')">
+            <material-button (trigger)="selectedView = 'kanban'">
                 <material-icon icon="view_column"></material-icon>
             </material-button>
-            <material-button (trigger)="viewFowardDetail(true)">
+            <material-button (trigger)="goToDetail()">
                 <material-icon icon="add"></material-icon>
             </material-button>
         </div>
         <div *ngIf="selectedView == 'list'">
-            <auge-work-items-list [fowardAddWorkItem]="fowardAddWorkItem" [initiative]="initiative" (closeDetail)="viewFowardDetail(false)"></auge-work-items-list>
+            <auge-work-items-list [initiative]="initiative" ></auge-work-items-list>
         </div>
         <div *ngIf="selectedView == 'kanban'">
-            <auge-work-items-kanban [fowardAddWorkItem]="fowardAddWorkItem" [initiative]="initiative" (closeDetail)="viewFowardDetail(false)"></auge-work-items-kanban>
+            <auge-work-items-kanban [initiative]="initiative"></auge-work-items-kanban>
         </div>
     </material-expansionpanel>
 </div>

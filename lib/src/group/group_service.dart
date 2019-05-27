@@ -67,7 +67,7 @@ class GroupService {
       group_pbgrpc.GroupDeleteRequest groupDeleteRequest = group_pbgrpc.GroupDeleteRequest()
         ..groupId = group.id
         ..groupVersion = group.version
-        ..authenticatedOrganizationId = _authService.selectedOrganization.id
+        ..authenticatedOrganizationId = _authService.authorizedOrganization.id
         ..authenticatedUserId = _authService.authenticatedUser.id;
 
       await _groupServiceClient.deleteGroup(groupDeleteRequest);
@@ -81,7 +81,7 @@ class GroupService {
     try {
       group_pbgrpc.GroupRequest groupRequest = group_pbgrpc.GroupRequest()
         ..group = group.writeToProtoBuf()
-        ..authenticatedOrganizationId = _authService.selectedOrganization.id
+        ..authenticatedOrganizationId = _authService.authorizedOrganization.id
         ..authenticatedUserId = _authService.authenticatedUser.id;
 
 

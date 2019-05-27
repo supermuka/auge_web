@@ -86,7 +86,7 @@ class InitiativesFilterComponent implements OnInit {
     try {
       // Objective
       List<Objective> objectives = await _objectiveService.getObjectives(
-          _objectiveService.authService.selectedOrganization.id, withMeasures: false);
+          _objectiveService.authService.authorizedOrganization.id, withMeasures: false);
 
       objectiveOptions = new StringSelectionOptions<Objective>(
           objectives, toFilterableString: (Objective objective) => objective.name);

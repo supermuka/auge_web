@@ -35,6 +35,7 @@ import 'package:auge_web/services/app_routes.dart';
 
 // ignore_for_file: uri_has_not_been_generated
 import 'package:auge_web/src/objective/objective_detail_component.template.dart' as objective_detail_component;
+import 'package:auge_web/src/measure/measure_detail_component.template.dart' as measure_detail_component;
 
 @Component(
     selector: 'auge-objectives',
@@ -60,7 +61,7 @@ import 'package:auge_web/src/objective/objective_detail_component.template.dart'
       'objectives_component.css'
     ])
 
-class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, OnDestroy {
+class ObjectivesComponent with CanReuse implements AfterViewInit, OnActivate, OnDestroy {
 
   final AppLayoutService _appLayoutService;
   final ObjectiveService _objectiveService;
@@ -70,12 +71,20 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
 
   final List<RouteDefinition> routes = [
     new RouteDefinition(
-      routePath: AppRoutes.groupAddRoute,
+      routePath: AppRoutes.objectiveAddRoute,
       component: objective_detail_component.ObjectiveDetailComponentNgFactory,
     ),
     new RouteDefinition(
-      routePath: AppRoutes.groupEditRoute,
+      routePath: AppRoutes.objectiveEditRoute,
       component: objective_detail_component.ObjectiveDetailComponentNgFactory,
+    ),
+    new RouteDefinition(
+      routePath: AppRoutes.measureAddRoute,
+      component: measure_detail_component.MeasureDetailComponentNgFactory,
+    ),
+    new RouteDefinition(
+      routePath: AppRoutes.measureEditRoute,
+      component: measure_detail_component.MeasureDetailComponentNgFactory,
     ),
   ];
 
@@ -129,12 +138,11 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
     } else {
       mainColWidth = '100%';
     }
-    // (!_timelineVisible) ?mainColWidth = '100%' : mainColWidth = '75%';
   }
 
   void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
 
-    if (_objectiveService.authService.selectedOrganization == null || _objectiveService.authService.authenticatedUser == null) {
+    if (_objectiveService.authService.authorizedOrganization == null || _objectiveService.authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
       return;
     }
@@ -157,8 +165,10 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
 
         expandedObjectiveId = initialObjective.id;
 
-        //expandedControl[initialObjective] = true;
       }
+
+      _historyTimelineService.refreshHistory(SystemModule.objectives.index);
+
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;
@@ -167,8 +177,8 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
 
   Future<List<Objective>> getObjetives() async {
     List<Objective> objectivesAux =  await _objectiveService.getObjectives(
-        _objectiveService.authService.selectedOrganization.id, withMeasures: true, withProfile: true);
-   // _sortObjectives(objectivesAux );
+        _objectiveService.authService.authorizedOrganization.id, withMeasures: true, withProfile: true);
+
     _sortObjectives(objectivesAux);
     return objectivesAux;
   }
@@ -180,7 +190,6 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
     e.scrollIntoView(ScrollAlignment.TOP);
     }
   }
-
 
   List<Objective> get objectives {
     return _searchService?.searchTerm.toString().isEmpty ? _objectives : _objectives.where((t) => t.name.contains(_searchService.searchTerm)).toList();
@@ -208,32 +217,6 @@ class ObjectivesComponent extends Object implements AfterViewInit, OnActivate, O
       _appLayoutService.error = e.toString();
       rethrow;
     }
-  }
-
-  void refreshList(String objectiveId) async {
-
-   // _objectives = await getObjetives();
-   // _sortObjectives();
-/*
-    if (expandedObjectiveId != null) {
-      Objective expandedObjective = _objectives.singleWhere((o) => o.id == expandedObjectiveId, orElse: null);
-      if (expandedObjective != null) {
-        _historyTimelineService.refreshHistory(SystemModule.objectives.index);
-      }
-    }
-*/
-
-    Objective objective = await _objectiveService.getObjective(objectiveId, withMeasures: true, withProfile: true);
-    if (selectedObjective == null) {
-      objectives.add( objective );
-    } else {
-      objectives[objectives.indexOf(selectedObjective)] = objective;
-    }
-
-    _sortObjectives(objectives);
-
-    _historyTimelineService.refreshHistory(SystemModule.objectives.index);
-    //_historyTimelineService.getHistory(SystemModule.objectives.index);
   }
 
   String userUrlImage(String userProfileImage) {

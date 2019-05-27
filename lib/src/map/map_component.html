@@ -7,17 +7,17 @@
                size="medium"
                #clickableRef="tooltipTarget"
                (click)="goToObjectives(iObjectiveMapLevel1)">
-                <span class="custom_row c100 p{{iObjectiveMapLevel1.progress}} tiny">
+                <span class="custom-row c100 p{{iObjectiveMapLevel1.progress}} tiny">
                     <span>{{iObjectiveMapLevel1.progress}}%</span>
                     <div class="slice">
                         <div class="bar"></div>
                         <div class="fill"></div>
                     </div>
                 </span>
-                <span class="custom_row custom-name truncate-ellipsed-parent">
+                <span class="custom-row custom-name truncate-ellipsed-parent">
                     <span class="truncate-ellipsed-block">{{iObjectiveMapLevel1.name}}</span>
                 </span>
-                <span class="custom_row avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel1.group.id)">
+                <span class="custom-row avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel1.group.id)">
                     <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + iObjectiveMapLevel1.group.name">{{firstLetter(iObjectiveMapLevel1.group.name)}}</span>
                 </span>
             </a>
@@ -36,17 +36,17 @@
                        tabindex="0"
                        size="medium"
                        #clickableRef="tooltipTarget" (click)="goToObjectives(iObjectiveMapLevel2)">
-                       <span class="custom_row c100 p{{iObjectiveMapLevel2.progress}} tiny">
+                       <span class="custom-row c100 p{{iObjectiveMapLevel2.progress}} tiny">
                            <span>{{iObjectiveMapLevel2.progress}}%</span>
                            <div class="slice">
                                <div class="bar"></div>
                                <div class="fill"></div>
                            </div>
                        </span>
-                       <span class="custom_row custom-name truncate-ellipsed-parent">
+                       <span class="custom-row custom-name truncate-ellipsed-parent">
                            <span class="truncate-ellipsed-block">{{iObjectiveMapLevel2.name}}</span>
                        </span>
-                       <span class="custom_row avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel2.group.id)">
+                       <span class="custom-row avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel2.group.id)">
                            <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + iObjectiveMapLevel2.group.name">{{firstLetter(iObjectiveMapLevel2.group.name)}}</span>
                        </span>
                     </a>
@@ -65,17 +65,17 @@
                                tabindex="0"
                                size="medium"
                                #clickableRef="tooltipTarget" (click)="goToObjectives(iObjectiveMapLevel3)">
-                                <span class="custom_row c100 p{{iObjectiveMapLevel3.progress}} tiny">
+                                <span class="custom-row c100 p{{iObjectiveMapLevel3.progress}} tiny">
                                     <span>{{iObjectiveMapLevel3.progress}}%</span>
                                     <div class="slice">
                                         <div class="bar"></div>
                                         <div class="fill"></div>
                                     </div>
                                 </span>
-                                <span class="custom_row custom-name truncate-ellipsed-parent">
+                                <span class="custom-row custom-name truncate-ellipsed-parent">
                                     <span class="truncate-ellipsed-block">{{iObjectiveMapLevel3.name}}</span>
                                 </span>
-                                <span class="custom_row avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel3.group.id)">
+                                <span class="custom-row avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel3.group.id)">
                                     <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + iObjectiveMapLevel3.group.name">{{firstLetter(iObjectiveMapLevel3.group.name)}}</span>
                                 </span>
                             </a>
@@ -94,17 +94,17 @@
                                        tabindex="0"
                                        size="medium"
                                        #clickableRef="tooltipTarget" (click)="goToObjectives(iObjectiveMapLevel4)">
-                                        <span class="custom_row c100 p{{iObjectiveMapLevel4.progress}} tiny">
+                                        <span class="custom-row c100 p{{iObjectiveMapLevel4.progress}} tiny">
                                             <span>{{iObjectiveMapLevel4.progress}}%</span>
                                             <div class="slice">
                                                 <div class="bar"></div>
                                                 <div class="fill"></div>
                                             </div>
                                         </span>
-                                        <span class="custom_row custom-name truncate-ellipsed-parent">
+                                        <span class="custom-row custom-name truncate-ellipsed-parent">
                                             <span class="truncate-ellipsed-block">{{iObjectiveMapLevel4.name}}</span>
                                         </span>
-                                        <span class="custom_row avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel4.group.id)">
+                                        <span class="custom-row avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel4.group.id)">
                                             <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + iObjectiveMapLevel4.group.name">{{firstLetter(iObjectiveMapLevel4.group.name)}}</span>
                                         </span>
                                     </a>
@@ -123,17 +123,17 @@
                                                tabindex="0"
                                                size="medium"
                                                #clickableRef="tooltipTarget" (click)="goToObjectives(iObjectiveMapLevel5)">
-                                            <span class="custom_row c100 p{{iObjectiveMapLevel5.progress}} tiny">
+                                            <span class="custom-row c100 p{{iObjectiveMapLevel5.progress}} tiny">
                                                 <span>{{iObjectiveMapLevel5.progress}}%</span>
                                                     <div class="slice">
                                                         <div class="bar"></div>
                                                         <div class="fill"></div>
                                                     </div>
                                                 </span>
-                                                <span class="custom_row custom-name truncate-ellipsed-parent">
+                                                <span class="custom-row custom-name truncate-ellipsed-parent">
                                                     <span class="truncate-ellipsed-block">{{iObjectiveMapLevel5.name}}</span>
                                                 </span>
-                                                <span class="custom_row avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel5.group.id)">
+                                                <span class="custom-row avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel5.group.id)">
                                                     <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + iObjectiveMapLevel5.group.name">{{firstLetter(iObjectiveMapLevel5.group.name)}}</span>
                                                 </span>
                                             </a>
@@ -152,17 +152,17 @@
                                                        tabindex="0"
                                                        size="medium"
                                                        #clickableRef="tooltipTarget" (click)="goToObjectives(iObjectiveMapLevel6)">
-                                                        <span class="custom_row c100 p{{iObjectiveMapLevel6.progress}} tiny">
+                                                        <span class="custom-row c100 p{{iObjectiveMapLevel6.progress}} tiny">
                                                             <span>{{iObjectiveMapLevel6.progress}}%</span>
                                                             <div class="slice">
                                                                 <div class="bar"></div>
                                                                 <div class="fill"></div>
                                                             </div>
                                                         </span>
-                                                        <span class="custom_row custom-name truncate-ellipsed-parent">
+                                                        <span class="custom-row custom-name truncate-ellipsed-parent">
                                                             <span class="truncate-ellipsed-block">{{iObjectiveMapLevel6.name}}</span>
                                                         </span>
-                                                        <span class="custom_row avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel6.group.id)">
+                                                        <span class="custom-row avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel6.group.id)">
                                                             <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + iObjectiveMapLevel6.group.name">{{firstLetter(iObjectiveMapLevel6.group.name)}}</span>
                                                         </span>
                                                     </a>
@@ -181,17 +181,17 @@
                                                                tabindex="0"
                                                                size="medium"
                                                                #clickableRef="tooltipTarget" (click)="goToObjectives(iObjectiveMapLevel7)">
-                                                                <span class="custom_row c100 p{{iObjectiveMapLevel7.progress}} tiny">
+                                                                <span class="custom-row c100 p{{iObjectiveMapLevel7.progress}} tiny">
                                                                     <span>{{iObjectiveMapLevel7.progress}}%</span>
                                                                     <div class="slice">
                                                                         <div class="bar"></div>
                                                                         <div class="fill"></div>
                                                                     </div>
                                                                 </span>
-                                                                <span class="custom_row custom-name truncate-ellipsed-parent">
+                                                                <span class="custom-row custom-name truncate-ellipsed-parent">
                                                                     <span class="truncate-ellipsed-block">{{iObjectiveMapLevel7.name}}</span>
                                                                 </span>
-                                                                <span class="custom_row avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel7.group.id)">
+                                                                <span class="custom-row avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel7.group.id)">
                                                                     <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + iObjectiveMapLevel7.group.name">{{firstLetter(iObjectiveMapLevel7.group.name)}}</span>
                                                                 </span>
                                                             </a>
@@ -210,17 +210,17 @@
                                                                        tabindex="0"
                                                                        size="medium"
                                                                        #clickableRef="tooltipTarget" (click)="goToObjectives(iObjectiveMapLevel8)">
-                                                                        <span class="custom_row c100 p{{iObjectiveMapLevel8.progress}} tiny">
+                                                                        <span class="custom-row c100 p{{iObjectiveMapLevel8.progress}} tiny">
                                                                             <span>{{iObjectiveMapLevel8.progress}}%</span>
                                                                             <div class="slice">
                                                                                 <div class="bar"></div>
                                                                                 <div class="fill"></div>
                                                                             </div>
                                                                         </span>
-                                                                        <span class="custom_row custom-name truncate-ellipsed-parent">
+                                                                        <span class="custom-row custom-name truncate-ellipsed-parent">
                                                                             <span class="truncate-ellipsed-block">{{iObjectiveMapLevel8.name}}</span>
                                                                         </span>
-                                                                        <span class="custom_row avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel8.group.id)">
+                                                                        <span class="custom-row avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel8.group.id)">
                                                                             <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + iObjectiveMapLevel8.group.name">{{firstLetter(iObjectiveMapLevel8.group.name)}}</span>
                                                                         </span>
                                                                     </a>
@@ -239,17 +239,17 @@
                                                                                tabindex="0"
                                                                                size="medium"
                                                                                #clickableRef="tooltipTarget" (click)="goToObjectives(iObjectiveMapLevel9)">
-                                                                                <span class="custom_row c100 p{{iObjectiveMapLevel9.progress}} tiny">
+                                                                                <span class="custom-row c100 p{{iObjectiveMapLevel9.progress}} tiny">
                                                                                     <span>{{iObjectiveMapLevel9.progress}}%</span>
                                                                                     <div class="slice">
                                                                                         <div class="bar"></div>
                                                                                         <div class="fill"></div>
                                                                                     </div>
                                                                                 </span>
-                                                                                <span class="custom_row custom-name truncate-ellipsed-parent">
+                                                                                <span class="custom-row custom-name truncate-ellipsed-parent">
                                                                                     <span class="truncate-ellipsed-block">{{iObjectiveMapLevel9.name}}</span>
                                                                                 </span>
-                                                                                <span class="custom_row avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel9.group.id)">
+                                                                                <span class="custom-row avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel9.group.id)">
                                                                                     <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + iObjectiveMapLevel9.group.name">{{firstLetter(iObjectiveMapLevel9.group.name)}}</span>
                                                                                 </span>
                                                                             </a>
@@ -268,17 +268,17 @@
                                                                                        tabindex="0"
                                                                                        size="medium"
                                                                                        #clickableRef="tooltipTarget" (click)="goToObjectives(iObjectiveMapLevel10)">
-                                                                                        <span class="custom_row c100 p{{iObjectiveMapLevel10.progress}} tiny">
+                                                                                        <span class="custom-row c100 p{{iObjectiveMapLevel10.progress}} tiny">
                                                                                             <span>{{iObjectiveMapLevel10.progress}}%</span>
                                                                                             <div class="slice">
                                                                                                 <div class="bar"></div>
                                                                                                 <div class="fill"></div>
                                                                                             </div>
                                                                                         </span>
-                                                                                        <span class="custom_row custom-name truncate-ellipsed-parent">
+                                                                                        <span class="custom-row custom-name truncate-ellipsed-parent">
                                                                                             <span class="truncate-ellipsed-block">{{iObjectiveMapLevel10.name}}</span>
                                                                                         </span>
-                                                                                        <span class="custom_row avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel10.group.id)">
+                                                                                        <span class="custom-row avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel10.group.id)">
                                                                                             <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + iObjectiveMapLevel10.group.name">{{firstLetter(iObjectiveMapLevel10.group.name)}}</span>
                                                                                         </span>
                                                                                     </a>

@@ -2,7 +2,6 @@
 // Author: Samuel C. Schwebel.
 
 import 'package:angular/angular.dart';
-
 import 'package:angular_router/angular_router.dart';
 
 import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
@@ -15,6 +14,8 @@ import 'package:auge_web/message/messages.dart';
 import 'package:auge_web/src/work_item/work_item_service.dart';
 import 'package:auge_web/src/work_item/work_items_kanban_component.dart';
 import 'package:auge_web/src/work_item/work_items_list_component.dart';
+
+import 'package:auge_web/services/app_routes.dart';
 
 @Component(
     selector: 'auge-work-items',
@@ -34,16 +35,16 @@ import 'package:auge_web/src/work_item/work_items_list_component.dart';
       'work_items_component.css'
     ])
 
-class WorkItemsComponent extends Object {
+class WorkItemsComponent with CanReuse {
+
+  final Router _router;
 
   @Input()
   Initiative initiative;
 
-  bool fowardAddWorkItem;
-
   String selectedView = 'list';
 
-  WorkItemsComponent();
+  WorkItemsComponent(this._router);
 
   String label(String label) =>  InitiativeMsg.label(label);
 
@@ -51,11 +52,12 @@ class WorkItemsComponent extends Object {
     return (stateWorkItemsCount / workItemsCount * withTotal).toString();
   }
 
-  void selectView(String view) {
-    selectedView = view;
-  }
+  void goToDetail() {
+    if (initiative == null) {
+      _router.navigate(AppRoutes.initiativeAddRoute.toUrl());
 
-  void viewFowardDetail(bool fowardAddWorkItem) {
-    this.fowardAddWorkItem = fowardAddWorkItem;
+    } else {
+      _router.navigate(AppRoutes.initiativeEditRoute.toUrl(parameters: { AppRoutesParam.initiativeIdParameter: initiative.id }));
+    }
   }
 }

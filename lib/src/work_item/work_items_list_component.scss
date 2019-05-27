@@ -1,14 +1,5 @@
 @import 'package:angular_components/css/material/material';
-@import 'package:angular_components/material_button/mixins';
 @import 'package:angular_components/material_expansionpanel/mixins';
-
-material-fab {
-  position: fixed !important;
-  z-index: 9999999;
-  right: 32px;
-  background-color: $mat-red;
-  color: $mat-white;
-}
 
 .expansionpanel-flat-on-collapse-theme-no-border {
   ::ng-deep #{$_panel}:not(.open) {

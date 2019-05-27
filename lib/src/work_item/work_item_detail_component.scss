@@ -1,36 +1,5 @@
-@import 'package:angular_components/css/material/material';
 @import 'package:angular_components/css/material/shadow';
-@import 'package:angular_components/material_input/material_input';
-@import 'package:angular_components/material_dialog/material_dialog';
-@import 'package:angular_components/material_button/mixins';
-@import 'package:angular_components/material_dialog/mixins';
-@import 'package:angular_components/material_progress/mixins';
 @import 'package:auge_web/scss/common';
-
-:host {
-  @include button-background-color('material-button.blue', $mat-blue-500);
-  @include button-color('material-button.blue', $mat-white);
-}
-
-material-fab {
-    float: right;
-}
-
-.width-300 {
-   width: 300px;
-}
-
-.width-240 {
-   width: 240px;
-}
-
-.width-90 {
-   width: 90px;
-}
-
-.width-130 {
-  width: 130px;
-}
 
 .width-200 {
    width: 200px;
@@ -38,51 +7,10 @@ material-fab {
    white-space: pre-wrap;
 }
 
-.width-480 {
-  width: 480px;
-}
-
-.material-box {
-  padding: 8px;
-  margin: 8px;
-
-  box-shadow:
-    0 2px 2px 0 rgba(0, 0, 0, 0.14),
-    0 3px 1px -2px rgba(0, 0, 0, 0.12),
-    0 1px 5px 0 rgba(0, 0, 0, 0.2);
-}
-
-.shadow-box-form {
-   @include material-shadow();
-   padding: 16px;
-   margin: 16px;
-   display: inline-block;
-}
-
-.shadow-box {
-   @include material-shadow();
-   overflow: hidden;
-}
-
 material-input {
   padding: 4px;
 }
 
-.material-progress-custom-theme {
-  @include material-progress-theme(
-    $mat-teal-100,
-    $mat-lime-500,
-    $mat-lime-200);
-}
-
-.label-text {
-  /* transform: translateY(-100%) translateY(-$mat-grid); */
-  font-size: $mat-font-size-caption;
-  margin-top: -4px;
-  margin-bottom: -4px;
-  padding-top: 0px;
-  padding-bottom: -4px;
-}
 
 material-dropdown-select { width: 250px; min-width: 250px; }
 
@@ -97,9 +25,4 @@ material-dropdown-select { width: 250px; min-width: 250px; }
 .material-list-item {
     padding: -16px;
     margin: -16px;
-    /*line-height: 1.1;
-    flex-wrap: wrap;
-    word-wrap: break-word;
-    white-space: pre-wrap;
-    */
 }

@@ -25,6 +25,7 @@ import 'package:auge_web/services/common_service.dart' as common_service;
 
 import 'package:auge_server/model/general/user.dart';
 import 'package:auge_server/model/general/organization.dart';
+import 'package:auge_server/model/general/user_profile_organization.dart';
 
 import 'package:auge_web/message/messages.dart';
 
@@ -48,7 +49,7 @@ import 'package:auge_web/services/app_routes.dart';
   templateUrl: 'auth_component.html',
 )
 
-class AuthComponent extends Object with OnActivate  {
+class AuthComponent with OnActivate  {
 
   String appLayoutRoute = AppRoutes.appLayoutRoute.toUrl();
 
@@ -58,6 +59,8 @@ class AuthComponent extends Object with OnActivate  {
   String eMail = "demo@levius.com.br";
   String passwordStr = "1234567";
   String dialogError;
+
+  List<UserProfileOrganization> authorizedUsersProfileOrganizations;
 
   // Dropdown Select to Organization and SuperAdmin
   List<OptionGroup<AppLayoutOrganizationSelectOption>> organizationGroupOptions = new List();
@@ -80,10 +83,14 @@ class AuthComponent extends Object with OnActivate  {
   void onActivate(RouterState previous, RouterState current) {
 
     // Needs to set auth attributes again
-    _authService.authenticatedUser = null;
-    _authService.selectedOrganization = null;
-    _authService.authorizedOrganizations = null;
-    _authService.authorizedSystemRole = null;
+   // _authService.authenticatedUser = null;
+    //_authService.selectedOrganization = null;
+    //_authService.authorizedOrganizations = null;
+
+    // Needs to set auth attributes again
+    _authService.authUserProfileOrganization = UserProfileOrganization();
+
+    // _authService.authorizedSystemRole = null;
 
     if (!browser.isChrome) {
       dialogError = AuthMsg.browserCompatibleErrorMsg();
@@ -104,16 +111,16 @@ class AuthComponent extends Object with OnActivate  {
         dialogError = AuthMsg.informEMailPasswordCorrectlyMsg();
       } else {
         try {
-          _authService.authenticatedUser =
+          _authService.authUserProfileOrganization.user =
               await _authService.getAuthenticatedUserWithEmail(eMail, passwordStr);
-          if (_authService.authenticatedUser == null) {
+          if (_authService.authUserProfileOrganization.user == null) {
             dialogError = AuthMsg.userNotFoundMsg();
           } else {
-            _authService.authorizedOrganizations =
-            await _authService.getAuthorizedOrganizationsByUserId(
-                _authService.authenticatedUser.id);
-            if (_authService.authorizedOrganizations == null ||
-                _authService.authorizedOrganizations.length == 0) {
+            authorizedUsersProfileOrganizations =
+            await _authService.getAuthorizedUsersProfileOrganizations(
+                _authService.authUserProfileOrganization.user.id);
+            if (authorizedUsersProfileOrganizations == null ||
+                authorizedUsersProfileOrganizations.length == 0) {
               dialogError = AuthMsg.organizationNotFoundMsg();
             } else {
               configOrganizationSeletion();
@@ -142,13 +149,12 @@ class AuthComponent extends Object with OnActivate  {
   }
 
   User get authenticatedUser {
-    return _authService?.authenticatedUser;
+    return _authService.authenticatedUser;
   }
 
-  Organization get authorizedAndSelectedOrganization {
-    return _authService?.selectedOrganization;
+  Organization get authorizedOrganization {
+    return _authService.authorizedOrganization;
   }
-
 
   void configOrganizationSeletion() {
 
@@ -160,13 +166,13 @@ class AuthComponent extends Object with OnActivate  {
 
     String orgGroupLabel = AuthMsg.label('Organization');
 
-    if (_authService.authorizedOrganizations != null &&
-        _authService.authorizedOrganizations.isNotEmpty) {
-      _authService.authorizedOrganizations.forEach((e) =>
+    if (authorizedUsersProfileOrganizations != null &&
+        authorizedUsersProfileOrganizations.isNotEmpty) {
+      authorizedUsersProfileOrganizations.forEach((e) =>
           orgs.add(new AppLayoutOrganizationSelectOption()
             ..group = orgGroupLabel
             ..name = e.organization.name
-            ..organization = e?.organization));
+            ..userProfileOrganization = e));
     }
     organizationGroupOptions.add(
         new OptionGroup.withLabel(orgs, orgGroupLabel));
@@ -185,14 +191,14 @@ class AuthComponent extends Object with OnActivate  {
       ..selectionChanges.listen((d) async {
         if (d != null && d.isNotEmpty && d.first != null && d.first.added != null && d.first.added.isNotEmpty) {
 
-          if (_authService.selectedOrganization !=
-              d.first.added.first.organization) {
+          if (_authService.authUserProfileOrganization !=
+              d.first.added.first.userProfileOrganization) {
 
-              _authService.selectedOrganization =
-                  d.first.added.first.organization;
+              _authService.authUserProfileOrganization =
+                  d.first.added.first.userProfileOrganization;
 
               organizationSingleSelectLabel =
-                d.first.added.first.name ??
+                d.first.added.first.userProfileOrganization.organization.name ??
                   AuthMsg.label('Select');
           }
         }
@@ -221,5 +227,5 @@ class AuthComponent extends Object with OnActivate  {
 class AppLayoutOrganizationSelectOption {
   String group;
   String name;
-  Organization organization;
+  UserProfileOrganization userProfileOrganization;
 }

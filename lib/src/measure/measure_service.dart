@@ -124,7 +124,7 @@ class MeasureService {
       measure_pbgrpc.MeasureRequest measureRequest = measure_pbgrpc.MeasureRequest()
         ..measure = measure.writeToProtoBuf()
         ..objectiveId = objectiveId
-        ..authenticatedOrganizationId = _authService.selectedOrganization.id
+        ..authenticatedOrganizationId = _authService.authorizedOrganization.id
         ..authenticatedUserId = _authService.authenticatedUser.id;
 
       if (measure.id == null) {
@@ -149,7 +149,7 @@ class MeasureService {
     measure_pbgrpc.MeasureProgressRequest measureProgressRequest = measure_pbgrpc.MeasureProgressRequest()
       ..measureProgress = measureProgress.writeToProtoBuf()
       ..measureId = measureId
-      ..authenticatedOrganizationId = _authService.selectedOrganization.id
+      ..authenticatedOrganizationId = _authService.authorizedOrganization.id
       ..authenticatedUserId = _authService.authenticatedUser.id;
 
     try {
@@ -179,7 +179,7 @@ class MeasureService {
     measure_pbgrpc.MeasureProgressRequest measureProgressRequest = measure_pbgrpc.MeasureProgressRequest()
       ..measureProgress = measureProgress.writeToProtoBuf()
       ..measureId = measureId
-      ..authenticatedOrganizationId = _authService.selectedOrganization.id
+      ..authenticatedOrganizationId = _authService.authorizedOrganization.id
       ..authenticatedUserId = _authService.authenticatedUser.id;
 
     try {
@@ -197,7 +197,7 @@ class MeasureService {
     measure_pbgrpc.MeasureDeleteRequest measureDeleteRequest = measure_pbgrpc.MeasureDeleteRequest()
       ..measureId = measure.id
       ..measureVersion = measure.version
-      ..authenticatedOrganizationId = _authService.selectedOrganization.id
+      ..authenticatedOrganizationId = _authService.authorizedOrganization.id
       ..authenticatedUserId = _authService.authenticatedUser.id;
     try {
       await _measureServiceClient.deleteMeasure(measureDeleteRequest);

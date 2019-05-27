@@ -171,7 +171,7 @@ class WorkItemDetailComponent implements OnInit  {
 
     //List<User> users = await _userService.getUsers(_authService.selectedOrganization?.id, withProfile: true);
     try {
-      _users = await _userService.getUsers(_userService.authService.selectedOrganization.id, withProfile: true);
+      _users = await _userService.getUsers(_userService.authService.authorizedOrganization.id, withProfile: true);
     } catch (e) {
       dialogError = e.toString();
       rethrow;

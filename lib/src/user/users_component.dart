@@ -106,7 +106,7 @@ class UsersComponent with CanReuse implements OnActivate {
   }
 
   void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
-    if (_userService.authService.selectedOrganization == null || _userService.authService.authenticatedUser == null) {
+    if (_userService.authService.authorizedOrganization == null || _userService.authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
       return;
     }
@@ -115,7 +115,7 @@ class UsersComponent with CanReuse implements OnActivate {
 
     try {
       // _users = await _userService.getUsers(_userService.authService.selectedOrganization?.id, withProfile: true);
-      _usersProfileOrganizations = await _userService.getUsersProfileOrganizations(_userService.authService.selectedOrganization?.id, withUserProfile: true);
+      _usersProfileOrganizations = await _userService.getUsersProfileOrganizations(_userService.authService.authorizedOrganization?.id, withUserProfile: true);
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;

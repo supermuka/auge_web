@@ -1,11 +1,1 @@
-@import 'package:angular_components/css/material/material';
-@import 'package:angular_components/css/material/shadow';
-
-material-fab {
-   position: fixed !important;
-   z-index: 9999999;
-   background-color: $mat-red;
-   color: $mat-white;
-   float: right;
-   right: 32px;
-}
+@import 'package:auge_web/scss/common.scss';

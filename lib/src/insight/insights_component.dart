@@ -63,7 +63,7 @@ class InsightsComponent implements OnActivate  {
   @override
   void onActivate(RouterState previous, RouterState current) async {
 
-    if (_authService.selectedOrganization == null || _authService.authenticatedUser == null) {
+    if (_authService.authorizedOrganization == null || _authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
       return;
     }
@@ -72,11 +72,11 @@ class InsightsComponent implements OnActivate  {
     _appLayoutService.headerTitle = AppLayoutMsg.label('Insights');
 
     try {
-      if (_authService.selectedOrganization != null) {
+      if (_authService.authorizedOrganization != null) {
         objectives = await _objectiveService.getObjectives(
-            _authService.selectedOrganization.id, withMeasures: true);
+            _authService.authorizedOrganization.id, withMeasures: true);
         initiatives = await _initiativeService.getInitiatives(
-            _authService.selectedOrganization.id, withWorkItems: true);
+            _authService.authorizedOrganization.id, withWorkItems: true);
       }
     } catch (e) {
       _appLayoutService.error = e.toString();

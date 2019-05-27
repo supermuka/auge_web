@@ -135,11 +135,10 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
       userProfileOrganization.user.userProfile.idiomLocale = Intl.defaultLocale;
 
       // Authorizated and selected organization
-      userProfileOrganization.organization = _userService.authService.selectedOrganization;
+      userProfileOrganization.organization = _userService.authService.authorizedOrganization;
     }
     SystemRole.values.forEach((role) {
       if (role != SystemRole.superAdmin) {
-        print(role.toString());
         userAuthorizationOptions.add(new Option(
             role.index,
             UserMsg.label(role.toString()), _userService.authService.isAuthorizedForAtuhorizatedRole(

@@ -28,7 +28,7 @@ class WorkItemService {
     work_item_pbgrpc.WorkItemDeleteRequest workItemDeleteRequest = work_item_pbgrpc.WorkItemDeleteRequest()
       ..workItemId = workItem.id
       ..workItemVersion = workItem.version
-      ..authenticatedOrganizationId = _authService.selectedOrganization.id
+      ..authenticatedOrganizationId = _authService.authorizedOrganization.id
       ..authenticatedUserId = _authService.authenticatedUser.id;
 
     try {
@@ -45,7 +45,7 @@ class WorkItemService {
     work_item_pbgrpc.WorkItemRequest workItemRequest = work_item_pbgrpc.WorkItemRequest()
       ..workItem = workItem.writeToProtoBuf()
       ..initiativeId = initiativeId
-      ..authenticatedOrganizationId = _authService.selectedOrganization.id
+      ..authenticatedOrganizationId = _authService.authorizedOrganization.id
       ..authenticatedUserId = _authService.authenticatedUser.id;
 
     try {

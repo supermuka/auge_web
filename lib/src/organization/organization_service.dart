@@ -42,7 +42,7 @@ class OrganizationService {
 
     organization_pbgrpc.OrganizationRequest organizationRequest = organization_pbgrpc.OrganizationRequest()
       ..organization = organization.writeToProtoBuf()
-      ..authenticatedOrganizationId = _authService.selectedOrganization.id
+      ..authenticatedOrganizationId = _authService.authorizedOrganization.id
       ..authenticatedUserId = _authService.authenticatedUser.id;
 
     try {
@@ -67,7 +67,7 @@ class OrganizationService {
     organization_pbgrpc.OrganizationDeleteRequest organizationDeleteRequest = organization_pbgrpc.OrganizationDeleteRequest()
       ..organizationId = organization.id
       ..organizationVersion = organization.version
-      ..authenticatedOrganizationId = _authService.selectedOrganization.id
+      ..authenticatedOrganizationId = _authService.authorizedOrganization.id
       ..authenticatedUserId = _authService.authenticatedUser.id;
 
     try {

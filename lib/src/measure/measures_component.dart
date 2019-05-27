@@ -2,6 +2,7 @@
 // Author: Samuel C. Schwebel.
 
 import 'package:angular/angular.dart';
+import 'package:angular_router/angular_router.dart';
 
 import 'package:angular_components/material_slider/material_slider.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
@@ -18,6 +19,8 @@ import 'package:angular_components/content/deferred_content.dart';
 
 import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/objective/measure.dart';
+
+import 'package:auge_web/services/app_routes.dart';
 
 import 'package:auge_web/message/messages.dart';
 import 'package:auge_web/src/measure/measure_detail_component.dart';
@@ -50,26 +53,25 @@ import 'package:auge_web/src/app_layout/app_layout_service.dart';
       'measures_component.css'
     ])
 
-class MeasuresComponent extends Object {
+class MeasuresComponent with CanReuse {
 
   final AppLayoutService _appLayoutService;
   final MeasureService _measureService;
+  final Router _router;
 
   @Input()
   Objective objective;
 
   Measure selectedMeasure;
 
-
-  bool detailVisible;
   bool progressVisible;
   bool addMeasureProgress;
   //Map<Measure, bool> expandedControl = Map();
 
   MenuModel<MenuItem> menuModel;
-  MeasuresComponent(this._appLayoutService, this._measureService) {
+  MeasuresComponent(this._appLayoutService, this._measureService, this._router) {
     menuModel = new MenuModel([new MenuItemGroup(
-        [new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => detailVisible = true),
+        [new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => goToDetail()),
         new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete()),
         new MenuItem('Progress History', icon: new Icon('show_chart'), action: () { addMeasureProgress = false; progressVisible = true; }) ])], icon: new Icon('menu'));
   }
@@ -130,6 +132,16 @@ class MeasuresComponent extends Object {
     // recovery the actual measure;
     if (selectedMeasure != null) {
       measures[measures.indexOf(selectedMeasure)] = await _measureService.getMeasure(selectedMeasure.id);
+    }
+  }
+
+  void goToDetail() {
+
+    if (selectedMeasure == null) {
+      _router.navigate(AppRoutes.measureAddRoute.toUrl(parameters: { AppRoutesParam.objectiveIdParameter: objective.id }));
+
+    } else {
+      _router.navigate(AppRoutes.measureEditRoute.toUrl(parameters: { AppRoutesParam.objectiveIdParameter: objective.id, AppRoutesParam.measureIdParameter: selectedMeasure.id }));
     }
   }
 }

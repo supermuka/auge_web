@@ -80,7 +80,7 @@ class OrganizationsComponent extends Object implements OnActivate, OnDestroy  {
 
   void onActivate(RouterState previous, RouterState current) async {
 
-    if (_authService.selectedOrganization == null || _authService.authenticatedUser == null) {
+    if (_authService.authorizedOrganization == null || _authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
       return;
     }

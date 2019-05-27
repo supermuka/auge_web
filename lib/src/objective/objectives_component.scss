@@ -1,14 +1,4 @@
-@import 'package:angular_components/css/material/material';
-
-.material-fab-add {
-   position: fixed !important;
-   z-index: 9999;
-   float: right;
-   bottom: 64px;
-   right: 64px;
-   background-color: $mat-red;
-   color: $mat-white;
-}
+@import 'package:auge_web/scss/common.scss';
 
 .custom-grid {
   display: grid;

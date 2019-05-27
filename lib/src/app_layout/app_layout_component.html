@@ -1,34 +1,34 @@
 <material-drawer id="drawer" temporary #drawer="drawer">
     <material-list class="menu-drawer" *deferredContent>
         <div group class="centralized">
-            <h4><strong>{{selectedOrganization?.name}}</strong></h4>
+            <h4><strong>{{authorizedOrganization?.name}}</strong></h4>
         </div>
         <div group>
-            <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(insightsRouteUrl)">
+            <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(insightsRouteUrl)">
                 <material-icon icon="home"></material-icon>{{insightsLabel}}
             </material-list-item>
-            <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(mapRouteUrl)">
+            <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(mapRouteUrl)">
                 <material-icon icon="map"></material-icon>{{objectivesMapLabel}}
             </material-list-item>
-            <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(ganttRouteUrl)">
+            <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(ganttRouteUrl)">
                 <material-icon icon="schedule"></material-icon>{{objectivesGanttLabel}}
             </material-list-item>
-            <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(objectivesRouteUrl)">
+            <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(objectivesRouteUrl)">
                 <material-icon icon="visibility"></material-icon>{{objectivesLabel}}
             </material-list-item>
-            <material-list-item [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(initiativesRouteUrl)">
+            <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(initiativesRouteUrl)">
                 <material-icon icon="timeline"></material-icon>{{initiativesLabel}}
             </material-list-item>
         </div>
         <div *ngIf="isAuthorizedToAccessOrganizationProfile || isAuthorizedToAccessUsers || isAuthorizedToAccessGroups" group>
             <div label>{{adminLabel}}</div>
-            <material-list-item *ngIf="isAuthorizedToAccessUsers" [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(usersRouteUrl)">
+            <material-list-item *ngIf="isAuthorizedToAccessUsers" [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(usersRouteUrl)">
                 <material-icon icon="account_circle"></material-icon>{{usersLabel}}
             </material-list-item>
-            <material-list-item *ngIf="isAuthorizedToAccessGroups" [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(groupsRouteUrl)">
+            <material-list-item *ngIf="isAuthorizedToAccessGroups" [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(groupsRouteUrl)">
                 <material-icon icon="group"></material-icon>{{groupsLabel}}
             </material-list-item>
-            <material-list-item *ngIf="isAuthorizedToAccessOrganizationProfile" [disabled]="!hasSelectedOrganization" (click)="drawer.toggle();goTo(organizationRouteUrl)">
+            <material-list-item *ngIf="isAuthorizedToAccessOrganizationProfile" [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(organizationRouteUrl)">
                 <material-icon icon="account_balance"></material-icon>{{organizationLabel}}
             </material-list-item>
         </div>
@@ -63,8 +63,8 @@
         <div class="error" [class.expanded]="error != null">{{error}}</div>
     </div>
     <div class="main">
-        <auge-user-detail *ngIf="userDetailVisible == true" [selectedUserProfileOrganizationId]="authenticatedUser.id" (saved)="changeUserDetail($event)" (closed)="userDetailVisible = false">
-        </auge-user-detail>
+        <!-- auge-user-detail *ngIf="userDetailVisible == true" [selectedUserProfileOrganizationId]="authenticatedUser.id" (saved)="changeUserDetail($event)" (closed)="userDetailVisible = false">
+        </auge-user-detail -->
         <router-outlet [routes]="routes"></router-outlet>
     </div>
 </div>

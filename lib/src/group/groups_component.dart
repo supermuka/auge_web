@@ -95,7 +95,7 @@ class GroupsComponent with CanReuse implements OnActivate, OnDestroy {
 
   void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
 
-    if (_groupService.authService.selectedOrganization == null || _groupService.authService.authenticatedUser == null) {
+    if (_groupService.authService.authorizedOrganization == null || _groupService.authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
       return;
     }
@@ -105,7 +105,7 @@ class GroupsComponent with CanReuse implements OnActivate, OnDestroy {
     _appLayoutService.enabledSearch = true;
 
     try {
-      _groups = await _groupService.getGroups(_groupService.authService.selectedOrganization.id);
+      _groups = await _groupService.getGroups(_groupService.authService.authorizedOrganization.id);
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;

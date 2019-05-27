@@ -1,7 +1,5 @@
 // Copyright (c) 2017, Levius.
 
-import 'dart:async';
-
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
 import 'package:auge_web/services/app_routes.dart';
@@ -133,8 +131,8 @@ class ObjectiveDetailComponent implements OnInit, OnActivate, OnDeactivate {
     modalVisible = true;
 
     String id;
-    if (current.parameters.containsKey(AppRoutesParam.groupIdParameter)) {
-      id = current.parameters[AppRoutesParam.groupIdParameter];
+    if (current.parameters.containsKey(AppRoutesParam.objectiveIdParameter)) {
+      id = current.parameters[AppRoutesParam.objectiveIdParameter];
     }
 
     if (id != null) {
@@ -144,14 +142,14 @@ class ObjectiveDetailComponent implements OnInit, OnActivate, OnDeactivate {
       //objective = selectedObjective.clone();
 
     } else {
-      objective.organization = _objectiveService.authService.selectedOrganization;
+      objective.organization = _objectiveService.authService.authorizedOrganization;
       objective.archived = false;
     }
 
     try {
-      _alignedToObjectives = await _objectiveService.getObjectives(_objectiveService.authService.selectedOrganization.id);
-      _users = await _userService.getUsers(_objectiveService.authService.selectedOrganization.id, withProfile: true);
-      _groups = await _groupService.getGroups(_objectiveService.authService.selectedOrganization.id);
+      _alignedToObjectives = await _objectiveService.getObjectives(_objectiveService.authService.authorizedOrganization.id);
+      _users = await _userService.getUsers(_objectiveService.authService.authorizedOrganization.id, withProfile: true);
+      _groups = await _groupService.getGroups(_objectiveService.authService.authorizedOrganization.id);
 
     } catch (e) {
       dialogError = e.toString();

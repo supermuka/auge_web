@@ -133,13 +133,13 @@ class GroupDetailComponent implements OnInit, OnActivate, OnDeactivate {
       // group = selectedGroup.clone();
       group = await _groupService.getGroup(id);
     } else {
-      group.organization = _groupService.authService.selectedOrganization;
+      group.organization = _groupService.authService;
       group.active = true;
     }
 
     try {
-      _superGroups = await _groupService.getGroups(_groupService.authService.selectedOrganization.id);
-      _users = await _userService.getUsers(_groupService.authService.selectedOrganization.id, withProfile: true);
+      _superGroups = await _groupService.getGroups(_groupService.authService.authorizedOrganization.id);
+      _users = await _userService.getUsers(_groupService.authService.authorizedOrganization.id, withProfile: true);
       groupTypes = await _groupService.getGroupTypes();
     } catch (e) {
       dialogError = e.toString();

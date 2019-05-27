@@ -68,11 +68,9 @@
             <auge-history-timeline></auge-history-timeline>
         </div>
     </div>
-    <material-fab class="material-fab-add" raised (trigger)="selectInitiative(null);goToDetail(selectedInitiative)">
-    <!--material-fab class="material-fab-add" raised (trigger)="selectInitiative(null);viewDetail(true)"-->
+    <material-fab class="material-fab-add" raised (trigger)="selectInitiative(null);goToDetail()">
         <material-icon icon="add"></material-icon>
     </material-fab>
-    <!-- auge-initiative-stages *ngIf="stagesVisible == true" [initiativeId]="selectedInitiative?.id" (saved)="refreshStages()" (closed)="closeStages()"></auge-initiative-stages -->
-    <!-- auge-initiative-detail *ngIf="detailVisible == true" [initiativeId]="selectedInitiative?.id" (saved)="refreshList($event)" (closed)="viewDetail(false)"></auge-initiative-detail -->
+
 </div>
 <router-outlet [routes]="routes"></router-outlet>

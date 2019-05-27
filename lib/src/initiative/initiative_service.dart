@@ -94,7 +94,7 @@ class InitiativeService {
       initiative_pbgrpc.InitiativeRequest initiativeRequest = initiative_pbgrpc.InitiativeRequest()
         ..initiative = initiative.writeToProtoBuf()
         ..authenticatedUserId = _authService.authenticatedUser.id
-        ..authenticatedOrganizationId = _authService.selectedOrganization.id;
+        ..authenticatedOrganizationId = _authService.authorizedOrganization.id;
 
 
       if (initiative.id == null) {
@@ -122,7 +122,7 @@ class InitiativeService {
       initiative_pbgrpc.InitiativeDeleteRequest initiativeDeleteRequest = initiative_pbgrpc.InitiativeDeleteRequest()
         ..initiativeId = initiative.id
         ..initiativeVersion = initiative.version
-        ..authenticatedOrganizationId = _authService.selectedOrganization.id
+        ..authenticatedOrganizationId = _authService.authorizedOrganization.id
         ..authenticatedUserId = _authService.authenticatedUser.id;
 
       await _initiativeServiceClient.deleteInitiative(initiativeDeleteRequest);
@@ -139,7 +139,7 @@ class InitiativeService {
         ..initiativeId = initiativeId
         ..stage = stage.writeToProtoBuf()
         ..authenticatedUserId = _authService.authenticatedUser.id
-        ..authenticatedOrganizationId = _authService.selectedOrganization.id;
+        ..authenticatedOrganizationId = _authService.authorizedOrganization.id;
 
 
       if (stage.id == null) {
@@ -165,7 +165,7 @@ class InitiativeService {
       stage_pbgrpc.StageDeleteRequest stageDeleteRequest = stage_pbgrpc.StageDeleteRequest()
         ..stageId = stage.id
         ..stageVersion = stage.version
-        ..authenticatedOrganizationId = _authService.selectedOrganization.id
+        ..authenticatedOrganizationId = _authService.authorizedOrganization.id
         ..authenticatedUserId = _authService.authenticatedUser.id;
 
       await _stageServiceClient.deleteStage(stageDeleteRequest);

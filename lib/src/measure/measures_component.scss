@@ -1,7 +1,3 @@
-@import 'package:angular_components/css/material/material';
-@import 'package:angular_components/material_button/mixins';
-@import 'package:angular_components/material_expansionpanel/mixins';
-
 .width-flex {
    display: flex;
    justify-content: space-between;
@@ -9,15 +5,6 @@
    margin-bottom: 0px;
    padding-top: 0px;
    padding-bottom: 0px;
-}
-
-material-fab {
-    position: relative !important;
-    z-index: 9999999;
-    background-color: $mat-red !important;
-    color: $mat-white;
-    float: right;
-    top: 32px;
 }
 
 .custom-expansionpanel-panel-specific-name-width {

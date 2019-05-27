@@ -43,6 +43,8 @@ import 'package:auge_web/services/app_routes.dart';
 // ignore_for_file: uri_has_not_been_generated
 import 'package:auge_web/src/initiative/initiative_detail_component.template.dart' as initiative_detail_component;
 import 'package:auge_web/src/initiative/initiative_stages_component.template.dart' as initiative_stages_component;
+import 'package:auge_web/src/work_item/work_item_detail_component.template.dart' as work_item_detail_component;
+
 @Component(
     selector: 'auge-initiatives',
     providers: const [InitiativeService, ObjectiveService, HistoryTimelineService],
@@ -93,12 +95,18 @@ class InitiativesComponent /* extends Object*/ with CanReuse implements OnActiva
       routePath: AppRoutes.initiativeStagesRoute,
       component: initiative_stages_component.InitiativeStagesComponentNgFactory,
     ),
+    new RouteDefinition(
+      routePath: AppRoutes.workItemAddRoute,
+      component: work_item_detail_component.WorkItemDetailComponentNgFactory,
+    ),
+    new RouteDefinition(
+      routePath: AppRoutes.workItemEditRoute,
+      component: work_item_detail_component.WorkItemDetailComponentNgFactory,
+    ),
   ];
 
   InitiativesFilterParam initiativesFilterParam;
 
-  bool detailVisible = false;
-  bool stagesVisible = false;
   String mainColWidth = '100%';
   bool _timelineVisible = false;
 
@@ -132,7 +140,7 @@ class InitiativesComponent /* extends Object*/ with CanReuse implements OnActiva
   InitiativesComponent(this._appLayoutService, this._initiativeService, this._objectiveService, this._searchService, this._historyTimelineService, this._router) {
     initiativesFilterParam = InitiativesFilterParam();
     menuModel = new MenuModel([new MenuItemGroup([
-      new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => goToDetail(selectedInitiative) /* viewDetail(true) */),
+      new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => goToDetail() /* viewDetail(true) */),
       new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete()),
       new MenuItem(stagesLabel, icon: new Icon('view_week'), action: () => goToStages(selectedInitiative)) ])], icon: new Icon('menu'));
 
@@ -162,7 +170,7 @@ class InitiativesComponent /* extends Object*/ with CanReuse implements OnActiva
 
   void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
 
-    if (_initiativeService.authService.selectedOrganization == null || _initiativeService.authService.authenticatedUser == null) {
+    if (_initiativeService.authService.authorizedOrganization == null || _initiativeService.authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
       return;
     }
@@ -208,7 +216,7 @@ class InitiativesComponent /* extends Object*/ with CanReuse implements OnActiva
   }
 
   Future<List<Initiative>> getInitiatives() async {
-    List<Initiative> initiativesAux = await _initiativeService.getInitiatives(_initiativeService.authService.selectedOrganization.id, withWorkItems: true, withProfile: true);
+    List<Initiative> initiativesAux = await _initiativeService.getInitiatives(_initiativeService.authService.authorizedOrganization.id, withWorkItems: true, withProfile: true);
 
     _sortInitiatives(initiativesAux);
     return initiativesAux;
@@ -220,12 +228,12 @@ class InitiativesComponent /* extends Object*/ with CanReuse implements OnActiva
 
   }
 
-  void goToDetail(Initiative initiative) {
-    if (initiative == null) {
+  void goToDetail() {
+    if (selectedInitiative == null) {
       _router.navigate(AppRoutes.initiativeAddRoute.toUrl());
 
     } else {
-      _router.navigate(AppRoutes.initiativeEditRoute.toUrl(parameters: { AppRoutesParam.initiativeIdParameter: initiative.id }));
+      _router.navigate(AppRoutes.initiativeEditRoute.toUrl(parameters: { AppRoutesParam.initiativeIdParameter: selectedInitiative.id }));
     }
   }
 
@@ -235,9 +243,6 @@ class InitiativesComponent /* extends Object*/ with CanReuse implements OnActiva
     }
   }
 
-  void goToWorkItem(Initiative initiative) {
-    _router.navigate(AppRoutes.workItemsRoute.toUrl(parameters: { AppRoutesParam.initiativeIdParameter: initiative.id }));
-  }
 
   void stopPropagation(MouseEvent me) {
     me.stopPropagation();
@@ -257,55 +262,6 @@ class InitiativesComponent /* extends Object*/ with CanReuse implements OnActiva
       _appLayoutService.error = e.toString();
       rethrow;
     }
-  }
-
-  void viewDetail(bool detailVisible) {
-    this.detailVisible = detailVisible;
-  }
-
-  void refreshList(String initiativeId) async {
-/*
-
-    if (selectedInitiative == null) {
-      initiatives.add(initiative);
-      expandedControl[initiative] = true;
-    } else {
-      // initiative.cloneTo(initiatives[initiatives.indexOf(selectedInitiative)]);
-    }
-    _sortInitiativesOrderByGroup(initiatives);
-*/
-
- //   _initiatives = await getInitiatives();
-
-    Initiative initiative = await _initiativeService.getInitiative(initiativeId, withWorkItems: true, withProfile: true);
-
-    if (selectedInitiative == null) {
-      _initiatives.add( initiative );
-    } else {
-      _initiatives[_initiatives.indexOf(selectedInitiative)] = initiative;
-    }
-
-    _sortInitiatives(_initiatives);
-
-  //  _sortObjectives();
-    _historyTimelineService.refreshHistory(SystemModule.initiatives.index);
-
-   // _historyTimelineService.getHistory(SystemModule.objectives.index);
-
-  }
-
-  //TODO implement refresh
-  void refreshStages() {
-
-  }
-
-  void closeStages() {
-    stagesVisible = false;
-  }
-
-  @override
-  Future<bool> canReuse(RouterState current, RouterState next) async {
-    return true;
   }
 
   String colorFromUuid(String id) {

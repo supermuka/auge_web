@@ -1,8 +1,4 @@
 @import 'package:angular_components/css/material/material';
-@import 'package:angular_components/css/material/shadow';
-@import 'package:angular_components/material_button/mixins';
-@import 'package:angular_components/material_dialog/mixins';
-@import 'package:angular_components/material_progress/mixins';
 @import 'package:angular_components/material_expansionpanel/mixins';
 
 header {
@@ -13,21 +9,6 @@ header {
     padding: 0px;
     height: 36px;
 }
-
-.material-progress-custom-theme {
-  @include material-progress-theme(
-    $mat-teal-100,
-    $mat-deep-purple-500,
-    $mat-deep-purple-200);
-}
-
-.material-progress-custom-theme {
-  @include material-progress-theme(
-    $mat-teal-100,
-    $mat-lime-500,
-    $mat-lime-200);
-}
-
 
 .expansionpanel-flat-on-collapse-theme-no-border {
   ::ng-deep #{$_panel}:not(.open) {
@@ -46,10 +27,6 @@ header {
   /* align-items: center; */
   overflow-x: auto;
   height: 100%;
-
- /* justify-content: center; */
- /* vertical-align: middle; */
-
 }
 
 .items-column {

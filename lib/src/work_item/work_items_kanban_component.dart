@@ -32,6 +32,8 @@ import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/work_item/work_item_service.dart';
 import 'package:auge_web/src/work_item/work_item_detail_component.dart';
 
+import 'package:auge_web/services/app_routes.dart';
+
 @Component(
     selector: 'auge-work-items-kanban',
     providers: const [WorkItemService],
@@ -54,26 +56,14 @@ import 'package:auge_web/src/work_item/work_item_detail_component.dart';
       'work_items_kanban_component.css'
     ])
 
-class WorkItemsKanbanComponent extends Object implements OnInit {
+class WorkItemsKanbanComponent with CanReuse implements OnInit {
 
   final AppLayoutService _appLayoutService;
   final WorkItemService _workItemService;
+  final Router _router;
 
   @Input()
   Initiative initiative;
-
-  @Input()
-  set fowardAddWorkItem(bool fowardAddWorkItem) {
-    viewDetail(fowardAddWorkItem);
-  }
-
-  final _closeController = new StreamController<void>.broadcast(sync: true);
-
-  /// Publishes events when close.
-  @Output()
-  Stream<void> get closeDetail => _closeController.stream;
-
-  bool detailVisible  = false;
 
   WorkItem selectedWorkItem;
   List<KanbanColumn> kanbanColumns;
@@ -84,11 +74,10 @@ class WorkItemsKanbanComponent extends Object implements OnInit {
 
   MenuModel<MenuItem> menuModel;
 
-
-  WorkItemsKanbanComponent(this._appLayoutService, this._workItemService) {
+  WorkItemsKanbanComponent(this._appLayoutService, this._workItemService, this._router) {
     initializeDateFormatting(Intl.defaultLocale);
 
-    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => viewDetail(true)), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
+    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => goToDetail()), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
   }
 
   String label(String label) =>  WorkItemMsg.label(label);
@@ -156,21 +145,12 @@ class WorkItemsKanbanComponent extends Object implements OnInit {
     _workItemService.saveWorkItem(initiative.id, workItem);
   }
 
-  void viewDetail(bool detailVisible) {
+  void goToDetail() {
+    if (initiative == null) {
+      _router.navigate(AppRoutes.initiativeAddRoute.toUrl());
 
-    if (this.detailVisible && !detailVisible) {
-      _closeController.add(null);
-    }
-
-    this.detailVisible = detailVisible;
-  }
-
-  void changeListItemDetail(WorkItem workItem) {
-    if (selectedWorkItem == null) {
-      kanbanColumns.singleWhere((ik) => ik.stage.id == workItem.stage.id).columnWorkItems.add(workItem);
     } else {
-      //List<WorkItem> workItems = kanbanColumns.singleWhere((ik) => ik.stage.id == workItem.stage.id).columnWorkItems;
-      //TODO workItem.cloneTo(workItems[workItems.indexOf(selectedWorkItem)]);
+      _router.navigate(AppRoutes.initiativeEditRoute.toUrl(parameters: { AppRoutesParam.initiativeIdParameter: initiative.id }));
     }
   }
 }

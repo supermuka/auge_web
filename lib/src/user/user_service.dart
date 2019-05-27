@@ -103,7 +103,7 @@ class UserService {
 
     user_profile_organization_pbgrpc.UserProfileOrganizationRequest userProfileOrganizationRequest = (user_profile_organization_pbgrpc.UserProfileOrganizationRequest()
       ..userProfileOrganization = userProfileOrganization.writeToProtoBuf()
-      ..authenticatedOrganizationId = _authService.selectedOrganization.id
+      ..authenticatedOrganizationId = _authService.authorizedOrganization.id
       ..authenticatedUserId = _authService.authenticatedUser.id
       ..withUserProfile = true);
     try {
@@ -128,7 +128,7 @@ class UserService {
     user_profile_organization_pbgrpc.UserProfileOrganizationDeleteRequest userProfileOrganizationDeleteRequest = user_profile_organization_pbgrpc.UserProfileOrganizationDeleteRequest()
       ..userProfileOrganizationId = userProfileOrganization.id
       ..userProfileOrganizationVersion = userProfileOrganization.version
-      ..authenticatedOrganizationId = _authService.selectedOrganization.id
+      ..authenticatedOrganizationId = _authService.authorizedOrganization.id
       ..authenticatedUserId = _authService.authenticatedUser.id;
     try {
 

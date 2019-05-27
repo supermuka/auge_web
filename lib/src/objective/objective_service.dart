@@ -77,7 +77,7 @@ class ObjectiveService {
 
     objective_pbgrpc.ObjectiveRequest objectiveRequest = (objective_pbgrpc.ObjectiveRequest()
       ..objective = objective.writeToProtoBuf()
-      ..authenticatedOrganizationId = _authService.selectedOrganization.id
+      ..authenticatedOrganizationId = _authService.authorizedOrganization.id
       ..authenticatedUserId = _authService.authenticatedUser.id);
 
     try {
@@ -107,7 +107,7 @@ class ObjectiveService {
         ..objectiveId = objective.id
         ..objectiveVersion = objective.version
         ..authenticatedUserId = _authService.authenticatedUser.id
-        ..authenticatedOrganizationId = _authService.selectedOrganization.id);
+        ..authenticatedOrganizationId = _authService.authorizedOrganization.id);
     } catch (e) {
       rethrow;
     }

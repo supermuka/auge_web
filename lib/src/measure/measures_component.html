@@ -7,7 +7,7 @@
             <span><strong>Measures</strong></span>
         </div>
         <div action>
-            <material-button icon (trigger)="selectMeasure(null);detailVisible = true">
+            <material-button icon (trigger)="selectMeasure(null);goToDetail()">
                 <material-icon icon="add"></material-icon>
             </material-button>
         </div>
@@ -41,8 +41,8 @@
             </div>
         </material-expansionpanel-set>
     </material-expansionpanel>
-    <auge-measure-detail *ngIf="detailVisible == true" [objectiveId]="objective.id" [selectedMeasureId]="selectedMeasure.id" (saved)="refreshMeasures()" (closed)="detailVisible = false">
-    </auge-measure-detail>
+    <!-- auge-measure-detail *ngIf="detailVisible == true" [objectiveId]="objective.id" [selectedMeasureId]="selectedMeasure.id" (saved)="refreshMeasures()" (closed)="detailVisible = false">
+    </auge-measure-detail -->
     <auge-measure-progress *ngIf="progressVisible == true" [addMeasureProgress]="addMeasureProgress" [objectiveStartDate]="objective.startDate" [objectiveEndDate]="objective.endDate" [selectedMeasure]="selectedMeasure" (saved)="refreshMeasures()" (closed)="closeProgress()">
     </auge-measure-progress>
 </div>

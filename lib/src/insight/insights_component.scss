@@ -1,6 +1,4 @@
-@import 'package:angular_components/css/material/material';
 @import 'package:angular_components/css/material/shadow';
-@import 'package:angular_components/scorecard/mixins';
 
 .center {
   display: flex;
@@ -12,7 +10,3 @@
   @include material-shadow();
   margin: 8px;
 }
-
-
-
-

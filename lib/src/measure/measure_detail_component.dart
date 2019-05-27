@@ -1,9 +1,9 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
-import 'dart:async';
-
 import 'package:angular/angular.dart';
+import 'package:angular_router/angular_router.dart';
+
 import 'package:angular_components/focus/focus.dart';
 import 'package:angular_components/laminate/components/modal/modal.dart';
 import 'package:angular_components/laminate/overlay/module.dart';
@@ -26,9 +26,11 @@ import 'package:auge_web/message/model_messages.dart';
 
 import 'package:auge_web/src/measure/measure_service.dart';
 
+import 'package:auge_web/services/app_routes.dart';
+
 @Component(
     selector: 'auge-measure-detail',
-    providers: [overlayBindings],
+    providers: [overlayBindings, MeasureService],
     directives: const [
       coreDirectives,
       materialInputDirectives,
@@ -46,29 +48,15 @@ import 'package:auge_web/src/measure/measure_service.dart';
       'measure_detail_component.css'
     ])
 
-class MeasureDetailComponent extends Object implements OnInit {
+class MeasureDetailComponent implements OnInit, OnActivate, OnDeactivate  {
 
   final MeasureService _measureService;
+  final Location _location;
 
-  @Input()
+  bool modalVisible = false;
+
   String objectiveId;
-
-  @Input()
-  String selectedMeasureId;
-
-  final _closedController = new StreamController<void>.broadcast(sync: true);
-
-  /// Publishes events when close.
-  @Output()
-  Stream<void> get closed => _closedController.stream;
-
-  final _savedController = new StreamController<void>.broadcast(sync: true);
-
-  /// Publishes events when save.
-  @Output()
-  Stream<void> get saved => _savedController.stream;
-
-  Measure measure = Measure();
+  Measure measure;
 
   List<MeasureUnit> _measureUnits = [];
   SelectionOptions measureUnitOptions;
@@ -84,7 +72,7 @@ class MeasureDetailComponent extends Object implements OnInit {
  // List errorControl = [];
  // bool validInput = false;
 
-  MeasureDetailComponent(this._measureService) {
+  MeasureDetailComponent(this._measureService, this._location) {
     measureUnitSingleSelectModel = SelectionModel.single();
   }
 
@@ -109,11 +97,28 @@ class MeasureDetailComponent extends Object implements OnInit {
 
   @override
   void ngOnInit() async {
+    //created as new here, even if it is later replaced by a query, because the query may take a while and the Angular will continue to process, causing an exception if the object does not exist
+    measure = Measure();
+  }
 
-    if (selectedMeasureId != null) {
-      measure = await _measureService.getMeasure(selectedMeasureId);
+  @override
+  void onActivate(RouterState previous, RouterState current) async {
+    modalVisible = true;
+
+    if (current.parameters.containsKey(AppRoutesParam.objectiveIdParameter)) {
+      objectiveId= current.parameters[AppRoutesParam.objectiveIdParameter];
     } else {
-      measure = new Measure();
+      throw Exception('Objective Id not found.');
+    }
+
+    String id;
+    if (current.parameters.containsKey(AppRoutesParam.measureIdParameter)) {
+      id = current.parameters[AppRoutesParam.measureIdParameter];
+    }
+
+    if (id != null) {
+      measure = await _measureService.getMeasure(id);
+    } else {
       measure.decimalsNumber = 0;
     }
 
@@ -139,14 +144,17 @@ class MeasureDetailComponent extends Object implements OnInit {
     }
   }
 
+  @override
+  void onDeactivate(RouterState current, RouterState next) {
+    modalVisible = false;
+  }
+
   void saveMeasure() async {
     try {
 
       //--measure.lastHistoryItem.setClientSideValues(user: _authService.authenticatedUser, description: measure.name, changedValues: MeasureFacilities.differenceToJson(measure, selectedMeasure));
 
       await _measureService.saveMeasure(objectiveId, measure);
-
-      _savedController.add(null);
 
       //_saveController.add(measure.id);
       closeDetail();
@@ -157,7 +165,8 @@ class MeasureDetailComponent extends Object implements OnInit {
   }
 
   void closeDetail() {
-    _closedController.add(null);
+    _location.back();
+ //   _closedController.add(null);
   }
 
   // Label for the button for single selection.
