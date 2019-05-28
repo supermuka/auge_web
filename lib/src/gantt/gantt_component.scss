@@ -3,23 +3,6 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:100,400,700");
 @import 'package:angular_components/css/material/material';
 @import 'package:angular_components/css/material/shadow';
-@import 'package:angular_components/material_button/mixins';
-
-@mixin colorize($selector, $color) {
-  $raised: $selector + '[raised]';
-  @include button-background-color($raised, $color);
-  @include button-color($raised, $mat-white);
-
-  $not-raised: $selector + ':not([raised])';
-  @include button-color($not-raised, $color);
-}
-
-:host {
-  font-family: Roboto,"Helvetica Neue",Arial,Helvetica,sans-serif;
-
-  @include colorize("material-button.red--true", $mat-red);
-  @include colorize("material-button.blue--true", $mat-blue);
-}
 
 $red: #ff6252;
 
@@ -39,7 +22,8 @@ $red: #ff6252;
 	/* overflow: hidden; */
 	max-height: calc(100vh - 20%);
 	height: 100%;
-    overflow-y: auto;
+	width: 100%;
+    overflow: auto;
 
 	@include material-shadow();
 	/* box-sizing: border-box; */
@@ -102,7 +86,7 @@ $red: #ff6252;
             color: #fff;
             background-color: #0a3444 !important;
             border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        	grid-template-columns: 150px repeat(2, 1fr);
+        	/* grid-template-columns: 150px repeat(2, 1fr); */
         	justify-items: center;
         	align-items: center;
             .gantt__row-first {
@@ -192,13 +176,71 @@ $red: #ff6252;
 				}
 			}
 		}
+		&--years-number {
+		   &-1 {
+		      grid-template-columns: 150px repeat(1, 1fr);
+		   }
+           &-2 {
+              grid-template-columns: 150px repeat(2, 1fr);
+           }
+           &-3 {
+              grid-template-columns: 150px repeat(3, 1fr);
+           }
+		   &-4 {
+		      grid-template-columns: 150px repeat(4, 1fr);
+		   }
+           &-5 {
+              grid-template-columns: 150px repeat(5, 1fr);
+           }
+           &-6 {
+              grid-template-columns: 150px repeat(6, 1fr);
+           }
+		   &-7 {
+		      grid-template-columns: 150px repeat(7, 1fr);
+		   }
+           &-8 {
+              grid-template-columns: 150px repeat(8, 1fr);
+           }
+           &-9 {
+              grid-template-columns: 150px repeat(9, 1fr);
+           }
+		   &-10 {
+		      grid-template-columns: 150px repeat(10, 1fr);
+		   }
+		}
+		&--months-number {
+           &-12 {
+              grid-template-columns: 150px repeat(12, 1fr);
+           }
+           &-24 {
+              grid-template-columns: 150px repeat(24, 1fr);
+           }
+           &-36 {
+              grid-template-columns: 150px repeat(36, 1fr);
+           }
+           &-48 {
+              grid-template-columns: 150px repeat(48, 1fr);
+           }
+           &-60 {
+              grid-template-columns: 150px repeat(60, 1fr);
+           }
+           &-72 {
+              grid-template-columns: 150px repeat(72, 1fr);
+           }
+           &-84 {
+              grid-template-columns: 150px repeat(84, 1fr);
+           }
+           &-96 {
+              grid-template-columns: 150px repeat(96, 1fr);
+           }
+           &-108 {
+              grid-template-columns: 150px repeat(108, 1fr);
+           }
+           &-120 {
+              grid-template-columns: 150px repeat(120, 1fr);
+           }
+        }
 	}
-}
-
-.text-group-letter {
-    color: white; /* foi preciso colocar, senão não funcionava o mix-blend-mode */
-    mix-blend-mode: difference;
-    line-height: 40px; /* same height to parent - class avatar*/
 }
 
 div.sticky {

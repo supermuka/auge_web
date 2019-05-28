@@ -2,7 +2,7 @@
 // Author: Samuel C. Schwebel.
 
 import 'dart:async';
-import 'dart:html';
+import 'dart:html' as html;
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
@@ -17,6 +17,7 @@ import 'package:angular_components/material_toggle/material_toggle.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel_set.dart';
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
+
 
 import 'package:auge_server/model/general/authorization.dart';
 import 'package:auge_server/model/objective/objective.dart';
@@ -147,29 +148,34 @@ class ObjectivesComponent with CanReuse implements AfterViewInit, OnActivate, On
       return;
     }
 
-    _appLayoutService.headerTitle = ObjectiveMsg.label('Objectives');
-
-    _appLayoutService.enabledSearch = true;
 
     // Expand panel whether [Id] objective is informed.
     if (routerStateCurrent.queryParameters.containsKey(AppRoutesParam.objectiveIdParameter)) {
       initialObjectiveId = routerStateCurrent.queryParameters[AppRoutesParam.objectiveIdParameter];
-    } else {
-      initialObjectiveId = null;
+
+
+      // Used just first time, to remove queryParam initialObjectiveId.
+      _router.navigate(routerStateCurrent.path, NavigationParams(queryParameters: Map.from(routerStateCurrent.queryParameters)..remove(AppRoutesParam.objectiveIdParameter), replace: true));
+      return;
+      //  justReplacedHistoryNavigate = true;
+      //_router.navigateByUrl(routerStateCurrent.path, replace: true);
+
+    //} else {
+    //  initialObjectiveId = null;
     }
+
+    _appLayoutService.headerTitle = ObjectiveMsg.label('Objectives');
+
+    _appLayoutService.enabledSearch = true;
+
 
     try {
       _objectives = await getObjetives();
      // _sortObjectives();
 
-      //print('DEBUA A ${routerStatePrevious.routePath.toUrl()}');
-      //print('DEBUA B ${ AppRoutes.mapRoute.toUrl()}');
       if (initialObjectiveId != null) {
-       //  Objective initialObjective = _objectives.singleWhere((o) => o.id == initialObjectiveId);
-
-        // expandedObjectiveId = initialObjective.id;
         expandedObjectiveId = initialObjectiveId;
-
+        initialObjectiveId = null;
       }
 
       _historyTimelineService.refreshHistory(SystemModule.objectives.index);
@@ -191,8 +197,8 @@ class ObjectivesComponent with CanReuse implements AfterViewInit, OnActivate, On
 
   void ngAfterViewInit() {
     if (initialObjectiveId != null) {
-      Element e = document.querySelector('#initial-objective');
-      if (e != null) e.scrollIntoView(ScrollAlignment.TOP);
+      html.Element e = html.document.querySelector('#initial-objective');
+      if (e != null) e.scrollIntoView(html.ScrollAlignment.TOP);
     }
   }
 
@@ -254,14 +260,14 @@ class ObjectivesComponent with CanReuse implements AfterViewInit, OnActivate, On
     }
   }
 
-  void scrollInit(bool event, HtmlElement element) {
+  void scrollInit(bool event, html.HtmlElement element) {
     if (event && initialObjectiveId != null) {
       if (element != null) {
 
         // Modal, needs to await the dom elements creation.
         new Future.delayed(Duration.zero, () {
 
-            element.scrollIntoView(ScrollAlignment.TOP);
+            element.scrollIntoView(html.ScrollAlignment.TOP);
             initialObjectiveId = null;
 
         });
@@ -289,5 +295,4 @@ class ObjectivesComponent with CanReuse implements AfterViewInit, OnActivate, On
       _router.navigate(AppRoutes.objectiveEditRoute.toUrl(parameters: { AppRoutesParam.objectiveIdParameter: selectedObjective.id }));
     }
   }
-
 }

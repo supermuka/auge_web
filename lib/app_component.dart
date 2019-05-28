@@ -48,4 +48,3 @@ class AppComponent extends Object with CanReuse {
     initializeMessages(Intl.defaultLocale);
   }
 }
-

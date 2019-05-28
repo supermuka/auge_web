@@ -47,9 +47,9 @@ class GanttComponent implements OnActivate {
   final GanttService _ganttService;
   final Router _router;
 
-  List<Objective> objectives = new List();
-  List<int> yearsInterval;
-  List<YearMonth> yearsMonthsInterval;
+  List<Objective> objectives = [];
+  List<int> yearsInterval = [];
+  List<YearMonth> yearsMonthsInterval = [];
   Map<String, List<Objective>> objectivesByGroup;
 
   String selectedYear;

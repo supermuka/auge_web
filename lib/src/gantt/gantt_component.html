@@ -1,20 +1,20 @@
 <div class="wrapper">
     <div class="gantt" elevation="2">
         <div class="sticky">
-            <div class="gantt__row gantt__row--years">
+            <div class="gantt__row gantt__row--years gantt__row--years-number-{{yearsInterval.length}}">
                 <div class="gantt__row-first"></div>
                 <div *ngFor="let iYear of yearsInterval">
                     <span>{{iYear}}</span>
                 </div>
             </div>
-            <div class="gantt__row gantt__row--months">
+            <div class="gantt__row gantt__row--months gantt__row--months-number-{{yearsMonthsInterval.length}}">
                 <div><span>{{groupLabel}}</span></div>
                 <div *ngFor="let iYearMonth of yearsMonthsInterval">
                     <span>{{iYearMonth.monthName}}</span>
                 </div>
             </div>
         </div>
-        <div class="gantt__row gantt__row--lines">
+        <div class="gantt__row gantt__row--lines  gantt__row--months-number-{{yearsMonthsInterval.length}}">
             <span></span>
             <span class="marker-{{iYearMonth.isCurrent}}" *ngFor="let iYearMonth of yearsMonthsInterval"></span>
         </div>
@@ -27,7 +27,7 @@
                     <span class="truncate-ellipsed">{{objectivesByGroup[iObjectivesGroupKey].first.group.name}}</span>
                 </span>
             </div>
-            <ul class="gantt__row-bars" >
+            <ul class="gantt__row-bars gantt__row--months-number-{{yearsMonthsInterval.length}}">
                <li clickableTooltipTarget
                    keyboardOnlyFocusIndicator
                    tabindex="0"

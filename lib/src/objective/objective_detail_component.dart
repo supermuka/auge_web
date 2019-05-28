@@ -19,7 +19,7 @@ import 'package:angular_components/model/selection/selection_options.dart';
 import 'package:angular_components/model/selection/string_selection_options.dart';
 import 'package:angular_components/material_datepicker/module.dart';
 import 'package:angular_components/model/date/date.dart';
-import 'package:angular_components/utils/browser/window/module.dart';
+// import 'package:angular_components/utils/browser/window/module.dart';
 import 'package:angular_components/material_datepicker/material_datepicker.dart';
 import 'package:angular_components/material_checkbox/material_checkbox.dart';
 
@@ -41,7 +41,7 @@ import 'objective_detail_component.template.dart' as objective_detail_component;
 
 @Component(
     selector: 'auge-objective-detail',
-    providers: const [overlayBindings, windowBindings, datepickerBindings, UserService, GroupService],
+    providers: const [overlayBindings, datepickerBindings, UserService, GroupService],
     directives: const [
       coreDirectives,
       materialInputDirectives,
