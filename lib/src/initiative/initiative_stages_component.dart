@@ -33,7 +33,9 @@ import 'package:auge_server/model/initiative/state.dart';
 
 import 'package:auge_web/services/common_service.dart';
 import 'package:auge_web/src/initiative/initiative_service.dart';
+
 import 'package:auge_web/message/messages.dart';
+import 'package:auge_web/message/model_messages.dart';
 
 // ignore_for_file: uri_has_not_been_generated
 import 'initiative_stages_component.template.dart' as initiative_stages_component;
@@ -102,11 +104,15 @@ class InitiativeStagesComponent implements /* OnInit, */ OnActivate, OnDeactivat
   }
 
   // Define messages and labels
+  static final String initiativeStagesLabel = StageMsg.label('Initiative Stages');
   static final String selectLabel =  StageMsg.label('Select');
   static final String stageLabel =  StageMsg.label('Stage');
 
   static final String saveButtonLabel = CommonMsg.buttonLabel('Save');
   static final String cancelButtonLabel = CommonMsg.buttonLabel('Cancel');
+  static final String closeButtonLabel = CommonMsg.buttonLabel('Close');
+
+  static final String nameLabel =  FieldMsg.label('${Stage.className}.${Stage.nameField}');
 
   static final String stateNotInfomedMsg =  StageMsg.stateNotInfomedMsg();
 

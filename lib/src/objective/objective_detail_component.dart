@@ -60,7 +60,7 @@ import 'objective_detail_component.template.dart' as objective_detail_component;
       'objective_detail_component.css'
     ])
 
-class ObjectiveDetailComponent implements OnInit, OnActivate, OnDeactivate {
+class ObjectiveDetailComponent with CanReuse implements OnInit, OnActivate, OnDeactivate {
 
   final UserService _userService;
   final ObjectiveService _objectiveService;

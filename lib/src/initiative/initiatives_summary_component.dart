@@ -55,6 +55,7 @@ class InitiativesSummaryComponent extends Object implements OnInit {
 
   InitiativesSummaryComponent(this._appLayoutService, this._initiativeService,  this._router);
 
+  static final String initiativesLabel =  InitiativeMsg.label('Initiatives');
   static final String groupLabel =  InitiativeMsg.label('Group');
   static final String leaderLabel =  InitiativeMsg.label('Leader');
 

@@ -27,20 +27,19 @@ class ObjectiveService {
 
 
   /// Return a list of [Objective]
-  Future<List<Objective>> getObjectives(String organizationId, {bool withMeasures = false, bool withProfile = false, bool withHistory = false}) async {
+  Future<List<Objective>> getObjectives(String organizationId, {bool withMeasures = false, bool withProfile = false}) async {
     return (await _objectiveServiceClient.getObjectives(
         objective_pbgrpc.ObjectiveGetRequest()
           ..organizationId = organizationId
           ..withMeasures = withMeasures
-          ..withProfile = withProfile
-          ..withHistory = withHistory)).objectives.map((m) =>
+          ..withProfile = withProfile)).objectives.map((m) =>
     Objective()
       ..readFromProtoBuf(m)).toList();
 
   }
 
   /// Return an [Objective] by Id
-  Future<Objective> getObjective(String id, {bool withMeasures = false, bool withProfile = false, bool withHistory = false}) async {
+  Future<Objective> getObjective(String id, {bool withMeasures = false, bool withProfile = false}) async {
     try {
 
       // Objective objective = await _augeApiService.objectiveAugeApi.getObjectiveById(id, withMeasures: withMeasures, withProfile: withProfile, withHistory: withHistory);
@@ -49,8 +48,7 @@ class ObjectiveService {
           objective_pbgrpc.ObjectiveGetRequest()
             ..id = id
             ..withMeasures = withMeasures
-            ..withProfile = withProfile
-            ..withHistory = withHistory);
+            ..withProfile = withProfile);
 
       return Objective()..readFromProtoBuf(objective);
 

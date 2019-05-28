@@ -23,7 +23,10 @@ class GanttService {
   Future<List<Objective>> getObjectivesGantt(String organizationId) async {
       //--return  _augeApiService.objectiveAugeApi.getObjectives(
       //--    organizationId, withMeasures: true, withProfile: true);
-    objective_pbgrpc.ObjectivesResponse objectivesResponse = await _objectiveServiceClient.getObjectives(objective_pbgrpc.ObjectiveGetRequest()..organizationId..withMeasures = true..withProfile = true);
+    objective_pbgrpc.ObjectivesResponse objectivesResponse = await _objectiveServiceClient.getObjectives(objective_pbgrpc.ObjectiveGetRequest()
+      ..organizationId = organizationId
+      ..withMeasures = true
+      ..withProfile = true);
 
     // Create model from protobuf equivalent
     return objectivesResponse.objectives.map((o) => Objective()..readFromProtoBuf(o)).toList();

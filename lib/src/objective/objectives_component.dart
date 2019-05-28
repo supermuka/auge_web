@@ -94,8 +94,8 @@ class ObjectivesComponent with CanReuse implements AfterViewInit, OnActivate, On
   String expandedObjectiveId;
   Objective selectedObjective;
   String initialObjectiveId;
+  String selectedView = 'list';
 
-  bool detailVisible = false;
   String mainColWidth = '100%';
   bool _timelineVisible = false;
 
@@ -154,16 +154,21 @@ class ObjectivesComponent with CanReuse implements AfterViewInit, OnActivate, On
     // Expand panel whether [Id] objective is informed.
     if (routerStateCurrent.queryParameters.containsKey(AppRoutesParam.objectiveIdParameter)) {
       initialObjectiveId = routerStateCurrent.queryParameters[AppRoutesParam.objectiveIdParameter];
+    } else {
+      initialObjectiveId = null;
     }
 
     try {
       _objectives = await getObjetives();
      // _sortObjectives();
 
+      //print('DEBUA A ${routerStatePrevious.routePath.toUrl()}');
+      //print('DEBUA B ${ AppRoutes.mapRoute.toUrl()}');
       if (initialObjectiveId != null) {
-        Objective initialObjective = _objectives.singleWhere((o) => o.id == initialObjectiveId);
+       //  Objective initialObjective = _objectives.singleWhere((o) => o.id == initialObjectiveId);
 
-        expandedObjectiveId = initialObjective.id;
+        // expandedObjectiveId = initialObjective.id;
+        expandedObjectiveId = initialObjectiveId;
 
       }
 
@@ -175,6 +180,7 @@ class ObjectivesComponent with CanReuse implements AfterViewInit, OnActivate, On
     }
   }
 
+
   Future<List<Objective>> getObjetives() async {
     List<Objective> objectivesAux =  await _objectiveService.getObjectives(
         _objectiveService.authService.authorizedOrganization.id, withMeasures: true, withProfile: true);
@@ -185,9 +191,8 @@ class ObjectivesComponent with CanReuse implements AfterViewInit, OnActivate, On
 
   void ngAfterViewInit() {
     if (initialObjectiveId != null) {
-    Element e = document.querySelector('#initial-objective');
-    if (e != null)
-    e.scrollIntoView(ScrollAlignment.TOP);
+      Element e = document.querySelector('#initial-objective');
+      if (e != null) e.scrollIntoView(ScrollAlignment.TOP);
     }
   }
 

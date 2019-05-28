@@ -2,7 +2,6 @@
 // Author: Samuel C. Schwebel.
 
 import 'dart:html' as html;
-import 'dart:async';
 
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:intl/intl.dart';
@@ -28,6 +27,8 @@ import 'package:auge_server/model/initiative/work_item.dart';
 import 'package:auge_server/model/initiative/stage.dart';
 
 import 'package:auge_web/message/messages.dart';
+import 'package:auge_web/message/model_messages.dart';
+
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/work_item/work_item_service.dart';
 import 'package:auge_web/src/work_item/work_item_detail_component.dart';
@@ -74,13 +75,18 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit {
 
   MenuModel<MenuItem> menuModel;
 
+  static final String dueDateLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.dueDateField}');
+  static final String completedLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.completedField}');
+  static final String checkItemsLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.checkItemsField}');
+
+
   WorkItemsKanbanComponent(this._appLayoutService, this._workItemService, this._router) {
     initializeDateFormatting(Intl.defaultLocale);
 
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => goToDetail()), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
   }
 
-  String label(String label) =>  WorkItemMsg.label(label);
+
 
   @override
   ngOnInit() {

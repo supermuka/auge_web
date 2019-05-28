@@ -77,6 +77,7 @@ class MeasuresComponent with CanReuse {
   }
 
   // Define messages and labels
+  static final String measuresLabel = MeasureMsg.label('Measures');
   static final String progressLabel =  MeasureMsg.label('Progress');
   static final String startValueLabel =  MeasureMsg.label('Start Value');
   static final String currentValueLabel =  MeasureMsg.label('Current Value');

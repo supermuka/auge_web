@@ -9,81 +9,81 @@
             <div class="fill"></div>
         </div>
     </div>
-    <h3>Objectives and Measures</h3>
+    <h3>{{objectivesMeasuresLabel}}</h3>
     <acx-scoreboard scrollable>
         <acx-scorecard class="card" elevation="2"
                        [label]="objectivesLabel"
                        [value]="objectivesNumber"
-                       description="Number total of objectives"
+                       [description]="objectivesDescriptionLabel"
                        changeType="POSITIVE">
         </acx-scorecard>
         <acx-scorecard class="card" elevation="2"
                        [label]="objectivesAchievedLabel"
                        [value]="achievedObjectivesNumber"
-                       description="Objectives over 70% progress"
+                       [description]="objectivesAchievedDescriptionLabel"
                        changeType="POSITIVE">
         </acx-scorecard>
         <acx-scorecard class="card" elevation="2"
                        [label]="objectivesRequiringAttentionLabel"
                        [value]="requiringAttentionObjectivesNumber"
-                       description="Objectives below 30% progress"
+                       [description]="objectivesRequiringAttentionDescriptionLabel"
                        changeType="NEGATIVE">
         </acx-scorecard>
         <acx-scorecard class="card" elevation="2"
                        [label]="measuresLabel"
                        [value]="measuresNumber"
-                       description="Number total of measures"
+                       [description]="measuresDescriptionLabel"
                        changeType="POSITIVE">
         </acx-scorecard>
         <acx-scorecard class="card" elevation="2"
                        [label]="measuresAchievedLabel"
                        [value]="achievedMeasuresNumber"
-                       description="Measures over 70% progress"
+                       [description]="measuresAchievedDescriptionLabel"
                        changeType="POSITIVE">
         </acx-scorecard>
         <acx-scorecard class="card" elevation="2"
                        [label]="measuresRequiringAttentionLabel"
                        [value]="requiringAttentionMeasuresNumber"
-                       description="Measures below 30% progress"
+                       [description]="measuresRequiringAttentionDescriptionLabel"
                        changeType="NEGATIVE">
         </acx-scorecard>
     </acx-scoreboard>
-    <h3>Initiatives and Work Items</h3>
+    <h3>{{initiativesWorkItemsLabel}}</h3>
     <acx-scoreboard scrollable>
         <acx-scorecard class="card" elevation="2"
                        [label]="initiativesLabel"
                        [value]="initiativesNumber"
-                       description="Number total of initiatives"
+                       [description]="initiativesDescriptionLabel"
                        changeType="POSITIVE">
         </acx-scorecard>
         <acx-scorecard class="card" elevation="2"
                        [label]="initiativesCompletedLabel"
                        [value]="completedInitiativesNumber"
-                       description="Initiatives with 100% work items completed"
+                       [description]="initiativesCompletedDescriptionLabel"
                        changeType="POSITIVE">
         </acx-scorecard>
         <acx-scorecard class="card" elevation="2"
                        [label]="initiativesRequiringAttentionLabel"
                        [value]="overDueInitiativesNumber"
-                       description="Initiatives with over due work items"
+                       [description]="initiativesRequiringAttentionDescriptionLabel"
                        changeType="NEGATIVE">
         </acx-scorecard>
         <acx-scorecard class="card" elevation="2"
                        [label]="workItemsLabel"
                        [value]="workItemsNumber"
-                       description="Number total of work items"
+                       [description]="workItemsDescriptionLabel"
                        changeType="POSITIVE">
         </acx-scorecard>
         <acx-scorecard class="card" elevation="2"
                        [label]="workItemsCompletedLabel"
                        [value]="completedWorkItemsNumber"
-                       description="Work items with 100% progress"
+                       [description]="workItemsCompletedDescriptionLabel"
                        changeType="POSITIVE">
         </acx-scorecard>
         <acx-scorecard class="card" elevation="2"
                        [label]="workItemsRequiringAttentionLabel"
                        [value]="overDueWorkItemsNumber"
-                       description="Over due work items"
+                       [description]="workItemsRequiringAttentionDescriptionLabel"
                        changeType="NEGATIVE">
         </acx-scorecard>
     </acx-scoreboard>

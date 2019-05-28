@@ -12,6 +12,7 @@ import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/general/user.dart';
 
 import 'package:auge_web/message/messages.dart';
+import 'package:auge_web/message/model_messages.dart';
 
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
@@ -53,24 +54,35 @@ class MapComponent implements OnActivate {
   MapComponent(this._authService, this._appLayoutService, this._mapService, this._router);
 
   // Define messages and labels
-  static final String leaderLabel =  MapMsg.label('Leader');
-  static final String groupLabel =  MapMsg.label('Group');
-  static final String startDateLabel =  MapMsg.label('Start Date');
-  static final String endDateLabel =  MapMsg.label('End Date');
+  static final String leaderLabel =  FieldMsg.label('${Objective.className}.${Objective.leaderField}');
+  static final String groupLabel =  FieldMsg.label('${Objective.className}.${Objective.groupField}');
+  static final String startDateLabel =  FieldMsg.label('${Objective.className}.${Objective.startDateField}');
+  static final String endDateLabel =  FieldMsg.label('${Objective.className}.${Objective.endDateField}');
 
-  void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
+  @override
+  void onActivate(RouterState previous, RouterState current) async {
 
     if (_authService.authorizedOrganization == null || _authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
       return;
     }
 
-    _appLayoutService.headerTitle = ObjectiveViewsMsg.label('Objectives Map');
+    _appLayoutService.headerTitle = MapMsg.label('Objectives Map');
 
     _appLayoutService.enabledSearch = false;
 
     try {
       objectivesMap = await _mapService.getObjectivesMap(_authService.authorizedOrganization.id);
+      /*
+      objectivesMap.forEach((o) {
+        print('root');
+        print(o.name);
+        o.alignedWithChildren.forEach((f) {
+          print('children');
+          print(f.name);
+        });
+      });
+      */
 
     } catch (e) {
       _appLayoutService.error = e.toString();

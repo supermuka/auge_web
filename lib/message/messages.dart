@@ -171,6 +171,7 @@ class StageMsg {
   /// Label
   static label(String label) => Intl.message(
       "${Intl.select(label, {
+        'Initiative Stages': 'Initiative Stages',
         'Stage': 'Stage',
         'Select': 'Select',
         'other': 'Not Defined'})}",
@@ -233,10 +234,7 @@ class MapMsg {
   /// Label for initiative
   static label(String label) => Intl.message(
       "${Intl.select(label, {
-        'Group': 'Group',
-        'Start Date': 'Start Date',
-        'End Date': 'End Date',
-        'Leader': 'Leader',
+        'Objectives Map': 'Objectives Map',
         'other': 'Not Defined'})}",
       name: "mapLabel",
       args: [label],
@@ -252,10 +250,7 @@ class GanttMsg {
   /// Label for initiative
   static label(String label) => Intl.message(
       "${Intl.select(label, {
-        'Group': 'Group',
-        'Start Date': 'Start Date',
-        'End Date': 'End Date',
-        'Leader': 'Leader',
+        'Objectives Gantt': 'Objectives Gantt',
         'other': 'Not Defined'})}",
       name: "ganttLabel",
       args: [label],
@@ -302,6 +297,7 @@ class MeasureMsg {
 }
 
 /// Specific messages and label for [ObjectiveHierarchy]
+/*
 class ObjectiveViewsMsg {
 
   /// Label for initiative
@@ -316,6 +312,7 @@ class ObjectiveViewsMsg {
       desc: "Objective Map labels"
   );
 }
+*/
 
 /// Specific messages and label for [Group]
 class GroupMsg {

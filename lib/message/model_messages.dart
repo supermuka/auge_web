@@ -75,6 +75,7 @@ class FieldMsg {
       //OBJECTIVE
       '${Objective.className}.${Objective.nameField}':'Name',
       '${Objective.className}.${Objective.descriptionField}':'Description',
+      '${Objective.className}.${Objective.groupField}':'Group',
       '${Objective.className}.${Objective.alignedToField}':'Aligned To',
       '${Objective.className}.${Objective.leaderField}':'Leader',
       '${Objective.className}.${Objective.startDateField}':'Start Date',

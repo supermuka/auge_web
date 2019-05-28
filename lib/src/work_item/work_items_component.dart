@@ -42,11 +42,13 @@ class WorkItemsComponent with CanReuse {
   @Input()
   Initiative initiative;
 
+
   String selectedView = 'list';
+
+  static final String workItemsLabel =  WorkItemMsg.label('Work Items');
 
   WorkItemsComponent(this._router);
 
-  String label(String label) =>  InitiativeMsg.label(label);
 
   String widthState(int workItemsCount, int stateWorkItemsCount, int withTotal) {
     return (stateWorkItemsCount / workItemsCount * withTotal).toString();

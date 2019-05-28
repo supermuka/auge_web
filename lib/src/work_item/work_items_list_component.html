@@ -21,18 +21,18 @@
                         <material-slider [(value)]="iWorkItem.completed"
                                          [min]="0"
                                          [max]="100"
-                                         materialTooltip="{{label('Completed')}}" (click)="updateWorkItem(iWorkItem)">
+                                         materialTooltip="{{completedLabel}}" (click)="updateWorkItem(iWorkItem)">
                         </material-slider>
                     </span>
                     <span class="w3-col l3">
-                        <span materialTooltip="{{label('Due Date')}}" [style.color]="dueDateColor(iWorkItem)">{{iWorkItem.dueDate | date}}</span>
+                        <span materialTooltip="{{dueDateLabel}}" [style.color]="dueDateColor(iWorkItem)">{{iWorkItem.dueDate | date}}</span>
                     </span>
                     <span class="w3-col l2">
-                        <span materialTooltip="{{label('Stage')}}" [style.color]="'hsl(' + iWorkItem.stage.state.colorHue + ', ' + iWorkItem.stage.state.colorSaturation + '%, ' + iWorkItem.stage.state.colorLightness + '%)'">{{iWorkItem.stage?.name}}</span>
+                        <span materialTooltip="{{stageLabel}}" [style.color]="'hsl(' + iWorkItem.stage.state.colorHue + ', ' + iWorkItem.stage.state.colorSaturation + '%, ' + iWorkItem.stage.state.colorLightness + '%)'">{{iWorkItem.stage?.name}}</span>
                     </span>
                 </div>
                 <div class="w3-row w3-col l12">
-                    <material-expansionpanel *ngIf="iWorkItem.checkItems.length > 0" name="{{label('Check Items')}}" autoDismissable [showSaveCancel]="false" class="expansionpanel-flat-on-collapse-theme-no-border">
+                    <material-expansionpanel *ngIf="iWorkItem.checkItems.length > 0" name="{{checkItemsLabel}}" autoDismissable [showSaveCancel]="false" class="expansionpanel-flat-on-collapse-theme-no-border">
                         <div *deferredContent>
                             <div *ngFor="let iCheckItem of iWorkItem.checkItems">
                                 <material-checkbox class="width-200" [(ngModel)]="iCheckItem.finished" [label]="iCheckItem.name" (click)="updateWorkItem(iWorkItem)"></material-checkbox>

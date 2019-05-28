@@ -108,13 +108,13 @@ $reverse: false;
 .tree li a:hover + ul ul::before{
 	border-color:  #e9453f;
 }
-
+/*
 .text-group-letter {
-    color: white; /* foi preciso colocar, senão não funcionava o mix-blend-mode */
+    color: white;
     mix-blend-mode: difference;
-    line-height: 40px; /* same height to parent - class avatar*/
+    line-height: 40px;
 }
-
+*/
 .custom-row {
     display: inline-block;
     vertical-align: middle;
@@ -126,4 +126,5 @@ $reverse: false;
    max-width: 400px;
   /* width: 400px; */
    text-align: left;
+   height: 100%;
 }

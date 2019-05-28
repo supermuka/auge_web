@@ -144,6 +144,12 @@ body {
   display: inline-block;
 }
 
+.text-group-letter {
+    color: white; /* foi preciso colocar, senão não funcionava o mix-blend-mode */
+    mix-blend-mode: difference;
+    line-height: 32px; /* same height to parent - class avatar*/
+}
+
 /* width */
 ::-webkit-scrollbar {
     width: 10px;

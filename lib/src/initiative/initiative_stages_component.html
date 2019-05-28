@@ -1,7 +1,7 @@
 <modal [visible]="modalVisible">
     <material-dialog headered class="dialog-custom" [error]="dialogError">
         <div header>
-            <h3>Initiative Stages</h3>
+            <h3>{{initiativeStagesLabel}}</h3>
         </div>
         <material-expansionpanel disabled
                                  [alwaysHideExpandIcon]="true"
@@ -50,7 +50,7 @@
                     </div>
                     <div class="w3-row-padding">
                         <div class="w3-col l8">
-                            <material-input autoFocus [(ngModel)]="iStage.name" floatingLabel [label]="'Nome?'"></material-input>
+                            <material-input autoFocus [(ngModel)]="iStage.name" floatingLabel [label]="nameLabel"></material-input>
                         </div>
                         <div class="w3-col l4">
                             <div class="input-container w3-right">
@@ -68,9 +68,8 @@
                 </material-expansionpanel>
             </div>
         </material-expansionpanel>
-
         <div footer>
-            <material-button (trigger)="close()">Close
+            <material-button (trigger)="close()">{{closeButtonLabel}}
                 <material-icon icon="close"></material-icon>
             </material-button>
         </div>

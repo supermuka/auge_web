@@ -1,5 +1,4 @@
-@import 'package:angular_components/css/material/material';
-@import 'package:angular_components/material_expansionpanel/mixins';
+@import 'package:auge_web/scss/common.scss';
 
 .text-group-letter {
   color: white; /* foi preciso colocar, senão não funcionava o mix-blend-mode */

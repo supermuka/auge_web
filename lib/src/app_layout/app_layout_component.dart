@@ -39,7 +39,6 @@ import 'package:auge_server/model/general/organization.dart';
 // ignore_for_file: uri_has_not_been_generated
 import 'package:auge_web/src/app_layout/app_layout_component.template.dart' as app_layout_component;
 import 'package:auge_web/src/insight/insights_component.template.dart' as insights_component;
-import 'package:auge_web/src/organization/organizations_component.template.dart' as organizations_component;
 import 'package:auge_web/src/organization/organization_detail_component.template.dart' as organization_detail_component;
 import 'package:auge_web/src/user/user_detail_component.template.dart' as user_detail_component;
 import 'package:auge_web/src/user/users_component.template.dart' as users_component;
@@ -82,7 +81,6 @@ class AppLayoutComponent /* extends Object */ with CanReuse implements OnActivat
   String get objectivesRouteUrl => AppRoutes.objectivesRoute.toUrl();
   String get initiativesRouteUrl => AppRoutes.initiativesRoute.toUrl();
   String get organizationRouteUrl =>  AppRoutes.organizationEditWithAppLayoutParentRoute.toUrl(parameters: { AppRoutesParam.organizationIdParameter: this._authService.authorizedOrganization.id });
-  String get organizationsRouteUrl => AppRoutes.organizationsRoute.toUrl();
   String get usersRouteUrl => AppRoutes.usersRoute.toUrl();
   String get groupsRouteUrl => AppRoutes.groupsRoute.toUrl();
 
@@ -95,10 +93,12 @@ class AppLayoutComponent /* extends Object */ with CanReuse implements OnActivat
       routePath: AppRoutes.insightslRoute,
       component: insights_component.InsightsComponentNgFactory,
     ),
+    /*
     new RouteDefinition(
       routePath: AppRoutes.organizationsRoute,
       component: organizations_component.OrganizationsComponentNgFactory,
     ),
+     */
     new RouteDefinition(
       routePath: AppRoutes.organizationEditWithAppLayoutParentRoute,
       component: organization_detail_component.OrganizationDetailComponentNgFactory,
@@ -244,12 +244,6 @@ class AppLayoutComponent /* extends Object */ with CanReuse implements OnActivat
     if (url != null)
       _router.navigate(url, NavigationParams(reload: reload));
   }
-
-  /*
-  void viewComponent(bool viewComponent) async {
-    // viewComponent
-  }
-  */
 
   bool get hasAuthorizedOrganization {
     return _authService.authorizedOrganization != null;

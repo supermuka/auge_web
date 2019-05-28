@@ -47,18 +47,44 @@ class InsightsComponent implements OnActivate  {
 
   // Define messages and labels
   static final String objectivesOverallLabel = InsightMsg.label('Objectives Overall');
+  static final String objectivesMeasuresLabel = InsightMsg.label('Objectives and Measures');
+  static final String initiativesWorkItemsLabel = InsightMsg.label('Initiatives and Work Items');
+
   static final String objectivesLabel =  InsightMsg.label('Objectives');
+  static final String objectivesDescriptionLabel =  InsightMsg.label('Number total of objectives');
+
   static final String objectivesAchievedLabel =  InsightMsg.label('Objectives Achieved');
+  static final String objectivesAchievedDescriptionLabel =  InsightMsg.label('Objectives over 70% progress');
+
   static final String objectivesRequiringAttentionLabel =  InsightMsg.label('Objectives Requiring Attention');
+  static final String objectivesRequiringAttentionDescriptionLabel =  InsightMsg.label('Objectives below 30% progress');
+
   static final String measuresLabel =  InsightMsg.label('Measures');
+  static final String measuresDescriptionLabel =  InsightMsg.label('Number total of measures');
+
   static final String measuresAchievedLabel =  InsightMsg.label('Measures Achieved');
+  static final String measuresAchievedDescriptionLabel =  InsightMsg.label('Measures over 70% progress');
+
   static final String measuresRequiringAttentionLabel =  InsightMsg.label('Measures Requiring Attention');
+  static final String measuresRequiringAttentionDescriptionLabel =  InsightMsg.label('Measures below 30% progress');
+
   static final String initiativesLabel =  InsightMsg.label('Initiatives');
+  static final String initiativesDescriptionLabel =  InsightMsg.label('Number total of initiatives');
+
   static final String initiativesCompletedLabel =  InsightMsg.label('Initiatives Completed');
+  static final String initiativesCompletedDescriptionLabel =  InsightMsg.label('Initiatives with 100% work items completed');
+
   static final String initiativesRequiringAttentionLabel =  InsightMsg.label('Initiatives Requiring Attention');
+  static final String initiativesRequiringAttentionDescriptionLabel =  InsightMsg.label('Initiatives with over due work items');
+
   static final String workItemsLabel =  InsightMsg.label('Work Items');
+  static final String workItemsDescriptionLabel =  InsightMsg.label('Number total of work items');
+
   static final String workItemsCompletedLabel =  InsightMsg.label('Work Items Completed');
+  static final String workItemsCompletedDescriptionLabel =  InsightMsg.label('Work items with 100% progress');
+
   static final String workItemsRequiringAttentionLabel =  InsightMsg.label('Work Items Requiring Attention');
+  static final String workItemsRequiringAttentionDescriptionLabel =  InsightMsg.label('Over due work items');
 
   @override
   void onActivate(RouterState previous, RouterState current) async {

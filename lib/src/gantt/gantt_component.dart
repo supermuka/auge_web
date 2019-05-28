@@ -13,6 +13,8 @@ import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/general/user.dart';
 
 import 'package:auge_web/message/messages.dart';
+import 'package:auge_web/message/model_messages.dart';
+
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
@@ -57,10 +59,16 @@ class GanttComponent implements OnActivate {
   }
 
   // Define messages and labels
+  /*
   static final String groupLabel =  GanttMsg.label('Group');
   static final String startDateLabel =  GanttMsg.label('Start Date');
   static final String endDateLabel =  GanttMsg.label('End Date');
   static final String leaderLabel =  GanttMsg.label('Leader');
+  */
+  static final String leaderLabel =  FieldMsg.label('${Objective.className}.${Objective.leaderField}');
+  static final String groupLabel =  FieldMsg.label('${Objective.className}.${Objective.groupField}');
+  static final String startDateLabel =  FieldMsg.label('${Objective.className}.${Objective.startDateField}');
+  static final String endDateLabel =  FieldMsg.label('${Objective.className}.${Objective.endDateField}');
 
   void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
     if (_authService.authorizedOrganization == null || _authService.authenticatedUser == null) {
@@ -68,7 +76,7 @@ class GanttComponent implements OnActivate {
       return;
     }
 
-    _appLayoutService.headerTitle = ObjectiveViewsMsg.label('Objectives Gantt');
+    _appLayoutService.headerTitle = GanttMsg.label('Objectives Gantt');
 
     _appLayoutService.enabledSearch = false;
 
@@ -90,7 +98,7 @@ class GanttComponent implements OnActivate {
   }
 
   void goToObjectives(Objective objective) async {
-    _router.navigateByUrl(AppRoutes.objectivesRoute.toUrl(queryParameters: { AppRoutesParam.objectiveIdParameter: objective.id }));
+    _router.navigateByUrl(AppRoutes.objectivesRoute.toUrl(queryParameters: { AppRoutesParam.objectiveIdParameter: objective.id }) /*, reload: true, replace: true */);
   }
 
   getYearsInterval() {
