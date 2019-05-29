@@ -1,8 +1,11 @@
-div.wrapper {
+.wrapper {
+  display: block;
+  position: relative;
+  /* height:40vh; width:80vw" */
   padding: 0 4px;
-  max-width: 1200px;
-  height: 400px;
-  width: 600px;
+  max-width: 800px;
+  height: 360px;
+  width: 400px;
   /*text-align: center;
   font-style: italic;*/
 }

@@ -382,6 +382,6 @@ class MeasureProgressComponent implements OnInit {
   // Order by to date
   void _sortMeasurePregressesOrderByDate(List<MeasureProgress> measureProgresses) {
     // measureProgresses.sort((a, b) => a?.date == null || b?.date == null ? -1 : a.date.compareTo(b.date));
-    measureProgresses.sort((a, b) => a.date.compareTo(b.date));
+    measureProgresses.sort((a, b) => a.date == null || b.date == null  ? -1 : a.date.compareTo(b.date)*-1);
   }
 }
