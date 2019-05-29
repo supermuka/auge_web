@@ -90,6 +90,10 @@ class FieldMsg {
       '${Measure.className}.${Measure.decimalsNumberField}':'Decimals Number',
       '${Measure.className}.${Measure.measureUnitField}':'Unit',
       '${Measure.className}.${Measure.metricField}':'Metric',
+      //MEASURE PROGRESS
+      '${MeasureProgress.className}.${MeasureProgress.dateField}':'Date',
+      '${MeasureProgress.className}.${MeasureProgress.currentValueField}':'Current Value',
+      '${MeasureProgress.className}.${MeasureProgress.commentField}':'Comment',
       //ORGANIZATION
       '${Organization.className}.${Organization.nameField}':'Name',
       '${Organization.className}.${Organization.codeField}':'EIN',

@@ -1,11 +1,13 @@
-.wrapper {
+.wrapper-chart {
   display: block;
   position: relative;
-  /* height:40vh; width:80vw" */
   padding: 0 4px;
   max-width: 800px;
   height: 360px;
   width: 400px;
-  /*text-align: center;
-  font-style: italic;*/
+  margin-right: 24px;
+}
+
+.wrapper-progress {
+  display: block;
 }

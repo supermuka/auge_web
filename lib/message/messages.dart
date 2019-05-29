@@ -291,10 +291,31 @@ class MeasureMsg {
   );
 
   static valueErrorMsg() => Intl.message("Current value should be between Start and End value.");
-  static currentValueExistsAtDate() => Intl.message("Current value already exists at date informed.");
   static currentDateNotBetweenStartEndDate(DateTime startDate, DateTime endDate) => Intl.message("Measure progress date should be between objective start date ${DateFormat.yMMMd().format(startDate)} and objective end date ${DateFormat.yMMMd().format(endDate)}.");
   static decimalNumberErrorMsg() => Intl.message("Decimal number should be between 0 and 5.");
 }
+
+
+/// Specific messages and label for [MeasureProgress]
+class MeasureProgressMsg {
+
+  /// Label for Measure
+  static label(String label) => Intl.message(
+      "${Intl.select(label, {
+        'Measure Progress': 'Measure Progress',
+        'other': 'Not Defined'})}",
+      name: "measureProgressLabel",
+      args: [label],
+      // locale: "en",
+      desc: "Measure Progresslabels"
+  );
+
+  static valueErrorMsg() => Intl.message("Current value should be between Start and End value.");
+  static currentValueExistsAtDate() => Intl.message("Current value already exists at date informed.");
+}
+
+
+
 
 /// Specific messages and label for [ObjectiveHierarchy]
 /*

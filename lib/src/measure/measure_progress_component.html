@@ -1,16 +1,17 @@
 <modal [visible]="true">
     <material-dialog headered [error]="dialogError">
         <div header>
-            <h3>Measure Progress</h3>
+            <h3>{{measureProgressLabel}}</h3>
         </div>
         <div class="w3-row">
             <div class="w3-col l6">
-                <div class="wrapper">
+                <div class="wrapper-chart">
                     <canvas id="canvas" height="360" width="400"></canvas>
                 </div>
             </div>
             <div class="w3-col l6">
-                <material-expansionpanel class="wrapper" disabled
+
+                <material-expansionpanel disabled
                                          [alwaysHideExpandIcon]="true"
                                          [expanded]="true"
                                          [showSaveCancel]="false">
@@ -49,7 +50,7 @@
                                         <material-icon icon="delete"></material-icon>
                                     </material-button>
                                 </div>
-                                <div class="w3-row">
+                                <div class="w3-row-padding">
                                     <div class="w3-col l6">
                                         <label class="input-container">
                                             <span class="label-text">{{dateLabel}}</span>
@@ -67,7 +68,7 @@
                                 </div>
                                 <div class="w3-row">
                                     <div class="w3-col l12">
-                                        <material-input floatingLabel multiline rows="2" [label]="'Comment'" [(ngModel)]="iMeasureProgress.comment" style="width: 100%;"></material-input>
+                                        <material-input floatingLabel multiline rows="2" [label]="commentLabel" [(ngModel)]="iMeasureProgress.comment" style="width: 100%;"></material-input>
                                     </div>
                                 </div>
                             </material-expansionpanel>

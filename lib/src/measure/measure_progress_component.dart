@@ -33,7 +33,9 @@ import 'package:auge_server/model/objective/measure.dart';
 
 import 'package:auge_web/services/common_service.dart';
 import 'package:auge_web/src/measure/measure_service.dart';
+
 import 'package:auge_web/message/messages.dart';
+import 'package:auge_web/message/model_messages.dart';
 
 @Component(
     selector: 'auge-measure-progress',
@@ -110,17 +112,16 @@ class MeasureProgressComponent implements OnInit {
   }
 
   // Define messages and labels
-  static final String progressLabel = MeasureMsg.label('Progress');
-  static final String startValueLabel = MeasureMsg.label('Start Value');
-  static final String currentValueLabel = MeasureMsg.label('Current Value');
-  static final String endValueLabel = MeasureMsg.label('End Value');
-  static final String dateLabel = MeasureMsg.label('Date');
+  static final String measureProgressLabel = MeasureMsg.label('Measure Progress');
+  static final String currentValueLabel = FieldMsg.label('${MeasureProgress.className}.${MeasureProgress.currentValueField}');
+  static final String dateLabel =  FieldMsg.label('${MeasureProgress.className}.${MeasureProgress.dateField}');
+  static final String commentLabel =  FieldMsg.label('${MeasureProgress.className}.${MeasureProgress.commentField}');
 
   static final String saveButtonLabel = CommonMsg.buttonLabel('Save');
   static final String cancelButtonLabel = CommonMsg.buttonLabel('Cancel');
 
-  static final String valueErrorMsg =  MeasureMsg.valueErrorMsg();
-  static final String currentValueExistsAtDateMsg =  MeasureMsg.currentValueExistsAtDate();
+  static final String valueErrorMsg =  MeasureProgressMsg.valueErrorMsg();
+  static final String currentValueExistsAtDateMsg =  MeasureProgressMsg.currentValueExistsAtDate();
 
   void ngOnInit() async {
     if (selectedMeasure != null) {
