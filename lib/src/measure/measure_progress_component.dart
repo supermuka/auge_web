@@ -115,7 +115,8 @@ class MeasureProgressComponent implements OnInit, OnActivate, OnDeactivate  {
   }
 
   // Define messages and labels
-  static final String measureProgressLabel = MeasureMsg.label('Measure Progress');
+  static final String measureProgressLabel = MeasureProgressMsg.label('Measure Progress');
+  static final String progressCurrentValuesLabel = MeasureProgressMsg.label('Progress Current Values');
   static final String currentValueLabel = FieldMsg.label('${MeasureProgress.className}.${MeasureProgress.currentValueField}');
   static final String dateLabel =  FieldMsg.label('${MeasureProgress.className}.${MeasureProgress.dateField}');
   static final String commentLabel =  FieldMsg.label('${MeasureProgress.className}.${MeasureProgress.commentField}');
@@ -128,14 +129,15 @@ class MeasureProgressComponent implements OnInit, OnActivate, OnDeactivate  {
   static final String currentValueExistsAtDateMsg =  MeasureProgressMsg.currentValueExistsAtDate();
 
   void ngOnInit() async {
+
     measureProgresses = [];
     objective = Objective();
-    measure= Measure();
+    measure = Measure();
   }
 
   @override
   void onActivate(RouterState previous, RouterState current) async {
-    print('onActivate');
+
     modalVisible = true;
 
     String objectiveId;
@@ -153,7 +155,7 @@ class MeasureProgressComponent implements OnInit, OnActivate, OnDeactivate  {
     } else {
       throw Exception('Measure Id not found.');
     }
-
+/*
     if (current.queryParameters.containsKey(AppRoutesQueryParam.objectiveStartDateQueryParameter )) {
       objective.startDate = DateTime.tryParse(current.queryParameters[AppRoutesQueryParam.objectiveStartDateQueryParameter]);
     } else {
@@ -165,9 +167,9 @@ class MeasureProgressComponent implements OnInit, OnActivate, OnDeactivate  {
       objective.endDate = null;
     }
 
-    if (objectiveId != null) {
-      objective = await _objectiveService.getObjective(objectiveId);
-    }
+*/
+
+
 
     if (measureId != null) {
       measure = await _measureService.getMeasure(measureId);
@@ -177,13 +179,29 @@ class MeasureProgressComponent implements OnInit, OnActivate, OnDeactivate  {
     }
 
     if (current.toUrl() == AppRoutes.measureProgressesAddRoute.toUrl(parameters: current.parameters, queryParameters: current.queryParameters)
+        && current.queryParameters[AppRoutesQueryParam.measureCurrentValueQueryParameter] != null) {
+      measureProgresses.insert(0, MeasureProgress()..date = DateTime.now()..currentValue = double.tryParse(current.queryParameters[AppRoutesQueryParam.measureCurrentValueQueryParameter]));
+      selectedMeasureProgress = measureProgresses.first;
+    }
+
+    if (objectiveId != null) {
+        objective = await _objectiveService.getObjective(objectiveId);
+    }
+
+    if (current.toUrl() == AppRoutes.measureProgressesAddRoute.toUrl(parameters: current.parameters, queryParameters: current.queryParameters)
       && current.queryParameters[AppRoutesQueryParam.measureCurrentValueQueryParameter] != null) {
       measureProgresses.insert(0, MeasureProgress()..date = DateTime.now()..currentValue = double.tryParse(current.queryParameters[AppRoutesQueryParam.measureCurrentValueQueryParameter]));
       selectedMeasureProgress = measureProgresses.first;
     }
 
+    buildChart();
+
+  }
+
+  Future<void> buildChart() {
     List<String> months = [];
     List<num> values = [];
+
     defineMonthsValuesProgress(months, values);
 
     var data = new LinearChartData(labels: months, datasets: <ChartDataSets>[
@@ -207,15 +225,14 @@ class MeasureProgressComponent implements OnInit, OnActivate, OnDeactivate  {
     ));
 
     // Modal, needs to await the dom elements creation.
-    new Future.delayed(Duration.zero, () {
+    // new Future.delayed(Duration.zero, () {
 
-      html.CanvasElement ce = html.querySelector('#canvas') as html.CanvasElement;
+    html.CanvasElement ce = html.querySelector('#canvas') as html.CanvasElement;
 
-      if (ce != null) {
-        chart = new Chart(ce, config);
+    if (ce != null) {
+      chart = new Chart(ce, config);
 
-      }
-    });
+    }
   }
 
   @override

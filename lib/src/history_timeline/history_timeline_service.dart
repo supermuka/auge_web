@@ -33,10 +33,7 @@ class HistoryTimelineService {
   // get authService => _authService;
 
   void refreshHistory(int systemModuleIndex) async {
-    print('entrou no refresh');
     history = await _getHistory(systemModuleIndex);
-    print('saiu do refresh');
-    history.forEach((i) => i.dateTime);
   }
 
   /// Return a list of [TimelineItem]

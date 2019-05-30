@@ -141,31 +141,12 @@ class MeasuresComponent with CanReuse {
   }
 
   void goToProgress(bool add) {
-    print('goToProgress');
     if (add) {
-      print(AppRoutes.measureProgressesAddRoute.toUrl(
-          parameters: {
-            AppRoutesParam.objectiveIdParameter: objective.id,
-            AppRoutesParam.measureIdParameter: selectedMeasure.id },
-          queryParameters: {
-            AppRoutesQueryParam.measureCurrentValueQueryParameter: selectedMeasure.currentValue.toString()}));
-
       _router.navigate(AppRoutes.measureProgressesAddRoute.toUrl(parameters: {
         AppRoutesParam.objectiveIdParameter: objective.id,
         AppRoutesParam.measureIdParameter: selectedMeasure.id }), NavigationParams(queryParameters: {
         AppRoutesQueryParam.measureCurrentValueQueryParameter: selectedMeasure.currentValue.toString() }));
-/*
-          parameters: {
-            AppRoutesParam.objectiveIdParameter: objective.id,
-            AppRoutesParam.measureIdParameter: selectedMeasure.id },
-          queryParameters: {
-            AppRoutesQueryParam.measureCurrentValueQueryParameter: selectedMeasure.currentValue.toString() }  ));*/
     } else {
-      print(AppRoutes.measureProgressesAddRoute.toUrl(
-        parameters: {
-          AppRoutesParam.objectiveIdParameter: objective.id,
-          AppRoutesParam.measureIdParameter: selectedMeasure.id },
-      ));
       _router.navigate(AppRoutes.measureProgressesAddRoute.toUrl(
           parameters: {
             AppRoutesParam.objectiveIdParameter: objective.id,

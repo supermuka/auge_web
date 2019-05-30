@@ -10,12 +10,12 @@
                 </div>
             </div>
             <div class="w3-col l6">
-                <material-expansionpanel disabled
+                <material-expansionpanel class="wrapper-progress" disabled
                                          [alwaysHideExpandIcon]="true"
                                          [expanded]="true"
                                          [showSaveCancel]="false">
                     <div name>
-                        <span><strong>Current Values</strong></span>
+                        <span><strong>{{progressCurrentValuesLabel}}</strong></span>
                     </div>
                     <div action>
                         <material-button icon (trigger)="selectMeasureProgress(null)">

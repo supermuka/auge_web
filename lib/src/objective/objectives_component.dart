@@ -156,7 +156,6 @@ class ObjectivesComponent with CanReuse implements AfterViewInit, OnActivate, On
       return;
     }
 
-
     // Expand panel whether [Id] objective is informed.
     if (routerStateCurrent.queryParameters.containsKey(AppRoutesParam.objectiveIdParameter)) {
       initialObjectiveId = routerStateCurrent.queryParameters[AppRoutesParam.objectiveIdParameter];
@@ -186,7 +185,6 @@ class ObjectivesComponent with CanReuse implements AfterViewInit, OnActivate, On
         initialObjectiveId = null;
       }
 
-      print('refreshHistory ${SystemModule.objectives.index}');
       if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.objectives.index);
 
     } catch (e) {

@@ -303,6 +303,7 @@ class MeasureProgressMsg {
   static label(String label) => Intl.message(
       "${Intl.select(label, {
         'Measure Progress': 'Measure Progress',
+        'Progress Current Values': 'Progress Current Values',
         'other': 'Not Defined'})}",
       name: "measureProgressLabel",
       args: [label],
