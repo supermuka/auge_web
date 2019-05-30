@@ -186,6 +186,8 @@ class InitiativesComponent /* extends Object*/ with CanReuse implements OnActiva
               initiativesFilterParam.objective = await _objectiveService.getObjective(objectiveId, withMeasures: false);
           }
 
+          if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.initiatives.index);
+
        } catch (e) {
         _appLayoutService.error = e.toString();
         rethrow;
@@ -257,6 +259,8 @@ class InitiativesComponent /* extends Object*/ with CanReuse implements OnActiva
 
       await _initiativeService.deleteInitiative(selectedInitiative);
       initiatives.remove(selectedInitiative);
+
+      if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.initiatives.index);
 
     } catch (e) {
       _appLayoutService.error = e.toString();

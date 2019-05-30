@@ -90,6 +90,7 @@ class OrganizationsComponent extends Object implements OnActivate, OnDestroy  {
 
     try {
       _organizations = await _organizationService.getOrganizations();
+
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;

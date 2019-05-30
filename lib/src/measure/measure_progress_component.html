@@ -1,4 +1,4 @@
-<modal [visible]="true">
+<modal [visible]="modalVisible">
     <material-dialog headered [error]="dialogError">
         <div header>
             <h3>{{measureProgressLabel}}</h3>
@@ -10,7 +10,6 @@
                 </div>
             </div>
             <div class="w3-col l6">
-
                 <material-expansionpanel disabled
                                          [alwaysHideExpandIcon]="true"
                                          [expanded]="true"
@@ -79,7 +78,7 @@
             </div>
         </div>
         <div footer>
-            <material-button (trigger)="closeChart()">Close
+            <material-button (trigger)="closeMeasureProgress()">{{closeButtonLabel}}
                 <material-icon icon="close"></material-icon>
             </material-button>
         </div>

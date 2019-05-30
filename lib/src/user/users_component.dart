@@ -14,7 +14,7 @@ import 'package:angular_components/material_toggle/material_toggle.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel_set.dart';
 
-import 'package:angular_components/content/deferred_content.dart';
+// import 'package:angular_components/content/deferred_content.dart';
 
 import 'package:auge_server/model/general/authorization.dart';
 import 'package:auge_server/model/general/user.dart';
@@ -35,7 +35,7 @@ import 'package:auge_web/src/user/user_detail_component.template.dart' as user_d
 
 @Component(
     selector: 'auge-users',
-    providers: const [DeferredContentDirective, UserService, HistoryTimelineService],
+    providers: const [UserService, HistoryTimelineService],
     directives: const [
       coreDirectives,
       routerDirectives,
@@ -79,13 +79,10 @@ class UsersComponent with CanReuse implements OnActivate {
 
   UserProfileOrganization selectedUserProfileOrganization;
 
-  bool detailVisible = false;
-
   String mainColWidth = '100%';
   bool _timelineVisible = false;
 
   MenuModel<MenuItem> menuModel;
-
 
   UsersComponent(this._appLayoutService, this._searchService, this._userService, this._historyTimelineService, this._router) {
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => goToDetail()), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
@@ -116,6 +113,8 @@ class UsersComponent with CanReuse implements OnActivate {
     try {
       // _users = await _userService.getUsers(_userService.authService.selectedOrganization?.id, withProfile: true);
       _usersProfileOrganizations = await _userService.getUsersProfileOrganizations(_userService.authService.authorizedOrganization?.id, withUserProfile: true);
+
+      if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.users.index);
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;
@@ -132,7 +131,7 @@ class UsersComponent with CanReuse implements OnActivate {
       await _userService.deleteUserProfileOrganization(selectedUserProfileOrganization);
 
       usersProfileOrganizations.remove(selectedUserProfileOrganization);
-      _historyTimelineService.refreshHistory(SystemModule.users.index);
+      if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.users.index);
 
     } catch (e) {
      // print('${e.runtimeType}, ${e}');

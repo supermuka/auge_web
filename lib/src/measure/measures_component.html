@@ -22,7 +22,7 @@
                         <div value class="custom-slider">
                             <!--material-progress materialTooltip="{{progressLabel + ' ' + iMeasure.progress.toString() + '%'}}" [activeProgress]="iMeasure.progress"></material-progress-->
                             <!-- material-slider [(value)]="iMeasure.currentValueInt"  [min]="iMeasure.startValueInt" [max]="iMeasure.endValueInt" (valueChange)="updateMeasure($event)"></material-slider -->
-                            <material-slider [disabled]="iMeasure.minValue == null || iMeasure.maxValue == null" [value]="iMeasure.valueRelatedMinMax" [step]="iMeasure.stepValue" [min]="iMeasure.minValue" [max]="iMeasure.maxValue" (valueChange)="changeCurrentValue(iMeasure, $event)" (click)="selectMeasure(iMeasure);addMeasureProgress = true;progressVisible = true" materialTooltip="{{progressLabel + ' ' + iMeasure.progress.toString() + '%'}}"></material-slider>
+                            <material-slider [disabled]="iMeasure.minValue == null || iMeasure.maxValue == null" [value]="iMeasure.valueRelatedMinMax" [step]="iMeasure.stepValue" [min]="iMeasure.minValue" [max]="iMeasure.maxValue" (valueChange)="changeCurrentValue(iMeasure, $event)" (click)="selectMeasure(iMeasure);goToProgress(true)" materialTooltip="{{progressLabel + ' ' + iMeasure.progress.toString() + '%'}}"></material-slider>
                             <div class="width-flex">
                                 <span materialTooltip="{{startValueLabel}}">{{iMeasure.startValue | number:'.' + iMeasure?.decimalsNumber?.toString()}}</span>
                                 <span materialTooltip="{{currentValueLabel}}">{{iMeasure.currentValue | number:'.' + iMeasure?.decimalsNumber?.toString()}}</span>
@@ -43,6 +43,6 @@
     </material-expansionpanel>
     <!-- auge-measure-detail *ngIf="detailVisible == true" [objectiveId]="objective.id" [selectedMeasureId]="selectedMeasure.id" (saved)="refreshMeasures()" (closed)="detailVisible = false">
     </auge-measure-detail -->
-    <auge-measure-progress *ngIf="progressVisible == true" [addMeasureProgress]="addMeasureProgress" [objectiveStartDate]="objective.startDate" [objectiveEndDate]="objective.endDate" [selectedMeasure]="selectedMeasure" (saved)="refreshMeasures()" (closed)="closeProgress()">
-    </auge-measure-progress>
+    <!--auge-measure-progress *ngIf="progressVisible == true" [addMeasureProgress]="addMeasureProgress" [objectiveStartDate]="objective.startDate" [objectiveEndDate]="objective.endDate" [selectedMeasure]="selectedMeasure" (saved)="refreshMeasures()" (closed)="closeProgress()">
+    </auge-measure-progress -->
 </div>

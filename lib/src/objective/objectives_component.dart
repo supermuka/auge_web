@@ -18,7 +18,6 @@ import 'package:angular_components/material_expansionpanel/material_expansionpan
 import 'package:angular_components/material_expansionpanel/material_expansionpanel_set.dart';
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
 
-
 import 'package:auge_server/model/general/authorization.dart';
 import 'package:auge_server/model/objective/objective.dart';
 
@@ -37,6 +36,7 @@ import 'package:auge_web/services/app_routes.dart';
 // ignore_for_file: uri_has_not_been_generated
 import 'package:auge_web/src/objective/objective_detail_component.template.dart' as objective_detail_component;
 import 'package:auge_web/src/measure/measure_detail_component.template.dart' as measure_detail_component;
+import 'package:auge_web/src/measure/measure_progress_component.template.dart' as measure_progress_component;
 
 @Component(
     selector: 'auge-objectives',
@@ -53,8 +53,8 @@ import 'package:auge_web/src/measure/measure_detail_component.template.dart' as 
       MaterialTooltipDirective,
       MaterialMenuComponent,
       HistoryTimelineComponent,
-      MeasuresComponent,
       InitiativesSummaryComponent,
+      MeasuresComponent,
     ],
     pipes: const [commonPipes],
     templateUrl: 'objectives_component.html',
@@ -86,6 +86,14 @@ class ObjectivesComponent with CanReuse implements AfterViewInit, OnActivate, On
     new RouteDefinition(
       routePath: AppRoutes.measureEditRoute,
       component: measure_detail_component.MeasureDetailComponentNgFactory,
+    ),
+    new RouteDefinition(
+      routePath: AppRoutes.measureProgressesRoute,
+      component: measure_progress_component.MeasureProgressComponentNgFactory,
+    ),
+    new RouteDefinition(
+      routePath: AppRoutes.measureProgressesAddRoute,
+      component: measure_progress_component.MeasureProgressComponentNgFactory,
     ),
   ];
 
@@ -178,7 +186,8 @@ class ObjectivesComponent with CanReuse implements AfterViewInit, OnActivate, On
         initialObjectiveId = null;
       }
 
-      _historyTimelineService.refreshHistory(SystemModule.objectives.index);
+      print('refreshHistory ${SystemModule.objectives.index}');
+      if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.objectives.index);
 
     } catch (e) {
       _appLayoutService.error = e.toString();

@@ -7,20 +7,20 @@
     <div class="w3-row-padding">
         <div class="w3-col" style="width:{{mainColWidth}}">
             <material-expansionpanel-set>
-                <div *ngFor="let userProfileOrganization of usersProfileOrganizations">
+                <div *ngFor="let iUserProfileOrganization of usersProfileOrganizations">
                     <material-expansionpanel class="expansionpanel-no-padding-margin"
                                              disabled
                                              [alwaysHideExpandIcon]="true"
                                              [hideExpandedHeader]="false"
                                              [showSaveCancel]="false">
                         <div name>
-                            <span class="avatar" [style.background-image]="'url(' + userUrlImage(userProfileOrganization.user) + ')'"></span><span><strong>{{userProfileOrganization.user.name}}</strong></span>
+                            <span class="avatar" [style.background-image]="'url(' + userUrlImage(iUserProfileOrganization.user) + ')'"></span><span><strong>{{iUserProfileOrganization.user.name}}</strong></span>
                         </div>
                         <div value>
-                            {{userProfileOrganization.user.eMail}}
+                            {{iUserProfileOrganization.user.eMail}}
                         </div>
                         <div action>
-                            <material-menu [menu]="menuModel" (click)="selectUserProfileOrganization(userProfileOrganization)">
+                            <material-menu [menu]="menuModel" (click)="selectUserProfileOrganization(iUserProfileOrganization)">
                             </material-menu>
                         </div>
                     </material-expansionpanel>

@@ -21,6 +21,8 @@ class OrganizationService {
     _organizationServiceClient = organization_pbgrpc.OrganizationServiceClient(_augeApiService.channel);
   }
 
+  AuthService get authService => _authService;
+
   /// Return an [Organization]
   Future<Organization> getOrganization(String organizationId) async {
     //return _augeApiService.augeApi.getOrganizations();

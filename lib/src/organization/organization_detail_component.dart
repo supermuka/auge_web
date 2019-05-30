@@ -89,9 +89,10 @@ class OrganizationDetailComponent implements OnInit, OnActivate, OnDeactivate {
     modalVisible = false;
   }
 
-  void saveOrganization() {
+  void saveOrganization() async {
     try {
-      _organizationService.saveOrganization(organization);
+      await _organizationService.saveOrganization(organization);
+      _organizationService.authService.authUserProfileOrganization.organization = await _organizationService.getOrganization(organization.id);
       closeDetail();
     } catch (e) {
       dialogError = e.toString();

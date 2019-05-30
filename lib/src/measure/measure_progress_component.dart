@@ -1,7 +1,7 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
-import 'dart:html';
+import 'dart:html' as html;
 import 'dart:async';
 
 import 'package:chartjs/chartjs.dart';
@@ -10,6 +10,8 @@ import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:angular/angular.dart';
+import 'package:angular_router/angular_router.dart';
+
 import 'package:angular_components/focus/focus.dart';
 import 'package:angular_components/laminate/components/modal/modal.dart';
 import 'package:angular_components/laminate/overlay/module.dart';
@@ -24,22 +26,25 @@ import 'package:angular_components/model/menu/menu.dart';
 import 'package:angular_components/material_menu/material_menu.dart';
 import 'package:angular_components/material_datepicker/module.dart';
 import 'package:angular_components/model/date/date.dart';
-import 'package:angular_components/utils/browser/window/module.dart';
 import 'package:angular_components/material_datepicker/material_datepicker.dart';
 import 'package:angular_components/material_dialog/material_dialog.dart';
 import 'package:angular_components/model/action/async_action.dart';
 
+import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/objective/measure.dart';
 
 import 'package:auge_web/services/common_service.dart';
+import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/measure/measure_service.dart';
 
 import 'package:auge_web/message/messages.dart';
 import 'package:auge_web/message/model_messages.dart';
 
+import 'package:auge_web/services/app_routes.dart';
+
 @Component(
     selector: 'auge-measure-progress',
-    providers: [overlayBindings, windowBindings, datepickerBindings, MeasureService],
+    providers: [overlayBindings, datepickerBindings, ObjectiveService, MeasureService],
     directives: const [
       coreDirectives,
       materialInputDirectives,
@@ -62,10 +67,15 @@ import 'package:auge_web/message/model_messages.dart';
       'measure_progress_component.css'
     ])
 
-class MeasureProgressComponent implements OnInit {
+class MeasureProgressComponent implements OnInit, OnActivate, OnDeactivate  {
 
+  final ObjectiveService _objectiveService;
   final MeasureService _measureService;
+  final Location _location;
 
+  bool modalVisible = false;
+
+  /*
   @Input()
   bool addMeasureProgress;
 
@@ -77,20 +87,13 @@ class MeasureProgressComponent implements OnInit {
 
   @Input()
   Measure selectedMeasure;
+*/
+
+  Objective objective;
+
+  Measure measure;
 
   List<MeasureProgress> measureProgresses;
-
-  final _closeController = new StreamController<void>.broadcast(sync: true);
-
-  /// Publishes events when close.
-  @Output()
-  Stream<void> get closed => _closeController.stream;
-
-  final _savedController = new StreamController<void>.broadcast(sync: true);
-
-  /// Publishes events when save.
-  @Output()
-  Stream<void> get saved => _savedController.stream;
 
   bool editable;
 
@@ -107,7 +110,7 @@ class MeasureProgressComponent implements OnInit {
 
   Chart chart;
 
-  MeasureProgressComponent(this._measureService) {
+  MeasureProgressComponent(this._objectiveService, this._measureService, this._location) {
     initializeDateFormatting(Intl.defaultLocale , null);
   }
 
@@ -119,18 +122,63 @@ class MeasureProgressComponent implements OnInit {
 
   static final String saveButtonLabel = CommonMsg.buttonLabel('Save');
   static final String cancelButtonLabel = CommonMsg.buttonLabel('Cancel');
+  static final String closeButtonLabel = CommonMsg.buttonLabel('Close');
 
   static final String valueErrorMsg =  MeasureProgressMsg.valueErrorMsg();
   static final String currentValueExistsAtDateMsg =  MeasureProgressMsg.currentValueExistsAtDate();
 
   void ngOnInit() async {
-    if (selectedMeasure != null) {
-      measureProgresses = await _measureService.getMeasureProgress(selectedMeasure.id);
-      _sortMeasurePregressesOrderByDate(measureProgresses);
+    measureProgresses = [];
+    objective = Objective();
+    measure= Measure();
+  }
+
+  @override
+  void onActivate(RouterState previous, RouterState current) async {
+    print('onActivate');
+    modalVisible = true;
+
+    String objectiveId;
+
+    if (current.parameters.containsKey(AppRoutesParam.objectiveIdParameter)) {
+      objectiveId = current.parameters[AppRoutesParam.objectiveIdParameter];
+    } else {
+      throw Exception('Objective Id not found.');
     }
 
-    if (addMeasureProgress) {
-      measureProgresses.insert(0, MeasureProgress()..date = DateTime.now()..currentValue = selectedMeasure.currentValue);
+    String measureId;
+
+    if (current.parameters.containsKey(AppRoutesParam.measureIdParameter)) {
+      measureId = current.parameters[AppRoutesParam.measureIdParameter];
+    } else {
+      throw Exception('Measure Id not found.');
+    }
+
+    if (current.queryParameters.containsKey(AppRoutesQueryParam.objectiveStartDateQueryParameter )) {
+      objective.startDate = DateTime.tryParse(current.queryParameters[AppRoutesQueryParam.objectiveStartDateQueryParameter]);
+    } else {
+      objective.startDate = null;
+    }
+    if (current.queryParameters.containsKey(AppRoutesQueryParam.objectiveEndDateQueryParameter )) {
+      objective.endDate = DateTime.tryParse(current.queryParameters[AppRoutesQueryParam.objectiveEndDateQueryParameter]);
+    } else {
+      objective.endDate = null;
+    }
+
+    if (objectiveId != null) {
+      objective = await _objectiveService.getObjective(objectiveId);
+    }
+
+    if (measureId != null) {
+      measure = await _measureService.getMeasure(measureId);
+
+      measureProgresses = await _measureService.getMeasureProgresses(measureId);
+      // _sortMeasurePregressesOrderByDate(measureProgresses);
+    }
+
+    if (current.toUrl() == AppRoutes.measureProgressesAddRoute.toUrl(parameters: current.parameters, queryParameters: current.queryParameters)
+      && current.queryParameters[AppRoutesQueryParam.measureCurrentValueQueryParameter] != null) {
+      measureProgresses.insert(0, MeasureProgress()..date = DateTime.now()..currentValue = double.tryParse(current.queryParameters[AppRoutesQueryParam.measureCurrentValueQueryParameter]));
       selectedMeasureProgress = measureProgresses.first;
     }
 
@@ -143,7 +191,7 @@ class MeasureProgressComponent implements OnInit {
           label: 'Start to End Value',
           backgroundColor: 'rgba(220,220,220,0.2)',
           fill: false,
-          data: [ChartPoint(x: months.first, y: selectedMeasure.startValue), ChartPoint(x: months.last, y: selectedMeasure.endValue)]
+          data: [ChartPoint(x: months.first, y: measure.startValue), ChartPoint(x: months.last, y: measure.endValue)]
       ),
       new ChartDataSets(
           label: 'Current Value Reviews',
@@ -154,14 +202,14 @@ class MeasureProgressComponent implements OnInit {
 
     var config = new ChartConfiguration(
         type: 'line', data: data, options: new ChartOptions(responsive: true,
-      title: ChartTitleOptions(display: true, text: 'Measure ' + selectedMeasure.name),
+      title: ChartTitleOptions(display: true, text: 'Measure ' + measure.name),
 
     ));
 
     // Modal, needs to await the dom elements creation.
     new Future.delayed(Duration.zero, () {
 
-      CanvasElement ce = querySelector('#canvas') as CanvasElement;
+      html.CanvasElement ce = html.querySelector('#canvas') as html.CanvasElement;
 
       if (ce != null) {
         chart = new Chart(ce, config);
@@ -170,12 +218,17 @@ class MeasureProgressComponent implements OnInit {
     });
   }
 
+  @override
+  void onDeactivate(RouterState current, RouterState next) {
+    modalVisible = false;
+  }
+
   defineMonthsValuesProgress(List<String> months, List<num>values) {
     int yearsCount = 1;
-    if (objectiveStartDate != null && objectiveEndDate != null && objectiveStartDate.year != objectiveEndDate.year)
-      yearsCount = yearsCount + objectiveEndDate.year - objectiveStartDate.year;
+    if (objective.startDate != null && objective.endDate != null && objective.startDate.year != objective.endDate.year)
+      yearsCount = yearsCount + objective.endDate.year - objective.startDate.year;
 
-    int firstYear = objectiveStartDate?.year ?? objectiveEndDate?.year ?? DateTime.now().year;
+    int firstYear = objective.startDate?.year ?? objective.endDate?.year ?? DateTime.now().year;
 
     List<int> yearsInterval = [];
     for (int iYear = 0;iYear<yearsCount;iYear++) {
@@ -221,8 +274,10 @@ class MeasureProgressComponent implements OnInit {
     }
   }
 
-  void closeChart() {
-    _closeController.add(null);
+  void closeMeasureProgress() {
+   // _closeController.add(null);
+    modalVisible = false;
+    _location.back();
   }
 
   void cancelMeasureProgress(MeasureProgress measureProgress, AsyncAction event) async {
@@ -233,7 +288,7 @@ class MeasureProgressComponent implements OnInit {
       } else {
         measureProgresses[measureProgresses.indexOf(measureProgress)] = await _measureService.getMeasureProgressById(measureProgress.id);
       }
-      _sortMeasurePregressesOrderByDate(measureProgresses);
+      // _sortMeasurePregressesOrderByDate(measureProgresses);
       updateChart();
     } on Exception {
       event.cancel();
@@ -243,36 +298,34 @@ class MeasureProgressComponent implements OnInit {
 
   void saveMeasureProgress(MeasureProgress measureProgress, AsyncAction event) async {
 
-
    if (measureProgresses.indexWhere((mp) => mp.date == measureProgress.date && mp.id != measureProgress.id) != -1) {
       dialogError = currentValueExistsAtDateMsg;
       event.cancel();
     }
-    else if (objectiveStartDate != null && measureProgress.date.compareTo(objectiveStartDate) < 0 || objectiveEndDate != null && measureProgress.date.compareTo(objectiveEndDate) > 0) {
-      dialogError = MeasureMsg.currentDateNotBetweenStartEndDate(objectiveStartDate, objectiveEndDate);
+    else if (objective.startDate != null && measureProgress.date.compareTo(objective.startDate) < 0 || objective.endDate != null && measureProgress.date.compareTo(objective.endDate) > 0) {
+      dialogError = MeasureMsg.currentDateNotBetweenStartEndDate(objective.startDate, objective.endDate);
       event.cancel();
     } else {
       try {
-        if (selectedMeasure.startValue != null ||
-            selectedMeasure?.endValue != null) {
-          selectedMeasure.startValue <= selectedMeasure.endValue
-              ? selectedMeasure.currentValue = measureProgress.currentValue
-              : selectedMeasure.currentValue =
-              selectedMeasure.startValue + selectedMeasure.endValue -
+        if (measure.startValue != null ||
+            measure?.endValue != null) {
+          measure.startValue <= measure.endValue
+              ? measure.currentValue = measureProgress.currentValue
+              : measure.currentValue =
+              measure.startValue + measure.endValue -
                   measureProgress.currentValue;
 
           String measureProgressId = await _measureService.saveMeasureProgress(
-              selectedMeasure.id, measureProgress);
+              measure.id, measureProgress);
           // Returns a new instance to get the generated data on the server side as well as having the last update.
           measureProgress =
           await _measureService.getMeasureProgressById(measureProgressId);
         }
 
         measureProgresses =
-        await _measureService.getMeasureProgress(selectedMeasure.id);
-        _sortMeasurePregressesOrderByDate(measureProgresses);
+        await _measureService.getMeasureProgresses(measure.id);
+        // _sortMeasurePregressesOrderByDate(measureProgresses);
 
-        _savedController.add(null);
       } catch (e) {
         dialogError = e.toString();
         event.cancel();
@@ -323,7 +376,7 @@ class MeasureProgressComponent implements OnInit {
   }
 
   void changedStartValue(String startValue) {
-    if (!validValue(double.tryParse(startValue), selectedMeasure?.currentValue, selectedMeasure?.endValue)) {
+    if (!validValue(double.tryParse(startValue), measure?.currentValue, measure?.endValue)) {
       //   errorControl.add(validStartValue);
       showStartValueErrorMsg = valueErrorMsg;
     } else {
@@ -334,7 +387,7 @@ class MeasureProgressComponent implements OnInit {
   }
 
   void changedCurrentValue(MeasureProgress measureProgress, var currentValue) {
-    if (!validValue(selectedMeasure?.startValue, double.tryParse(currentValue), selectedMeasure?.endValue)) {
+    if (!validValue(measure?.startValue, double.tryParse(currentValue), measure?.endValue)) {
       // errorControl.add(validCurrentValue);
       showCurrentValueErrorMsg = valueErrorMsg;
     } else {
@@ -347,12 +400,10 @@ class MeasureProgressComponent implements OnInit {
   }
 
   // String get unitLeadingText => measure?.measureUnit == null ? null : measure.measureUnit.symbol;
-  String get unitLeadingText => selectedMeasure?.measureUnit?.symbol == null ? null : selectedMeasure.measureUnit.symbol.contains(r'$') ? selectedMeasure.measureUnit.symbol : null;
+  String get unitLeadingText => measure?.measureUnit?.symbol == null ? null : measure.measureUnit.symbol.contains(r'$') ? measure.measureUnit.symbol : null;
 
   //String get unitTrailingText => measure?.measureUnit == null ? null :  measure.measureUnit.symbol;
-  String get unitTrailingText => selectedMeasure?.measureUnit?.symbol == null ? null : !selectedMeasure.measureUnit.symbol.contains(r'$') ? selectedMeasure.measureUnit.symbol : null;
-
-
+  String get unitTrailingText => measure?.measureUnit?.symbol == null ? null : !measure.measureUnit.symbol.contains(r'$') ? measure.measureUnit.symbol : null;
 
   Date getDate(MeasureProgress measureProgress) {
     Date _date;
@@ -367,7 +418,7 @@ class MeasureProgressComponent implements OnInit {
       measureProgress.date = null;
     } else {
       measureProgress.date = _date.asUtcTime();
-      _sortMeasurePregressesOrderByDate(measureProgresses);
+      // _sortMeasurePregressesOrderByDate(measureProgresses);
       updateChart();
     }
   }
@@ -381,8 +432,11 @@ class MeasureProgressComponent implements OnInit {
   }
 
   // Order by to date
+  /*
   void _sortMeasurePregressesOrderByDate(List<MeasureProgress> measureProgresses) {
     // measureProgresses.sort((a, b) => a?.date == null || b?.date == null ? -1 : a.date.compareTo(b.date));
     measureProgresses.sort((a, b) => a.date == null || b.date == null  ? -1 : a.date.compareTo(b.date)*-1);
   }
+  */
+
 }

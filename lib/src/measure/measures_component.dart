@@ -64,8 +64,6 @@ class MeasuresComponent with CanReuse {
 
   Measure selectedMeasure;
 
-  bool progressVisible;
-  bool addMeasureProgress;
   //Map<Measure, bool> expandedControl = Map();
 
   MenuModel<MenuItem> menuModel;
@@ -73,7 +71,7 @@ class MeasuresComponent with CanReuse {
     menuModel = new MenuModel([new MenuItemGroup(
         [new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => goToDetail()),
         new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete()),
-        new MenuItem('Progress History', icon: new Icon('show_chart'), action: () { addMeasureProgress = false; progressVisible = true; }) ])], icon: new Icon('menu'));
+        new MenuItem('Progress History', icon: new Icon('show_chart'), action: () => goToProgress(false)) ])], icon: new Icon('menu'));
   }
 
   // Define messages and labels
@@ -128,8 +126,6 @@ class MeasuresComponent with CanReuse {
   }
 
   void closeProgress() async {
-    progressVisible = false;
-
     // recovery the actual measure;
     if (selectedMeasure != null) {
       measures[measures.indexOf(selectedMeasure)] = await _measureService.getMeasure(selectedMeasure.id);
@@ -137,12 +133,44 @@ class MeasuresComponent with CanReuse {
   }
 
   void goToDetail() {
-
     if (selectedMeasure == null) {
       _router.navigate(AppRoutes.measureAddRoute.toUrl(parameters: { AppRoutesParam.objectiveIdParameter: objective.id }));
-
     } else {
       _router.navigate(AppRoutes.measureEditRoute.toUrl(parameters: { AppRoutesParam.objectiveIdParameter: objective.id, AppRoutesParam.measureIdParameter: selectedMeasure.id }));
+    }
+  }
+
+  void goToProgress(bool add) {
+    print('goToProgress');
+    if (add) {
+      print(AppRoutes.measureProgressesAddRoute.toUrl(
+          parameters: {
+            AppRoutesParam.objectiveIdParameter: objective.id,
+            AppRoutesParam.measureIdParameter: selectedMeasure.id },
+          queryParameters: {
+            AppRoutesQueryParam.measureCurrentValueQueryParameter: selectedMeasure.currentValue.toString()}));
+
+      _router.navigate(AppRoutes.measureProgressesAddRoute.toUrl(parameters: {
+        AppRoutesParam.objectiveIdParameter: objective.id,
+        AppRoutesParam.measureIdParameter: selectedMeasure.id }), NavigationParams(queryParameters: {
+        AppRoutesQueryParam.measureCurrentValueQueryParameter: selectedMeasure.currentValue.toString() }));
+/*
+          parameters: {
+            AppRoutesParam.objectiveIdParameter: objective.id,
+            AppRoutesParam.measureIdParameter: selectedMeasure.id },
+          queryParameters: {
+            AppRoutesQueryParam.measureCurrentValueQueryParameter: selectedMeasure.currentValue.toString() }  ));*/
+    } else {
+      print(AppRoutes.measureProgressesAddRoute.toUrl(
+        parameters: {
+          AppRoutesParam.objectiveIdParameter: objective.id,
+          AppRoutesParam.measureIdParameter: selectedMeasure.id },
+      ));
+      _router.navigate(AppRoutes.measureProgressesAddRoute.toUrl(
+          parameters: {
+            AppRoutesParam.objectiveIdParameter: objective.id,
+            AppRoutesParam.measureIdParameter: selectedMeasure.id },
+          ));
     }
   }
 }

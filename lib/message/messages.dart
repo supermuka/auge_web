@@ -375,18 +375,35 @@ class InsightMsg {
   static label(String label) => Intl.message(
     "${Intl.select(label, {
       'Objectives Overall': 'Objectives Overall',
+      'Objectives and Measures': 'Objectives and Measures',
+      'Initiatives and Work Items': 'Initiatives and Work Items',
       'Objectives': 'Objectives',
       'Objectives Achieved': 'Objectives Achieved',
       'Objectives Requiring Attention': 'Objectives Requiring Attention',
+      'Number total of objectives': 'Number total of objectives',
+      'Objectives over 70% progress': 'Objectives over 70% progress',
+      'Objectives below 30% progress': 'Objectives below 30% progress',
+
       'Measures': 'Measures',
       'Measures Achieved': 'Measures Achieved',
       'Measures Requiring Attention': 'Measures Requiring Attention',
+      'Number total of measures': 'Number total of measures',
+      'Measures over 70% progress': 'Measures over 70% progress',
+      'Measures below 30% progress': 'Measures below 30% progress',
+
       'Initiatives': 'Initiatives',
       'Initiatives Completed': 'Initiatives Completed',
       'Initiatives Requiring Attention': 'Initiatives Requiring Attention',
+      'Initiatives with 100% work items completed': 'Initiatives with 100% work items completed',
+      'Initiatives with over due work items':'Initiatives with over due work items',
+
       'Work Items': 'Work Items',
       'Work Items Completed': 'Work Items Completed',
       'Work Items Requiring Attention': 'Work Items Requiring Attention',
+      'Number total of work items': 'Number total of work items',
+      'Work items with 100% progress': 'Work items with 100% progress',
+      'Over due work items': 'Over due work items',
+
       'other': 'Not Defined'})}",
     name: "insightLabel",
     args: [label],

@@ -5,13 +5,13 @@
             <h3 *ngIf="userProfileOrganization.id != null">{{editUserLabel}}</h3>
         </div>
         <div class="w3-row">
-           <material-input class="w3-col l12" [(ngModel)]="userProfileOrganization.user.name" floatingLabel [label]="nameLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
+           <material-input autocomplete="off" class="w3-col l12" [(ngModel)]="userProfileOrganization.user.name" floatingLabel [label]="nameLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
         </div>
         <div class="w3-row">
-           <material-input class="w3-col l12" [(ngModel)]="userProfileOrganization.user.eMail" floatingLabel [label]="emailLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
+           <material-input autocomplete="off" class="w3-col l12" [(ngModel)]="userProfileOrganization.user.eMail" floatingLabel [label]="emailLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
         </div>
         <div class="w3-row">
-           <material-input class="w3-col l12"  type="password" [(ngModel)]="passwordSecure" floatingLabel [label]="passwordLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
+           <material-input autocomplete="new-password" class="w3-col l12"  type="password"  [(ngModel)]="passwordSecure" floatingLabel [label]="passwordLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
         </div>
         <div class="w3-row">
           <label class="w3-col l12">{{photoLabel}}</label>
@@ -49,7 +49,8 @@
             <material-radio-group *ngIf="userProfileOrganization != null" [(ngModel)]="userProfileOrganization.authorizationRole" class="radio-per-line">
                 <material-radio *ngFor="let option of userAuthorizationOptions"
                                 [disabled]="!option.enabled"
-                                [value]="option.index" no-ink>{{option.label}}
+                                [value]="option.index" no-ink
+                                [checked]="option.checked">{{option.label}}
                 </material-radio>
             </material-radio-group>
         </div>

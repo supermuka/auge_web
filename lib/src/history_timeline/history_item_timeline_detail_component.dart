@@ -270,16 +270,31 @@ class GroupChangedValues {
               v[User.nameField].containsKey(_cKey))
             fieldsChangedValues['${Group.className}.${k}'][_cKey] =
             v[User.nameField][_cKey];
-          UserChangedValues.constructViewToFieldsChangedValues(
-              fieldsChangedValues, {Group.groupTypeField: v});
-        } else if (k == Group.superGroupField) {
 
-          GroupChangedValues.constructViewToFieldsChangedValues(
-              fieldsChangedValues, {Group.superGroupField: v});
+
+        } else if (k == Group.superGroupField ) {
+
+          fieldsChangedValues.putIfAbsent(
+              '${Group.className}.${k}', () =>
+          {
+            _typeToViewKey: _typeToViewText,
+            _fieldDescriptionKey: FieldMsg.label('${Group.className}.${k}')
+          });
+
+          if (v.containsKey(Group.nameField) &&
+              v[Group.nameField].containsKey(_pKey))
+            fieldsChangedValues['${Group.className}.${k}'][_pKey] =
+            v[Group.nameField][_pKey];
+          if (v.containsKey(Group.nameField) &&
+              v[Group.nameField].containsKey(_cKey))
+            fieldsChangedValues['${Group.className}.${k}'][_cKey] =
+            v[Group.nameField][_cKey];
 
         } else if (k == Group.groupTypeField) {
+
           GroupTypeChangedValues.constructViewToFieldsChangedValues(
               fieldsChangedValues, {Group.groupTypeField: v});
+
         } else if (k == Group.membersField) {
           fieldsChangedValues.putIfAbsent(
               '${Group.className}.${k}', () =>
@@ -364,6 +379,59 @@ class ObjectiveChangedValues {
             fieldsChangedValues['${Objective.className}.${k}'][_pKey] = DateTime.parse(v[_pKey]);
           if (v.containsKey(_cKey))
             fieldsChangedValues['${Objective.className}.${k}'][_cKey] = DateTime.parse(v[_cKey]);
+
+        } else if (k == Objective.leaderField) {
+          fieldsChangedValues.putIfAbsent(
+              '${Objective.className}.${k}', () =>
+          {
+            _typeToViewKey: _typeToViewText,
+            _fieldDescriptionKey: FieldMsg.label('${Objective.className}.${k}')
+          });
+
+          if (v.containsKey(User.nameField) &&
+              v[User.nameField].containsKey(_pKey))
+            fieldsChangedValues['${Objective.className}.${k}'][_pKey] =
+            v[User.nameField][_pKey];
+          if (v.containsKey(User.nameField) &&
+              v[User.nameField].containsKey(_cKey))
+            fieldsChangedValues['${Objective.className}.${k}'][_cKey] =
+            v[User.nameField][_cKey];
+
+        } else if (k == Objective.groupField ) {
+
+          fieldsChangedValues.putIfAbsent(
+              '${Objective.className}.${k}', () =>
+          {
+            _typeToViewKey: _typeToViewText,
+            _fieldDescriptionKey: FieldMsg.label('${Objective.className}.${k}')
+          });
+
+          if (v.containsKey(Group.nameField) &&
+              v[Group.nameField].containsKey(_pKey))
+            fieldsChangedValues['${Objective.className}.${k}'][_pKey] =
+            v[Group.nameField][_pKey];
+          if (v.containsKey(Group.nameField) &&
+              v[Group.nameField].containsKey(_cKey))
+            fieldsChangedValues['${Objective.className}.${k}'][_cKey] =
+            v[Group.nameField][_cKey];
+
+        } else if (k == Objective.alignedToField ) {
+
+          fieldsChangedValues.putIfAbsent(
+              '${Objective.className}.${k}', () =>
+          {
+            _typeToViewKey: _typeToViewText,
+            _fieldDescriptionKey: FieldMsg.label('${Objective.className}.${k}')
+          });
+
+          if (v.containsKey(Objective.nameField) &&
+              v[Objective.nameField].containsKey(_pKey))
+            fieldsChangedValues['${Objective.className}.${k}'][_pKey] =
+            v[Objective.nameField][_pKey];
+          if (v.containsKey(Objective.nameField) &&
+              v[Objective.nameField].containsKey(_cKey))
+            fieldsChangedValues['${Objective.className}.${k}'][_cKey] =
+            v[Objective.nameField][_cKey];
 
         } else if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
           fieldsChangedValues.putIfAbsent('${Objective.className}.${k}', () =>

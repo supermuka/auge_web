@@ -68,8 +68,6 @@ class GroupsComponent with CanReuse implements OnActivate, OnDestroy {
   List<Group> _groups = new List();
   Group selectedGroup;
 
-  bool detailVisible;
-
   String mainColWidth = '100%';
   bool _timelineVisible = false;
 
@@ -106,6 +104,8 @@ class GroupsComponent with CanReuse implements OnActivate, OnDestroy {
 
     try {
       _groups = await _groupService.getGroups(_groupService.authService.authorizedOrganization.id);
+
+      if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.groups.index);
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;

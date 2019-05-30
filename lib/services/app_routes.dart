@@ -9,6 +9,15 @@ class AppRoutesParam {
   static const initiativeIdParameter = 'initiative_id';
   static const workItemIdParameter = 'work_item_id';
   static const objectiveIdParameter = 'objective_id';
+
+}
+
+class AppRoutesQueryParam {
+
+  //QueryParam
+  static const objectiveStartDateQueryParameter = 'start_date';
+  static const objectiveEndDateQueryParameter = 'end_date';
+  static const measureCurrentValueQueryParameter = 'current_value';
 }
 
 class AppRoutes {
@@ -16,11 +25,9 @@ class AppRoutes {
   static final authRoute = new RoutePath(
     path: 'auth',
   );
-
   static final appLayoutRoute = new RoutePath(
-    path: 'app_layout',
+    path: 'app',
   );
-
   static final insightslRoute = new RoutePath(
     path: 'insights',
     parent: appLayoutRoute,
@@ -96,6 +103,14 @@ class AppRoutes {
       path: ':${AppRoutesParam.objectiveIdParameter}/measures/:${AppRoutesParam.measureIdParameter}/edit',
       parent: objectivesRoute
   );
+  static final measureProgressesRoute = new RoutePath(
+      path: ':${AppRoutesParam.objectiveIdParameter}/measures/:${AppRoutesParam.measureIdParameter}/progresses',
+      parent: objectivesRoute
+  );
+  static final measureProgressesAddRoute = new RoutePath(
+      path: ':${AppRoutesParam.objectiveIdParameter}/measures/:${AppRoutesParam.measureIdParameter}/progresses/add',
+      parent: objectivesRoute
+  );
   static final objectiveAddRoute = new RoutePath(
       path: 'add',
       parent: objectivesRoute
@@ -121,7 +136,7 @@ class AppRoutes {
       parent: usersRoute
   );
   static final userEditWithAppLayoutParentRoute = new RoutePath(
-      path: 'users/:${AppRoutesParam.userProfileOrganizationIdParameter}/edit',
+      path: 'users/:${AppRoutesParam.userProfileOrganizationIdParameter}/auth/edit',
       parent: appLayoutRoute
   );
   static final organizationAddRoute = new RoutePath(

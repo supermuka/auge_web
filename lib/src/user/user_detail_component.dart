@@ -133,6 +133,7 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
       }
     } else {
       userProfileOrganization.user.userProfile.idiomLocale = Intl.defaultLocale;
+      userProfileOrganization.authorizationRole = SystemRole.standard.index;
 
       // Authorizated and selected organization
       userProfileOrganization.organization = _userService.authService.authorizedOrganization;
@@ -141,7 +142,9 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
       if (role != SystemRole.superAdmin) {
         userAuthorizationOptions.add(new Option(
             role.index,
-            UserMsg.label(role.toString()), _userService.authService.isAuthorizedForAtuhorizatedRole(
+            UserMsg.label(role.toString()),
+            role.index == userProfileOrganization.authorizationRole,
+            _userService.authService.isAuthorizedForAtuhorizatedRole(
             SystemModule.users, systemFunction: userProfileOrganization.id == null ?  SystemFunction.create : SystemFunction.update,
             systemConstraint: role
         )));
@@ -157,6 +160,7 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
   void saveUserProfileOrganization() async {
     try {
 
+      print(userProfileOrganization.authorizationRole);
       await _userService.saveUserProfileOrganization(userProfileOrganization);
 
       closeDetail();
@@ -229,7 +233,8 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
 class Option {
   final int index;
   final String label;
+  final bool checked;
   final bool enabled;
 
-  Option(this.index, this.label, this.enabled);
+  Option(this.index, this.label, this.checked, this.enabled);
 }
