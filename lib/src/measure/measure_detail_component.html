@@ -13,14 +13,14 @@
         <div class="w3-row">
            <material-input class="w3-col l6" [(ngModel)]="measure.metric" floatingLabel [label]="metricLabel"></material-input>
            <div class="w3-col l4">
-
-               <label>Unit</label><br/>
-               <material-dropdown-select [buttonText]="measureUnitSingleSelectLabel"
-                                          [selection]="measureUnitSingleSelectModel"
-                                          [options]="measureUnitOptions"
-                                          [itemRenderer]="measureUnitItemRenderer">
-               </material-dropdown-select>
-
+               <div class="input-container">
+                   <label>{{unitLabel}}</label>
+                   <material-dropdown-select [buttonText]="measureUnitSingleSelectLabel"
+                                              [selection]="measureUnitSingleSelectModel"
+                                              [options]="measureUnitOptions"
+                                              [itemRenderer]="measureUnitItemRenderer">
+                   </material-dropdown-select>
+               </div>
            </div>
            <!-- material-input type="number" class="w3-col l2" [(ngModel)]="measure.decimalsNumber"  [rightAlign]="true" floatingLabel [label]="decimalsNumberLabel" [lowerBound]="0" [upperBound]="5"></material-input -->
            <material-input type="number" class="w3-col l2" [(ngModel)]="measure.decimalsNumber"  [rightAlign]="true" floatingLabel [label]="decimalsNumberLabel"  [error]="showDecimalsNumberErrorMsg" (change)="changedDecimalsNumber($event)"></material-input>

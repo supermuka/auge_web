@@ -290,7 +290,7 @@ class MeasureMsg {
       desc: "Measure Unit labels"
   );
 
-  static valueErrorMsg() => Intl.message("Current value should be between Start and End value.");
+  static valueErrorMsg() => Intl.message("Incorret value. Possible reasons: a) Current value should be between Start and End Value. b) Start and End Value are equals.");
   static currentDateNotBetweenStartEndDate(DateTime startDate, DateTime endDate) => Intl.message("Measure progress date should be between objective start date ${DateFormat.yMMMd().format(startDate)} and objective end date ${DateFormat.yMMMd().format(endDate)}.");
   static decimalNumberErrorMsg() => Intl.message("Decimal number should be between 0 and 5.");
 }

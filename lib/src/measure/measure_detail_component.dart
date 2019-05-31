@@ -90,6 +90,7 @@ class MeasureDetailComponent implements OnInit, OnActivate, OnDeactivate  {
   static final String nameLabel =  FieldMsg.label('${Measure.className}.${Measure.nameField}');
   static final String descriptionLabel =  FieldMsg.label('${Measure.className}.${Measure.descriptionField}');
   static final String metricLabel =  FieldMsg.label('${Measure.className}.${Measure.metricField}');
+  static final String unitLabel = FieldMsg.label('${Measure.className}.${Measure.measureUnitField}');
   static final String decimalsNumberLabel = FieldMsg.label('${Measure.className}.${Measure.decimalsNumberField}');
   static final String startValueLabel =  FieldMsg.label('${Measure.className}.${Measure.startValueField}');
   static final String currentValueLabel =  FieldMsg.label('${Measure.className}.${Measure.currentValueField}');
@@ -137,10 +138,14 @@ class MeasureDetailComponent implements OnInit, OnActivate, OnDeactivate  {
         }
       });
 
-    if (measure.measureUnit != null)
+    if (measure.measureUnit != null) {
       measureUnitSingleSelectModel.select(measure.measureUnit);
-    else if (measureUnitOptions.optionsList.isNotEmpty) {
+    } else if (measureUnitOptions.optionsList.isNotEmpty) {
       measureUnitSingleSelectModel.select(measureUnitOptions.optionsList.first);
+      /*
+      measure.measureUnit = measureUnitOptions.optionsList.first;
+      measureUnitSingleSelectModel.select(measureUnitOptions.optionsList.first);
+*/
     }
   }
 
@@ -184,8 +189,10 @@ class MeasureDetailComponent implements OnInit, OnActivate, OnDeactivate  {
   ItemRenderer get measureUnitItemRenderer => (dynamic unit) => unit.name + (unit.symbol == null || unit.symbol.trim().length == 0 ? '' : ' (' + unit.symbol + ')');
 
   bool validValue(double startValue, double currentValue, double endValue) {
-    if (startValue != null && currentValue != null && endValue != null) {
-      if (startValue <= endValue) {
+    if (startValue != null && endValue != null && startValue == endValue) {
+      return false;
+    } else if (startValue != null && currentValue != null && endValue != null) {
+        if (startValue < endValue) {
         if (currentValue < startValue ||
             currentValue > endValue) {
           return false;
@@ -201,7 +208,7 @@ class MeasureDetailComponent implements OnInit, OnActivate, OnDeactivate  {
   }
 
   void changedStartValue(String startValue) {
-    if (!validValue(double.tryParse(startValue), measure?.currentValue, measure?.endValue)) {
+    if (!validValue(double.tryParse(startValue), measure.currentValue, measure.endValue)) {
    //   errorControl.add(validStartValue);
       showStartValueErrorMsg = valueErrorMsg;
     } else {
@@ -212,7 +219,7 @@ class MeasureDetailComponent implements OnInit, OnActivate, OnDeactivate  {
   }
 
   void changedCurrentValue(String currentValue) {
-    if (!validValue(measure?.startValue, double.tryParse(currentValue), measure?.endValue)) {
+    if (!validValue(measure.startValue, double.tryParse(currentValue), measure.endValue)) {
      // errorControl.add(validCurrentValue);
       showCurrentValueErrorMsg = valueErrorMsg;
     } else {
@@ -223,7 +230,7 @@ class MeasureDetailComponent implements OnInit, OnActivate, OnDeactivate  {
   }
 
   void changedEndValue(String endValue) {
-    if (!validValue(measure?.startValue, measure?.currentValue, double.tryParse(endValue))) {
+    if (!validValue(measure.startValue, measure.currentValue, double.tryParse(endValue))) {
 //      errorControl.add(validEndValue);
       showEndValueErrorMsg = valueErrorMsg;
     } else {
@@ -251,8 +258,8 @@ class MeasureDetailComponent implements OnInit, OnActivate, OnDeactivate  {
   }
 
   bool get validInput {
-    if ((measure?.name != null && measure.name.isEmpty)
-        || !validValue(measure?.startValue, measure?.currentValue, measure?.endValue)
+    if ((measure.name != null && measure.name.isEmpty)
+        || !validValue(measure.startValue, measure.currentValue, measure.endValue)
     || !validDecimalsNumber(measure.decimalsNumber)) {
       return false;
     } else {

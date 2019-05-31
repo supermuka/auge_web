@@ -14,6 +14,7 @@ import 'package:auge_server/model/general/user.dart';
 import 'package:auge_server/model/general/user_profile_organization.dart';
 import 'package:auge_server/model/general/group.dart';
 import 'package:auge_server/model/objective/objective.dart';
+import 'package:auge_server/model/objective/measure.dart';
 import 'package:auge_server/model/initiative/initiative.dart';
 import 'package:auge_server/model/initiative/stage.dart';
 
@@ -109,6 +110,8 @@ class HistoryItemTimelineDetailComponent /* extends Object */ implements OnInit 
       GroupChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues,changedValues);
     } else if (objectClassName == Objective.className) {
       ObjectiveChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues,changedValues);
+    } else if (objectClassName == Measure.className) {
+      MeasureChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues,changedValues);
     } else if (objectClassName == Initiative.className) {
       InitiativeChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues,changedValues);
     }
@@ -443,6 +446,71 @@ class ObjectiveChangedValues {
             v[_pKey];
           if (v.containsKey(_cKey))
             fieldsChangedValues['${Objective.className}.${k}'][_cKey] =
+            v[_cKey];
+        }
+      }
+    });
+  }
+}
+
+// MEASURE UNIT
+class MeasureUnitChangedValues {
+
+  static void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
+    changedValues?.forEach((k, v) {
+      // if (k != Group.idField && k != Group.versionField) {
+      if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
+        fieldsChangedValues.putIfAbsent('${MeasureUnit.className}.${k}', () =>
+        {
+          _typeToViewKey: _typeToViewText,
+          _fieldDescriptionKey: FieldMsg.label(k)});
+        if (v.containsKey(_pKey))
+          fieldsChangedValues['${MeasureUnit.className}.${k}'][_pKey] =
+          v[_pKey];
+        if (v.containsKey(_cKey))
+          fieldsChangedValues['${MeasureUnit.className}.${k}'][_cKey] =
+          v[_cKey];
+      }
+      // }
+    });
+  }
+}
+
+
+//MEASURE
+class MeasureChangedValues {
+
+  static void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
+
+    changedValues?.forEach((k, v) {
+      if (k != Measure.idField && k != Measure.versionField) {
+        if (k == Measure.measureUnitField) {
+          fieldsChangedValues.putIfAbsent(
+              '${Measure.className}.${k}', () =>
+          {
+            _typeToViewKey: _typeToViewText,
+            _fieldDescriptionKey: FieldMsg.label('${Measure.className}.${k}')
+          });
+
+          if (v.containsKey(MeasureUnit.nameField) &&
+              v[MeasureUnit.nameField].containsKey(_pKey))
+            fieldsChangedValues['${Measure.className}.${k}'][_pKey] =
+            v[MeasureUnit.nameField][_pKey];
+          if (v.containsKey(MeasureUnit.nameField) &&
+              v[MeasureUnit.nameField].containsKey(_cKey))
+            fieldsChangedValues['${Measure.className}.${k}'][_cKey] =
+            v[MeasureUnit.nameField][_cKey];
+        }
+        else if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
+          fieldsChangedValues.putIfAbsent('${Measure.className}.${k}', () =>
+          {
+            _typeToViewKey: _typeToViewText,
+            _fieldDescriptionKey: FieldMsg.label('${Measure.className}.${k}')});
+          if (v.containsKey(_pKey))
+            fieldsChangedValues['${Measure.className}.${k}'][_pKey] =
+            v[_pKey];
+          if (v.containsKey(_cKey))
+            fieldsChangedValues['${Measure.className}.${k}'][_cKey] =
             v[_cKey];
         }
       }

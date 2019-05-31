@@ -23,9 +23,11 @@ import 'package:auge_server/model/objective/measure.dart';
 import 'package:auge_web/services/app_routes.dart';
 
 import 'package:auge_web/message/messages.dart';
+import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/measure/measure_detail_component.dart';
 import 'package:auge_web/src/measure/measure_progress_component.dart';
 import 'package:auge_web/src/measure/measure_service.dart';
+import 'package:auge_web/src/history_timeline/history_timeline_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 
 @Component(
@@ -53,21 +55,23 @@ import 'package:auge_web/src/app_layout/app_layout_service.dart';
       'measures_component.css'
     ])
 
-class MeasuresComponent with CanReuse {
+class MeasuresComponent {
 
   final AppLayoutService _appLayoutService;
   final MeasureService _measureService;
+  final HistoryTimelineService _historyTimelineService;
   final Router _router;
 
   @Input()
   Objective objective;
 
+  @Input()
+  TimelineParam timelineParam;
+
   Measure selectedMeasure;
 
-  //Map<Measure, bool> expandedControl = Map();
-
   MenuModel<MenuItem> menuModel;
-  MeasuresComponent(this._appLayoutService, this._measureService, this._router) {
+  MeasuresComponent(this._appLayoutService, this._measureService, this._historyTimelineService, this._router) {
     menuModel = new MenuModel([new MenuItemGroup(
         [new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => goToDetail()),
         new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete()),
@@ -91,6 +95,9 @@ class MeasuresComponent with CanReuse {
 
       await _measureService.deleteMeasure(selectedMeasure);
       objective.measures.remove(selectedMeasure);
+
+      // This is necessary, because this component is not used with a router, where the refresh is mame into onActivate. It is uses into [objects_components]
+      if (timelineParam != null && timelineParam.timelineVisible) _historyTimelineService.refreshHistory(SystemModule.objectives.index);
 
     } catch (e) {
       _appLayoutService.error = e.toString();
@@ -154,4 +161,9 @@ class MeasuresComponent with CanReuse {
           ));
     }
   }
+}
+
+/// Used just to pass by reference the parent [timelineVisible]
+class TimelineParam {
+  bool timelineVisible = false;
 }

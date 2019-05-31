@@ -51,15 +51,15 @@
                                 </div>
                                 <div class="w3-row-padding">
                                     <div class="w3-col l6">
-                                        <label class="input-container">
-                                            <span class="label-text">{{dateLabel}}</span>
+                                        <div class="input-container">
+                                            <label>{{dateLabel}}</label>
                                             <material-datepicker [date]="getDate(iMeasureProgress)"
                                                                  (dateChange)="setDate(iMeasureProgress, $event)"
                                                                  [minDate]="limitToDateRange.start"
                                                                  [maxDate]="limitToDateRange.end"
                                                                  [required]="true">
                                             </material-datepicker>
-                                        </label>
+                                        </div>
                                     </div>
                                     <div class="w3-col l6">
                                         <material-input autoFocus type="number" [ngModel]="iMeasureProgress.currentValue"  [rightAlign]="true" floatingLabel [label]="currentValueLabel" [error]="showCurrentValueErrorMsg" [leadingText]="unitLeadingText" [trailingText]="unitTrailingText" (change)="changedCurrentValue(iMeasureProgress, $event)"></material-input>

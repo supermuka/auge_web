@@ -50,7 +50,7 @@
                         <hr>
                         <span><strong>{{alignedToLabel}}</strong> {{iObjective?.alignedTo?.name}}</span>
                         <div class="w3-row-padding" >
-                            <auge-measures *ngIf="iObjective.id == expandedObjectiveId" [objective]="iObjective"></auge-measures>
+                            <auge-measures *ngIf="iObjective.id == expandedObjectiveId" [objective]="iObjective" [timelineParam]="timelineParam"></auge-measures>
                             <auge-initiatives-summary *ngIf="iObjective.id == expandedObjectiveId" [objectiveId]="iObjective.id"></auge-initiatives-summary>
                         </div>
                     </material-expansionpanel>

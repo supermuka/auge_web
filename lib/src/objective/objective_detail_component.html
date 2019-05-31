@@ -29,7 +29,7 @@
         <div class="w3-row-padding">
             <div class="w3-col m6">
                 <label class="input-container">
-                    <span class="label-text">{{startDateLabel}}</span>
+                    <span>{{startDateLabel}}</span>
                     <material-datepicker [(date)]="startDate"
                                          [minDate]="limitToDateRange.start"
                                          [maxDate]="limitToDateRange.end"
@@ -39,7 +39,7 @@
             </div>
             <div class="w3-col m6">
                 <label class="input-container">
-                    <span class="label-text">{{endDateLabel}}</span>
+                    <span>{{endDateLabel}}</span>
                     <material-datepicker [(date)]="endDate"
                                          [minDate]="limitToDateRange.start"
                                          [maxDate]="limitToDateRange.end"

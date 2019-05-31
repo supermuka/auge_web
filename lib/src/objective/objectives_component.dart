@@ -104,8 +104,10 @@ class ObjectivesComponent with CanReuse implements AfterViewInit, OnActivate, On
   Objective selectedObjective;
   String initialObjectiveId;
   String selectedView = 'list';
+  TimelineParam timelineParam = TimelineParam();
 
   String mainColWidth = '100%';
+  // Just to pass information about timeline visible to sub-components
   bool _timelineVisible = false;
 
   MenuModel<MenuItem> menuModel;
@@ -141,6 +143,7 @@ class ObjectivesComponent with CanReuse implements AfterViewInit, OnActivate, On
   }
   set timelineVisible(bool visible) {
     _timelineVisible = visible;
+    timelineParam.timelineVisible = _timelineVisible;
     if (_timelineVisible) {
       mainColWidth = '75%';
       _historyTimelineService.refreshHistory(SystemModule.objectives.index);
