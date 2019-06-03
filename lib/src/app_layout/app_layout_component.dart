@@ -73,7 +73,7 @@ import 'package:auge_web/src/group/groups_component.template.dart' as groups_com
       'package:angular_components/app_layout/layout.scss.css',
     ])
 
-class AppLayoutComponent /* extends Object */ with CanReuse implements OnActivate {
+class AppLayoutComponent with CanReuse implements OnActivate {
 
   String get insightsRouteUrl => AppRoutes.insightslRoute.toUrl();
   String get mapRouteUrl => AppRoutes.mapRoute.toUrl();

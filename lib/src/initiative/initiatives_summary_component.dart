@@ -41,7 +41,7 @@ import 'package:auge_web/services/app_routes.dart';
       'initiatives_summary_component.css'
     ])
 
-class InitiativesSummaryComponent extends Object implements OnInit {
+class InitiativesSummaryComponent with CanReuse implements OnInit {
 
   final InitiativeService _initiativeService;
   final Router _router;

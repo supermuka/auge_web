@@ -19,7 +19,7 @@ import 'package:auge_web/src/app_layout/app_layout_component.template.dart' as a
 
 @Component(
     selector: 'auge-app-component',
-    providers: const <dynamic>[materialProviders, AugeApiService, AuthService],
+    providers: const <dynamic>[AugeApiService, AuthService],
     directives: const [
       coreDirectives,
       routerDirectives,
@@ -29,7 +29,7 @@ import 'package:auge_web/src/app_layout/app_layout_component.template.dart' as a
       'app_component.css',
     ])
 
-class AppComponent extends Object with CanReuse {
+class AppComponent with CanReuse {
 
   final List<RouteDefinition> routes = [
     new RouteDefinition(

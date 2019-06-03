@@ -197,6 +197,8 @@ class WorkItemMsg {
         'Select a value': 'Select a value',
         'Work Items Over Due': 'Work Items Over Due',
         'Check Item': 'Check Item',
+        'No Match': 'No Match',
+        'Select a value': 'Select a value',
         'other': 'Not Defined'})}",
       name: "workItemLabel",
       args: [label],
@@ -204,6 +206,9 @@ class WorkItemMsg {
       desc: "Work Item labels",
       examples: const {"Name": "Name"}
   );
+
+  static valuePercentIntervalMsg() => Intl.message('The percentual value should be between 0 and 100');
+
 }
 
 

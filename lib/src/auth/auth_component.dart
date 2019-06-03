@@ -49,7 +49,7 @@ import 'package:auge_web/services/app_routes.dart';
   templateUrl: 'auth_component.html',
 )
 
-class AuthComponent with OnActivate  {
+class AuthComponent implements OnActivate  {
 
   String appLayoutRoute = AppRoutes.appLayoutRoute.toUrl();
 

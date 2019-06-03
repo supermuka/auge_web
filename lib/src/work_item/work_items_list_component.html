@@ -5,12 +5,12 @@
                                  [hideExpandedHeader]="false"
                                  [showSaveCancel]="false">
             <div name class="custom-expansionpanel-panel-specific-name-width">
-                <span class="truncate-ellipsed-parent">
-                    <span class="truncate-ellipsed">{{iWorkItem.name}}</span>
-                </span>
-                <span class="w3-right" *ngFor="let member of iWorkItem.assignedTo">&nbsp;
+                <div class="truncate-ellipsed-parent">
+                    <span class="truncate-ellipsed-block">{{iWorkItem.name}}</span>
+                </div>
+                <div class="w3-right" *ngFor="let member of iWorkItem.assignedTo">&nbsp;
                     <span class="avatar" [style.background-image]="'url(' +  userUrlImage(member)  + ')'" [materialTooltip]="member.name"></span>
-                </span>
+                </div>
             </div>
             <div value>
                 <div class="w3-row-padding">

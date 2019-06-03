@@ -1,4 +1,4 @@
-<modal [visible]="true">
+<modal [visible]="modalVisible">
     <material-dialog headered class="headered-dialog" [error]="dialogError">
         <div header>
             <h3 *ngIf="workItem.id == null">{{addWorkItemLabel}}</h3>
@@ -6,7 +6,7 @@
         </div>
         <div class="w3-row">
             <div class="w3-col m8">
-              <material-input type="text" [(ngModel)]="workItem.name" style="width:100%" floatingLabel [label]="nameLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
+              <material-input autoFocus type="text" [(ngModel)]="workItem.name" style="width:100%" floatingLabel [label]="nameLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
             </div>
             <div class="w3-col m4">
                 <div class="input-container">
@@ -42,7 +42,7 @@
                     [(inputText)]="memberInputText"
                     [filterSuggestions]="true"
                     [popupMatchInputWidth]="true"
-                    [leadingGlyph]="leadingGlyph"
+                    [leadingGlyph]="'search'"
                     [label]="assignedToLabel"
                     [emptyPlaceholder]="noMatchLabel"
                     [selection]="memberSingleSelectModel"
@@ -88,7 +88,7 @@
             <material-button [disabled]="!validInput" (trigger)="saveWorkItem()">{{saveButtonLabel}}
                 <material-icon icon="save"></material-icon>
             </material-button>
-            <material-button autoFocus (trigger)="closeDetail()">{{closeButtonLabel}}
+            <material-button (trigger)="closeDetail()">{{closeButtonLabel}}
                 <material-icon icon="close"></material-icon>
             </material-button>
         </div>

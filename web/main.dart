@@ -2,6 +2,7 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'package:angular/angular.dart';
+import 'package:angular_components/angular_components.dart';
 import 'package:angular_router/angular_router.dart';
 import 'package:grpc/grpc_web.dart';
 
@@ -11,6 +12,7 @@ import 'package:auge_web/app_component.template.dart' as app_component;
 
 @GenerateInjector([
    routerProviders,
+   materialProviders,
    const Provider(appBaseHref, useValue: '/'),
 
    // Remove next line in production

@@ -93,6 +93,9 @@ class GroupsComponent with CanReuse implements OnActivate, OnDestroy {
 
   void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
 
+//TODO será que precisa isto mesmo, para evitar chamar novamente quando navega-se para outra rota?
+    //if (routerStatePrevious.toUrl() == AppRoutes.groupsRoute.toUrl()) return;
+
     if (_groupService.authService.authorizedOrganization == null || _groupService.authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
       return;
@@ -153,7 +156,7 @@ class GroupsComponent with CanReuse implements OnActivate, OnDestroy {
       _router.navigate(AppRoutes.groupAddRoute.toUrl());
 
     } else {
-      _router.navigate(AppRoutes.groupEditRoute.toUrl(parameters: { AppRoutesParam.groupIdParameter: selectedGroup.id }));
+      _router.navigate(AppRoutes.groupEditRoute.toUrl(parameters: { AppRoutesParam.groupIdParameter: selectedGroup.id }) );
     }
   }
 }

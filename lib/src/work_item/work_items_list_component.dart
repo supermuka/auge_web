@@ -108,15 +108,13 @@ class WorkItemsListComponent with CanReuse /* with CanReuse implements OnActivat
   List<WorkItem> get workItems => initiative?.workItems;
 
   String userUrlImage(User userMember) {
-    return common_service.userUrlImage(userMember?.userProfile?.image);
+    return common_service.userUrlImage(userMember.userProfile?.image);
   }
 
+  // Just edit, because de add is called on super component.
   void goToDetail() {
-    if (initiative == null) {
-      _router.navigate(AppRoutes.initiativeAddRoute.toUrl());
-
-    } else {
-      _router.navigate(AppRoutes.initiativeEditRoute.toUrl(parameters: { AppRoutesParam.initiativeIdParameter: initiative.id }));
-    }
+      _router.navigate(AppRoutes.workItemEditRoute.toUrl(parameters: {
+        AppRoutesParam.initiativeIdParameter: initiative.id,
+        AppRoutesParam.workItemIdParameter: selectedWorkItem.id }));
   }
 }

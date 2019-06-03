@@ -2,7 +2,6 @@
 // Author: Samuel C. Schwebel.
 
 import 'dart:html' as html;
-import 'dart:async';
 
 import 'package:chartjs/chartjs.dart';
 
@@ -198,7 +197,7 @@ class MeasureProgressComponent implements OnInit, OnActivate, OnDeactivate  {
 
   }
 
-  Future<void> buildChart() {
+ void buildChart() {
     List<String> months = [];
     List<num> values = [];
 
@@ -366,11 +365,10 @@ class MeasureProgressComponent implements OnInit, OnActivate, OnDeactivate  {
   void delete(MeasureProgress measureProgress) async {
 
     try {
-
-      // Created just to pass instance from TimelineItem. No addition data is need, just [id, isDeleted and deletedBy].
-      measureProgress.isDeleted = true;
-      //--measureProgress.lastHistoryItem.setClientSideValues(user: _authService.authenticatedUser, description: null, /* changedValues: MeasureProgressFacilities.differenceToJson(measureProgress, selectedMeasureProgress) */ );
+      await _measureService.deleteMeasureProgress(measureProgress);
+      measureProgresses = await _measureService.getMeasureProgresses(measure.id);
     } catch (e) {
+      dialogError = e.toString();
       rethrow;
     }
   }

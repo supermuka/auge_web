@@ -55,7 +55,7 @@ import 'package:auge_web/src/app_layout/app_layout_service.dart';
       'measures_component.css'
     ])
 
-class MeasuresComponent {
+class MeasuresComponent with CanReuse {
 
   final AppLayoutService _appLayoutService;
   final MeasureService _measureService;
@@ -76,6 +76,8 @@ class MeasuresComponent {
         [new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => goToDetail()),
         new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete()),
         new MenuItem('Progress History', icon: new Icon('show_chart'), action: () => goToProgress(false)) ])], icon: new Icon('menu'));
+    print('DEBUG MeasuresComponent - construtor');
+
   }
 
   // Define messages and labels

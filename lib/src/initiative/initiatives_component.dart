@@ -4,6 +4,7 @@
 import 'dart:async';
 import 'dart:html';
 
+import 'package:collection/collection.dart';
 import 'package:angular/angular.dart';
 
 import 'package:angular_router/angular_router.dart';
@@ -72,7 +73,7 @@ import 'package:auge_web/src/work_item/work_item_detail_component.template.dart'
       'initiatives_component.css'
     ])
 
-class InitiativesComponent /* extends Object*/ with CanReuse implements OnActivate, OnDestroy {
+class InitiativesComponent with CanReuse implements OnActivate, OnDestroy {
 
   final InitiativeService _initiativeService;
   final ObjectiveService _objectiveService;
@@ -110,7 +111,7 @@ class InitiativesComponent /* extends Object*/ with CanReuse implements OnActiva
   String mainColWidth = '100%';
   bool _timelineVisible = false;
 
-  List<Initiative> _initiatives = new List();
+  List<Initiative> _initiatives = List();
   Initiative selectedInitiative;
   String expandedInitiativeId;
 
@@ -124,18 +125,14 @@ class InitiativesComponent /* extends Object*/ with CanReuse implements OnActiva
   static final String sortedByLabel = InitiativeMsg.label('Sorted By');
   static final String objectiveLabel =  InitiativeMsg.label('Objective');
 
-
   static final String nameLabel =  FieldMsg.label('${Initiative.className}.${Initiative.nameField}');
   static final String groupLabel = FieldMsg.label('${Initiative.className}.${Initiative.groupField}');
   static final String leaderLabel =  FieldMsg.label('${Initiative.className}.${Initiative.leaderField}');
   static final String stagesLabel =  FieldMsg.label('${Initiative.className}.${Initiative.stagesField}');
 
-
   final initiativesSortedByOptions = [nameLabel, groupLabel, leaderLabel];
 
   String _sortedBy = nameLabel;
-
-
 
   InitiativesComponent(this._appLayoutService, this._initiativeService, this._objectiveService, this._searchService, this._historyTimelineService, this._router) {
     initiativesFilterParam = InitiativesFilterParam();
@@ -152,7 +149,6 @@ class InitiativesComponent /* extends Object*/ with CanReuse implements OnActiva
   }
 
   get sortedBy => _sortedBy;
-
 
   bool get timelineVisible {
     return _timelineVisible;
@@ -174,33 +170,46 @@ class InitiativesComponent /* extends Object*/ with CanReuse implements OnActiva
       _router.navigate(AppRoutes.authRoute.toUrl());
       return;
     }
-    
+
+    if (routerStatePrevious.toUrl() == AppRoutes.initiativesRoute.toUrl() ||
+        (routerStatePrevious.toUrl() == AppRoutes.initiativeAddRoute.toUrl() && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.initiativeIdQueryParameter) ||
+         routerStatePrevious.toUrl() == AppRoutes.initiativeEditRoute.toUrl()) && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.initiativeIdQueryParameter)) return;
+
     _appLayoutService.headerTitle = InitiativeMsg.label('Initiatives');
 
-    if (routerStateCurrent.parameters.containsKey(AppRoutesParam.objectiveIdParameter)) {
-        String objectiveId = routerStateCurrent.parameters[AppRoutesParam
-            .objectiveIdParameter];
+    try {
 
-        try {
+      if (routerStateCurrent.parameters.containsKey(AppRoutesParam.objectiveIdParameter)) {
+          String objectiveId = routerStateCurrent.parameters[AppRoutesParam
+              .objectiveIdParameter];
+
           if (objectiveId != null || objectiveId.isNotEmpty) {
               initiativesFilterParam.objective = await _objectiveService.getObjective(objectiveId, withMeasures: false);
           }
-
-          if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.initiatives.index);
-
-       } catch (e) {
-        _appLayoutService.error = e.toString();
-        rethrow;
       }
+
+    //  if (routerStatePrevious.toUrl() == AppRoutes.initiativesRoute.toUrl()) return;
+
+
+    //  List<Initiative> initiativesAux = await getInitiatives();
+
+    //  if (!DeepCollectionEquality().equals(_initiatives, initiativesAux))
+
+      _initiatives = await getInitiatives();
+
+      if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.initiatives.index);
+
+      if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.initiativeIdQueryParameter)) {
+        setExpandedInitiativeId(routerStateCurrent.queryParameters[AppRoutesQueryParam
+            .initiativeIdQueryParameter], true);
+      }
+
+      _appLayoutService.enabledSearch = true;
+
+    } catch (e) {
+      _appLayoutService.error = e.toString();
+      rethrow;
     }
-
-
-    _initiatives = await getInitiatives();
-
-    // wideControl = new List<bool>.filled(_initiatives.length, false);
-   // expandedControl = new List<bool>.filled(_initiatives.length, false);
-
-    _appLayoutService.enabledSearch = true;
   }
 
   get visibleFilter => _searchService.visibleFilter;
@@ -211,10 +220,16 @@ class InitiativesComponent /* extends Object*/ with CanReuse implements OnActiva
 
   List<Initiative> get initiatives {
 
+    return _initiatives;
+
+    /*TODO
+
     List<Initiative> initiativesFilter;
     initiativesFilter = initiativesFilterParam.objective == null ? _initiatives : _initiatives.where((t) => t.objective != null && t.objective.id == initiativesFilterParam.objective.id).toList();
 
     return _searchService?.searchTerm.toString().isEmpty ? initiativesFilter : initiativesFilter.where((t) => t.name.contains(_searchService.searchTerm)).toList();
+
+     */
   }
 
   Future<List<Initiative>> getInitiatives() async {
@@ -298,8 +313,6 @@ class InitiativesComponent /* extends Object*/ with CanReuse implements OnActiva
   String composeTooltip(String label, String name) {
     return label + ' ' + ((name == null) ? '(-)' : name);
   }
-
-
 
   setExpandedInitiativeId(String initiativeId, bool expanded) {
     if (expanded) {

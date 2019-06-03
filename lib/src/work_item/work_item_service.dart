@@ -40,7 +40,7 @@ class WorkItemService {
   }
 
   /// Save (create or update) a [WorkItem]
-  void saveWorkItem(String initiativeId, WorkItem workItem) async {
+  Future<String> saveWorkItem(String initiativeId, WorkItem workItem) async {
 
     work_item_pbgrpc.WorkItemRequest workItemRequest = work_item_pbgrpc.WorkItemRequest()
       ..workItem = workItem.writeToProtoBuf()
@@ -61,6 +61,7 @@ class WorkItemService {
       print('${e.runtimeType}, ${e}');
       rethrow;
     }
+    return workItem.id;
   }
 
   /// Return [Workitem] by id

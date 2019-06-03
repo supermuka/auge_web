@@ -7,6 +7,7 @@ import 'package:auge_server/model/general/organization.dart';
 import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/objective/measure.dart';
 import 'package:auge_server/model/initiative/initiative.dart';
+import 'package:auge_server/model/initiative/stage.dart';
 import 'package:auge_server/model/initiative/work_item.dart';
 
 /// Specific messages and label for [User] class field
@@ -38,6 +39,7 @@ class ClassNameMsg {
       Measure.className: 'Measure',
       MeasureProgress.className: 'Measure Progress',
       Initiative.className: 'Initiative',
+      Stage.className: 'Stage',
       WorkItem.className: 'Work Item',
       'other': 'Not Defined'})}",
     name: "classNameLabel",
@@ -104,6 +106,9 @@ class FieldMsg {
       '${Initiative.className}.${Initiative.leaderField}':'Leader',
       '${Initiative.className}.${Initiative.stagesField}':'Stages',
       '${Initiative.className}.${Initiative.objectiveField}':'Objective',
+      //STAGE
+      '${Stage.className}.${Stage.nameField}':'Name',
+      '${Stage.className}.${Stage.stateField}':'State',
       //WORK ITEMS
       '${WorkItem.className}.${WorkItem.nameField}':'Name',
       '${WorkItem.className}.${WorkItem.descriptionField}':'Description',

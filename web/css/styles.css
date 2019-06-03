@@ -112,8 +112,12 @@ body {
 
 .avatar-border {
   @extend .avatar;
-  border-style: dashed;
+  /* border-style: dotted; */
+  border-style:  dashed;
+  /* border-width: thin; */
   border-width: thin;
+  border-color: white;
+  /* mix-blend-mode: difference; */
 }
 
 .avatar-icon {

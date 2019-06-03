@@ -1,13 +1,12 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
-import 'dart:async';
-
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
+import 'package:auge_web/services/app_routes.dart';
 
 import 'package:angular_components/focus/focus.dart';
 import 'package:angular_components/laminate/components/modal/modal.dart';
@@ -26,7 +25,6 @@ import 'package:angular_components/material_select/dropdown_button.dart';
 import 'package:angular_components/material_select/material_dropdown_select_accessor.dart';
 import 'package:angular_components/material_datepicker/module.dart';
 import 'package:angular_components/model/date/date.dart';
-import 'package:angular_components/utils/browser/window/module.dart';
 import 'package:angular_components/material_input/material_input.dart';
 import 'package:angular_components/material_input/material_auto_suggest_input.dart';
 import 'package:angular_components/material_input/material_number_accessor.dart';
@@ -40,7 +38,7 @@ import 'package:angular_components/material_chips/material_chip.dart';
 import 'package:angular_components/material_chips/material_chips.dart';
 import 'package:angular_components/material_datepicker/material_datepicker.dart';
 
-import 'package:auge_server/model/initiative/initiative.dart';
+import 'package:auge_server/model/initiative/stage.dart';
 import 'package:auge_server/model/initiative/work_item.dart';
 import 'package:auge_server/model/general/user.dart';
 
@@ -48,6 +46,7 @@ import 'package:auge_web/message/messages.dart';
 import 'package:auge_web/message/model_messages.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
+import 'package:auge_web/src/initiative/initiative_service.dart';
 import 'package:auge_web/src/work_item/work_item_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
 
@@ -56,7 +55,7 @@ import 'work_item_detail_component.template.dart' as work_item_detail_component;
 
 @Component(
     selector: 'auge-work-item-detail',
-    providers: const [popupBindings, overlayBindings, windowBindings, datepickerBindings, WorkItemService, UserService],
+    providers: const [popupBindings, overlayBindings, datepickerBindings, WorkItemService, UserService],
     directives: const [
       coreDirectives,
       routerDirectives,
@@ -87,30 +86,26 @@ import 'work_item_detail_component.template.dart' as work_item_detail_component;
       'work_item_detail_component.css'
     ])
 
-class WorkItemDetailComponent implements OnInit  {
+class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
+
+  bool modalVisible = false;
 
   final UserService _userService;
+  final InitiativeService _initiativeService;
   final WorkItemService _workItemService;
-
+  final Router _router;
+  final Location _location;
+  /*
   @Input()
   Initiative initiative;
 
   @Input()
   String selectedWorkItemId;
+*/
 
-  final _closeController = new StreamController<void>.broadcast(sync: true);
+  String initiativeId;
 
-  /// Publishes events when close.
-  @Output()
-  Stream<void> get close => _closeController.stream;
-
-  final _saveController = new StreamController<WorkItem>.broadcast(sync: true);
-
-  /// Publishes events when save.
-  @Output()
-  Stream<WorkItem> get save => _saveController.stream;
-
-  WorkItem workItem = new WorkItem();
+  WorkItem workItem;
 
   String memberInputText = '';
   SelectionOptions memberOptions;
@@ -118,11 +113,7 @@ class WorkItemDetailComponent implements OnInit  {
   SelectionModel memberSingleSelectModel;
   SelectionModel stageSingleSelectModel;
 
-  String leadingGlyph = 'search';
-
-  String emptyPlaceholder = 'No match';
-
-  List<User> memberUsers = new List();
+  List<User> memberUsers = List();
 
   String errorCompleted;
 
@@ -137,7 +128,9 @@ class WorkItemDetailComponent implements OnInit  {
   /// When it exists, the error/exception message presented into dialog view.
   String dialogError;
 
-  WorkItemDetailComponent(this._userService, this._workItemService)  {
+  String previousPath;
+
+  WorkItemDetailComponent(this._userService, this._initiativeService, this._workItemService, this._router, this._location)  {
 
     initializeDateFormatting(Intl.defaultLocale , null);
     memberSingleSelectModel = SelectionModel.single();
@@ -150,7 +143,8 @@ class WorkItemDetailComponent implements OnInit  {
   static final String closeButtonLabel = CommonMsg.buttonLabel('Close');
   static final String addWorkItemLabel =  WorkItemMsg.label('Add Work Item');
   static final String editWorkItemLabel =  WorkItemMsg.label('Edit Work Item');
-  static final String noMatchLabel =  WorkItemMsg.label('No Match');
+  static final String noMatchLabel = WorkItemMsg.label('No Match');
+  static final String selectValueLabel = WorkItemMsg.label('Select a value');
 
   static final String nameLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.nameField}');
   static final String descriptionLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.descriptionField}');
@@ -160,17 +154,38 @@ class WorkItemDetailComponent implements OnInit  {
   static final String assignedToLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.assignedToField}');
   static final String checkItemLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.checkItemsField}');
 
+  static final String valuePercentIntervalMsg = WorkItemMsg.valuePercentIntervalMsg();
+
   @override
   void ngOnInit() async {
-
     // Clone the object to have an intermediate
-    workItem = WorkItem(); // need to create, because the angular throws a exception if the query delay.
-    if (selectedWorkItemId != null) {
-      workItem = await _workItemService.getWorkItem(selectedWorkItemId);
+    workItem =
+        WorkItem(); // need to create, because the angular throws a exception if the query delay.
+  }
+
+  @override
+  void onActivate(RouterState previous, RouterState current) async {
+
+    modalVisible = true;
+
+    previousPath = previous.path;
+
+    if (current.parameters.containsKey(AppRoutesParam.initiativeIdParameter)) {
+      initiativeId = current.parameters[AppRoutesParam.initiativeIdParameter];
+    }
+
+    String workItemId;
+    if (current.parameters.containsKey(AppRoutesParam.workItemIdParameter)) {
+      workItemId = current.parameters[AppRoutesParam.workItemIdParameter];
     }
 
     //List<User> users = await _userService.getUsers(_authService.selectedOrganization?.id, withProfile: true);
     try {
+
+      if (workItemId != null) {
+        workItem = await _workItemService.getWorkItem(workItemId);
+      }
+
       _users = await _userService.getUsers(_userService.authService.authorizedOrganization.id, withProfile: true);
     } catch (e) {
       dialogError = e.toString();
@@ -179,7 +194,6 @@ class WorkItemDetailComponent implements OnInit  {
 
     memberOptions = new StringSelectionOptions<User>(
         _users, toFilterableString: (User user) => user.name);
-
 
     memberSingleSelectModel.selectionChanges.listen((member) {
 
@@ -190,8 +204,12 @@ class WorkItemDetailComponent implements OnInit  {
         }
       });
 
-    if (initiative.stages != null && initiative.stages.isNotEmpty) {
-      stageOptions = new SelectionOptions.fromList( initiative.stages );
+    List<Stage> stages;
+    stages = await _initiativeService.getStages(initiativeId);
+
+
+    if (stages != null && stages.isNotEmpty) {
+      stageOptions = new SelectionOptions.fromList( stages );
 
       stageSingleSelectModel =
       new SelectionModel.single()
@@ -203,30 +221,34 @@ class WorkItemDetailComponent implements OnInit  {
         });
 
       if (workItem.stage == null) {
-        workItem.stage = initiative.stages.first;
+        workItem.stage = stages.first;
       }
       stageSingleSelectModel.select(workItem.stage);
     }
+  }
+
+  @override
+  void onDeactivate(RouterState current, RouterState next) {
+    modalVisible = false;
   }
 
   removeMember(User user) {
     workItem.assignedTo.remove(user);
   }
 
-  void saveWorkItem() {
+  void saveWorkItem() async {
     try {
-      _workItemService.saveWorkItem(initiative.id, workItem);
-      _saveController.add(workItem);
-
-      closeDetail();
+      workItem.id = await _workItemService.saveWorkItem(initiativeId, workItem);
+      closeDetail(workItem.id);
     } catch (e) {
       dialogError = e.toString();
       rethrow;
     }
   }
 
-  void closeDetail() {
-    _closeController.add(null);
+  void closeDetail([String workItemId]) {
+    _location.back();
+    // _router.navigate(previousPath, (workItemId != null) ? NavigationParams(queryParameters: {AppRoutesQueryParam.workItemIdQueryParameter: workItemId}) : null);
   }
 
   String get memberLabelRenderer {
@@ -265,7 +287,7 @@ class WorkItemDetailComponent implements OnInit  {
 
   void set completed(int completed) {
     if (completed != null && !(completed >= 0 && completed <= 100)) {
-      errorCompleted = 'O percentual deve ficar entre 0 e 100';
+      errorCompleted = valuePercentIntervalMsg;
     } else {
       errorCompleted = null;
       workItem.completed = completed;
@@ -283,7 +305,7 @@ class WorkItemDetailComponent implements OnInit  {
 
         nameLabel = stageSingleSelectModel.selectedValues.first?.name;
     } else {
-      nameLabel = WorkItemMsg.label('Select a value');
+      nameLabel = WorkItemMsg.label(selectValueLabel);
     }
     return nameLabel ;
   }

@@ -17,6 +17,7 @@ import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/objective/measure.dart';
 import 'package:auge_server/model/initiative/initiative.dart';
 import 'package:auge_server/model/initiative/stage.dart';
+import 'package:auge_server/model/initiative/state.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/message/messages.dart';
@@ -107,13 +108,15 @@ class HistoryItemTimelineDetailComponent /* extends Object */ implements OnInit 
     if (objectClassName == UserProfileOrganization.className) {
       UserProfileOrganizationChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues, changedValues);
     } else if (objectClassName == Group.className) {
-      GroupChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues,changedValues);
+      GroupChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues, changedValues);
     } else if (objectClassName == Objective.className) {
-      ObjectiveChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues,changedValues);
+      ObjectiveChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues, changedValues);
     } else if (objectClassName == Measure.className) {
-      MeasureChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues,changedValues);
+      MeasureChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues, changedValues);
     } else if (objectClassName == Initiative.className) {
-      InitiativeChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues,changedValues);
+      InitiativeChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues, changedValues);
+    } else if (objectClassName == Stage.className) {
+      StageChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues, changedValues);
     }
     return fieldsChangedValues;
   }
@@ -598,6 +601,47 @@ class InitiativeChangedValues {
             v[_pKey];
           if (v.containsKey(_cKey))
             fieldsChangedValues['${Initiative.className}.${k}'][_cKey] =
+            v[_cKey];
+        }
+      }
+    });
+  }
+}
+
+//STAGE
+class StageChangedValues {
+
+  static void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
+
+    changedValues?.forEach((k, v) {
+      if (k != Stage.idField && k != Stage.versionField && k != Stage.indexField) {
+        if (k == Stage.stateField) {
+          fieldsChangedValues.putIfAbsent(
+              '${Stage.className}.${k}', () =>
+          {
+            _typeToViewKey: _typeToViewText,
+            _fieldDescriptionKey: FieldMsg.label('${Stage.className}.${k}')
+          });
+
+          if (v.containsKey(State.nameField) &&
+              v[State.nameField].containsKey(_pKey))
+            fieldsChangedValues['${Stage.className}.${k}'][_pKey] =
+            v[State.nameField][_pKey];
+          if (v.containsKey(MeasureUnit.nameField) &&
+              v[State.nameField].containsKey(_cKey))
+            fieldsChangedValues['${Stage.className}.${k}'][_cKey] =
+            v[State.nameField][_cKey];
+        }
+        else if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
+          fieldsChangedValues.putIfAbsent('${Stage.className}.${k}', () =>
+          {
+            _typeToViewKey: _typeToViewText,
+            _fieldDescriptionKey: FieldMsg.label('${Stage.className}.${k}')});
+          if (v.containsKey(_pKey))
+            fieldsChangedValues['${Stage.className}.${k}'][_pKey] =
+            v[_pKey];
+          if (v.containsKey(_cKey))
+            fieldsChangedValues['${Stage.className}.${k}'][_cKey] =
             v[_cKey];
         }
       }

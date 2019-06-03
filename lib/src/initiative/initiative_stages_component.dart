@@ -71,8 +71,6 @@ class InitiativeStagesComponent implements /* OnInit, */ OnActivate, OnDeactivat
 
   bool modalVisible = false;
 
-
-
   String initiativeId;
   List<Stage> stages;
 
@@ -113,6 +111,7 @@ class InitiativeStagesComponent implements /* OnInit, */ OnActivate, OnDeactivat
   static final String closeButtonLabel = CommonMsg.buttonLabel('Close');
 
   static final String nameLabel =  FieldMsg.label('${Stage.className}.${Stage.nameField}');
+  static final String stateLabel =  FieldMsg.label('${Stage.className}.${Stage.stateField}');
 
   static final String stateNotInfomedMsg =  StageMsg.stateNotInfomedMsg();
 

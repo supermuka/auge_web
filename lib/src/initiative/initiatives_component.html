@@ -40,11 +40,11 @@
                             <div class="w3-col m3">
                                 <div class="custom-grid w3-right">
                                     <div class="truncate-parent">
-                                        <div *ngIf="iInitiative.group != null" class="avatar avatar-border margin-top margin-bottom" [style.background-color]="colorFromUuid(iInitiative.group?.id)" [materialTooltip]="composeTooltip(groupLabel, iInitiative.group?.name)">
+                                        <div *ngIf="iInitiative.group != null" class="avatar avatar-border margin-bottom" [style.background-color]="colorFromUuid(iInitiative.group?.id)" [materialTooltip]="composeTooltip(groupLabel, iInitiative.group?.name)">
                                             <span class="text-group-letter">{{firstLetter(iInitiative.group?.name)}}</span>
                                         </div>
                                         <div *ngIf="iInitiative.group == null" class="avatar margin-bottom"></div>
-                                        <div *ngIf="iInitiative.leader != null" class="avatar margin-bottom margin-top" [style.background-image]="'url(' +  userUrlImage(iInitiative.leader?.userProfile.image) + ')'" [materialTooltip]="composeTooltip(leaderLabel, iInitiative.leader?.name)"></div>
+                                        <div *ngIf="iInitiative.leader != null" class="avatar margin-top" [style.background-image]="'url(' +  userUrlImage(iInitiative.leader?.userProfile.image) + ')'" [materialTooltip]="composeTooltip(leaderLabel, iInitiative.leader?.name)"></div>
                                         <div *ngIf="iInitiative.leader == null" class="avatar margin-top"></div>
                                     </div>
                                 </div>

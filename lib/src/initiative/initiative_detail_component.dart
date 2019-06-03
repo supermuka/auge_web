@@ -63,14 +63,15 @@ import 'initiative_detail_component.template.dart' as initiative_detail_componen
   ])
 class InitiativeDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
-  bool modalVisible;
+  bool modalVisible = false;
 
  // final AuthService _authService;
   final InitiativeService _initiativeService;
   final ObjectiveService _objectiveService;
   final UserService _userService;
   final GroupService _groupService;
-  final Location _location;
+  final Router _router;
+  // final Location _location;
 
   Initiative initiative;
 
@@ -98,8 +99,9 @@ class InitiativeDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
   /// When it exists, the error/exception message presented into dialog view.
   String dialogError;
+  String previousPath;
 
-  InitiativeDetailComponent(this._initiativeService, this._objectiveService,  this._userService, this._groupService, this._location)  {
+  InitiativeDetailComponent(this._initiativeService, this._objectiveService,  this._userService, this._groupService, this._router /*, this._location */)  {
     stateSingleSelectModel = SelectionModel.single();
     leaderSingleSelectModel = SelectionModel.single();
     objectiveSingleSelectModel = SelectionModel.single();
@@ -127,6 +129,8 @@ class InitiativeDetailComponent implements OnInit, OnActivate, OnDeactivate {
   void onActivate(RouterState previous, RouterState current) async {
 
     modalVisible = true;
+
+    previousPath = previous.path;
 
    // initiative = Initiative(); // Needs to create new here, even if it can be replaced later, because if get method to delay, Angular throws an error.
     String initiativeId;
@@ -231,16 +235,17 @@ class InitiativeDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
   void saveInitiative() async {
     try {
-      await _initiativeService.saveInitiative(initiative);
-      closeDetail();
+      initiative.id = await _initiativeService.saveInitiative(initiative);
+      closeDetail(initiative.id);
     } catch (e) {
       dialogError = e.toString();
       rethrow;
     }
   }
 
-  void closeDetail() {
-    _location.back();
+  void closeDetail([String initiativeId]) {
+    //_location.back();
+     _router.navigate(previousPath, (initiativeId != null) ? NavigationParams(queryParameters: {AppRoutesQueryParam.initiativeIdQueryParameter: initiativeId}) : null);
   }
 
   String get leaderLabelRenderer {

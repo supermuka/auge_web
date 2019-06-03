@@ -205,4 +205,19 @@ class MeasureService {
       rethrow;
     }
   }
+
+  /// Delete a [MeasureProgress]
+  void deleteMeasureProgress(MeasureProgress measureProgress) async {
+
+    measure_pbgrpc.MeasureProgressDeleteRequest measureProgressDeleteRequest = measure_pbgrpc.MeasureProgressDeleteRequest()
+      ..measureProgressId = measureProgress.id
+      ..measureProgressVersion = measureProgress.version
+      ..authenticatedOrganizationId = _authService.authorizedOrganization.id
+      ..authenticatedUserId = _authService.authenticatedUser.id;
+    try {
+      await _measureServiceClient.deleteMeasureProgress(measureProgressDeleteRequest);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

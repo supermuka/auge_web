@@ -35,31 +35,33 @@ import 'package:auge_web/services/app_routes.dart';
       'work_items_component.css'
     ])
 
-class WorkItemsComponent with CanReuse {
+class WorkItemsComponent with CanReuse implements OnInit {
 
   final Router _router;
 
   @Input()
   Initiative initiative;
 
-
-  String selectedView = 'list';
+  String selectedView;
 
   static final String workItemsLabel =  WorkItemMsg.label('Work Items');
 
-  WorkItemsComponent(this._router);
+  WorkItemsComponent(this._router) {
+    print('WorkItemsComponent construtor');
+  }
 
+  @override
+  void ngOnInit() async {
+    print('entrou OnInit list');
+    selectedView = 'list';
+  }
 
   String widthState(int workItemsCount, int stateWorkItemsCount, int withTotal) {
     return (stateWorkItemsCount / workItemsCount * withTotal).toString();
   }
 
+  // Add here, edit is handled on sub componented list and kanban
   void goToDetail() {
-    if (initiative == null) {
-      _router.navigate(AppRoutes.initiativeAddRoute.toUrl());
-
-    } else {
-      _router.navigate(AppRoutes.initiativeEditRoute.toUrl(parameters: { AppRoutesParam.initiativeIdParameter: initiative.id }));
-    }
+    _router.navigate(AppRoutes.workItemAddRoute.toUrl(parameters: { AppRoutesParam.initiativeIdParameter: initiative.id }));
   }
 }

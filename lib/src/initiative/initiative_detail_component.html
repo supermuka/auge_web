@@ -5,7 +5,7 @@
             <h3 *ngIf="initiative.id != null">{{editInitiativeLabel}}</h3>
         </div>
         <div class="w3-row">
-           <material-input class="w3-col l12" [(ngModel)]="initiative.name" floatingLabel [label]="nameLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
+           <material-input autoFocus class="w3-col l12" [(ngModel)]="initiative.name" floatingLabel [label]="nameLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
         </div>
         <div class="w3-row">
            <material-input class="w3-col l12" [(ngModel)]="initiative.description" floatingLabel multiline rows="3" [label]="descriptionLabel"></material-input>
@@ -65,7 +65,7 @@
                 <material-icon icon="save"></material-icon>
             </material-button>
 
-            <material-button autoFocus (trigger)="closeDetail()">{{closeButtonLabel}}
+            <material-button (trigger)="closeDetail()">{{closeButtonLabel}}
                 <material-icon icon="close"></material-icon>
             </material-button>
         </div>

@@ -152,12 +152,9 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit {
   }
 
   void goToDetail() {
-    if (initiative == null) {
-      _router.navigate(AppRoutes.initiativeAddRoute.toUrl());
-
-    } else {
-      _router.navigate(AppRoutes.initiativeEditRoute.toUrl(parameters: { AppRoutesParam.initiativeIdParameter: initiative.id }));
-    }
+      _router.navigate(AppRoutes.workItemEditRoute.toUrl(parameters: {
+        AppRoutesParam.initiativeIdParameter: initiative.id,
+        AppRoutesParam.workItemIdParameter: selectedWorkItem.id }));
   }
 }
 
@@ -166,6 +163,6 @@ class KanbanColumn {
   List<WorkItem> columnWorkItems;
 
   KanbanColumn() {
-    columnWorkItems = new List();
+    columnWorkItems = List();
   }
 }

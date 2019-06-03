@@ -24,7 +24,7 @@ import 'package:auge_web/message/messages.dart';
     styleUrls: const [
       'initiative_summary_component.css'
     ])
-class InitiativeSummaryComponent extends Object {
+class InitiativeSummaryComponent {
 
   static final int progressBarWidth = 360;
   final preferredTooltipPositions = const [RelativePosition.OffsetBottomLeft, RelativePosition.OffsetBottomRight];
