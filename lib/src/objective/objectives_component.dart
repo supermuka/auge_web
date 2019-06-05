@@ -159,6 +159,10 @@ class ObjectivesComponent with CanReuse implements AfterViewInit, OnActivate, On
       return;
     }
 
+    if (routerStatePrevious.toUrl() == AppRoutes.objectivesRoute.toUrl() ||
+        (routerStatePrevious.toUrl() == AppRoutes.objectiveAddRoute.toUrl() && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.objectiveIdQueryParameter) ||
+            routerStatePrevious.toUrl() == AppRoutes.objectiveEditRoute.toUrl()) && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.objectiveIdQueryParameter)) return;
+
     // Expand panel whether [Id] objective is informed.
     if (routerStateCurrent.queryParameters.containsKey(AppRoutesParam.objectiveIdParameter)) {
       initialObjectiveId = routerStateCurrent.queryParameters[AppRoutesParam.objectiveIdParameter];
@@ -189,6 +193,11 @@ class ObjectivesComponent with CanReuse implements AfterViewInit, OnActivate, On
       }
 
       if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.objectives.index);
+
+      if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.objectiveIdQueryParameter)) {
+        setExpandedObjectiveId(routerStateCurrent.queryParameters[AppRoutesQueryParam
+            .objectiveIdQueryParameter], true);
+      }
 
     } catch (e) {
       _appLayoutService.error = e.toString();

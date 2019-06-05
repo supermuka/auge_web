@@ -65,7 +65,8 @@ class ObjectiveDetailComponent implements OnInit, OnActivate, OnDeactivate {
   final UserService _userService;
   final ObjectiveService _objectiveService;
   final GroupService _groupService;
-  final Location _location;
+  final Router _router;
+  //final Location _location;
 
   bool modalVisible = false;
 
@@ -95,8 +96,9 @@ class ObjectiveDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
   /// When it exists, the error/exception message presented into dialog view.
   String dialogError;
+  String previousPath;
 
-  ObjectiveDetailComponent(this._userService, this._objectiveService, this._groupService, this._location) {
+  ObjectiveDetailComponent(this._userService, this._objectiveService, this._groupService, this._router) {
     groupSingleSelectModel = SelectionModel.single();
     alignedToSingleSelectModel = SelectionModel.single();
     leaderSingleSelectModel = SelectionModel.single();
@@ -129,6 +131,8 @@ class ObjectiveDetailComponent implements OnInit, OnActivate, OnDeactivate {
   @override
   void onActivate(RouterState previous, RouterState current) async {
     modalVisible = true;
+
+    previousPath = previous.path;
 
     String id;
     if (current.parameters.containsKey(AppRoutesParam.objectiveIdParameter)) {
@@ -217,17 +221,18 @@ class ObjectiveDetailComponent implements OnInit, OnActivate, OnDeactivate {
     try {
 
       // History item definition
-       await _objectiveService.saveObjective(objective);
+      objective.id = await _objectiveService.saveObjective(objective);
+      closeDetail(objective.id);
 
-      closeDetail();
     } catch (e) {
       dialogError = e.toString();
       rethrow;
     }
   }
 
-  void closeDetail() {
-    _location.back();
+  void closeDetail([String objectiveId]) {
+    _router.navigate(previousPath, (objectiveId != null) ? NavigationParams(queryParameters: {AppRoutesQueryParam.objectiveIdQueryParameter: objectiveId}) : null);
+  //  _location.back();
   }
 
   String get alignedToLabelRenderer {

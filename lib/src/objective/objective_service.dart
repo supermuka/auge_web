@@ -71,7 +71,7 @@ class ObjectiveService {
   }
 
   /// Save (create or update) an [Objective]
-  void saveObjective(Objective objective) async {
+  Future<String> saveObjective(Objective objective) async {
 
     objective_pbgrpc.ObjectiveRequest objectiveRequest = (objective_pbgrpc.ObjectiveRequest()
       ..objective = objective.writeToProtoBuf()
@@ -95,6 +95,7 @@ class ObjectiveService {
       print('${e.runtimeType}, ${e}');
       rethrow;
     }
+    return objective.id;
   }
 
 

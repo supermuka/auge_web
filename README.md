@@ -23,16 +23,17 @@ pub run intl_translation:extract_to_arb --output-dir=lib\shared\i10n lib\shared\
 pub run intl_translation:generate_from_arb --output-dir=lib\shared\i18n lib\shared\message\messages.dart lib\shared\i18n\intl_messages_pt_BR.arb lib\shared\i18n\intl_messages.arb
 
 
-**PARA FAZER**
+DOCKER
 
->- Existem muitos CSS repetido. Entender uma forma de concentrar os CSS em um único arquivo padrão.
-
+https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-debian-9
 
 DEPLOY
 
 pub run build_runner build -r -o web:build
 
 /var/www/auge.levius.com..br/public_html
+
+
 
 
 

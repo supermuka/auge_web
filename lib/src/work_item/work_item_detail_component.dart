@@ -163,6 +163,8 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
         WorkItem(); // need to create, because the angular throws a exception if the query delay.
   }
 
+
+
   @override
   void onActivate(RouterState previous, RouterState current) async {
 

@@ -17,6 +17,7 @@ class AppRoutesQueryParam {
   //QueryParam
   static const initiativeIdQueryParameter = 'initiative_id';
   static const workItemIdQueryParameter = 'work_item_id';
+  static const objectiveIdQueryParameter = 'initiative_id';
   static const objectiveStartDateQueryParameter = 'start_date';
   static const objectiveEndDateQueryParameter = 'end_date';
   static const measureCurrentValueQueryParameter = 'current_value';

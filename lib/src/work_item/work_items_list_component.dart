@@ -96,16 +96,24 @@ class WorkItemsListComponent with CanReuse /* with CanReuse implements OnActivat
     return workItem.isOverdue ? 'hsl(0, 100%, 50%)' : null;
   }
 
-  void updateWorkItem(WorkItem workItem) {
+  void updateWorkItem(WorkItem workItem) async {
     try {
-      _workItemService.saveWorkItem(initiative.id, workItem);
+      print('DEBUG updateWorkItem');
+      print(workItem.version);
+      await _workItemService.saveWorkItem(initiative.id, workItem);
+
+      //TODO maybe this needs to be updated with parent onActivate.
+      workItem = await _workItemService.getWorkItem(workItem.id);
+      int i = initiative.workItems.indexWhere((it) => it.id == workItem.id);
+      if (i != -1) initiative.workItems[i] = workItem;
+      print(workItem.version);
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;
     }
   }
 
-  List<WorkItem> get workItems => initiative?.workItems;
+  List<WorkItem> get workItems => initiative.workItems;
 
   String userUrlImage(User userMember) {
     return common_service.userUrlImage(userMember.userProfile?.image);
