@@ -39,7 +39,7 @@ import 'package:auge_web/services/app_routes.dart';
   pipes: const [commonPipes],
 )
 
-class GanttComponent implements OnActivate {
+class GanttComponent with CanReuse implements OnActivate {
   final preferredTooltipPositions = const [RelativePosition.OffsetBottomLeft, RelativePosition.OffsetBottomRight];
 
   final AuthService _authService;

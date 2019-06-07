@@ -30,7 +30,7 @@ import 'package:auge_web/services/app_routes.dart';
   templateUrl: 'insights_component.html',
 )
 
-class InsightsComponent implements OnActivate  {
+class InsightsComponent with CanReuse implements OnActivate  {
 
   final ScoreboardType selectable = ScoreboardType.selectable;
 

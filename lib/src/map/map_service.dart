@@ -23,12 +23,14 @@ class MapService {
 
   /// Return a list of the [Objectives] in hierarchy form with yours children
   Future<List<Objective>> getObjectivesMap(String organizationId) async {
+
     objective_pbgrpc.ObjectivesResponse objectivesResponse = await _objectiveServiceClient.getObjectives(
         objective_pbgrpc.ObjectiveGetRequest()
           ..organizationId = organizationId
           ..treeAlignedWithChildren = true
           ..withProfile = true
           ..withMeasures = true);
+
     return objectivesResponse.objectives.map((o) =>
     Objective()..readFromProtoBuf(o)).toList();
   }

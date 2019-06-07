@@ -40,7 +40,7 @@ import 'package:auge_web/services/app_routes.dart';
   ],
 )
 
-class MapComponent implements OnActivate {
+class MapComponent with CanReuse implements OnActivate {
 
   final preferredTooltipPositions = const [RelativePosition.OffsetBottomLeft, RelativePosition.OffsetBottomRight];
 

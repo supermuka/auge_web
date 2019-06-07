@@ -25,7 +25,7 @@ import 'search_service.dart';
     MaterialAutoSuggestInputComponent,
   ],
 )
-class SearchComponent extends Object with CanReuse {
+class SearchComponent with CanReuse {
 
   final SearchService _searchService;
 
