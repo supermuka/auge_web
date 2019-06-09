@@ -58,7 +58,7 @@
                         <hr class="hr-margin">
                         <span *ngIf="iInitiative.objective != null"><strong>{{objectiveLabel}}:</strong> {{iInitiative.objective?.name}}</span>
                         <div class="w3-row-padding" >
-                            <auge-work-items [initiative]="iInitiative"></auge-work-items>
+                            <auge-work-items [initiative]="iInitiative" [selectionView]="workItemSelectionView"></auge-work-items>
                         </div>
                     </material-expansionpanel>
                 </div>

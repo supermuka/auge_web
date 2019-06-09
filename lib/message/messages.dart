@@ -247,6 +247,8 @@ class MapMsg {
       desc: "Map labels",
       examples: const {"Leader": "Leader"}
   );
+
+  static notInformedMsg() => Intl.message("Not Informed!");
 }
 
 /// Specific messages and label for [Gantt]

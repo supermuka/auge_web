@@ -25,7 +25,7 @@ Timer repeatingTimer(Function handleTimeout, [int milliseconds] ) {
 }
 
 String colorFromUuid(String id) {
-  return id == null ? '#ffffff' : '#' + id.substring(0, 6);
+  return id == null ? '#f2f2f2' : '#' + id.substring(0, 6);
 }
 
 String firstLetter(String name) {

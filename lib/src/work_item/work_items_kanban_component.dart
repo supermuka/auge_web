@@ -21,6 +21,7 @@ import 'package:angular_components/model/ui/icon.dart';
 import 'package:angular_components/content/deferred_content.dart';
 import 'package:angular_components/material_menu/material_menu.dart';
 
+import 'package:auge_server/model/general/authorization.dart';
 import 'package:auge_server/model/general/user.dart';
 import 'package:auge_server/model/initiative/initiative.dart';
 import 'package:auge_server/model/initiative/work_item.dart';
@@ -31,6 +32,8 @@ import 'package:auge_web/message/model_messages.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/work_item/work_item_service.dart';
+import 'package:auge_web/src/history_timeline/history_timeline_service.dart';
+
 import 'package:auge_web/src/work_item/work_item_detail_component.dart';
 
 import 'package:auge_web/services/app_routes.dart';
@@ -61,6 +64,7 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit {
 
   final AppLayoutService _appLayoutService;
   final WorkItemService _workItemService;
+  final HistoryTimelineService _historyTimelineService;
   final Router _router;
 
   @Input()
@@ -80,7 +84,7 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit {
   static final String checkItemsLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.checkItemsField}');
 
 
-  WorkItemsKanbanComponent(this._appLayoutService, this._workItemService, this._router) {
+  WorkItemsKanbanComponent(this._appLayoutService, this._workItemService, this._historyTimelineService, this._router) {
     initializeDateFormatting(Intl.defaultLocale);
 
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => goToDetail()), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
@@ -147,8 +151,22 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit {
     return common_service.userUrlImage(userMember?.userProfile?.image);
   }
 
-  void updateWorkItem(WorkItem workItem) {
-    _workItemService.saveWorkItem(initiative.id, workItem);
+  void updateWorkItem(WorkItem workItem) async {
+    try {
+
+      await _workItemService.saveWorkItem(initiative.id, workItem);
+
+      //TODO maybe this needs to be updated with parent onActivate.
+      workItem = await _workItemService.getWorkItem(workItem.id);
+      int i = initiative.workItems.indexWhere((it) => it.id == workItem.id);
+      if (i != -1) {
+        initiative.workItems[i] = workItem;
+        _historyTimelineService.refreshHistory(SystemModule.initiatives.index);
+      }
+    } catch (e) {
+      _appLayoutService.error = e.toString();
+      rethrow;
+    }
   }
 
   void goToDetail() {

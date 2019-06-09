@@ -18,6 +18,7 @@ import 'package:auge_server/model/objective/measure.dart';
 import 'package:auge_server/model/initiative/initiative.dart';
 import 'package:auge_server/model/initiative/stage.dart';
 import 'package:auge_server/model/initiative/state.dart';
+import 'package:auge_server/model/initiative/work_item.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/message/messages.dart';
@@ -91,16 +92,6 @@ class HistoryItemTimelineDetailComponent /* extends Object */ implements OnInit 
     return common_service.userUrlImage(userProfileImage);
   }
 
-  dynamic formatValue(dynamic value) {
-
-    if (value is DateTime) {
-      //return DateFormat.yMMMd().add_Hms().format(data);
-      return DateFormat.yMMMd().format(value);
-    } else {
-      return value.toString();
-    }
-  }
-
   // Format data type to web presentation
   Map<String, Map<dynamic, dynamic>> getViewToChangedValues(String objectClassName, Map<String, dynamic> changedValues) {
 
@@ -117,6 +108,8 @@ class HistoryItemTimelineDetailComponent /* extends Object */ implements OnInit 
       InitiativeChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues, changedValues);
     } else if (objectClassName == Stage.className) {
       StageChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues, changedValues);
+    } else if (objectClassName == WorkItem.className) {
+      WorkItemChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues, changedValues);
     }
     return fieldsChangedValues;
   }
@@ -339,9 +332,6 @@ class GroupChangedValues {
             fieldsChangedValues['${Group.className}.${k}'][_cKey] =
             v[_cKey];
         }
-
-
-
       }
     });
   }
@@ -642,6 +632,112 @@ class StageChangedValues {
             v[_pKey];
           if (v.containsKey(_cKey))
             fieldsChangedValues['${Stage.className}.${k}'][_cKey] =
+            v[_cKey];
+        }
+      }
+    });
+  }
+}
+
+//WORKITEM
+class WorkItemChangedValues {
+
+  static void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
+
+    changedValues?.forEach((k, v) {
+      if (k != WorkItem.idField && k != WorkItem.versionField) {
+        if (k == WorkItem.stageField) {
+          fieldsChangedValues.putIfAbsent(
+              '${WorkItem.className}.${k}', () =>
+          {
+            _typeToViewKey: _typeToViewText,
+            _fieldDescriptionKey: FieldMsg.label('${WorkItem.className}.${k}')
+          });
+
+          if (v.containsKey(Stage.nameField) &&
+              v[Stage.nameField].containsKey(_pKey))
+            fieldsChangedValues['${WorkItem.className}.${k}'][_pKey] =
+            v[Stage.nameField][_pKey];
+          if (v.containsKey(Stage.nameField) &&
+              v[Stage.nameField].containsKey(_cKey))
+            fieldsChangedValues['${WorkItem.className}.${k}'][_cKey] =
+            v[Stage.nameField][_cKey];
+        } else if (k == WorkItem.assignedToField) {
+          fieldsChangedValues.putIfAbsent(
+              '${WorkItem.className}.${k}', () =>
+          {
+            _typeToViewKey: _typeToViewText,
+            _fieldDescriptionKey: FieldMsg.label('${WorkItem.className}.${k}')
+          });
+
+          if (v.containsKey(_pKey) && v[_pKey] is List) {
+            StringBuffer sb = new StringBuffer();
+            v[_pKey].forEach((l) {
+              if (sb.isNotEmpty) sb.write(', ');
+              sb.write(l[User.nameField]);
+            });
+            fieldsChangedValues['${WorkItem.className}.${k}'][_pKey] = sb.toString();
+          }
+          if (v.containsKey(_cKey) && v[_cKey] is List) {
+            StringBuffer sb = new StringBuffer();
+            v[_cKey].forEach((l) {
+              if (sb.isNotEmpty) sb.write(', ');;
+              sb.write(l[User.nameField]);
+            });
+            fieldsChangedValues['${WorkItem.className}.${k}'][_cKey] = sb.toString();
+          }
+        } else if (k == WorkItem.checkItemsField) {
+          fieldsChangedValues.putIfAbsent(
+              '${WorkItem.className}.${k}', () =>
+          {
+            _typeToViewKey: _typeToViewText,
+            _fieldDescriptionKey: FieldMsg.label('${WorkItem.className}.${k}')
+          });
+
+          if (v.containsKey(_pKey) && v[_pKey] is List) {
+            StringBuffer sb = new StringBuffer();
+            v[_pKey].forEach((l) {
+              if (sb.isNotEmpty) sb.write(', ');
+              sb.write(l[WorkItemCheckItem.nameField]);
+            });
+            fieldsChangedValues['${WorkItem.className}.${k}'][_pKey] = sb.toString();
+          }
+          if (v.containsKey(_cKey) && v[_cKey] is List) {
+            StringBuffer sb = new StringBuffer();
+            v[_cKey].forEach((l) {
+              if (sb.isNotEmpty) sb.write(', ');;
+              sb.write(l[WorkItemCheckItem.nameField]);
+            });
+            fieldsChangedValues['${WorkItem.className}.${k}'][_cKey] = sb.toString();
+          }
+        } else if (k == WorkItem.completedField) {
+          fieldsChangedValues.putIfAbsent('${WorkItem.className}.${k}', () =>
+          {
+            _typeToViewKey: _typeToViewText,
+            _fieldDescriptionKey: FieldMsg.label('${WorkItem.className}.${k}')});
+          if (v.containsKey(_pKey))
+            fieldsChangedValues['${WorkItem.className}.${k}'][_pKey] = '${v[_pKey]}%';
+          if (v.containsKey(_cKey))
+            fieldsChangedValues['${WorkItem.className}.${k}'][_cKey] = '${v[_cKey]}%';
+        } else if (k == WorkItem.dueDateField) {
+          fieldsChangedValues.putIfAbsent('${WorkItem.className}.${k}', () =>
+          {
+            _typeToViewKey: _typeToViewDateTime,
+            _fieldDescriptionKey: FieldMsg.label('${WorkItem.className}.${k}')});
+          if (v.containsKey(_pKey))
+            fieldsChangedValues['${WorkItem.className}.${k}'][_pKey] = DateTime.parse(v[_pKey]);
+          if (v.containsKey(_cKey))
+            fieldsChangedValues['${WorkItem.className}.${k}'][_cKey] = DateTime.parse(v[_cKey]);
+        } else if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
+          fieldsChangedValues.putIfAbsent('${WorkItem.className}.${k}', () =>
+          {
+            _typeToViewKey: _typeToViewText,
+            _fieldDescriptionKey: FieldMsg.label('${WorkItem.className}.${k}')});
+          if (v.containsKey(_pKey))
+            fieldsChangedValues['${WorkItem.className}.${k}'][_pKey] =
+            v[_pKey];
+          if (v.containsKey(_cKey))
+            fieldsChangedValues['${WorkItem.className}.${k}'][_cKey] =
             v[_cKey];
         }
       }

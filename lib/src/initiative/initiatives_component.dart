@@ -4,7 +4,6 @@
 import 'dart:async';
 import 'dart:html';
 
-import 'package:collection/collection.dart';
 import 'package:angular/angular.dart';
 
 import 'package:angular_router/angular_router.dart';
@@ -73,7 +72,7 @@ import 'package:auge_web/src/work_item/work_item_detail_component.template.dart'
       'initiatives_component.css'
     ])
 
-class InitiativesComponent with CanReuse implements OnActivate, OnDestroy {
+class InitiativesComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
 
   final InitiativeService _initiativeService;
   final ObjectiveService _objectiveService;
@@ -114,6 +113,8 @@ class InitiativesComponent with CanReuse implements OnActivate, OnDestroy {
   List<Initiative> _initiatives = List();
   Initiative selectedInitiative;
   String expandedInitiativeId;
+  // To control workItem [list or [kanban]
+  SelectionView workItemSelectionView;
 
   // List<bool> wideControl = new List();
   // List<bool> expandedControl = new List();
@@ -141,6 +142,11 @@ class InitiativesComponent with CanReuse implements OnActivate, OnDestroy {
       new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete()),
       new MenuItem(stagesLabel, icon: new Icon('view_week'), action: () => goToStages(selectedInitiative)) ])], icon: new Icon('menu'));
 
+  }
+
+  @override
+  void ngOnInit() async {
+    workItemSelectionView = SelectionView();
   }
 
   set sortedBy(String sortedBy) {
@@ -171,9 +177,14 @@ class InitiativesComponent with CanReuse implements OnActivate, OnDestroy {
       return;
     }
 
+    print('onActivate 1');
     if (routerStatePrevious.toUrl() == AppRoutes.initiativesRoute.toUrl() ||
         (routerStatePrevious.toUrl() == AppRoutes.initiativeAddRoute.toUrl() && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.initiativeIdQueryParameter) ||
-         routerStatePrevious.toUrl() == AppRoutes.initiativeEditRoute.toUrl()) && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.initiativeIdQueryParameter)) return;
+         routerStatePrevious.toUrl() == AppRoutes.initiativeEditRoute.toUrl() && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.initiativeIdQueryParameter) ||
+         routerStatePrevious.toUrl() == AppRoutes.workItemAddRoute.toUrl() && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.workItemIdQueryParameter) ||
+         routerStatePrevious.toUrl() == AppRoutes.workItemEditRoute.toUrl() && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.workItemIdQueryParameter))
+    ) return;
+    print('onActivate 2');
 
     _appLayoutService.headerTitle = InitiativeMsg.label('Initiatives');
 
@@ -203,6 +214,8 @@ class InitiativesComponent with CanReuse implements OnActivate, OnDestroy {
         setExpandedInitiativeId(routerStateCurrent.queryParameters[AppRoutesQueryParam
             .initiativeIdQueryParameter], true);
       }
+
+      workItemSelectionView.selected = workItemSelectionView.selected ?? 'list';
 
       _appLayoutService.enabledSearch = true;
 

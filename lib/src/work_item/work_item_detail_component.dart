@@ -86,7 +86,7 @@ import 'work_item_detail_component.template.dart' as work_item_detail_component;
       'work_item_detail_component.css'
     ])
 
-class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
+class WorkItemDetailComponent with CanReuse implements OnInit, OnActivate, OnDeactivate  {
 
   bool modalVisible = false;
 
@@ -94,7 +94,7 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
   final InitiativeService _initiativeService;
   final WorkItemService _workItemService;
   final Router _router;
-  final Location _location;
+  //final Location _location;
   /*
   @Input()
   Initiative initiative;
@@ -130,7 +130,7 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
 
   String previousPath;
 
-  WorkItemDetailComponent(this._userService, this._initiativeService, this._workItemService, this._router, this._location)  {
+  WorkItemDetailComponent(this._userService, this._initiativeService, this._workItemService, this._router /*, this._location*/)  {
 
     initializeDateFormatting(Intl.defaultLocale , null);
     memberSingleSelectModel = SelectionModel.single();
@@ -162,8 +162,6 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
     workItem =
         WorkItem(); // need to create, because the angular throws a exception if the query delay.
   }
-
-
 
   @override
   void onActivate(RouterState previous, RouterState current) async {
@@ -249,8 +247,8 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
   }
 
   void closeDetail([String workItemId]) {
-    _location.back();
-    // _router.navigate(previousPath, (workItemId != null) ? NavigationParams(queryParameters: {AppRoutesQueryParam.workItemIdQueryParameter: workItemId}) : null);
+    //_location.back();
+    _router.navigate(previousPath, (workItemId != null) ? NavigationParams(queryParameters: {AppRoutesQueryParam.workItemIdQueryParameter: workItemId}) : null);
   }
 
   String get memberLabelRenderer {

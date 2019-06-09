@@ -17,8 +17,8 @@
                 <span class="custom-row custom-name truncate-ellipsed-parent">
                     <span class="truncate-ellipsed-block">{{iObjectiveMapLevel1.name}}</span>
                 </span>
-                <span class="avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel1.group.id)">
-                    <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + iObjectiveMapLevel1.group.name">{{firstLetter(iObjectiveMapLevel1.group.name)}}</span>
+                <span class="avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel1?.group?.id)">
+                    <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjectiveMapLevel1?.group?.name)">{{firstLetter(iObjectiveMapLevel1?.group?.name)}}</span>
                 </span>
             </a>
             <material-tooltip-card [for]="clickableRef" [preferredPositions]="preferredTooltipPositions">
@@ -27,7 +27,7 @@
                 <div>{{endDateLabel}}</div>
                 <div><strong>{{iObjectiveMapLevel1.endDate | date}}</strong></div>
                 <div>{{leaderLabel}}</div>
-                <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel1?.leader) + ')'"></div><span> <strong>{{iObjectiveMapLevel1?.leader.name}}</strong></span>
+                <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel1?.leader) + ')'"></div><span> <strong>{{iObjectiveMapLevel1?.leader?.name}}</strong></span>
             </material-tooltip-card>
 
             <ul *ngIf="iObjectiveMapLevel1.alignedWithChildren.length > 0">
@@ -47,8 +47,8 @@
                        <span class="custom-row custom-name truncate-ellipsed-parent">
                            <span class="truncate-ellipsed-block">{{iObjectiveMapLevel2.name}}</span>
                        </span>
-                       <span class="avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel2.group.id)">
-                           <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + iObjectiveMapLevel2.group.name">{{firstLetter(iObjectiveMapLevel2.group.name)}}</span>
+                       <span class="avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel2?.group?.id)">
+                           <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjectiveMapLevel2?.group?.name)">{{firstLetter(iObjectiveMapLevel2?.group?.name)}}</span>
                        </span>
                     </a>
                     <material-tooltip-card [for]="clickableRef" [preferredPositions]="preferredTooltipPositions">
@@ -57,7 +57,7 @@
                         <div>{{endDateLabel}}</div>
                         <div><strong>{{iObjectiveMapLevel2.endDate | date}}</strong></div>
                         <div>{{leaderLabel}}</div>
-                        <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel2?.leader) + ')'"></div><span> <strong>{{iObjectiveMapLevel2?.leader.name}}</strong></span>
+                        <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel2?.leader) + ')'"></div><span> <strong>{{iObjectiveMapLevel2?.leader?.name}}</strong></span>
                     </material-tooltip-card>
                     <ul *ngIf="iObjectiveMapLevel2.alignedWithChildren.length > 0">
                         <li *ngFor="let iObjectiveMapLevel3 of iObjectiveMapLevel2.alignedWithChildren">
@@ -76,8 +76,8 @@
                                 <span class="custom-row custom-name truncate-ellipsed-parent">
                                     <span class="truncate-ellipsed-block">{{iObjectiveMapLevel3.name}}</span>
                                 </span>
-                                <span class="avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel3.group.id)">
-                                    <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + iObjectiveMapLevel3.group.name">{{firstLetter(iObjectiveMapLevel3.group.name)}}</span>
+                                <span class="avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel3?.group?.id)">
+                                    <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjectiveMapLevel3?.group?.name)">{{firstLetter(iObjectiveMapLevel3?.group?.name)}}</span>
                                 </span>
                             </a>
                             <material-tooltip-card [for]="clickableRef" [preferredPositions]="preferredTooltipPositions">
@@ -86,7 +86,7 @@
                                 <div>{{endDateLabel}}</div>
                                 <div><strong>{{iObjectiveMapLevel3.endDate | date}}</strong></div>
                                 <div>{{leaderLabel}}</div>
-                                <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel3?.leader) + ')'"></div><span> <strong>{{iObjectiveMapLevel3?.leader.name}}</strong></span>
+                                <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel3?.leader) + ')'"></div><span> <strong>{{iObjectiveMapLevel3?.leader?.name}}</strong></span>
                             </material-tooltip-card>
                             <ul *ngIf="iObjectiveMapLevel3.alignedWithChildren.length > 0">
                                 <li *ngFor="let iObjectiveMapLevel4 of iObjectiveMapLevel3.alignedWithChildren">
@@ -105,8 +105,8 @@
                                         <span class="custom-row custom-name truncate-ellipsed-parent">
                                             <span class="truncate-ellipsed-block">{{iObjectiveMapLevel4.name}}</span>
                                         </span>
-                                        <span class="avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel4.group.id)">
-                                            <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + iObjectiveMapLevel4.group.name">{{firstLetter(iObjectiveMapLevel4.group.name)}}</span>
+                                        <span class="avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel4?.group?.id)">
+                                            <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjectiveMapLevel4?.group?.name)">{{firstLetter(iObjectiveMapLevel4?.group?.name)}}</span>
                                         </span>
                                     </a>
                                     <material-tooltip-card [for]="clickableRef" [preferredPositions]="preferredTooltipPositions">
@@ -115,7 +115,7 @@
                                         <div>{{endDateLabel}}</div>
                                         <div><strong>{{iObjectiveMapLevel4.endDate | date}}</strong></div>
                                         <div>{{leaderLabel}}</div>
-                                        <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel4?.leader) + ')'"></div><span> <strong>{{iObjectiveMapLevel4?.leader.name}}</strong></span>
+                                        <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel4?.leader) + ')'"></div><span> <strong>{{iObjectiveMapLevel4?.leader?.name}}</strong></span>
                                     </material-tooltip-card>
                                     <ul *ngIf="iObjectiveMapLevel4.alignedWithChildren.length > 0">
                                         <li *ngFor="let iObjectiveMapLevel5 of iObjectiveMapLevel4.alignedWithChildren">
@@ -134,8 +134,8 @@
                                                 <span class="custom-row custom-name truncate-ellipsed-parent">
                                                     <span class="truncate-ellipsed-block">{{iObjectiveMapLevel5.name}}</span>
                                                 </span>
-                                                <span class="avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel5.group.id)">
-                                                    <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + iObjectiveMapLevel5.group.name">{{firstLetter(iObjectiveMapLevel5.group.name)}}</span>
+                                                <span class="avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel5?.group?.id)">
+                                                    <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjectiveMapLevel5?.group?.name)">{{firstLetter(iObjectiveMapLevel5?.group?.name)}}</span>
                                                 </span>
                                             </a>
                                             <material-tooltip-card [for]="clickableRef" [preferredPositions]="preferredTooltipPositions">
@@ -144,7 +144,7 @@
                                                 <div>{{endDateLabel}}</div>
                                                 <div><strong>{{iObjectiveMapLevel5.endDate | date}}</strong></div>
                                                 <div>{{leaderLabel}}</div>
-                                                <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel5?.leader) + ')'"></div><span> <strong>{{iObjectiveMapLevel5?.leader.name}}</strong></span>
+                                                <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel5?.leader) + ')'"></div><span> <strong>{{iObjectiveMapLevel5?.leader?.name}}</strong></span>
                                             </material-tooltip-card>
                                             <ul *ngIf="iObjectiveMapLevel5.alignedWithChildren.length > 0">
                                                 <li *ngFor="let iObjectiveMapLevel6 of iObjectiveMapLevel5.alignedWithChildren">
@@ -163,8 +163,8 @@
                                                         <span class="custom-row custom-name truncate-ellipsed-parent">
                                                             <span class="truncate-ellipsed-block">{{iObjectiveMapLevel6.name}}</span>
                                                         </span>
-                                                        <span class="avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel6.group.id)">
-                                                            <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + iObjectiveMapLevel6.group.name">{{firstLetter(iObjectiveMapLevel6.group.name)}}</span>
+                                                        <span class="avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel6?.group?.id)">
+                                                            <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjectiveMapLevel6?.group?.name)">{{firstLetter(iObjectiveMapLevel6?.group?.name)}}</span>
                                                         </span>
                                                     </a>
                                                     <material-tooltip-card [for]="clickableRef" [preferredPositions]="preferredTooltipPositions">
@@ -173,7 +173,7 @@
                                                         <div>{{endDateLabel}}</div>
                                                         <div><strong>{{iObjectiveMapLevel6.endDate | date}}</strong></div>
                                                         <div>{{leaderLabel}}</div>
-                                                        <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel6?.leader) + ')'"></div><span> <strong>{{iObjectiveMapLevel6?.leader.name}}</strong></span>
+                                                        <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel6?.leader) + ')'"></div><span> <strong>{{iObjectiveMapLevel6?.leader?.name}}</strong></span>
                                                     </material-tooltip-card>
                                                     <ul *ngIf="iObjectiveMapLevel6.alignedWithChildren.length > 0">
                                                         <li *ngFor="let iObjectiveMapLevel7 of iObjectiveMapLevel6.alignedWithChildren">
@@ -192,8 +192,8 @@
                                                                 <span class="custom-row custom-name truncate-ellipsed-parent">
                                                                     <span class="truncate-ellipsed-block">{{iObjectiveMapLevel7.name}}</span>
                                                                 </span>
-                                                                <span class="avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel7.group.id)">
-                                                                    <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + iObjectiveMapLevel7.group.name">{{firstLetter(iObjectiveMapLevel7.group.name)}}</span>
+                                                                <span class="avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel7?.group?.id)">
+                                                                    <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjectiveMapLevel7?.group?.name)">{{firstLetter(iObjectiveMapLevel7?.group?.name)}}</span>
                                                                 </span>
                                                             </a>
                                                             <material-tooltip-card [for]="clickableRef" [preferredPositions]="preferredTooltipPositions">
@@ -202,7 +202,7 @@
                                                                 <div>{{endDateLabel}}</div>
                                                                 <div><strong>{{iObjectiveMapLevel7.endDate | date}}</strong></div>
                                                                 <div>{{leaderLabel}}</div>
-                                                                <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel7?.leader) + ')'"></div><span> <strong>{{iObjectiveMapLevel7?.leader.name}}</strong></span>
+                                                                <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel7?.leader) + ')'"></div><span> <strong>{{iObjectiveMapLevel7?.leader?.name}}</strong></span>
                                                             </material-tooltip-card>
                                                             <ul *ngIf="iObjectiveMapLevel7.alignedWithChildren.length > 0">
                                                                 <li *ngFor="let iObjectiveMapLevel8 of iObjectiveMapLevel7.alignedWithChildren">
@@ -221,8 +221,8 @@
                                                                         <span class="custom-row custom-name truncate-ellipsed-parent">
                                                                             <span class="truncate-ellipsed-block">{{iObjectiveMapLevel8.name}}</span>
                                                                         </span>
-                                                                        <span class="avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel8.group.id)">
-                                                                            <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + iObjectiveMapLevel8.group.name">{{firstLetter(iObjectiveMapLevel8.group.name)}}</span>
+                                                                        <span class="avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel8?.group?.id)">
+                                                                            <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjectiveMapLevel8?.group?.name)">{{firstLetter(iObjectiveMapLevel8?.group?.name)}}</span>
                                                                         </span>
                                                                     </a>
                                                                     <material-tooltip-card [for]="clickableRef" [preferredPositions]="preferredTooltipPositions">
@@ -231,7 +231,7 @@
                                                                         <div>{{endDateLabel}}</div>
                                                                         <div><strong>{{iObjectiveMapLevel8.endDate | date}}</strong></div>
                                                                         <div>{{leaderLabel}}</div>
-                                                                        <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel8?.leader) + ')'"></div><span> <strong>{{iObjectiveMapLevel8?.leader.name}}</strong></span>
+                                                                        <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel8?.leader) + ')'"></div><span> <strong>{{iObjectiveMapLevel8?.leader?.name}}</strong></span>
                                                                     </material-tooltip-card>
                                                                     <ul *ngIf="iObjectiveMapLevel8.alignedWithChildren.length > 0">
                                                                         <li *ngFor="let iObjectiveMapLevel9 of iObjectiveMapLevel8.alignedWithChildren">
@@ -250,8 +250,8 @@
                                                                                 <span class="custom-row custom-name truncate-ellipsed-parent">
                                                                                     <span class="truncate-ellipsed-block">{{iObjectiveMapLevel9.name}}</span>
                                                                                 </span>
-                                                                                <span class="avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel9.group.id)">
-                                                                                    <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + iObjectiveMapLevel9.group.name">{{firstLetter(iObjectiveMapLevel9.group.name)}}</span>
+                                                                                <span class="avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel9?.group?.id)">
+                                                                                    <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjectiveMapLevel9?.group?.name)">{{firstLetter(iObjectiveMapLevel9?.group?.name)}}</span>
                                                                                 </span>
                                                                             </a>
                                                                             <material-tooltip-card [for]="clickableRef" [preferredPositions]="preferredTooltipPositions">
@@ -260,7 +260,7 @@
                                                                                 <div>{{endDateLabel}}</div>
                                                                                 <div><strong>{{iObjectiveMapLevel9.endDate | date}}</strong></div>
                                                                                 <div>{{leaderLabel}}</div>
-                                                                                <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel9?.leader) + ')'"></div><span> <strong>{{iObjectiveMapLevel9?.leader.name}}</strong></span>
+                                                                                <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel9?.leader) + ')'"></div><span> <strong>{{iObjectiveMapLevel9?.leader?.name}}</strong></span>
                                                                             </material-tooltip-card>
                                                                             <ul *ngIf="iObjectiveMapLevel9.alignedWithChildren.length > 0">
                                                                                 <li *ngFor="let iObjectiveMapLevel10 of iObjectiveMapLevel9.alignedWithChildren">
@@ -279,8 +279,8 @@
                                                                                         <span class="custom-row custom-name truncate-ellipsed-parent">
                                                                                             <span class="truncate-ellipsed-block">{{iObjectiveMapLevel10.name}}</span>
                                                                                         </span>
-                                                                                        <span class="avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel10.group.id)">
-                                                                                            <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + iObjectiveMapLevel10.group.name">{{firstLetter(iObjectiveMapLevel10.group.name)}}</span>
+                                                                                        <span class="avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel10?.group?.id)">
+                                                                                            <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjectiveMapLevel10?.group?.name)">{{firstLetter(iObjectiveMapLevel10?.group?.name)}}</span>
                                                                                         </span>
                                                                                     </a>
                                                                                     <material-tooltip-card [for]="clickableRef" [preferredPositions]="preferredTooltipPositions">
@@ -289,7 +289,7 @@
                                                                                         <div>{{endDateLabel}}</div>
                                                                                         <div><strong>{{iObjectiveMapLevel10.endDate | date}}</strong></div>
                                                                                         <div>{{leaderLabel}}</div>
-                                                                                        <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel10?.leader) + ')'"></div><span> <strong>{{iObjectiveMapLevel10?.leader.name}}</strong></span>
+                                                                                        <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel10?.leader) + ')'"></div><span> <strong>{{iObjectiveMapLevel10?.leader?.name}}</strong></span>
                                                                                     </material-tooltip-card>
                                                                                 </li>
                                                                             </ul>

@@ -35,26 +35,22 @@ import 'package:auge_web/services/app_routes.dart';
       'work_items_component.css'
     ])
 
-class WorkItemsComponent with CanReuse implements OnInit {
+class WorkItemsComponent with CanReuse {
 
   final Router _router;
 
   @Input()
   Initiative initiative;
 
-  String selectedView;
+  @Input()
+  SelectionView selectionView;
 
   static final String workItemsLabel =  WorkItemMsg.label('Work Items');
 
   WorkItemsComponent(this._router) {
-    print('WorkItemsComponent construtor');
+
   }
 
-  @override
-  void ngOnInit() async {
-    print('entrou OnInit list');
-    selectedView = 'list';
-  }
 
   String widthState(int workItemsCount, int stateWorkItemsCount, int withTotal) {
     return (stateWorkItemsCount / workItemsCount * withTotal).toString();
@@ -64,4 +60,9 @@ class WorkItemsComponent with CanReuse implements OnInit {
   void goToDetail() {
     _router.navigate(AppRoutes.workItemAddRoute.toUrl(parameters: { AppRoutesParam.initiativeIdParameter: initiative.id }));
   }
+}
+
+//TODO Just used to stores last view selection, because this components are created again, even using CanReuse (Needs to investigate better)
+class SelectionView {
+  String selected;
 }

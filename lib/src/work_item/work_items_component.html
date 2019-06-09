@@ -7,20 +7,20 @@
             <span><strong>{{workItemsLabel}}</strong></span>
         </div>
         <div action>
-            <material-button (trigger)="selectedView = 'list'">
+            <material-button (trigger)="selectionView.selected = 'list'">
                 <material-icon icon="view_list"></material-icon>
             </material-button>
-            <material-button (trigger)="selectedView = 'kanban'">
+            <material-button (trigger)="selectionView.selected = 'kanban'">
                 <material-icon icon="view_column"></material-icon>
             </material-button>
             <material-button (trigger)="goToDetail()">
                 <material-icon icon="add"></material-icon>
             </material-button>
         </div>
-        <div *ngIf="selectedView == 'list'">
+        <div *ngIf="selectionView.selected == 'list'">
             <auge-work-items-list [initiative]="initiative" ></auge-work-items-list>
         </div>
-        <div *ngIf="selectedView == 'kanban'">
+        <div *ngIf="selectionView.selected == 'kanban'">
             <auge-work-items-kanban [initiative]="initiative"></auge-work-items-kanban>
         </div>
     </material-expansionpanel>

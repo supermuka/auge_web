@@ -54,10 +54,13 @@ class MapComponent with CanReuse implements OnActivate {
   MapComponent(this._authService, this._appLayoutService, this._mapService, this._router);
 
   // Define messages and labels
+  static final String notInformedMsg = MapMsg.notInformedMsg();
+
   static final String leaderLabel =  FieldMsg.label('${Objective.className}.${Objective.leaderField}');
   static final String groupLabel =  FieldMsg.label('${Objective.className}.${Objective.groupField}');
   static final String startDateLabel =  FieldMsg.label('${Objective.className}.${Objective.startDateField}');
   static final String endDateLabel =  FieldMsg.label('${Objective.className}.${Objective.endDateField}');
+
 
   @override
   void onActivate(RouterState previous, RouterState current) async {
@@ -73,7 +76,7 @@ class MapComponent with CanReuse implements OnActivate {
 
     try {
       objectivesMap = await _mapService.getObjectivesMap(_authService.authorizedOrganization.id);
-      /*
+
       objectivesMap.forEach((o) {
         print('root');
         print(o.name);
@@ -82,7 +85,7 @@ class MapComponent with CanReuse implements OnActivate {
           print(f.name);
         });
       });
-      */
+
 
     } catch (e) {
       _appLayoutService.error = e.toString();
@@ -96,7 +99,6 @@ class MapComponent with CanReuse implements OnActivate {
 
   void goToObjectives(Objective objective) async {
     _router.navigateByUrl(AppRoutes.objectivesRoute.toUrl(queryParameters: { AppRoutesParam.objectiveIdParameter: objective.id }));
-
   }
 
   String colorFromUuid(String id) {
@@ -105,5 +107,9 @@ class MapComponent with CanReuse implements OnActivate {
 
   String firstLetter(String name) {
     return common_service.firstLetter(name);
+  }
+
+  String groupName(String name) {
+    return name ?? notInformedMsg;
   }
 }
