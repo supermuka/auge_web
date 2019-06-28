@@ -42,6 +42,10 @@ import 'objective_detail_component.template.dart' as objective_detail_component;
 @Component(
     selector: 'auge-objective-detail',
     providers: const [overlayBindings, datepickerBindings, UserService, GroupService],
+      templateUrl: 'objective_detail_component.html',
+      styleUrls: const [
+      'objective_detail_component.css'
+    ],
     directives: const [
       coreDirectives,
       materialInputDirectives,
@@ -54,10 +58,6 @@ import 'objective_detail_component.template.dart' as objective_detail_component;
       MaterialIconComponent,
       MaterialCheckboxComponent,
       MaterialDatepickerComponent,
-    ],
-    templateUrl: 'objective_detail_component.html',
-    styleUrls: const [
-      'objective_detail_component.css'
     ])
 
 class ObjectiveDetailComponent implements OnInit, OnActivate, OnDeactivate {

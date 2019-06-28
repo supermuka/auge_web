@@ -15,8 +15,8 @@ import 'search_service.dart';
 
 @Component(
   selector: 'auge-search',
-  styleUrls: const ['search_component.css'],
   templateUrl: 'search_component.html',
+  styleUrls: const ['search_component.css'],
   directives: const [
     coreDirectives,
     routerDirectives,

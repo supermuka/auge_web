@@ -29,6 +29,10 @@ import 'package:auge_web/src/group/group_detail_component.template.dart' as grou
 
 @Component(
     selector: 'auge-groups',
+    templateUrl: 'groups_component.html',
+    styleUrls: const [
+      'groups_component.css'
+    ],
     providers: const [GroupService, HistoryTimelineService],
     directives: const [
       coreDirectives,
@@ -40,10 +44,6 @@ import 'package:auge_web/src/group/group_detail_component.template.dart' as grou
       MaterialToggleComponent,
       MaterialMenuComponent,
       HistoryTimelineComponent,
-    ],
-    templateUrl: 'groups_component.html',
-    styleUrls: const [
-      'groups_component.css'
     ])
 
 class GroupsComponent with CanReuse implements OnActivate, OnDestroy {

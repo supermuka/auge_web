@@ -30,6 +30,10 @@ import 'package:auge_web/src/group/group_service.dart';
 @Component(
   selector: 'auge-initiatives-filter',
   providers: const [overlayBindings, ObjectiveService, UserService, GroupService],
+  templateUrl: 'initiatives_filter_component.html',
+  styleUrls: const [
+    'initiatives_filter_component.css'
+  ],
   directives: const [
     coreDirectives,
     routerDirectives,
@@ -39,10 +43,6 @@ import 'package:auge_web/src/group/group_service.dart';
     MaterialIconComponent,
     MaterialButtonComponent,
     MaterialAutoSuggestInputComponent,
-  ],
-  templateUrl: 'initiatives_filter_component.html',
-  styleUrls: const [
-    'initiatives_filter_component.css'
   ])
 class InitiativesFilterComponent implements OnInit {
 

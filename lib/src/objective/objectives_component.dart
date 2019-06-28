@@ -41,6 +41,10 @@ import 'package:auge_web/src/measure/measure_progress_component.template.dart' a
 @Component(
     selector: 'auge-objectives',
     providers: const [ObjectiveService, HistoryTimelineService],
+    templateUrl: 'objectives_component.html',
+    styleUrls: const [
+      'objectives_component.css'
+    ],
     directives: const [
       coreDirectives,
       routerDirectives,
@@ -56,11 +60,7 @@ import 'package:auge_web/src/measure/measure_progress_component.template.dart' a
       InitiativesSummaryComponent,
       MeasuresComponent,
     ],
-    pipes: const [commonPipes],
-    templateUrl: 'objectives_component.html',
-    styleUrls: const [
-      'objectives_component.css'
-    ])
+    pipes: const [commonPipes])
 
 class ObjectivesComponent with CanReuse implements AfterViewInit, OnActivate, OnDestroy {
 

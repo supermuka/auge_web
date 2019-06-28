@@ -80,6 +80,7 @@ class AppLayoutMsg {
         'Organization': 'Organization',
         'Organizations': 'Organizations',
         'Admin': 'Administration',
+        'SuperAdmin': 'Super Administration',
         'User Detail': 'User Detail',
         'Logout': 'Logout',
         'Insights': 'Insights',
@@ -89,6 +90,7 @@ class AppLayoutMsg {
         'Objectives Gantt': 'Objectives Gantt',
         'Users': 'Users',
         'Groups': 'Groups',
+        'Configuration': 'Configuration',
         'other': 'Not Defined'})}",
       name: "appLayoutLabel",
       args: [label],
@@ -115,6 +117,50 @@ class OrganizationMsg {
       desc: "Organization labels",
       examples: const {"Name": "Name"}
   );
+}
+
+/// Specific messages and label for [Configuration]
+class ConfigurationMsg {
+
+  /// Label for configuration
+  static label(String label) => Intl.message(
+      "${Intl.select(label, {
+        'Configuration': 'Configuration',
+        'Edit Configuration': 'Edit Configuration',
+        'Add Configuration': 'Add Configuration',
+        'Test Connection': 'Test Connection',
+        'Connected!': 'Connected!',
+        'Not Connected!': 'Not Connected!',
+        'Binded!': 'Binded!',
+        'Not Binded!': 'Not Binded',
+        'Test Bind': 'Test Bind',
+        'Test Group': 'Test Group',
+        'Group Found!': 'Group Found!',
+        'Group Not Found!': 'Group Not Found!',
+        'other': 'Not Defined'})}",
+      name: "configurationLabel",
+      args: [label],
+      // locale: "en",
+      desc: "Configuration labels",
+      examples: const {"Name": "Name"}
+  );
+
+
+  /// Label for ldap search scope level configuration
+  static searchScopeLabel(int indexLabel) => Intl.message(
+      "${Intl.select(indexLabel, {
+        0: 'Base Level',
+        1: 'One Level',
+        2: 'Sub Level',
+        3: 'Subordinate Subtree',
+        'other': 'Not Defined'})}",
+      name: "searchScopeLabel",
+      args: [label],
+      // locale: "en",
+      desc: "Search Scope Configuration labels",
+      examples: const {"0": "Name"}
+  );
+
 }
 
 /// Specific messages and label for [User]

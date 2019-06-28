@@ -56,6 +56,10 @@ import 'work_item_detail_component.template.dart' as work_item_detail_component;
 @Component(
     selector: 'auge-work-item-detail',
     providers: const [popupBindings, overlayBindings, datepickerBindings, WorkItemService, UserService],
+    templateUrl: 'work_item_detail_component.html',
+    styleUrls: const [
+      'work_item_detail_component.css'
+    ],
     directives: const [
       coreDirectives,
       routerDirectives,
@@ -80,10 +84,6 @@ import 'work_item_detail_component.template.dart' as work_item_detail_component;
       MaterialChipsComponent,
       MaterialChipComponent,
       MaterialDatepickerComponent,
-    ],
-    templateUrl: 'work_item_detail_component.html',
-    styleUrls: const [
-      'work_item_detail_component.css'
     ])
 
 class WorkItemDetailComponent with CanReuse implements OnInit, OnActivate, OnDeactivate  {

@@ -20,7 +20,7 @@
                 <material-icon icon="timeline"></material-icon>{{initiativesLabel}}
             </material-list-item>
         </div>
-        <div *ngIf="isAuthorizedToAccessOrganizationProfile || isAuthorizedToAccessUsers || isAuthorizedToAccessGroups" group>
+        <div *ngIf="isAdmin" group>
             <div label>{{adminLabel}}</div>
             <material-list-item *ngIf="isAuthorizedToAccessUsers" [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(usersRouteUrl)">
                 <material-icon icon="account_circle"></material-icon>{{usersLabel}}
@@ -28,8 +28,14 @@
             <material-list-item *ngIf="isAuthorizedToAccessGroups" [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(groupsRouteUrl)">
                 <material-icon icon="group"></material-icon>{{groupsLabel}}
             </material-list-item>
+        </div>
+        <div *ngIf="isSuperAdmin" group>
+            <div label>{{superAdminLabel}}</div>
             <material-list-item *ngIf="isAuthorizedToAccessOrganizationProfile" [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(organizationRouteUrl)">
                 <material-icon icon="account_balance"></material-icon>{{organizationLabel}}
+            </material-list-item>
+            <material-list-item *ngIf="isAuthorizedToAccessConfiguration" [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(configurationRouteUrl)">
+                <material-icon icon="settings"></material-icon>{{configurationLabel}}
             </material-list-item>
         </div>
     </material-list>

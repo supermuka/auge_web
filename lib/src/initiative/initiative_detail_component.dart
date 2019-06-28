@@ -43,6 +43,10 @@ import 'initiative_detail_component.template.dart' as initiative_detail_componen
 @Component(
   selector: 'auge-initiative-detail',
   providers: const [overlayBindings, ObjectiveService, UserService, GroupService],
+  templateUrl: 'initiative_detail_component.html',
+  styleUrls: const [
+  'initiative_detail_component.css'
+  ],
   directives: const [
     coreDirectives,
     routerDirectives,
@@ -56,10 +60,6 @@ import 'initiative_detail_component.template.dart' as initiative_detail_componen
     MaterialDropdownSelectComponent,
     DropdownSelectValueAccessor,
     DropdownButtonComponent,
-  ],
-  templateUrl: 'initiative_detail_component.html',
-  styleUrls: const [
-    'initiative_detail_component.css'
   ])
 class InitiativeDetailComponent implements OnInit, OnActivate, OnDeactivate {
 

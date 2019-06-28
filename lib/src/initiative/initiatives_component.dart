@@ -48,6 +48,10 @@ import 'package:auge_web/src/work_item/work_item_detail_component.template.dart'
 @Component(
     selector: 'auge-initiatives',
     providers: const [InitiativeService, ObjectiveService, HistoryTimelineService],
+    templateUrl: 'initiatives_component.html',
+    styleUrls: const [
+      'initiatives_component.css'
+    ],
     directives: const [
       coreDirectives,
       routerDirectives,
@@ -66,10 +70,6 @@ import 'package:auge_web/src/work_item/work_item_detail_component.template.dart'
       WorkItemsListComponent,
       HistoryTimelineComponent,
       InitiativeStagesComponent,
-    ],
-    templateUrl: 'initiatives_component.html',
-    styleUrls: const [
-      'initiatives_component.css'
     ])
 
 class InitiativesComponent with CanReuse implements OnInit, OnActivate, OnDestroy {

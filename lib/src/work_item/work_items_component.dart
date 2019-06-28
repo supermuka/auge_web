@@ -20,6 +20,10 @@ import 'package:auge_web/services/app_routes.dart';
 @Component(
     selector: 'auge-work-items',
     providers: const [WorkItemService],
+    templateUrl: 'work_items_component.html',
+    styleUrls: const [
+      'work_items_component.css'
+    ],
     directives: const [
       coreDirectives,
       routerDirectives,
@@ -29,11 +33,7 @@ import 'package:auge_web/services/app_routes.dart';
       WorkItemsListComponent,
       WorkItemsKanbanComponent,
     ],
-    pipes: const [commonPipes],
-    templateUrl: 'work_items_component.html',
-    styleUrls: const [
-      'work_items_component.css'
-    ])
+    pipes: const [commonPipes])
 
 class WorkItemsComponent with CanReuse {
 

@@ -39,6 +39,10 @@ import 'group_detail_component.template.dart' as group_detail_component;
 @Component(
     selector: 'auge-group-detail',
     providers: const [overlayBindings, UserService],
+    templateUrl: 'group_detail_component.html',
+    styleUrls: const [
+      'group_detail_component.css'
+    ],
     directives: const [
       coreDirectives,
       materialInputDirectives,
@@ -54,10 +58,6 @@ import 'group_detail_component.template.dart' as group_detail_component;
       MaterialRadioGroupComponent,
       MaterialChipsComponent,
       MaterialChipComponent,
-    ],
-    templateUrl: 'group_detail_component.html',
-    styleUrls: const [
-      'group_detail_component.css'
     ])
 
 class GroupDetailComponent implements OnInit, OnActivate, OnDeactivate {

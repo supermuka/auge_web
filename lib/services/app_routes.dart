@@ -154,6 +154,9 @@ class AppRoutes {
       path: 'organizations/:${AppRoutesParam.organizationIdParameter}/edit',
      parent: appLayoutRoute
   );
-
+  static final configurationRoute = new RoutePath(
+      path: 'configuration',
+      parent: appLayoutRoute
+  );
 }
 

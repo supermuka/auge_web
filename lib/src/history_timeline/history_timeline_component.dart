@@ -26,6 +26,10 @@ export 'package:auge_web/src/history_timeline/history_timeline_service.dart';
 
 @Component(
     selector: 'auge-history-timeline',
+    templateUrl: 'history_timeline_component.html',
+    styleUrls: const [
+      'history_timeline_component.css'
+    ],
     providers: const [],
     directives: const [
       coreDirectives,
@@ -35,12 +39,7 @@ export 'package:auge_web/src/history_timeline/history_timeline_service.dart';
       DeferredContentDirective,
       HistoryItemTimelineDetailComponent,
     ],
-    pipes:   const [DatePipe],
-    templateUrl: 'history_timeline_component.html',
-
-    styleUrls: const [
-      'history_timeline_component.css'
-    ])
+    pipes:   const [DatePipe],)
 
 class HistoryTimelineComponent /* extends Object implements OnInit  */ {
 

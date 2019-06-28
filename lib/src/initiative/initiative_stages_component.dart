@@ -43,6 +43,10 @@ import 'initiative_stages_component.template.dart' as initiative_stages_componen
 @Component(
     selector: 'auge-initiative-stages',
     providers: [overlayBindings, InitiativeService],
+    templateUrl: 'initiative_stages_component.html',
+    styleUrls: const [
+      'initiative_stages_component.css'
+    ],
     directives: const [
       coreDirectives,
       materialInputDirectives,
@@ -59,10 +63,7 @@ import 'initiative_stages_component.template.dart' as initiative_stages_componen
       DropdownButtonComponent,
     ],
   /*  pipes: const [commonPipes], */
-    templateUrl: 'initiative_stages_component.html',
-    styleUrls: const [
-      'initiative_stages_component.css'
-    ])
+   )
 
 class InitiativeStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
 

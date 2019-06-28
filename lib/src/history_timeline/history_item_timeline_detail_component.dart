@@ -38,6 +38,10 @@ const _cKey = 'c';
 @Component(
     selector: 'auge-history-item-timeline-detail',
     providers: const [],
+    templateUrl: 'history_item_timeline_detail_component.html',
+    styleUrls: const [
+    'history_item_timeline_detail_component.css'
+    ],
     directives: const [
       coreDirectives,
       MaterialExpansionPanel,
@@ -45,11 +49,7 @@ const _cKey = 'c';
       MaterialIconComponent,
       DeferredContentDirective,
     ],
-    pipes: const [commonPipes],
-    templateUrl: 'history_item_timeline_detail_component.html',
-    styleUrls: const [
-      'history_item_timeline_detail_component.css'
-    ])
+    pipes: const [commonPipes])
 class HistoryItemTimelineDetailComponent /* extends Object */ implements OnInit {
 
 

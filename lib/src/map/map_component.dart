@@ -26,8 +26,8 @@ import 'package:auge_web/services/app_routes.dart';
 @Component(
   selector: 'auge-map',
   providers: const [MapService, ObjectiveService],
-  styleUrls: const ['map_component.css'],
   templateUrl: 'map_component.html',
+  styleUrls: const ['map_component.css'],
   pipes: [commonPipes],
 
   directives: const [

@@ -31,6 +31,10 @@ import 'package:auge_web/services/app_routes.dart';
 @Component(
     selector: 'auge-measure-detail',
     providers: [overlayBindings, MeasureService],
+    templateUrl: 'measure_detail_component.html',
+    styleUrls: const [
+      'measure_detail_component.css'
+    ],
     directives: const [
       coreDirectives,
       materialInputDirectives,
@@ -42,10 +46,6 @@ import 'package:auge_web/services/app_routes.dart';
       DropdownSelectValueAccessor,
       MaterialButtonComponent,
       MaterialIconComponent,
-    ],
-    templateUrl: 'measure_detail_component.html',
-    styleUrls: const [
-      'measure_detail_component.css'
     ])
 
 class MeasureDetailComponent implements OnInit, OnActivate, OnDeactivate  {

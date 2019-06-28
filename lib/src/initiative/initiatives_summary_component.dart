@@ -25,6 +25,10 @@ import 'package:auge_web/services/app_routes.dart';
 @Component(
     selector: 'auge-initiatives-summary',
     providers: const [InitiativeService],
+    templateUrl: 'initiatives_summary_component.html',
+    styleUrls: const [
+      'initiatives_summary_component.css'
+    ],
     directives: const [
       coreDirectives,
       routerDirectives,
@@ -35,10 +39,6 @@ import 'package:auge_web/services/app_routes.dart';
       MaterialExpansionPanelSet,
       MaterialExpansionPanel,
       InitiativeSummaryComponent,
-    ],
-    templateUrl: 'initiatives_summary_component.html',
-    styleUrls: const [
-      'initiatives_summary_component.css'
     ])
 
 class InitiativesSummaryComponent with CanReuse implements OnInit {

@@ -4,11 +4,13 @@ import 'package:auge_server/model/general/user.dart';
 import 'package:auge_server/model/general/user_profile_organization.dart';
 import 'package:auge_server/model/general/group.dart';
 import 'package:auge_server/model/general/organization.dart';
+import 'package:auge_server/model/general/configuration.dart';
 import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/objective/measure.dart';
 import 'package:auge_server/model/initiative/initiative.dart';
 import 'package:auge_server/model/initiative/stage.dart';
 import 'package:auge_server/model/initiative/work_item.dart';
+
 
 /// Specific messages and label for [User] class field
 class CommonFieldAndValuesMsg {
@@ -117,6 +119,27 @@ class FieldMsg {
       '${WorkItem.className}.${WorkItem.stageField}':'Stage',
       '${WorkItem.className}.${WorkItem.assignedToField}':'Assigned To',
       '${WorkItem.className}.${WorkItem.checkItemsField}':'Check Items',
+      //LDAP CONFIGURATION
+      '${DirectoryService.className}.${DirectoryService.enabledField}':'Ldap Enabled',
+      '${DirectoryService.className}.${DirectoryService.hostAddressField}':'Host Address',
+      '${DirectoryService.className}.${DirectoryService.portField}':'Port',
+      '${DirectoryService.className}.${DirectoryService.sslTlsField}':'SSL/TLS Enabled',
+      '${DirectoryService.className}.${DirectoryService.adminBindDNField}':'Admin Bind DN',
+      '${DirectoryService.className}.${DirectoryService.adminPasswordField}':'Admin Password',
+
+      '${DirectoryService.className}.${DirectoryService.groupSearchDNField}':'Group Search DN',
+      '${DirectoryService.className}.${DirectoryService.groupSearchScopeField}':'Group Search Scope',
+      '${DirectoryService.className}.${DirectoryService.groupSearchFilterField}':'Group Search Filter',
+      '${DirectoryService.className}.${DirectoryService.groupMemberAttributeField}':'Group Member Attribute',
+
+      '${DirectoryService.className}.${DirectoryService.userSearchDNField}':'User Search DN',
+      '${DirectoryService.className}.${DirectoryService.userSearchScopeField}':'User Search Scope',
+      '${DirectoryService.className}.${DirectoryService.userSearchFilterField}':'User Search Filter',
+      '${DirectoryService.className}.${DirectoryService.userLoginAttributeField}':'User Login Attribute',
+      '${DirectoryService.className}.${DirectoryService.userFirstNameAttributeField}':'User First Attribute',
+      '${DirectoryService.className}.${DirectoryService.userLastNameAttributeField}':'User Last Attribute',
+      '${DirectoryService.className}.${DirectoryService.userEmailAttributeField}':'User Email Attribute',
+
       'other': 'Not Defined'})}",
     name: "FieldLabel",
     args: [classAndFieldName],

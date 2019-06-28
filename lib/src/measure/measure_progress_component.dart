@@ -44,6 +44,8 @@ import 'package:auge_web/services/app_routes.dart';
 @Component(
     selector: 'auge-measure-progress',
     providers: [overlayBindings, datepickerBindings, ObjectiveService, MeasureService],
+    templateUrl: 'measure_progress_component.html',
+    styleUrls: const ['measure_progress_component.css'],
     directives: const [
       coreDirectives,
       materialInputDirectives,
@@ -60,11 +62,7 @@ import 'package:auge_web/services/app_routes.dart';
       MaterialDatepickerComponent,
       MaterialMenuComponent,
     ],
-    pipes: const [commonPipes],
-    templateUrl: 'measure_progress_component.html',
-    styleUrls: const [
-      'measure_progress_component.css'
-    ])
+    pipes: const [commonPipes])
 
 class MeasureProgressComponent implements OnInit, OnActivate, OnDeactivate  {
 

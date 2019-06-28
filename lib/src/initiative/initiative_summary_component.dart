@@ -13,16 +13,16 @@ import 'package:auge_web/message/messages.dart';
 
 @Component(
     selector: 'auge-initiative-summary',
+    templateUrl: 'initiative_summary_component.html',
+    styleUrls: const [
+      'initiative_summary_component.css'
+    ],
     directives: const [
       coreDirectives,
       ClickableTooltipTargetDirective,
       KeyboardOnlyFocusIndicatorDirective,
       MaterialTooltipDirective,
       MaterialPaperTooltipComponent,
-    ],
-    templateUrl: 'initiative_summary_component.html',
-    styleUrls: const [
-      'initiative_summary_component.css'
     ])
 class InitiativeSummaryComponent {
 

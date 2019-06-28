@@ -28,6 +28,10 @@ import 'package:auge_web/src/organization/organization_detail_component.template
 @Component(
     selector: 'auge-organizations',
     providers: const <dynamic>[OrganizationService],
+    templateUrl: 'organizations_component.html',
+    styleUrls: const [
+      'organizations_component.css'
+    ],
     directives: const [
       coreDirectives,
       routerDirectives,
@@ -37,10 +41,6 @@ import 'package:auge_web/src/organization/organization_detail_component.template
       MaterialFabComponent,
       MaterialIconComponent,
       MaterialMenuComponent,
-    ],
-    templateUrl: 'organizations_component.html',
-    styleUrls: const [
-      'organizations_component.css'
     ])
 
 class OrganizationsComponent extends Object implements OnActivate, OnDestroy  {

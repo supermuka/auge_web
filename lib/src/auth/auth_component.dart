@@ -33,6 +33,8 @@ import 'package:auge_web/services/app_routes.dart';
 
 @Component(
   selector: 'auge-auth',
+  templateUrl: 'auth_component.html',
+  styleUrls: const ['auth_component.css'],
   providers: const [scrollHostProviders],
   directives: const [
     routerDirectives,
@@ -44,9 +46,7 @@ import 'package:auge_web/services/app_routes.dart';
     MaterialButtonComponent,
     MaterialDropdownSelectComponent,
     DropdownSelectValueAccessor,
-  ],
-  styleUrls: const ['auth_component.css'],
-  templateUrl: 'auth_component.html',
+  ]
 )
 
 class AuthComponent implements OnActivate  {

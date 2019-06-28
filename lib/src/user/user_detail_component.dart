@@ -36,6 +36,10 @@ import 'package:auge_web/services/common_service.dart' as common_service;
 
 @Component(
     selector: 'auge-user-detail',
+    templateUrl: 'user_detail_component.html',
+    styleUrls: const [
+      'user_detail_component.css'
+    ],
     providers: const <dynamic>[overlayBindings, UserService],
     directives: const [
       coreDirectives,
@@ -48,10 +52,6 @@ import 'package:auge_web/services/common_service.dart' as common_service;
       MaterialRadioComponent,
       MaterialButtonComponent,
       MaterialIconComponent,
-    ],
-    templateUrl: 'user_detail_component.html',
-    styleUrls: const [
-      'user_detail_component.css'
     ])
 
 /// Component uses to add and edit an [User] and [UserProfile]

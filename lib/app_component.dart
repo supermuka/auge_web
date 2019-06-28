@@ -17,14 +17,14 @@ import 'package:auge_web/src/app_layout/app_layout_component.template.dart' as a
 
 @Component(
     selector: 'auge-app-component',
+    templateUrl: 'app_component.html',
+    styleUrls: const [
+    'app_component.css',
+    ],
     providers: const <dynamic>[AugeApiService, AuthService],
     directives: const [
       coreDirectives,
       routerDirectives,
-    ],
-    templateUrl: 'app_component.html',
-    styleUrls: const [
-      'app_component.css',
     ])
 
 class AppComponent with CanReuse {

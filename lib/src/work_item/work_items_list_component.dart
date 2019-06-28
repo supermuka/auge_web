@@ -38,6 +38,10 @@ import 'package:auge_web/services/app_routes.dart';
 @Component(
     selector: 'auge-work-items-list',
     providers: const [InitiativeService, WorkItemService],
+    templateUrl: 'work_items_list_component.html',
+    styleUrls: const [
+      'work_items_list_component.css'
+    ],
     directives: const [
       coreDirectives,
       routerDirectives,
@@ -51,11 +55,7 @@ import 'package:auge_web/services/app_routes.dart';
       WorkItemDetailComponent,
       NgModel,
     ],
-    pipes: const [commonPipes],
-    templateUrl: 'work_items_list_component.html',
-    styleUrls: const [
-      'work_items_list_component.css'
-    ])
+    pipes: const [commonPipes])
 class WorkItemsListComponent with CanReuse /* with CanReuse implements OnActivate  */ {
 
   final AppLayoutService _appLayoutService;

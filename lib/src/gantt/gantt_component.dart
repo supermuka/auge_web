@@ -25,6 +25,8 @@ import 'package:auge_web/services/app_routes.dart';
 @Component(
   selector: 'auge-gantt',
   providers: const [GanttService, ObjectiveService],
+  templateUrl: 'gantt_component.html',
+  styleUrls: const ['gantt_component.css'],
   directives: const [
     coreDirectives,
     routerDirectives,
@@ -34,8 +36,6 @@ import 'package:auge_web/services/app_routes.dart';
     KeyboardOnlyFocusIndicatorDirective,
     MaterialPaperTooltipComponent,
   ],
-  styleUrls: const ['gantt_component.css'],
-  templateUrl: 'gantt_component.html',
   pipes: const [commonPipes],
 )
 

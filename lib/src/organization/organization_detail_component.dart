@@ -23,6 +23,10 @@ import 'package:auge_web/src/organization/organization_service.dart';
 @Component(
   selector: 'auge-organization-detail',
   providers: const <dynamic>[overlayBindings, OrganizationService],
+    templateUrl: 'organization_detail_component.html',
+    styleUrls: const [
+      'organization_detail_component.css'
+    ],
   directives: const [
     coreDirectives,
     routerDirectives,
@@ -32,10 +36,6 @@ import 'package:auge_web/src/organization/organization_service.dart';
     ModalComponent,
     MaterialIconComponent,
     MaterialButtonComponent,
-  ],
-  templateUrl: 'organization_detail_component.html',
-  styleUrls: const [
-    'organization_detail_component.css'
   ])
 
 class OrganizationDetailComponent implements OnInit, OnActivate, OnDeactivate {

@@ -33,6 +33,10 @@ import 'package:auge_web/src/app_layout/app_layout_service.dart';
 @Component(
     selector: 'auge-measures',
     providers: [MeasureService],
+    templateUrl: 'measures_component.html',
+    styleUrls: const [
+      'measures_component.css'
+    ],
     directives: const [
       coreDirectives,
       materialInputDirectives,
@@ -49,11 +53,7 @@ import 'package:auge_web/src/app_layout/app_layout_service.dart';
       MeasureDetailComponent,
       MeasureProgressComponent,
     ],
-    pipes: const [commonPipes],
-    templateUrl: 'measures_component.html',
-    styleUrls: const [
-      'measures_component.css'
-    ])
+    pipes: const [commonPipes])
 
 class MeasuresComponent with CanReuse {
 

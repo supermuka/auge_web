@@ -21,14 +21,13 @@ import 'package:auge_web/services/app_routes.dart';
 @Component(
   selector: 'auge-insights',
   providers: const [ObjectiveService, InitiativeService],
+    styleUrls: const ['insights_component.css'],
+    templateUrl: 'insights_component.html',
   directives: const [
     coreDirectives,
     ScoreboardComponent,
     ScorecardComponent,
-  ],
-  styleUrls: const ['insights_component.css'],
-  templateUrl: 'insights_component.html',
-)
+  ])
 
 class InsightsComponent with CanReuse implements OnActivate  {
 

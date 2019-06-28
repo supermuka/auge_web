@@ -36,6 +36,10 @@ import 'package:auge_web/src/user/user_detail_component.template.dart' as user_d
 @Component(
     selector: 'auge-users',
     providers: const [UserService, HistoryTimelineService],
+    templateUrl: 'users_component.html',
+    styleUrls: const [
+      'users_component.css'
+    ],
     directives: const [
       coreDirectives,
       routerDirectives,
@@ -46,10 +50,6 @@ import 'package:auge_web/src/user/user_detail_component.template.dart' as user_d
       MaterialMenuComponent,
       MaterialToggleComponent,
       HistoryTimelineComponent,
-    ],
-    templateUrl: 'users_component.html',
-    styleUrls: const [
-      'users_component.css'
     ])
 
 class UsersComponent with CanReuse implements OnActivate {
