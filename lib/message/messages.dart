@@ -1,3 +1,4 @@
+import 'package:auge_server/model/general/configuration.dart';
 import 'package:intl/intl.dart';
 
 class CommonMsg {
@@ -128,15 +129,7 @@ class ConfigurationMsg {
         'Configuration': 'Configuration',
         'Edit Configuration': 'Edit Configuration',
         'Add Configuration': 'Add Configuration',
-        'Test Connection': 'Test Connection',
-        'Connected!': 'Connected!',
-        'Not Connected!': 'Not Connected!',
-        'Binded!': 'Binded!',
-        'Not Binded!': 'Not Binded',
-        'Test Bind': 'Test Bind',
-        'Test Group': 'Test Group',
-        'Group Found!': 'Group Found!',
-        'Group Not Found!': 'Group Not Found!',
+        'Test Directory Service': 'Test Directory Service',
         'other': 'Not Defined'})}",
       name: "configurationLabel",
       args: [label],
@@ -145,6 +138,28 @@ class ConfigurationMsg {
       examples: const {"Name": "Name"}
   );
 
+  /// Label for status configuration
+  static statusLabel(int indexLabel) => Intl.message(
+      "${Intl.select(indexLabel, {
+        DirectoryServiceStatus.success.index: 'Success!',
+        DirectoryServiceStatus.errorException.index: 'An exception occured!',
+        DirectoryServiceStatus.errorEmailAttribute.index: 'Email attribute not found!',
+        DirectoryServiceStatus.errorFirstNameAttribute.index: 'First name attribute not found!',
+        DirectoryServiceStatus.errorGroupMemberAttributeNotFound.index: 'Group member attribute not found!',
+        DirectoryServiceStatus.errorGroupNotFound.index: 'Group not found!',
+        DirectoryServiceStatus.errorLastNameAttribute.index: 'Last name attribute not found!',
+        DirectoryServiceStatus.errorLoginAttribute.index: 'Login attribute not found!',
+        DirectoryServiceStatus.errorManyGroupsFound.index: 'Many groups found!',
+        DirectoryServiceStatus.errorNotBindedInvalidCredentials.index: 'Not binded! Invalid credentials.',
+        DirectoryServiceStatus.errorNotConnected.index: 'Not connected!',
+        DirectoryServiceStatus.errorUserNotFound.index: 'User not found!',
+        'other': 'Not Defined'})}",
+      name: "statusConfigurationLabel",
+      args: [label],
+      // locale: "en",
+      desc: "Status Configuration labels",
+      examples: const {"Name": "Name"}
+  );
 
   /// Label for ldap search scope level configuration
   static searchScopeLabel(int indexLabel) => Intl.message(
