@@ -1,4 +1,4 @@
-import 'package:auge_server/model/general/configuration.dart';
+import 'package:auge_server/model/general/organization_configuration.dart';
 import 'package:intl/intl.dart';
 
 class CommonMsg {

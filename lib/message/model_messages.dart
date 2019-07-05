@@ -4,7 +4,7 @@ import 'package:auge_server/model/general/user.dart';
 import 'package:auge_server/model/general/user_profile_organization.dart';
 import 'package:auge_server/model/general/group.dart';
 import 'package:auge_server/model/general/organization.dart';
-import 'package:auge_server/model/general/configuration.dart';
+import 'package:auge_server/model/general/organization_configuration.dart';
 import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/objective/measure.dart';
 import 'package:auge_server/model/initiative/initiative.dart';
@@ -119,8 +119,11 @@ class FieldMsg {
       '${WorkItem.className}.${WorkItem.stageField}':'Stage',
       '${WorkItem.className}.${WorkItem.assignedToField}':'Assigned To',
       '${WorkItem.className}.${WorkItem.checkItemsField}':'Check Items',
-      //LDAP CONFIGURATION
-      '${DirectoryService.className}.${DirectoryService.enabledField}':'Ldap Enabled',
+
+      //CONFIGURATION
+      '${OrganizationConfiguration.className}.${OrganizationConfiguration.directoryServiceEnabledField}':'Directory Service (LDAP) Enabled',
+
+      //DIRECTORY SERVICE CONFIGURATION
       '${DirectoryService.className}.${DirectoryService.hostAddressField}':'Host Address',
       '${DirectoryService.className}.${DirectoryService.portField}':'Port',
       '${DirectoryService.className}.${DirectoryService.sslTlsField}':'SSL/TLS Enabled',

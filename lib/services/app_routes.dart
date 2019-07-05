@@ -15,6 +15,7 @@ class AppRoutesParam {
 class AppRoutesQueryParam {
 
   //QueryParam
+  static const organizationIdQueryParameter = 'organization_id';
   static const initiativeIdQueryParameter = 'initiative_id';
   static const workItemIdQueryParameter = 'work_item_id';
   static const objectiveIdQueryParameter = 'initiative_id';
@@ -155,7 +156,7 @@ class AppRoutes {
      parent: appLayoutRoute
   );
   static final configurationRoute = new RoutePath(
-      path: 'configuration',
+      path: 'organizations/:${AppRoutesParam.organizationIdParameter}/configuration',
       parent: appLayoutRoute
   );
 }

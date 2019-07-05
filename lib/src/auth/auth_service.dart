@@ -86,7 +86,6 @@ class AuthService  {
           .convert(passwordStr.codeUnits)
           .bytes);
 
-
      try {
        user_profile_organization_pbgrpc
            .UserProfileOrganization userProfileOrganization = await _userProfileOrganizationServiceClient

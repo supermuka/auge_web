@@ -84,7 +84,7 @@ class AppLayoutComponent with CanReuse implements OnActivate {
   String get usersRouteUrl => AppRoutes.usersRoute.toUrl();
   String get groupsRouteUrl => AppRoutes.groupsRoute.toUrl();
   String get organizationRouteUrl =>  AppRoutes.organizationEditWithAppLayoutParentRoute.toUrl(parameters: { AppRoutesParam.organizationIdParameter: this._authService.authorizedOrganization.id });
-  String get configurationRouteUrl => AppRoutes.configurationRoute.toUrl();
+  String get configurationRouteUrl => AppRoutes.configurationRoute.toUrl(parameters: { AppRoutesParam.organizationIdParameter: this._authService.authorizedOrganization.id });
 
   final List<RouteDefinition> routes = [
     new RouteDefinition(

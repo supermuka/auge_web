@@ -58,7 +58,17 @@ class AuthComponent implements OnActivate  {
 
   String eMail = "demo@levius.com.br";
   String passwordStr = "1234567";
-  String dialogError;
+  String _dialogError;
+
+  String get dialogError => _dialogError;
+
+  set dialogError(String dialogError) {
+    _dialogError = dialogError;
+
+    // Start a timeout to after to clear the error.
+    // The error is presented just some seconds.
+    common_service.startTimeoutTimer(() { _dialogError = null; });
+  }
 
   List<UserProfileOrganization> authorizedUsersProfileOrganizations;
 
@@ -130,7 +140,8 @@ class AuthComponent implements OnActivate  {
           }
         } catch (e) {
           dialogError = AuthMsg.serverApiErrorMsg();
-          rethrow;
+          return true;
+          //rethrow;
         }
       }
       return true;
