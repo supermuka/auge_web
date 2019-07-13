@@ -138,7 +138,7 @@ class UserChangedValues {
         if (k == User.userProfileField) {
             UserProfileChangedValues.constructViewToFieldsChangedValues(
                fieldsChangedValues, v);
-        } else if (k == User.passwordField) {
+        } else if (k == UserProfile.passwordField) {
           fieldsChangedValues.putIfAbsent('${User.className}.${k}', () =>
           { _typeToViewKey: _typeToViewText,
             _fieldDescriptionKey: FieldMsg.label('${User.className}.${k}')});

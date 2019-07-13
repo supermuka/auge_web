@@ -8,7 +8,7 @@
            <material-input autocomplete="off" class="w3-col l12" [(ngModel)]="userProfileOrganization.user.name" floatingLabel [label]="nameLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
         </div>
         <div class="w3-row">
-           <material-input autocomplete="off" class="w3-col l12" [(ngModel)]="userProfileOrganization.user.eMail" floatingLabel [label]="emailLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
+           <material-input autocomplete="off" class="w3-col l12" [(ngModel)]="userProfileOrganization.user.userProfile.eMail" floatingLabel [label]="emailLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
         </div>
         <div class="w3-row">
            <material-input autocomplete="new-password" class="w3-col l12"  type="password"  [(ngModel)]="passwordSecure" floatingLabel [label]="passwordLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>

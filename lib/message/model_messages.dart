@@ -59,10 +59,10 @@ class FieldMsg {
     "${Intl.select(classAndFieldName, {
        //USER
       '${User.className}.${User.nameField}': 'Name',
-      '${User.className}.${User.eMailField}': 'e-Mail',
-      '${User.className}.${User.passwordField}': 'Password',
+      '${User.className}.${User.inactiveField}': 'Inactive',
       //USERPROFILE
-      '${UserProfile.className}.${UserProfile.isSuperAdminField}':'Super Admin',
+      '${UserProfile.className}.${UserProfile.eMailField}': 'e-Mail',
+      '${UserProfile.className}.${UserProfile.passwordField}': 'Password',
       '${UserProfile.className}.${UserProfile.imageField}':'Image',
       '${UserProfile.className}.${UserProfile.idiomLocaleField}':'Idioma',
       //USERPROFILEORGANIZATION
@@ -138,7 +138,8 @@ class FieldMsg {
       '${DirectoryService.className}.${DirectoryService.userSearchDNField}':'User Search DN',
       '${DirectoryService.className}.${DirectoryService.userSearchScopeField}':'User Search Scope',
       '${DirectoryService.className}.${DirectoryService.userSearchFilterField}':'User Search Filter',
-      '${DirectoryService.className}.${DirectoryService.userLoginAttributeField}':'User Login Attribute',
+      '${DirectoryService.className}.${DirectoryService.userIdAttributeField}':'User Id (Internal GUID/UUID) Attribute',
+      '${DirectoryService.className}.${DirectoryService.userAdditionalIdAttributeField}':'User Additional Id (Login) Attribute',
       '${DirectoryService.className}.${DirectoryService.userFirstNameAttributeField}':'User First Attribute',
       '${DirectoryService.className}.${DirectoryService.userLastNameAttributeField}':'User Last Attribute',
       '${DirectoryService.className}.${DirectoryService.userEmailAttributeField}':'User Email Attribute',

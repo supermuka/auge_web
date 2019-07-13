@@ -17,7 +17,7 @@
                             <span class="avatar" [style.background-image]="'url(' + userUrlImage(iUserProfileOrganization.user) + ')'"></span><span><strong>{{iUserProfileOrganization.user.name}}</strong></span>
                         </div>
                         <div value>
-                            {{iUserProfileOrganization.user.eMail}}
+                            {{iUserProfileOrganization.user.userProfile.eMail}}
                         </div>
                         <div action>
                             <material-menu [menu]="menuModel" (click)="selectUserProfileOrganization(iUserProfileOrganization)">

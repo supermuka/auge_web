@@ -148,7 +148,7 @@ class ConfigurationMsg {
         DirectoryServiceStatus.errorGroupMemberAttributeNotFound.index: 'Group member attribute not found!',
         DirectoryServiceStatus.errorGroupNotFound.index: 'Group not found!',
         DirectoryServiceStatus.errorLastNameAttribute.index: 'Last name attribute not found!',
-        DirectoryServiceStatus.errorLoginAttribute.index: 'Login attribute not found!',
+        DirectoryServiceStatus.errorIdAttribute.index: 'Login attribute not found!',
         DirectoryServiceStatus.errorManyGroupsFound.index: 'Many groups found!',
         DirectoryServiceStatus.errorNotBindedInvalidCredentials.index: 'Not binded! Invalid credentials.',
         DirectoryServiceStatus.errorNotConnected.index: 'Not connected!',

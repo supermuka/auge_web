@@ -91,9 +91,9 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
   static final String editUserLabel =  UserMsg.label('Edit User');
 
   static final String nameLabel =  FieldMsg.label('${User.className}.${User.nameField}');
-  static final String emailLabel =  FieldMsg.label('${User.className}.${User.eMailField}');
-  static final String passwordLabel =  FieldMsg.label('${User.className}.${User.passwordField}');
   static final String authorizationLabel = FieldMsg.label('${UserProfileOrganization.className}.${UserProfileOrganization.authorizationRoleField}');
+  static final String emailLabel =  FieldMsg.label('${UserProfile.className}.${UserProfile.eMailField}');
+  static final String passwordLabel =  FieldMsg.label('${UserProfile.className}.${UserProfile.passwordField}');
   static final String photoLabel = FieldMsg.label('${UserProfile.className}.${UserProfile.imageField}');
   static final String idiomLabel = FieldMsg.label('${UserProfile.className}.${UserProfile.idiomLocaleField}');
 
@@ -210,7 +210,7 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
   set passwordSecure(String password) {
     _passwordOrigin = password;
 
-    userProfileOrganization.user.password = base64.encode(sha256
+    userProfileOrganization.user.userProfile.password = base64.encode(sha256
         .convert(password.codeUnits)
         .bytes);
   }
@@ -222,7 +222,7 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
   }
 
   bool get validInput {
-    return (userProfileOrganization.user?.name?.trim()?.isNotEmpty ?? false) && (userProfileOrganization.user?.eMail?.trim()?.isNotEmpty ?? false);
+    return (userProfileOrganization.user?.name?.trim()?.isNotEmpty ?? false) && (userProfileOrganization.user?.userProfile?.eMail?.trim()?.isNotEmpty ?? false);
   }
 
   void closeDetail() {
