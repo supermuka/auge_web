@@ -99,10 +99,16 @@ class AuthService  {
            ..readFromProtoBuf(userProfileOrganization.user);
        }
      } on GrpcError catch (e) {
+       if (e.code == StatusCode.notFound) {
+         return null;
+       } else {
+         print(e);
+         rethrow;
+       }
+     } catch (e) {
        print(e);
        rethrow;
      }
-
       /*--
         try {
           user = await _augeApiService.augeApi.getAuthenticatedUserWithEmail(

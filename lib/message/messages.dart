@@ -130,6 +130,7 @@ class ConfigurationMsg {
         'Edit Configuration': 'Edit Configuration',
         'Add Configuration': 'Add Configuration',
         'Test Directory Service': 'Test Directory Service',
+        'Sync Directory Service': 'Sync Directory Service',
         'other': 'Not Defined'})}",
       name: "configurationLabel",
       args: [label],
@@ -461,6 +462,7 @@ class InsightMsg {
       'Measures below 30% progress': 'Measures below 30% progress',
 
       'Initiatives': 'Initiatives',
+      'Number total of initiatives': 'Number total of initiatives',
       'Initiatives Completed': 'Initiatives Completed',
       'Initiatives Requiring Attention': 'Initiatives Requiring Attention',
       'Initiatives with 100% work items completed': 'Initiatives with 100% work items completed',

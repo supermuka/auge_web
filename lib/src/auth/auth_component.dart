@@ -122,7 +122,7 @@ class AuthComponent implements OnActivate  {
       } else {
         try {
           _authService.authUserProfileOrganization.user =
-              await _authService.getAuthenticatedUserWithEmail(eMail, passwordStr);
+          await _authService.getAuthenticatedUserWithEmail(eMail, passwordStr);
           if (_authService.authUserProfileOrganization.user == null) {
             dialogError = AuthMsg.userNotFoundMsg();
           } else {
@@ -138,6 +138,7 @@ class AuthComponent implements OnActivate  {
               return false;
             }
           }
+
         } catch (e) {
           dialogError = AuthMsg.serverApiErrorMsg();
           return true;
@@ -224,8 +225,6 @@ class AuthComponent implements OnActivate  {
   String userUrlImage(User user) {
     return common_service.userUrlImage(user?.userProfile?.image);
   }
-
-
 
   bool get validInput {
     return (eMail != null && eMail.trim().isNotEmpty

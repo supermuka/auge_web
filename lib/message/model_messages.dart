@@ -61,10 +61,13 @@ class FieldMsg {
       '${User.className}.${User.nameField}': 'Name',
       '${User.className}.${User.inactiveField}': 'Inactive',
       //USERPROFILE
+      '${UserProfile.className}.${UserProfile.additionalIdField}': 'Additional Identification',
       '${UserProfile.className}.${UserProfile.eMailField}': 'e-Mail',
       '${UserProfile.className}.${UserProfile.passwordField}': 'Password',
       '${UserProfile.className}.${UserProfile.imageField}':'Image',
       '${UserProfile.className}.${UserProfile.idiomLocaleField}':'Idioma',
+      '${UserProfile.className}.${UserProfile.directoryServiceIdField}': 'Directory Service Id ',
+
       //USERPROFILEORGANIZATION
       '${UserProfileOrganization.className}.${UserProfileOrganization.authorizationRoleField}':'Authorization',
 

@@ -54,6 +54,13 @@
                 </material-radio>
             </material-radio-group>
         </div>
+        <div class="w3-row">
+            <material-input class="w3-col l12" [(ngModel)]="userProfileOrganization.user.userProfile.additionalId" floatingLabel [label]="additionalIdLabel"></material-input>
+        </div>
+        <div class="w3-row">
+            <material-input class="w3-col l12" [(ngModel)]="userProfileOrganization.user.userProfile.directoryServiceId" floatingLabel [label]="directoryServiceIdLabel"></material-input>
+        </div>
+        <material-checkbox [(ngModel)]="userProfileOrganization.user.inactive" [label]="inactiveLabel"></material-checkbox>
         <div footer>
             <material-button [disabled]="!validInput" (trigger)="saveUserProfileOrganization()">{{saveButtonLabel}}
                 <material-icon icon="save"></material-icon>

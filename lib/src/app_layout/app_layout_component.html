@@ -20,7 +20,7 @@
                 <material-icon icon="timeline"></material-icon>{{initiativesLabel}}
             </material-list-item>
         </div>
-        <div *ngIf="isAdmin" group>
+        <div *ngIf="isAdmin || isSuperAdmin" group>
             <div label>{{adminLabel}}</div>
             <material-list-item *ngIf="isAuthorizedToAccessUsers" [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(usersRouteUrl)">
                 <material-icon icon="account_circle"></material-icon>{{usersLabel}}

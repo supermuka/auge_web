@@ -22,6 +22,7 @@ import 'package:angular_components/material_radio/material_radio_group.dart';
 import 'package:angular_components/material_radio/material_radio.dart';
 import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
+import 'package:angular_components/material_checkbox/material_checkbox.dart';
 
 import 'package:auge_server/model/general/user.dart';
 import 'package:auge_server/model/general/user_profile_organization.dart';
@@ -52,6 +53,7 @@ import 'package:auge_web/services/common_service.dart' as common_service;
       MaterialRadioComponent,
       MaterialButtonComponent,
       MaterialIconComponent,
+      MaterialCheckboxComponent,
     ])
 
 /// Component uses to add and edit an [User] and [UserProfile]
@@ -96,6 +98,10 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
   static final String passwordLabel =  FieldMsg.label('${UserProfile.className}.${UserProfile.passwordField}');
   static final String photoLabel = FieldMsg.label('${UserProfile.className}.${UserProfile.imageField}');
   static final String idiomLabel = FieldMsg.label('${UserProfile.className}.${UserProfile.idiomLocaleField}');
+  static final String additionalIdLabel = FieldMsg.label('${UserProfile.className}.${UserProfile.additionalIdField}');
+  static final String directoryServiceIdLabel = FieldMsg.label('${UserProfile.className}.${UserProfile.directoryServiceIdField}');
+
+  static final String inactiveLabel = FieldMsg.label('${User.className}.${User.inactiveField}');
 
   static final String pt_BRsymbol = 'pt_BR';
   static final String en_USsymbol = 'en_US';
@@ -132,6 +138,7 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
         rethrow;
       }
     } else {
+      userProfileOrganization.user.userProfile.organization = _userService.authService.authorizedOrganization;
       userProfileOrganization.user.userProfile.idiomLocale = Intl.defaultLocale;
       userProfileOrganization.authorizationRole = SystemRole.standard.index;
 
@@ -160,7 +167,6 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
   void saveUserProfileOrganization() async {
     try {
 
-      print(userProfileOrganization.authorizationRole);
       await _userService.saveUserProfileOrganization(userProfileOrganization);
 
       closeDetail();
