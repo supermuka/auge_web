@@ -124,12 +124,14 @@ class FieldMsg {
       '${WorkItem.className}.${WorkItem.checkItemsField}':'Check Items',
 
       //CONFIGURATION
+      '${OrganizationConfiguration.className}.${OrganizationConfiguration.domainField}':'Domínio',
       '${OrganizationConfiguration.className}.${OrganizationConfiguration.directoryServiceEnabledField}':'Directory Service (LDAP) Enabled',
 
       //DIRECTORY SERVICE CONFIGURATION
       '${DirectoryService.className}.${DirectoryService.hostAddressField}':'Host Address',
       '${DirectoryService.className}.${DirectoryService.portField}':'Port',
       '${DirectoryService.className}.${DirectoryService.sslTlsField}':'SSL/TLS Enabled',
+      '${DirectoryService.className}.${DirectoryService.passwordFormatField}':'Password Format',
       '${DirectoryService.className}.${DirectoryService.adminBindDNField}':'Admin Bind DN',
       '${DirectoryService.className}.${DirectoryService.adminPasswordField}':'Admin Password',
 

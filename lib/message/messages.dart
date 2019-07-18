@@ -139,6 +139,20 @@ class ConfigurationMsg {
       examples: const {"Name": "Name"}
   );
 
+  /// Label for password format configuration
+  static passwordFormatLabel(int indexLabel) => Intl.message(
+      "${Intl.select(indexLabel, {
+        DirectoryServicePasswordFormat.textPlan.index: 'Text Plan (default)',
+        DirectoryServicePasswordFormat.des.index: 'DES',
+        DirectoryServicePasswordFormat.sha.index: 'SHA',
+        'other': 'Not Defined'})}",
+      name: "passwordFormatConfigurationLabel",
+      args: [label],
+      // locale: "en",
+      desc: "PasswordFormat Configuration labels",
+      examples: const {"Name": "Name"}
+  );
+
   /// Label for status configuration
   static statusLabel(int indexLabel) => Intl.message(
       "${Intl.select(indexLabel, {

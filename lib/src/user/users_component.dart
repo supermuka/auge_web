@@ -32,7 +32,6 @@ import 'package:auge_web/services/common_service.dart' as common_service;
 // ignore_for_file: uri_has_not_been_generated
 import 'package:auge_web/src/user/user_detail_component.template.dart' as user_detail_component;
 
-
 @Component(
     selector: 'auge-users',
     providers: const [UserService, HistoryTimelineService],
