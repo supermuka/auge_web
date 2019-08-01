@@ -186,7 +186,7 @@ class WorkItemDetailComponent with CanReuse implements OnInit, OnActivate, OnDea
         workItem = await _workItemService.getWorkItem(workItemId);
       }
 
-      _users = await _userService.getUsers(_userService.authService.authorizedOrganization.id, withProfile: true);
+      _users = await _userService.getUsers(_userService.authService.authorizedOrganization.id, withUserProfile: true);
     } catch (e) {
       dialogError = e.toString();
       rethrow;

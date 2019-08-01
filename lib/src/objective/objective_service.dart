@@ -6,7 +6,7 @@ import 'package:auge_server/model/objective/objective.dart';
 
 import 'package:auge_web/services/auge_api_service.dart';
 
-import 'package:auge_server/src/protos/generated/general/common.pbgrpc.dart' as common_pbgrpc;
+import 'package:auge_server/src/protos/generated/google/protobuf/wrappers.pb.dart' as wrappers_pb;
 import 'package:auge_server/src/protos/generated/objective/objective.pbgrpc.dart' as objective_pbgrpc;
 
 import 'package:grpc/grpc_web.dart';
@@ -75,17 +75,17 @@ class ObjectiveService {
 
     objective_pbgrpc.ObjectiveRequest objectiveRequest = (objective_pbgrpc.ObjectiveRequest()
       ..objective = objective.writeToProtoBuf()
-      ..authenticatedOrganizationId = _authService.authorizedOrganization.id
-      ..authenticatedUserId = _authService.authenticatedUser.id);
+      ..authOrganizationId = _authService.authorizedOrganization.id
+      ..authUserId = _authService.authenticatedUser.id);
 
     try {
       if (objective.id == null) {
 
-        common_pbgrpc.IdResponse idResponse= await _objectiveServiceClient
+        wrappers_pb.StringValue idResponse= await _objectiveServiceClient
             .createObjective(objectiveRequest);
 
         // ID - primary key generated on server-side.
-        objective.id = idResponse?.id;
+        objective.id = idResponse?.value;
 
       } else {
         await _objectiveServiceClient.updateObjective(objectiveRequest);
@@ -105,8 +105,8 @@ class ObjectiveService {
       await _objectiveServiceClient.deleteObjective(objective_pbgrpc.ObjectiveDeleteRequest()
         ..objectiveId = objective.id
         ..objectiveVersion = objective.version
-        ..authenticatedUserId = _authService.authenticatedUser.id
-        ..authenticatedOrganizationId = _authService.authorizedOrganization.id);
+        ..authUserId = _authService.authenticatedUser.id
+        ..authOrganizationId = _authService.authorizedOrganization.id);
     } catch (e) {
       rethrow;
     }

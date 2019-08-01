@@ -59,5 +59,8 @@ Google Inbox use component. New mails and foward don't have back browser navitag
 Has better performance by pass param (data) from parent (master) screen.
 Use to high related components and concepts.
 
+--low-resources-mode
+
+
 
 

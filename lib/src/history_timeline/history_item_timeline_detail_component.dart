@@ -11,7 +11,7 @@ import 'package:angular_components/material_icon/material_icon.dart';
 import 'package:angular_components/content/deferred_content.dart';
 
 import 'package:auge_server/model/general/user.dart';
-import 'package:auge_server/model/general/user_profile_organization.dart';
+import 'package:auge_server/model/general/user_access.dart';
 import 'package:auge_server/model/general/group.dart';
 import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/objective/measure.dart';
@@ -96,8 +96,8 @@ class HistoryItemTimelineDetailComponent /* extends Object */ implements OnInit 
   Map<String, Map<dynamic, dynamic>> getViewToChangedValues(String objectClassName, Map<String, dynamic> changedValues) {
 
     Map<String, Map<dynamic, dynamic>> fieldsChangedValues = {};
-    if (objectClassName == UserProfileOrganization.className) {
-      UserProfileOrganizationChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues, changedValues);
+    if (objectClassName == UserAccess.className) {
+      UserAccessChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues, changedValues);
     } else if (objectClassName == Group.className) {
       GroupChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues, changedValues);
     } else if (objectClassName == Objective.className) {
@@ -138,12 +138,12 @@ class UserChangedValues {
         if (k == User.userProfileField) {
             UserProfileChangedValues.constructViewToFieldsChangedValues(
                fieldsChangedValues, v);
-        } else if (k == UserProfile.passwordField) {
+     /*   } else if (k == UserProfile.passwordField) {
           fieldsChangedValues.putIfAbsent('${User.className}.${k}', () =>
           { _typeToViewKey: _typeToViewText,
             _fieldDescriptionKey: FieldMsg.label('${User.className}.${k}')});
           if (v.containsKey(_pKey)) fieldsChangedValues['${User.className}.${k}'][_pKey] = '***';
-          if (v.containsKey(_cKey)) fieldsChangedValues['${User.className}.${k}'][_cKey] = '***';
+          if (v.containsKey(_cKey)) fieldsChangedValues['${User.className}.${k}'][_cKey] = '***';*/
         } else if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
           fieldsChangedValues.putIfAbsent('${User.className}.${k}', () =>
           {
@@ -205,28 +205,28 @@ class UserProfileChangedValues  {
   }
 }
 
-class UserProfileOrganizationChangedValues  {
+class UserAccessChangedValues  {
 
   static void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
     changedValues?.forEach((k, v) {
-      if (k != UserProfileOrganization.idField && k != UserProfileOrganization.versionField) {
-        if (k == UserProfileOrganization.userField) {
+      if (k != UserAccess.idField && k != UserAccess.versionField) {
+        if (k == UserAccess.userField) {
           UserChangedValues.constructViewToFieldsChangedValues(
               fieldsChangedValues, v);
-        } else if (k == UserProfileOrganization.organizationField) {
+        } else if (k == UserAccess.organizationField) {
          // OrganizationChangedValues().constructViewToFieldsChangedValues(
          //     fieldsChangedValues, v);
         }
         else if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
-          fieldsChangedValues.putIfAbsent('${UserProfileOrganization.className}.${k}', () =>
+          fieldsChangedValues.putIfAbsent('${UserAccess.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewText,
-            _fieldDescriptionKey: FieldMsg.label('${UserProfileOrganization.className}.${k}')});
+            _fieldDescriptionKey: FieldMsg.label('${UserAccess.className}.${k}')});
           if (v.containsKey(_pKey))
-            fieldsChangedValues['${UserProfileOrganization.className}.${k}'][_pKey] =
+            fieldsChangedValues['${UserAccess.className}.${k}'][_pKey] =
             v[_pKey];
           if (v.containsKey(_cKey))
-            fieldsChangedValues['${UserProfileOrganization.className}.${k}'][_cKey] =
+            fieldsChangedValues['${UserAccess.className}.${k}'][_cKey] =
             v[_cKey];
         }
       }

@@ -6,70 +6,97 @@ import 'dart:async';
 import 'package:angular/core.dart';
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_server/model/general/user.dart';
-import 'package:auge_server/model/general/user_profile_organization.dart';
+import 'package:auge_server/model/general/user_identity.dart';
+import 'package:auge_server/model/general/user_access.dart';
 
 import 'package:auge_web/services/auge_api_service.dart';
-import 'package:auge_server/src/protos/generated/general/common.pbgrpc.dart' as common_pbgrpc;
+import 'package:auge_server/src/protos/generated/google/protobuf/wrappers.pb.dart' as wrappers_pb;
 import 'package:auge_server/src/protos/generated/general/user.pbgrpc.dart' as user_pbgrpc;
-import 'package:auge_server/src/protos/generated/general/user_profile_organization.pbgrpc.dart' as user_profile_organization_pbgrpc;
+import 'package:auge_server/src/protos/generated/general/user_identity.pbgrpc.dart' as user_identity_pbgrpc;
+import 'package:auge_server/src/protos/generated/general/user_access.pbgrpc.dart' as user_access_pbgrpc;
 
 @Injectable()
 class UserService {
   final AuthService _authService;
   final AugeApiService _augeApiService;
+
   user_pbgrpc.UserServiceClient _userServiceClient;
-  user_profile_organization_pbgrpc.UserProfileOrganizationServiceClient _userProfileOrganizationServiceClient;
+  user_identity_pbgrpc.UserIdentityServiceClient _userIdentityServiceClient;
+  user_access_pbgrpc.UserAccessServiceClient _userAccessServiceClient;
 
   UserService(this._authService, this._augeApiService) {
     _userServiceClient = user_pbgrpc.UserServiceClient(_augeApiService.channel);
-    _userProfileOrganizationServiceClient = user_profile_organization_pbgrpc.UserProfileOrganizationServiceClient(_augeApiService.channel);
+    _userIdentityServiceClient = user_identity_pbgrpc.UserIdentityServiceClient(_augeApiService.channel);
+    _userAccessServiceClient = user_access_pbgrpc.UserAccessServiceClient(_augeApiService.channel);
   }
 
   AuthService get authService => _authService;
 
-
   /// Return [User] list by Organization [id]
-  Future<List<User>> getUsers(String organizationId, {bool withProfile = false}) async {
+  Future<List<User>> getUsers(String organizationId, {bool withUserProfile = false}) async {
     // return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
     return (await _userServiceClient.getUsers(
-        user_pbgrpc.UserGetRequest()..organizationId = organizationId..withProfile = withProfile)).users.map((m) =>
+        user_pbgrpc.UserGetRequest()..organizationId = organizationId..withUserProfile = withUserProfile)).users.map((m) =>
     User()
       ..readFromProtoBuf(m)).toList();
   }
 
   /// Return [User] list by Organization [id]
-  Future<User> getUser(String id, {bool withProfile = false}) async {
+  Future<User> getUser(String id, {bool withUserProfile = false}) async {
     // return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
     return User()..readFromProtoBuf((await _userServiceClient.getUser(
-        user_pbgrpc.UserGetRequest()..id = id..withProfile = withProfile)));
+        user_pbgrpc.UserGetRequest()..id = id..withUserProfile = withUserProfile)));
   }
 
-  Future<List<UserProfileOrganization>> getUsersProfileOrganizations(String organizationId, {String userId, bool withUserProfile}) async {
+  Future<UserIdentity> getUserIdentity(String id) async {
+    try {
+      //  return await _augeApiService.augeApi.getUsersProfileOrganizations(
+      //      userId: userId, organizationId: organizationId);
+      user_identity_pbgrpc.UserIdentityGetRequest userIdentityGetRequest =  user_identity_pbgrpc.UserIdentityGetRequest();
+      if (id != null) userIdentityGetRequest.id = id;
+      return UserIdentity()..readFromProtoBuf((await _userIdentityServiceClient.getUserIdentity(userIdentityGetRequest)));
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<UserIdentity>> getUserIdentities(String userId) async {
     try {
     //  return await _augeApiService.augeApi.getUsersProfileOrganizations(
     //      userId: userId, organizationId: organizationId);
-      user_profile_organization_pbgrpc.UserProfileOrganizationGetRequest userProfileOrganizationGetRequest =  user_profile_organization_pbgrpc.UserProfileOrganizationGetRequest();
-      if (userId != null) userProfileOrganizationGetRequest.userId = userId;
-      if (organizationId != null) userProfileOrganizationGetRequest.organizationId = organizationId;
-      if (withUserProfile != null) userProfileOrganizationGetRequest.withUserProfile = withUserProfile;
-      return (await _userProfileOrganizationServiceClient.getUsersProfileOrganizations(userProfileOrganizationGetRequest)).usersProfileOrganizations.map((m) =>
-      UserProfileOrganization()
+      user_identity_pbgrpc.UserIdentityGetRequest userIdentityGetRequest =  user_identity_pbgrpc.UserIdentityGetRequest();
+      if (userId != null) userIdentityGetRequest.userId = userId;
+      return (await _userIdentityServiceClient.getUserIdentities(userIdentityGetRequest)).userIdentities.map((m) =>
+      UserIdentity()
         ..readFromProtoBuf(m)).toList();
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<UserProfileOrganization> getUserProfileOrganization(String id, {String userId, String organizationId, bool withProfile = false}) async {
+  Future<UserAccess> getUserAccess(String id) async {
     try {
       //  return await _augeApiService.augeApi.getUsersProfileOrganizations(
       //      userId: userId, organizationId: organizationId);
-      user_profile_organization_pbgrpc.UserProfileOrganizationGetRequest userProfileOrganizationGetRequest =  user_profile_organization_pbgrpc.UserProfileOrganizationGetRequest();
-      if (id != null) userProfileOrganizationGetRequest.id = id;
-      if (userId != null) userProfileOrganizationGetRequest.userId = userId;
-      if (organizationId != null) userProfileOrganizationGetRequest.organizationId = organizationId;
+      user_access_pbgrpc.UserAccessGetRequest userAccessGetRequest =  user_access_pbgrpc.UserAccessGetRequest();
+      if (id != null) userAccessGetRequest.id = id;
+      return UserAccess()..readFromProtoBuf((await _userAccessServiceClient.getUserAccess(userAccessGetRequest)));
+    } catch (e) {
+      rethrow;
+    }
+  }
 
-      return UserProfileOrganization()..readFromProtoBuf(await _userProfileOrganizationServiceClient.getUserProfileOrganization(userProfileOrganizationGetRequest));
+  Future<List<UserAccess>> getUserAccesses(String userId) async {
+    try {
+      //  return await _augeApiService.augeApi.getUsersProfileOrganizations(
+      //      userId: userId, organizationId: organizationId);
+      user_access_pbgrpc.UserAccessGetRequest userAccessGetRequest =  user_access_pbgrpc.UserAccessGetRequest();
+      if (userId != null) userAccessGetRequest.userId = userId;
+
+      return (await _userAccessServiceClient.getUserAccesses(userAccessGetRequest)).userAccesses.map((m) =>
+      UserAccess()
+        ..readFromProtoBuf(m)).toList();
+
     } catch (e) {
       rethrow;
     }
@@ -81,7 +108,7 @@ class UserService {
 
     user_pbgrpc.UserRequest userRequest = user_pbgrpc.UserRequest()
       ..user = user.writeToProtoBuf()
-      ..authenticatedUserId = _authService.authenticatedUser.id;
+      ..authUserId = _authService.authenticatedUser.id;
 
     try {
       if (user.id == null) {
@@ -98,23 +125,22 @@ class UserService {
   }
 */
 
-  /// Save (create or update) an [UserProfileOrganization]
-  void saveUserProfileOrganization(UserProfileOrganization userProfileOrganization) async {
+  /// Save (create or update) an [User]
+  void saveUser(User user) async {
 
-    user_profile_organization_pbgrpc.UserProfileOrganizationRequest userProfileOrganizationRequest = (user_profile_organization_pbgrpc.UserProfileOrganizationRequest()
-      ..userProfileOrganization = userProfileOrganization.writeToProtoBuf()
-      ..authenticatedOrganizationId = _authService.authorizedOrganization.id
-      ..authenticatedUserId = _authService.authenticatedUser.id
-      ..withUserProfile = true);
+    user_pbgrpc.UserRequest userRequest = (user_pbgrpc.UserRequest()
+      ..user = user.writeToProtoBuf()
+      ..authOrganizationId = _authService.authorizedOrganization.id
+      ..authUserId = _authService.authenticatedUser.id);
     try {
-      if (userProfileOrganization.id == null) {
-        common_pbgrpc.IdResponse idResponse = await _userProfileOrganizationServiceClient
-            .createUserProfileOrganization(userProfileOrganizationRequest);
+      if (user.id == null) {
+        wrappers_pb.StringValue responseId = await _userServiceClient
+            .createUser(userRequest);
 
-        userProfileOrganization.id = idResponse.id;
+        user.id = responseId.value;
       } else {
-        await _userProfileOrganizationServiceClient.updateUserProfileOrganization(
-            userProfileOrganizationRequest);
+        await _userServiceClient.updateUser(
+            userRequest);
       }
     } catch (e) {
       print(e);
@@ -122,18 +148,64 @@ class UserService {
     }
   }
 
-  /// Delete (create or update) an [UserProfileOrganization]
-  void deleteUserProfileOrganization(UserProfileOrganization userProfileOrganization) async {
+  /// Save (create or update) an [UserIdentity]
+  void saveUserIdentity(UserIdentity userIdentity) async {
 
-    user_profile_organization_pbgrpc.UserProfileOrganizationDeleteRequest userProfileOrganizationDeleteRequest = user_profile_organization_pbgrpc.UserProfileOrganizationDeleteRequest()
-      ..userProfileOrganizationId = userProfileOrganization.id
-      ..userProfileOrganizationVersion = userProfileOrganization.version
-      ..authenticatedOrganizationId = _authService.authorizedOrganization.id
-      ..authenticatedUserId = _authService.authenticatedUser.id;
+    user_identity_pbgrpc.UserIdentityRequest userIdentityRequest = (user_identity_pbgrpc.UserIdentityRequest()
+      ..userIdentity = userIdentity.writeToProtoBuf()
+      ..authOrganizationId = _authService.authorizedOrganization.id
+      ..authUserId = _authService.authenticatedUser.id);
+
     try {
+      if (userIdentity.id == null) {
+        wrappers_pb.StringValue responseId = await _userIdentityServiceClient
+            .createUserIdentity(userIdentityRequest);
 
-        await _userProfileOrganizationServiceClient
-            .deleteUserProfileOrganization(userProfileOrganizationDeleteRequest);
+        userIdentity.id = responseId.value;
+      } else {
+        await _userIdentityServiceClient.updateUserIdentity(
+            userIdentityRequest);
+      }
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  /// Save (create or update) an [UserAccess]
+  void saveUserAccess(UserAccess userAccess) async {
+
+    user_access_pbgrpc.UserAccessRequest userAccessRequest = (user_access_pbgrpc.UserAccessRequest()
+      ..userAccess = userAccess.writeToProtoBuf()
+      ..authOrganizationId = _authService.authorizedOrganization.id
+      ..authUserId = _authService.authenticatedUser.id);
+    try {
+      if (userAccess.id == null) {
+        wrappers_pb.StringValue responseId = await _userAccessServiceClient
+            .createUserAccess(userAccessRequest);
+
+        userAccess.id = responseId.value;
+      } else {
+        await _userAccessServiceClient.updateUserAccess(
+            userAccessRequest);
+      }
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  /// Delete (create or update) an [User]
+  void deleteUser(User user) async {
+
+    user_pbgrpc.UserDeleteRequest userDeleteRequest = user_pbgrpc.UserDeleteRequest()
+      ..userId = user.id
+      ..userVersion = user.version
+      ..authOrganizationId = _authService.authorizedOrganization.id
+      ..authUserId = _authService.authenticatedUser.id;
+    try {
+      await _userServiceClient
+          .deleteUser(userDeleteRequest);
 
     } catch (e) {
       print(e);
@@ -141,20 +213,46 @@ class UserService {
     }
   }
 
-  /// Soft Delete an [User]
- /*
-  void deleteUser(User user) async {
+  /// Delete (create or update) an [UserIdentity]
+  void deleteUserIdentity(UserIdentity userIdentity) async {
 
-    user_pbgrpc.UserRequest userRequest = user_pbgrpc.UserRequest()..user = user.writeToProtoBuf()..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
-
+    user_identity_pbgrpc.UserIdentityDeleteRequest userIdentityDeleteRequest = user_identity_pbgrpc.UserIdentityDeleteRequest()
+      ..userIdentityId = userIdentity.id
+      ..userIdentityVersion = userIdentity.version
+      ..authOrganizationId = _authService.authorizedOrganization.id
+      ..authUserId = _authService.authenticatedUser.id;
     try {
-        await _userServiceClient.deleteUser(userRequest);
+
+      await _userIdentityServiceClient
+          .deleteUserIdentity(userIdentityDeleteRequest);
+
     } catch (e) {
+      print(e);
       rethrow;
     }
   }
-  */
 
+  /// Delete (create or update) an [UserAccess]
+  void deleteUserAccess(UserAccess userAccess) async {
 
+    user_access_pbgrpc.UserAccessDeleteRequest userAccessDeleteRequest = user_access_pbgrpc.UserAccessDeleteRequest()
+      ..userAccessId = userAccess.id
+      ..userAccessVersion = userAccess.version
+      ..authOrganizationId = _authService.authorizedOrganization.id
+      ..authUserId = _authService.authenticatedUser.id;
+    try {
+
+        await _userAccessServiceClient
+            .deleteUserAccess(userAccessDeleteRequest);
+
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  List<UserIdentityProvider> getUserIdentityProviders() {
+    return UserIdentityProvider.values;
+  }
 
 }

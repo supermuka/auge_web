@@ -1,73 +1,189 @@
 <modal [visible]="modalVisible">
     <material-dialog headered [error]="dialogError">
         <div header>
-            <h3 *ngIf="userProfileOrganization.id == null">{{addUserLabel}}</h3>
-            <h3 *ngIf="userProfileOrganization.id != null">{{editUserLabel}}</h3>
+            <h3 *ngIf="user.id == null">{{addUserLabel}}</h3>
+            <h3 *ngIf="user.id != null">{{editUserLabel}}</h3>
         </div>
-        <div class="w3-row">
-           <material-input autocomplete="off" class="w3-col l12" [(ngModel)]="userProfileOrganization.user.name" floatingLabel [label]="nameLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
+        <div style="width:560px;height:400px;">
+            <material-tab-strip
+                                (tabChange)="onTabChange($event)"
+                                [tabLabels]="tabLabels">
+            </material-tab-strip>
+            <div *ngIf="tabIndex == 0">
+                <div class="w3-padding">
+                    <div class="w3-row">
+                        <material-input autocomplete="off" class="w3-col l12" [(ngModel)]="user.name" floatingLabel [label]="nameLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
+                    </div>
+                    <div class="w3-row">
+                        <material-input autocomplete="off" class="w3-col l12" [(ngModel)]="user.userProfile.eMail" floatingLabel [label]="profileEmailLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
+                    </div>
+                    <!--div class="w3-row">
+                        <material-input autocomplete="new-password" class="w3-col l12" type="password" [(ngModel)]="passwordSecure" floatingLabel [label]="passwordLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
+                    </div -->
+                    <div class="w3-row">
+                        <label class="w3-col l12">{{profilePhotoLabel}}</label>
+                    </div>
+                    <div class="w3-row-padding">
+                        <span class="avatar" [style.background-image]="'url(' + userUrlImage(user) + ')'"></span>
+                        <input type="file" id="upload_image" accept="image/png,image/jpg,image/jpeg,capture=camera">
+                        <material-button icon (trigger)="uploadImage()">{{uploadButtonLabel}}
+                            <material-icon icon="done"></material-icon>
+                        </material-button>
+                        <material-button icon [disabled]="user.userProfile.image == null" (trigger)="clearImage()">{{clearButtonLabel}}
+                            <material-icon icon="clear"></material-icon>
+                        </material-button>
+                    </div>
+                    <div class="w3-row">
+                        <label>{{profileIdiomLabel}}</label>
+                    </div>
+                    <div class="w3-row">
+                        <material-radio-group [(ngModel)]="user.userProfile.idiomLocale">
+                            <material-radio [value]="pt_BRsymbol" no-ink>
+                                <span class="avatar-icon" [style.background-image]="'url(' + getBrFlag + ')'"></span>{{pt_BRvalueLabel}}
+                            </material-radio>
+                            <material-radio [value]="en_USsymbol" no-ink>
+                                <span class="avatar-icon" [style.background-image]="'url(' + getUsFlag + ')'"></span>{{en_USvalueLabel}}
+                            </material-radio>
+                            <material-radio [value]="es_ESsymbol" no-ink>
+                                <span class="avatar-icon" [style.background-image]="'url(' + getEsFlag + ')'"></span>{{es_ESvalueLabel}}
+                            </material-radio>
+                        </material-radio-group>
+                    </div>
+                    <material-checkbox [(ngModel)]="user.inactive" [label]="inactiveLabel"></material-checkbox>
+                    <div class="w3-row">
+                        <material-button class="w3-right" [disabled]="!validInput" (trigger)="saveUser()">{{saveButtonLabel}}
+                            <material-icon icon="save"></material-icon>
+                        </material-button>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="tabIndex == 1">
+                <div class="w3-padding">
+                    <div class="w3-row">
+                        <material-button class="w3-right" (trigger)="selectUserIdentity(null)">
+                            <material-icon icon="add"></material-icon>
+                        </material-button>
+                    </div>
+                    <div class="w3-padding-small">
+                        <div *ngFor="let iUserIdentity of userIdentities">
+                            <material-expansionpanel  disabled [alwaysHideExpandIcon]="true"
+                                                      [hideExpandedHeader]="true"
+                                                      [showSaveCancel]="true"
+                                                      [expanded]="iUserIdentity != null && iUserIdentity == userIdentity"
+                                                      (expandedChange)="expandedChangeUserIdentity(iUserIdentity, $event)"
+                                                      (save)="saveUserIdentity(iUserIdentity, $event)"
+                                                      (cancel)="cancelUserIdentity(iUserIdentity, $event)"
+                                                      expandIcon="edit">
+                                <div name>
+                                    <span>{{iUserIdentity.identification}}</span>
+                                </div>
+                                <div value>
+                                    <span>{{getUserIdentityProviderLabel(iUserIdentity.provider)}}</span>
+                                    <span>{{iUserIdentity.managedByOrganization.name}}</span>
+                                    <!-- span>{{iMeasureProgress.comment}}</span -->
+                                </div>
+                                <div action>
+                                    <material-button icon (trigger)="selectUserIdentity(iUserIdentity)">
+                                        <material-icon icon="edit"></material-icon>
+                                    </material-button>
+                                    <material-button icon (trigger)="deleteUserIdentity(iUserIdentity)">
+                                        <material-icon icon="delete"></material-icon>
+                                    </material-button>
+                                </div>
+                                <div *ngIf="userIdentity != null">
+                                    <div class="w3-row">
+                                        <div class="w3-col l6">
+                                            <material-input autoFocus [(ngModel)]="userIdentity.identification" floatingLabel [label]="identityIdentificationLabel"></material-input>
+                                        </div>
+                                        <div class="w3-col l6">
+                                            <material-input disabled [ngModel]="userIdentity.managedByOrganization.name" floatingLabel [label]="identityManagedByOrganizationLabel"></material-input>
+                                        </div>
+                                    </div>
+                                    <div class="w3-row">
+                                        <div class="w3-col l6">
+                                            <div class="input-container">
+                                                <label>{{identityProviderLabel}}</label>
+                                                <material-dropdown-select [buttonText]="userIdentityProviderSingleSelectLabel"
+                                                                          [selection]="userIdentityProviderSingleSelectModel"
+                                                                          [options]="userIdentityProviderOptions"
+                                                                          [itemRenderer]="userIdentityProviderItemRenderer">
+                                                </material-dropdown-select>
+                                            </div>
+                                        </div>
+                                        <div class="w3-col l6">
+                                            <material-input [disabled]="userIdentity?.provider == 0" [(ngModel)]="userIdentity.providerObjectId"  floatingLabel [label]="identityProviderObjectIdLabel"></material-input>
+                                        </div>
+                                    </div>
+                                    <div class="w3-row">
+                                        <div class="w3-col l16">
+                                            <material-input [disabled]="userIdentity?.provider != 0" [(ngModel)]="userIdentity.password" floatingLabel [label]="identityPasswordLabel"></material-input>
+                                        </div>
+                                    </div>
+                                </div>
+                            </material-expansionpanel>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="tabIndex == 2">
+                <div class="w3-padding">
+                    <div class="w3-row">
+                        <material-button class="w3-right" (trigger)="selectUserAccess(null)">
+                            <material-icon icon="add"></material-icon>
+                        </material-button>
+                    </div>
+                    <div class="w3-padding-small">
+                        <div *ngFor="let iUserAccess of userAccesses">
+                            <material-expansionpanel  disabled [alwaysHideExpandIcon]="true"
+                                                      [hideExpandedHeader]="true"
+                                                      [showSaveCancel]="true"
+                                                      [expanded]="iUserAccess != null && iUserAccess == userAccesses"
+                                                      (expandedChange)="expandedChangeUserAccess(iUserAccess, $event)"
+                                                      (save)="saveUserAccess(iUserAccess, $event)"
+                                                      (cancel)="cancelUserAccess(iUserAccess, $event)"
+                                                      expandIcon="edit">
+                                <div name>
+                                    <span>{{iUserAccess.organization.name}}</span>
+                                </div>
+                                <div value>
+                                    <span>{{getUserAccessRoleLabel(iUserAccess.accessRole)}}</span>
+                                    <!-- span>{{iMeasureProgress.comment}}</span -->
+                                </div>
+                                <div action>
+                                    <material-button icon (trigger)="selectUserAccess(iUserAccess)">
+                                        <material-icon icon="edit"></material-icon>
+                                    </material-button>
+                                    <material-button icon (trigger)="deleteUserAccess(iUserAccess)">
+                                        <material-icon icon="delete"></material-icon>
+                                    </material-button>
+                                </div>
+                                <div *ngIf="userAccess != null">
+                                    <div class="w3-row">
+                                        <div class="w3-col l12">
+                                            <material-input disabled [ngModel]="userAccess.organization.name" floatingLabel [label]="accessOrganizationLabel"></material-input>
+                                        </div>
+                                    </div>
+                                    <div class="w3-row">
+                                        <material-radio-group [(ngModel)]="userAccess.accessRole" class="radio-per-line">
+                                            <material-radio *ngFor="let option of userAccessOptions"
+                                                            [disabled]="!option.enabled"
+                                                            [value]="option.index" no-ink
+                                                            [checked]="option.checked">{{option.label}}
+                                            </material-radio>
+                                        </material-radio-group>
+                                    </div>
+                                </div>
+                            </material-expansionpanel>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="w3-row">
-           <material-input autocomplete="off" class="w3-col l12" [(ngModel)]="userProfileOrganization.user.userProfile.eMail" floatingLabel [label]="emailLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
-        </div>
-        <div class="w3-row">
-           <material-input autocomplete="new-password" class="w3-col l12"  type="password"  [(ngModel)]="passwordSecure" floatingLabel [label]="passwordLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
-        </div>
-        <div class="w3-row">
-          <label class="w3-col l12">{{photoLabel}}</label>
-        </div>
-        <div class="w3-row-padding">
-            <span class="avatar" [style.background-image]="'url(' + userUrlImage(userProfileOrganization.user) + ')'"></span>
-            <input type="file" id="upload_image" accept="image/png,image/jpg,image/jpeg,capture=camera">
-            <material-button icon (trigger)="uploadImage()">{{uploadButtonLabel}}
-                <material-icon icon="done"></material-icon>
-            </material-button>
-            <material-button icon [disabled]="userProfileOrganization.user.userProfile.image == null" (trigger)="clearImage()">{{clearButtonLabel}}
-                <material-icon icon="clear"></material-icon>
-            </material-button>
-        </div>
-        <div class="w3-row">
-            <label>{{idiomLabel}}</label>
-        </div>
-        <div class="w3-row">
-            <material-radio-group [(ngModel)]="userProfileOrganization.user.userProfile.idiomLocale">
-                <material-radio [value]="pt_BRsymbol" no-ink>
-                    <span class="avatar-icon" [style.background-image]="'url(' + getBrFlag + ')'"></span>{{pt_BRvalueLabel}}
-                </material-radio>
-                <material-radio [value]="en_USsymbol" no-ink>
-                    <span class="avatar-icon" [style.background-image]="'url(' + getUsFlag + ')'"></span>{{en_USvalueLabel}}
-                </material-radio>
-                <material-radio [value]="es_ESsymbol" no-ink>
-                    <span class="avatar-icon" [style.background-image]="'url(' + getEsFlag + ')'"></span>{{es_ESvalueLabel}}
-                </material-radio>
-            </material-radio-group>
-        </div>
-        <div class="w3-row">
-            <label>{{authorizationLabel}}</label>
-        </div>
-        <div class="w3-row">
-            <material-radio-group *ngIf="userProfileOrganization != null" [(ngModel)]="userProfileOrganization.authorizationRole" class="radio-per-line">
-                <material-radio *ngFor="let option of userAuthorizationOptions"
-                                [disabled]="!option.enabled"
-                                [value]="option.index" no-ink
-                                [checked]="option.checked">{{option.label}}
-                </material-radio>
-            </material-radio-group>
-        </div>
-        <div class="w3-row">
-            <material-input class="w3-col l12" [(ngModel)]="userProfileOrganization.user.userProfile.additionalId" floatingLabel [label]="additionalIdLabel"></material-input>
-        </div>
-        <div class="w3-row">
-            <material-input class="w3-col l12" [(ngModel)]="userProfileOrganization.user.userProfile.directoryServiceId" floatingLabel [label]="directoryServiceIdLabel"></material-input>
-        </div>
-        <material-checkbox [(ngModel)]="userProfileOrganization.user.inactive" [label]="inactiveLabel"></material-checkbox>
+        <hr>
         <div footer>
-            <material-button [disabled]="!validInput" (trigger)="saveUserProfileOrganization()">{{saveButtonLabel}}
-                <material-icon icon="save"></material-icon>
-            </material-button>
             <material-button autoFocus (trigger)="closeDetail()">{{closeButtonLabel}}
                 <material-icon icon="close"></material-icon>
             </material-button>
-        </div>
+         </div>
     </material-dialog>
 </modal>

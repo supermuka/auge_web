@@ -151,7 +151,7 @@ class InitiativeDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
     try {
       _states =  await _initiativeService.getStates();
-      _users = await _userService.getUsers(_initiativeService.authService.authorizedOrganization.id, withProfile: true);
+      _users = await _userService.getUsers(_initiativeService.authService.authorizedOrganization.id, withUserProfile: true);
       _objectives = await _objectiveService.getObjectives(_initiativeService.authService.authorizedOrganization.id, withMeasures: false);
       _groups = await _groupService.getGroups(_initiativeService.authService.authorizedOrganization.id);
 

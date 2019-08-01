@@ -1,7 +1,8 @@
 import 'package:intl/intl.dart';
 
 import 'package:auge_server/model/general/user.dart';
-import 'package:auge_server/model/general/user_profile_organization.dart';
+import 'package:auge_server/model/general/user_identity.dart';
+import 'package:auge_server/model/general/user_access.dart';
 import 'package:auge_server/model/general/group.dart';
 import 'package:auge_server/model/general/organization.dart';
 import 'package:auge_server/model/general/organization_configuration.dart';
@@ -35,7 +36,7 @@ class ClassNameMsg {
     "${Intl.select(className, {
       User.className: 'User',
       UserProfile.className: 'User Profile',
-      UserProfileOrganization.className: 'User and Profiles',
+      UserAccess.className: 'User and Profiles',
       Group.className: 'Group',
       Objective.className: 'Objective',
       Measure.className: 'Measure',
@@ -61,15 +62,20 @@ class FieldMsg {
       '${User.className}.${User.nameField}': 'Name',
       '${User.className}.${User.inactiveField}': 'Inactive',
       //USERPROFILE
-      '${UserProfile.className}.${UserProfile.additionalIdField}': 'Additional Identification',
       '${UserProfile.className}.${UserProfile.eMailField}': 'e-Mail',
-      '${UserProfile.className}.${UserProfile.passwordField}': 'Password',
       '${UserProfile.className}.${UserProfile.imageField}':'Image',
       '${UserProfile.className}.${UserProfile.idiomLocaleField}':'Idioma',
-      '${UserProfile.className}.${UserProfile.directoryServiceIdField}': 'Directory Service Id ',
 
-      //USERPROFILEORGANIZATION
-      '${UserProfileOrganization.className}.${UserProfileOrganization.authorizationRoleField}':'Authorization',
+      //USERIDENTITY
+      '${UserIdentity.className}.${UserIdentity.identificationField}': 'Identification',
+      '${UserIdentity.className}.${UserIdentity.passwordField}': 'Password',
+      '${UserIdentity.className}.${UserIdentity.providerField}': 'Provider',
+      '${UserIdentity.className}.${UserIdentity.providerObjectIdField}': 'Provider Object Id',
+      '${UserIdentity.className}.${UserIdentity.managedByOrganizationField}': 'Managed By Organization',
+
+      //USERORGANIZATIONACCESS
+      '${UserAccess.className}.${UserAccess.organizationField}':'Organization',
+      '${UserAccess.className}.${UserAccess.accessRoleField}':'Access Role',
 
       //GROUP
       '${Group.className}.${Group.nameField}':'Name',
@@ -143,8 +149,8 @@ class FieldMsg {
       '${DirectoryService.className}.${DirectoryService.userSearchDNField}':'User Search DN',
       '${DirectoryService.className}.${DirectoryService.userSearchScopeField}':'User Search Scope',
       '${DirectoryService.className}.${DirectoryService.userSearchFilterField}':'User Search Filter',
-      '${DirectoryService.className}.${DirectoryService.userIdAttributeField}':'User Id (Internal GUID/UUID) Attribute',
-      '${DirectoryService.className}.${DirectoryService.userAdditionalIdAttributeField}':'User Additional Id (Login) Attribute',
+      '${DirectoryService.className}.${DirectoryService.userProviderObjectIdAttributeField}':'User Provider Object Id (GUID/UUID) Attribute',
+      '${DirectoryService.className}.${DirectoryService.userIdentificationAttributeField}':'User Identification (login) Attribute',
       '${DirectoryService.className}.${DirectoryService.userFirstNameAttributeField}':'User First Attribute',
       '${DirectoryService.className}.${DirectoryService.userLastNameAttributeField}':'User Last Attribute',
       '${DirectoryService.className}.${DirectoryService.userEmailAttributeField}':'User Email Attribute',

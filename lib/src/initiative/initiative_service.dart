@@ -13,7 +13,7 @@ import 'package:auge_server/model/initiative/stage.dart';
 import 'package:auge_server/model/initiative/state.dart';
 
 import 'package:auge_server/src/protos/generated/google/protobuf/empty.pb.dart' as empty_pb;
-import 'package:auge_server/src/protos/generated/general/common.pb.dart' as common_pb;
+import 'package:auge_server/src/protos/generated/google/protobuf/wrappers.pb.dart' as wrappers_pb;
 import 'package:auge_server/src/protos/generated/initiative/initiative.pbgrpc.dart' as initiative_pbgrpc;
 import 'package:auge_server/src/protos/generated/initiative/stage.pbgrpc.dart' as stage_pbgrpc;
 import 'package:auge_server/src/protos/generated/initiative/state.pbgrpc.dart' as state_pbgrpc;
@@ -93,16 +93,16 @@ class InitiativeService {
 
       initiative_pbgrpc.InitiativeRequest initiativeRequest = initiative_pbgrpc.InitiativeRequest()
         ..initiative = initiative.writeToProtoBuf()
-        ..authenticatedUserId = _authService.authenticatedUser.id
-        ..authenticatedOrganizationId = _authService.authorizedOrganization.id;
+        ..authUserId = _authService.authenticatedUser.id
+        ..authOrganizationId = _authService.authorizedOrganization.id;
 
 
       if (initiative.id == null) {
-        common_pb.IdResponse idResponse = await _initiativeServiceClient
+        wrappers_pb.StringValue idResponse = await _initiativeServiceClient
             .createInitiative(initiativeRequest);
 
         // ID - primary key generated on server-side.
-        initiative.id = idResponse?.id;
+        initiative.id = idResponse?.value;
       } else {
         await _initiativeServiceClient.updateInitiative(initiativeRequest);
       }
@@ -122,8 +122,8 @@ class InitiativeService {
       initiative_pbgrpc.InitiativeDeleteRequest initiativeDeleteRequest = initiative_pbgrpc.InitiativeDeleteRequest()
         ..initiativeId = initiative.id
         ..initiativeVersion = initiative.version
-        ..authenticatedOrganizationId = _authService.authorizedOrganization.id
-        ..authenticatedUserId = _authService.authenticatedUser.id;
+        ..authOrganizationId = _authService.authorizedOrganization.id
+        ..authUserId = _authService.authenticatedUser.id;
 
       await _initiativeServiceClient.deleteInitiative(initiativeDeleteRequest);
     } catch (e) {
@@ -138,16 +138,16 @@ class InitiativeService {
       stage_pbgrpc.StageRequest stageRequest = stage_pbgrpc.StageRequest()
         ..initiativeId = initiativeId
         ..stage = stage.writeToProtoBuf()
-        ..authenticatedUserId = _authService.authenticatedUser.id
-        ..authenticatedOrganizationId = _authService.authorizedOrganization.id;
+        ..authUserId = _authService.authenticatedUser.id
+        ..authOrganizationId = _authService.authorizedOrganization.id;
 
 
       if (stage.id == null) {
-        common_pb.IdResponse idResponse = await _stageServiceClient
+        wrappers_pb.StringValue idResponse = await _stageServiceClient
             .createStage(stageRequest);
 
         // ID - primary key generated on server-side.
-        stage.id = idResponse?.id;
+        stage.id = idResponse?.value;
       } else {
         await _stageServiceClient.updateStage(stageRequest);
       }
@@ -165,8 +165,8 @@ class InitiativeService {
       stage_pbgrpc.StageDeleteRequest stageDeleteRequest = stage_pbgrpc.StageDeleteRequest()
         ..stageId = stage.id
         ..stageVersion = stage.version
-        ..authenticatedOrganizationId = _authService.authorizedOrganization.id
-        ..authenticatedUserId = _authService.authenticatedUser.id;
+        ..authOrganizationId = _authService.authorizedOrganization.id
+        ..authUserId = _authService.authenticatedUser.id;
 
       await _stageServiceClient.deleteStage(stageDeleteRequest);
     } catch (e) {

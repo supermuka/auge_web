@@ -10,7 +10,7 @@ import 'package:auge_web/services/auge_api_service.dart';
 import 'package:auge_web/message/messages.dart';
 
 import 'package:auge_server/src/protos/generated/google/protobuf/empty.pb.dart' as empty_pb;
-import 'package:auge_server/src/protos/generated/general/common.pb.dart' as common_pb;
+import 'package:auge_server/src/protos/generated/google/protobuf/wrappers.pb.dart' as wrappers_pb;
 import 'package:auge_server/src/protos/generated/objective/measure.pbgrpc.dart' as measure_pbgrpc;
 
 import 'package:grpc/grpc_web.dart';
@@ -124,16 +124,16 @@ class MeasureService {
       measure_pbgrpc.MeasureRequest measureRequest = measure_pbgrpc.MeasureRequest()
         ..measure = measure.writeToProtoBuf()
         ..objectiveId = objectiveId
-        ..authenticatedOrganizationId = _authService.authorizedOrganization.id
-        ..authenticatedUserId = _authService.authenticatedUser.id;
+        ..authOrganizationId = _authService.authorizedOrganization.id
+        ..authUserId = _authService.authenticatedUser.id;
 
       if (measure.id == null) {
 
-        common_pb.IdResponse idResponse = await _measureServiceClient
+        wrappers_pb.StringValue idResponse = await _measureServiceClient
         .createMeasure(measureRequest);
 
         // ID - primary key generated on server-side.
-        measure.id = idResponse?.id;
+        measure.id = idResponse?.value;
 
       } else {
         await _measureServiceClient.updateMeasure(measureRequest);
@@ -149,17 +149,17 @@ class MeasureService {
     measure_pbgrpc.MeasureProgressRequest measureProgressRequest = measure_pbgrpc.MeasureProgressRequest()
       ..measureProgress = measureProgress.writeToProtoBuf()
       ..measureId = measureId
-      ..authenticatedOrganizationId = _authService.authorizedOrganization.id
-      ..authenticatedUserId = _authService.authenticatedUser.id;
+      ..authOrganizationId = _authService.authorizedOrganization.id
+      ..authUserId = _authService.authenticatedUser.id;
 
     try {
 
       if (measureProgress.id == null) {
-        common_pb.IdResponse idResponse = await _measureServiceClient
+        wrappers_pb.StringValue idResponse = await _measureServiceClient
             .createMeasureProgress(measureProgressRequest);
 
         // ID - primary key generated on server-side.
-        return idResponse?.id;
+        return idResponse?.value;
       } else {
 
        await _measureServiceClient
@@ -179,8 +179,8 @@ class MeasureService {
     measure_pbgrpc.MeasureProgressRequest measureProgressRequest = measure_pbgrpc.MeasureProgressRequest()
       ..measureProgress = measureProgress.writeToProtoBuf()
       ..measureId = measureId
-      ..authenticatedOrganizationId = _authService.authorizedOrganization.id
-      ..authenticatedUserId = _authService.authenticatedUser.id;
+      ..authOrganizationId = _authService.authorizedOrganization.id
+      ..authUserId = _authService.authenticatedUser.id;
 
     try {
        await _measureServiceClient
@@ -197,8 +197,8 @@ class MeasureService {
     measure_pbgrpc.MeasureDeleteRequest measureDeleteRequest = measure_pbgrpc.MeasureDeleteRequest()
       ..measureId = measure.id
       ..measureVersion = measure.version
-      ..authenticatedOrganizationId = _authService.authorizedOrganization.id
-      ..authenticatedUserId = _authService.authenticatedUser.id;
+      ..authOrganizationId = _authService.authorizedOrganization.id
+      ..authUserId = _authService.authenticatedUser.id;
     try {
       await _measureServiceClient.deleteMeasure(measureDeleteRequest);
     } catch (e) {
@@ -212,8 +212,8 @@ class MeasureService {
     measure_pbgrpc.MeasureProgressDeleteRequest measureProgressDeleteRequest = measure_pbgrpc.MeasureProgressDeleteRequest()
       ..measureProgressId = measureProgress.id
       ..measureProgressVersion = measureProgress.version
-      ..authenticatedOrganizationId = _authService.authorizedOrganization.id
-      ..authenticatedUserId = _authService.authenticatedUser.id;
+      ..authOrganizationId = _authService.authorizedOrganization.id
+      ..authUserId = _authService.authenticatedUser.id;
     try {
       await _measureServiceClient.deleteMeasureProgress(measureProgressDeleteRequest);
     } catch (e) {

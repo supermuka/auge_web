@@ -3,7 +3,7 @@ import 'package:angular_router/angular_router.dart';
 class AppRoutesParam {
   //Params
   static const organizationIdParameter = 'organization_id';
-  static const userProfileOrganizationIdParameter = 'user_profile_organization_id';
+  static const userIdParameter = 'user_id';
   static const groupIdParameter = 'group_id';
   static const measureIdParameter = 'measure_id';
   static const initiativeIdParameter = 'initiative_id';
@@ -136,11 +136,11 @@ class AppRoutes {
       parent: usersRoute
   );
   static final userEditRoute = new RoutePath(
-      path: ':${AppRoutesParam.userProfileOrganizationIdParameter}/edit',
+      path: ':${AppRoutesParam.userIdParameter}/edit',
       parent: usersRoute
   );
   static final userEditWithAppLayoutParentRoute = new RoutePath(
-      path: 'users/:${AppRoutesParam.userProfileOrganizationIdParameter}/auth/edit',
+      path: 'users/:${AppRoutesParam.userIdParameter}/auth/edit',
       parent: appLayoutRoute
   );
   static final organizationAddRoute = new RoutePath(

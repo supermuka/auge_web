@@ -13,7 +13,7 @@ import 'package:auge_web/message/messages.dart';
 import 'package:auge_server/model/general/group.dart';
 
 import 'package:auge_server/src/protos/generated/google/protobuf/empty.pb.dart' as empty_pb;
-import 'package:auge_server/src/protos/generated/general/common.pb.dart' as common_pb;
+import 'package:auge_server/src/protos/generated/google/protobuf/wrappers.pb.dart' as wrappers_pb;
 
 import 'package:auge_server/src/protos/generated/general/group.pbgrpc.dart' as group_pbgrpc;
 
@@ -67,8 +67,8 @@ class GroupService {
       group_pbgrpc.GroupDeleteRequest groupDeleteRequest = group_pbgrpc.GroupDeleteRequest()
         ..groupId = group.id
         ..groupVersion = group.version
-        ..authenticatedOrganizationId = _authService.authorizedOrganization.id
-        ..authenticatedUserId = _authService.authenticatedUser.id;
+        ..authOrganizationId = _authService.authorizedOrganization.id
+        ..authUserId = _authService.authenticatedUser.id;
 
       await _groupServiceClient.deleteGroup(groupDeleteRequest);
     } catch (e) {
@@ -81,18 +81,18 @@ class GroupService {
     try {
       group_pbgrpc.GroupRequest groupRequest = group_pbgrpc.GroupRequest()
         ..group = group.writeToProtoBuf()
-        ..authenticatedOrganizationId = _authService.authorizedOrganization.id
-        ..authenticatedUserId = _authService.authenticatedUser.id;
+        ..authOrganizationId = _authService.authorizedOrganization.id
+        ..authUserId = _authService.authenticatedUser.id;
 
 
       //= group.writeToProtoBuf()..authenticatedUser = _authService.authenticatedUser.writeToProtoBuf();
 
       if (group.id == null) {
 
-        common_pb.IdResponse idResponse = await _groupServiceClient.createGroup(groupRequest);
+        wrappers_pb.StringValue idResponse = await _groupServiceClient.createGroup(groupRequest);
 
         // ID - primary key generated on server-side.
-        group.id = idResponse?.id;
+        group.id = idResponse?.value;
       } else {
         await _groupServiceClient.updateGroup(groupRequest);
       }

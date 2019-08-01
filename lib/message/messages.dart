@@ -48,7 +48,7 @@ class AuthMsg {
   /// Label for [Auth]
   static label(String label) => Intl.message(
       "${Intl.select(label, {
-        'eMail': 'e-Mail',
+        'Identification': 'Identification',
         'Password': 'Password',
         'Select': 'Select',
         'Super Admin': 'Super Admin',
@@ -64,7 +64,7 @@ class AuthMsg {
       examples: const {"eMail": "e-mail"}
   );
 
-  static informEMailPasswordCorrectlyMsg() => Intl.message("Inform an e-mail and password correctly.");
+  static informIdentificationPasswordCorrectlyMsg() => Intl.message("Inform an identification and password correctly.");
   static userNotFoundMsg() => Intl.message("User account with the informed email not found.");
   static organizationNotFoundMsg() => Intl.message("An organization to user account not found.");
   static serverApiErrorMsg() => Intl.message("Server not available.");
@@ -163,7 +163,7 @@ class ConfigurationMsg {
         DirectoryServiceStatus.errorGroupMemberAttributeNotFound.index: 'Group member attribute not found!',
         DirectoryServiceStatus.errorGroupNotFound.index: 'Group not found!',
         DirectoryServiceStatus.errorLastNameAttribute.index: 'Last name attribute not found!',
-        DirectoryServiceStatus.errorIdAttribute.index: 'Login attribute not found!',
+        DirectoryServiceStatus.errorIdentificationAttribute.index: 'Identification (login) attribute not found!',
         DirectoryServiceStatus.errorManyGroupsFound.index: 'Many groups found!',
         DirectoryServiceStatus.errorNotBindedInvalidCredentials.index: 'Not binded! Invalid credentials.',
         DirectoryServiceStatus.errorNotConnected.index: 'Not connected!',
@@ -203,14 +203,50 @@ class UserMsg {
         'User': 'User',
         'Edit User': 'Edit User',
         'Add User': 'Add User',
-        'SystemRole.superAdmin': 'Super Admin',
-        'SystemRole.admin': 'Admin',
-        'SystemRole.standard': 'Standard',
+        'Profile': 'Profile',
+        'Identity': 'Identity',
+        'Access': 'Access',
         'other': 'Not Defined'})}",
       name: "userLabel",
       args: [label],
       // locale: "en",
       desc: "Organization labels",
+      examples: const {"Name": "Name"}
+  );
+}
+
+/// Specific messages and label for [UserIdentity]
+class UserIdentityMsg {
+
+  /// Label for user
+  static label(String label) => Intl.message(
+      "${Intl.select(label, {
+
+        'UserIdentityProvider.internal': 'Internal',
+        'UserIdentityProvider.directoryService': 'Directory Service',
+        'other': 'Not Defined'})}",
+      name: "userLabel",
+      args: [label],
+      // locale: "en",
+      desc: "User Identity labels",
+      examples: const {"Name": "Name"}
+  );
+}
+
+/// Specific messages and label for [UserAccess]
+class UserAccessMsg {
+
+  /// Label for user
+  static label(String label) => Intl.message(
+      "${Intl.select(label, {
+        'SystemRole.superAdmin': 'Super Admin',
+        'SystemRole.admin': 'Admin',
+        'SystemRole.standard': 'Standard',
+        'other': 'Not Defined'})}",
+      name: "userAccessLabel",
+      args: [label],
+      // locale: "en",
+      desc: "User Organization Access labels",
       examples: const {"Name": "Name"}
   );
 }

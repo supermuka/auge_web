@@ -6,7 +6,6 @@ import 'dart:convert' show base64;
 import 'dart:typed_data' show Uint8List;
 
 import 'package:image/image.dart';
-import 'package:crypto/crypto.dart' show sha256;
 import 'package:intl/intl.dart';
 
 import 'package:angular/angular.dart';
@@ -17,16 +16,27 @@ import 'package:angular_components/focus/focus.dart';
 import 'package:angular_components/laminate/components/modal/modal.dart';
 import 'package:angular_components/laminate/overlay/module.dart';
 import 'package:angular_components/material_dialog/material_dialog.dart';
+import 'package:angular_components/material_tab/fixed_material_tab_strip.dart';
+import 'package:angular_components/material_tab/tab_change_event.dart';
 import 'package:angular_components/material_input/material_input.dart';
 import 'package:angular_components/material_radio/material_radio_group.dart';
 import 'package:angular_components/material_radio/material_radio.dart';
 import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
 import 'package:angular_components/material_checkbox/material_checkbox.dart';
+import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
+import 'package:angular_components/material_expansionpanel/material_expansionpanel_set.dart';
+import 'package:angular_components/material_expansionpanel/material_expansionpanel_auto_dismiss.dart';
+import 'package:angular_components/material_select/material_dropdown_select.dart';
+import 'package:angular_components/material_select/material_dropdown_select_accessor.dart';
+import 'package:angular_components/model/selection/selection_model.dart';
+import 'package:angular_components/model/selection/selection_options.dart';
+import 'package:angular_components/model/ui/has_renderer.dart';
 
-import 'package:auge_server/model/general/user.dart';
-import 'package:auge_server/model/general/user_profile_organization.dart';
 import 'package:auge_server/model/general/authorization.dart';
+import 'package:auge_server/model/general/user.dart';
+import 'package:auge_server/model/general/user_identity.dart';
+import 'package:auge_server/model/general/user_access.dart';
 
 import 'package:auge_web/message/messages.dart';
 import 'package:auge_web/message/model_messages.dart';
@@ -34,6 +44,8 @@ import 'package:auge_web/message/model_messages.dart';
 //import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
+
+import 'package:angular_components/model/action/async_action.dart';
 
 @Component(
     selector: 'auge-user-detail',
@@ -47,6 +59,8 @@ import 'package:auge_web/services/common_service.dart' as common_service;
       routerDirectives,
       materialInputDirectives,
       AutoFocusDirective,
+      NgModel,
+      FixedMaterialTabStripComponent,
       MaterialDialogComponent,
       ModalComponent,
       MaterialRadioGroupComponent,
@@ -54,6 +68,11 @@ import 'package:auge_web/services/common_service.dart' as common_service;
       MaterialButtonComponent,
       MaterialIconComponent,
       MaterialCheckboxComponent,
+      MaterialExpansionPanel,
+      MaterialExpansionPanelSet,
+      MaterialExpansionPanelAutoDismiss,
+      MaterialDropdownSelectComponent,
+      DropdownSelectValueAccessor,
     ])
 
 /// Component uses to add and edit an [User] and [UserProfile]
@@ -64,12 +83,27 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
   bool modalVisible = false;
 
- //  final SelectionModel selectionModelUserAuthorization = new SelectionModel.multi();
-  String _passwordOrigin;
+  // To control Tabs
+  int tabIndex = 0;
 
-  UserProfileOrganization userProfileOrganization;
+  final List<String> tabLabels = <String>[UserMsg.label('Profile'), UserMsg.label('Identity'), UserMsg.label('Organization Access')];
 
-  List<Option> userAuthorizationOptions;
+  // Identity Provider
+  List<int> _userIdentityProviders = [];
+  SelectionOptions userIdentityProviderOptions;
+  SelectionModel userIdentityProviderSingleSelectModel;
+
+  // Model
+  User user;
+  List<UserIdentity> userIdentities;
+  List<UserAccess> userAccesses;
+
+  UserIdentity userIdentity;
+  int userIdentityIndex;
+  UserAccess userAccess;
+  int userAccessIndex;
+
+  List<Option> userAccessOptions;
 
   String get getUsFlag => '/packages/auge_web/assets/images/flag_us.png';
   String get getEsFlag => '/packages/auge_web/assets/images/flag_es.png';
@@ -79,7 +113,8 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
   String dialogError;
 
   UserDetailComponent(this._userService, this._location) {
-    userAuthorizationOptions = List<Option>();
+    userIdentityProviderSingleSelectModel = SelectionModel<int>.single();
+    userAccessOptions = List<Option>();
   }
 
   // Define messages and labels
@@ -93,15 +128,19 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
   static final String editUserLabel =  UserMsg.label('Edit User');
 
   static final String nameLabel =  FieldMsg.label('${User.className}.${User.nameField}');
-  static final String authorizationLabel = FieldMsg.label('${UserProfileOrganization.className}.${UserProfileOrganization.authorizationRoleField}');
-  static final String emailLabel =  FieldMsg.label('${UserProfile.className}.${UserProfile.eMailField}');
-  static final String passwordLabel =  FieldMsg.label('${UserProfile.className}.${UserProfile.passwordField}');
-  static final String photoLabel = FieldMsg.label('${UserProfile.className}.${UserProfile.imageField}');
-  static final String idiomLabel = FieldMsg.label('${UserProfile.className}.${UserProfile.idiomLocaleField}');
-  static final String additionalIdLabel = FieldMsg.label('${UserProfile.className}.${UserProfile.additionalIdField}');
-  static final String directoryServiceIdLabel = FieldMsg.label('${UserProfile.className}.${UserProfile.directoryServiceIdField}');
-
   static final String inactiveLabel = FieldMsg.label('${User.className}.${User.inactiveField}');
+  static final String profileEmailLabel =  FieldMsg.label('${UserProfile.className}.${UserProfile.eMailField}');
+  static final String profilePhotoLabel = FieldMsg.label('${UserProfile.className}.${UserProfile.imageField}');
+  static final String profileIdiomLabel = FieldMsg.label('${UserProfile.className}.${UserProfile.idiomLocaleField}');
+
+  static final String identityIdentificationLabel = FieldMsg.label('${UserIdentity.className}.${UserIdentity.identificationField}');
+  static final String identityPasswordLabel = FieldMsg.label('${UserIdentity.className}.${UserIdentity.passwordField}');
+  static final String identityProviderLabel = FieldMsg.label('${UserIdentity.className}.${UserIdentity.providerField}');
+  static final String identityProviderObjectIdLabel = FieldMsg.label('${UserIdentity.className}.${UserIdentity.providerObjectIdField}');
+  static final String identityManagedByOrganizationLabel = FieldMsg.label('${UserIdentity.className}.${UserIdentity.managedByOrganizationField}');
+
+  static final String accessOrganizationLabel  = FieldMsg.label('${UserAccess.className}.${UserAccess.organizationField}');
+  static final String accessRoleLabel = FieldMsg.label('${UserAccess.className}.${UserAccess.accessRoleField}');
 
   static final String pt_BRsymbol = 'pt_BR';
   static final String en_USsymbol = 'en_US';
@@ -114,49 +153,65 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
   @override
   void ngOnInit() async {
     //created as new here, even if it is later replaced by a query, because the query may take a while and the Angular will continue to process, causing an exception if the object does not exist
-    userProfileOrganization = UserProfileOrganization();
-  }
+    user = User();
+    userIdentities = <UserIdentity>[];
+    userAccesses = <UserAccess>[];
 
+    for (int i = 0;i<UserIdentityProvider.values.length;i++) {
+      _userIdentityProviders.add(i);
+    }
+    userIdentityProviderOptions = SelectionOptions.fromList( _userIdentityProviders );
+
+    userIdentityProviderSingleSelectModel.selectionChanges.listen((unit) {
+      if (unit.isNotEmpty && unit.first.added != null && unit.first.added.length != 0 && unit.first.added?.first != null) {
+        userIdentity.provider = unit.first.added.first;
+      }
+    });
+
+
+    SystemRole.values.forEach((role) {
+      if (role != SystemRole.superAdmin) {
+        userAccessOptions.add(Option(
+            role.index,
+            UserMsg.label(role.toString())
+           )
+        );
+      }
+    });
+
+
+      }
 
   @override
   void onActivate(RouterState previous, RouterState current) async {
     modalVisible = true;
 
     String id;
-    if (current.parameters.containsKey(AppRoutesParam.userProfileOrganizationIdParameter)) {
-      id = current.parameters[AppRoutesParam.userProfileOrganizationIdParameter];
+    if (current.parameters.containsKey(AppRoutesParam.userIdParameter)) {
+      id = current.parameters[AppRoutesParam.userIdParameter];
     }
 
     if (id != null) {
 
       try {
-        userProfileOrganization = await _userService.getUserProfileOrganization(id, withProfile: true);
+        user = await _userService.getUser(id, withUserProfile: true);
 
+        userIdentities = await _userService.getUserIdentities(id);
 
+        userAccesses = await _userService.getUserAccesses(id);
+        
       } catch (e) {
         dialogError = e.toString();
         rethrow;
       }
     } else {
-      userProfileOrganization.user.userProfile.organization = _userService.authService.authorizedOrganization;
-      userProfileOrganization.user.userProfile.idiomLocale = Intl.defaultLocale;
-      userProfileOrganization.authorizationRole = SystemRole.standard.index;
+
+      user.userProfile.idiomLocale = Intl.defaultLocale;
+      //userAccess.accessRole = SystemRole.standard.index;
 
       // Authorizated and selected organization
-      userProfileOrganization.organization = _userService.authService.authorizedOrganization;
+      //userAccess.organization = _userService.authService.authorizedOrganization;
     }
-    SystemRole.values.forEach((role) {
-      if (role != SystemRole.superAdmin) {
-        userAuthorizationOptions.add(new Option(
-            role.index,
-            UserMsg.label(role.toString()),
-            role.index == userProfileOrganization.authorizationRole,
-            _userService.authService.isAuthorizedForAtuhorizatedRole(
-            SystemModule.users, systemFunction: userProfileOrganization.id == null ?  SystemFunction.create : SystemFunction.update,
-            systemConstraint: role
-        )));
-      }
-    });
   }
 
   @override
@@ -164,10 +219,31 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
     modalVisible = false;
   }
 
-  void saveUserProfileOrganization() async {
+  void selectUserIdentity(UserIdentity ui) async {
+    if (ui == null) {
+      userIdentities.insert(0, UserIdentity()..managedByOrganization = _userService.authService.authorizedOrganization..user = user);
+      userIdentity = userIdentities.first;
+      userIdentity.provider = UserIdentityProvider.internal.index;
+    } else {
+      // Get a new instance to doesn't referenced the other.
+      userIdentity = ui;
+    }
+  }
+
+  void selectUserAccess(UserAccess uoa) async {
+    if (uoa == null) {
+      userAccesses.insert(0, UserAccess()..organization = _userService.authService.authorizedOrganization..accessRole = SystemRole.standard.index);
+      userAccess = userAccesses.first;
+    } else {
+      // Get a new instance to doesn't referenced the other.
+      userAccess = uoa;
+    }
+  }
+
+  void saveUser() async {
     try {
 
-      await _userService.saveUserProfileOrganization(userProfileOrganization);
+      await _userService.saveUser(user);
 
       closeDetail();
     } catch (e) {
@@ -193,7 +269,7 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
         Image thumbnail = copyResize(image, width: 120, height: 120);
 
-        userProfileOrganization.user.userProfile.image = base64.encode(encodePng(thumbnail));
+        user.userProfile.image = base64.encode(encodePng(thumbnail));
 
       });
 
@@ -206,41 +282,145 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
   }
 
   void clearImage() {
-    userProfileOrganization.user.userProfile.image = null;
+    user.userProfile.image = null;
   }
 
   String userUrlImage(User user) {
     return common_service.userUrlImage(user?.userProfile?.image);
   }
 
-  set passwordSecure(String password) {
-    _passwordOrigin = password;
-
-    userProfileOrganization.user.userProfile.password = base64.encode(sha256
-        .convert(password.codeUnits)
-        .bytes);
-  }
-
-  get passwordSecure {
-    _passwordOrigin = '';
-
-    return _passwordOrigin;
-  }
-
   bool get validInput {
-    return (userProfileOrganization.user?.name?.trim()?.isNotEmpty ?? false) && (userProfileOrganization.user?.userProfile?.eMail?.trim()?.isNotEmpty ?? false);
+    return (user?.name?.trim()?.isNotEmpty ?? false) && (user?.userProfile?.eMail?.trim()?.isNotEmpty ?? false);
   }
 
   void closeDetail() {
     _location.back();
+  }
+
+  void cancelUserIdentity(UserIdentity userIdentity, AsyncAction event) async {
+
+    try {
+      if (userIdentity.id == null) {
+        userIdentities.remove(userIdentity);
+      } else {
+        userIdentities[userIdentities.indexOf(userIdentity)] = await _userService.getUserIdentity(userIdentity.id);
+      }
+    } on Exception {
+      event.cancel();
+      rethrow;
+    }
+  }
+
+  void saveUserIdentity(UserIdentity ui, AsyncAction event) async {
+      try {
+        await _userService.saveUserIdentity(ui);
+
+        // turn null (not selected)
+        userIdentity = null;
+      } catch (e) {
+        dialogError = e.toString();
+        event.cancel();
+        rethrow;
+      }
+  }
+
+  void cancelUserAccess(UserAccess ua, AsyncAction event) async {
+
+    try {
+      if (ua.id == null) {
+        userAccesses.remove(ua);
+      } else {
+        userAccesses[userAccesses.indexOf(ua)] = await _userService.getUserAccess(ua.id);
+      }
+    } on Exception {
+      event.cancel();
+      rethrow;
+    }
+  }
+
+
+  void saveUserAccess(UserAccess uoa, AsyncAction event) async {
+    try {
+
+      await _userService.saveUserAccess(uoa);
+
+      // turn null (not selected)
+      userAccess = null;
+
+    } catch (e) {
+      dialogError = e.toString();
+      event.cancel();
+      rethrow;
+    }
+  }
+
+  void deleteUserIdentity(UserIdentity userIdentity) async {
+    try {
+      await _userService.deleteUserIdentity(userIdentity);
+      userIdentities = await _userService.getUserIdentities(user.id);
+    } catch (e) {
+      dialogError = e.toString();
+      rethrow;
+    }
+  }
+
+  void deleteUserAccess(UserAccess uoa) async {
+    try {
+      await _userService.deleteUserAccess(uoa);
+      userAccesses = await _userService.getUserAccesses(user.id);
+    } catch (e) {
+      dialogError = e.toString();
+      rethrow;
+    }
+  }
+
+  void onTabChange(TabChangeEvent event) {
+    tabIndex = event.newIndex;
+  }
+
+  String getUserIdentityProviderLabel(int uip) => UserIdentityMsg.label(UserIdentityProvider.values[uip].toString());
+
+  // Label for the button for single selection.
+  String get userIdentityProviderSingleSelectLabel {
+    String nameLabel;
+    if ((userIdentityProviderSingleSelectModel != null) &&
+        (userIdentityProviderSingleSelectModel.selectedValues != null) &&
+        (userIdentityProviderSingleSelectModel.selectedValues.length > 0)) {
+
+      nameLabel = getUserIdentityProviderLabel(userIdentityProviderSingleSelectModel.selectedValues.first);
+    }
+    return nameLabel ;
+  }
+
+  ItemRenderer get userIdentityProviderItemRenderer => (dynamic uip) => getUserIdentityProviderLabel(uip);
+
+  void expandedChangeUserIdentity(UserIdentity userIdentity, bool event) {
+    if (event != true) return;
+    if (userIdentity.provider != null) {
+      userIdentityProviderSingleSelectModel.select(userIdentity.provider);
+    } else if (userIdentityProviderOptions.optionsList.isNotEmpty) {
+      userIdentityProviderSingleSelectModel.select(userIdentityProviderOptions.optionsList.first);
+    }
+  }
+
+  String getUserAccessRoleLabel(int uoar) => UserAccessMsg.label(SystemRole.values[uoar].toString());
+
+  void expandedChangeUserAccess(UserAccess uoa, bool event) {
+    if (event != true) return;
+    userAccessOptions.forEach((role) {
+            role.checked = (role.index == userAccess.accessRole);
+            role.enabled = _userService.authService.isAuthorizedForAtuhorizatedRole(
+                SystemModule.users, systemFunction: uoa.id == null ?  SystemFunction.create : SystemFunction.update,
+                systemConstraint: role);
+    });
   }
 }
 
 class Option {
   final int index;
   final String label;
-  final bool checked;
-  final bool enabled;
+  bool checked;
+  bool enabled;
 
-  Option(this.index, this.label, this.checked, this.enabled);
+  Option(this.index, this.label);
 }

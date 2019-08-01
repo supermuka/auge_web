@@ -8,7 +8,7 @@ import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_server/model/general/organization.dart';
 
 import 'package:auge_web/services/auge_api_service.dart';
-import 'package:auge_server/src/protos/generated/general/common.pbgrpc.dart' as common_pbgrpc;
+import 'package:auge_server/src/protos/generated/google/protobuf/wrappers.pb.dart' as wrappers_pb;
 import 'package:auge_server/src/protos/generated/general/organization.pbgrpc.dart' as organization_pbgrpc;
 
 @Injectable()
@@ -44,16 +44,16 @@ class OrganizationService {
 
     organization_pbgrpc.OrganizationRequest organizationRequest = organization_pbgrpc.OrganizationRequest()
       ..organization = organization.writeToProtoBuf()
-      ..authenticatedOrganizationId = _authService.authorizedOrganization.id
-      ..authenticatedUserId = _authService.authenticatedUser.id;
+      ..authOrganizationId = _authService.authorizedOrganization.id
+      ..authUserId = _authService.authenticatedUser.id;
 
     try {
       if (organization.id == null) {
 
-        common_pbgrpc.IdResponse idResponse= await _organizationServiceClient
+        wrappers_pb.StringValue idResponse= await _organizationServiceClient
             .createOrganization(organizationRequest);
 
-        organization.id = idResponse.id;
+        organization.id = idResponse.value;
 
       } else {
         await _organizationServiceClient.updateOrganization(organizationRequest);
@@ -69,8 +69,8 @@ class OrganizationService {
     organization_pbgrpc.OrganizationDeleteRequest organizationDeleteRequest = organization_pbgrpc.OrganizationDeleteRequest()
       ..organizationId = organization.id
       ..organizationVersion = organization.version
-      ..authenticatedOrganizationId = _authService.authorizedOrganization.id
-      ..authenticatedUserId = _authService.authenticatedUser.id;
+      ..authOrganizationId = _authService.authorizedOrganization.id
+      ..authUserId = _authService.authenticatedUser.id;
 
     try {
       await _organizationServiceClient.deleteOrganization(organizationDeleteRequest);

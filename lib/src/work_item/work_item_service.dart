@@ -6,7 +6,7 @@ import 'package:auge_server/model/initiative/work_item.dart';
 
 import 'package:auge_web/services/auge_api_service.dart';
 
-import 'package:auge_server/src/protos/generated/general/common.pbgrpc.dart' as common_pbgrpc;
+import 'package:auge_server/src/protos/generated/google/protobuf/wrappers.pb.dart' as wrappers_pb;
 import 'package:auge_server/src/protos/generated/initiative/work_item.pbgrpc.dart' as work_item_pbgrpc;
 
 @Injectable()
@@ -28,8 +28,8 @@ class WorkItemService {
     work_item_pbgrpc.WorkItemDeleteRequest workItemDeleteRequest = work_item_pbgrpc.WorkItemDeleteRequest()
       ..workItemId = workItem.id
       ..workItemVersion = workItem.version
-      ..authenticatedOrganizationId = _authService.authorizedOrganization.id
-      ..authenticatedUserId = _authService.authenticatedUser.id;
+      ..authOrganizationId = _authService.authorizedOrganization.id
+      ..authUserId = _authService.authenticatedUser.id;
 
     try {
       await _workItemServiceClient.deleteWorkItem(workItemDeleteRequest);
@@ -45,15 +45,15 @@ class WorkItemService {
     work_item_pbgrpc.WorkItemRequest workItemRequest = work_item_pbgrpc.WorkItemRequest()
       ..workItem = workItem.writeToProtoBuf()
       ..initiativeId = initiativeId
-      ..authenticatedOrganizationId = _authService.authorizedOrganization.id
-      ..authenticatedUserId = _authService.authenticatedUser.id;
+      ..authOrganizationId = _authService.authorizedOrganization.id
+      ..authUserId = _authService.authenticatedUser.id;
 
     try {
       if (workItem.id == null) {
-        common_pbgrpc.IdResponse idResponse = await _workItemServiceClient
+        wrappers_pb.StringValue idResponse = await _workItemServiceClient
             .createWorkItem(workItemRequest);
 
-        workItem.id = idResponse.id;
+        workItem.id = idResponse.value;
       } else {
         await _workItemServiceClient.updateWorkItem(workItemRequest);
       }

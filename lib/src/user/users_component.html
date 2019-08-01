@@ -7,20 +7,20 @@
     <div class="w3-row-padding">
         <div class="w3-col" style="width:{{mainColWidth}}">
             <material-expansionpanel-set>
-                <div *ngFor="let iUserProfileOrganization of usersProfileOrganizations">
+                <div *ngFor="let iUser of users">
                     <material-expansionpanel class="expansionpanel-no-padding-margin"
                                              disabled
                                              [alwaysHideExpandIcon]="true"
                                              [hideExpandedHeader]="false"
                                              [showSaveCancel]="false">
                         <div name>
-                            <span class="avatar" [style.background-image]="'url(' + userUrlImage(iUserProfileOrganization.user) + ')'"></span><span><strong>{{iUserProfileOrganization.user.name}}</strong></span>
+                            <span class="avatar" [style.background-image]="'url(' + userUrlImage(iUser) + ')'"></span><span><strong>{{iUser.name}}</strong></span>
                         </div>
                         <div value>
-                            {{iUserProfileOrganization.user.userProfile.eMail}}
+                            {{iUser.userProfile.eMail}}
                         </div>
                         <div action>
-                            <material-menu [menu]="menuModel" (click)="selectUserProfileOrganization(iUserProfileOrganization)">
+                            <material-menu [menu]="menuModel" (click)="selectUser(iUser)">
                             </material-menu>
                         </div>
                     </material-expansionpanel>
@@ -31,7 +31,7 @@
             <auge-history-timeline></auge-history-timeline>
         </div>
     </div>
-    <material-fab class="material-fab-add" raised (trigger)="selectUserProfileOrganization(null);goToDetail()">
+    <material-fab class="material-fab-add" raised (trigger)="selectUser(null);goToDetail()">
         <material-icon icon="add"></material-icon>
     </material-fab>
 </div>

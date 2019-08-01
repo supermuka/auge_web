@@ -25,7 +25,7 @@ import 'package:auge_web/services/common_service.dart' as common_service;
 
 import 'package:auge_server/model/general/user.dart';
 import 'package:auge_server/model/general/organization.dart';
-import 'package:auge_server/model/general/user_profile_organization.dart';
+import 'package:auge_server/model/general/user_access.dart';
 
 import 'package:auge_web/message/messages.dart';
 
@@ -56,7 +56,7 @@ class AuthComponent implements OnActivate  {
   final AuthService _authService;
   final Router _router;
 
-  String eMail = "demo@levius.com.br";
+  String identification = "demo@levius.com.br";
   String passwordStr = "1234567";
   String _dialogError;
 
@@ -70,7 +70,7 @@ class AuthComponent implements OnActivate  {
     common_service.startTimeoutTimer(() { _dialogError = null; });
   }
 
-  List<UserProfileOrganization> authorizedUsersProfileOrganizations;
+  List<UserAccess> authorizedUserAccesses;
 
   // Dropdown Select to Organization and SuperAdmin
   List<OptionGroup<AppLayoutOrganizationSelectOption>> organizationGroupOptions = new List();
@@ -85,7 +85,7 @@ class AuthComponent implements OnActivate  {
   static final String loginButtonLabel = CommonMsg.buttonLabel('Login');
   static final String requiredValueMsg = CommonMsg.requiredValueMsg();
 
-  static final String eMailLabel = AuthMsg.label('eMail');
+  static final String identificationLabel = AuthMsg.label('Identification');
   static final String passwordLabel = AuthMsg.label('Password');
 
   static String organizationSingleSelectLabel = AuthMsg.label('Select');
@@ -98,7 +98,7 @@ class AuthComponent implements OnActivate  {
     //_authService.authorizedOrganizations = null;
 
     // Needs to set auth attributes again
-    _authService.authUserProfileOrganization = UserProfileOrganization();
+    _authService.authUserAccess = UserAccess();
 
     // _authService.authorizedSystemRole = null;
 
@@ -117,23 +117,23 @@ class AuthComponent implements OnActivate  {
 */
     action.cancelIf( Future<bool>.sync(
             () async  {
-      if (eMail.isEmpty || passwordStr.isEmpty) {
-        dialogError = AuthMsg.informEMailPasswordCorrectlyMsg();
+      if (identification.isEmpty || passwordStr.isEmpty) {
+        dialogError = AuthMsg.informIdentificationPasswordCorrectlyMsg();
       } else {
         try {
-          _authService.authUserProfileOrganization.user =
-          await _authService.getAuthenticatedUserWithEmail(eMail, passwordStr);
-          if (_authService.authUserProfileOrganization.user == null) {
+          _authService.authUserAccess.user =
+          await _authService.getAuthenticatedUser(identification, passwordStr);
+          if (_authService.authUserAccess.user == null) {
             dialogError = AuthMsg.userNotFoundMsg();
           } else {
-            authorizedUsersProfileOrganizations =
-            await _authService.getAuthorizedUsersProfileOrganizations(
-                _authService.authUserProfileOrganization.user.id);
-            if (authorizedUsersProfileOrganizations == null ||
-                authorizedUsersProfileOrganizations.length == 0) {
+            authorizedUserAccesses =
+            await _authService.getAuthorizedUserAccesses(
+                _authService.authUserAccess.user.id);
+            if (authorizedUserAccesses == null ||
+                authorizedUserAccesses.length == 0) {
               dialogError = AuthMsg.organizationNotFoundMsg();
             } else {
-              configOrganizationSeletion();
+              configOrganizationSelection();
               // Don't cancel
               return false;
             }
@@ -147,7 +147,6 @@ class AuthComponent implements OnActivate  {
       }
       return true;
     }));
-
   }
 
   goToAppLayout(AsyncAction<bool> action) {
@@ -168,7 +167,7 @@ class AuthComponent implements OnActivate  {
     return _authService.authorizedOrganization;
   }
 
-  void configOrganizationSeletion() {
+  void configOrganizationSelection() {
 
     // MENU LEFT *** Dropdown select to Organizations and Super Admin ***
     organizationGroupOptions.clear();
@@ -178,13 +177,13 @@ class AuthComponent implements OnActivate  {
 
     String orgGroupLabel = AuthMsg.label('Organization');
 
-    if (authorizedUsersProfileOrganizations != null &&
-        authorizedUsersProfileOrganizations.isNotEmpty) {
-      authorizedUsersProfileOrganizations.forEach((e) =>
+    if (authorizedUserAccesses != null &&
+        authorizedUserAccesses.isNotEmpty) {
+      authorizedUserAccesses.forEach((e) =>
           orgs.add(new AppLayoutOrganizationSelectOption()
             ..group = orgGroupLabel
             ..name = e.organization.name
-            ..userProfileOrganization = e));
+            ..userAccess  = e));
     }
     organizationGroupOptions.add(
         new OptionGroup.withLabel(orgs, orgGroupLabel));
@@ -203,14 +202,14 @@ class AuthComponent implements OnActivate  {
       ..selectionChanges.listen((d) async {
         if (d != null && d.isNotEmpty && d.first != null && d.first.added != null && d.first.added.isNotEmpty) {
 
-          if (_authService.authUserProfileOrganization !=
-              d.first.added.first.userProfileOrganization) {
+          if (_authService.authUserAccess !=
+              d.first.added.first.userAccess) {
 
-              _authService.authUserProfileOrganization =
-                  d.first.added.first.userProfileOrganization;
+              _authService.authUserAccess =
+                  d.first.added.first.userAccess;
 
               organizationSingleSelectLabel =
-                d.first.added.first.userProfileOrganization.organization.name ??
+                d.first.added.first.userAccess.organization.name ??
                   AuthMsg.label('Select');
           }
         }
@@ -227,7 +226,7 @@ class AuthComponent implements OnActivate  {
   }
 
   bool get validInput {
-    return (eMail != null && eMail.trim().isNotEmpty
+    return (identification != null && identification.trim().isNotEmpty
         && passwordStr != null && passwordStr.trim().isNotEmpty) ?? false;
   }
 
@@ -237,5 +236,5 @@ class AuthComponent implements OnActivate  {
 class AppLayoutOrganizationSelectOption {
   String group;
   String name;
-  UserProfileOrganization userProfileOrganization;
+  UserAccess userAccess;
 }

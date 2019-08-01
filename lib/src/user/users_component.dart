@@ -18,7 +18,6 @@ import 'package:angular_components/material_expansionpanel/material_expansionpan
 
 import 'package:auge_server/model/general/authorization.dart';
 import 'package:auge_server/model/general/user.dart';
-import 'package:auge_server/model/general/user_profile_organization.dart';
 
 import 'package:auge_web/message/messages.dart';
 import 'package:auge_web/src/user/user_service.dart';
@@ -74,9 +73,9 @@ class UsersComponent with CanReuse implements OnActivate {
  // String error;
 
   //List<User> _users;
-  List<UserProfileOrganization> _usersProfileOrganizations;
+  List<User> _users;
 
-  UserProfileOrganization selectedUserProfileOrganization;
+  User selectedUser;
 
   String mainColWidth = '100%';
   bool _timelineVisible = false;
@@ -111,7 +110,7 @@ class UsersComponent with CanReuse implements OnActivate {
 
     try {
       // _users = await _userService.getUsers(_userService.authService.selectedOrganization?.id, withProfile: true);
-      _usersProfileOrganizations = await _userService.getUsersProfileOrganizations(_userService.authService.authorizedOrganization?.id, withUserProfile: true);
+      _users = await _userService.getUsers(_userService.authService.authorizedOrganization?.id, withUserProfile: true);
 
       if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.users.index);
     } catch (e) {
@@ -120,16 +119,16 @@ class UsersComponent with CanReuse implements OnActivate {
     }
   }
 
-  List<UserProfileOrganization> get usersProfileOrganizations {
-    return _searchService?.searchTerm.toString().isEmpty ? _usersProfileOrganizations : _usersProfileOrganizations.where((t) => t.user.name.contains(_searchService.searchTerm)).toList();
+  List<User> get users {
+    return _searchService?.searchTerm.toString().isEmpty ? _users : _users.where((t) => t.name.contains(_searchService.searchTerm)).toList();
   }
 
   void delete() async {
     try {
       // Delete user
-      await _userService.deleteUserProfileOrganization(selectedUserProfileOrganization);
+      await _userService.deleteUser(selectedUser);
 
-      usersProfileOrganizations.remove(selectedUserProfileOrganization);
+      users.remove(selectedUser);
       if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.users.index);
 
     } catch (e) {
@@ -139,8 +138,8 @@ class UsersComponent with CanReuse implements OnActivate {
     }
   }
 
-  void selectUserProfileOrganization(UserProfileOrganization userProfileOrganization) {
-    selectedUserProfileOrganization = userProfileOrganization;
+  void selectUser(User user) {
+    selectedUser = user;
   }
 
   String userUrlImage(User user) {
@@ -148,10 +147,10 @@ class UsersComponent with CanReuse implements OnActivate {
   }
 
   void goToDetail() {
-    if (selectedUserProfileOrganization == null) {
+    if (selectedUser == null) {
       _router.navigate(AppRoutes.userAddRoute.toUrl());
     } else {
-      _router.navigate(AppRoutes.userEditRoute.toUrl(parameters: { AppRoutesParam.userProfileOrganizationIdParameter: selectedUserProfileOrganization.id }));
+      _router.navigate(AppRoutes.userEditRoute.toUrl(parameters: { AppRoutesParam.userIdParameter: selectedUser.id }));
     }
   }
 }

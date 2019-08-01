@@ -139,7 +139,7 @@ class GroupDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
     try {
       _superGroups = await _groupService.getGroups(_groupService.authService.authorizedOrganization.id);
-      _users = await _userService.getUsers(_groupService.authService.authorizedOrganization.id, withProfile: true);
+      _users = await _userService.getUsers(_groupService.authService.authorizedOrganization.id, withUserProfile: true);
       groupTypes = await _groupService.getGroupTypes();
     } catch (e) {
       dialogError = e.toString();

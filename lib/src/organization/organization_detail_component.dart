@@ -92,7 +92,7 @@ class OrganizationDetailComponent implements OnInit, OnActivate, OnDeactivate {
   void saveOrganization() async {
     try {
       await _organizationService.saveOrganization(organization);
-      _organizationService.authService.authUserProfileOrganization.organization = await _organizationService.getOrganization(organization.id);
+      _organizationService.authService.authUserAccess.organization = await _organizationService.getOrganization(organization.id);
       closeDetail();
     } catch (e) {
       dialogError = e.toString();

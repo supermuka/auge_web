@@ -142,10 +142,6 @@ class MeasureDetailComponent implements OnInit, OnActivate, OnDeactivate  {
       measureUnitSingleSelectModel.select(measure.measureUnit);
     } else if (measureUnitOptions.optionsList.isNotEmpty) {
       measureUnitSingleSelectModel.select(measureUnitOptions.optionsList.first);
-      /*
-      measure.measureUnit = measureUnitOptions.optionsList.first;
-      measureUnitSingleSelectModel.select(measureUnitOptions.optionsList.first);
-*/
     }
   }
 
