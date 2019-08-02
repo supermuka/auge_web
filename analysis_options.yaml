@@ -5,6 +5,7 @@ analyzer:
 # Lint rules and documentation, see http://dart-lang.github.io/linter/lints
 linter:
   rules:
+    - camel_case_types
     - cancel_subscriptions
     - close_sinks
     - hash_and_equals

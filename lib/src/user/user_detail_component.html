@@ -137,7 +137,7 @@
                             <material-expansionpanel  disabled [alwaysHideExpandIcon]="true"
                                                       [hideExpandedHeader]="true"
                                                       [showSaveCancel]="true"
-                                                      [expanded]="iUserAccess != null && iUserAccess == userAccesses"
+                                                      [expanded]="iUserAccess != null && iUserAccess == userAccess"
                                                       (expandedChange)="expandedChangeUserAccess(iUserAccess, $event)"
                                                       (save)="saveUserAccess(iUserAccess, $event)"
                                                       (cancel)="cancelUserAccess(iUserAccess, $event)"

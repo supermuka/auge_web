@@ -86,7 +86,7 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
   // To control Tabs
   int tabIndex = 0;
 
-  final List<String> tabLabels = <String>[UserMsg.label('Profile'), UserMsg.label('Identity'), UserMsg.label('Organization Access')];
+  final List<String> tabLabels = <String>[UserMsg.label('Profile'), UserMsg.label('Identity'), UserMsg.label('Access')];
 
   // Identity Provider
   List<int> _userIdentityProviders = [];
@@ -168,19 +168,16 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
       }
     });
 
-
     SystemRole.values.forEach((role) {
-      if (role != SystemRole.superAdmin) {
+      //if (role != SystemRole.superAdmin) {
         userAccessOptions.add(Option(
             role.index,
-            UserMsg.label(role.toString())
+            getUserAccessRoleLabel(role.index)
            )
         );
-      }
+      //}
     });
-
-
-      }
+  }
 
   @override
   void onActivate(RouterState previous, RouterState current) async {
@@ -235,7 +232,6 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
       userAccesses.insert(0, UserAccess()..organization = _userService.authService.authorizedOrganization..accessRole = SystemRole.standard.index);
       userAccess = userAccesses.first;
     } else {
-      // Get a new instance to doesn't referenced the other.
       userAccess = uoa;
     }
   }
@@ -409,7 +405,7 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
     if (event != true) return;
     userAccessOptions.forEach((role) {
             role.checked = (role.index == userAccess.accessRole);
-            role.enabled = _userService.authService.isAuthorizedForAtuhorizatedRole(
+            role.enabled = _userService.authService.isAuthorizedForAccessRole(
                 SystemModule.users, systemFunction: uoa.id == null ?  SystemFunction.create : SystemFunction.update,
                 systemConstraint: role);
     });
@@ -419,8 +415,8 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
 class Option {
   final int index;
   final String label;
-  bool checked;
-  bool enabled;
+  bool checked = false;
+  bool enabled = false;
 
   Option(this.index, this.label);
 }

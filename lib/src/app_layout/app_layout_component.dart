@@ -193,10 +193,10 @@ class AppLayoutComponent with CanReuse implements OnActivate {
       return;
     }
 
-    isAuthorizedToAccessUsers =_authService.isAuthorizedForAtuhorizatedRole(SystemModule.users);
-    isAuthorizedToAccessGroups = _authService.isAuthorizedForAtuhorizatedRole(SystemModule.groups);
-    isAuthorizedToAccessOrganizationProfile =_authService.isAuthorizedForAtuhorizatedRole(SystemModule.organization_profile);
-    isAuthorizedToAccessConfiguration =_authService.isAuthorizedForAtuhorizatedRole(SystemModule.configuration);
+    isAuthorizedToAccessUsers =_authService.isAuthorizedForAccessRole(SystemModule.users);
+    isAuthorizedToAccessGroups = _authService.isAuthorizedForAccessRole(SystemModule.groups);
+    isAuthorizedToAccessOrganizationProfile =_authService.isAuthorizedForAccessRole(SystemModule.organization_profile);
+    isAuthorizedToAccessConfiguration =_authService.isAuthorizedForAccessRole(SystemModule.configuration);
 
     // RIGHT - SETTINGS *** Dropdown select to User Profile and Logout ***
     userProfileLogoutGroupOptions.clear();
