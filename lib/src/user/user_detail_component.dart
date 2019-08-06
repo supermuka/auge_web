@@ -63,11 +63,11 @@ import 'package:angular_components/model/action/async_action.dart';
       FixedMaterialTabStripComponent,
       MaterialDialogComponent,
       ModalComponent,
+      MaterialCheckboxComponent,
       MaterialRadioGroupComponent,
       MaterialRadioComponent,
       MaterialButtonComponent,
       MaterialIconComponent,
-      MaterialCheckboxComponent,
       MaterialExpansionPanel,
       MaterialExpansionPanelSet,
       MaterialExpansionPanelAutoDismiss,
@@ -129,6 +129,8 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
   static final String nameLabel =  FieldMsg.label('${User.className}.${User.nameField}');
   static final String inactiveLabel = FieldMsg.label('${User.className}.${User.inactiveField}');
+  static final String managedByUserLabel = FieldMsg.label('${User.className}.${User.managedByOrganizationField}');
+
   static final String profileEmailLabel =  FieldMsg.label('${UserProfile.className}.${UserProfile.eMailField}');
   static final String profilePhotoLabel = FieldMsg.label('${UserProfile.className}.${UserProfile.imageField}');
   static final String profileIdiomLabel = FieldMsg.label('${UserProfile.className}.${UserProfile.idiomLocaleField}');
@@ -137,7 +139,7 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
   static final String identityPasswordLabel = FieldMsg.label('${UserIdentity.className}.${UserIdentity.passwordField}');
   static final String identityProviderLabel = FieldMsg.label('${UserIdentity.className}.${UserIdentity.providerField}');
   static final String identityProviderObjectIdLabel = FieldMsg.label('${UserIdentity.className}.${UserIdentity.providerObjectIdField}');
-  static final String identityManagedByOrganizationLabel = FieldMsg.label('${UserIdentity.className}.${UserIdentity.managedByOrganizationField}');
+
 
   static final String accessOrganizationLabel  = FieldMsg.label('${UserAccess.className}.${UserAccess.organizationField}');
   static final String accessRoleLabel = FieldMsg.label('${UserAccess.className}.${UserAccess.accessRoleField}');
@@ -203,6 +205,8 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
       }
     } else {
 
+      user.inactive = false;
+      user.managedByOrganization = _userService.authService.authorizedOrganization;
       user.userProfile.idiomLocale = Intl.defaultLocale;
       //userAccess.accessRole = SystemRole.standard.index;
 
@@ -218,7 +222,7 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
   void selectUserIdentity(UserIdentity ui) async {
     if (ui == null) {
-      userIdentities.insert(0, UserIdentity()..managedByOrganization = _userService.authService.authorizedOrganization..user = user);
+      userIdentities.insert(0, UserIdentity()..user = user);
       userIdentity = userIdentities.first;
       userIdentity.provider = UserIdentityProvider.internal.index;
     } else {
@@ -407,7 +411,7 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
             role.checked = (role.index == userAccess.accessRole);
             role.enabled = _userService.authService.isAuthorizedForAccessRole(
                 SystemModule.users, systemFunction: uoa.id == null ?  SystemFunction.create : SystemFunction.update,
-                systemConstraint: role);
+                systemConstraint: SystemRole.values[role.index]);
     });
   }
 }

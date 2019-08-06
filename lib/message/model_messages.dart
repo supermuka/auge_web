@@ -61,6 +61,8 @@ class FieldMsg {
        //USER
       '${User.className}.${User.nameField}': 'Name',
       '${User.className}.${User.inactiveField}': 'Inactive',
+      '${User.className}.${User.managedByOrganizationField}': 'Managed By Organization',
+
       //USERPROFILE
       '${UserProfile.className}.${UserProfile.eMailField}': 'e-Mail',
       '${UserProfile.className}.${UserProfile.imageField}':'Image',
@@ -71,7 +73,6 @@ class FieldMsg {
       '${UserIdentity.className}.${UserIdentity.passwordField}': 'Password',
       '${UserIdentity.className}.${UserIdentity.providerField}': 'Provider',
       '${UserIdentity.className}.${UserIdentity.providerObjectIdField}': 'Provider Object Id',
-      '${UserIdentity.className}.${UserIdentity.managedByOrganizationField}': 'Managed By Organization',
 
       //USERORGANIZATIONACCESS
       '${UserAccess.className}.${UserAccess.organizationField}':'Organization',

@@ -79,7 +79,6 @@
                                 </div>
                                 <div value>
                                     <span>{{getUserIdentityProviderLabel(iUserIdentity.provider)}}</span>
-                                    <span>{{iUserIdentity.managedByOrganization.name}}</span>
                                     <!-- span>{{iMeasureProgress.comment}}</span -->
                                 </div>
                                 <div action>
@@ -94,9 +93,6 @@
                                     <div class="w3-row">
                                         <div class="w3-col l6">
                                             <material-input autoFocus [(ngModel)]="userIdentity.identification" floatingLabel [label]="identityIdentificationLabel"></material-input>
-                                        </div>
-                                        <div class="w3-col l6">
-                                            <material-input disabled [ngModel]="userIdentity.managedByOrganization.name" floatingLabel [label]="identityManagedByOrganizationLabel"></material-input>
                                         </div>
                                     </div>
                                     <div class="w3-row">

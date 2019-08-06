@@ -177,14 +177,12 @@ class InitiativesComponent with CanReuse implements OnInit, OnActivate, OnDestro
       return;
     }
 
-    print('onActivate 1');
     if (routerStatePrevious.toUrl() == AppRoutes.initiativesRoute.toUrl() ||
         (routerStatePrevious.toUrl() == AppRoutes.initiativeAddRoute.toUrl() && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.initiativeIdQueryParameter) ||
          routerStatePrevious.toUrl() == AppRoutes.initiativeEditRoute.toUrl() && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.initiativeIdQueryParameter) ||
          routerStatePrevious.toUrl() == AppRoutes.workItemAddRoute.toUrl() && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.workItemIdQueryParameter) ||
          routerStatePrevious.toUrl() == AppRoutes.workItemEditRoute.toUrl() && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.workItemIdQueryParameter))
     ) return;
-    print('onActivate 2');
 
     _appLayoutService.headerTitle = InitiativeMsg.label('Initiatives');
 

@@ -102,11 +102,6 @@ class AuthService  {
 
   bool isAuthorizedForAccessRole(SystemModule systemModule, {dynamic systemFunction, dynamic systemConstraint}) {
     if (_generalAuthorizationPolicy != null) {
-      print('DEB A');
-      print(SystemRole.values[authUserAccess.accessRole]);
-      print(systemModule);
-      print(systemFunction);
-      print(systemConstraint);
 
       return _generalAuthorizationPolicy.isAuthorized(SystemRole.values[authUserAccess.accessRole], systemModule, systemFunction: systemFunction, systemConstraint: systemConstraint);
     } else {

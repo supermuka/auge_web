@@ -36,7 +36,7 @@ class UserService {
   Future<List<User>> getUsers(String organizationId, {bool withUserProfile = false}) async {
     // return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
     return (await _userServiceClient.getUsers(
-        user_pbgrpc.UserGetRequest()..organizationId = organizationId..withUserProfile = withUserProfile)).users.map((m) =>
+        user_pbgrpc.UserGetRequest()..managedByOrganizationIdOrAccessedByOrganizationId = organizationId..withUserProfile = withUserProfile)).users.map((m) =>
     User()
       ..readFromProtoBuf(m)).toList();
   }

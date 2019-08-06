@@ -76,16 +76,14 @@ class MapComponent with CanReuse implements OnActivate {
 
     try {
       objectivesMap = await _mapService.getObjectivesMap(_authService.authorizedOrganization.id);
-
+/*
       objectivesMap.forEach((o) {
-        print('root');
-        print(o.name);
+;
         o.alignedWithChildren.forEach((f) {
-          print('children');
-          print(f.name);
+
         });
       });
-
+*/
 
     } catch (e) {
       _appLayoutService.error = e.toString();
