@@ -2,6 +2,7 @@
 // Author: Samuel C. Schwebel.
 
 import 'dart:async';
+//import 'dart:html' as html;
 
 import 'package:platform_detect/platform_detect.dart';
 
@@ -19,6 +20,8 @@ import 'package:angular_components/material_select/material_dropdown_select_acce
 import 'package:angular_components/model/selection/selection_model.dart';
 import 'package:angular_components/model/selection/selection_options.dart';
 import 'package:angular_components/model/ui/has_renderer.dart';
+
+
 
 import 'auth_service.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
@@ -54,6 +57,7 @@ class AuthComponent implements OnActivate  {
   String appLayoutRoute = AppRoutes.appLayoutRoute.toUrl();
 
   final AuthService _authService;
+
   final Router _router;
 
   String identification = "demo@levius.com.br";
@@ -224,8 +228,21 @@ class AuthComponent implements OnActivate  {
   String userUrlImage(User user) {
     return common_service.userUrlImage(user?.userProfile?.image);
   }
+/*
+  bool validIdentificationPattern(html.FocusEvent focusEvent) {
+    if (identification != null && identification.trim().isNotEmpty) {
+      bool isEmailPattern = common_service.isEmailPattern(identification);
+      if (!isEmailPattern) {
+        focusEvent.stopPropagation();
+      }
+      return isEmailPattern;
+    } else {
+      return true;
+    }
+  }
+ */
 
-  bool get validInput {
+  bool validInput() {
     return (identification != null && identification.trim().isNotEmpty
         && passwordStr != null && passwordStr.trim().isNotEmpty) ?? false;
   }

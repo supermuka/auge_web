@@ -33,6 +33,7 @@ import 'package:angular_components/model/selection/selection_model.dart';
 import 'package:angular_components/model/selection/selection_options.dart';
 import 'package:angular_components/model/ui/has_renderer.dart';
 
+import 'package:auge_server/model/general/organization_configuration.dart';
 import 'package:auge_server/model/general/authorization.dart';
 import 'package:auge_server/model/general/user.dart';
 import 'package:auge_server/model/general/user_identity.dart';
@@ -43,6 +44,7 @@ import 'package:auge_web/message/model_messages.dart';
 
 //import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
+import 'package:auge_web/src/configuration/configuration_service.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
 
 import 'package:angular_components/model/action/async_action.dart';
@@ -53,7 +55,7 @@ import 'package:angular_components/model/action/async_action.dart';
     styleUrls: const [
       'user_detail_component.css'
     ],
-    providers: const <dynamic>[overlayBindings, UserService],
+    providers: const <dynamic>[overlayBindings, UserService, ConfigurationService],
     directives: const [
       coreDirectives,
       routerDirectives,
@@ -79,12 +81,15 @@ import 'package:angular_components/model/action/async_action.dart';
 class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
   final UserService _userService;
+  final ConfigurationService _configurationService;
   final Location _location;
 
   bool modalVisible = false;
 
   // To control Tabs
   int tabIndex = 0;
+
+  OrganizationConfiguration organizationConfiguration;
 
   final List<String> tabLabels = <String>[UserMsg.label('Profile'), UserMsg.label('Identity'), UserMsg.label('Access')];
 
@@ -112,7 +117,7 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
   /// When it exists, the error/exception message is presented into dialog view.
   String dialogError;
 
-  UserDetailComponent(this._userService, this._location) {
+  UserDetailComponent(this._userService, this._configurationService, this._location) {
     userIdentityProviderSingleSelectModel = SelectionModel<int>.single();
     userAccessOptions = List<Option>();
   }
@@ -140,6 +145,9 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
   static final String identityProviderLabel = FieldMsg.label('${UserIdentity.className}.${UserIdentity.providerField}');
   static final String identityProviderObjectIdLabel = FieldMsg.label('${UserIdentity.className}.${UserIdentity.providerObjectIdField}');
 
+  static final String domainOrganizationConfigurationRequiredMsg = UserMsg.domainOrganizationConfigurationRequiredMsg();
+  static final String identificationRequiredMsg = UserMsg.identificationRequiredMsg();
+  static final String invalidIdentificationMsg = UserMsg.invalidIdentificationMsg();
 
   static final String accessOrganizationLabel  = FieldMsg.label('${UserAccess.className}.${UserAccess.organizationField}');
   static final String accessRoleLabel = FieldMsg.label('${UserAccess.className}.${UserAccess.accessRoleField}');
@@ -179,6 +187,9 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
         );
       //}
     });
+
+    organizationConfiguration = await _configurationService.getOrganizationConfiguration(_userService.authService.authorizedOrganization.id);
+
   }
 
   @override
@@ -208,11 +219,13 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
       user.inactive = false;
       user.managedByOrganization = _userService.authService.authorizedOrganization;
       user.userProfile.idiomLocale = Intl.defaultLocale;
+
       //userAccess.accessRole = SystemRole.standard.index;
 
       // Authorizated and selected organization
       //userAccess.organization = _userService.authService.authorizedOrganization;
     }
+
   }
 
   @override
@@ -222,7 +235,7 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
   void selectUserIdentity(UserIdentity ui) async {
     if (ui == null) {
-      userIdentities.insert(0, UserIdentity()..user = user);
+      userIdentities.insert(0, UserIdentity()..user = user..identification = '<id>@' + organizationConfiguration.domain ?? '<domain.com>' );
       userIdentity = userIdentities.first;
       userIdentity.provider = UserIdentityProvider.internal.index;
     } else {
@@ -235,6 +248,10 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
     if (uoa == null) {
       userAccesses.insert(0, UserAccess()..organization = _userService.authService.authorizedOrganization..accessRole = SystemRole.standard.index);
       userAccess = userAccesses.first;
+
+      userAccess.organization = _userService.authService.authorizedOrganization;
+      userAccess.user = user;
+
     } else {
       userAccess = uoa;
     }
@@ -312,15 +329,32 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
   }
 
   void saveUserIdentity(UserIdentity ui, AsyncAction event) async {
-      try {
-        await _userService.saveUserIdentity(ui);
 
-        // turn null (not selected)
-        userIdentity = null;
-      } catch (e) {
-        dialogError = e.toString();
+      // validate domain informed
+
+      if (organizationConfiguration == null || organizationConfiguration.domain.trim().isEmpty) {
+        dialogError = domainOrganizationConfigurationRequiredMsg;
         event.cancel();
-        rethrow;
+      } else if (ui.identification.trim().isEmpty) {
+        dialogError = identificationRequiredMsg;
+        event.cancel();
+      } else if (ui.identification.substring(ui.identification.indexOf('@') + 1) != organizationConfiguration.domain) {
+        dialogError = invalidIdentificationMsg;
+        event.cancel();
+      } else if (ui.identification.substring(0, ui.identification.indexOf('@')).trim().isEmpty) {
+        dialogError = invalidIdentificationMsg;
+        event.cancel();
+      } else {
+        try {
+          await _userService.saveUserIdentity(ui);
+
+          // turn null (not selected)
+          userIdentity = null;
+        } catch (e) {
+          dialogError = e.toString();
+          event.cancel();
+          rethrow;
+        }
       }
   }
 
@@ -413,6 +447,18 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
                 SystemModule.users, systemFunction: uoa.id == null ?  SystemFunction.create : SystemFunction.update,
                 systemConstraint: SystemRole.values[role.index]);
     });
+  }
+
+  bool isManagedByOrganization() {
+    return (user?.managedByOrganization == null || user.managedByOrganization.id == _userService.authService.authorizedOrganization.id);
+  }
+
+  bool isUserAccessByOrganization(String userAccessOrganizationId) {
+    return (userAccessOrganizationId == _userService.authService.authorizedOrganization.id);
+  }
+
+  bool isUserAccessAdded() {
+    return (userAccesses.indexWhere((t) => t.organization.id == _userService.authService.authorizedOrganization.id) != -1);
   }
 }
 

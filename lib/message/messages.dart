@@ -210,9 +210,14 @@ class UserMsg {
       name: "userLabel",
       args: [label],
       // locale: "en",
-      desc: "Organization labels",
+      desc: "User labels",
       examples: const {"Name": "Name"}
   );
+
+  static domainOrganizationConfigurationRequiredMsg() => Intl.message("Domain on organization configuration is required.");
+  static identificationRequiredMsg() => Intl.message("Identification is required.");
+  static invalidIdentificationMsg() => Intl.message("Identification format invalid. Valid format example: id@domain.com");
+
 }
 
 /// Specific messages and label for [UserIdentity]

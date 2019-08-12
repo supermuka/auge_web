@@ -44,3 +44,10 @@ set error(String error) {
   // The error is presented just some seconds.
   startTimeoutTimer(() { _error = null; });
 }
+
+/// RFC2822 Email Format Validation
+/// https://regexr.com/2rhq7
+bool isEmailPattern(String eMail) {
+  RegExp exp = new RegExp(r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?");
+  return exp.hasMatch(eMail);
+}

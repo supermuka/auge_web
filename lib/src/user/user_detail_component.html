@@ -12,10 +12,10 @@
             <div *ngIf="tabIndex == 0">
                 <div class="w3-padding">
                     <div class="w3-row">
-                        <material-input autocomplete="off" class="w3-col l12" [(ngModel)]="user.name" floatingLabel [label]="nameLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
+                        <material-input [disabled]="!isManagedByOrganization()" autocomplete="off" class="w3-col l12" [(ngModel)]="user.name" floatingLabel [label]="nameLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
                     </div>
                     <div class="w3-row">
-                        <material-input autocomplete="off" class="w3-col l12" [(ngModel)]="user.userProfile.eMail" floatingLabel [label]="profileEmailLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
+                        <material-input [disabled]="!isManagedByOrganization()" type="email" autocomplete="off" class="w3-col l12" [(ngModel)]="user.userProfile.eMail" floatingLabel [label]="profileEmailLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
                     </div>
                     <!--div class="w3-row">
                         <material-input autocomplete="new-password" class="w3-col l12" type="password" [(ngModel)]="passwordSecure" floatingLabel [label]="passwordLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
@@ -25,11 +25,11 @@
                     </div>
                     <div class="w3-row-padding">
                         <span class="avatar" [style.background-image]="'url(' + userUrlImage(user) + ')'"></span>
-                        <input type="file" id="upload_image" accept="image/png,image/jpg,image/jpeg,capture=camera">
-                        <material-button icon (trigger)="uploadImage()">{{uploadButtonLabel}}
+                        <input [disabled]="!isManagedByOrganization()" type="file" id="upload_image" accept="image/png,image/jpg,image/jpeg,capture=camera">
+                        <material-button [disabled]="!isManagedByOrganization()" icon (trigger)="uploadImage()">{{uploadButtonLabel}}
                             <material-icon icon="done"></material-icon>
                         </material-button>
-                        <material-button icon [disabled]="user.userProfile.image == null" (trigger)="clearImage()">{{clearButtonLabel}}
+                        <material-button [disabled]="user.userProfile.image == null || !isManagedByOrganization()" icon (trigger)="clearImage()">{{clearButtonLabel}}
                             <material-icon icon="clear"></material-icon>
                         </material-button>
                     </div>
@@ -38,20 +38,20 @@
                     </div>
                     <div class="w3-row">
                         <material-radio-group [(ngModel)]="user.userProfile.idiomLocale">
-                            <material-radio [value]="pt_BRsymbol" no-ink>
+                            <material-radio  [disabled]="!isManagedByOrganization()" [value]="pt_BRsymbol" no-ink>
                                 <span class="avatar-icon" [style.background-image]="'url(' + getBrFlag + ')'"></span>{{pt_BRvalueLabel}}
                             </material-radio>
-                            <material-radio [value]="en_USsymbol" no-ink>
+                            <material-radio  [disabled]="!isManagedByOrganization()" [value]="en_USsymbol" no-ink>
                                 <span class="avatar-icon" [style.background-image]="'url(' + getUsFlag + ')'"></span>{{en_USvalueLabel}}
                             </material-radio>
-                            <material-radio [value]="es_ESsymbol" no-ink>
+                            <material-radio  [disabled]="!isManagedByOrganization()" [value]="es_ESsymbol" no-ink>
                                 <span class="avatar-icon" [style.background-image]="'url(' + getEsFlag + ')'"></span>{{es_ESvalueLabel}}
                             </material-radio>
                         </material-radio-group>
                     </div>
-                    <material-checkbox [(ngModel)]="user.inactive" [label]="inactiveLabel"></material-checkbox>
+                    <material-checkbox [disabled]="!isManagedByOrganization()" [(ngModel)]="user.inactive" [label]="inactiveLabel"></material-checkbox>
                     <div class="w3-row">
-                        <material-button class="w3-right" [disabled]="!validInput" (trigger)="saveUser()">{{saveButtonLabel}}
+                        <material-button class="w3-right" [disabled]="!validInput || !isManagedByOrganization()" (trigger)="saveUser()">{{saveButtonLabel}}
                             <material-icon icon="save"></material-icon>
                         </material-button>
                     </div>
@@ -60,7 +60,7 @@
             <div *ngIf="tabIndex == 1">
                 <div class="w3-padding">
                     <div class="w3-row">
-                        <material-button class="w3-right" (trigger)="selectUserIdentity(null)">
+                        <material-button [disabled]="!isManagedByOrganization()" class="w3-right" (trigger)="selectUserIdentity(null)">
                             <material-icon icon="add"></material-icon>
                         </material-button>
                     </div>
@@ -82,24 +82,26 @@
                                     <!-- span>{{iMeasureProgress.comment}}</span -->
                                 </div>
                                 <div action>
-                                    <material-button icon (trigger)="selectUserIdentity(iUserIdentity)">
+                                    <material-button [disabled]="!isManagedByOrganization()"  icon (trigger)="selectUserIdentity(iUserIdentity)">
                                         <material-icon icon="edit"></material-icon>
                                     </material-button>
-                                    <material-button icon (trigger)="deleteUserIdentity(iUserIdentity)">
+                                    <material-button [disabled]="!isManagedByOrganization()"  icon (trigger)="deleteUserIdentity(iUserIdentity)">
                                         <material-icon icon="delete"></material-icon>
                                     </material-button>
                                 </div>
                                 <div *ngIf="userIdentity != null">
                                     <div class="w3-row">
                                         <div class="w3-col l6">
-                                            <material-input autoFocus [(ngModel)]="userIdentity.identification" floatingLabel [label]="identityIdentificationLabel"></material-input>
+                                            <material-input [disabled]="!isManagedByOrganization()" type="email"
+                                                            autoFocus
+                                                            [(ngModel)]="userIdentity.identification" floatingLabel [label]="identityIdentificationLabel"></material-input>
                                         </div>
                                     </div>
                                     <div class="w3-row">
                                         <div class="w3-col l6">
                                             <div class="input-container">
                                                 <label>{{identityProviderLabel}}</label>
-                                                <material-dropdown-select [buttonText]="userIdentityProviderSingleSelectLabel"
+                                                <material-dropdown-select [disabled]="!isManagedByOrganization()" [buttonText]="userIdentityProviderSingleSelectLabel"
                                                                           [selection]="userIdentityProviderSingleSelectModel"
                                                                           [options]="userIdentityProviderOptions"
                                                                           [itemRenderer]="userIdentityProviderItemRenderer">
@@ -107,12 +109,12 @@
                                             </div>
                                         </div>
                                         <div class="w3-col l6">
-                                            <material-input [disabled]="userIdentity?.provider == 0" [(ngModel)]="userIdentity.providerObjectId"  floatingLabel [label]="identityProviderObjectIdLabel"></material-input>
+                                            <material-input [disabled]="userIdentity?.provider == 0 && !isManagedByOrganization()" [(ngModel)]="userIdentity.providerObjectId"  floatingLabel [label]="identityProviderObjectIdLabel"></material-input>
                                         </div>
                                     </div>
                                     <div class="w3-row">
                                         <div class="w3-col l16">
-                                            <material-input [disabled]="userIdentity?.provider != 0" [(ngModel)]="userIdentity.password" floatingLabel [label]="identityPasswordLabel"></material-input>
+                                            <material-input [disabled]="userIdentity?.provider != 0 && !isManagedByOrganization()" [(ngModel)]="userIdentity.password" floatingLabel [label]="identityPasswordLabel"></material-input>
                                         </div>
                                     </div>
                                 </div>
@@ -124,7 +126,7 @@
             <div *ngIf="tabIndex == 2">
                 <div class="w3-padding">
                     <div class="w3-row">
-                        <material-button class="w3-right" (trigger)="selectUserAccess(null)">
+                        <material-button [disabled]="!isManagedByOrganization() || isUserAccessAdded()"  class="w3-right" (trigger)="selectUserAccess(null)">
                             <material-icon icon="add"></material-icon>
                         </material-button>
                     </div>
@@ -146,10 +148,10 @@
                                     <!-- span>{{iMeasureProgress.comment}}</span -->
                                 </div>
                                 <div action>
-                                    <material-button icon (trigger)="selectUserAccess(iUserAccess)">
+                                    <material-button [disabled]="!isManagedByOrganization()" icon (trigger)="selectUserAccess(iUserAccess)">
                                         <material-icon icon="edit"></material-icon>
                                     </material-button>
-                                    <material-button icon (trigger)="deleteUserAccess(iUserAccess)">
+                                    <material-button [disabled]="!isManagedByOrganization() || !isUserAccessByOrganization(iUserAccess.organization.id)" icon (trigger)="deleteUserAccess(iUserAccess)">
                                         <material-icon icon="delete"></material-icon>
                                     </material-button>
                                 </div>
@@ -160,7 +162,7 @@
                                         </div>
                                     </div>
                                     <div class="w3-row">
-                                        <material-radio-group [(ngModel)]="userAccess.accessRole" class="radio-per-line">
+                                        <material-radio-group [disabled]="!isManagedByOrganization()" [(ngModel)]="userAccess.accessRole" class="radio-per-line">
                                             <material-radio *ngFor="let option of userAccessOptions"
                                                             [disabled]="!option.enabled"
                                                             [value]="option.index" no-ink
