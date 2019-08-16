@@ -5,7 +5,7 @@
             <h3 *ngIf="group.id != null">{{editGroupLabel}}</h3>
         </div>
         <div class="w3-row">
-                <material-input class="w3-col l12" [(ngModel)]="group.name" floatingLabel [label]="nameLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
+            <material-input class="w3-col l12" [(ngModel)]="group.name" floatingLabel [label]="nameLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
         </div>
         <div class="w3-row">
           <label class="w3-col l12">{{groupTypeLabel}}</label>
@@ -51,7 +51,7 @@
                                          [limit]="10">
             </material-auto-suggest-input>
         </div>
-        <div class="w3-row ">
+        <div class="w3-row">
             <material-auto-suggest-input style="width: 100%"
                                          [(inputText)]="memberInputText"
                                          [filterSuggestions]="true"

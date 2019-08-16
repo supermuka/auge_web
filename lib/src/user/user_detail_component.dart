@@ -16,7 +16,8 @@ import 'package:angular_components/focus/focus.dart';
 import 'package:angular_components/laminate/components/modal/modal.dart';
 import 'package:angular_components/laminate/overlay/module.dart';
 import 'package:angular_components/material_dialog/material_dialog.dart';
-import 'package:angular_components/material_tab/fixed_material_tab_strip.dart';
+import 'package:angular_components/material_tab/material_tab.dart';
+import 'package:angular_components/material_tab/material_tab_panel.dart';
 import 'package:angular_components/material_tab/tab_change_event.dart';
 import 'package:angular_components/material_input/material_input.dart';
 import 'package:angular_components/material_radio/material_radio_group.dart';
@@ -62,7 +63,8 @@ import 'package:angular_components/model/action/async_action.dart';
       materialInputDirectives,
       AutoFocusDirective,
       NgModel,
-      FixedMaterialTabStripComponent,
+      MaterialTabPanelComponent,
+      MaterialTabComponent,
       MaterialDialogComponent,
       ModalComponent,
       MaterialCheckboxComponent,

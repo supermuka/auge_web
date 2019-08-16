@@ -65,7 +65,7 @@ class AuthMsg {
   );
 
   static informIdentificationPasswordCorrectlyMsg() => Intl.message("Inform an identification and password correctly.");
-  static userNotFoundMsg() => Intl.message("User account with the informed email not found.");
+  static userNotFoundMsg() => Intl.message("User account not found with the identification and password informed.");
   static organizationNotFoundMsg() => Intl.message("An organization to user account not found.");
   static serverApiErrorMsg() => Intl.message("Server not available.");
   static browserCompatibleErrorMsg() => Intl.message("Browser Compatible: Chrome");
@@ -129,6 +129,8 @@ class ConfigurationMsg {
         'Configuration': 'Configuration',
         'Edit Configuration': 'Edit Configuration',
         'Add Configuration': 'Add Configuration',
+        'General': 'General',
+        'Directory Service': 'Directory Service',
         'Test Directory Service': 'Test Directory Service',
         'Sync Directory Service': 'Sync Directory Service',
         'other': 'Not Defined'})}",
@@ -156,7 +158,7 @@ class ConfigurationMsg {
   /// Label for status configuration
   static statusLabel(int indexLabel) => Intl.message(
       "${Intl.select(indexLabel, {
-        DirectoryServiceStatus.success.index: 'Success!',
+        DirectoryServiceStatus.processFinished.index: 'Process finished!',
         DirectoryServiceStatus.errorException.index: 'An exception occured!',
         DirectoryServiceStatus.errorEmailAttribute.index: 'Email attribute not found!',
         DirectoryServiceStatus.errorFirstNameAttribute.index: 'First name attribute not found!',
@@ -165,7 +167,7 @@ class ConfigurationMsg {
         DirectoryServiceStatus.errorLastNameAttribute.index: 'Last name attribute not found!',
         DirectoryServiceStatus.errorIdentificationAttribute.index: 'Identification (login) attribute not found!',
         DirectoryServiceStatus.errorManyGroupsFound.index: 'Many groups found!',
-        DirectoryServiceStatus.errorNotBindedInvalidCredentials.index: 'Not binded! Invalid credentials.',
+        DirectoryServiceStatus.errorNotBoundInvalidCredentials.index: 'Not binded! Invalid credentials.',
         DirectoryServiceStatus.errorNotConnected.index: 'Not connected!',
         DirectoryServiceStatus.errorUserNotFound.index: 'User not found!',
         'other': 'Not Defined'})}",
