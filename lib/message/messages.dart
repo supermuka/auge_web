@@ -158,7 +158,8 @@ class ConfigurationMsg {
   /// Label for status configuration
   static statusLabel(int indexLabel) => Intl.message(
       "${Intl.select(indexLabel, {
-        DirectoryServiceStatus.processFinished.index: 'Process finished!',
+        DirectoryServiceStatus.testFinished.index: 'Test finished!',
+        DirectoryServiceStatus.syncFinished.index: 'Sync finished!',
         DirectoryServiceStatus.errorException.index: 'An exception occured!',
         DirectoryServiceStatus.errorEmailAttribute.index: 'Email attribute not found!',
         DirectoryServiceStatus.errorFirstNameAttribute.index: 'First name attribute not found!',

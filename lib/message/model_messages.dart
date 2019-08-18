@@ -155,6 +155,9 @@ class FieldMsg {
       '${DirectoryService.className}.${DirectoryService.userFirstNameAttributeField}':'User First Attribute',
       '${DirectoryService.className}.${DirectoryService.userLastNameAttributeField}':'User Last Attribute',
       '${DirectoryService.className}.${DirectoryService.userEmailAttributeField}':'User Email Attribute',
+      '${DirectoryService.className}.${DirectoryService.syncIntervalField}':'Sync Interval (hours)',
+      '${DirectoryService.className}.${DirectoryService.syncLastDateTimeField}':'Sync Last Date Time',
+      '${DirectoryService.className}.${DirectoryService.syncLastResultField}':'Sync Last Result',
 
       'other': 'Not Defined'})}",
     name: "FieldLabel",
