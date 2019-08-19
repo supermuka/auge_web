@@ -1,0 +1,47 @@
+@import 'package:angular_components/css/material/material';
+
+.dialog-custom {
+   min-width: 360px;
+}
+
+.material-fab-add {
+   position: fixed !important;
+   z-index: 9999;
+   float: right;
+   bottom: 64px;
+   right: 64px;
+   background-color: $mat-red;
+   color: $mat-white;
+}
+
+.input-container  {
+   display: inline-block;
+   padding-top: 0px;
+   padding-bottom: 0px;
+   width: 100%;
+   &:focus-within {
+      & label {
+         display: block;
+         font-size: $mat-font-size-caption;
+         color: $mat-blue-500;
+         margin-top: -4px;
+      }
+   }&:not(:focus-within) {
+      & label {
+         display: block;
+         font-size: $mat-font-size-caption;
+         color: $mat-light-transparent-black;
+         margin-top: -4px;
+      }
+   }
+
+   & material-datepicker {
+      display: block;
+      margin-top: 4px;
+   }
+
+   & material-dropdown-select {
+      display: block;
+      margin-top: 4px;
+   }
+}

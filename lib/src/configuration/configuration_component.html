@@ -1,0 +1,143 @@
+<modal [visible]="modalVisible">
+    <material-dialog style="width:600px;height:400px;" headered [error]="dialogError">
+        <div header>
+            <h3 *ngIf="organizationConfiguration.organizationId == null">{{addConfigurationLabel}}</h3>
+            <h3 *ngIf="organizationConfiguration.organizationId != null">{{editConfigurationLabel}}</h3>
+        </div>
+        <material-tab-panel class="tab-panel" [activeTabIndex]="0">
+            <material-tab  [label]="generalLabel">
+                <div class="w3-padding-small">
+                    <div class="w3-row">
+                    <!-- div class="w3-row-padding" -->
+                        <material-input class="w3-col l12" [(ngModel)]="organizationConfiguration.domain" leadingText="www" floatingLabel [label]="domainLabel"></material-input>
+                    <!-- /div -->
+                    </div>
+                </div>
+            </material-tab>
+            <material-tab [label]="directoryServiceLabel">
+                <div class="w3-padding">
+                    <div class="w3-row">
+                        <strong class="w3-col l12"><material-toggle [(ngModel)]="organizationConfiguration.directoryServiceEnabled" [label]="directoryServiceEnabledLabel" ></material-toggle></strong>
+                    </div>
+                    <div class="w3-row w3-padding">
+                        <strong>Server and Admin</strong>
+                    </div>
+                    <div class="w3-row">
+                        <material-input class="w3-col l6" [disabled]="!organizationConfiguration.directoryServiceEnabled" [(ngModel)]="organizationConfiguration.directoryService.hostAddress" floatingLabel [label]="hostAddressLabel"></material-input>
+                        <material-input class="w3-col l3" type="number" [disabled]="!organizationConfiguration.directoryServiceEnabled" [(ngModel)]="organizationConfiguration.directoryService.port" floatingLabel [label]="portLabel"></material-input>
+                        <material-toggle class="w3-col l3" [disabled]="!organizationConfiguration.directoryServiceEnabled" [(ngModel)]="organizationConfiguration.directoryService.sslTls" [label]="sslTlsLabel" ></material-toggle>
+                    </div>
+                    <div class="w3-row">
+                        <material-input class="w3-col l6" [disabled]="!organizationConfiguration.directoryServiceEnabled" [(ngModel)]="organizationConfiguration.directoryService.adminBindDN" floatingLabel [label]="adminBindDNLabel"></material-input>
+                        <material-input class="w3-col l3" [disabled]="!organizationConfiguration.directoryServiceEnabled" [(ngModel)]="adminPasswordSecure" type="password" floatingLabel [label]="adminPasswordLabel"></material-input>
+                        <div class="w3-col l3">
+                            <div class="input-container">
+                                <label>{{passwordFormatLabel}}</label>
+                                <material-dropdown-select [disabled]="!organizationConfiguration.directoryServiceEnabled"
+                                                          [buttonText]="passwordFormatSelectLabel"
+                                                          [selection]="passwordFormatSelectionModel"
+                                                          [options]="passwordFormatSelectionOptions"
+                                                          [itemRenderer]="passwordFormatItemRenderer">
+                                </material-dropdown-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w3-row w3-padding">
+                        <strong>Group</strong>
+                    </div>
+                    <div class="w3-row">
+                        <material-input class="w3-col l6" [disabled]="!organizationConfiguration.directoryServiceEnabled" [(ngModel)]="organizationConfiguration.directoryService.groupSearchDN" floatingLabel [label]="groupSearchDNLabel"></material-input>
+                        <!-- material-input class="w3-col l6" [(ngModel)]="configuration.ldap.groupSearchScope" floatingLabel [label]="groupSearchScopeLabel"></material-input -->
+                        <div class="w3-col l6">
+                            <div class="input-container">
+                                <label>{{userSearchScopeLabel}}</label>
+                                <material-dropdown-select [disabled]="!organizationConfiguration.directoryServiceEnabled"
+                                                          [buttonText]="groupSearchScopeSelectLabel"
+                                                          [selection]="groupSearchScopeSelectionModel"
+                                                          [options]="groupSearchScopeSelectionOptions"
+                                                          [itemRenderer]="searchScopeItemRenderer">
+                                </material-dropdown-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w3-row">
+                        <material-input class="w3-col l6" [disabled]="!organizationConfiguration.directoryServiceEnabled" [(ngModel)]="organizationConfiguration.directoryService.groupSearchFilter" floatingLabel [label]="groupSearchFilterLabel"></material-input>
+                        <material-input class="w3-col l6" [disabled]="!organizationConfiguration.directoryServiceEnabled" [(ngModel)]="organizationConfiguration.directoryService.groupMemberAttribute" floatingLabel [label]="groupMemberAttributeLabel"></material-input>
+                    </div>
+                    <div class="w3-row w3-padding">
+                        <strong>User</strong>
+                    </div>
+                    <div class="w3-row">
+                        <material-input class="w3-col l6" [disabled]="!organizationConfiguration.directoryServiceEnabled" [(ngModel)]="organizationConfiguration.directoryService.userSearchDN" floatingLabel [label]="userSearchDNLabel"></material-input>
+                        <!-- material-input class="w3-col l6" [(ngModel)]="configuration.ldap.userSearchScope" floatingLabel [label]="userSearchScopeLabel"></material-input -->
+                        <div class="w3-col l6">
+                            <div class="input-container">
+                                <label>{{userSearchScopeLabel}}</label>
+                                <material-dropdown-select [disabled]="!organizationConfiguration.directoryServiceEnabled"
+                                                          [buttonText]="userSearchScopeSelectLabel"
+                                                          [selection]="userSearchScopeSelectionModel"
+                                                          [options]="userSearchScopeSelectionOptions"
+                                                          [itemRenderer]="searchScopeItemRenderer">
+                                </material-dropdown-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w3-row">
+                        <material-input class="w3-col l6" [disabled]="!organizationConfiguration.directoryServiceEnabled" [(ngModel)]="organizationConfiguration.directoryService.userSearchFilter" floatingLabel [label]="userSearchFilterLabel"></material-input>
+                        <material-input class="w3-col l6" [disabled]="!organizationConfiguration.directoryServiceEnabled" [(ngModel)]="organizationConfiguration.directoryService.userProviderObjectIdAttribute" floatingLabel [label]="userProviderObjectIdAttributeLabel"></material-input>
+                    </div>
+                    <div class="w3-row">
+                        <material-input class="w3-col l6" [disabled]="!organizationConfiguration.directoryServiceEnabled" [(ngModel)]="organizationConfiguration.directoryService.userFirstNameAttribute" floatingLabel [label]="userFirstNameAttributeLabel"></material-input>
+                        <material-input class="w3-col l6" [disabled]="!organizationConfiguration.directoryServiceEnabled" [(ngModel)]="organizationConfiguration.directoryService.userLastNameAttribute" floatingLabel [label]="userLastNameAttributeLabel"></material-input>
+                    </div>
+                    <div class="w3-row">
+                        <material-input class="w3-col l6" [disabled]="!organizationConfiguration.directoryServiceEnabled" [(ngModel)]="organizationConfiguration.directoryService.userEmailAttribute" floatingLabel [label]="userEmailAttributeLabel"></material-input>
+                        <material-input class="w3-col l6" [disabled]="!organizationConfiguration.directoryServiceEnabled" [(ngModel)]="organizationConfiguration.directoryService.userIdentificationAttribute" floatingLabel [label]="userIdentificationAttributeLabel"></material-input>
+                    </div>
+                    <div class="w3-row">
+                        <div class="w3-col l12 w3-right">
+                            <material-button raised dense [disabled]="!organizationConfiguration.directoryServiceEnabled" (trigger)="testDirectoryService()">{{testDirectoryServiceLabel}}
+                            </material-button>
+                            <material-spinner *ngIf="testInProgress == true"></material-spinner>
+                        </div>
+                    </div>
+                    <div class="w3-row">
+                        <div class="w3-col l12 w3-right">
+                            <label><strong>{{testDirectoryServiceStatus}}</strong></label>
+                        </div>
+                    </div>
+                    <div class="w3-row w3-padding">
+                        <strong>Synchronization</strong>
+                    </div>
+                    <div class="w3-row">
+                        <material-input class="w3-col l6" [(ngModel)]="organizationConfiguration.directoryService.syncInterval"  [label]="syncIntervalLabel"></material-input>
+                        <material-input class="w3-col l6" disabled [ngModel]="organizationConfiguration.directoryService.syncLastDateTime?.toLocal()?.toString()"  [label]="syncLastDateTimeLabel"></material-input>
+                    </div>
+                    <div class="w3-row">
+                        <material-input class="w3-col l12" disabled maxRows="10" [ngModel]="organizationConfiguration.directoryService.syncLastResult"  [label]="syncLastResultLabel"></material-input>
+                    </div>
+                    <div class="w3-row">
+                        <div class="w3-col l12 w3-right">
+                            <material-button raised dense [disabled]="!organizationConfiguration.directoryServiceEnabled" (trigger)="syncDirectoryService()">{{syncDirectoryServiceLabel}}
+                            </material-button>
+                            <material-spinner *ngIf="syncInProgress == true"></material-spinner>
+                        </div>
+                    </div>
+                    <div class="w3-row">
+                        <div class="w3-col l12 w3-right">
+                            <label><strong>{{syncDirectoryServiceStatus}}</strong></label>
+                        </div>
+                    </div>
+                </div>
+            </material-tab>
+        </material-tab-panel>
+        <div footer>
+            <material-button [disabled]="!validInput" (trigger)="saveOrganizationConfiguration()">{{saveButtonLabel}}
+                <material-icon icon="save"></material-icon>
+            </material-button>
+            <material-button autoFocus (trigger)="closeDetail()">{{closeButtonLabel}}
+                <material-icon icon="close"></material-icon>
+            </material-button>
+        </div>
+    </material-dialog>
+</modal>
