@@ -138,14 +138,14 @@ class FieldMsg {
       '${DirectoryService.className}.${DirectoryService.hostAddressField}':'Host Address',
       '${DirectoryService.className}.${DirectoryService.portField}':'Port',
       '${DirectoryService.className}.${DirectoryService.sslTlsField}':'SSL/TLS Enabled',
-      '${DirectoryService.className}.${DirectoryService.passwordFormatField}':'Password Format',
-      '${DirectoryService.className}.${DirectoryService.adminBindDNField}':'Admin Bind DN',
-      '${DirectoryService.className}.${DirectoryService.adminPasswordField}':'Admin Password',
+      '${DirectoryService.className}.${DirectoryService.syncBindDnField}':'Sync Bind DN',
+      '${DirectoryService.className}.${DirectoryService.syncBindPasswordField}':'Sync Bind Password (not saved)',
 
       '${DirectoryService.className}.${DirectoryService.groupSearchDNField}':'Group Search DN',
       '${DirectoryService.className}.${DirectoryService.groupSearchScopeField}':'Group Search Scope',
       '${DirectoryService.className}.${DirectoryService.groupSearchFilterField}':'Group Search Filter',
-      '${DirectoryService.className}.${DirectoryService.groupMemberAttributeField}':'Group Member Attribute',
+      '${DirectoryService.className}.${DirectoryService.groupMemberUserAttributeField}':'Group Member User Attribute',
+
 
       '${DirectoryService.className}.${DirectoryService.userSearchDNField}':'User Search DN',
       '${DirectoryService.className}.${DirectoryService.userSearchScopeField}':'User Search Scope',
@@ -155,6 +155,7 @@ class FieldMsg {
       '${DirectoryService.className}.${DirectoryService.userFirstNameAttributeField}':'User First Attribute',
       '${DirectoryService.className}.${DirectoryService.userLastNameAttributeField}':'User Last Attribute',
       '${DirectoryService.className}.${DirectoryService.userEmailAttributeField}':'User Email Attribute',
+      '${DirectoryService.className}.${DirectoryService.userAttributeForGroupRelationshipField}':'User Attribute for Group Relationship',
       '${DirectoryService.className}.${DirectoryService.syncIntervalField}':'Sync Interval (hours)',
       '${DirectoryService.className}.${DirectoryService.syncLastDateTimeField}':'Sync Last Date Time',
       '${DirectoryService.className}.${DirectoryService.syncLastResultField}':'Sync Last Result',

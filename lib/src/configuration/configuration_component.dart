@@ -1,8 +1,6 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
-import 'dart:convert' show base64, utf8;
-
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
 import 'package:auge_web/services/app_routes.dart';
@@ -87,10 +85,6 @@ class ConfigurationComponent implements OnInit, OnActivate, OnDeactivate {
   String syncDirectoryServiceStatus;
 
   List<int> _listSearchScope = [0, 1, 2, 3]; // 'BASE_LEVEL', 'ONE_LEVEL', 'SUB_LEVEL', 'SUBORDINATE_SUBTREE'
-  List<int> _passwordFormats = [
-    DirectoryServicePasswordFormat.textPlan.index,
-    DirectoryServicePasswordFormat.des.index,
-    DirectoryServicePasswordFormat.sha.index];
 
   SelectionOptions passwordFormatSelectionOptions;
   SelectionModel passwordFormatSelectionModel;
@@ -124,8 +118,12 @@ class ConfigurationComponent implements OnInit, OnActivate, OnDeactivate {
 
   static final String addConfigurationLabel =  ConfigurationMsg.label('Add Configuration');
   static final String editConfigurationLabel =  ConfigurationMsg.label('Edit Configuration');
-  static final String testDirectoryServiceLabel =  ConfigurationMsg.label('Test Directory Service');
-  static final String syncDirectoryServiceLabel =  ConfigurationMsg.label('Sync Directory Service');
+  static final String serverAdminLabel =  ConfigurationMsg.label('Server and Admin');
+  static final String groupLabel =  ConfigurationMsg.label('Group');
+  static final String synchronizationLabel =  ConfigurationMsg.label('Synchronization');
+
+  static final String testDirectoryServiceLabel =  ConfigurationMsg.label('Test Connection');
+  static final String syncDirectoryServiceLabel =  ConfigurationMsg.label('Sync and Save');
 
   static final String domainLabel = FieldMsg.label('${OrganizationConfiguration.className}.${OrganizationConfiguration.domainField}');
   static final String directoryServiceEnabledLabel = FieldMsg.label('${OrganizationConfiguration.className}.${OrganizationConfiguration.directoryServiceEnabledField}');
@@ -133,14 +131,14 @@ class ConfigurationComponent implements OnInit, OnActivate, OnDeactivate {
   static final String hostAddressLabel =  FieldMsg.label('${DirectoryService.className}.${DirectoryService.hostAddressField}');
   static final String portLabel =  FieldMsg.label('${DirectoryService.className}.${DirectoryService.portField}');
   static final String sslTlsLabel =  FieldMsg.label('${DirectoryService.className}.${DirectoryService.sslTlsField}');
-  static final String passwordFormatLabel =  FieldMsg.label('${DirectoryService.className}.${DirectoryService.passwordFormatField}');
-  static final String adminBindDNLabel =  FieldMsg.label('${DirectoryService.className}.${DirectoryService.adminBindDNField}');
-  static final String adminPasswordLabel =  FieldMsg.label('${DirectoryService.className}.${DirectoryService.adminPasswordField}');
+  static final String syncBindDnLabel =  FieldMsg.label('${DirectoryService.className}.${DirectoryService.syncBindDnField}');
+  static final String syncBindPasswordLabel =  FieldMsg.label('${DirectoryService.className}.${DirectoryService.syncBindPasswordField}');
 
   static final String groupSearchDNLabel = FieldMsg.label('${DirectoryService.className}.${DirectoryService.groupSearchDNField}');
   static final String groupSearchScopeLabel = FieldMsg.label('${DirectoryService.className}.${DirectoryService.groupSearchScopeField}');
   static final String groupSearchFilterLabel = FieldMsg.label('${DirectoryService.className}.${DirectoryService.groupSearchFilterField}');
-  static final String groupMemberAttributeLabel = FieldMsg.label('${DirectoryService.className}.${DirectoryService.groupMemberAttributeField}');
+  static final String groupMemberUserAttributeLabel = FieldMsg.label('${DirectoryService.className}.${DirectoryService.groupMemberUserAttributeField}');
+
 
   static final String userSearchDNLabel = FieldMsg.label('${DirectoryService.className}.${DirectoryService.userSearchDNField}');
   static final String userSearchScopeLabel = FieldMsg.label('${DirectoryService.className}.${DirectoryService.userSearchScopeField}');
@@ -150,6 +148,7 @@ class ConfigurationComponent implements OnInit, OnActivate, OnDeactivate {
   static final String userFirstNameAttributeLabel = FieldMsg.label('${DirectoryService.className}.${DirectoryService.userFirstNameAttributeField}');
   static final String userLastNameAttributeLabel = FieldMsg.label('${DirectoryService.className}.${DirectoryService.userLastNameAttributeField}');
   static final String userEmailAttributeLabel = FieldMsg.label('${DirectoryService.className}.${DirectoryService.userEmailAttributeField}');
+  static final String userAttributeForGroupRelationshipLabel = FieldMsg.label('${DirectoryService.className}.${DirectoryService.userAttributeForGroupRelationshipField}');
 
   static final String syncIntervalLabel = FieldMsg.label('${DirectoryService.className}.${DirectoryService.syncIntervalField}');
   static final String syncLastDateTimeLabel = FieldMsg.label('${DirectoryService.className}.${DirectoryService.syncLastDateTimeField}');
@@ -160,15 +159,8 @@ class ConfigurationComponent implements OnInit, OnActivate, OnDeactivate {
     organizationConfiguration = OrganizationConfiguration();
     organizationConfiguration.directoryServiceEnabled = false;
 
-    passwordFormatSelectionOptions = SelectionOptions.fromList(_passwordFormats);
     groupSearchScopeSelectionOptions = SelectionOptions.fromList(_listSearchScope);
     userSearchScopeSelectionOptions = SelectionOptions.fromList(_listSearchScope);
-
-    passwordFormatSelectionModel.selectionChanges.listen((s) {
-      if (s.isNotEmpty && s.first.added != null && s.first.added.length != 0 && s.first.added?.first != null) {
-        organizationConfiguration.directoryService.passwordFormat = s.first.added.first;
-      }
-    });
 
     groupSearchScopeSelectionModel.selectionChanges.listen((s) {
       if (s.isNotEmpty && s.first.added != null && s.first.added.length != 0 && s.first.added?.first != null) {
@@ -222,19 +214,6 @@ class ConfigurationComponent implements OnInit, OnActivate, OnDeactivate {
     modalVisible = false;
   }
 
-
-  // Label for the button for single selection.
-  String get passwordFormatSelectLabel {
-    String nameLabel;
-    if ((passwordFormatSelectionModel != null) &&
-        (passwordFormatSelectionModel.selectedValues != null) &&
-        (passwordFormatSelectionModel.selectedValues.length > 0)) {
-
-      nameLabel = ConfigurationMsg.passwordFormatLabel(passwordFormatSelectionModel.selectedValues.first);
-    }
-    return nameLabel ;
-  }
-
   // Label for the button for single selection.
   String get groupSearchScopeSelectLabel {
     String nameLabel;
@@ -258,8 +237,6 @@ class ConfigurationComponent implements OnInit, OnActivate, OnDeactivate {
     }
     return nameLabel ;
   }
-
-  ItemRenderer get passwordFormatItemRenderer => (dynamic item) => ConfigurationMsg.passwordFormatLabel(item);
 
   ItemRenderer get searchScopeItemRenderer => (dynamic item) => ConfigurationMsg.searchScopeLabel(item);
 
@@ -323,26 +300,20 @@ class ConfigurationComponent implements OnInit, OnActivate, OnDeactivate {
   void closeDetail() {
     _location.back();
   }
-
+/*
   set adminPasswordSecure(String password) {
    // _passwordOrigin = password;
 
 
     //TODO - future understand a way to cipher this password. LDAP normaly store in plan text, though isn't the wanted way.
-    organizationConfiguration.directoryService.adminPassword = base64.encode(password.codeUnits);
+    organizationConfiguration.directoryService.syncBindPassword = base64.encode(password.codeUnits);
     
-/*
+
     organizationConfiguration.directoryService.adminPassword = base64.encode(sha256
         .convert(password.codeUnits)
         .bytes);
-        */
-  }
 
-  get adminPasswordSecure {
-   // _passwordOrigin = '';
-
-    if (organizationConfiguration.directoryService.adminPassword != null && organizationConfiguration.directoryService.adminPassword.isNotEmpty)
-    return utf8.decode(base64.decode(organizationConfiguration.directoryService.adminPassword));
-    //return _passwordOrigin;
   }
+  */
+
 }

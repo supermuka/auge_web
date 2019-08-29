@@ -129,10 +129,13 @@ class ConfigurationMsg {
         'Configuration': 'Configuration',
         'Edit Configuration': 'Edit Configuration',
         'Add Configuration': 'Add Configuration',
+        'Server and Admin': 'Server and Admin',
+        'Group': 'Group',
+        'Synchronization': 'Synchronization',
         'General': 'General',
         'Directory Service': 'Directory Service',
-        'Test Directory Service': 'Test Directory Service',
-        'Sync Directory Service': 'Sync Directory Service',
+        'Test Connection': 'Test Connection',
+        'Sync and Save': 'Sync and Save',
         'other': 'Not Defined'})}",
       name: "configurationLabel",
       args: [label],
@@ -141,36 +144,21 @@ class ConfigurationMsg {
       examples: const {"Name": "Name"}
   );
 
-  /// Label for password format configuration
-  static passwordFormatLabel(int indexLabel) => Intl.message(
-      "${Intl.select(indexLabel, {
-        DirectoryServicePasswordFormat.textPlan.index: 'Text Plan (default)',
-        DirectoryServicePasswordFormat.des.index: 'DES',
-        DirectoryServicePasswordFormat.sha.index: 'SHA',
-        'other': 'Not Defined'})}",
-      name: "passwordFormatConfigurationLabel",
-      args: [label],
-      // locale: "en",
-      desc: "PasswordFormat Configuration labels",
-      examples: const {"Name": "Name"}
-  );
-
   /// Label for status configuration
   static statusLabel(int indexLabel) => Intl.message(
       "${Intl.select(indexLabel, {
-        DirectoryServiceStatus.testFinished.index: 'Test finished!',
-        DirectoryServiceStatus.syncFinished.index: 'Sync finished!',
-        DirectoryServiceStatus.errorException.index: 'An exception occured!',
-        DirectoryServiceStatus.errorEmailAttribute.index: 'Email attribute not found!',
-        DirectoryServiceStatus.errorFirstNameAttribute.index: 'First name attribute not found!',
-        DirectoryServiceStatus.errorGroupMemberAttributeNotFound.index: 'Group member attribute not found!',
-        DirectoryServiceStatus.errorGroupNotFound.index: 'Group not found!',
-        DirectoryServiceStatus.errorLastNameAttribute.index: 'Last name attribute not found!',
-        DirectoryServiceStatus.errorIdentificationAttribute.index: 'Identification (login) attribute not found!',
-        DirectoryServiceStatus.errorManyGroupsFound.index: 'Many groups found!',
-        DirectoryServiceStatus.errorNotBoundInvalidCredentials.index: 'Not binded! Invalid credentials.',
-        DirectoryServiceStatus.errorNotConnected.index: 'Not connected!',
-        DirectoryServiceStatus.errorUserNotFound.index: 'User not found!',
+        DirectoryServiceStatus.finished.index: 'Finished.',
+        DirectoryServiceStatus.errorException.index: 'An exception occured.',
+        DirectoryServiceStatus.errorEmailAttributeNotFound.index: 'Email attribute not found.',
+        DirectoryServiceStatus.errorFirstNameAttributeNotFound.index: 'First name attribute not found.',
+        DirectoryServiceStatus.errorGroupOrGroupMemberNotFound.index: 'Group or group member not found.',
+        DirectoryServiceStatus.errorGroupFilterInvalid.index: 'Group filter invalid.',
+        DirectoryServiceStatus.errorLastNameAttributeNotFound.index: 'Last name attribute not found.',
+        DirectoryServiceStatus.errorIdentificationAttributeNotFound.index: 'Identification (login) attribute not found.',
+        DirectoryServiceStatus.errorUserAttributeForGroupRelationshipNotFound.index: 'User attribute for group relationship not found.',
+        DirectoryServiceStatus.errorNotBoundInvalidCredentials.index: 'Not binded. Invalid credentials.',
+        DirectoryServiceStatus.errorNotConnected.index: 'Not connected.',
+        DirectoryServiceStatus.errorUserNotFound.index: 'User not found.',
         'other': 'Not Defined'})}",
       name: "statusConfigurationLabel",
       args: [label],
