@@ -1,6 +1,8 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
+import 'dart:convert' show json;
+
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
 import 'package:auge_web/services/app_routes.dart';
@@ -300,20 +302,21 @@ class ConfigurationComponent implements OnInit, OnActivate, OnDeactivate {
   void closeDetail() {
     _location.back();
   }
-/*
-  set adminPasswordSecure(String password) {
-   // _passwordOrigin = password;
 
+  String formatSyncLastResult(String syncLastResult) {
 
-    //TODO - future understand a way to cipher this password. LDAP normaly store in plan text, though isn't the wanted way.
-    organizationConfiguration.directoryService.syncBindPassword = base64.encode(password.codeUnits);
-    
+    if (syncLastResult == null) return null;
 
-    organizationConfiguration.directoryService.adminPassword = base64.encode(sha256
-        .convert(password.codeUnits)
-        .bytes);
+    Map mapSyncLastResult = json.decode(syncLastResult);
+    StringBuffer formatSyncLastResult = StringBuffer();
+    for (String event in mapSyncLastResult.keys) {
+      formatSyncLastResult.writeln('${ConfigurationMsg.eventSyncResultLabel(event)}\n');
+      int i = 0;
+      for (String detail in mapSyncLastResult[event]) {
+        formatSyncLastResult.writeln('  ${++i} ${detail}\n');
+      }
+    }
+    return formatSyncLastResult.toString();
 
   }
-  */
-
 }

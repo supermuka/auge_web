@@ -182,6 +182,38 @@ class ConfigurationMsg {
       examples: const {"0": "Name"}
   );
 
+  /// Label for status configuration
+  static eventSyncResultLabel(String label) => Intl.message(
+      "${Intl.select(label, {
+
+        DirectoryServiceEvent
+            .skipEntry.toString(): 'Skip Entry',
+        DirectoryServiceEvent
+            .userInsert.toString(): 'User Insert',
+        DirectoryServiceEvent
+            .userUpdate.toString(): 'User Update',
+        DirectoryServiceEvent
+            .userDelete.toString(): 'User Delete',
+        DirectoryServiceEvent
+            .userIdentityInsert.toString(): 'User Identity Insert',
+        DirectoryServiceEvent
+            .userIdentityUpdate.toString(): 'User Identity Update',
+        DirectoryServiceEvent
+            .userIdentityDelete.toString(): 'User Identity Delete',
+        DirectoryServiceEvent
+            .userAccessInsert.toString(): 'User Access Insert',
+        DirectoryServiceEvent
+            .userAccessUpdate.toString(): 'User Access Update',
+        DirectoryServiceEvent
+            .userAccessDelete.toString(): 'User Access Delete',
+        'other': 'Not Defined'})}",
+      name: "eventSyncResultConfigurationLabel",
+      args: [label],
+      // locale: "en",
+      desc: "Event Sync Result Configuration labels",
+      examples: const {"Name": "Name"}
+  );
+
 }
 
 /// Specific messages and label for [User]

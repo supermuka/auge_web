@@ -98,7 +98,7 @@
                         <material-input class="w3-col l6" disabled [ngModel]="organizationConfiguration.directoryService.syncLastDateTime?.toLocal()?.toString()" floatingLabel  [label]="syncLastDateTimeLabel"></material-input>
                     </div>
                     <div class="w3-row-padding">
-                        <material-input class="w3-col l12" disabled maxRows="10" [ngModel]="organizationConfiguration.directoryService.syncLastResult" floatingLabel  [label]="syncLastResultLabel"></material-input>
+                        <material-input class="w3-col l12" disabled multiline rows="10" maxRows="10" [ngModel]="formatSyncLastResult(organizationConfiguration.directoryService.syncLastResult)" floatingLabel  [label]="syncLastResultLabel"></material-input>
                     </div>
                     <div class="w3-row-padding">
                         <div class="w3-col l6">
