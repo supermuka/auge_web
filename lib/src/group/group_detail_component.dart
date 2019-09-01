@@ -110,7 +110,7 @@ class GroupDetailComponent implements OnInit, OnActivate, OnDeactivate {
   static final String superGroupLabel =  FieldMsg.label('${Group.className}.${Group.superGroupField}');
   static final String groupTypeLabel = FieldMsg.label('${Group.className}.${Group.groupTypeField}');
   static final String leaderLabel =  FieldMsg.label('${Group.className}.${Group.leaderField}');
-  static final String activeLabel =  FieldMsg.label('${Group.className}.${Group.activeField}');
+  static final String inactiveLabel =  FieldMsg.label('${Group.className}.${Group.inactiveField}');
   static final String membersLabel =  FieldMsg.label('${Group.className}.${Group.membersField}');
 
   @override
@@ -134,7 +134,7 @@ class GroupDetailComponent implements OnInit, OnActivate, OnDeactivate {
       group = await _groupService.getGroup(id);
     } else {
       group.organization = _userService.authService.authorizedOrganization;
-      group.active = true;
+      group.inactive = true;
     }
 
     try {

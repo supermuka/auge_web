@@ -148,7 +148,7 @@ class GroupsComponent with CanReuse implements OnActivate, OnDestroy {
   }
 
   String groupActiveInactive(Group group) {
-    return group.active ? GroupMsg.label('Active') : GroupMsg.label('Inactive');
+    return group.inactive ? GroupMsg.label('Inactive') : GroupMsg.label('Active');
   }
 
   void goToDetail() {

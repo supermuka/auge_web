@@ -74,7 +74,7 @@
                 </material-chip>
             </material-chips>
         </div>
-        <material-checkbox [(ngModel)]="group.active" [label]="activeLabel"></material-checkbox>
+        <material-checkbox [(ngModel)]="group.inactive" [label]="inactiveLabel"></material-checkbox>
         <div footer>
             <material-button [disabled]="!validInput" (trigger)="saveGroup()">{{saveButtonLabel}}
                 <material-icon icon="save"></material-icon>

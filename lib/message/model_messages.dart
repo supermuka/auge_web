@@ -80,7 +80,7 @@ class FieldMsg {
 
       //GROUP
       '${Group.className}.${Group.nameField}':'Name',
-      '${Group.className}.${Group.activeField}':'Active',
+      '${Group.className}.${Group.inactiveField}':'Inactive',
       '${Group.className}.${Group.leaderField}':'Leader',
       '${Group.className}.${Group.groupTypeField}':'Group Type',
       '${Group.className}.${Group.superGroupField}':'Super Group',

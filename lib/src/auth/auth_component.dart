@@ -60,7 +60,7 @@ class AuthComponent implements OnActivate  {
 
   final Router _router;
 
-  String identification = "demo@levius.com.br";
+  String identification = AuthMsg.label('name@domain.com');
   String passwordStr = "1234567";
   String _dialogError;
 

@@ -48,6 +48,7 @@ class AuthMsg {
   /// Label for [Auth]
   static label(String label) => Intl.message(
       "${Intl.select(label, {
+        'name@domain.com': 'name@domain.com',
         'Identification': 'Identification',
         'Password': 'Password',
         'Select': 'Select',
@@ -185,7 +186,8 @@ class ConfigurationMsg {
   /// Label for status configuration
   static eventSyncResultLabel(String label) => Intl.message(
       "${Intl.select(label, {
-
+        DirectoryServiceEvent
+            .entry.toString(): 'Entry',
         DirectoryServiceEvent
             .skipEntry.toString(): 'Skip Entry',
         DirectoryServiceEvent
@@ -493,7 +495,7 @@ class GroupMsg {
         'Edit Group': 'Edit Group',
         'Add Group': 'Add Group',
         'No Match': 'No Match',
-        'Active': 'Active',
+        'Inactive': 'Inactive',
         'Inactive': 'Inactive',
         'other': 'Not Defined'})}",
       name: "groupLabel",

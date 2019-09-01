@@ -240,7 +240,7 @@ class GroupChangedValues {
   static void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
     changedValues?.forEach((k, v) {
       if (k != Group.idField && k != Group.versionField) {
-        if (k == Group.activeField) {
+        if (k == Group.inactiveField) {
           fieldsChangedValues.putIfAbsent(
               '${Group.className}.${k}', () =>
           {
