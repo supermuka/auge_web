@@ -6,6 +6,7 @@ import 'package:auge_server/model/general/user_access.dart';
 import 'package:auge_server/model/general/group.dart';
 import 'package:auge_server/model/general/organization.dart';
 import 'package:auge_server/model/general/organization_configuration.dart';
+import 'package:auge_server/model/general/organization_directory_service.dart';
 import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/objective/measure.dart';
 import 'package:auge_server/model/initiative/initiative.dart';
@@ -129,36 +130,34 @@ class FieldMsg {
       '${WorkItem.className}.${WorkItem.stageField}':'Stage',
       '${WorkItem.className}.${WorkItem.assignedToField}':'Assigned To',
       '${WorkItem.className}.${WorkItem.checkItemsField}':'Check Items',
-
       //CONFIGURATION
       '${OrganizationConfiguration.className}.${OrganizationConfiguration.domainField}':'Domínio',
-      '${OrganizationConfiguration.className}.${OrganizationConfiguration.directoryServiceEnabledField}':'Directory Service (LDAP) Enabled',
 
       //DIRECTORY SERVICE CONFIGURATION
-      '${DirectoryService.className}.${DirectoryService.hostAddressField}':'Host Address',
-      '${DirectoryService.className}.${DirectoryService.portField}':'Port',
-      '${DirectoryService.className}.${DirectoryService.sslTlsField}':'SSL/TLS Enabled',
-      '${DirectoryService.className}.${DirectoryService.syncBindDnField}':'Sync Bind DN',
-      '${DirectoryService.className}.${DirectoryService.syncBindPasswordField}':'Sync Bind Password (not saved)',
+      '${OrganizationDirectoryService.className}.${OrganizationDirectoryService.directoryServiceEnabledField}':'Directory Service (LDAP) Enabled',
+      '${OrganizationDirectoryService.className}.${OrganizationDirectoryService.hostAddressField}':'Host Address',
+      '${OrganizationDirectoryService.className}.${OrganizationDirectoryService.portField}':'Port',
+      '${OrganizationDirectoryService.className}.${OrganizationDirectoryService.sslTlsField}':'SSL/TLS Enabled',
+      '${OrganizationDirectoryService.className}.${OrganizationDirectoryService.syncBindDnField}':'Sync Bind DN',
+      '${OrganizationDirectoryService.className}.${OrganizationDirectoryService.syncBindPasswordField}':'Sync Bind Password (not saved)',
 
-      '${DirectoryService.className}.${DirectoryService.groupSearchDNField}':'Group Search DN',
-      '${DirectoryService.className}.${DirectoryService.groupSearchScopeField}':'Group Search Scope',
-      '${DirectoryService.className}.${DirectoryService.groupSearchFilterField}':'Group Search Filter',
-      '${DirectoryService.className}.${DirectoryService.groupMemberUserAttributeField}':'Group Member User Attribute',
+      '${OrganizationDirectoryService.className}.${OrganizationDirectoryService.groupSearchDNField}':'Group Search DN',
+      '${OrganizationDirectoryService.className}.${OrganizationDirectoryService.groupSearchScopeField}':'Group Search Scope',
+      '${OrganizationDirectoryService.className}.${OrganizationDirectoryService.groupSearchFilterField}':'Group Search Filter',
+      '${OrganizationDirectoryService.className}.${OrganizationDirectoryService.groupMemberUserAttributeField}':'Group Member User Attribute',
 
-
-      '${DirectoryService.className}.${DirectoryService.userSearchDNField}':'User Search DN',
-      '${DirectoryService.className}.${DirectoryService.userSearchScopeField}':'User Search Scope',
-      '${DirectoryService.className}.${DirectoryService.userSearchFilterField}':'User Search Filter',
-      '${DirectoryService.className}.${DirectoryService.userProviderObjectIdAttributeField}':'User Provider Object Id (GUID/UUID) Attribute',
-      '${DirectoryService.className}.${DirectoryService.userIdentificationAttributeField}':'User Identification (login) Attribute',
-      '${DirectoryService.className}.${DirectoryService.userFirstNameAttributeField}':'User First Attribute',
-      '${DirectoryService.className}.${DirectoryService.userLastNameAttributeField}':'User Last Attribute',
-      '${DirectoryService.className}.${DirectoryService.userEmailAttributeField}':'User Email Attribute',
-      '${DirectoryService.className}.${DirectoryService.userAttributeForGroupRelationshipField}':'User Attribute for Group Relationship',
-      '${DirectoryService.className}.${DirectoryService.syncIntervalField}':'Sync Interval (hours)',
-      '${DirectoryService.className}.${DirectoryService.syncLastDateTimeField}':'Sync Last Date Time',
-      '${DirectoryService.className}.${DirectoryService.syncLastResultField}':'Sync Last Result',
+      '${OrganizationDirectoryService.className}.${OrganizationDirectoryService.userSearchDNField}':'User Search DN',
+      '${OrganizationDirectoryService.className}.${OrganizationDirectoryService.userSearchScopeField}':'User Search Scope',
+      '${OrganizationDirectoryService.className}.${OrganizationDirectoryService.userSearchFilterField}':'User Search Filter',
+      '${OrganizationDirectoryService.className}.${OrganizationDirectoryService.userProviderObjectIdAttributeField}':'User Provider Object Id (GUID/UUID) Attribute',
+      '${OrganizationDirectoryService.className}.${OrganizationDirectoryService.userIdentificationAttributeField}':'User Identification (login) Attribute',
+      '${OrganizationDirectoryService.className}.${OrganizationDirectoryService.userFirstNameAttributeField}':'User First Attribute',
+      '${OrganizationDirectoryService.className}.${OrganizationDirectoryService.userLastNameAttributeField}':'User Last Attribute',
+      '${OrganizationDirectoryService.className}.${OrganizationDirectoryService.userEmailAttributeField}':'User Email Attribute',
+      '${OrganizationDirectoryService.className}.${OrganizationDirectoryService.userAttributeForGroupRelationshipField}':'User Attribute for Group Relationship',
+      '${OrganizationDirectoryService.className}.${OrganizationDirectoryService.syncIntervalField}':'Sync Interval (hours)',
+      '${OrganizationDirectoryService.className}.${OrganizationDirectoryService.syncLastDateTimeField}':'Sync Last Date Time',
+      '${OrganizationDirectoryService.className}.${OrganizationDirectoryService.syncLastResultField}':'Sync Last Result',
 
       'other': 'Not Defined'})}",
     name: "FieldLabel",

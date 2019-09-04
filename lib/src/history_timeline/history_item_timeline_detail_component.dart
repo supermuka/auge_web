@@ -104,6 +104,8 @@ class HistoryItemTimelineDetailComponent /* extends Object */ implements OnInit 
       ObjectiveChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues, changedValues);
     } else if (objectClassName == Measure.className) {
       MeasureChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues, changedValues);
+    } else if (objectClassName == MeasureProgress.className) {
+      MeasureProgressChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues, changedValues);
     } else if (objectClassName == Initiative.className) {
       InitiativeChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues, changedValues);
     } else if (objectClassName == Stage.className) {
@@ -504,6 +506,40 @@ class MeasureChangedValues {
             v[_pKey];
           if (v.containsKey(_cKey))
             fieldsChangedValues['${Measure.className}.${k}'][_cKey] =
+            v[_cKey];
+        }
+      }
+    });
+  }
+}
+
+//MEASURE PROGRESS
+class MeasureProgressChangedValues {
+
+  static void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
+
+    changedValues?.forEach((k, v) {
+      if (k != MeasureProgress.idField && k != MeasureProgress.versionField) {
+        if (k == MeasureProgress.dateField) {
+          fieldsChangedValues.putIfAbsent('${MeasureProgress.className}.${k}', () =>
+          {
+            _typeToViewKey: _typeToViewDateTime,
+            _fieldDescriptionKey: FieldMsg.label('${MeasureProgress.className}.${k}')});
+          if (v.containsKey(_pKey))
+            fieldsChangedValues['${MeasureProgress.className}.${k}'][_pKey] = DateTime.parse(v[_pKey]);
+          if (v.containsKey(_cKey))
+            fieldsChangedValues['${MeasureProgress.className}.${k}'][_cKey] = DateTime.parse(v[_cKey]);
+
+        } else if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
+          fieldsChangedValues.putIfAbsent('${MeasureProgress.className}.${k}', () =>
+          {
+            _typeToViewKey: _typeToViewText,
+            _fieldDescriptionKey: FieldMsg.label('${MeasureProgress.className}.${k}')});
+          if (v.containsKey(_pKey))
+            fieldsChangedValues['${MeasureProgress.className}.${k}'][_pKey] =
+            v[_pKey];
+          if (v.containsKey(_cKey))
+            fieldsChangedValues['${MeasureProgress.className}.${k}'][_cKey] =
             v[_cKey];
         }
       }

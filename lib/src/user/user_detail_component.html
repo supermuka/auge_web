@@ -5,9 +5,9 @@
             <h3 *ngIf="user.id != null">{{editUserLabel}}</h3>
         </div>
         <div>
-            <material-tab-panel class="tab-panel" [activeTabIndex]="0">
-                <material-tab [label]="tabLabels[0]">
-                    <div class="w3-padding-small">
+            <material-tab-panel [activeTabIndex]="0">
+                <material-tab style="width: 100%;" [label]="tabLabels[0]">
+                    <div class="w3-padding-small" style="width: 100%;">
                         <div class="w3-row">
                             <material-input [disabled]="!isManagedByOrganization()" autocomplete="off" class="w3-col l12" [(ngModel)]="user.name" floatingLabel [label]="nameLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
                         </div>
@@ -19,8 +19,14 @@
                         </div>
                         <div class="w3-row">
                             <span class="avatar" [style.background-image]="'url(' + userUrlImage(user) + ')'"></span>
-                            <input [disabled]="!isManagedByOrganization()" type="file" id="upload_image" accept="image/png,image/jpg,image/jpeg,capture=camera">
-                            <material-button [disabled]="!isManagedByOrganization()" icon (trigger)="uploadImage()">{{uploadButtonLabel}}
+                            <!--
+                            <input id="upload_image" [disabled]="!isManagedByOrganization()" type="file"  accept="image/png,image/jpg,image/jpeg,capture=camera">
+                            <material-button for="upload_image" [disabled]="!isManagedByOrganization()" icon (trigger)="uploadImage()">{{uploadButtonLabel}}
+                                <material-icon icon="done"></material-icon>
+                            </material-button>
+                            -->
+                            <input id="upload_image" [disabled]="!isManagedByOrganization()" type="file"  accept="image/png,image/jpg,image/jpeg,capture=camera" (change)="uploadImage()">
+                            <material-button for="upload_image" [disabled]="!isManagedByOrganization()" icon (trigger)="selectUploadImage()">{{uploadButtonLabel}}
                                 <material-icon icon="done"></material-icon>
                             </material-button>
                             <material-button [disabled]="user.userProfile.image == null || !isManagedByOrganization()" icon (trigger)="clearImage()">{{clearButtonLabel}}
@@ -51,8 +57,8 @@
                         </div>
                     </div>
                 </material-tab>
-                <material-tab [label]="tabLabels[1]">
-                    <div class="w3-padding-small">
+                <material-tab style="width: 100%;" [label]="tabLabels[1]">
+                    <div class="w3-padding-small" style="width: 100%;">
                         <div class="w3-row">
                             <material-button [disabled]="!isManagedByOrganization()" class="w3-right" (trigger)="selectUserIdentity(null)">
                                 <material-icon icon="add"></material-icon>
@@ -116,8 +122,8 @@
                         </div>
                     </div>
                 </material-tab>
-                <material-tab class="w3-row" [label]="tabLabels[2]">
-                    <div class="w3-padding-small">
+                <material-tab style="width: 100%;" [label]="tabLabels[2]">
+                    <div class="w3-padding-small" style="width: 100%;">
                         <div class="w3-row">
                             <material-button [disabled]="!isManagedByOrganization() || isUserAccessAdded()"  class="w3-right" (trigger)="selectUserAccess(null)">
                                 <material-icon icon="add"></material-icon>

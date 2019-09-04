@@ -166,10 +166,14 @@ body {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #888;
+     /* background: #888; */
+     /* background:  #82b1ff; */
+      background: #b3b3b3;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: #555;
+    /* background: #555; */
+    /* background: #2962ff; */
+    background: #808080;
 }

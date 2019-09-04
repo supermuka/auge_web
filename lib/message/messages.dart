@@ -1,4 +1,4 @@
-import 'package:auge_server/model/general/organization_configuration.dart';
+import 'package:auge_server/model/general/organization_directory_service.dart';
 import 'package:intl/intl.dart';
 
 class CommonMsg {
@@ -112,6 +112,7 @@ class OrganizationMsg {
         'Organizations': 'Organizations',
         'Edit Organization': 'Edit Organization',
         'Add Organization': 'Add Organization',
+        'Organization Detail': 'Organization Detail',
         'other': 'Not Defined'})}",
       name: "organizationLabel",
       args: [label],
@@ -128,8 +129,6 @@ class ConfigurationMsg {
   static label(String label) => Intl.message(
       "${Intl.select(label, {
         'Configuration': 'Configuration',
-        'Edit Configuration': 'Edit Configuration',
-        'Add Configuration': 'Add Configuration',
         'Server and Admin': 'Server and Admin',
         'Group': 'Group',
         'Synchronization': 'Synchronization',

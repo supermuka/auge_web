@@ -31,11 +31,8 @@
         </div>
         <div *ngIf="isSuperAdmin" group>
             <div label>{{superAdminLabel}}</div>
-            <material-list-item *ngIf="isAuthorizedToAccessOrganizationProfile" [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(organizationRouteUrl)">
+            <material-list-item *ngIf="isAuthorizedToAccessOrganization" [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(organizationRouteUrl)">
                 <material-icon icon="account_balance"></material-icon>{{organizationLabel}}
-            </material-list-item>
-            <material-list-item *ngIf="isAuthorizedToAccessConfiguration" [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(configurationRouteUrl)">
-                <material-icon icon="settings"></material-icon>{{configurationLabel}}
             </material-list-item>
         </div>
     </material-list>

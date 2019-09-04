@@ -3,3 +3,7 @@
 .radio-per-line {
   display: flex;
 }
+
+input[type="file"] {
+    display: none;
+}

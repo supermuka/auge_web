@@ -45,7 +45,7 @@ import 'package:auge_web/message/model_messages.dart';
 
 //import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
-import 'package:auge_web/src/configuration/configuration_service.dart';
+import 'package:auge_web/src/organization/organization_service.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
 
 import 'package:angular_components/model/action/async_action.dart';
@@ -56,7 +56,7 @@ import 'package:angular_components/model/action/async_action.dart';
     styleUrls: const [
       'user_detail_component.css'
     ],
-    providers: const <dynamic>[overlayBindings, UserService, ConfigurationService],
+    providers: const <dynamic>[overlayBindings, UserService, OrganizationService],
     directives: const [
       coreDirectives,
       routerDirectives,
@@ -83,7 +83,7 @@ import 'package:angular_components/model/action/async_action.dart';
 class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
   final UserService _userService;
-  final ConfigurationService _configurationService;
+  final OrganizationService _organizationService;
   final Location _location;
 
   bool modalVisible = false;
@@ -119,7 +119,9 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
   /// When it exists, the error/exception message is presented into dialog view.
   String dialogError;
 
-  UserDetailComponent(this._userService, this._configurationService, this._location) {
+  html.InputElement _uploadImage;
+
+  UserDetailComponent(this._userService, this._organizationService, this._location) {
     userIdentityProviderSingleSelectModel = SelectionModel<int>.single();
     userAccessOptions = List<Option>();
   }
@@ -162,6 +164,8 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
   static final String en_USvalueLabel = UserProfileValueMsg.label(en_USsymbol);
   static final String es_ESvalueLabel = UserProfileValueMsg.label(es_ESsymbol);
 
+
+
   @override
   void ngOnInit() async {
     //created as new here, even if it is later replaced by a query, because the query may take a while and the Angular will continue to process, causing an exception if the object does not exist
@@ -190,8 +194,9 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
       //}
     });
 
-    organizationConfiguration = await _configurationService.getOrganizationConfiguration(_userService.authService.authorizedOrganization.id);
+    organizationConfiguration = await _organizationService.getOrganizationConfiguration(organizationId: _userService.authService.authorizedOrganization.id);
 
+    _uploadImage = html.querySelector("#upload_image");
   }
 
   @override
@@ -271,8 +276,13 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
     }
   }
 
+  void selectUploadImage() async {
+
+    _uploadImage.click();
+  }
+
   void uploadImage() async {
-    html.InputElement _uploadImage = html.querySelector("#upload_image");
+ //   html.InputElement _uploadImage = html.querySelector("#upload_image");
 
     html.FileList files = _uploadImage.files;
     if (files.length > 0) {

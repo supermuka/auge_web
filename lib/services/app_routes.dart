@@ -37,10 +37,6 @@ class AppRoutes {
     parent: appLayoutRoute,
     useAsDefault: true,
   );
-  static final organizationsRoute = new RoutePath(
-    path: 'organizations',
-    parent: appLayoutRoute
-  );
   static final usersRoute = new RoutePath(
     path: 'users',
     parent: appLayoutRoute
@@ -84,7 +80,7 @@ class AppRoutes {
       parent: objectivesRoute
   );
   static final organizationRoute = new RoutePath(
-     path: 'organization/:${AppRoutesParam.organizationIdParameter}',
+     path: 'organizations/:${AppRoutesParam.organizationIdParameter}',
      parent: appLayoutRoute
   );
   static final groupsRoute = new RoutePath(
@@ -141,22 +137,6 @@ class AppRoutes {
   );
   static final userEditWithAppLayoutParentRoute = new RoutePath(
       path: 'users/:${AppRoutesParam.userIdParameter}/auth/edit',
-      parent: appLayoutRoute
-  );
-  static final organizationAddRoute = new RoutePath(
-      path: 'add',
-      parent: organizationsRoute
-  );
-  static final organizationEditRoute = new RoutePath(
-      path: ':${AppRoutesParam.organizationIdParameter}/edit',
-      parent: organizationsRoute
-  );
-  static final organizationEditWithAppLayoutParentRoute = new RoutePath(
-      path: 'organizations/:${AppRoutesParam.organizationIdParameter}/edit',
-     parent: appLayoutRoute
-  );
-  static final configurationRoute = new RoutePath(
-      path: 'organizations/:${AppRoutesParam.organizationIdParameter}/configuration',
       parent: appLayoutRoute
   );
 }
