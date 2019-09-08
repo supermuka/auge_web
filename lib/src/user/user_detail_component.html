@@ -1,5 +1,5 @@
 <modal [visible]="modalVisible">
-    <material-dialog style="width:560px;height:400px;" headered [error]="dialogError">
+    <material-dialog style="width:560px;height:400px;" [error]="dialogError">
         <div header>
             <h3 *ngIf="user.id == null">{{addUserLabel}}</h3>
             <h3 *ngIf="user.id != null">{{editUserLabel}}</h3>
@@ -7,17 +7,17 @@
         <div>
             <material-tab-panel [activeTabIndex]="0">
                 <material-tab style="width: 100%;" [label]="tabLabels[0]">
-                    <div class="w3-padding-small" style="width: 100%;">
-                        <div class="w3-row">
+                    <div style="width: 100%;">
+                        <div class="w3-row-padding">
                             <material-input [disabled]="!isManagedByOrganization()" autocomplete="off" class="w3-col l12" [(ngModel)]="user.name" floatingLabel [label]="nameLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
                         </div>
-                        <div class="w3-row">
+                        <div class="w3-row-padding">
                             <material-input [disabled]="!isManagedByOrganization()" type="email" autocomplete="off" class="w3-col l12" [(ngModel)]="user.userProfile.eMail" floatingLabel [label]="profileEmailLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
                         </div>
-                        <div class="w3-row">
+                        <div class="w3-row-padding">
                             <label class="w3-col l12">{{profilePhotoLabel}}</label>
                         </div>
-                        <div class="w3-row">
+                        <div class="w3-row-padding">
                             <span class="avatar" [style.background-image]="'url(' + userUrlImage(user) + ')'"></span>
                             <!--
                             <input id="upload_image" [disabled]="!isManagedByOrganization()" type="file"  accept="image/png,image/jpg,image/jpeg,capture=camera">
@@ -33,10 +33,10 @@
                                 <material-icon icon="clear"></material-icon>
                             </material-button>
                         </div>
-                        <div class="w3-row">
+                        <div class="w3-row-padding">
                             <label>{{profileIdiomLabel}}</label>
                         </div>
-                        <div class="w3-row">
+                        <div class="w3-row-padding">
                             <material-radio-group [(ngModel)]="user.userProfile.idiomLocale">
                                 <material-radio  [disabled]="!isManagedByOrganization()" [value]="pt_BRsymbol" no-ink>
                                     <span class="avatar-icon" [style.background-image]="'url(' + getBrFlag + ')'"></span>{{pt_BRvalueLabel}}
@@ -49,10 +49,12 @@
                                 </material-radio>
                             </material-radio-group>
                         </div>
-                        <material-checkbox [disabled]="!isManagedByOrganization()" [(ngModel)]="user.inactive" [label]="inactiveLabel"></material-checkbox>
-                        <div class="w3-row">
+                        <div class="w3-row-padding">
+                            <material-checkbox [disabled]="!isManagedByOrganization()" [(ngModel)]="user.inactive" [label]="inactiveLabel"></material-checkbox>
+                        </div>
+                        <div class="footer-material-tab">
                             <material-button class="w3-right" [disabled]="!validInput || !isManagedByOrganization()" (trigger)="saveUser()">{{saveButtonLabel}}
-                                <material-icon icon="save"></material-icon>
+                                <!-- material-icon icon="save"></material-icon -->
                             </material-button>
                         </div>
                     </div>
@@ -117,6 +119,20 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!--div toolbelt>
+                                        <material-yes-no-buttons class="custom-toolbelt-buttons"
+                                                                 yesText="Done"
+                                                                 noText="Cancel2"
+                                                                 (yes)="cancelUserIdentity(iUserIdentity, null)"
+                                                                 (no)="cancelUserIdentity(iUserIdentity, null)">
+                                        </material-yes-no-buttons>
+                                        <material-button class="w3-right" raised (trigger)="cancelUserIdentity(iUserIdentity, null)">
+                                            Save
+                                        </material-button>
+                                        <material-button class="w3-right" raised (trigger)="cancelUserIdentity(iUserIdentity, null)">
+                                            Cancel
+                                        </material-button>
+                                    </div -->
                                 </material-expansionpanel>
                             </div>
                         </div>
@@ -178,7 +194,7 @@
         </div>
         <div footer>
             <material-button autoFocus (trigger)="closeDetail()">{{closeButtonLabel}}
-                <material-icon icon="close"></material-icon>
+                <!-- material-icon icon="close"></material-icon -->
             </material-button>
          </div>
     </material-dialog>

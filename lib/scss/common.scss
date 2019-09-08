@@ -1,4 +1,6 @@
 @import 'package:angular_components/css/material/material';
+@import 'package:angular_components/material_expansionpanel/mixins';
+@import 'package:angular_components/material_button/mixins';
 
 .dialog-custom {
    min-width: 360px;
@@ -44,4 +46,28 @@
       display: block;
       margin-top: 4px;
    }
+}
+
+
+/*
+// based on AngularDart Gallery - MaterialInput
+// basead on  @include button-color($not-raised, $color) MaterialButton Mixins - THIS DID NOT WORK FINE
+
+  $color: $mat-blue;
+  $selector: 'material-button';
+  $raised: $selector + '[raised]';
+  @include button-background-color($raised, $color);
+  @include button-color($raised, $mat-white);
+
+  $not-raised: $selector + ':not([raised])';
+  @include button-color($not-raised, $color);
+*/
+::ng-deep material-button:not([disabled]):not([icon]) {
+    &[raised] {
+       background-color: $mat-blue;
+       color: $mat-white;
+    }
+    &:not([raised]) {
+       color: $mat-blue;
+    }
 }

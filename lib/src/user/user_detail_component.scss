@@ -1,4 +1,54 @@
 @import 'package:auge_web/scss/common.scss';
+@import 'package:angular_components/css/material/material';
+
+.footer-material-tab {
+   margin-left: $mat-grid * -2;
+   margin-right: $mat-grid * -2;
+
+  // padding-right: -16px;
+   //margin-top: -16px;
+   // margin-bottom: -16px;
+   box-sizing: border-box;
+   flex-shrink: 0;
+   padding: $mat-grid * 2;
+   border-top: 1px $mat-gray-300 solid;
+}
+
+/*
+::ng-deep material-expansionpanel{
+  @include raised-button('material-button')
+}
+*/
+/*
+material-expansionpanel {
+   @include expansionpanel-save-raised-highlighted(blue, red);
+  ::ng-deep material-yes-no-buttons {
+    @include raised-button('material-button');
+  }
+}
+*/
+/*
+::ng-deep material-button[raised] {
+  @include raised-button('material-button', blue);
+}
+*/
+
+
+/*
+material-button[raised] {
+  background: $mat-blue;
+  color: $mat-white;
+  margin: 0 $mat-grid $mat-grid 0;
+}
+*/
+
+/*
+material-button {
+    @include button-color('material-button', red);
+ }
+*/
+
+
 
 .radio-per-line {
   display: flex;
@@ -7,3 +57,10 @@
 input[type="file"] {
     display: none;
 }
+
+
+/*
+material-yes-no-buttons {
+   @include expansionpanel-save-raised-highlighted(blue, white);
+}
+*/

@@ -34,6 +34,8 @@ import 'package:angular_components/model/selection/selection_model.dart';
 import 'package:angular_components/model/selection/selection_options.dart';
 import 'package:angular_components/model/ui/has_renderer.dart';
 
+import 'package:angular_components/material_yes_no_buttons/material_yes_no_buttons.dart';
+
 import 'package:auge_server/model/general/organization_configuration.dart';
 import 'package:auge_server/model/general/authorization.dart';
 import 'package:auge_server/model/general/user.dart';
@@ -77,6 +79,7 @@ import 'package:angular_components/model/action/async_action.dart';
       MaterialExpansionPanelAutoDismiss,
       MaterialDropdownSelectComponent,
       DropdownSelectValueAccessor,
+      MaterialYesNoButtonsComponent,
     ])
 
 /// Component uses to add and edit an [User] and [UserProfile]
