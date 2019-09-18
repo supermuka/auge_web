@@ -62,6 +62,7 @@
   $not-raised: $selector + ':not([raised])';
   @include button-color($not-raised, $color);
 */
+
 ::ng-deep material-button:not([disabled]):not([icon]) {
     &[raised] {
        background-color: $mat-blue;
@@ -70,4 +71,17 @@
     &:not([raised]) {
        color: $mat-blue;
     }
+}
+
+.footer-material-tab {
+   margin-left: $mat-grid * -2;
+   margin-right: $mat-grid * -2;
+
+  // padding-right: -16px;
+   //margin-top: -16px;
+   // margin-bottom: -16px;
+   box-sizing: border-box;
+   flex-shrink: 0;
+   padding: $mat-grid * 2 $mat-grid $mat-grid * 2 $mat-grid;
+   border-top: 1px $mat-gray-300 solid;
 }

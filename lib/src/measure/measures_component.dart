@@ -73,9 +73,9 @@ class MeasuresComponent with CanReuse {
   MenuModel<MenuItem> menuModel;
   MeasuresComponent(this._appLayoutService, this._measureService, this._historyTimelineService, this._router) {
     menuModel = new MenuModel([new MenuItemGroup(
-        [new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => goToDetail()),
-        new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete()),
-        new MenuItem('Progress History', icon: new Icon('show_chart'), action: () => goToProgress(false)) ])], icon: new Icon('menu'));
+        [new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , actionWithContext: (_) => goToDetail()),
+        new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), actionWithContext: (_) => delete()),
+        new MenuItem('Progress History', icon: new Icon('show_chart'), actionWithContext: (_) => goToProgress(false)) ])], icon: new Icon('menu'));
   }
 
   // Define messages and labels

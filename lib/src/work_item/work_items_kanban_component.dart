@@ -87,7 +87,7 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit {
   WorkItemsKanbanComponent(this._appLayoutService, this._workItemService, this._historyTimelineService, this._router) {
     initializeDateFormatting(Intl.defaultLocale);
 
-    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => goToDetail()), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete())])], icon: new Icon('menu'));
+    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , actionWithContext: (_) => goToDetail()), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), actionWithContext: (_) => delete())])], icon: new Icon('menu'));
   }
 
 

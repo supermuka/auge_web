@@ -12,10 +12,10 @@
                             <material-input class="w3-col l8" [(ngModel)]="organization.name" floatingLabel [label]="organizationNameLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
                             <material-input class="w3-col l4" [(ngModel)]="organization.code" floatingLabel [label]="organizationCodeLabel"></material-input>
                         </div>
-                        <div class="w3-row-padding">
+                        <div class="footer-material-tab">
                             <div class="w3-right">
                                 <material-button  [disabled]="!validInputOrganization" (trigger)="saveOrganization()">{{saveButtonLabel}}
-                                    <material-icon icon="save"></material-icon>
+                                    <!-- material-icon icon="save"></material-icon -->
                                 </material-button>
                             </div>
                         </div>
@@ -33,7 +33,7 @@
                         <div class="w3-row-padding">
                             <div class="w3-col">
                                 <material-button class="w3-right" [disabled]="!validInputConfiguration" (trigger)="saveOrganizationConfiguration()">{{saveButtonLabel}}
-                                    <material-icon icon="save"></material-icon>
+                                    <!-- material-icon icon="save"></material-icon -->
                                 </material-button>
                             </div>
                         </div>
@@ -127,21 +127,21 @@
                         <div class="w3-row-padding">
                             <div class="w3-col l4">
                                 <material-button class="w3-right" [disabled]="!organizationDirectoryService.directoryServiceEnabled" (trigger)="testOrganizationDirectoryService()">{{testDirectoryServiceLabel}}
-                                    <material-icon icon="check_circle_outline"></material-icon>
+                                    <!-- material-icon icon="check_circle_outline"></material-icon -->
                                 </material-button>
                                 <material-spinner *ngIf="testInProgress == true"></material-spinner>
                                 <label><strong>{{testDirectoryServiceStatus}}</strong></label>
                             </div>
                             <div class="w3-col l4">
                                 <material-button class="w3-right" [disabled]="!organizationDirectoryService.directoryServiceEnabled" (trigger)="syncOrganizationDirectoryService()">{{syncDirectoryServiceLabel}}
-                                    <material-icon icon="sync"></material-icon>
+                                    <!-- material-icon icon="sync"></material-icon -->
                                 </material-button>
                                 <material-spinner *ngIf="syncInProgress == true"></material-spinner>
                                 <label><strong>{{syncDirectoryServiceStatus}}</strong></label>
                             </div>
                             <div class="w3-col l4">
                                 <material-button class="w3-right" [disabled]="!validInputDirectoryService" (trigger)="saveOrganizationDirectoryService()">{{saveButtonLabel}}
-                                    <material-icon icon="save"></material-icon>
+                                    <!-- material-icon icon="save"></material-icon -->
                                 </material-button>
                             </div>
                         </div>
@@ -151,7 +151,7 @@
         </div>
         <div footer>
             <material-button autoFocus (trigger)="closeDetail()">{{closeButtonLabel}}
-                <material-icon icon="close"></material-icon>
+                <!-- material-icon icon="close"></material-icon -->
             </material-button>
         </div>
     </material-dialog>

@@ -27,10 +27,10 @@
                             -->
                             <input id="upload_image" [disabled]="!isManagedByOrganization()" type="file"  accept="image/png,image/jpg,image/jpeg,capture=camera" (change)="uploadImage()">
                             <material-button for="upload_image" [disabled]="!isManagedByOrganization()" icon (trigger)="selectUploadImage()">{{uploadButtonLabel}}
-                                <material-icon icon="done"></material-icon>
+                                <!--material-icon icon="done"></material-icon-->
                             </material-button>
                             <material-button [disabled]="user.userProfile.image == null || !isManagedByOrganization()" icon (trigger)="clearImage()">{{clearButtonLabel}}
-                                <material-icon icon="clear"></material-icon>
+                                <!--material-icon icon="clear"></material-icon-->
                             </material-button>
                         </div>
                         <div class="w3-row-padding">

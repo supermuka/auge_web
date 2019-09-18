@@ -138,9 +138,9 @@ class InitiativesComponent with CanReuse implements OnInit, OnActivate, OnDestro
   InitiativesComponent(this._appLayoutService, this._initiativeService, this._objectiveService, this._searchService, this._historyTimelineService, this._router) {
     initiativesFilterParam = InitiativesFilterParam();
     menuModel = new MenuModel([new MenuItemGroup([
-      new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , action: () => goToDetail() /* viewDetail(true) */),
-      new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), action: () => delete()),
-      new MenuItem(stagesLabel, icon: new Icon('view_week'), action: () => goToStages(selectedInitiative)) ])], icon: new Icon('menu'));
+      new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , actionWithContext: (_) => goToDetail() /* viewDetail(true) */),
+      new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), actionWithContext: (_) => delete()),
+      new MenuItem(stagesLabel, icon: new Icon('view_week'), actionWithContext: (_) => goToStages(selectedInitiative)) ])], icon: new Icon('menu'));
 
   }
 

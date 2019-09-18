@@ -15,7 +15,8 @@
                                          [(inputText)]="groupInputText"
                                          [filterSuggestions]="true"
                                          [popupMatchInputWidth]="true"
-                                         [trailingGlyph]="'search'"
+                                         [showClearIcon]="true"
+                                         [leadingGlyph]="'search'"
                                          [rightAlign]="false"
                                          [label]="groupLabel"
                                          [floatingLabel]="true"
@@ -53,6 +54,7 @@
                                          [(inputText)]="alignedToInputText"
                                          [filterSuggestions]="true"
                                          [popupMatchInputWidth]="true"
+                                         [showClearIcon]="true"
                                          [trailingGlyph]="leadingGlyph"
                                          [rightAlign]="false"
                                          [label]="alignedToLabel"
@@ -69,6 +71,7 @@
                                          [(inputText)]="leaderInputText"
                                          [filterSuggestions]="true"
                                          [popupMatchInputWidth]="true"
+                                         [showClearIcon]="true"
                                          [trailingGlyph]="leadingGlyph"
                                          [rightAlign]="false"
                                          [label]="leaderLabel"
@@ -84,10 +87,10 @@
         <material-checkbox [(ngModel)]="objective.archived" [label]="archivedLabel"></material-checkbox>
         <div footer>
             <material-button [disabled]="!validInput" (trigger)="saveObjective()">{{saveButtonLabel}}
-                <material-icon icon="save"></material-icon>
+                <!-- material-icon icon="save"></material-icon -->
             </material-button>
             <material-button autoFocus (trigger)="closeDetail()">{{closeButtonLabel}}
-                <material-icon icon="close"></material-icon>
+                <!-- material-icon icon="close"></material-icon -->
             </material-button>
         </div>
     </material-dialog>

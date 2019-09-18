@@ -1,18 +1,14 @@
 @import 'package:auge_web/scss/common.scss';
-@import 'package:angular_components/css/material/material';
 
-.footer-material-tab {
-   margin-left: $mat-grid * -2;
-   margin-right: $mat-grid * -2;
+/*
+@import 'package:angular_components/material_button/mixins';
+*/
 
-  // padding-right: -16px;
-   //margin-top: -16px;
-   // margin-bottom: -16px;
-   box-sizing: border-box;
-   flex-shrink: 0;
-   padding: $mat-grid * 2;
-   border-top: 1px $mat-gray-300 solid;
+/*
+material-expansionpanel{
+  @include raised-button('material-button')
 }
+/*
 
 /*
 ::ng-deep material-expansionpanel{
@@ -47,8 +43,6 @@ material-button {
     @include button-color('material-button', red);
  }
 */
-
-
 
 .radio-per-line {
   display: flex;

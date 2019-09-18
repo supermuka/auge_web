@@ -23,8 +23,8 @@
                                          [(inputText)]="superGroupInputText"
                                          [filterSuggestions]="true"
                                          [popupMatchInputWidth]="true"
-                                         [trailingGlyph]="'search'"
-                                         [rightAlign]="false"
+                                         [showClearIcon]="true"
+                                         [leadingGlyph]="'search'"
                                          [label]="superGroupLabel"
                                          [floatingLabel]="true"
                                          [emptyPlaceholder]="noMatchLabel"
@@ -39,8 +39,8 @@
                                           [(inputText)]="leaderInputText"
                                          [filterSuggestions]="true"
                                          [popupMatchInputWidth]="true"
-                                         [trailingGlyph]="'search'"
-                                         [rightAlign]="false"
+                                         [showClearIcon]="true"
+                                         [leadingGlyph]="'search'"
                                          [label]="leaderLabel"
                                          [floatingLabel]="true"
                                          [emptyPlaceholder]="noMatchLabel"
@@ -77,10 +77,10 @@
         <material-checkbox [(ngModel)]="group.inactive" [label]="inactiveLabel"></material-checkbox>
         <div footer>
             <material-button [disabled]="!validInput" (trigger)="saveGroup()">{{saveButtonLabel}}
-                <material-icon icon="save"></material-icon>
+                <!-- material-icon icon="save"></material-icon -->
             </material-button>
             <material-button autoFocus (trigger)="closeDetail()">{{closeButtonLabel}}
-                <material-icon icon="close"></material-icon>
+                <!-- material-icon icon="close"></material-icon -->
             </material-button>
         </div>
     </material-dialog>
