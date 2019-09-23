@@ -16,7 +16,7 @@ import 'package:angular_components/material_expansionpanel/material_expansionpan
 import 'package:auge_server/model/general/authorization.dart';
 import 'package:auge_server/model/general/group.dart';
 
-import 'package:auge_web/message/messages.dart';
+import 'package:auge_server/shared/message/messages.dart';
 import 'package:auge_web/src/group/group_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';

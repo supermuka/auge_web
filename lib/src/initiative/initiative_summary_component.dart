@@ -9,7 +9,7 @@ import 'package:angular_components/material_tooltip/material_tooltip.dart';
 
 import 'package:auge_server/model/initiative/initiative.dart';
 
-import 'package:auge_web/message/messages.dart';
+import 'package:auge_server/shared/message/messages.dart';
 
 @Component(
     selector: 'auge-initiative-summary',

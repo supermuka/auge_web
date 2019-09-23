@@ -11,8 +11,8 @@ import 'package:angular_components/laminate/enums/alignment.dart';
 import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/general/user.dart';
 
-import 'package:auge_web/message/messages.dart';
-import 'package:auge_web/message/model_messages.dart';
+import 'package:auge_server/shared/message/messages.dart';
+import 'package:auge_server/shared/message/model_messages.dart';
 
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';

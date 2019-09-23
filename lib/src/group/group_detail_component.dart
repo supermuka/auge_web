@@ -26,8 +26,8 @@ import 'package:angular_router/angular_router.dart';
 import 'package:auge_server/model/general/group.dart';
 import 'package:auge_server/model/general/user.dart';
 
-import 'package:auge_web/message/messages.dart';
-import 'package:auge_web/message/model_messages.dart';
+import 'package:auge_server/shared/message/messages.dart';
+import 'package:auge_server/shared/message/model_messages.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/user/user_service.dart';

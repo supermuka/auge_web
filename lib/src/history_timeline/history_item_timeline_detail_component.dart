@@ -21,8 +21,8 @@ import 'package:auge_server/model/initiative/state.dart';
 import 'package:auge_server/model/initiative/work_item.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
-import 'package:auge_web/message/messages.dart';
-import 'package:auge_web/message/model_messages.dart';
+import 'package:auge_server/shared/message/messages.dart';
+import 'package:auge_server/shared/message/model_messages.dart';
 
 // Const to format html types
 const _typeToViewText = '0';

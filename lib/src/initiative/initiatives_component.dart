@@ -22,8 +22,8 @@ import 'package:angular_components/material_select/material_dropdown_select.dart
 import 'package:auge_server/model/initiative/initiative.dart';
 import 'package:auge_server/model/general/authorization.dart';
 
-import 'package:auge_web/message/messages.dart';
-import 'package:auge_web/message/model_messages.dart';
+import 'package:auge_server/shared/message/messages.dart';
+import 'package:auge_server/shared/message/model_messages.dart';
 
 import 'package:auge_web/src/initiative/initiative_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';

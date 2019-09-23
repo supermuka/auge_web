@@ -30,7 +30,7 @@ import 'package:auge_web/src/user/user_detail_component.dart';
 import 'package:auge_web/services/app_routes.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
 
-import 'package:auge_web/message/messages.dart';
+import 'package:auge_server/shared/message/messages.dart';
 
 import 'package:auge_server/model/general/authorization.dart';
 import 'package:auge_server/model/general/user.dart';

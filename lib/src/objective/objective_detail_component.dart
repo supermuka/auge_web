@@ -27,8 +27,8 @@ import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/general/user.dart';
 import 'package:auge_server/model/general/group.dart';
 
-import 'package:auge_web/message/messages.dart';
-import 'package:auge_web/message/model_messages.dart';
+import 'package:auge_server/shared/message/messages.dart';
+import 'package:auge_server/shared/message/model_messages.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
 //import 'package:auge_web/src/auth/auth_service.dart';
@@ -142,7 +142,7 @@ class ObjectiveDetailComponent implements OnInit, OnActivate, OnDeactivate {
     if (id != null) {
       // Clone objective
      // objective = selectedObjective.clone();
-       objective = await _objectiveService.getObjective(id);
+       objective = await _objectiveService.getObjective(id, withProfile: true);
       //objective = selectedObjective.clone();
 
     } else {

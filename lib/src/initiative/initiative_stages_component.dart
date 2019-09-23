@@ -34,8 +34,8 @@ import 'package:auge_server/model/initiative/state.dart';
 import 'package:auge_web/services/common_service.dart';
 import 'package:auge_web/src/initiative/initiative_service.dart';
 
-import 'package:auge_web/message/messages.dart';
-import 'package:auge_web/message/model_messages.dart';
+import 'package:auge_server/shared/message/messages.dart';
+import 'package:auge_server/shared/message/model_messages.dart';
 
 // ignore_for_file: uri_has_not_been_generated
 import 'initiative_stages_component.template.dart' as initiative_stages_component;

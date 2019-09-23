@@ -13,6 +13,8 @@
             <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(ganttRouteUrl)">
                 <material-icon icon="schedule"></material-icon>{{objectivesGanttLabel}}
             </material-list-item>
+        </div>
+        <div group>
             <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(objectivesRouteUrl)">
                 <material-icon icon="visibility"></material-icon>{{objectivesLabel}}
             </material-list-item>

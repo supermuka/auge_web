@@ -21,8 +21,8 @@ import 'package:angular_components/model/ui/has_renderer.dart';
 
 import 'package:auge_server/model/objective/measure.dart';
 
-import 'package:auge_web/message/messages.dart';
-import 'package:auge_web/message/model_messages.dart';
+import 'package:auge_server/shared/message/messages.dart';
+import 'package:auge_server/shared/message/model_messages.dart';
 
 import 'package:auge_web/src/measure/measure_service.dart';
 

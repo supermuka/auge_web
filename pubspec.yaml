@@ -1,6 +1,6 @@
 name: auge_web
 version: 0.1.0
-description: Autogestão
+description: Objectives and Activities
 environment:
   sdk: '>=2.2.0 <3.0.0'
 

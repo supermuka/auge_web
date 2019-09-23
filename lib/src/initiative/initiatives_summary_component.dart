@@ -14,7 +14,7 @@ import 'package:angular_components/material_tooltip/material_tooltip.dart';
 
 import 'package:auge_server/model/initiative/initiative.dart';
 
-import 'package:auge_web/message/messages.dart';
+import 'package:auge_server/shared/message/messages.dart';
 // import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/src/initiative/initiative_service.dart';

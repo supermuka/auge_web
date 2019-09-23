@@ -1,7 +1,9 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
-import 'package:auge_web/message/model_messages.dart';
+
+import 'package:auge_server/shared/message/model_messages.dart';
+
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -16,7 +18,7 @@ import 'package:auge_server/model/general/history_item.dart';
 import 'package:auge_server/model/general/authorization.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
-import 'package:auge_web/message/messages.dart';
+import 'package:auge_server/shared/message/messages.dart';
 
 import 'package:auge_web/src/history_timeline/history_item_timeline_detail_component.dart';
 

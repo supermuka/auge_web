@@ -7,7 +7,7 @@ import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_server/model/objective/measure.dart';
 
 import 'package:auge_web/services/auge_api_service.dart';
-import 'package:auge_web/message/messages.dart';
+import 'package:auge_server/shared/message/messages.dart';
 
 import 'package:auge_server/src/protos/generated/google/protobuf/empty.pb.dart' as empty_pb;
 import 'package:auge_server/src/protos/generated/google/protobuf/wrappers.pb.dart' as wrappers_pb;

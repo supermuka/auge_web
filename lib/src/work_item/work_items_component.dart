@@ -10,7 +10,7 @@ import 'package:angular_components/material_icon/material_icon.dart';
 
 import 'package:auge_server/model/initiative/initiative.dart';
 
-import 'package:auge_web/message/messages.dart';
+import 'package:auge_server/shared/message/messages.dart';
 import 'package:auge_web/src/work_item/work_item_service.dart';
 import 'package:auge_web/src/work_item/work_items_kanban_component.dart';
 import 'package:auge_web/src/work_item/work_items_list_component.dart';
