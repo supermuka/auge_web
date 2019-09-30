@@ -7,15 +7,15 @@ import 'package:angular_components/focus/keyboard_only_focus_indicator.dart';
 import 'package:angular_components/laminate/enums/alignment.dart';
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
 
-import 'package:auge_server/model/initiative/initiative.dart';
+import 'package:auge_server/model/work/work.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
 
 @Component(
-    selector: 'auge-initiative-summary',
-    templateUrl: 'initiative_summary_component.html',
+    selector: 'auge-work-summary',
+    templateUrl: 'work_summary_component.html',
     styleUrls: const [
-      'initiative_summary_component.css'
+      'work_summary_component.css'
     ],
     directives: const [
       coreDirectives,
@@ -24,21 +24,21 @@ import 'package:auge_server/shared/message/messages.dart';
       MaterialTooltipDirective,
       MaterialPaperTooltipComponent,
     ])
-class InitiativeSummaryComponent {
+class WorkSummaryComponent {
 
   static final int progressBarWidth = 360;
   final preferredTooltipPositions = const [RelativePosition.OffsetBottomLeft, RelativePosition.OffsetBottomRight];
 
   @Input()
-  Initiative initiative;
+  Work work;
 
   // Define messages and labels
-  static final String workItemsOverDueLabel =  InitiativeMsg.label('Work Items Over Due');
+  static final String workItemsOverDueLabel =  WorkMsg.label('Work Items Over Due');
 
-  String circleColor(Initiative initiative)  {
+  String circleColor(Work work)  {
     String color;
-    int workItemsOverDueCount = initiative.workItemsOverDueCount;
-    int workItemsCount = initiative.workItemsCount;
+    int workItemsOverDueCount = work.workItemsOverDueCount;
+    int workItemsCount = work.workItemsCount;
 
     if (workItemsOverDueCount == 0) {
       color =  '#0f9d58'; // $mat-green-500: #0f9d58; // 'hsl(120, 100%, 50%)';

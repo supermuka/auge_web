@@ -15,10 +15,10 @@ import 'package:auge_server/model/general/user_access.dart';
 import 'package:auge_server/model/general/group.dart';
 import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/objective/measure.dart';
-import 'package:auge_server/model/initiative/initiative.dart';
-import 'package:auge_server/model/initiative/stage.dart';
-import 'package:auge_server/model/initiative/state.dart';
-import 'package:auge_server/model/initiative/work_item.dart';
+import 'package:auge_server/model/work/work.dart';
+import 'package:auge_server/model/work/work_stage.dart';
+import 'package:auge_server/model/work/state.dart';
+import 'package:auge_server/model/work/work_item.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_server/shared/message/messages.dart';
@@ -106,9 +106,9 @@ class HistoryItemTimelineDetailComponent /* extends Object */ implements OnInit 
       MeasureChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues, changedValues);
     } else if (objectClassName == MeasureProgress.className) {
       MeasureProgressChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues, changedValues);
-    } else if (objectClassName == Initiative.className) {
-      InitiativeChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues, changedValues);
-    } else if (objectClassName == Stage.className) {
+    } else if (objectClassName == Work.className) {
+      WorkChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues, changedValues);
+    } else if (objectClassName == WorkStage.className) {
       StageChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues, changedValues);
     } else if (objectClassName == WorkItem.className) {
       WorkItemChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues, changedValues);
@@ -547,86 +547,86 @@ class MeasureProgressChangedValues {
   }
 }
 
-//INITIATIVE
-class InitiativeChangedValues {
+//WORK
+class WorkChangedValues {
 
   static void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
 
     changedValues?.forEach((k, v) {
 
-    if (k != Initiative.idField && k != Initiative.versionField) {
-      if (k == Initiative.stagesField) {
+    if (k != Work.idField && k != Work.versionField) {
+      if (k == Work.workStagesField) {
         fieldsChangedValues.putIfAbsent(
-            '${Initiative.className}.${k}', () =>
+            '${Work.className}.${k}', () =>
         {
           _typeToViewKey: _typeToViewText,
-          _fieldDescriptionKey: FieldMsg.label('${Initiative.className}.${k}')
+          _fieldDescriptionKey: FieldMsg.label('${Work.className}.${k}')
         });
 
         if (v.containsKey(_pKey) && v[_pKey] is List) {
           StringBuffer sb = new StringBuffer();
           v[_pKey].forEach((l) {
             if (sb.isNotEmpty) sb.write(', ');
-            sb.write(l[Stage.nameField]);
+            sb.write(l[WorkStage.nameField]);
           });
-          fieldsChangedValues['${Initiative.className}.${k}'][_pKey] =
+          fieldsChangedValues['${Work.className}.${k}'][_pKey] =
               sb.toString();
         }
         if (v.containsKey(_cKey) && v[_cKey] is List) {
           StringBuffer sb = new StringBuffer();
           v[_cKey].forEach((l) {
             if (sb.isNotEmpty) sb.write(', ');;
-            sb.write(l[Stage.nameField]);
+            sb.write(l[WorkStage.nameField]);
           });
-          fieldsChangedValues['${Initiative.className}.${k}'][_cKey] =
+          fieldsChangedValues['${Work.className}.${k}'][_cKey] =
               sb.toString();
         }
-      } else if (k == Initiative.groupField) {
+      } else if (k == Work.groupField) {
 
-        fieldsChangedValues.putIfAbsent('${Initiative.className}.${k}', () =>
+        fieldsChangedValues.putIfAbsent('${Work.className}.${k}', () =>
         {
           _typeToViewKey: _typeToViewText,
-          _fieldDescriptionKey: FieldMsg.label('${Initiative.className}.${k}')});
+          _fieldDescriptionKey: FieldMsg.label('${Work.className}.${k}')});
 
         if (v.containsKey(Group.nameField) && v[Group.nameField].containsKey(_pKey))
-          fieldsChangedValues['${Initiative.className}.${k}'][_pKey] = v[Group.nameField][_pKey];
+          fieldsChangedValues['${Work.className}.${k}'][_pKey] = v[Group.nameField][_pKey];
         if (v.containsKey(Group.nameField) && v[Group.nameField].containsKey(_cKey))
-          fieldsChangedValues['${Initiative.className}.${k}'][_cKey] = v[Group.nameField][_cKey];
+          fieldsChangedValues['${Work.className}.${k}'][_cKey] = v[Group.nameField][_cKey];
 
-      } else if (k == Initiative.leaderField) {
+      } else if (k == Work.leaderField) {
 
-        fieldsChangedValues.putIfAbsent('${Initiative.className}.${k}', () =>
+        fieldsChangedValues.putIfAbsent('${Work.className}.${k}', () =>
         {
           _typeToViewKey: _typeToViewText,
-          _fieldDescriptionKey: FieldMsg.label('${Initiative.className}.${k}')});
+          _fieldDescriptionKey: FieldMsg.label('${Work.className}.${k}')});
 
         if (v.containsKey(User.nameField) && v[User.nameField].containsKey(_pKey))
-          fieldsChangedValues['${Initiative.className}.${k}'][_pKey] = v[User.nameField][_pKey];
+          fieldsChangedValues['${Work.className}.${k}'][_pKey] = v[User.nameField][_pKey];
         if (v.containsKey(User.nameField) && v[User.nameField].containsKey(_cKey))
-          fieldsChangedValues['${Initiative.className}.${k}'][_cKey] = v[User.nameField][_cKey];
+          fieldsChangedValues['${Work.className}.${k}'][_cKey] = v[User.nameField][_cKey];
 
-      } else if (k == Initiative.objectiveField) {
+      } else if (k == Work.objectiveField) {
 
-        fieldsChangedValues.putIfAbsent('${Initiative.className}.${k}', () =>
+        fieldsChangedValues.putIfAbsent('${Work.className}.${k}', () =>
         {
           _typeToViewKey: _typeToViewText,
-          _fieldDescriptionKey: FieldMsg.label('${Initiative.className}.${k}')});
+          _fieldDescriptionKey: FieldMsg.label('${Work.className}.${k}')});
 
         if (v.containsKey(Objective.nameField) && v[Objective.nameField].containsKey(_pKey))
-          fieldsChangedValues['${Initiative.className}.${k}'][_pKey] = v[User.nameField][_pKey];
+          fieldsChangedValues['${Work.className}.${k}'][_pKey] = v[User.nameField][_pKey];
         if (v.containsKey(Objective.nameField) && v[Objective.nameField].containsKey(_cKey))
-          fieldsChangedValues['${Initiative.className}.${k}'][_cKey] = v[Objective.nameField][_cKey];
+          fieldsChangedValues['${Work.className}.${k}'][_cKey] = v[Objective.nameField][_cKey];
 
       } else if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
-          fieldsChangedValues.putIfAbsent('${Initiative.className}.${k}', () =>
+          fieldsChangedValues.putIfAbsent('${Work.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewText,
-            _fieldDescriptionKey: FieldMsg.label('${Initiative.className}.${k}')});
+            _fieldDescriptionKey: FieldMsg.label('${Work.className}.${k}')});
           if (v.containsKey(_pKey))
-            fieldsChangedValues['${Initiative.className}.${k}'][_pKey] =
+            fieldsChangedValues['${Work.className}.${k}'][_pKey] =
             v[_pKey];
           if (v.containsKey(_cKey))
-            fieldsChangedValues['${Initiative.className}.${k}'][_cKey] =
+            fieldsChangedValues['${Work.className}.${k}'][_cKey] =
             v[_cKey];
         }
       }
@@ -640,34 +640,34 @@ class StageChangedValues {
   static void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
 
     changedValues?.forEach((k, v) {
-      if (k != Stage.idField && k != Stage.versionField && k != Stage.indexField) {
-        if (k == Stage.stateField) {
+      if (k != WorkStage.idField && k != WorkStage.versionField && k != WorkStage.indexField) {
+        if (k == WorkStage.stateField) {
           fieldsChangedValues.putIfAbsent(
-              '${Stage.className}.${k}', () =>
+              '${WorkStage.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewText,
-            _fieldDescriptionKey: FieldMsg.label('${Stage.className}.${k}')
+            _fieldDescriptionKey: FieldMsg.label('${WorkStage.className}.${k}')
           });
 
           if (v.containsKey(State.nameField) &&
               v[State.nameField].containsKey(_pKey))
-            fieldsChangedValues['${Stage.className}.${k}'][_pKey] =
+            fieldsChangedValues['${WorkStage.className}.${k}'][_pKey] =
             v[State.nameField][_pKey];
           if (v.containsKey(MeasureUnit.nameField) &&
               v[State.nameField].containsKey(_cKey))
-            fieldsChangedValues['${Stage.className}.${k}'][_cKey] =
+            fieldsChangedValues['${WorkStage.className}.${k}'][_cKey] =
             v[State.nameField][_cKey];
         }
         else if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
-          fieldsChangedValues.putIfAbsent('${Stage.className}.${k}', () =>
+          fieldsChangedValues.putIfAbsent('${WorkStage.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewText,
-            _fieldDescriptionKey: FieldMsg.label('${Stage.className}.${k}')});
+            _fieldDescriptionKey: FieldMsg.label('${WorkStage.className}.${k}')});
           if (v.containsKey(_pKey))
-            fieldsChangedValues['${Stage.className}.${k}'][_pKey] =
+            fieldsChangedValues['${WorkStage.className}.${k}'][_pKey] =
             v[_pKey];
           if (v.containsKey(_cKey))
-            fieldsChangedValues['${Stage.className}.${k}'][_cKey] =
+            fieldsChangedValues['${WorkStage.className}.${k}'][_cKey] =
             v[_cKey];
         }
       }
@@ -682,7 +682,7 @@ class WorkItemChangedValues {
 
     changedValues?.forEach((k, v) {
       if (k != WorkItem.idField && k != WorkItem.versionField) {
-        if (k == WorkItem.stageField) {
+        if (k == WorkItem.workStageField) {
           fieldsChangedValues.putIfAbsent(
               '${WorkItem.className}.${k}', () =>
           {
@@ -690,14 +690,14 @@ class WorkItemChangedValues {
             _fieldDescriptionKey: FieldMsg.label('${WorkItem.className}.${k}')
           });
 
-          if (v.containsKey(Stage.nameField) &&
-              v[Stage.nameField].containsKey(_pKey))
+          if (v.containsKey(WorkStage.nameField) &&
+              v[WorkStage.nameField].containsKey(_pKey))
             fieldsChangedValues['${WorkItem.className}.${k}'][_pKey] =
-            v[Stage.nameField][_pKey];
-          if (v.containsKey(Stage.nameField) &&
-              v[Stage.nameField].containsKey(_cKey))
+            v[WorkStage.nameField][_pKey];
+          if (v.containsKey(WorkStage.nameField) &&
+              v[WorkStage.nameField].containsKey(_cKey))
             fieldsChangedValues['${WorkItem.className}.${k}'][_cKey] =
-            v[Stage.nameField][_cKey];
+            v[WorkStage.nameField][_cKey];
         } else if (k == WorkItem.assignedToField) {
           fieldsChangedValues.putIfAbsent(
               '${WorkItem.className}.${k}', () =>

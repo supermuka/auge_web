@@ -6,7 +6,7 @@ class AppRoutesParam {
   static const userIdParameter = 'user_id';
   static const groupIdParameter = 'group_id';
   static const measureIdParameter = 'measure_id';
-  static const initiativeIdParameter = 'initiative_id';
+  static const workIdParameter = 'work_id';
   static const workItemIdParameter = 'work_item_id';
   static const objectiveIdParameter = 'objective_id';
 
@@ -16,9 +16,9 @@ class AppRoutesQueryParam {
 
   //QueryParam
   static const organizationIdQueryParameter = 'organization_id';
-  static const initiativeIdQueryParameter = 'initiative_id';
+  static const workIdQueryParameter = 'work_id';
   static const workItemIdQueryParameter = 'work_item_id';
-  static const objectiveIdQueryParameter = 'initiative_id';
+  static const objectiveIdQueryParameter = 'work_id';
   static const objectiveStartDateQueryParameter = 'start_date';
   static const objectiveEndDateQueryParameter = 'end_date';
   static const measureCurrentValueQueryParameter = 'current_value';
@@ -49,25 +49,25 @@ class AppRoutes {
       path: 'gantt',
       parent: appLayoutRoute
   );
-  static final initiativesRoute = new RoutePath(
-    path: 'initiatives',
+  static final worksRoute = new RoutePath(
+    path: 'works',
     parent: appLayoutRoute
   );
-  static final initiativeAddRoute = new RoutePath(
+  static final workAddRoute = new RoutePath(
       path: 'add',
-      parent: initiativesRoute
+      parent: worksRoute
   );
-  static final initiativeEditRoute = new RoutePath(
-      path: ':${AppRoutesParam.initiativeIdParameter}/edit',
-      parent: initiativesRoute
+  static final workEditRoute = new RoutePath(
+      path: ':${AppRoutesParam.workIdParameter}/edit',
+      parent: worksRoute
   );
-  static final initiativeStagesRoute = new RoutePath(
-      path: ':${AppRoutesParam.initiativeIdParameter}/stages',
-      parent: initiativesRoute
+  static final workStagesRoute = new RoutePath(
+      path: ':${AppRoutesParam.workIdParameter}/stages',
+      parent: worksRoute
   );
 
-  static final initiativesByObjectiveRoute = new RoutePath(
-      path: 'initiatives/:${AppRoutesParam.objectiveIdParameter}',
+  static final worksByObjectiveRoute = new RoutePath(
+      path: 'works/:${AppRoutesParam.objectiveIdParameter}',
       parent: appLayoutRoute
   );
   static final objectivesRoute = new RoutePath(
@@ -120,12 +120,12 @@ class AppRoutes {
       parent: objectivesRoute
   );
   static final workItemAddRoute = new RoutePath(
-      path: ':${AppRoutesParam.initiativeIdParameter}/work_items/add',
-      parent: initiativesRoute
+      path: ':${AppRoutesParam.workIdParameter}/work_items/add',
+      parent: worksRoute
   );
   static final workItemEditRoute = new RoutePath(
-      path: ':${AppRoutesParam.initiativeIdParameter}/work_items/:${AppRoutesParam.workItemIdParameter}/edit',
-      parent: initiativesRoute
+      path: ':${AppRoutesParam.workIdParameter}/work_items/:${AppRoutesParam.workItemIdParameter}/edit',
+      parent: worksRoute
   );
   static final userAddRoute = new RoutePath(
       path: 'add',

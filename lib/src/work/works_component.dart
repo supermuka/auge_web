@@ -19,38 +19,38 @@ import 'package:angular_components/material_toggle/material_toggle.dart';
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
 import 'package:angular_components/material_select/material_dropdown_select.dart';
 
-import 'package:auge_server/model/initiative/initiative.dart';
+import 'package:auge_server/model/work/work.dart';
 import 'package:auge_server/model/general/authorization.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
 import 'package:auge_server/shared/message/model_messages.dart';
 
-import 'package:auge_web/src/initiative/initiative_service.dart';
+import 'package:auge_web/src/work/work_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/history_timeline/history_timeline_service.dart';
-import 'package:auge_web/src/initiative/initiatives_filter_component.dart';
-import 'package:auge_web/src/initiative/initiative_summary_component.dart';
+import 'package:auge_web/src/work/works_filter_component.dart';
+import 'package:auge_web/src/work/work_summary_component.dart';
 import 'package:auge_web/src/history_timeline/history_timeline_component.dart';
-import 'package:auge_web/src/initiative/initiative_detail_component.dart';
-import 'package:auge_web/src/initiative/initiative_stages_component.dart';
+import 'package:auge_web/src/work/work_detail_component.dart';
+import 'package:auge_web/src/work/work_stages_component.dart';
 import 'package:auge_web/src/work_item/work_items_component.dart';
 import 'package:auge_web/src/work_item/work_items_list_component.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/services/app_routes.dart';
 
 // ignore_for_file: uri_has_not_been_generated
-import 'package:auge_web/src/initiative/initiative_detail_component.template.dart' as initiative_detail_component;
-import 'package:auge_web/src/initiative/initiative_stages_component.template.dart' as initiative_stages_component;
+import 'package:auge_web/src/work/work_detail_component.template.dart' as work_detail_component;
+import 'package:auge_web/src/work/work_stages_component.template.dart' as work_stages_component;
 import 'package:auge_web/src/work_item/work_item_detail_component.template.dart' as work_item_detail_component;
 
 @Component(
-    selector: 'auge-initiatives',
-    providers: const [InitiativeService, ObjectiveService, HistoryTimelineService],
-    templateUrl: 'initiatives_component.html',
+    selector: 'auge-works',
+    providers: const [WorkService, ObjectiveService, HistoryTimelineService],
+    templateUrl: 'works_component.html',
     styleUrls: const [
-      'initiatives_component.css'
+      'works_component.css'
     ],
     directives: const [
       coreDirectives,
@@ -63,18 +63,18 @@ import 'package:auge_web/src/work_item/work_item_detail_component.template.dart'
       MaterialExpansionPanelSet,
       MaterialToggleComponent,
       MaterialMenuComponent,
-      InitiativesFilterComponent,
-      InitiativeSummaryComponent,
-      InitiativeDetailComponent,
+      WorksFilterComponent,
+      WorkSummaryComponent,
+      WorkDetailComponent,
       WorkItemsComponent,
       WorkItemsListComponent,
       HistoryTimelineComponent,
-      InitiativeStagesComponent,
+      WorkStagesComponent,
     ])
 
-class InitiativesComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
+class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
 
-  final InitiativeService _initiativeService;
+  final WorkService _workService;
   final ObjectiveService _objectiveService;
   final SearchService _searchService;
   final HistoryTimelineService _historyTimelineService;
@@ -84,16 +84,16 @@ class InitiativesComponent with CanReuse implements OnInit, OnActivate, OnDestro
 
   final List<RouteDefinition> routes = [
     new RouteDefinition(
-      routePath: AppRoutes.initiativeAddRoute,
-      component: initiative_detail_component.InitiativeDetailComponentNgFactory,
+      routePath: AppRoutes.workAddRoute,
+      component: work_detail_component.WorkDetailComponentNgFactory,
     ),
     new RouteDefinition(
-      routePath: AppRoutes.initiativeEditRoute,
-      component: initiative_detail_component.InitiativeDetailComponentNgFactory,
+      routePath: AppRoutes.workEditRoute,
+      component: work_detail_component.WorkDetailComponentNgFactory,
     ),
     new RouteDefinition(
-      routePath: AppRoutes.initiativeStagesRoute,
-      component: initiative_stages_component.InitiativeStagesComponentNgFactory,
+      routePath: AppRoutes.workStagesRoute,
+      component: work_stages_component.WorkStagesComponentNgFactory,
     ),
     new RouteDefinition(
       routePath: AppRoutes.workItemAddRoute,
@@ -105,42 +105,42 @@ class InitiativesComponent with CanReuse implements OnInit, OnActivate, OnDestro
     ),
   ];
 
-  InitiativesFilterParam initiativesFilterParam;
+  WorksFilterParam worksFilterParam;
 
   String mainColWidth = '100%';
   bool _timelineVisible = false;
 
-  List<Initiative> _initiatives = List();
-  Initiative selectedInitiative;
-  String expandedInitiativeId;
+  List<Work> _works = List();
+  Work selectedWork;
+  String expandedWorkId;
   // To control workItem [list or [kanban]
   SelectionView workItemSelectionView;
 
   // List<bool> wideControl = new List();
   // List<bool> expandedControl = new List();
-  //Map<Initiative, bool> wideControl = Map();
+  //Map<Work, bool> wideControl = Map();
 
   MenuModel<MenuItem> menuModel;
 
   // Define messages and labels
-  static final String sortedByLabel = InitiativeMsg.label('Sorted By');
-  static final String objectiveLabel =  InitiativeMsg.label('Objective');
+  static final String sortedByLabel = WorkMsg.label('Sorted By');
+  static final String objectiveLabel =  WorkMsg.label('Objective');
 
-  static final String nameLabel =  FieldMsg.label('${Initiative.className}.${Initiative.nameField}');
-  static final String groupLabel = FieldMsg.label('${Initiative.className}.${Initiative.groupField}');
-  static final String leaderLabel =  FieldMsg.label('${Initiative.className}.${Initiative.leaderField}');
-  static final String stagesLabel =  FieldMsg.label('${Initiative.className}.${Initiative.stagesField}');
+  static final String nameLabel =  FieldMsg.label('${Work.className}.${Work.nameField}');
+  static final String groupLabel = FieldMsg.label('${Work.className}.${Work.groupField}');
+  static final String leaderLabel =  FieldMsg.label('${Work.className}.${Work.leaderField}');
+  static final String stagesLabel =  FieldMsg.label('${Work.className}.${Work.workStagesField}');
 
-  final initiativesSortedByOptions = [nameLabel, groupLabel, leaderLabel];
+  final worksSortedByOptions = [nameLabel, groupLabel, leaderLabel];
 
   String _sortedBy = nameLabel;
 
-  InitiativesComponent(this._appLayoutService, this._initiativeService, this._objectiveService, this._searchService, this._historyTimelineService, this._router) {
-    initiativesFilterParam = InitiativesFilterParam();
+  WorksComponent(this._appLayoutService, this._workService, this._objectiveService, this._searchService, this._historyTimelineService, this._router) {
+    worksFilterParam = WorksFilterParam();
     menuModel = new MenuModel([new MenuItemGroup([
       new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , actionWithContext: (_) => goToDetail() /* viewDetail(true) */),
       new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), actionWithContext: (_) => delete()),
-      new MenuItem(stagesLabel, icon: new Icon('view_week'), actionWithContext: (_) => goToStages(selectedInitiative)) ])], icon: new Icon('menu'));
+      new MenuItem(stagesLabel, icon: new Icon('view_week'), actionWithContext: (_) => goToStages(selectedWork)) ])], icon: new Icon('menu'));
 
   }
 
@@ -151,7 +151,7 @@ class InitiativesComponent with CanReuse implements OnInit, OnActivate, OnDestro
 
   set sortedBy(String sortedBy) {
     _sortedBy = sortedBy;
-    _sortInitiatives(_initiatives);
+    _sortWorks(_works);
   }
 
   get sortedBy => _sortedBy;
@@ -163,7 +163,7 @@ class InitiativesComponent with CanReuse implements OnInit, OnActivate, OnDestro
     _timelineVisible = visible;
     if (_timelineVisible) {
       mainColWidth = '75%';
-      _historyTimelineService.refreshHistory(SystemModule.initiatives.index);
+      _historyTimelineService.refreshHistory(SystemModule.works.index);
     } else {
       mainColWidth = '100%';
     }
@@ -172,19 +172,19 @@ class InitiativesComponent with CanReuse implements OnInit, OnActivate, OnDestro
 
   void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
 
-    if (_initiativeService.authService.authorizedOrganization == null || _initiativeService.authService.authenticatedUser == null) {
+    if (_workService.authService.authorizedOrganization == null || _workService.authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
       return;
     }
 
-    if (routerStatePrevious.toUrl() == AppRoutes.initiativesRoute.toUrl() ||
-        (routerStatePrevious.toUrl() == AppRoutes.initiativeAddRoute.toUrl() && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.initiativeIdQueryParameter) ||
-         routerStatePrevious.toUrl() == AppRoutes.initiativeEditRoute.toUrl() && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.initiativeIdQueryParameter) ||
+    if (routerStatePrevious.toUrl() == AppRoutes.worksRoute.toUrl() ||
+        (routerStatePrevious.toUrl() == AppRoutes.workAddRoute.toUrl() && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.workIdQueryParameter) ||
+         routerStatePrevious.toUrl() == AppRoutes.workEditRoute.toUrl() && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.workIdQueryParameter) ||
          routerStatePrevious.toUrl() == AppRoutes.workItemAddRoute.toUrl() && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.workItemIdQueryParameter) ||
          routerStatePrevious.toUrl() == AppRoutes.workItemEditRoute.toUrl() && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.workItemIdQueryParameter))
     ) return;
 
-    _appLayoutService.headerTitle = InitiativeMsg.label('Initiatives');
+    _appLayoutService.headerTitle = WorkMsg.label('Works');
 
     try {
 
@@ -193,24 +193,24 @@ class InitiativesComponent with CanReuse implements OnInit, OnActivate, OnDestro
               .objectiveIdParameter];
 
           if (objectiveId != null || objectiveId.isNotEmpty) {
-              initiativesFilterParam.objective = await _objectiveService.getObjective(objectiveId, withMeasures: false);
+              worksFilterParam.objective = await _objectiveService.getObjective(objectiveId, withMeasures: false);
           }
       }
 
-    //  if (routerStatePrevious.toUrl() == AppRoutes.initiativesRoute.toUrl()) return;
+    //  if (routerStatePrevious.toUrl() == AppRoutes.worksRoute.toUrl()) return;
 
 
-    //  List<Initiative> initiativesAux = await getInitiatives();
+    //  List<Work> worksAux = await getWorks();
 
-    //  if (!DeepCollectionEquality().equals(_initiatives, initiativesAux))
+    //  if (!DeepCollectionEquality().equals(_works, worksAux))
 
-      _initiatives = await getInitiatives();
+      _works = await getWorks();
 
-      if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.initiatives.index);
+      if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.works.index);
 
-      if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.initiativeIdQueryParameter)) {
-        setExpandedInitiativeId(routerStateCurrent.queryParameters[AppRoutesQueryParam
-            .initiativeIdQueryParameter], true);
+      if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.workIdQueryParameter)) {
+        setExpandedWorkId(routerStateCurrent.queryParameters[AppRoutesQueryParam
+            .workIdQueryParameter], true);
       }
 
       workItemSelectionView.selected = workItemSelectionView.selected ?? 'list';
@@ -229,25 +229,25 @@ class InitiativesComponent with CanReuse implements OnInit, OnActivate, OnDestro
     _searchService.visibleFilter = visibleFilter;
   }
 
-  List<Initiative> get initiatives {
+  List<Work> get works {
 
-    return _initiatives;
+    return _works;
 
     /*TODO
 
-    List<Initiative> initiativesFilter;
-    initiativesFilter = initiativesFilterParam.objective == null ? _initiatives : _initiatives.where((t) => t.objective != null && t.objective.id == initiativesFilterParam.objective.id).toList();
+    List<Work> worksFilter;
+    worksFilter = worksFilterParam.objective == null ? _works : _works.where((t) => t.objective != null && t.objective.id == worksFilterParam.objective.id).toList();
 
-    return _searchService?.searchTerm.toString().isEmpty ? initiativesFilter : initiativesFilter.where((t) => t.name.contains(_searchService.searchTerm)).toList();
+    return _searchService?.searchTerm.toString().isEmpty ? worksFilter : worksFilter.where((t) => t.name.contains(_searchService.searchTerm)).toList();
 
      */
   }
 
-  Future<List<Initiative>> getInitiatives() async {
-    List<Initiative> initiativesAux = await _initiativeService.getInitiatives(_initiativeService.authService.authorizedOrganization.id, withWorkItems: true, withProfile: true);
+  Future<List<Work>> getWorks() async {
+    List<Work> worksAux = await _workService.getWorks(_workService.authService.authorizedOrganization.id, withWorkItems: true, withProfile: true);
 
-    _sortInitiatives(initiativesAux);
-    return initiativesAux;
+    _sortWorks(worksAux);
+    return worksAux;
   }
 
   @override
@@ -257,17 +257,17 @@ class InitiativesComponent with CanReuse implements OnInit, OnActivate, OnDestro
   }
 
   void goToDetail() {
-    if (selectedInitiative == null) {
-      _router.navigate(AppRoutes.initiativeAddRoute.toUrl());
+    if (selectedWork == null) {
+      _router.navigate(AppRoutes.workAddRoute.toUrl());
 
     } else {
-      _router.navigate(AppRoutes.initiativeEditRoute.toUrl(parameters: { AppRoutesParam.initiativeIdParameter: selectedInitiative.id }));
+      _router.navigate(AppRoutes.workEditRoute.toUrl(parameters: { AppRoutesParam.workIdParameter: selectedWork.id }));
     }
   }
 
-  void goToStages(Initiative initiative) {
-    if (initiative != null) {
-      _router.navigate(AppRoutes.initiativeStagesRoute.toUrl(parameters: { AppRoutesParam.initiativeIdParameter: initiative.id }));
+  void goToStages(Work work) {
+    if (work != null) {
+      _router.navigate(AppRoutes.workStagesRoute.toUrl(parameters: { AppRoutesParam.workIdParameter: work.id }));
     }
   }
 
@@ -276,17 +276,17 @@ class InitiativesComponent with CanReuse implements OnInit, OnActivate, OnDestro
     me.stopPropagation();
   }
 
-  void selectInitiative(Initiative item) {
-    selectedInitiative = item;
+  void selectWork(Work item) {
+    selectedWork = item;
   }
 
   void delete() async {
     try {
 
-      await _initiativeService.deleteInitiative(selectedInitiative);
-      initiatives.remove(selectedInitiative);
+      await _workService.deleteWork(selectedWork);
+      works.remove(selectedWork);
 
-      if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.initiatives.index);
+      if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.works.index);
 
     } catch (e) {
       _appLayoutService.error = e.toString();
@@ -303,14 +303,14 @@ class InitiativesComponent with CanReuse implements OnInit, OnActivate, OnDestro
   }
 
   // Order by to group
-  void _sortInitiatives(List<Initiative> initiativesToSort) {
+  void _sortWorks(List<Work> worksToSort) {
 
     if (_sortedBy == nameLabel) {
-      initiativesToSort.sort((a, b) => a?.name == null || b?.name == null ? -1 : a.name.compareTo(b.name));
+      worksToSort.sort((a, b) => a?.name == null || b?.name == null ? -1 : a.name.compareTo(b.name));
     } else if (_sortedBy == groupLabel) {
-      initiativesToSort.sort((a, b) => a?.group == null || b?.group == null ? -1 : a.group.name.compareTo(b.group.name));
+      worksToSort.sort((a, b) => a?.group == null || b?.group == null ? -1 : a.group.name.compareTo(b.group.name));
     } else if (_sortedBy == leaderLabel) {
-      initiativesToSort.sort((a, b) =>
+      worksToSort.sort((a, b) =>
       a?.leader == null || b?.leader == null
           ? -1
           : a.leader.name.compareTo(b.leader.name));
@@ -325,11 +325,11 @@ class InitiativesComponent with CanReuse implements OnInit, OnActivate, OnDestro
     return label + ' ' + ((name == null) ? '(-)' : name);
   }
 
-  setExpandedInitiativeId(String initiativeId, bool expanded) {
+  setExpandedWorkId(String workId, bool expanded) {
     if (expanded) {
-      expandedInitiativeId = initiativeId;
+      expandedWorkId = workId;
     } else {
-      expandedInitiativeId = null;
+      expandedWorkId = null;
     }
   }
 }

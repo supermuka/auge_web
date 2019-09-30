@@ -28,24 +28,24 @@ import 'package:angular_components/model/selection/selection_options.dart';
 import 'package:angular_components/model/selection/string_selection_options.dart';
 import 'package:angular_components/model/ui/has_factory.dart';
 
-import 'package:auge_server/model/initiative/stage.dart';
-import 'package:auge_server/model/initiative/state.dart';
+import 'package:auge_server/model/work/work_stage.dart';
+import 'package:auge_server/model/work/state.dart';
 
 import 'package:auge_web/services/common_service.dart';
-import 'package:auge_web/src/initiative/initiative_service.dart';
+import 'package:auge_web/src/work/work_service.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
 import 'package:auge_server/shared/message/model_messages.dart';
 
 // ignore_for_file: uri_has_not_been_generated
-import 'initiative_stages_component.template.dart' as initiative_stages_component;
+import 'work_stages_component.template.dart' as work_stages_component;
 
 @Component(
-    selector: 'auge-initiative-stages',
-    providers: [overlayBindings, InitiativeService],
-    templateUrl: 'initiative_stages_component.html',
+    selector: 'auge-work-stages',
+    providers: [overlayBindings, WorkService],
+    templateUrl: 'work_stages_component.html',
     styleUrls: const [
-      'initiative_stages_component.css'
+      'work_stages_component.css'
     ],
     directives: const [
       coreDirectives,
@@ -65,19 +65,19 @@ import 'initiative_stages_component.template.dart' as initiative_stages_componen
   /*  pipes: const [commonPipes], */
    )
 
-class InitiativeStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
+class WorkStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
 
-  final InitiativeService _initiativeService;
+  final WorkService _workService;
   final Location _location;
 
   bool modalVisible = false;
 
-  String initiativeId;
-  List<Stage> stages;
+  String workId;
+  List<WorkStage> workStages;
 
   bool editable;
 
-  Stage selectedStage;
+  WorkStage selectedWorkStage;
 
   String showStartValueErrorMsg;
   String showCurrentValueErrorMsg;
@@ -90,20 +90,20 @@ class InitiativeStagesComponent implements /* OnInit, */ OnActivate, OnDeactivat
 
   List<State> _states;
 
-  InitiativeStagesComponent(this._initiativeService, this._location) {
+  WorkStagesComponent(this._workService, this._location) {
    // initializeDateFormatting(Intl.defaultLocale , null);
 
     stateSingleSelectModel = SelectionModel.single()
       ..selectionChanges.listen((es) {
-        if (selectedStage != null && es.isNotEmpty && es.first.added != null &&
+        if (selectedWorkStage != null && es.isNotEmpty && es.first.added != null &&
             es.first.added.length != 0 && es.first.added.first != null) {
-          selectedStage.state = es.first.added.first;
+          selectedWorkStage.state = es.first.added.first;
         }
       });
   }
 
   // Define messages and labels
-  static final String initiativeStagesLabel = StageMsg.label('Initiative Stages');
+  static final String workStagesLabel = StageMsg.label('Work Stages');
   static final String selectLabel =  StageMsg.label('Select');
   static final String stageLabel =  StageMsg.label('Stage');
 
@@ -111,8 +111,8 @@ class InitiativeStagesComponent implements /* OnInit, */ OnActivate, OnDeactivat
   static final String cancelButtonLabel = CommonMsg.buttonLabel('Cancel');
   static final String closeButtonLabel = CommonMsg.buttonLabel('Close');
 
-  static final String nameLabel =  FieldMsg.label('${Stage.className}.${Stage.nameField}');
-  static final String stateLabel =  FieldMsg.label('${Stage.className}.${Stage.stateField}');
+  static final String nameLabel =  FieldMsg.label('${WorkStage.className}.${WorkStage.nameField}');
+  static final String stateLabel =  FieldMsg.label('${WorkStage.className}.${WorkStage.stateField}');
 
   static final String stateNotInfomedMsg =  StageMsg.stateNotInfomedMsg();
 
@@ -120,18 +120,18 @@ class InitiativeStagesComponent implements /* OnInit, */ OnActivate, OnDeactivat
   void onActivate(RouterState previous, RouterState current) async {
     modalVisible = true;
 
-    if (current.parameters.containsKey(AppRoutesParam.initiativeIdParameter)) {
-      initiativeId = current.parameters[AppRoutesParam.initiativeIdParameter];
+    if (current.parameters.containsKey(AppRoutesParam.workIdParameter)) {
+      workId = current.parameters[AppRoutesParam.workIdParameter];
     }
-    if (initiativeId != null) {
-      stages = await _initiativeService.getStages(initiativeId);
+    if (workId != null) {
+      workStages = await _workService.getWorkStages(workId);
     } else {
-      throw Exception('Initiative Id not found.');
+      throw Exception('Work Id not found.');
     }
 
-    _states =  await _initiativeService.getStates();
+    _states =  await _workService.getStates();
 
-    // List<State> states =  await _initiativeService.getStates();
+    // List<State> states =  await _workService.getStates();
 
     stateOptions = new StringSelectionOptions<State>(
         _states, toFilterableString: (State state) => state.name);
@@ -163,13 +163,13 @@ class InitiativeStagesComponent implements /* OnInit, */ OnActivate, OnDeactivat
     print ((await stream.first).name);
   }
 
-  void cancelStage(Stage stage, AsyncAction event) async {
+  void cancelWorkStage(WorkStage workStage, AsyncAction event) async {
 
     try {
-      if (stage.id == null) {
-        stages.remove(stage);
+      if (workStage.id == null) {
+        workStages.remove(workStage);
       } else {
-        stages[stages.indexOf(stage)] = await _initiativeService.getStage(stage.id);
+        workStages[workStages.indexOf(workStage)] = await _workService.getWorkStage(workStage.id);
       }
      // _sortMeasurePregressesOrderByDate(measureProgresses);
     } on Exception {
@@ -178,31 +178,31 @@ class InitiativeStagesComponent implements /* OnInit, */ OnActivate, OnDeactivat
     }
   }
 
-  void saveStage(Stage stage, AsyncAction event) async {
+  void saveWorkStage(WorkStage workStage, AsyncAction event) async {
 
-    if (stage.state == null) {
+    if (workStage.state == null) {
       dialogError = stateNotInfomedMsg;
       event.cancel();
     } else {
       try {
 
-        if (stage.index == null) {
+        if (workStage.index == null) {
           int lastIndexIntoStage = 0;
-          for (int i = 0;i < stages.length;i++) {
-            if (stage.state.index == stages[i].state.index && stages[i].index != null && lastIndexIntoStage < stages[i].index) {
-              lastIndexIntoStage = stages[i].index;
+          for (int i = 0;i < workStages.length;i++) {
+            if (workStage.state.index == workStages[i].state.index && workStages[i].index != null && lastIndexIntoStage < workStages[i].index) {
+              lastIndexIntoStage = workStages[i].index;
             }
           }
-          stage.index = lastIndexIntoStage + 1;
+          workStage.index = lastIndexIntoStage + 1;
         }
 
-        String stageId = await _initiativeService.saveStage(
-            initiativeId, stage);
+        String stageId = await _workService.saveStage(
+            workId, workStage);
         // Returns a new instance to get the generated data on the server side as well as having the last update.
-        selectedStage = await _initiativeService.getStage(stageId);
+        selectedWorkStage = await _workService.getWorkStage(stageId);
         //  }
 
-        // stages = await _initiativeService.getStages(selectedInitiative.id);
+        // stages = await _workService.getStages(selectedWork.id);
         _sortStages();
 
       } catch (e) {
@@ -213,25 +213,25 @@ class InitiativeStagesComponent implements /* OnInit, */ OnActivate, OnDeactivat
     }
   }
 
-  void selectStage(Stage stage) async {
-    if (stage == null) {
-      stages.insert(0, Stage());
-      selectedStage = stages.first;
+  void selectWorkStage(WorkStage workStage) async {
+    if (workStage == null) {
+      workStages.insert(0, WorkStage());
+      selectedWorkStage = workStages.first;
   //    selectedStage.index = stages.length;
    //   selectedMeasureProgress.date = DateTime.now();
     } else {
       // Get a new instance to doesn't referenced the other.
-      selectedStage = stage;
+      selectedWorkStage = workStage;
     }
 
   }
 
   /// Call a delete
-  void delete(Stage stage) async {
+  void deleteWorkStage(WorkStage workStage) async {
     try {
-      await _initiativeService.deleteStage(stage);
+      await _workService.deleteWorkStage(workStage);
 
-      stages = await _initiativeService.getStages(initiativeId);
+      workStages = await _workService.getWorkStages(workId);
 
       // stages.remove(stage);
 
@@ -252,29 +252,29 @@ class InitiativeStagesComponent implements /* OnInit, */ OnActivate, OnDeactivat
   // Order by State.index and Stage.index
   void _sortStages() {
     // measureProgresses.sort((a, b) => a?.date == null || b?.date == null ? -1 : a.date.compareTo(b.date));
-    stages.sort((a, b) => a.index.compareTo(b.index));
-    stages.sort((a, b) => a.state.index.compareTo(b.state.index));
+    workStages.sort((a, b) => a.index.compareTo(b.index));
+    workStages.sort((a, b) => a.state.index.compareTo(b.state.index));
   }
 
 
   bool get validStageInput {
-    return (selectedStage.name.isNotEmpty && stateSingleSelectModel != null && stateSingleSelectModel.selectedValues.isNotEmpty && stateSingleSelectModel.selectedValues.first.index != null);
+    return (selectedWorkStage.name.isNotEmpty && stateSingleSelectModel != null && stateSingleSelectModel.selectedValues.isNotEmpty && stateSingleSelectModel.selectedValues.first.index != null);
   }
 
-  void moveUpStage(Stage stage) async {
-    int i = stages.indexOf(stage);
+  void moveUpWorkStage(WorkStage workStage) async {
+    int i = workStages.indexOf(workStage);
 
-    if (i > 0 && stage.state.index == stages[i-1].state.index ) {
+    if (i > 0 && workStage.state.index == workStages[i-1].state.index ) {
       // Receive state equals previous stage, because can be different that the actual
    //   stage.state = stages[i-1].state;
 
-      ++stages[i-1].index;
-      await _initiativeService.saveStage(initiativeId, stages[i-1]);
+      ++workStages[i-1].index;
+      await _workService.saveStage(workId, workStages[i-1]);
 
-      --stages[i].index;
-      await _initiativeService.saveStage(initiativeId, stages[i]);
+      --workStages[i].index;
+      await _workService.saveStage(workId, workStages[i]);
 
-      stages = await _initiativeService.getStages(initiativeId);
+      workStages = await _workService.getWorkStages(workId);
       //stages.removeAt(i);
       //stages.insert(i-1, stage);
       //_sortStages();
@@ -282,41 +282,41 @@ class InitiativeStagesComponent implements /* OnInit, */ OnActivate, OnDeactivat
     }
   }
 
-  void moveDownStage(Stage stage) async {
-    int i = stages.indexOf(stage);
-    if (i < stages.length-1 && stage.state.index == stages[i+1].state.index) {
+  void moveDownWorkStage(WorkStage workStage) async {
+    int i = workStages.indexOf(workStage);
+    if (i < workStages.length-1 && workStage.state.index == workStages[i+1].state.index) {
 
       // Receive state equals previous stage, because can be different that the actual
-      --stages[i+1].index;
-      await _initiativeService.saveStage(initiativeId, stages[i+1]);
+      --workStages[i+1].index;
+      await _workService.saveStage(workId, workStages[i+1]);
 
-      ++stages[i].index;
-      await _initiativeService.saveStage(initiativeId, stages[i]);
+      ++workStages[i].index;
+      await _workService.saveStage(workId, workStages[i]);
 
-      stages = await _initiativeService.getStages(initiativeId);
+      workStages = await _workService.getWorkStages(workId);
       //stages.removeAt(i);
       //stages.insert(i+1, stage);
     }
   }
 
-  bool disableUp(Stage stage) {
-    int firstIndexIntoStage = -1;
-    for (int i = 0;i < stages.length;i++) {
-      if (stage.state.index == stages[i].state.index && stages[i].index != null && ( firstIndexIntoStage == -1 || firstIndexIntoStage > stages[i].index )) {
-        firstIndexIntoStage = stages[i].index;
+  bool disableUpWorkStage(WorkStage workStage) {
+    int firstIndexIntoWorkStage = -1;
+    for (int i = 0;i < workStages.length;i++) {
+      if (workStage.state.index == workStages[i].state.index && workStages[i].index != null && ( firstIndexIntoWorkStage == -1 || firstIndexIntoWorkStage > workStages[i].index )) {
+        firstIndexIntoWorkStage = workStages[i].index;
       }
     }
-    return (firstIndexIntoStage == stage.index);
+    return (firstIndexIntoWorkStage == workStage.index);
   }
 
-  bool disableDown(Stage stage) {
+  bool disableDownWorkStage(WorkStage workStage) {
     int lastIndexIntoStage = 0;
-    for (int i = 0;i < stages.length;i++) {
-      if (stage.state.index == stages[i].state.index && stages[i].index != null && ( lastIndexIntoStage < stages[i].index )) {
-        lastIndexIntoStage = stages[i].index;
+    for (int i = 0;i < workStages.length;i++) {
+      if (workStage.state.index == workStages[i].state.index && workStages[i].index != null && ( lastIndexIntoStage < workStages[i].index )) {
+        lastIndexIntoStage = workStages[i].index;
       }
     }
-    return (lastIndexIntoStage == stage.index);
+    return (lastIndexIntoStage == workStage.index);
   }
 
   void close() {
@@ -325,7 +325,7 @@ class InitiativeStagesComponent implements /* OnInit, */ OnActivate, OnDeactivat
 
   ItemRenderer get stateItemRenderer => (dynamic state) => state.name;
 
-  FactoryRenderer get stateFactoryRenderer => (_) => initiative_stages_component.StateRendererComponentNgFactory;
+  FactoryRenderer get stateFactoryRenderer => (_) => work_stages_component.StateRendererComponentNgFactory;
 
 }
 

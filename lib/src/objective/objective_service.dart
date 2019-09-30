@@ -7,7 +7,7 @@ import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_web/services/auge_api_service.dart';
 
 import 'package:auge_server/src/protos/generated/google/protobuf/wrappers.pb.dart' as wrappers_pb;
-import 'package:auge_server/src/protos/generated/objective/objective.pbgrpc.dart' as objective_pbgrpc;
+import 'package:auge_server/src/protos/generated/objective/objective_measure.pbgrpc.dart' as objective_measure_pbgrpc;
 
 import 'package:grpc/grpc_web.dart';
 
@@ -15,12 +15,12 @@ import 'package:grpc/grpc_web.dart';
 class ObjectiveService {
   final AuthService _authService;
   final AugeApiService _augeApiService;
-  objective_pbgrpc.ObjectiveServiceClient _objectiveServiceClient;
+  objective_measure_pbgrpc.ObjectiveServiceClient _objectiveServiceClient;
 
   DateTime currentDateTime;
 
   ObjectiveService(this._authService, this._augeApiService) {
-    _objectiveServiceClient = objective_pbgrpc.ObjectiveServiceClient(_augeApiService.channel);
+    _objectiveServiceClient = objective_measure_pbgrpc.ObjectiveServiceClient(_augeApiService.channel);
   }
 
   get authService => _authService;
@@ -29,26 +29,26 @@ class ObjectiveService {
   /// Return a list of [Objective]
   Future<List<Objective>> getObjectives(String organizationId, {bool withMeasures = false, bool withProfile = false}) async {
     return (await _objectiveServiceClient.getObjectives(
-        objective_pbgrpc.ObjectiveGetRequest()
+        objective_measure_pbgrpc.ObjectiveGetRequest()
           ..organizationId = organizationId
           ..withMeasures = withMeasures
-          ..withProfile = withProfile)).objectives.map((m) =>
+          ..withUserProfile = withProfile)).objectives.map((m) =>
     Objective()
       ..readFromProtoBuf(m)).toList();
 
   }
 
   /// Return an [Objective] by Id
-  Future<Objective> getObjective(String id, {bool withMeasures = false, bool withProfile = false}) async {
+  Future<Objective> getObjective(String id, {bool withMeasures = false, bool withUserProfile = false}) async {
     try {
 
       // Objective objective = await _augeApiService.objectiveAugeApi.getObjectiveById(id, withMeasures: withMeasures, withProfile: withProfile, withHistory: withHistory);
 
-      objective_pbgrpc.Objective objective = await _objectiveServiceClient.getObjective(
-          objective_pbgrpc.ObjectiveGetRequest()
+      objective_measure_pbgrpc.Objective objective = await _objectiveServiceClient.getObjective(
+          objective_measure_pbgrpc.ObjectiveGetRequest()
             ..id = id
             ..withMeasures = withMeasures
-            ..withProfile = withProfile);
+            ..withUserProfile = withUserProfile);
 
       return Objective()..readFromProtoBuf(objective);
 
@@ -73,7 +73,7 @@ class ObjectiveService {
   /// Save (create or update) an [Objective]
   Future<String> saveObjective(Objective objective) async {
 
-    objective_pbgrpc.ObjectiveRequest objectiveRequest = (objective_pbgrpc.ObjectiveRequest()
+    objective_measure_pbgrpc.ObjectiveRequest objectiveRequest = (objective_measure_pbgrpc.ObjectiveRequest()
       ..objective = objective.writeToProtoBuf()
       ..authOrganizationId = _authService.authorizedOrganization.id
       ..authUserId = _authService.authenticatedUser.id);
@@ -102,7 +102,7 @@ class ObjectiveService {
   /// Delete an [Objective]
   void deleteObjective(Objective objective) async {
     try {
-      await _objectiveServiceClient.deleteObjective(objective_pbgrpc.ObjectiveDeleteRequest()
+      await _objectiveServiceClient.deleteObjective(objective_measure_pbgrpc.ObjectiveDeleteRequest()
         ..objectiveId = objective.id
         ..objectiveVersion = objective.version
         ..authUserId = _authService.authenticatedUser.id

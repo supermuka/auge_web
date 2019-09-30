@@ -18,8 +18,8 @@
             <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(objectivesRouteUrl)">
                 <material-icon icon="visibility"></material-icon>{{objectivesLabel}}
             </material-list-item>
-            <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(initiativesRouteUrl)">
-                <material-icon icon="timeline"></material-icon>{{initiativesLabel}}
+            <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(worksRouteUrl)">
+                <material-icon icon="timeline"></material-icon>{{worksLabel}}
             </material-list-item>
         </div>
         <div *ngIf="isAdmin || isSuperAdmin" group>

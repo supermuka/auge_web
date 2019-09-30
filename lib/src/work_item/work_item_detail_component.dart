@@ -38,15 +38,15 @@ import 'package:angular_components/material_chips/material_chip.dart';
 import 'package:angular_components/material_chips/material_chips.dart';
 import 'package:angular_components/material_datepicker/material_datepicker.dart';
 
-import 'package:auge_server/model/initiative/stage.dart';
-import 'package:auge_server/model/initiative/work_item.dart';
+import 'package:auge_server/model/work/work_stage.dart';
+import 'package:auge_server/model/work/work_item.dart';
 import 'package:auge_server/model/general/user.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
 import 'package:auge_server/shared/message/model_messages.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
-import 'package:auge_web/src/initiative/initiative_service.dart';
+import 'package:auge_web/src/work/work_service.dart';
 import 'package:auge_web/src/work_item/work_item_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
 
@@ -91,19 +91,19 @@ class WorkItemDetailComponent with CanReuse implements OnInit, OnActivate, OnDea
   bool modalVisible = false;
 
   final UserService _userService;
-  final InitiativeService _initiativeService;
+  final WorkService _workService;
   final WorkItemService _workItemService;
   final Router _router;
   //final Location _location;
   /*
   @Input()
-  Initiative initiative;
+  Work work;
 
   @Input()
   String selectedWorkItemId;
 */
 
-  String initiativeId;
+  String workId;
 
   WorkItem workItem;
 
@@ -130,7 +130,7 @@ class WorkItemDetailComponent with CanReuse implements OnInit, OnActivate, OnDea
 
   String previousPath;
 
-  WorkItemDetailComponent(this._userService, this._initiativeService, this._workItemService, this._router /*, this._location*/)  {
+  WorkItemDetailComponent(this._userService, this._workService, this._workItemService, this._router /*, this._location*/)  {
 
     initializeDateFormatting(Intl.defaultLocale , null);
     memberSingleSelectModel = SelectionModel.single();
@@ -150,7 +150,7 @@ class WorkItemDetailComponent with CanReuse implements OnInit, OnActivate, OnDea
   static final String descriptionLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.descriptionField}');
   static final String dueDateLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.dueDateField}');
   static final String completedLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.completedField}');
-  static final String stageLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.stageField}');
+  static final String stageLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.workStageField}');
   static final String assignedToLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.assignedToField}');
   static final String checkItemLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.checkItemsField}');
 
@@ -170,8 +170,8 @@ class WorkItemDetailComponent with CanReuse implements OnInit, OnActivate, OnDea
 
     previousPath = previous.path;
 
-    if (current.parameters.containsKey(AppRoutesParam.initiativeIdParameter)) {
-      initiativeId = current.parameters[AppRoutesParam.initiativeIdParameter];
+    if (current.parameters.containsKey(AppRoutesParam.workIdParameter)) {
+      workId = current.parameters[AppRoutesParam.workIdParameter];
     }
 
     String workItemId;
@@ -204,26 +204,26 @@ class WorkItemDetailComponent with CanReuse implements OnInit, OnActivate, OnDea
         }
       });
 
-    List<Stage> stages;
-    stages = await _initiativeService.getStages(initiativeId);
+    List<WorkStage> workStages;
+    workStages = await _workService.getWorkStages(workId);
 
 
-    if (stages != null && stages.isNotEmpty) {
-      stageOptions = new SelectionOptions.fromList( stages );
+    if (workStages != null && workStages.isNotEmpty) {
+      stageOptions = new SelectionOptions.fromList( workStages );
 
       stageSingleSelectModel =
       new SelectionModel.single()
         ..selectionChanges.listen((es) {
           if (es.isNotEmpty && es.first.added != null &&
               es.first.added.length != 0 && es.first.added.first != null) {
-            workItem.stage = es.first.added.first;
+            workItem.workStage = es.first.added.first;
           }
         });
 
-      if (workItem.stage == null) {
-        workItem.stage = stages.first;
+      if (workItem.workStage == null) {
+        workItem.workStage = workStages.first;
       }
-      stageSingleSelectModel.select(workItem.stage);
+      stageSingleSelectModel.select(workItem.workStage);
     }
   }
 
@@ -238,7 +238,7 @@ class WorkItemDetailComponent with CanReuse implements OnInit, OnActivate, OnDea
 
   void saveWorkItem() async {
     try {
-      workItem.id = await _workItemService.saveWorkItem(initiativeId, workItem);
+      workItem.id = await _workItemService.saveWorkItem(workId, workItem);
       closeDetail(workItem.id);
     } catch (e) {
       dialogError = e.toString();

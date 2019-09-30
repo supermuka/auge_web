@@ -4,16 +4,16 @@
                              [expanded]="true"
                              [showSaveCancel]="false">
         <div name>
-            <span><strong>{{initiativesLabel}}</strong></span>
+            <span><strong>{{worksLabel}}</strong></span>
         </div>
         <div action>
-            <material-button icon (trigger)="goToInitiatives()">
+            <material-button icon (trigger)="goToWorks()">
                 <material-icon icon="launch"></material-icon>
             </material-button>
         </div>
         <material-expansionpanel-set>
-            <div class="initiatives-vertical-size" *deferredContent>
-                <div *ngFor="let iInitiative of initiatives;let i = index">
+            <div class="works-vertical-size" *deferredContent>
+                <div *ngFor="let iInitiative of works;let i = index">
                     <material-expansionpanel disabled
                                              [expanded]="false"
                                              [hideExpandedHeader]="false"
@@ -25,7 +25,7 @@
                             <div class="w3-right avatar" [style.background-image]="'url(' +  userUrlImage(iInitiative?.leader?.userProfile?.image) + ')'" [materialTooltip]="leaderLabel + ' ' + iInitiative?.leader?.name"></div>
                         </div>
                         <div value>
-                            <auge-initiative-summary [initiative]="iInitiative"></auge-initiative-summary>
+                            <auge-work-summary [work]="iInitiative"></auge-work-summary>
                         </div>
                     </material-expansionpanel>
                 </div>

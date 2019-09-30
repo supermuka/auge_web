@@ -28,7 +28,7 @@
                         <span materialTooltip="{{dueDateLabel}}" [style.color]="dueDateColor(iWorkItem)">{{iWorkItem.dueDate | date}}</span>
                     </span>
                     <span class="w3-col l2">
-                        <span materialTooltip="{{stageLabel}}" [style.color]="'hsl(' + iWorkItem.stage.state.colorHue + ', ' + iWorkItem.stage.state.colorSaturation + '%, ' + iWorkItem.stage.state.colorLightness + '%)'">{{iWorkItem.stage?.name}}</span>
+                        <span materialTooltip="{{stageLabel}}" [style.color]="'hsl(' + iWorkItem.workStage.state.colorHue + ', ' + iWorkItem.workStage.state.colorSaturation + '%, ' + iWorkItem.workStage.state.colorLightness + '%)'">{{iWorkItem.workStage?.name}}</span>
                     </span>
                 </div>
                 <div class="w3-row w3-col l12">

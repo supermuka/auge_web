@@ -1,7 +1,7 @@
 <modal [visible]="modalVisible">
     <material-dialog headered class="dialog-custom" [error]="dialogError">
         <div header>
-            <h3>{{initiativeStagesLabel}}</h3>
+            <h3>{{workStagesLabel}}</h3>
         </div>
         <material-expansionpanel disabled
                                  [alwaysHideExpandIcon]="true"
@@ -11,46 +11,46 @@
                 <span><strong>{{stageLabel}}</strong></span>
             </div>
             <div action>
-                <material-button icon (trigger)="selectStage(null)">
+                <material-button icon (trigger)="selectWorkStage(null)">
                     <material-icon icon="add"></material-icon>
                 </material-button>
             </div>
-            <div *ngFor="let iStage of stages;let i = index">
-                <div class="group" *ngIf="i == 0 || stages[i-1]?.state?.id != stages[i]?.state?.id">
-                    <label><span *ngIf="iStage?.state?.colorHue != null" [style.background-color]="'hsl(' + iStage?.state?.colorHue + ', ' + iStage?.state?.colorSaturation + '%,' + iStage?.state?.colorLightness + '%)'">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;{{iStage?.state?.name}}</label>&nbsp;
+            <div *ngFor="let iWorkStage of workStages;let i = index">
+                <div class="group" *ngIf="i == 0 || workStages[i-1]?.state?.id != workStages[i]?.state?.id">
+                    <label><span *ngIf="iWorkStage?.state?.colorHue != null" [style.background-color]="'hsl(' + iWorkStage?.state?.colorHue + ', ' + iWorkStage?.state?.colorSaturation + '%,' + iWorkStage?.state?.colorLightness + '%)'">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;{{iWorkStage?.state?.name}}</label>&nbsp;
                 </div>
                 <material-expansionpanel disabled
                                          flat
                                          [alwaysHideExpandIcon]="true"
                                          [hideExpandedHeader]="true"
                                          [showSaveCancel]="true"
-                                         [expanded]="iStage != null && iStage == selectedStage"
-                                         (save)="saveStage(iStage, $event)"
-                                         (cancel)="cancelStage(iStage, $event)"
+                                         [expanded]="iWorkStage != null && iWorkStage == selectedWorkStage"
+                                         (save)="saveWorkStage(iWorkStage, $event)"
+                                         (cancel)="cancelWorkStage(iWorkStage, $event)"
                                          expandIcon="edit">
                     <div name>
-                        <span>{{iStage.name}}</span>
+                        <span>{{iWorkStage.name}}</span>
                     </div>
                     <div value>
-                        <span class="w3-right">{{iStage.index}}</span>
+                        <span class="w3-right">{{iWorkStage.index}}</span>
                     </div>
                     <div action>
-                        <material-button icon [disabled]="disableUp(iStage)" (trigger)="moveUpStage(iStage)">
+                        <material-button icon [disabled]="disableUpWorkStage(iWorkStage)" (trigger)="moveUpWorkStage(iWorkStage)">
                             <material-icon icon="arrow_drop_up"></material-icon>
                         </material-button>
-                        <material-button icon [disabled]="disableDown(iStage)" (trigger)="moveDownStage(iStage)">
+                        <material-button icon [disabled]="disableDownWorkStage(iWorkStage)" (trigger)="moveDownWorkStage(iWorkStage)">
                             <material-icon icon="arrow_drop_down"></material-icon>
                         </material-button>
-                        <material-button icon (trigger)="selectStage(iStage)">
+                        <material-button icon (trigger)="selectWorkStage(iWorkStage)">
                             <material-icon icon="edit"></material-icon>
                         </material-button>
-                        <material-button icon (trigger)="delete(iStage)">
+                        <material-button icon (trigger)="deleteWorkStage(iWorkStage)">
                             <material-icon icon="delete"></material-icon>
                         </material-button>
                     </div>
                     <div class="w3-row-padding">
                         <div class="w3-col l8">
-                            <material-input autoFocus [(ngModel)]="iStage.name" floatingLabel [label]="nameLabel"></material-input>
+                            <material-input autoFocus [(ngModel)]="iWorkStage.name" floatingLabel [label]="nameLabel"></material-input>
                         </div>
                         <div class="w3-col l4">
                             <div class="input-container w3-right">

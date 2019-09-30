@@ -30,9 +30,9 @@ import 'package:auge_web/src/group/group_service.dart';
 @Component(
   selector: 'auge-initiatives-filter',
   providers: const [overlayBindings, ObjectiveService, UserService, GroupService],
-  templateUrl: 'initiatives_filter_component.html',
+  templateUrl: 'works_filter_component.html',
   styleUrls: const [
-    'initiatives_filter_component.css'
+    'works_filter_component.css'
   ],
   directives: const [
     coreDirectives,
@@ -44,14 +44,14 @@ import 'package:auge_web/src/group/group_service.dart';
     MaterialButtonComponent,
     MaterialAutoSuggestInputComponent,
   ])
-class InitiativesFilterComponent implements OnInit {
+class WorksFilterComponent implements OnInit {
 
   /// When it exists, the error/exception message presented into dialog view.
   String dialogError;
 
   /// If empty, no filter. Otherwide, filter initiatives with [Objective] informed.
   @Input()
-  InitiativesFilterParam initiativesFilterParam;
+  WorksFilterParam initiativesFilterParam;
 
   Objective objective;
 
@@ -70,13 +70,13 @@ class InitiativesFilterComponent implements OnInit {
 
   SelectionModel objectiveSingleSelectModel;
 
-  InitiativesFilterComponent(this._objectiveService);
+  WorksFilterComponent(this._objectiveService);
 
   // Define messages and labels
 
-  static final String filterInitiativesLabel =  InitiativeMsg.label('Filter Initiatives');
-  static final String noMatchLabel =  InitiativeMsg.label('No Match');
-  static final String objectiveLabel =  InitiativeMsg.label('Objective');
+  static final String filterWorksLabel =  WorkMsg.label('Filter Works');
+  static final String noMatchLabel =  WorkMsg.label('No Match');
+  static final String objectiveLabel =  WorkMsg.label('Objective');
   static final String clearButtonLabel = CommonMsg.buttonLabel('Clear');
   static final String applyButtonLabel = CommonMsg.buttonLabel('Apply');
 
@@ -131,6 +131,6 @@ class InitiativesFilterComponent implements OnInit {
   ItemRenderer get objectiveItemRenderer => (dynamic objective) => objective.name;
 }
 
-class InitiativesFilterParam {
+class WorksFilterParam {
   Objective objective;
 }

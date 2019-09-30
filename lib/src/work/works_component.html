@@ -1,16 +1,16 @@
 <div class="container-list">
     <!-- filter called by search component -->
     <div *ngIf="visibleFilter == true">
-        <auge-initiatives-filter [initiativesFilterParam]="initiativesFilterParam" (close)="visibleFilter = false"></auge-initiatives-filter>
+        <auge-works-filter [worksFilterParam]="worksFilterParam" (close)="visibleFilter = false"></auge-works-filter>
     </div>
     <div class="w3-row-padding">
         <div class="w3-col">
             <label>{{sortedByLabel}}</label>
             <material-dropdown-select class="w3-margin-left"
-                                      [disabled]="initiatives.isEmpty"
+                                      [disabled]="works.isEmpty"
                                       buttonText="{{sortedBy}}"
                                       [(selection)]="sortedBy"
-                                      [options]="initiativesSortedByOptions">
+                                      [options]="worksSortedByOptions">
             </material-dropdown-select>
             <material-toggle class="w3-right" label="Timeline" (checkedChange)="timelineVisible = $event"></material-toggle>
         </div>
@@ -18,47 +18,46 @@
     <div class="w3-row-padding">
         <div class="w3-col" style="width:{{mainColWidth}}">
             <material-expansionpanel-set>
-                <div *ngFor="let iInitiative of initiatives;let i = index">
+                <div *ngFor="let iWork of works;let i = index">
                     <material-expansionpanel
                             [alwaysHideExpandIcon]="true"
                             [hideExpandedHeader]="false"
                             [showSaveCancel]="false"
-                            [expanded]="iInitiative.id == expandedInitiativeId"
-                            (expandedChange)="setExpandedInitiativeId(iInitiative.id, $event)">
+                            [expanded]="iWork.id == expandedWorkId"
+                            (expandedChange)="setExpandedWorkId(iWork.id, $event)">
                         <div name class="custom-expansionpanel-panel-specific-name-width">
                             <span class="truncate-ellipsed-parent">
-                                <span class="truncate-ellipsed"><strong>{{iInitiative.name}}</strong></span>
-                                <div class="truncate-ellipsed">{{iInitiative.description}}</div>
+                                <span class="truncate-ellipsed"><strong>{{iWork.name}}</strong></span>
+                                <div class="truncate-ellipsed">{{iWork.description}}</div>
                             </span>
                         </div>
                         <div class="w3-row" value>
                             <div class="w3-col m9">
                                 <div class="custom-grid-vertical">
-                                     <auge-initiative-summary [initiative]="iInitiative"></auge-initiative-summary>
+                                     <auge-work-summary [work]="iWork"></auge-work-summary>
                                 </div>
                             </div>
                             <div class="w3-col m3">
                                 <div class="custom-grid w3-right">
                                     <div class="truncate-parent">
-                                        <div *ngIf="iInitiative.group != null" class="avatar avatar-border margin-bottom" [style.background-color]="colorFromUuid(iInitiative.group?.id)" [materialTooltip]="composeTooltip(groupLabel, iInitiative.group?.name)">
-                                            <span class="text-group-letter">{{firstLetter(iInitiative.group?.name)}}</span>
+                                        <div *ngIf="iWork.group != null" class="avatar avatar-border margin-bottom" [style.background-color]="colorFromUuid(iWork.group?.id)" [materialTooltip]="composeTooltip(groupLabel, iWork.group?.name)">
+                                            <span class="text-group-letter">{{firstLetter(iWork.group?.name)}}</span>
                                         </div>
-                                        <div *ngIf="iInitiative.group == null" class="avatar margin-bottom"></div>
-                                        <div *ngIf="iInitiative.leader != null" class="avatar margin-top" [style.background-image]="'url(' +  userUrlImage(iInitiative.leader?.userProfile.image) + ')'" [materialTooltip]="composeTooltip(leaderLabel, iInitiative.leader?.name)"></div>
-                                        <div *ngIf="iInitiative.leader == null" class="avatar margin-top"></div>
+                                        <div *ngIf="iWork.group == null" class="avatar margin-bottom"></div>
+                                        <div *ngIf="iWork.leader != null" class="avatar margin-top" [style.background-image]="'url(' +  userUrlImage(iWork.leader?.userProfile.image) + ')'" [materialTooltip]="composeTooltip(leaderLabel, iWork.leader?.name)"></div>
+                                        <div *ngIf="iWork.leader == null" class="avatar margin-top"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div action>
-                            <!-- material-toggle [disabled]="expandedControl[iInitiative] != null && !expandedControl[iInitiative]" [(checked)]="wideControl[iInitiative]"></material-toggle -->
-                            <material-menu [menu]="menuModel" (click)="selectInitiative(iInitiative)">
+                            <material-menu [menu]="menuModel" (click)="selectWork(iWork)">
                             </material-menu>
                         </div>
                         <hr class="hr-margin">
-                        <span *ngIf="iInitiative.objective != null"><strong>{{objectiveLabel}}:</strong> {{iInitiative.objective?.name}}</span>
+                        <span *ngIf="iWork.objective != null"><strong>{{objectiveLabel}}:</strong> {{iWork.objective?.name}}</span>
                         <div class="w3-row-padding" >
-                            <auge-work-items [initiative]="iInitiative" [selectionView]="workItemSelectionView"></auge-work-items>
+                            <auge-work-items [work]="iWork" [selectionView]="workItemSelectionView"></auge-work-items>
                         </div>
                     </material-expansionpanel>
                 </div>
@@ -68,7 +67,7 @@
             <auge-history-timeline></auge-history-timeline>
         </div>
     </div>
-    <material-fab class="material-fab-add" raised (trigger)="selectInitiative(null);goToDetail()">
+    <material-fab class="material-fab-add" raised (trigger)="selectWork(null);goToDetail()">
         <material-icon icon="add"></material-icon>
     </material-fab>
 

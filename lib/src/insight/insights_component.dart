@@ -9,18 +9,18 @@ import 'package:angular_components/scorecard/scoreboard.dart';
 import 'package:angular_components/scorecard/scorecard.dart';
 
 import 'package:auge_server/model/objective/objective.dart';
-import 'package:auge_server/model/initiative/initiative.dart';
+import 'package:auge_server/model/work/work.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
-import 'package:auge_web/src/initiative/initiative_service.dart';
+import 'package:auge_web/src/work/work_service.dart';
 import 'package:auge_web/services/app_routes.dart';
 
 @Component(
   selector: 'auge-insights',
-  providers: const [ObjectiveService, InitiativeService],
+  providers: const [ObjectiveService, WorkService],
     styleUrls: const ['insights_component.css'],
     templateUrl: 'insights_component.html',
   directives: const [
@@ -36,18 +36,18 @@ class InsightsComponent with CanReuse implements OnActivate  {
   AuthService _authService;
   AppLayoutService _appLayoutService;
   ObjectiveService _objectiveService;
-  InitiativeService _initiativeService;
+  WorkService _workService;
   final Router _router;
 
   List<Objective> objectives = new List();
-  List<Initiative> initiatives = new List();
+  List<Work> works = new List();
 
-  InsightsComponent(this._authService, this._appLayoutService, this._objectiveService, this._initiativeService, this._router);
+  InsightsComponent(this._authService, this._appLayoutService, this._objectiveService, this._workService, this._router);
 
   // Define messages and labels
   static final String objectivesOverallLabel = InsightMsg.label('Objectives Overall');
   static final String objectivesMeasuresLabel = InsightMsg.label('Objectives and Measures');
-  static final String initiativesWorkItemsLabel = InsightMsg.label('Initiatives and Work Items');
+  static final String worksWorkItemsLabel = InsightMsg.label('Works and Work Items');
 
   static final String objectivesLabel =  InsightMsg.label('Objectives');
   static final String objectivesDescriptionLabel =  InsightMsg.label('Number total of objectives');
@@ -67,14 +67,14 @@ class InsightsComponent with CanReuse implements OnActivate  {
   static final String measuresRequiringAttentionLabel =  InsightMsg.label('Measures Requiring Attention');
   static final String measuresRequiringAttentionDescriptionLabel =  InsightMsg.label('Measures below 30% progress');
 
-  static final String initiativesLabel =  InsightMsg.label('Initiatives');
-  static final String initiativesDescriptionLabel =  InsightMsg.label('Number total of initiatives');
+  static final String worksLabel =  InsightMsg.label('Works');
+  static final String worksDescriptionLabel =  InsightMsg.label('Number total of works');
 
-  static final String initiativesCompletedLabel =  InsightMsg.label('Initiatives Completed');
-  static final String initiativesCompletedDescriptionLabel =  InsightMsg.label('Initiatives with 100% work items completed');
+  static final String worksCompletedLabel =  InsightMsg.label('Works Completed');
+  static final String worksCompletedDescriptionLabel =  InsightMsg.label('Works with 100% work items completed');
 
-  static final String initiativesRequiringAttentionLabel =  InsightMsg.label('Initiatives Requiring Attention');
-  static final String initiativesRequiringAttentionDescriptionLabel =  InsightMsg.label('Initiatives with over due work items');
+  static final String worksRequiringAttentionLabel =  InsightMsg.label('Works Requiring Attention');
+  static final String worksRequiringAttentionDescriptionLabel =  InsightMsg.label('Works with over due work items');
 
   static final String workItemsLabel =  InsightMsg.label('Work Items');
   static final String workItemsDescriptionLabel =  InsightMsg.label('Number total of work items');
@@ -100,7 +100,7 @@ class InsightsComponent with CanReuse implements OnActivate  {
       if (_authService.authorizedOrganization != null) {
         objectives = await _objectiveService.getObjectives(
             _authService.authorizedOrganization.id, withMeasures: true);
-        initiatives = await _initiativeService.getInitiatives(
+        works = await _workService.getWorks(
             _authService.authorizedOrganization.id, withWorkItems: true);
       }
     } catch (e) {
@@ -180,46 +180,46 @@ class InsightsComponent with CanReuse implements OnActivate  {
     return _requiringAttentionMeasuresNumber?.toString() ?? '0';
   }
 
-  /// Return a total number of initiatives
-  String get initiativesNumber {
-    return initiatives.length?.toString() ?? '0';
+  /// Return a total number of works
+  String get worksNumber {
+    return works.length?.toString() ?? '0';
   }
 
-  /// Return a total number of initiatives completed = all work items completed
-  String get completedInitiativesNumber {
+  /// Return a total number of works completed = all work items completed
+  String get completedWorksNumber {
 
-    int _completedInitiativesNumber = 0;
+    int _completedWorksNumber = 0;
 
-    for (int i=0;i<initiatives.length;i++) {
-      int _completedInitiaveWorkItemsNumber = 0;
-      for (int ii=0;ii<initiatives[i].workItems.length;ii++) {
-        if (initiatives[i].workItems[ii].completed == 100) {
-          _completedInitiaveWorkItemsNumber++;
+    for (int i=0;i<works.length;i++) {
+      int _completedWorkWorkItemsNumber = 0;
+      for (int ii=0;ii<works[i].workItems.length;ii++) {
+        if (works[i].workItems[ii].completed == 100) {
+          _completedWorkWorkItemsNumber++;
         }
       }
-      if (initiatives[i].workItems.length != 0 && initiatives[i].workItems.length == _completedInitiaveWorkItemsNumber) {
-        _completedInitiativesNumber++;
+      if (works[i].workItems.length != 0 && works[i].workItems.length == _completedWorkWorkItemsNumber) {
+        _completedWorksNumber++;
       }
     }
-    return _completedInitiativesNumber?.toString() ?? '0';
+    return _completedWorksNumber?.toString() ?? '0';
   }
 
-  /// Return a total number of initiatives with over due work items
-  String get overDueInitiativesNumber {
-    int _overDueInitiativesNumber = 0;
-    for (int i=0;i<initiatives.length;i++) {
-      if (initiatives[i].workItemsOverDueCount > 0) {
-        _overDueInitiativesNumber++;
+  /// Return a total number of works with over due work items
+  String get overDueWorksNumber {
+    int _overDueWorksNumber = 0;
+    for (int i=0;i<works.length;i++) {
+      if (works[i].workItemsOverDueCount > 0) {
+        _overDueWorksNumber++;
       }
     }
-    return _overDueInitiativesNumber?.toString() ?? '0';
+    return _overDueWorksNumber?.toString() ?? '0';
   }
 
   /// Return a total number of measures
   String get workItemsNumber {
     int _workItemsNumber = 0;
-    for (int i=0;i<initiatives.length;i++) {
-      _workItemsNumber = _workItemsNumber + initiatives[i].workItems.length;
+    for (int i=0;i<works.length;i++) {
+      _workItemsNumber = _workItemsNumber + works[i].workItems.length;
     }
     return _workItemsNumber?.toString() ?? '0';
   }
@@ -227,9 +227,9 @@ class InsightsComponent with CanReuse implements OnActivate  {
   /// Return a total number of completed work items with progress equal 100%
   String get completedWorkItemsNumber {
     int _completedWorkItemsNumber = 0;
-    for (int i=0;i<initiatives.length;i++) {
-      for (int ii=0;ii<initiatives[i].workItems.length;ii++) {
-        if (initiatives[i].workItems[ii].completed == 100) {
+    for (int i=0;i<works.length;i++) {
+      for (int ii=0;ii<works[i].workItems.length;ii++) {
+        if (works[i].workItems[ii].completed == 100) {
           _completedWorkItemsNumber++;
         }
       }
@@ -240,9 +240,9 @@ class InsightsComponent with CanReuse implements OnActivate  {
   /// Return a total number of over due work items
   String get overDueWorkItemsNumber {
     int _overDueWorkItemsNumber = 0;
-    for (int i=0;i<initiatives.length;i++) {
-      for (int ii=0;ii<initiatives[i].workItems.length;ii++) {
-        if (initiatives[i].workItems[ii].isOverdue) {
+    for (int i=0;i<works.length;i++) {
+      for (int ii=0;ii<works[i].workItems.length;ii++) {
+        if (works[i].workItems[ii].isOverdue) {
           _overDueWorkItemsNumber++;
         }
       }

@@ -26,7 +26,7 @@ import 'package:auge_server/shared/message/model_messages.dart';
 
 import 'package:auge_web/src/history_timeline/history_timeline_component.dart';
 import 'package:auge_web/src/measure/measures_component.dart';
-import 'package:auge_web/src/initiative/initiatives_summary_component.dart';
+import 'package:auge_web/src/work/works_summary_component.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
@@ -57,7 +57,7 @@ import 'package:auge_web/src/measure/measure_progress_component.template.dart' a
       MaterialTooltipDirective,
       MaterialMenuComponent,
       HistoryTimelineComponent,
-      InitiativesSummaryComponent,
+      WorksSummaryComponent,
       MeasuresComponent,
     ],
     pipes: const [commonPipes])

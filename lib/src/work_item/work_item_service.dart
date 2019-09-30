@@ -2,21 +2,21 @@ import 'package:angular/core.dart';
 
 import 'package:auge_web/src/auth/auth_service.dart';
 
-import 'package:auge_server/model/initiative/work_item.dart';
+import 'package:auge_server/model/work/work_item.dart';
 
 import 'package:auge_web/services/auge_api_service.dart';
 
 import 'package:auge_server/src/protos/generated/google/protobuf/wrappers.pb.dart' as wrappers_pb;
-import 'package:auge_server/src/protos/generated/initiative/work_item.pbgrpc.dart' as work_item_pbgrpc;
+import 'package:auge_server/src/protos/generated/work/work_work_item.pbgrpc.dart' as work_work_item_pbgrpc;
 
 @Injectable()
 class WorkItemService {
   final AuthService _authService;
   final AugeApiService _augeApiService;
-  work_item_pbgrpc.WorkItemServiceClient _workItemServiceClient;
+  work_work_item_pbgrpc.WorkItemServiceClient _workItemServiceClient;
 
   WorkItemService(this._authService, this._augeApiService) {
-    _workItemServiceClient = work_item_pbgrpc.WorkItemServiceClient(_augeApiService.channel);
+    _workItemServiceClient = work_work_item_pbgrpc.WorkItemServiceClient(_augeApiService.channel);
 
   }
 
@@ -25,7 +25,7 @@ class WorkItemService {
   /// Delete a [WorkItem]
   void deleteWorkItem(WorkItem workItem) async {
 
-    work_item_pbgrpc.WorkItemDeleteRequest workItemDeleteRequest = work_item_pbgrpc.WorkItemDeleteRequest()
+    work_work_item_pbgrpc.WorkItemDeleteRequest workItemDeleteRequest = work_work_item_pbgrpc.WorkItemDeleteRequest()
       ..workItemId = workItem.id
       ..workItemVersion = workItem.version
       ..authOrganizationId = _authService.authorizedOrganization.id
@@ -40,11 +40,11 @@ class WorkItemService {
   }
 
   /// Save (create or update) a [WorkItem]
-  Future<String> saveWorkItem(String initiativeId, WorkItem workItem) async {
+  Future<String> saveWorkItem(String workId, WorkItem workItem) async {
 
-    work_item_pbgrpc.WorkItemRequest workItemRequest = work_item_pbgrpc.WorkItemRequest()
+    work_work_item_pbgrpc.WorkItemRequest workItemRequest = work_work_item_pbgrpc.WorkItemRequest()
       ..workItem = workItem.writeToProtoBuf()
-      ..initiativeId = initiativeId
+      ..workId = workId
       ..authOrganizationId = _authService.authorizedOrganization.id
       ..authUserId = _authService.authenticatedUser.id;
 
@@ -68,7 +68,7 @@ class WorkItemService {
   Future<WorkItem> getWorkItem(String id) async {
     // return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
     return WorkItem()..readFromProtoBuf((await _workItemServiceClient.getWorkItem(
-        work_item_pbgrpc.WorkItemGetRequest()..id = id)));
+        work_work_item_pbgrpc.WorkItemGetRequest()..id = id)));
   }
 
 }

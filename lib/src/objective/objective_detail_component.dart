@@ -142,7 +142,7 @@ class ObjectiveDetailComponent implements OnInit, OnActivate, OnDeactivate {
     if (id != null) {
       // Clone objective
      // objective = selectedObjective.clone();
-       objective = await _objectiveService.getObjective(id, withProfile: true);
+       objective = await _objectiveService.getObjective(id, withUserProfile: true);
       //objective = selectedObjective.clone();
 
     } else {

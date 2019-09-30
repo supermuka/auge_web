@@ -41,7 +41,7 @@ import 'package:auge_web/src/app_layout/app_layout_component.template.dart' as a
 import 'package:auge_web/src/insight/insights_component.template.dart' as insights_component;
 import 'package:auge_web/src/user/user_detail_component.template.dart' as user_detail_component;
 import 'package:auge_web/src/user/users_component.template.dart' as users_component;
-import 'package:auge_web/src/initiative/initiatives_component.template.dart' as initiatives_component;
+import 'package:auge_web/src/work/works_component.template.dart' as works_component;
 import 'package:auge_web/src/map/map_component.template.dart' as map_component;
 import 'package:auge_web/src/gantt/gantt_component.template.dart' as gantt_component;
 import 'package:auge_web/src/objective/objectives_component.template.dart' as objectives_component;
@@ -79,7 +79,7 @@ class AppLayoutComponent with CanReuse implements OnActivate {
   String get mapRouteUrl => AppRoutes.mapRoute.toUrl();
   String get ganttRouteUrl => AppRoutes.ganttRoute.toUrl();
   String get objectivesRouteUrl => AppRoutes.objectivesRoute.toUrl();
-  String get initiativesRouteUrl => AppRoutes.initiativesRoute.toUrl();
+  String get worksRouteUrl => AppRoutes.worksRoute.toUrl();
   String get usersRouteUrl => AppRoutes.usersRoute.toUrl();
   String get groupsRouteUrl => AppRoutes.groupsRoute.toUrl();
   String get organizationRouteUrl =>  AppRoutes.organizationRoute.toUrl(parameters: { AppRoutesParam.organizationIdParameter: this._authService.authorizedOrganization.id });
@@ -108,12 +108,12 @@ class AppLayoutComponent with CanReuse implements OnActivate {
       component: users_component.UsersComponentNgFactory,
     ),
     new RouteDefinition(
-      routePath: AppRoutes.initiativesRoute,
-      component: initiatives_component.InitiativesComponentNgFactory,
+      routePath: AppRoutes.worksRoute,
+      component: works_component.WorksComponentNgFactory,
     ),
     new RouteDefinition(
-      routePath: AppRoutes.initiativesByObjectiveRoute,
-      component: initiatives_component.InitiativesComponentNgFactory,
+      routePath: AppRoutes.worksByObjectiveRoute,
+      component: works_component.WorksComponentNgFactory,
     ),
     new RouteDefinition(
       routePath: AppRoutes.mapRoute,
@@ -170,7 +170,7 @@ class AppLayoutComponent with CanReuse implements OnActivate {
   static final String objectivesMapLabel = AppLayoutMsg.label('Objectives Map');
   static final String objectivesGanttLabel = AppLayoutMsg.label('Objectives Gantt');
   static final String objectivesLabel = AppLayoutMsg.label('Objectives');
-  static final String initiativesLabel = AppLayoutMsg.label('Initiatives');
+  static final String worksLabel = AppLayoutMsg.label('Works');
   static final String organizationLabel = AppLayoutMsg.label('Organization');
   static final String configurationLabel = AppLayoutMsg.label('Configuration');
   static final String usersLabel = AppLayoutMsg.label('Users');

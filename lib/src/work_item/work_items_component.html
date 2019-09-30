@@ -18,10 +18,10 @@
             </material-button>
         </div>
         <div *ngIf="selectionView.selected == 'list'">
-            <auge-work-items-list [initiative]="initiative" ></auge-work-items-list>
+            <auge-work-items-list [work]="work" ></auge-work-items-list>
         </div>
         <div *ngIf="selectionView.selected == 'kanban'">
-            <auge-work-items-kanban [initiative]="initiative"></auge-work-items-kanban>
+            <auge-work-items-kanban [work]="work"></auge-work-items-kanban>
         </div>
     </material-expansionpanel>
 </div>

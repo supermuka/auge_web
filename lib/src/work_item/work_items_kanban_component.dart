@@ -23,9 +23,9 @@ import 'package:angular_components/material_menu/material_menu.dart';
 
 import 'package:auge_server/model/general/authorization.dart';
 import 'package:auge_server/model/general/user.dart';
-import 'package:auge_server/model/initiative/initiative.dart';
-import 'package:auge_server/model/initiative/work_item.dart';
-import 'package:auge_server/model/initiative/stage.dart';
+import 'package:auge_server/model/work/work.dart';
+import 'package:auge_server/model/work/work_item.dart';
+import 'package:auge_server/model/work/work_stage.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
 import 'package:auge_server/shared/message/model_messages.dart';
@@ -68,7 +68,7 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit {
   final Router _router;
 
   @Input()
-  Initiative initiative;
+  Work work;
 
   WorkItem selectedWorkItem;
   List<KanbanColumn> kanbanColumns;
@@ -97,13 +97,13 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit {
     kanbanColumns = new List();
 
     // Define os estados com base no que está na iniciativa
-    initiative.stages.forEach((es) { kanbanColumns.add(new KanbanColumn()..stage = es);
+    work.workStages.forEach((es) { kanbanColumns.add(new KanbanColumn()..workStage = es);
     } );
 
     // Distribui os itens de trabalho para cada coluna (estágio)
-    initiative.workItems.forEach((it) {
-      if (it.stage != null)
-        kanbanColumns.singleWhere((ik) => ik.stage.id == it.stage.id).columnWorkItems.add(it);
+    work.workItems.forEach((it) {
+      if (it.workStage != null)
+        kanbanColumns.singleWhere((ik) => ik.workStage.id == it.workStage.id).columnWorkItems.add(it);
     });
   }
 
@@ -121,9 +121,9 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit {
     ev.preventDefault();
 
     kanbanColumnDnD.columnWorkItems.remove(workItemDnD);
-    workItemDnD.stage = kanbanColumnDrop.stage;
+    workItemDnD.workStage = kanbanColumnDrop.workStage;
 
-    _workItemService.saveWorkItem(initiative.id, workItemDnD);
+    _workItemService.saveWorkItem(work.id, workItemDnD);
 
     kanbanColumnDrop.columnWorkItems.add(workItemDnD);
 
@@ -134,7 +134,7 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit {
   void delete() async {
     try {
       await _workItemService.deleteWorkItem(selectedWorkItem);
-      initiative.workItems.remove(selectedWorkItem);
+      work.workItems.remove(selectedWorkItem);
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;
@@ -154,14 +154,14 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit {
   void updateWorkItem(WorkItem workItem) async {
     try {
 
-      await _workItemService.saveWorkItem(initiative.id, workItem);
+      await _workItemService.saveWorkItem(work.id, workItem);
 
       //TODO maybe this needs to be updated with parent onActivate.
       workItem = await _workItemService.getWorkItem(workItem.id);
-      int i = initiative.workItems.indexWhere((it) => it.id == workItem.id);
+      int i = work.workItems.indexWhere((it) => it.id == workItem.id);
       if (i != -1) {
-        initiative.workItems[i] = workItem;
-        _historyTimelineService.refreshHistory(SystemModule.initiatives.index);
+        work.workItems[i] = workItem;
+        _historyTimelineService.refreshHistory(SystemModule.works.index);
       }
     } catch (e) {
       _appLayoutService.error = e.toString();
@@ -171,13 +171,13 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit {
 
   void goToDetail() {
       _router.navigate(AppRoutes.workItemEditRoute.toUrl(parameters: {
-        AppRoutesParam.initiativeIdParameter: initiative.id,
+        AppRoutesParam.workIdParameter: work.id,
         AppRoutesParam.workItemIdParameter: selectedWorkItem.id }));
   }
 }
 
 class KanbanColumn {
-  Stage stage;
+  WorkStage workStage;
   List<WorkItem> columnWorkItems;
 
   KanbanColumn() {

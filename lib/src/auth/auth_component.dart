@@ -85,7 +85,7 @@ class AuthComponent implements OnActivate  {
 
   /// Messages and labels
   static final String headerTitleLabel = CommonMsg.label('AUGE');
-  static final String headerSubtitleLabel = CommonMsg.label('Objectives and Initiatives');
+  static final String headerSubtitleLabel = CommonMsg.label('Objectives and Works');
   static final String loginButtonLabel = CommonMsg.buttonLabel('Login');
   static final String requiredValueMsg = CommonMsg.requiredValueMsg();
 

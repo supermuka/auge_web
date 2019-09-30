@@ -11,7 +11,7 @@ import 'package:auge_server/shared/message/messages.dart';
 
 import 'package:auge_server/src/protos/generated/google/protobuf/empty.pb.dart' as empty_pb;
 import 'package:auge_server/src/protos/generated/google/protobuf/wrappers.pb.dart' as wrappers_pb;
-import 'package:auge_server/src/protos/generated/objective/measure.pbgrpc.dart' as measure_pbgrpc;
+import 'package:auge_server/src/protos/generated/objective/objective_measure.pbgrpc.dart' as objective_measure_pbgrpc;
 
 import 'package:grpc/grpc_web.dart';
 
@@ -20,10 +20,10 @@ import 'package:grpc/grpc_web.dart';
 class MeasureService {
   final AuthService _authService;
   final AugeApiService _augeApiService;
-  measure_pbgrpc.MeasureServiceClient _measureServiceClient;
+  objective_measure_pbgrpc.MeasureServiceClient _measureServiceClient;
 
   MeasureService(this._authService, this._augeApiService) {
-     _measureServiceClient = measure_pbgrpc.MeasureServiceClient(_augeApiService.channel);
+     _measureServiceClient = objective_measure_pbgrpc.MeasureServiceClient(_augeApiService.channel);
   }
 
   /// Delete a [Measure]
@@ -31,7 +31,7 @@ class MeasureService {
   /// Return a list of [Measure] by [objectiveId]
   Future<List<Measure>> getMeasures(String objectiveId) async {
     return (await _measureServiceClient.getMeasures(
-        measure_pbgrpc.MeasureGetRequest()
+        objective_measure_pbgrpc.MeasureGetRequest()
           ..objectiveId = objectiveId)).measures.map((m) =>
     Measure()
     ..readFromProtoBuf(m)).toList();
@@ -42,8 +42,8 @@ class MeasureService {
     try {
       //--Measure measure = await _augeApiService.objectiveAugeApi.getMeasureById(id);
 
-      measure_pbgrpc.Measure measure = await _measureServiceClient.getMeasure(
-          measure_pbgrpc.MeasureGetRequest()
+      objective_measure_pbgrpc.Measure measure = await _measureServiceClient.getMeasure(
+          objective_measure_pbgrpc.MeasureGetRequest()
             ..id = id);
 
       return Measure()..readFromProtoBuf(measure);
@@ -65,9 +65,9 @@ class MeasureService {
   /// Return an [MeasureProgress] by [Measure.id]
   Future<List<MeasureProgress>> getMeasureProgresses(String measureId) async {
 
-    measure_pbgrpc
+    objective_measure_pbgrpc
         .MeasureProgressesResponse measureProgressesResponsePb = await _measureServiceClient
-        .getMeasureProgresses(measure_pbgrpc.MeasureProgressGetRequest()
+        .getMeasureProgresses(objective_measure_pbgrpc.MeasureProgressGetRequest()
       ..measureId = measureId);
 
     return measureProgressesResponsePb.measureProgresses.map((m) =>
@@ -77,10 +77,10 @@ class MeasureService {
 
   /// Return an [MeasureProgress] by id [MeasureProgress.id]
   Future<MeasureProgress> getMeasureProgressById(String measureProgressId) async {
-    measure_pbgrpc.MeasureProgress measureProgressPb;
+    objective_measure_pbgrpc.MeasureProgress measureProgressPb;
       try {
         measureProgressPb = await _measureServiceClient
-            .getMeasureProgress(measure_pbgrpc.MeasureProgressGetRequest()..id = measureProgressId);
+            .getMeasureProgress(objective_measure_pbgrpc.MeasureProgressGetRequest()..id = measureProgressId);
 
       } on GrpcError {
         /*--
@@ -100,7 +100,7 @@ class MeasureService {
   Future<List<MeasureUnit>> getMeasureUnits() async {
 
     // List<MeasureUnit> measureUnits = await _augeApiService.objectiveAugeApi.getMeasureUnits();
-    measure_pbgrpc.MeasureUnitsResponse measureUnitsResponsePb = await _measureServiceClient
+    objective_measure_pbgrpc.MeasureUnitsResponse measureUnitsResponsePb = await _measureServiceClient
         .getMeasureUnits(empty_pb.Empty());
 
     List<MeasureUnit> measureUnits =  measureUnitsResponsePb.measureUnits.map((m) =>
@@ -121,7 +121,7 @@ class MeasureService {
   void saveMeasure(String objectiveId, Measure measure) async {
     try {
 
-      measure_pbgrpc.MeasureRequest measureRequest = measure_pbgrpc.MeasureRequest()
+      objective_measure_pbgrpc.MeasureRequest measureRequest = objective_measure_pbgrpc.MeasureRequest()
         ..measure = measure.writeToProtoBuf()
         ..objectiveId = objectiveId
         ..authOrganizationId = _authService.authorizedOrganization.id
@@ -146,7 +146,7 @@ class MeasureService {
   /// Save (create) a [MeasureProgress]
   Future<String> saveMeasureProgress(String measureId, MeasureProgress measureProgress) async {
 
-    measure_pbgrpc.MeasureProgressRequest measureProgressRequest = measure_pbgrpc.MeasureProgressRequest()
+    objective_measure_pbgrpc.MeasureProgressRequest measureProgressRequest = objective_measure_pbgrpc.MeasureProgressRequest()
       ..measureProgress = measureProgress.writeToProtoBuf()
       ..measureId = measureId
       ..authOrganizationId = _authService.authorizedOrganization.id
@@ -176,7 +176,7 @@ class MeasureService {
   /// Save (update) a [MeasureProgress]
   void updateMeasureProgress(String measureId, MeasureProgress measureProgress) async {
 
-    measure_pbgrpc.MeasureProgressRequest measureProgressRequest = measure_pbgrpc.MeasureProgressRequest()
+    objective_measure_pbgrpc.MeasureProgressRequest measureProgressRequest = objective_measure_pbgrpc.MeasureProgressRequest()
       ..measureProgress = measureProgress.writeToProtoBuf()
       ..measureId = measureId
       ..authOrganizationId = _authService.authorizedOrganization.id
@@ -194,7 +194,7 @@ class MeasureService {
   /// Delete a [Measure]
   void deleteMeasure(Measure measure) async {
 
-    measure_pbgrpc.MeasureDeleteRequest measureDeleteRequest = measure_pbgrpc.MeasureDeleteRequest()
+    objective_measure_pbgrpc.MeasureDeleteRequest measureDeleteRequest = objective_measure_pbgrpc.MeasureDeleteRequest()
       ..measureId = measure.id
       ..measureVersion = measure.version
       ..authOrganizationId = _authService.authorizedOrganization.id
@@ -209,7 +209,7 @@ class MeasureService {
   /// Delete a [MeasureProgress]
   void deleteMeasureProgress(MeasureProgress measureProgress) async {
 
-    measure_pbgrpc.MeasureProgressDeleteRequest measureProgressDeleteRequest = measure_pbgrpc.MeasureProgressDeleteRequest()
+    objective_measure_pbgrpc.MeasureProgressDeleteRequest measureProgressDeleteRequest = objective_measure_pbgrpc.MeasureProgressDeleteRequest()
       ..measureProgressId = measureProgress.id
       ..measureProgressVersion = measureProgress.version
       ..authOrganizationId = _authService.authorizedOrganization.id

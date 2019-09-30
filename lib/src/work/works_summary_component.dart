@@ -12,22 +12,22 @@ import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
 
-import 'package:auge_server/model/initiative/initiative.dart';
+import 'package:auge_server/model/work/work.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
 // import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
-import 'package:auge_web/src/initiative/initiative_service.dart';
+import 'package:auge_web/src/work/work_service.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
-import 'package:auge_web/src/initiative/initiative_summary_component.dart';
+import 'package:auge_web/src/work/work_summary_component.dart';
 import 'package:auge_web/services/app_routes.dart';
 
 @Component(
-    selector: 'auge-initiatives-summary',
-    providers: const [InitiativeService],
-    templateUrl: 'initiatives_summary_component.html',
+    selector: 'auge-works-summary',
+    providers: const [WorkService],
+    templateUrl: 'works_summary_component.html',
     styleUrls: const [
-      'initiatives_summary_component.css'
+      'works_summary_component.css'
     ],
     directives: const [
       coreDirectives,
@@ -38,12 +38,12 @@ import 'package:auge_web/services/app_routes.dart';
       MaterialTooltipDirective,
       MaterialExpansionPanelSet,
       MaterialExpansionPanel,
-      InitiativeSummaryComponent,
+      WorkSummaryComponent,
     ])
 
-class InitiativesSummaryComponent with CanReuse implements OnInit {
+class WorksSummaryComponent with CanReuse implements OnInit {
 
-  final InitiativeService _initiativeService;
+  final WorkService _workService;
   final Router _router;
  // final AuthService _authService;
   final AppLayoutService _appLayoutService;
@@ -51,20 +51,20 @@ class InitiativesSummaryComponent with CanReuse implements OnInit {
   @Input()
   String objectiveId;
 
-  List<Initiative> initiatives = [];
+  List<Work> works = [];
 
-  InitiativesSummaryComponent(this._appLayoutService, this._initiativeService,  this._router);
+  WorksSummaryComponent(this._appLayoutService, this._workService,  this._router);
 
-  static final String initiativesLabel =  InitiativeMsg.label('Initiatives');
-  static final String groupLabel =  InitiativeMsg.label('Group');
-  static final String leaderLabel =  InitiativeMsg.label('Leader');
+  static final String worksLabel =  WorkMsg.label('Works');
+  static final String groupLabel =  WorkMsg.label('Group');
+  static final String leaderLabel =  WorkMsg.label('Leader');
 
   @override
   ngOnInit() async {
     try {
       if (objectiveId != null) {
-        initiatives = await _initiativeService.getInitiatives(
-            this._initiativeService.authService.authorizedOrganization.id, objectiveId: objectiveId,
+        works = await _workService.getWorks(
+            this._workService.authService.authorizedOrganization.id, objectiveId: objectiveId,
             withWorkItems: true, withProfile: true);
       }
     } catch (e) {
@@ -73,8 +73,8 @@ class InitiativesSummaryComponent with CanReuse implements OnInit {
     }
   }
 
-  void goToInitiatives() {
-    _router.navigate(AppRoutes.initiativesByObjectiveRoute.toUrl(parameters: { AppRoutesParam.objectiveIdParameter:objectiveId}));
+  void goToWorks() {
+    _router.navigate(AppRoutes.worksByObjectiveRoute.toUrl(parameters: { AppRoutesParam.objectiveIdParameter:objectiveId}));
   }
 
   String userUrlImage(String userProfileImage) {

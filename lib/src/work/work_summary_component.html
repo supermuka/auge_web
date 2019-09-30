@@ -4,28 +4,28 @@
           tabindex="0"
           size="medium"
           #clickableRef="tooltipTarget">
-        <span *ngFor="let istate of initiative.stateWorkItemsCount.keys">
-            <span [style.background-color]="'hsl(' + istate?.colorHue + ', ' + istate?.colorSaturation + '%, ' + istate?.colorLightness + '%)'" [style.width]="widthState(initiative?.workItemsCount, initiative?.stateWorkItemsCount[istate], progressBarWidth) + 'px'">&nbsp;</span>
+        <span *ngFor="let istate of work.stateWorkItemsCount.keys">
+            <span [style.background-color]="'hsl(' + istate?.colorHue + ', ' + istate?.colorSaturation + '%, ' + istate?.colorLightness + '%)'" [style.width]="widthState(work?.workItemsCount, work?.stateWorkItemsCount[istate], progressBarWidth) + 'px'">&nbsp;</span>
         </span>
         <material-tooltip-card [for]="clickableRef" [preferredPositions]="preferredTooltipPositions">
-            <div *ngFor="let istage of initiative.stageWorkItemsCount.keys; let iee = index">
-                <div *ngIf="iee == 0 || initiative.stageWorkItemsCount.keys.elementAt(iee-1).state.id != initiative.stageWorkItemsCount.keys.elementAt(iee).state.id">
+            <div *ngFor="let istage of work.stageWorkItemsCount.keys; let iee = index">
+                <div *ngIf="iee == 0 || work.stageWorkItemsCount.keys.elementAt(iee-1).state.id != work.stageWorkItemsCount.keys.elementAt(iee).state.id">
                     <br/>
                     <div class="tooltip-card-bar" [style.background-color]="'hsl(' + istage.state.colorHue + ', ' + istage.state.colorSaturation + '%, ' + istage.state.colorLightness + '%)'">
                     </div>&nbsp;<strong>{{istage.state.name}}</strong><br/>
                 </div>
-                <b>{{initiative?.stageWorkItemsCount[istage]}}</b>&nbsp;{{istage.name}}
+                <b>{{work?.stageWorkItemsCount[istage]}}</b>&nbsp;{{istage.name}}
             </div>
         </material-tooltip-card>
     </div>
     <div class="w3-col s6 l2">
-        <span *ngIf="initiative.workItemsCount != 0" class="circle" [style.background-color]="circleColor(initiative)" clickableTooltipTarget
+        <span *ngIf="work.workItemsCount != 0" class="circle" [style.background-color]="circleColor(work)" clickableTooltipTarget
              keyboardOnlyFocusIndicator
              tabindex="0"
              size="medium"
              #clickableRefCircle="tooltipTarget">
             <material-tooltip-card [for]="clickableRefCircle" >
-                <p><b>{{initiative.workItemsOverDueCount}} / {{initiative.workItemsCount}}</b>&nbsp;{{workItemsOverDueLabel}}</p>
+                <p><b>{{work.workItemsOverDueCount}} / {{work.workItemsCount}}</b>&nbsp;{{workItemsOverDueLabel}}</p>
             </material-tooltip-card>
         </span>&nbsp;
     </div>

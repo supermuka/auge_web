@@ -8,7 +8,7 @@ import 'package:angular_components/material_expansionpanel/material_expansionpan
 import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
 
-import 'package:auge_server/model/initiative/initiative.dart';
+import 'package:auge_server/model/work/work.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
 import 'package:auge_web/src/work_item/work_item_service.dart';
@@ -40,7 +40,7 @@ class WorkItemsComponent with CanReuse {
   final Router _router;
 
   @Input()
-  Initiative initiative;
+  Work work;
 
   @Input()
   SelectionView selectionView;
@@ -58,7 +58,7 @@ class WorkItemsComponent with CanReuse {
 
   // Add here, edit is handled on sub componented list and kanban
   void goToDetail() {
-    _router.navigate(AppRoutes.workItemAddRoute.toUrl(parameters: { AppRoutesParam.initiativeIdParameter: initiative.id }));
+    _router.navigate(AppRoutes.workItemAddRoute.toUrl(parameters: { AppRoutesParam.workIdParameter: work.id }));
   }
 }
 

@@ -22,8 +22,8 @@ import 'package:angular_components/model/selection/string_selection_options.dart
 import 'package:angular_components/model/ui/has_factory.dart';
 
 import 'package:auge_server/model/general/user.dart';
-import 'package:auge_server/model/initiative/initiative.dart';
-import 'package:auge_server/model/initiative/state.dart';
+import 'package:auge_server/model/work/work.dart';
+import 'package:auge_server/model/work/state.dart';
 import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/general/group.dart';
 
@@ -33,19 +33,19 @@ import 'package:auge_server/shared/message/model_messages.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
 //import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
-import 'package:auge_web/src/initiative/initiative_service.dart';
+import 'package:auge_web/src/work/work_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/group/group_service.dart';
 
 // ignore_for_file: uri_has_not_been_generated
-import 'initiative_detail_component.template.dart' as initiative_detail_component;
+import 'work_detail_component.template.dart' as work_detail_component;
 
 @Component(
-  selector: 'auge-initiative-detail',
+  selector: 'auge-work-detail',
   providers: const [overlayBindings, ObjectiveService, UserService, GroupService],
-  templateUrl: 'initiative_detail_component.html',
+  templateUrl: 'work_detail_component.html',
   styleUrls: const [
-  'initiative_detail_component.css'
+  'work_detail_component.css'
   ],
   directives: const [
     coreDirectives,
@@ -61,21 +61,21 @@ import 'initiative_detail_component.template.dart' as initiative_detail_componen
     DropdownSelectValueAccessor,
     DropdownButtonComponent,
   ])
-class InitiativeDetailComponent implements OnInit, OnActivate, OnDeactivate {
+class WorkDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
   bool modalVisible = false;
 
  // final AuthService _authService;
-  final InitiativeService _initiativeService;
+  final WorkService _workService;
   final ObjectiveService _objectiveService;
   final UserService _userService;
   final GroupService _groupService;
   final Router _router;
   // final Location _location;
 
-  Initiative initiative;
+  Work work;
 
-  Map<String, dynamic> initiativeValuesPrevious;
+  Map<String, dynamic> workValuesPrevious;
 //  Stage selectedStage = null;
 
   String groupInputText = '';
@@ -101,7 +101,7 @@ class InitiativeDetailComponent implements OnInit, OnActivate, OnDeactivate {
   String dialogError;
   String previousPath;
 
-  InitiativeDetailComponent(this._initiativeService, this._objectiveService,  this._userService, this._groupService, this._router /*, this._location */)  {
+  WorkDetailComponent(this._workService, this._objectiveService,  this._userService, this._groupService, this._router /*, this._location */)  {
     stateSingleSelectModel = SelectionModel.single();
     leaderSingleSelectModel = SelectionModel.single();
     objectiveSingleSelectModel = SelectionModel.single();
@@ -113,16 +113,16 @@ class InitiativeDetailComponent implements OnInit, OnActivate, OnDeactivate {
   static final String closeButtonLabel = CommonMsg.buttonLabel('Close');
   static final String requiredValueMsg = CommonMsg.requiredValueMsg();
 
-  static final String addInitiativeLabel =  InitiativeMsg.label('Add Initiative');
-  static final String editInitiativeLabel =  InitiativeMsg.label('Edit Initiative');
-  static final String noMatchLabel =  InitiativeMsg.label('No Match');
-  static final String selectLabel =  InitiativeMsg.label('Select');
+  static final String addWorkLabel =  WorkMsg.label('Add Work');
+  static final String editWorkLabel =  WorkMsg.label('Edit Work');
+  static final String noMatchLabel =  WorkMsg.label('No Match');
+  static final String selectLabel =  WorkMsg.label('Select');
 
-  static final String nameLabel =  FieldMsg.label('${Initiative.className}.${Initiative.nameField}');
-  static final String descriptionLabel =  FieldMsg.label('${Initiative.className}.${Initiative.descriptionField}');
-  static final String groupLabel =  FieldMsg.label('${Initiative.className}.${Initiative.groupField}');
-  static final String leaderLabel =  FieldMsg.label('${Initiative.className}.${Initiative.leaderField}');
-  static final String objectiveLabel =  FieldMsg.label('${Initiative.className}.${Initiative.objectiveField}');
+  static final String nameLabel =  FieldMsg.label('${Work.className}.${Work.nameField}');
+  static final String descriptionLabel =  FieldMsg.label('${Work.className}.${Work.descriptionField}');
+  static final String groupLabel =  FieldMsg.label('${Work.className}.${Work.groupField}');
+  static final String leaderLabel =  FieldMsg.label('${Work.className}.${Work.leaderField}');
+  static final String objectiveLabel =  FieldMsg.label('${Work.className}.${Work.objectiveField}');
 //  static final String stageLabel =  FieldMsg.label('${Stage.className}.${Stage.nameField}');
 
   @override
@@ -132,35 +132,35 @@ class InitiativeDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
     previousPath = previous.path;
 
-   // initiative = Initiative(); // Needs to create new here, even if it can be replaced later, because if get method to delay, Angular throws an error.
-    String initiativeId;
-    if (current.parameters.containsKey(AppRoutesParam.initiativeIdParameter)) {
-      initiativeId = current.parameters[AppRoutesParam.initiativeIdParameter];
+   // work = Work(); // Needs to create new here, even if it can be replaced later, because if get method to delay, Angular throws an error.
+    String workId;
+    if (current.parameters.containsKey(AppRoutesParam.workIdParameter)) {
+      workId = current.parameters[AppRoutesParam.workIdParameter];
     }
 
-    if (initiativeId != null) {
+    if (workId != null) {
       // Clone objective
-      // initiative = selectedInitiative.clone();
+      // work = selectedWork.clone();
 
-      initiative = await _initiativeService.getInitiative(initiativeId);
+      work = await _workService.getWork(workId);
 
     } else {
 
-      initiative.organization = _initiativeService.authService.authorizedOrganization;
+      work.organization = _workService.authService.authorizedOrganization;
     }
 
     try {
-      _states =  await _initiativeService.getStates();
-      _users = await _userService.getUsers(_initiativeService.authService.authorizedOrganization.id, withUserProfile: true);
-      _objectives = await _objectiveService.getObjectives(_initiativeService.authService.authorizedOrganization.id, withMeasures: false);
-      _groups = await _groupService.getGroups(_initiativeService.authService.authorizedOrganization.id);
+      _states =  await _workService.getStates();
+      _users = await _userService.getUsers(_workService.authService.authorizedOrganization.id, withUserProfile: true);
+      _objectives = await _objectiveService.getObjectives(_workService.authService.authorizedOrganization.id, withMeasures: false);
+      _groups = await _groupService.getGroups(_workService.authService.authorizedOrganization.id);
 
     } catch (e) {
       dialogError = e.toString();
       rethrow;
     }
 
-    // List<State> states =  await _initiativeService.getStates();
+    // List<State> states =  await _workService.getStates();
     // stateOptions = new SelectionOptions.fromList(_states);
     stateOptions = new StringSelectionOptions<State>(
         _states, toFilterableString: (State state) => state.name);
@@ -186,38 +186,38 @@ class InitiativeDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
     leaderSingleSelectModel.selectionChanges.listen((leader) {
       if (leader.isNotEmpty && leader.first.added != null && leader.first.added.length != 0 && leader.first.added?.first != null) {
-        initiative.leader = leader.first.added.first;
+        work.leader = leader.first.added.first;
       }
     });
 
-    if (initiative.leader != null) {
-      // leaderSingleSelectModel.select(initiative.leader);
-      leaderSingleSelectModel.select(leaderOptions.optionsList.singleWhere((l) => l.id == initiative.leader.id));
+    if (work.leader != null) {
+      // leaderSingleSelectModel.select(work.leader);
+      leaderSingleSelectModel.select(leaderOptions.optionsList.singleWhere((l) => l.id == work.leader.id));
     }
 
     // Objective Select Model
     objectiveSingleSelectModel.selectionChanges.listen((objective) {
       if (objective.isNotEmpty && objective.first.added != null && objective.first.added.length != 0 && objective.first.added?.first != null) {
-        initiative.objective = objective.first.added.first;
+        work.objective = objective.first.added.first;
       }
     });
 
-    if (initiative.objective != null) {
-      objectiveSingleSelectModel.select(objectiveOptions.optionsList.singleWhere((o) => o.id == initiative.objective.id));
-      //objectiveSingleSelectModel.select(initiative.objective);
+    if (work.objective != null) {
+      objectiveSingleSelectModel.select(objectiveOptions.optionsList.singleWhere((o) => o.id == work.objective.id));
+      //objectiveSingleSelectModel.select(work.objective);
 
     }
 
     // Group
     groupSingleSelectModel.selectionChanges.listen((groupEvent) {
       if (groupEvent.isNotEmpty && groupEvent.first.added != null && groupEvent.first.added.length != 0 && groupEvent.first.added?.first != null) {
-        initiative.group = groupEvent.first.added.first;
+        work.group = groupEvent.first.added.first;
       }
     });
 
-    if (initiative.group != null) {
-      groupSingleSelectModel.select(groupOptions.optionsList.singleWhere((g) => g.id == initiative.group.id));
-      //  groupSingleSelectModel.select(initiative.group);
+    if (work.group != null) {
+      groupSingleSelectModel.select(groupOptions.optionsList.singleWhere((g) => g.id == work.group.id));
+      //  groupSingleSelectModel.select(work.group);
     }
 
   }
@@ -230,22 +230,22 @@ class InitiativeDetailComponent implements OnInit, OnActivate, OnDeactivate {
   @override
   void ngOnInit() async {
 
-    initiative = Initiative(); // Needs to create new here, even if it can be replaced later, because if get method to delay, Angular throws an error.
+    work = Work(); // Needs to create new here, even if it can be replaced later, because if get method to delay, Angular throws an error.
   }
 
-  void saveInitiative() async {
+  void saveWork() async {
     try {
-      initiative.id = await _initiativeService.saveInitiative(initiative);
-      closeDetail(initiative.id);
+      work.id = await _workService.saveWork(work);
+      closeDetail(work.id);
     } catch (e) {
       dialogError = e.toString();
       rethrow;
     }
   }
 
-  void closeDetail([String initiativeId]) {
+  void closeDetail([String workId]) {
     //_location.back();
-     _router.navigate(previousPath, (initiativeId != null) ? NavigationParams(queryParameters: {AppRoutesQueryParam.initiativeIdQueryParameter: initiativeId}) : null);
+     _router.navigate(previousPath, (workId != null) ? NavigationParams(queryParameters: {AppRoutesQueryParam.workIdQueryParameter: workId}) : null);
   }
 
   String get leaderLabelRenderer {
@@ -276,7 +276,7 @@ class InitiativeDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
   ItemRenderer get objectiveItemRenderer => (dynamic objective) => objective.name;
 
-  FactoryRenderer get leaderFactoryRenderer => (_) => initiative_detail_component.LeaderRendererComponentNgFactory;
+  FactoryRenderer get leaderFactoryRenderer => (_) => work_detail_component.LeaderRendererComponentNgFactory;
 
   String get groupLabelRenderer {
     String nameLabel;
@@ -292,7 +292,7 @@ class InitiativeDetailComponent implements OnInit, OnActivate, OnDeactivate {
   ItemRenderer get groupItemRenderer => (dynamic gru) => gru.name;
 
   bool get validInput {
-    return initiative.name?.trim()?.isNotEmpty ?? false;
+    return work.name?.trim()?.isNotEmpty ?? false;
   }
 }
 

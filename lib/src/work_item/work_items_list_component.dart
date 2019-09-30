@@ -21,15 +21,15 @@ import 'package:angular_components/material_menu/material_menu.dart';
 
 import 'package:auge_server/model/general/authorization.dart';
 import 'package:auge_server/model/general/user.dart';
-import 'package:auge_server/model/initiative/initiative.dart';
-import 'package:auge_server/model/initiative/work_item.dart';
+import 'package:auge_server/model/work/work.dart';
+import 'package:auge_server/model/work/work_item.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
 import 'package:auge_server/shared/message/model_messages.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/work_item/work_item_service.dart';
-import 'package:auge_web/src/initiative/initiative_service.dart';
+import 'package:auge_web/src/work/work_service.dart';
 import 'package:auge_web/src/history_timeline/history_timeline_service.dart';
 import 'package:auge_web/src/work_item/work_item_detail_component.dart';
 
@@ -37,7 +37,7 @@ import 'package:auge_web/services/app_routes.dart';
 
 @Component(
     selector: 'auge-work-items-list',
-    providers: const [InitiativeService, WorkItemService],
+    providers: const [WorkService, WorkItemService],
     templateUrl: 'work_items_list_component.html',
     styleUrls: const [
       'work_items_list_component.css'
@@ -64,7 +64,7 @@ class WorkItemsListComponent with CanReuse /* with CanReuse implements OnActivat
   final Router _router;
 
   @Input()
-  Initiative initiative;
+  Work work;
 
   WorkItem selectedWorkItem;
 
@@ -72,7 +72,7 @@ class WorkItemsListComponent with CanReuse /* with CanReuse implements OnActivat
 
 
   static final String dueDateLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.dueDateField}');
-  static final String stageLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.stageField}');
+  static final String stageLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.workStageField}');
   static final String completedLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.completedField}');
   static final String checkItemsLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.checkItemsField}');
 
@@ -87,7 +87,7 @@ class WorkItemsListComponent with CanReuse /* with CanReuse implements OnActivat
   void delete() async {
     try {
       await _workItemService.deleteWorkItem(selectedWorkItem);
-      initiative.workItems.remove(selectedWorkItem);
+      work.workItems.remove(selectedWorkItem);
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;
@@ -101,14 +101,14 @@ class WorkItemsListComponent with CanReuse /* with CanReuse implements OnActivat
   void updateWorkItem(WorkItem workItem) async {
     try {
 
-      await _workItemService.saveWorkItem(initiative.id, workItem);
+      await _workItemService.saveWorkItem(work.id, workItem);
 
       //TODO maybe this needs to be updated with parent onActivate.
       workItem = await _workItemService.getWorkItem(workItem.id);
-      int i = initiative.workItems.indexWhere((it) => it.id == workItem.id);
+      int i = work.workItems.indexWhere((it) => it.id == workItem.id);
       if (i != -1) {
-        initiative.workItems[i] = workItem;
-        _historyTimelineService.refreshHistory(SystemModule.initiatives.index);
+        work.workItems[i] = workItem;
+        _historyTimelineService.refreshHistory(SystemModule.works.index);
       }
     } catch (e) {
       _appLayoutService.error = e.toString();
@@ -116,7 +116,7 @@ class WorkItemsListComponent with CanReuse /* with CanReuse implements OnActivat
     }
   }
 
-  List<WorkItem> get workItems => initiative.workItems;
+  List<WorkItem> get workItems => work.workItems;
 
   String userUrlImage(User userMember) {
     return common_service.userUrlImage(userMember.userProfile?.image);
@@ -125,7 +125,7 @@ class WorkItemsListComponent with CanReuse /* with CanReuse implements OnActivat
   // Just edit, because de add is called on super component.
   void goToDetail() {
       _router.navigate(AppRoutes.workItemEditRoute.toUrl(parameters: {
-        AppRoutesParam.initiativeIdParameter: initiative.id,
+        AppRoutesParam.workIdParameter: work.id,
         AppRoutesParam.workItemIdParameter: selectedWorkItem.id }));
   }
 }
