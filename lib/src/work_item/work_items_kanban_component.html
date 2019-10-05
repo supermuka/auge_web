@@ -1,8 +1,8 @@
 <div class="container-flex-row">
     <div *ngFor="let kanbanColumn of kanbanColumns">
         <div class="items-column" (drop)="drop($event, kanbanColumn)" (dragover)="allowDrop($event)">
-            <header [style.background-color]="'hsl(' + kanbanColumn.workStage.state.colorHue + ', ' + kanbanColumn.workStage.state.colorSaturation + '%, ' + kanbanColumn.workStage.state.colorLightness + '%)'">
-               <h5><strong>{{kanbanColumn.workStage.name}}</strong></h5>
+            <header [style.background-color]="'hsl(' + stateHslColor(kanbanColumn.workStage.state) + ')'">
+               <h7><strong>{{kanbanColumn.workStage.name}}</strong></h7>
             </header>
             <material-expansionpanel-set>
                 <div *ngFor="let iColumnWorkItem of kanbanColumn.columnWorkItems">

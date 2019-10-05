@@ -69,7 +69,7 @@ class GroupDetailComponent implements OnInit, OnActivate, OnDeactivate {
   bool modalVisible = false;
 
   Group group;
-  List<GroupType> groupTypes = [];
+  //List<GroupType> groupTypes = [];
 
   String superGroupInputText = '';
   String leaderInputText = '';
@@ -140,7 +140,7 @@ class GroupDetailComponent implements OnInit, OnActivate, OnDeactivate {
     try {
       _superGroups = await _groupService.getGroups(_groupService.authService.authorizedOrganization.id);
       _users = await _userService.getUsers(_groupService.authService.authorizedOrganization.id, withUserProfile: true);
-      groupTypes = await _groupService.getGroupTypes();
+    //  groupTypes = await _groupService.getGroupTypes();
     } catch (e) {
       dialogError = e.toString();
       rethrow;
@@ -282,6 +282,11 @@ class GroupDetailComponent implements OnInit, OnActivate, OnDeactivate {
   bool get validInput {
     return group.name?.trim()?.isNotEmpty ?? false;
   }
+
+  List<GroupType> get groupTypes => GroupType.values;
+
+  String groupTypeName(String name) => GroupMsg.groupTypeLabel(name);
+
 }
 
 @Component(

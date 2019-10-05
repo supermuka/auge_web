@@ -5,14 +5,14 @@
           size="medium"
           #clickableRef="tooltipTarget">
         <span *ngFor="let istate of work.stateWorkItemsCount.keys">
-            <span [style.background-color]="'hsl(' + istate?.colorHue + ', ' + istate?.colorSaturation + '%, ' + istate?.colorLightness + '%)'" [style.width]="widthState(work?.workItemsCount, work?.stateWorkItemsCount[istate], progressBarWidth) + 'px'">&nbsp;</span>
+            <span [style.background-color]="'hsl(' + stateHslColor(istate) + ')'" [style.width]="widthState(work?.workItemsCount, work?.stateWorkItemsCount[istate], progressBarWidth) + 'px'">&nbsp;</span>
         </span>
         <material-tooltip-card [for]="clickableRef" [preferredPositions]="preferredTooltipPositions">
             <div *ngFor="let istage of work.stageWorkItemsCount.keys; let iee = index">
-                <div *ngIf="iee == 0 || work.stageWorkItemsCount.keys.elementAt(iee-1).state.id != work.stageWorkItemsCount.keys.elementAt(iee).state.id">
+                <div *ngIf="iee == 0 || work.stageWorkItemsCount.keys.elementAt(iee-1).state.index != istage.state.index">
                     <br/>
-                    <div class="tooltip-card-bar" [style.background-color]="'hsl(' + istage.state.colorHue + ', ' + istage.state.colorSaturation + '%, ' + istage.state.colorLightness + '%)'">
-                    </div>&nbsp;<strong>{{istage.state.name}}</strong><br/>
+                    <div class="tooltip-card-bar" [style.background-color]="'hsl(' + stateHslColor(istage.state) + ')'"></div>
+                    &nbsp;<strong>{{stateName(istage.state)}}</strong><br/>
                 </div>
                 <b>{{work?.stageWorkItemsCount[istage]}}</b>&nbsp;{{istage.name}}
             </div>

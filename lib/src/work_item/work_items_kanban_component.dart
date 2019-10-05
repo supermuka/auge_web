@@ -32,6 +32,7 @@ import 'package:auge_server/shared/message/model_messages.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/work_item/work_item_service.dart';
+import 'package:auge_web/src/work/work_service.dart';
 import 'package:auge_web/src/history_timeline/history_timeline_service.dart';
 
 import 'package:auge_web/src/work_item/work_item_detail_component.dart';
@@ -174,6 +175,9 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit {
         AppRoutesParam.workIdParameter: work.id,
         AppRoutesParam.workItemIdParameter: selectedWorkItem.id }));
   }
+
+  String stateHslColor(State state) => WorkService.getStateHslColor(state);
+
 }
 
 class KanbanColumn {

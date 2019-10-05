@@ -101,12 +101,15 @@ class GroupService {
     }
   }
 
+  /*
   /// Return a list of [GroupType]
   Future<List<GroupType>> getGroupTypes() async {
     List<GroupType> groupTypes =  (await _groupServiceClient.getGroupTypes(empty_pb.Empty())).groupTypes.map((upo) => GroupType()..readFromProtoBuf(upo)).toList();
     // Translate
-    groupTypes.forEach((f) => f.name = GroupMsg.groupTypeLabel(f.name));
+    GroupType.values .forEach((f) => f.toString() = GroupMsg.groupTypeLabel(f.name));
 
     return groupTypes;
   }
+
+   */
 }

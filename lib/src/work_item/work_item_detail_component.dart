@@ -86,7 +86,7 @@ import 'work_item_detail_component.template.dart' as work_item_detail_component;
       MaterialDatepickerComponent,
     ])
 
-class WorkItemDetailComponent with CanReuse implements OnInit, OnActivate, OnDeactivate  {
+class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
 
   bool modalVisible = false;
 

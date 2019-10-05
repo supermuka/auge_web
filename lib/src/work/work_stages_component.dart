@@ -1,8 +1,6 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
-import 'dart:async';
-
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
 import 'package:auge_web/services/app_routes.dart';
@@ -29,7 +27,6 @@ import 'package:angular_components/model/selection/string_selection_options.dart
 import 'package:angular_components/model/ui/has_factory.dart';
 
 import 'package:auge_server/model/work/work_stage.dart';
-import 'package:auge_server/model/work/state.dart';
 
 import 'package:auge_web/services/common_service.dart';
 import 'package:auge_web/src/work/work_service.dart';
@@ -129,12 +126,13 @@ class WorkStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
       throw Exception('Work Id not found.');
     }
 
-    _states =  await _workService.getStates();
+    // _states =  await _workService.getStates();
+    _states = State.values;
 
     // List<State> states =  await _workService.getStates();
 
     stateOptions = new StringSelectionOptions<State>(
-        _states, toFilterableString: (State state) => state.name);
+        _states, toFilterableString: (State state) => StateMsg.label(state.toString()));
 
     if (stateOptions.optionsList.isNotEmpty) {
       stateSingleSelectModel.select(stateOptions.optionsList.first);
@@ -152,17 +150,17 @@ class WorkStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
     if ((stateSingleSelectModel != null) &&
         (stateSingleSelectModel.selectedValues != null) &&
         (stateSingleSelectModel.selectedValues.length > 0)) {
-      nameLabel = stateSingleSelectModel.selectedValues.first?.name;
+      nameLabel = StateMsg.label(stateSingleSelectModel.selectedValues.first?.toString());
     } else {
       nameLabel = selectLabel;
     }
     return nameLabel;
   }
-
+/*
   void selectionChangeState(Stream<State> stream) async {
     print ((await stream.first).name);
   }
-
+*/
   void cancelWorkStage(WorkStage workStage, AsyncAction event) async {
 
     try {
@@ -215,7 +213,7 @@ class WorkStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
 
   void selectWorkStage(WorkStage workStage) async {
     if (workStage == null) {
-      workStages.insert(0, WorkStage());
+      workStages.insert(0, WorkStage()..state = State.notStarted);
       selectedWorkStage = workStages.first;
   //    selectedStage.index = stages.length;
    //   selectedMeasureProgress.date = DateTime.now();
@@ -302,7 +300,7 @@ class WorkStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
   bool disableUpWorkStage(WorkStage workStage) {
     int firstIndexIntoWorkStage = -1;
     for (int i = 0;i < workStages.length;i++) {
-      if (workStage.state.index == workStages[i].state.index && workStages[i].index != null && ( firstIndexIntoWorkStage == -1 || firstIndexIntoWorkStage > workStages[i].index )) {
+      if (workStage.state != null && workStage.state.index == workStages[i].state.index && workStages[i].index != null && ( firstIndexIntoWorkStage == -1 || firstIndexIntoWorkStage > workStages[i].index )) {
         firstIndexIntoWorkStage = workStages[i].index;
       }
     }
@@ -312,7 +310,7 @@ class WorkStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
   bool disableDownWorkStage(WorkStage workStage) {
     int lastIndexIntoStage = 0;
     for (int i = 0;i < workStages.length;i++) {
-      if (workStage.state.index == workStages[i].state.index && workStages[i].index != null && ( lastIndexIntoStage < workStages[i].index )) {
+      if (workStage.state != null && workStage.state.index == workStages[i].state.index && workStages[i].index != null && ( lastIndexIntoStage < workStages[i].index )) {
         lastIndexIntoStage = workStages[i].index;
       }
     }
@@ -323,9 +321,13 @@ class WorkStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
     _location.back();
   }
 
-  ItemRenderer get stateItemRenderer => (dynamic state) => state.name;
+  ItemRenderer get stateItemRenderer => (dynamic state) => StateMsg.label(state.toString());
 
   FactoryRenderer get stateFactoryRenderer => (_) => work_stages_component.StateRendererComponentNgFactory;
+
+  String stateHslColor(State state) => WorkService.getStateHslColor(state);
+
+  String stateName(State state) => StateMsg.label(state.toString());
 
 }
 
@@ -345,7 +347,7 @@ class StateRendererComponent implements RendersValue {
 
   @override
   set value(newValue) {
-    disPlayName = (newValue as State).name;
-    disPlayCor = 'hsl(' + (newValue as State).colorHue + ', ' + (newValue as State).colorSaturation + '%, ' + (newValue as State).colorLightness + '%)';
+    disPlayName = StateMsg.label((newValue as State).toString());
+    disPlayCor = 'hsl(${WorkService.getStateHslColor(newValue)})';
   }
 }

@@ -23,7 +23,7 @@ import 'package:angular_components/model/ui/has_factory.dart';
 
 import 'package:auge_server/model/general/user.dart';
 import 'package:auge_server/model/work/work.dart';
-import 'package:auge_server/model/work/state.dart';
+import 'package:auge_server/model/work/work_stage.dart';
 import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/general/group.dart';
 
@@ -82,8 +82,8 @@ class WorkDetailComponent implements OnInit, OnActivate, OnDeactivate {
   String leaderInputText = '';
   String objectiveInputText = '';
 
-  SelectionOptions stateOptions;
-  SelectionModel<State> stateSingleSelectModel;
+ // SelectionOptions stateOptions;
+ // SelectionModel<State> stateSingleSelectModel;
 
   SelectionOptions leaderOptions;
   SelectionModel<User> leaderSingleSelectModel;
@@ -92,7 +92,7 @@ class WorkDetailComponent implements OnInit, OnActivate, OnDeactivate {
   SelectionOptions groupOptions;
   SelectionModel<Group> groupSingleSelectModel;
 
-  List<State> _states;
+  //List<State> _states;
   List<User> _users;
   List<Objective> _objectives;
   List<Group> _groups;
@@ -102,7 +102,7 @@ class WorkDetailComponent implements OnInit, OnActivate, OnDeactivate {
   String previousPath;
 
   WorkDetailComponent(this._workService, this._objectiveService,  this._userService, this._groupService, this._router /*, this._location */)  {
-    stateSingleSelectModel = SelectionModel.single();
+   // stateSingleSelectModel = SelectionModel.single();
     leaderSingleSelectModel = SelectionModel.single();
     objectiveSingleSelectModel = SelectionModel.single();
     groupSingleSelectModel = SelectionModel.single();
@@ -150,10 +150,12 @@ class WorkDetailComponent implements OnInit, OnActivate, OnDeactivate {
     }
 
     try {
-      _states =  await _workService.getStates();
-      _users = await _userService.getUsers(_workService.authService.authorizedOrganization.id, withUserProfile: true);
+    //  _states =  await _workService.getStates();
+     // _states = State.values;
+          _users = await _userService.getUsers(_workService.authService.authorizedOrganization.id, withUserProfile: true);
       _objectives = await _objectiveService.getObjectives(_workService.authService.authorizedOrganization.id, withMeasures: false);
       _groups = await _groupService.getGroups(_workService.authService.authorizedOrganization.id);
+
 
     } catch (e) {
       dialogError = e.toString();
@@ -162,12 +164,18 @@ class WorkDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
     // List<State> states =  await _workService.getStates();
     // stateOptions = new SelectionOptions.fromList(_states);
+
+ /*
     stateOptions = new StringSelectionOptions<State>(
-        _states, toFilterableString: (State state) => state.name);
+        _states, toFilterableString: (State state) =>
+          StateMsg.label(state?.toString()));
+
+
 
     if (stateOptions.optionsList.isNotEmpty) {
       stateSingleSelectModel.select(stateOptions.optionsList.first);
     }
+  */
 
     // Leader
     // List<User> users = await _userService.getUsers(_authService.selectedOrganization.id, withProfile: true);
@@ -295,7 +303,7 @@ class WorkDetailComponent implements OnInit, OnActivate, OnDeactivate {
     return work.name?.trim()?.isNotEmpty ?? false;
   }
 }
-
+/*
 @Component(
     selector: 'state-renderer',
     template: '<div><span [style.background-color]="disPlayCor">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;{{disPlayName}}</div>',
@@ -311,11 +319,14 @@ class StateRendererComponent implements RendersValue {
 
   @override
   set value(newValue) {
-    disPlayName = (newValue as State).name;
-    disPlayCor = 'hsl(' + (newValue as State).colorHue + ', ' + (newValue as State).colorSaturation + '%, ' + (newValue as State).colorLightness + '%)';
+    disPlayName = StateMsg.label((newValue as State).toString());
+   // disPlayCor = 'hsl(' + (newValue as State).colorHue + ', ' + (newValue as State).colorSaturation + '%, ' + (newValue as State).colorLightness + '%)';
+
+    disPlayCor = 'hsl(${_workService.getStateHslColor((newValue as State))})';
+
   }
 }
-
+*/
 @Component(
     selector: 'leader-renderer',
     template: '<div left-icon class="avatar-icon" [style.background-image]="disPlayurl"></div>{{disPlayName}}',

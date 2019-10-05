@@ -10,7 +10,6 @@ import 'package:auge_web/services/auge_api_service.dart';
 
 import 'package:auge_server/model/work/work.dart';
 import 'package:auge_server/model/work/work_stage.dart';
-import 'package:auge_server/model/work/state.dart';
 
 import 'package:auge_server/src/protos/generated/google/protobuf/empty.pb.dart' as empty_pb;
 import 'package:auge_server/src/protos/generated/google/protobuf/wrappers.pb.dart' as wrappers_pb;
@@ -78,7 +77,7 @@ class WorkService {
         work_stage_pbgrpc.WorkStageGetRequest()
           ..id = id)));
   }
-
+/*
   /// Return a list of [State]
   Future<List<State>> getStates() async {
     //-- return _augeApiService.workAugeApi.getStates()
@@ -86,7 +85,7 @@ class WorkService {
     State()
       ..readFromProtoBuf(s)).toList();
   }
-
+*/
   /// Save (create or update)an [Work]
   Future<String> saveWork(Work work) async {
     try {
@@ -112,7 +111,6 @@ class WorkService {
     }
     return work.id;
   }
-
 
 
   /// Delete an [Work]
@@ -172,5 +170,18 @@ class WorkService {
     } catch (e) {
       rethrow;
     }
+  }
+
+
+  static String getStateHslColor(State state) {
+    String hslColor;
+    if (state == State.notStarted) {
+      hslColor = '0, 0%, 90%';
+    } else if (state == State.inProgress) {
+      hslColor = '90, 100%, 90%';
+    } else if (state == State.completed) {
+      hslColor = '200, 100%, 90%';
+    }
+    return hslColor;
   }
 }

@@ -17,7 +17,6 @@ import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/objective/measure.dart';
 import 'package:auge_server/model/work/work.dart';
 import 'package:auge_server/model/work/work_stage.dart';
-import 'package:auge_server/model/work/state.dart';
 import 'package:auge_server/model/work/work_item.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
@@ -291,11 +290,6 @@ class GroupChangedValues {
             fieldsChangedValues['${Group.className}.${k}'][_cKey] =
             v[Group.nameField][_cKey];
 
-        } else if (k == Group.groupTypeField) {
-
-          GroupTypeChangedValues.constructViewToFieldsChangedValues(
-              fieldsChangedValues, {Group.groupTypeField: v});
-
         } else if (k == Group.membersField) {
           fieldsChangedValues.putIfAbsent(
               '${Group.className}.${k}', () =>
@@ -335,28 +329,6 @@ class GroupChangedValues {
             v[_cKey];
         }
       }
-    });
-  }
-}
-
-class GroupTypeChangedValues {
-
-  static void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
-    changedValues?.forEach((k, v) {
-     // if (k != Group.idField && k != Group.versionField) {
-      if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
-        fieldsChangedValues.putIfAbsent('${GroupType.className}.${k}', () =>
-        {
-          _typeToViewKey: _typeToViewText,
-          _fieldDescriptionKey: FieldMsg.label(k)});
-        if (v.containsKey(_pKey))
-          fieldsChangedValues['${GroupType.className}.${k}'][_pKey] =
-          v[_pKey];
-        if (v.containsKey(_cKey))
-          fieldsChangedValues['${GroupType.className}.${k}'][_cKey] =
-          v[_cKey];
-      }
-     // }
     });
   }
 }
@@ -641,24 +613,7 @@ class StageChangedValues {
 
     changedValues?.forEach((k, v) {
       if (k != WorkStage.idField && k != WorkStage.versionField && k != WorkStage.indexField) {
-        if (k == WorkStage.stateField) {
-          fieldsChangedValues.putIfAbsent(
-              '${WorkStage.className}.${k}', () =>
-          {
-            _typeToViewKey: _typeToViewText,
-            _fieldDescriptionKey: FieldMsg.label('${WorkStage.className}.${k}')
-          });
-
-          if (v.containsKey(State.nameField) &&
-              v[State.nameField].containsKey(_pKey))
-            fieldsChangedValues['${WorkStage.className}.${k}'][_pKey] =
-            v[State.nameField][_pKey];
-          if (v.containsKey(MeasureUnit.nameField) &&
-              v[State.nameField].containsKey(_cKey))
-            fieldsChangedValues['${WorkStage.className}.${k}'][_cKey] =
-            v[State.nameField][_cKey];
-        }
-        else if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
+       if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
           fieldsChangedValues.putIfAbsent('${WorkStage.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewText,

@@ -23,6 +23,7 @@ import 'package:auge_server/model/general/authorization.dart';
 import 'package:auge_server/model/general/user.dart';
 import 'package:auge_server/model/work/work.dart';
 import 'package:auge_server/model/work/work_item.dart';
+import 'package:auge_server/model/work/work_stage.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
 import 'package:auge_server/shared/message/model_messages.dart';
@@ -128,4 +129,6 @@ class WorkItemsListComponent with CanReuse /* with CanReuse implements OnActivat
         AppRoutesParam.workIdParameter: work.id,
         AppRoutesParam.workItemIdParameter: selectedWorkItem.id }));
   }
+
+  String stateHslColor(State state) => WorkService.getStateHslColor(state);
 }

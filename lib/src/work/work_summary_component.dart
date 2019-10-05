@@ -8,6 +8,9 @@ import 'package:angular_components/laminate/enums/alignment.dart';
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
 
 import 'package:auge_server/model/work/work.dart';
+import 'package:auge_server/model/work/work_stage.dart';
+
+import 'package:auge_web/src/work/work_service.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
 
@@ -53,4 +56,8 @@ class WorkSummaryComponent {
   String widthState(int workItemsCount, int stateWorkItemsCount, int widthTotal) {
     return (stateWorkItemsCount / workItemsCount * widthTotal).toString();
   }
+
+  String stateHslColor(State state) => WorkService.getStateHslColor(state);
+
+  String stateName(State state) => StateMsg.label(state.toString());
 }
