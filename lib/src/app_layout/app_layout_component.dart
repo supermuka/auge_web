@@ -48,6 +48,8 @@ import 'package:auge_web/src/objective/objectives_component.template.dart' as ob
 import 'package:auge_web/src/group/groups_component.template.dart' as groups_component;
 import 'package:auge_web/src/organization/organization_component.template.dart' as organization_component;
 
+import 'package:auge_web/src/work/work_kanban_component.template.dart' as work_kanban_component;
+
 @Component(
     selector: 'auge-layout',
     providers: const <dynamic>[AppLayoutService, SearchService],
@@ -134,6 +136,10 @@ class AppLayoutComponent with CanReuse implements OnActivate {
     new RouteDefinition(
       routePath: AppRoutes.organizationRoute,
       component: organization_component.OrganizationComponentNgFactory,
+    ),
+    new RouteDefinition(
+      routePath: AppRoutes.workKanbanRoute,
+      component: work_kanban_component.WorkKanbanComponentNgFactory,
     ),
   ];
 

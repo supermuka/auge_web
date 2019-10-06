@@ -3,24 +3,8 @@
 @import 'package:auge_web/scss/common.scss';
 
 .custom-expansionpanel-panel-specific-name-width {
-  /* width: 400px; */
   min-width: 400px;
 }
-
-
- /*Reference: https://css-tricks.com/full-width-containers-limited-width-parents/*/
- /*
-.expansionpanel-wide-true {
-  position: relative;
-  width: calc(100vw - 5%);
-  left: 50%;
-  right: 50%;
-  margin-left: calc(-50vw + 5%);
-  margin-right: calc(-50vw + 5%);
-
-  height: calc(100vh - 5%);
-}
-*/
 
 .custom-grid {
   display: grid;
@@ -49,3 +33,4 @@
   justify-items: center;
   align-items: center;
 }
+

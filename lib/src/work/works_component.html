@@ -53,6 +53,9 @@
                         <div action>
                             <material-menu [menu]="menuModel" (click)="selectWork(iWork)">
                             </material-menu>
+                            <material-button icon (trigger)="goToWorkKanban(iWork)">
+                                <material-icon icon="launch"></material-icon>
+                            </material-button>
                         </div>
                         <hr class="hr-margin">
                         <span *ngIf="iWork.objective != null"><strong>{{objectiveLabel}}:</strong> {{iWork.objective?.name}}</span>

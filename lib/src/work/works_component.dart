@@ -8,7 +8,9 @@ import 'package:angular/angular.dart';
 
 import 'package:angular_router/angular_router.dart';
 
+
 import 'package:angular_components/material_button/material_fab.dart';
+import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
 import 'package:angular_components/material_menu/material_menu.dart';
 import 'package:angular_components/model/ui/icon.dart';
@@ -34,7 +36,7 @@ import 'package:auge_web/src/work/works_filter_component.dart';
 import 'package:auge_web/src/work/work_summary_component.dart';
 import 'package:auge_web/src/history_timeline/history_timeline_component.dart';
 import 'package:auge_web/src/work/work_detail_component.dart';
-import 'package:auge_web/src/work/work_stages_component.dart';
+//import 'package:auge_web/src/work/work_stages_component.dart';
 import 'package:auge_web/src/work_item/work_items_component.dart';
 import 'package:auge_web/src/work_item/work_items_list_component.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
@@ -43,6 +45,7 @@ import 'package:auge_web/services/app_routes.dart';
 // ignore_for_file: uri_has_not_been_generated
 import 'package:auge_web/src/work/work_detail_component.template.dart' as work_detail_component;
 import 'package:auge_web/src/work/work_stages_component.template.dart' as work_stages_component;
+//import 'package:auge_web/src/work/work_kanban_component.template.dart' as work_kanban_component;
 import 'package:auge_web/src/work_item/work_item_detail_component.template.dart' as work_item_detail_component;
 
 @Component(
@@ -56,6 +59,7 @@ import 'package:auge_web/src/work_item/work_item_detail_component.template.dart'
       coreDirectives,
       routerDirectives,
       MaterialFabComponent,
+      MaterialButtonComponent,
       MaterialIconComponent,
       MaterialDropdownSelectComponent,
       MaterialTooltipDirective,
@@ -69,7 +73,7 @@ import 'package:auge_web/src/work_item/work_item_detail_component.template.dart'
       WorkItemsComponent,
       WorkItemsListComponent,
       HistoryTimelineComponent,
-      WorkStagesComponent,
+      //WorkStagesComponent,
     ])
 
 class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
@@ -91,6 +95,13 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
       routePath: AppRoutes.workEditRoute,
       component: work_detail_component.WorkDetailComponentNgFactory,
     ),
+    /*
+    new RouteDefinition(
+      routePath: AppRoutes.workKanbanRoute,
+      component: work_kanban_component.WorkKanbanComponentNgFactory,
+    ),
+    */
+
     new RouteDefinition(
       routePath: AppRoutes.workStagesRoute,
       component: work_stages_component.WorkStagesComponentNgFactory,
@@ -103,6 +114,7 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
       routePath: AppRoutes.workItemEditRoute,
       component: work_item_detail_component.WorkItemDetailComponentNgFactory,
     ),
+
   ];
 
   WorksFilterParam worksFilterParam;
@@ -197,13 +209,6 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
           }
       }
 
-    //  if (routerStatePrevious.toUrl() == AppRoutes.worksRoute.toUrl()) return;
-
-
-    //  List<Work> worksAux = await getWorks();
-
-    //  if (!DeepCollectionEquality().equals(_works, worksAux))
-
       _works = await getWorks();
 
       if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.works.index);
@@ -253,7 +258,6 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
   @override
   ngOnDestroy() async {
     _appLayoutService.enabledSearch = false;
-
   }
 
   void goToDetail() {
@@ -331,5 +335,9 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
     } else {
       expandedWorkId = null;
     }
+  }
+
+  goToWorkKanban(Work work) {
+      _router.navigate(AppRoutes.workKanbanRoute.toUrl(parameters: { AppRoutesParam.workIdParameter: work.id }));
   }
 }
