@@ -47,3 +47,33 @@ header {
   min-height: 60vh;
   max-height: 90vh;
 }
+
+/*
+.custom-expansionpanel-panel-specific-name-width {
+  min-width: 400px;
+}
+*/
+
+.custom-grid {
+  display: grid;
+  /* grid-template-columns: min-content auto; */
+  grid-template-columns: min-content auto;
+}
+
+.custom-grid-vertical {
+  display: inline-grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
+ /* grid-gap: 3px; */
+  justify-items: center;
+  align-items: center;
+}
+
+.margin-bottom {
+  margin-bottom: 2px;
+}
+
+.margin-top {
+  margin-top: 2px;
+}
+

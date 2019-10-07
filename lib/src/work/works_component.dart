@@ -38,7 +38,7 @@ import 'package:auge_web/src/history_timeline/history_timeline_component.dart';
 import 'package:auge_web/src/work/work_detail_component.dart';
 //import 'package:auge_web/src/work/work_stages_component.dart';
 import 'package:auge_web/src/work_item/work_items_component.dart';
-import 'package:auge_web/src/work_item/work_items_list_component.dart';
+import 'package:auge_web/src/work_item/work_items_component.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/services/app_routes.dart';
 
@@ -71,7 +71,6 @@ import 'package:auge_web/src/work_item/work_item_detail_component.template.dart'
       WorkSummaryComponent,
       WorkDetailComponent,
       WorkItemsComponent,
-      WorkItemsListComponent,
       HistoryTimelineComponent,
       //WorkStagesComponent,
     ])
@@ -126,7 +125,7 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
   Work selectedWork;
   String expandedWorkId;
   // To control workItem [list or [kanban]
-  SelectionView workItemSelectionView;
+  //SelectionView workItemSelectionView;
 
   // List<bool> wideControl = new List();
   // List<bool> expandedControl = new List();
@@ -158,7 +157,7 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
 
   @override
   void ngOnInit() async {
-    workItemSelectionView = SelectionView();
+   // workItemSelectionView = SelectionView();
   }
 
   set sortedBy(String sortedBy) {
@@ -218,7 +217,7 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
             .workIdQueryParameter], true);
       }
 
-      workItemSelectionView.selected = workItemSelectionView.selected ?? 'list';
+   //   workItemSelectionView.selected = workItemSelectionView.selected ?? 'list';
 
       _appLayoutService.enabledSearch = true;
 

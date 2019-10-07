@@ -1,25 +1,44 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
+import 'package:auge_web/src/app_layout/app_layout_service.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
+
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
+import 'package:angular_forms/angular_forms.dart';
 
+import 'package:angular_components/material_expansionpanel/material_expansionpanel_set.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
-import 'package:angular_components/material_button/material_button.dart';
-import 'package:angular_components/material_icon/material_icon.dart';
+import 'package:angular_components/material_tooltip/material_tooltip.dart';
+import 'package:angular_components/material_slider/material_slider.dart';
+import 'package:angular_components/material_checkbox/material_checkbox.dart';
+import 'package:angular_components/model/menu/menu.dart';
+import 'package:angular_components/model/ui/icon.dart';
+import 'package:angular_components/content/deferred_content.dart';
+import 'package:angular_components/material_menu/material_menu.dart';
 
+import 'package:auge_server/model/general/authorization.dart';
+import 'package:auge_server/model/general/user.dart';
 import 'package:auge_server/model/work/work.dart';
+import 'package:auge_server/model/work/work_item.dart';
+import 'package:auge_server/model/work/work_stage.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
+import 'package:auge_server/shared/message/model_messages.dart';
+
+import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/work_item/work_item_service.dart';
-import 'package:auge_web/src/work_item/work_items_kanban_component.dart';
-import 'package:auge_web/src/work_item/work_items_list_component.dart';
+import 'package:auge_web/src/work/work_service.dart';
+import 'package:auge_web/src/history_timeline/history_timeline_service.dart';
+import 'package:auge_web/src/work_item/work_item_detail_component.dart';
 
 import 'package:auge_web/services/app_routes.dart';
 
 @Component(
     selector: 'auge-work-items',
-    providers: const [WorkItemService],
+    providers: const [WorkService, WorkItemService],
     templateUrl: 'work_items_component.html',
     styleUrls: const [
       'work_items_component.css'
@@ -27,42 +46,89 @@ import 'package:auge_web/services/app_routes.dart';
     directives: const [
       coreDirectives,
       routerDirectives,
+      MaterialExpansionPanelSet,
       MaterialExpansionPanel,
-      MaterialButtonComponent,
-      MaterialIconComponent,
-      WorkItemsListComponent,
-      WorkItemsKanbanComponent,
+      MaterialTooltipDirective,
+      MaterialSliderComponent,
+      MaterialCheckboxComponent,
+      DeferredContentDirective,
+      MaterialMenuComponent,
+      WorkItemDetailComponent,
+      NgModel,
     ],
     pipes: const [commonPipes])
+class WorkItemsComponent with CanReuse /* with CanReuse implements OnActivate  */ {
 
-class WorkItemsComponent with CanReuse {
-
+  final AppLayoutService _appLayoutService;
+  final WorkItemService _workItemService;
+  final HistoryTimelineService _historyTimelineService;
   final Router _router;
 
   @Input()
   Work work;
 
-  @Input()
-  SelectionView selectionView;
+  WorkItem selectedWorkItem;
 
-  static final String workItemsLabel =  WorkItemMsg.label('Work Items');
+  MenuModel<MenuItem> menuModel;
 
-  WorkItemsComponent(this._router) {
 
+  static final String dueDateLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.dueDateField}');
+  static final String stageLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.workStageField}');
+  static final String completedLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.completedField}');
+  static final String checkItemsLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.checkItemsField}');
+
+  WorkItemsComponent(this._appLayoutService, this._workItemService, this._historyTimelineService, this._router) {
+    initializeDateFormatting(Intl.defaultLocale);
+
+    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , actionWithContext: (_) => goToDetail()), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), actionWithContext: (_) => delete())])], icon: new Icon('menu'));
   }
 
+  void selectWorkItem(WorkItem workItem) => this.selectedWorkItem = workItem;
 
-  String widthState(int workItemsCount, int stateWorkItemsCount, int withTotal) {
-    return (stateWorkItemsCount / workItemsCount * withTotal).toString();
+  void delete() async {
+    try {
+      await _workItemService.deleteWorkItem(selectedWorkItem);
+      work.workItems.remove(selectedWorkItem);
+    } catch (e) {
+      _appLayoutService.error = e.toString();
+      rethrow;
+    }
   }
 
-  // Add here, edit is handled on sub componented list and kanban
+  String dueDateColor(WorkItem workItem) {
+    return workItem.isOverdue ? 'hsl(0, 100%, 50%)' : null;
+  }
+
+  void updateWorkItem(WorkItem workItem) async {
+    try {
+
+      await _workItemService.saveWorkItem(work.id, workItem);
+
+      //TODO maybe this needs to be updated with parent onActivate.
+      workItem = await _workItemService.getWorkItem(workItem.id);
+      int i = work.workItems.indexWhere((it) => it.id == workItem.id);
+      if (i != -1) {
+        work.workItems[i] = workItem;
+        _historyTimelineService.refreshHistory(SystemModule.works.index);
+      }
+    } catch (e) {
+      _appLayoutService.error = e.toString();
+      rethrow;
+    }
+  }
+
+  List<WorkItem> get workItems => work.workItems;
+
+  String userUrlImage(User userMember) {
+    return common_service.userUrlImage(userMember.userProfile?.image);
+  }
+
+  // Just edit, because de add is called on super component.
   void goToDetail() {
-    _router.navigate(AppRoutes.workItemAddRoute.toUrl(parameters: { AppRoutesParam.workIdParameter: work.id }));
+      _router.navigate(AppRoutes.workItemEditRoute.toUrl(parameters: {
+        AppRoutesParam.workIdParameter: work.id,
+        AppRoutesParam.workItemIdParameter: selectedWorkItem.id }));
   }
-}
 
-//TODO Just used to stores last view selection, because this components are created again, even using CanReuse (Needs to investigate better)
-class SelectionView {
-  String selected;
+  String stateHslColor(State state) => WorkService.getStateHslColor(state);
 }

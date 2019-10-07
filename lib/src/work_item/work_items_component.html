@@ -1,27 +1,52 @@
-<div class="container-list custom-container-list">
-    <material-expansionpanel disabled
-                             [alwaysHideExpandIcon]="true"
-                             [expanded]="true"
-                             [showSaveCancel]="false">
-        <div name>
-            <span><strong>{{workItemsLabel}}</strong></span>
-        </div>
-        <div action>
-            <material-button (trigger)="selectionView.selected = 'list'">
-                <material-icon icon="view_list"></material-icon>
-            </material-button>
-            <material-button (trigger)="selectionView.selected = 'kanban'">
-                <material-icon icon="view_column"></material-icon>
-            </material-button>
-            <material-button (trigger)="goToDetail()">
-                <material-icon icon="add"></material-icon>
-            </material-button>
-        </div>
-        <div *ngIf="selectionView.selected == 'list'">
-            <auge-work-items-list [work]="work" ></auge-work-items-list>
-        </div>
-        <div *ngIf="selectionView.selected == 'kanban'">
-            <auge-work-items-kanban [work]="work"></auge-work-items-kanban>
-        </div>
-    </material-expansionpanel>
-</div>
+<material-expansionpanel-set>
+    <div *ngFor="let iWorkItem of workItems">
+        <material-expansionpanel disabled
+                                 [expanded]="false"
+                                 [hideExpandedHeader]="false"
+                                 [showSaveCancel]="false">
+            <div name class="custom-expansionpanel-panel-specific-name-width">
+                <div class="truncate-ellipsed-parent">
+                    <span class="truncate-ellipsed-block">{{iWorkItem.name}}</span>
+                </div>
+                <div class="w3-right" *ngFor="let member of iWorkItem.assignedTo">&nbsp;
+                    <span class="avatar" [style.background-image]="'url(' +  userUrlImage(member)  + ')'" [materialTooltip]="member.name"></span>
+                </div>
+            </div>
+            <div value>
+                <div class="w3-row-padding">
+                    <span class="w3-col l1">
+                        {{iWorkItem.completed}}%
+                    </span>
+                    <span class="w3-col l6">
+                        <material-slider [(value)]="iWorkItem.completed"
+                                         [min]="0"
+                                         [max]="100"
+                                         materialTooltip="{{completedLabel}}" (click)="updateWorkItem(iWorkItem)">
+                        </material-slider>
+                    </span>
+                    <span class="w3-col l3">
+                        <span materialTooltip="{{dueDateLabel}}" [style.color]="dueDateColor(iWorkItem)">{{iWorkItem.dueDate | date}}</span>
+                    </span>
+                    <span class="w3-col l2">
+                        <span materialTooltip="{{stageLabel}}" [style.color]="'hsl(' + stateHslColor(iWorkItem.workStage.state) + ')'">{{iWorkItem.workStage?.name}}</span>
+                    </span>
+                </div>
+                <div class="w3-row w3-col l12">
+                    <material-expansionpanel *ngIf="iWorkItem.checkItems.length > 0" name="{{checkItemsLabel}}" autoDismissable [showSaveCancel]="false" class="expansionpanel-flat-on-collapse-theme-no-border">
+                        <div *deferredContent>
+                            <div *ngFor="let iCheckItem of iWorkItem.checkItems">
+                                <material-checkbox class="width-200" [(ngModel)]="iCheckItem.finished" [label]="iCheckItem.name" (click)="updateWorkItem(iWorkItem)"></material-checkbox>
+                            </div>
+                        </div>
+                    </material-expansionpanel>
+                </div>
+            </div>
+            <div action>
+                <div>
+                    <material-menu [menu]="menuModel" (click)="selectWorkItem(iWorkItem)">
+                    </material-menu>
+                </div>
+            </div>
+        </material-expansionpanel>
+    </div>
+</material-expansionpanel-set>

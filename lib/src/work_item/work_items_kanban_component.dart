@@ -16,10 +16,12 @@ import 'package:angular_components/material_expansionpanel/material_expansionpan
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
 import 'package:angular_components/material_slider/material_slider.dart';
 import 'package:angular_components/material_checkbox/material_checkbox.dart';
+import 'package:angular_components/material_toggle/material_toggle.dart';
 import 'package:angular_components/model/menu/menu.dart';
 import 'package:angular_components/model/ui/icon.dart';
 import 'package:angular_components/content/deferred_content.dart';
 import 'package:angular_components/material_menu/material_menu.dart';
+import 'package:auge_web/src/work/work_summary_component.dart';
 
 import 'package:auge_server/model/general/authorization.dart';
 import 'package:auge_server/model/general/user.dart';
@@ -41,7 +43,7 @@ import 'package:auge_web/services/app_routes.dart';
 
 @Component(
     selector: 'auge-work-items-kanban',
-    providers: const [WorkItemService],
+    providers: const [WorkService, WorkItemService, HistoryTimelineService],
       templateUrl: 'work_items_kanban_component.html',
       styleUrls: const [
       'work_items_kanban_component.css'
@@ -51,24 +53,29 @@ import 'package:auge_web/services/app_routes.dart';
       routerDirectives,
       MaterialExpansionPanelSet,
       MaterialExpansionPanel,
+      MaterialToggleComponent,
       MaterialTooltipDirective,
       MaterialSliderComponent,
       MaterialCheckboxComponent,
       DeferredContentDirective,
       MaterialMenuComponent,
       WorkItemDetailComponent,
-      NgModel
+      NgModel,
+      WorkSummaryComponent,
     ],
     pipes: const [commonPipes])
 
-class WorkItemsKanbanComponent with CanReuse implements OnInit {
+class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
 
   final AppLayoutService _appLayoutService;
+  final WorkService _workService;
   final WorkItemService _workItemService;
   final HistoryTimelineService _historyTimelineService;
   final Router _router;
 
-  @Input()
+  String mainColWidth = '100%';
+  bool _timelineVisible = false;
+
   Work work;
 
   WorkItem selectedWorkItem;
@@ -80,21 +87,59 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit {
 
   MenuModel<MenuItem> menuModel;
 
+
+  static final String groupLabel = FieldMsg.label('${Work.className}.${Work.groupField}');
+  static final String leaderLabel =  FieldMsg.label('${Work.className}.${Work.leaderField}');
+
   static final String dueDateLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.dueDateField}');
   static final String completedLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.completedField}');
   static final String checkItemsLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.checkItemsField}');
 
 
-  WorkItemsKanbanComponent(this._appLayoutService, this._workItemService, this._historyTimelineService, this._router) {
+  WorkItemsKanbanComponent(this._appLayoutService, this._workService, this._workItemService, this._historyTimelineService, this._router) {
     initializeDateFormatting(Intl.defaultLocale);
 
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , actionWithContext: (_) => goToDetail()), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), actionWithContext: (_) => delete())])], icon: new Icon('menu'));
   }
 
+  @override
+  void ngOnInit() {
+    work = Work();
+  }
 
 
   @override
-  ngOnInit() {
+  void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
+    if (_workItemService.authService.authorizedOrganization == null ||
+        _workItemService.authService.authenticatedUser == null) {
+      _router.navigate(AppRoutes.authRoute.toUrl());
+      return;
+    }
+
+
+
+    try {
+
+      if (routerStateCurrent.parameters.containsKey(AppRoutesParam.workIdParameter)) {
+        String workId = routerStateCurrent.parameters[AppRoutesParam
+            .workIdParameter];
+
+        if (workId != null || workId.isNotEmpty) {
+          work = await _workService.getWork(workId, withWorkItems: true);
+        }
+      }
+
+      _appLayoutService.headerTitle = WorkItemMsg.label('Work Kanban');
+
+      if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.works.index);
+
+      _appLayoutService.enabledSearch = true;
+
+    } catch (e) {
+      _appLayoutService.error = e.toString();
+      rethrow;
+    }
+
     kanbanColumns = new List();
 
     // Define os estados com base no que está na iniciativa
@@ -106,6 +151,25 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit {
       if (it.workStage != null)
         kanbanColumns.singleWhere((ik) => ik.workStage.id == it.workStage.id).columnWorkItems.add(it);
     });
+
+  }
+
+  @override
+  ngOnDestroy() async {
+    _appLayoutService.enabledSearch = false;
+  }
+
+  bool get timelineVisible {
+    return _timelineVisible;
+  }
+  set timelineVisible(bool visible) {
+    _timelineVisible = visible;
+    if (_timelineVisible) {
+      mainColWidth = '75%';
+      _historyTimelineService.refreshHistory(SystemModule.works.index);
+    } else {
+      mainColWidth = '100%';
+    }
   }
 
   void drag(html.MouseEvent ev, KanbanColumn kanbanColumn, WorkItem workItem) {
@@ -116,7 +180,6 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit {
   void allowDrop(html.MouseEvent  ev) {
     ev.preventDefault();
   }
-
 
   drop(ev, KanbanColumn kanbanColumnDrop) {
     ev.preventDefault();
@@ -178,6 +241,17 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit {
 
   String stateHslColor(State state) => WorkService.getStateHslColor(state);
 
+  String composeTooltip(String label, String name) {
+    return label + ' ' + ((name == null) ? '(-)' : name);
+  }
+
+  String colorFromUuid(String id) {
+    return id == null ? '#ffffff' : '#' + id.substring(0, 6);
+  }
+
+  String firstLetter(String name) {
+    return name == null ? 'G' : name.substring(0, 1).toUpperCase();
+  }
 }
 
 class KanbanColumn {
