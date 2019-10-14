@@ -213,9 +213,27 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
   }
 
   void delete() async {
+    print('DEBUG delete');
+    print(selectedWorkItem?.id);
     try {
       await _workItemService.deleteWorkItem(selectedWorkItem);
+
       work.workItems.remove(selectedWorkItem);
+
+      KanbanColumn kanbanColumnDelete;
+      for (var kcStage in kanbanColumns) {
+        for (var cWI in kcStage.columnWorkItems) {
+          if (cWI.id == selectedWorkItem.id) {
+            kanbanColumnDelete = kcStage;
+            break;
+          }
+        }
+        if (kanbanColumnDelete != null) break;
+      }
+
+      kanbanColumnDelete.columnWorkItems.remove(selectedWorkItem);
+
+
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;
