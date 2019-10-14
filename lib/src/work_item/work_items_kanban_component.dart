@@ -17,6 +17,8 @@ import 'package:angular_components/material_tooltip/material_tooltip.dart';
 import 'package:angular_components/material_slider/material_slider.dart';
 import 'package:angular_components/material_checkbox/material_checkbox.dart';
 import 'package:angular_components/material_toggle/material_toggle.dart';
+import 'package:angular_components/material_button/material_button.dart';
+import 'package:angular_components/material_icon/material_icon.dart';
 import 'package:angular_components/model/menu/menu.dart';
 import 'package:angular_components/model/ui/icon.dart';
 import 'package:angular_components/content/deferred_content.dart';
@@ -41,6 +43,9 @@ import 'package:auge_web/src/work_item/work_item_detail_component.dart';
 
 import 'package:auge_web/services/app_routes.dart';
 
+// ignore_for_file: uri_has_not_been_generated
+import 'package:auge_web/src/work_item/work_item_detail_component.template.dart' as work_item_detail_component;
+
 @Component(
     selector: 'auge-work-items-kanban',
     providers: const [WorkService, WorkItemService, HistoryTimelineService],
@@ -62,6 +67,8 @@ import 'package:auge_web/services/app_routes.dart';
       WorkItemDetailComponent,
       NgModel,
       WorkSummaryComponent,
+      MaterialButtonComponent,
+      MaterialIconComponent,
     ],
     pipes: const [commonPipes])
 
@@ -87,7 +94,6 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
 
   MenuModel<MenuItem> menuModel;
 
-
   static final String groupLabel = FieldMsg.label('${Work.className}.${Work.groupField}');
   static final String leaderLabel =  FieldMsg.label('${Work.className}.${Work.leaderField}');
 
@@ -95,6 +101,17 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
   static final String completedLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.completedField}');
   static final String checkItemsLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.checkItemsField}');
 
+  final List<RouteDefinition> routes = [
+    new RouteDefinition(
+      routePath: AppRoutes.workItemKanbanAddRoute,
+      component: work_item_detail_component.WorkItemDetailComponentNgFactory,
+    ),
+    new RouteDefinition(
+      routePath: AppRoutes.workItemKanbanEditRoute,
+      component: work_item_detail_component.WorkItemDetailComponentNgFactory,
+    ),
+
+  ];
 
   WorkItemsKanbanComponent(this._appLayoutService, this._workService, this._workItemService, this._historyTimelineService, this._router) {
     initializeDateFormatting(Intl.defaultLocale);
@@ -115,8 +132,6 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
       _router.navigate(AppRoutes.authRoute.toUrl());
       return;
     }
-
-
 
     try {
 
@@ -140,7 +155,7 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
       rethrow;
     }
 
-    kanbanColumns = new List();
+    kanbanColumns = List();
 
     // Define os estados com base no que está na iniciativa
     work.workStages.forEach((es) { kanbanColumns.add(new KanbanColumn()..workStage = es);
@@ -233,10 +248,18 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
     }
   }
 
-  void goToDetail() {
-      _router.navigate(AppRoutes.workItemEditRoute.toUrl(parameters: {
-        AppRoutesParam.workIdParameter: work.id,
-        AppRoutesParam.workItemIdParameter: selectedWorkItem.id }));
+  void goToDetail([String stageId]) {
+
+    if (selectedWorkItem == null) {
+      print(AppRoutes.workItemKanbanAddRoute.toUrl(parameters: {
+        AppRoutesParam.workIdParameter: work.id }, queryParameters: {AppRoutesQueryParam.stageIdQueryParameter: stageId}));
+      _router.navigate(AppRoutes.workItemKanbanAddRoute.toUrl(parameters: {
+        AppRoutesParam.workIdParameter: work.id }, queryParameters: {AppRoutesQueryParam.stageIdQueryParameter: stageId}));
+
+    } else {
+      _router.navigate(AppRoutes.workItemKanbanEditRoute.toUrl(parameters: {
+        AppRoutesParam.workItemIdParameter: selectedWorkItem.id }, queryParameters: {AppRoutesQueryParam.stageIdQueryParameter: stageId}));
+    }
   }
 
   String stateHslColor(State state) => WorkService.getStateHslColor(state);

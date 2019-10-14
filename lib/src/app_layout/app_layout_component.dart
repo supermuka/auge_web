@@ -138,7 +138,7 @@ class AppLayoutComponent with CanReuse implements OnActivate {
       component: organization_component.OrganizationComponentNgFactory,
     ),
     new RouteDefinition(
-      routePath: AppRoutes.workKanbanRoute,
+      routePath: AppRoutes.workItemsKanbanRoute,
       component: work_items_kanban_component.WorkItemsKanbanComponentNgFactory,
     ),
   ];

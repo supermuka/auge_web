@@ -26,7 +26,8 @@
             <div class="w3-col m8">
                 <div class="input-container">
                     <label>{{stageLabel}}</label>
-                    <material-dropdown-select [buttonText]="stageSingleSelectLabel"
+                    <material-dropdown-select [disabled]="stageIdOrigin != null"
+                                              [buttonText]="stageSingleSelectLabel"
                                               [selection]="stageSingleSelectModel"
                                               [options]="stageOptions"
                                               [itemRenderer]="stageItemRenderer">

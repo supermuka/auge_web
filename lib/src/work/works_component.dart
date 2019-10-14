@@ -38,14 +38,13 @@ import 'package:auge_web/src/history_timeline/history_timeline_component.dart';
 import 'package:auge_web/src/work/work_detail_component.dart';
 //import 'package:auge_web/src/work/work_stages_component.dart';
 import 'package:auge_web/src/work_item/work_items_component.dart';
-import 'package:auge_web/src/work_item/work_items_component.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/services/app_routes.dart';
 
 // ignore_for_file: uri_has_not_been_generated
 import 'package:auge_web/src/work/work_detail_component.template.dart' as work_detail_component;
 import 'package:auge_web/src/work/work_stages_component.template.dart' as work_stages_component;
-//import 'package:auge_web/src/work/work_kanban_component.template.dart' as work_kanban_component;
+import 'package:auge_web/src/work_item/work_items_kanban_component.template.dart' as work_items_kanban_component;
 import 'package:auge_web/src/work_item/work_item_detail_component.template.dart' as work_item_detail_component;
 
 @Component(
@@ -94,12 +93,10 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
       routePath: AppRoutes.workEditRoute,
       component: work_detail_component.WorkDetailComponentNgFactory,
     ),
-    /*
     new RouteDefinition(
-      routePath: AppRoutes.workKanbanRoute,
-      component: work_kanban_component.WorkKanbanComponentNgFactory,
+      routePath: AppRoutes.workItemsKanbanRoute,
+      component: work_items_kanban_component.WorkItemsKanbanComponentNgFactory,
     ),
-    */
 
     new RouteDefinition(
       routePath: AppRoutes.workStagesRoute,
@@ -113,7 +110,6 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
       routePath: AppRoutes.workItemEditRoute,
       component: work_item_detail_component.WorkItemDetailComponentNgFactory,
     ),
-
   ];
 
   WorksFilterParam worksFilterParam;
@@ -337,6 +333,8 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
   }
 
   goToWorkKanban(Work work) {
-      _router.navigate(AppRoutes.workKanbanRoute.toUrl(parameters: { AppRoutesParam.workIdParameter: work.id }));
+    print('DEBUG 000');
+    print(AppRoutes.workItemsKanbanRoute.toUrl(parameters: { AppRoutesParam.workIdParameter: work.id }));
+      _router.navigate(AppRoutes.workItemsKanbanRoute.toUrl(parameters: { AppRoutesParam.workIdParameter: work.id }));
   }
 }

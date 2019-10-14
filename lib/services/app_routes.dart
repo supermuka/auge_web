@@ -18,7 +18,8 @@ class AppRoutesQueryParam {
   static const organizationIdQueryParameter = 'organization_id';
   static const workIdQueryParameter = 'work_id';
   static const workItemIdQueryParameter = 'work_item_id';
-  static const objectiveIdQueryParameter = 'work_id';
+  static const stageIdQueryParameter = 'stage_id';
+  static const objectiveIdQueryParameter = 'objective_id';
   static const objectiveStartDateQueryParameter = 'start_date';
   static const objectiveEndDateQueryParameter = 'end_date';
   static const measureCurrentValueQueryParameter = 'current_value';
@@ -61,7 +62,7 @@ class AppRoutes {
       path: ':${AppRoutesParam.workIdParameter}/edit',
       parent: worksRoute
   );
-  static final workKanbanRoute = new RoutePath(
+  static final workItemsKanbanRoute = new RoutePath(
       path: 'works/:${AppRoutesParam.workIdParameter}/kanban',
       parent: appLayoutRoute
   );
@@ -130,6 +131,14 @@ class AppRoutes {
   static final workItemEditRoute = new RoutePath(
       path: ':${AppRoutesParam.workIdParameter}/work_items/:${AppRoutesParam.workItemIdParameter}/edit',
       parent: worksRoute
+  );
+  static final workItemKanbanAddRoute = new RoutePath(
+      path: 'work_items/add',
+      parent: workItemsKanbanRoute
+  );
+  static final workItemKanbanEditRoute = new RoutePath(
+      path: 'work_items/:${AppRoutesParam.workItemIdParameter}/edit',
+      parent: workItemsKanbanRoute
   );
   static final userAddRoute = new RoutePath(
       path: 'add',

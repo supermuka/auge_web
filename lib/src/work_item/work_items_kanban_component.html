@@ -12,11 +12,12 @@
                     [showSaveCancel]="false"
                     [expanded]="true"
                     [disabled]="true">
+                <!-- div name and value are the same to WorksComponent -->
                 <div name class="custom-expansionpanel-panel-specific-name-width">
-                                    <span class="truncate-ellipsed-parent">
-                                        <span class="truncate-ellipsed"><strong>{{work.name}}</strong></span>
-                                        <div class="truncate-ellipsed">{{work.description}}</div>
-                                    </span>
+                    <span class="truncate-ellipsed-parent">
+                        <span class="truncate-ellipsed"><strong>{{work.name}}</strong></span>
+                        <div class="truncate-ellipsed">{{work.description}}</div>
+                    </span>
                 </div>
                 <div class="w3-row" value>
                     <div class="w3-col m9">
@@ -38,14 +39,17 @@
                     </div>
                 </div>
                 <div class="container-flex-row">
-                    <div *ngFor="let kanbanColumn of kanbanColumns">
-                        <div class="items-column" (drop)="drop($event, kanbanColumn)" (dragover)="allowDrop($event)">
+                    <div *ngFor="let kanbanColumn of kanbanColumns" class="column-divider">
+                        <div (drop)="drop($event, kanbanColumn)" (dragover)="allowDrop($event)" class="items-column">
                             <header [style.background-color]="'hsl(' + stateHslColor(kanbanColumn.workStage.state) + ')'">
                                 <h7><strong>{{kanbanColumn.workStage.name}}</strong></h7>
+                                <material-button class="w3-right" icon (trigger)="selectWorkItem(null);goToDetail(kanbanColumn.workStage.id)">
+                                    <material-icon icon="add"></material-icon>
+                                </material-button>
                             </header>
                             <material-expansionpanel-set>
                                 <div *ngFor="let iColumnWorkItem of kanbanColumn.columnWorkItems">
-                                    <div draggable="true" (dragstart)="drag($event, kanbanColumn, iColumnWorkItem)" >
+                                    <div class="column-stage" draggable="true" (dragstart)="drag($event, kanbanColumn, iColumnWorkItem)" >
                                         <material-expansionpanel disabled
                                                                  [expanded]="false"
                                                                  [hideExpandedHeader]="false"
@@ -103,3 +107,4 @@
          </div>
     </div>
 </div>
+<router-outlet [routes]="routes"></router-outlet>

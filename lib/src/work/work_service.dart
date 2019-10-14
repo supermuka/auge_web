@@ -11,11 +11,9 @@ import 'package:auge_web/services/auge_api_service.dart';
 import 'package:auge_server/model/work/work.dart';
 import 'package:auge_server/model/work/work_stage.dart';
 
-import 'package:auge_server/src/protos/generated/google/protobuf/empty.pb.dart' as empty_pb;
 import 'package:auge_server/src/protos/generated/google/protobuf/wrappers.pb.dart' as wrappers_pb;
 import 'package:auge_server/src/protos/generated/work/work_work_item.pbgrpc.dart' as work_work_item_pbgrpc;
 import 'package:auge_server/src/protos/generated/work/work_stage.pbgrpc.dart' as work_stage_pbgrpc;
-import 'package:auge_server/src/protos/generated/work/state.pbgrpc.dart' as state_pbgrpc;
 
 @Injectable()
 class WorkService {
@@ -24,15 +22,13 @@ class WorkService {
 
   work_work_item_pbgrpc.WorkServiceClient _workServiceClient;
   work_stage_pbgrpc.WorkStageServiceClient _workStageServiceClient;
-  state_pbgrpc.StateServiceClient _stateServiceClient;
+
 
   WorkService(this._authService, this._augeApiService) {
     _workServiceClient =
         work_work_item_pbgrpc.WorkServiceClient(_augeApiService.channel);
     _workStageServiceClient =
         work_stage_pbgrpc.WorkStageServiceClient(_augeApiService.channel);
-    _stateServiceClient =
-        state_pbgrpc.StateServiceClient(_augeApiService.channel);
   }
 
   get authService => _authService;

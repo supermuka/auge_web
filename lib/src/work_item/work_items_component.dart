@@ -18,6 +18,8 @@ import 'package:angular_components/model/menu/menu.dart';
 import 'package:angular_components/model/ui/icon.dart';
 import 'package:angular_components/content/deferred_content.dart';
 import 'package:angular_components/material_menu/material_menu.dart';
+import 'package:angular_components/material_button/material_button.dart';
+import 'package:angular_components/material_icon/material_icon.dart';
 
 import 'package:auge_server/model/general/authorization.dart';
 import 'package:auge_server/model/general/user.dart';
@@ -46,6 +48,8 @@ import 'package:auge_web/services/app_routes.dart';
     directives: const [
       coreDirectives,
       routerDirectives,
+      MaterialButtonComponent,
+      MaterialIconComponent,
       MaterialExpansionPanelSet,
       MaterialExpansionPanel,
       MaterialTooltipDirective,
@@ -71,6 +75,7 @@ class WorkItemsComponent with CanReuse /* with CanReuse implements OnActivate  *
 
   MenuModel<MenuItem> menuModel;
 
+  static final String workItemsLabel = WorkItemMsg.label('Work Items');
 
   static final String dueDateLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.dueDateField}');
   static final String stageLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.workStageField}');
@@ -125,9 +130,15 @@ class WorkItemsComponent with CanReuse /* with CanReuse implements OnActivate  *
 
   // Just edit, because de add is called on super component.
   void goToDetail() {
+    if (selectedWorkItem == null) {
+      _router.navigate(AppRoutes.workItemAddRoute.toUrl(parameters: {
+        AppRoutesParam.workIdParameter: work.id }));
+    } else {
       _router.navigate(AppRoutes.workItemEditRoute.toUrl(parameters: {
         AppRoutesParam.workIdParameter: work.id,
         AppRoutesParam.workItemIdParameter: selectedWorkItem.id }));
+    }
+
   }
 
   String stateHslColor(State state) => WorkService.getStateHslColor(state);

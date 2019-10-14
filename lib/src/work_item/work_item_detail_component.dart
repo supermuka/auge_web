@@ -104,7 +104,7 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
 */
 
   String workId;
-
+  String stageIdOrigin;
   WorkItem workItem;
 
   String memberInputText = '';
@@ -170,6 +170,10 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
 
     previousPath = previous.path;
 
+    print('DEBUG AA');
+    print(AppRoutesParam.workIdParameter);
+    print(current.parameters.containsKey(AppRoutesParam.workIdParameter));
+
     if (current.parameters.containsKey(AppRoutesParam.workIdParameter)) {
       workId = current.parameters[AppRoutesParam.workIdParameter];
     }
@@ -192,6 +196,11 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
       rethrow;
     }
 
+    // If Stage Id is passed
+    if (current.queryParameters.containsKey(AppRoutesQueryParam.stageIdQueryParameter)) {
+      stageIdOrigin = current.queryParameters[AppRoutesQueryParam.stageIdQueryParameter];
+    }
+
     memberOptions = new StringSelectionOptions<User>(
         _users, toFilterableString: (User user) => user.name);
 
@@ -207,7 +216,6 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
     List<WorkStage> workStages;
     workStages = await _workService.getWorkStages(workId);
 
-
     if (workStages != null && workStages.isNotEmpty) {
       stageOptions = new SelectionOptions.fromList( workStages );
 
@@ -221,7 +229,11 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
         });
 
       if (workItem.workStage == null) {
-        workItem.workStage = workStages.first;
+        if (stageIdOrigin == null) {
+          workItem.workStage = workStages.first;
+        } else {
+          workItem.workStage = workStages.firstWhere((t) => t.id == stageIdOrigin);
+        }
       }
       stageSingleSelectModel.select(workItem.workStage);
     }
