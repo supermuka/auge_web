@@ -196,15 +196,17 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
     ev.preventDefault();
   }
 
-  drop(ev, KanbanColumn kanbanColumnDrop) {
+  drop(ev, KanbanColumn kanbanColumnDrop) async {
     ev.preventDefault();
 
     kanbanColumnDnD.columnWorkItems.remove(workItemDnD);
     workItemDnD.workStage = kanbanColumnDrop.workStage;
 
-    _workItemService.saveWorkItem(work.id, workItemDnD);
+    await _workItemService.saveWorkItem(work.id, workItemDnD);
 
-    kanbanColumnDrop.columnWorkItems.add(workItemDnD);
+    //TODO, por causa de performance, talvez o save precisaria retornar o ID + Version
+    WorkItem workItemUpdated = await _workItemService.getWorkItem(workItemDnD.id);
+    if (workItemUpdated != null) kanbanColumnDrop.columnWorkItems.add(workItemUpdated);
 
     kanbanColumnDnD = null;
     workItemDnD = null;
