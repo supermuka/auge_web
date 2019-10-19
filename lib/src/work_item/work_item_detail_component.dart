@@ -1,6 +1,10 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
+import 'dart:html' as html;
+import 'dart:convert' show base64;
+import 'dart:typed_data' show Uint8List;
+
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -37,6 +41,7 @@ import 'package:angular_components/material_checkbox/material_checkbox.dart';
 import 'package:angular_components/material_chips/material_chip.dart';
 import 'package:angular_components/material_chips/material_chips.dart';
 import 'package:angular_components/material_datepicker/material_datepicker.dart';
+import 'package:angular_components/material_tooltip/material_tooltip.dart';
 
 import 'package:auge_server/model/work/work_stage.dart';
 import 'package:auge_server/model/work/work_item.dart';
@@ -84,6 +89,7 @@ import 'work_item_detail_component.template.dart' as work_item_detail_component;
       MaterialChipsComponent,
       MaterialChipComponent,
       MaterialDatepickerComponent,
+      MaterialTooltipDirective,
     ])
 
 class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
@@ -130,10 +136,16 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
 
   String previousPath;
 
+  bool attachmentDragOver = false;
+
+  html.InputElement _uploadFile;
+
   WorkItemDetailComponent(this._userService, this._workService, this._workItemService, this._router /*, this._location*/)  {
 
     initializeDateFormatting(Intl.defaultLocale , null);
     memberSingleSelectModel = SelectionModel.single();
+
+    _uploadFile = html.querySelector("#upload_file");
 
   }
 
@@ -145,6 +157,8 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
   static final String editWorkItemLabel =  WorkItemMsg.label('Edit Work Item');
   static final String noMatchLabel = WorkItemMsg.label('No Match');
   static final String selectValueLabel = WorkItemMsg.label('Select a value');
+  static final String dropFileHereLabel = WorkItemMsg.label('Drop File Here');
+
 
   static final String nameLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.nameField}');
   static final String descriptionLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.descriptionField}');
@@ -152,6 +166,7 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
   static final String completedLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.completedField}');
   static final String stageLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.workStageField}');
   static final String assignedToLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.assignedToField}');
+  static final String attachmentsLabel = FieldMsg.label('${WorkItem.className}.${WorkItem.attachmentsField}');
   static final String checkItemLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.checkItemsField}');
 
   static final String valuePercentIntervalMsg = WorkItemMsg.valuePercentIntervalMsg();
@@ -161,6 +176,11 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
     // Clone the object to have an intermediate
     workItem =
         WorkItem(); // need to create, because the angular throws a exception if the query delay.
+
+    print('AAAAAA');
+    _uploadFile = html.querySelector("#upload_file");
+    print(_uploadFile);
+
   }
 
   @override
@@ -169,10 +189,6 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
     modalVisible = true;
 
     previousPath = previous.path;
-
-    print('DEBUG AA');
-    print(AppRoutesParam.workIdParameter);
-    print(current.parameters.containsKey(AppRoutesParam.workIdParameter));
 
     if (current.parameters.containsKey(AppRoutesParam.workIdParameter)) {
       workId = current.parameters[AppRoutesParam.workIdParameter];
@@ -237,6 +253,11 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
       }
       stageSingleSelectModel.select(workItem.workStage);
     }
+
+    print('bbbbbb');
+    _uploadFile = html.querySelector("#upload_file");
+    print(_uploadFile);
+
   }
 
   @override
@@ -246,6 +267,10 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
 
   removeMember(User user) {
     workItem.assignedTo.remove(user);
+  }
+
+  removeAttachment(WorkItemAttachment workItemAttachment) {
+    workItem.attachments.remove(workItemAttachment);
   }
 
   void saveWorkItem() async {
@@ -362,6 +387,121 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
   bool get validCheckItemInput {
     return (checkItemEntry != null && checkItemEntry.isNotEmpty);
   }
+
+  void addAttachmentFile(html.File file) {
+    html.FileReader reader = html.FileReader();
+
+    reader.onLoad.listen((fileEvent) {
+      Uint8List fileContent = reader.result;
+      // Code doing stuff with fileContent goes here!
+
+      String content = base64.encode(fileContent);
+
+      workItem.attachments..add(WorkItemAttachment()..name = file.name..type = file.type..content = content);
+
+      //Image image = decodeImage(fileContent);
+
+      //Image thumbnail = copyResize(image, width: 120, height: 120);
+
+      //user.userProfile.image = base64.encode(encodePng(thumbnail));
+
+    });
+
+    reader.onError.listen((itWentWrongEvent) {
+      // Handle the error
+    });
+
+    reader.readAsArrayBuffer(file);
+  }
+
+  void uploadFile() async {
+    //   html.InputElement _uploadImage = html.querySelector("#upload_image");
+
+    html.FileList files = _uploadFile.files;
+    if (files.length > 0) {
+      html.File file = files.item(0);
+      addAttachmentFile(file);
+    }
+  }
+
+  void dropFile(html.MouseEvent ev) {
+    // Prevent default behavior (Prevent file from being opened)
+    ev.preventDefault();
+
+
+    if (ev.dataTransfer.items.length != 0) {
+      // Use DataTransferItemList interface to access the file(s)
+      for (var i = 0; i < ev.dataTransfer.items.length; i++) {
+        // If dropped items aren't files, reject them
+        if (ev.dataTransfer.items[i].kind == 'file') {
+          html.File file = ev.dataTransfer.items[i].getAsFile();
+          addAttachmentFile(file);
+        }
+      }
+    } else {
+      throw Exception('Event dataTransfer.items.length is zero');
+      /*
+      // Use DataTransfer interface to access the file(s)
+      for (var i = 0; i < ev.dataTransfer.files.length; i++) {
+
+
+       // html.File file = files.item(0);
+
+        html.FileReader reader = new html.FileReader();
+
+        reader.onLoad.listen((fileEvent) {
+          Uint8List fileContent = reader.result;
+          // Code doing stuff with fileContent goes here!
+
+          String content = String.fromCharCodes(fileContent);
+
+          print('2222');
+          print(content);
+        //  workItem.attachments..add(WorkItemAttachment()..name = file.name..content = content);
+
+
+          //Image image = decodeImage(fileContent);
+
+          //Image thumbnail = copyResize(image, width: 120, height: 120);
+
+          //user.userProfile.image = base64.encode(encodePng(thumbnail));
+
+        });
+
+        reader.onError.listen((itWentWrongEvent) {
+          // Handle the error
+        });
+
+        reader.readAsArrayBuffer(ev.dataTransfer.files[i]);
+
+      }
+      */
+    }
+  }
+
+  void dragOver(html.MouseEvent  ev) {
+    ev.preventDefault();
+    attachmentDragOver = true;
+  }
+
+  void dragLeave(html.MouseEvent  ev) {
+    attachmentDragOver = false;
+  }
+
+  void selectUploadFile() async {
+    print('selectUploadFile');
+    print(_uploadFile);
+
+    _uploadFile.click();
+  }
+
+/*
+  String attachmentSymbol() {
+    //return String.fromCharCode(55357);
+    return '\uD83D\uDCCE'; // '\u00a9';
+    //1F4CE 1f4ce
+  }
+*/
 }
 
 @Component(

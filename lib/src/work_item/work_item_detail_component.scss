@@ -1,5 +1,7 @@
+@import 'package:angular_components/css/material/material';
 @import 'package:angular_components/css/material/shadow';
 @import 'package:auge_web/scss/common';
+@import 'package:angular_components/material_input/mixins';
 
 .width-200 {
    width: 200px;
@@ -24,4 +26,14 @@ material-dropdown-select { width: 250px; min-width: 250px; }
 .material-list-item {
     padding: -16px;
     margin: -16px;
+}
+
+.material-input-disabled-color-custom-true {
+  @include material-input-disabled-underline-color($mat-blue-500);
+  //@include material-input-disabled-input-color($mat-blue-500);
+  @include input-label-color($mat-blue-500);
+}
+
+input[type="file"] {
+    display: none;
 }

@@ -127,6 +127,8 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
   UserDetailComponent(this._userService, this._organizationService, this._location) {
     userIdentityProviderSingleSelectModel = SelectionModel<int>.single();
     userAccessOptions = List<Option>();
+
+    _uploadImage = html.querySelector("#upload_image");
   }
 
   // Define messages and labels
@@ -199,7 +201,8 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
     organizationConfiguration = await _organizationService.getOrganizationConfiguration(organizationId: _userService.authService.authorizedOrganization.id);
 
-    _uploadImage = html.querySelector("#upload_image");
+
+
   }
 
   @override
@@ -475,6 +478,8 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
   bool isUserAccessAdded() {
     return (userAccesses.indexWhere((t) => t.organization.id == _userService.authService.authorizedOrganization.id) != -1);
   }
+
+
 }
 
 class Option {

@@ -58,7 +58,21 @@
             <material-chips *ngFor="let member of workItem?.assignedTo">
                 <material-chip [hasLeftIcon]="true" (remove)="removeMember(member)">
                     <div left-icon class="avatar" [style.background-image]="'url(' +  userUrlImage(member)  + ')'"></div>
-                    {{member?.name}}
+                    {{member.name}}
+                </material-chip>
+            </material-chips>
+        </div>
+        <div class="w3-row">
+            <material-input class="w3-col material-input-disabled-color-custom-{{attachmentDragOver}}" style="width:90%;" [disabled]="true" [ngModel]="dropFileHereLabel" floatingLabel [label]="attachmentsLabel" (drop)="dropFile($event)" (dragover)="dragOver($event)" (dragleave)="dragLeave($event)"></material-input>
+            <input id="upload_file" type="file" (change)="uploadFile()">
+            <material-button class="w3-rest w3-right" icon (trigger)="selectUploadFile()">
+                <material-icon icon="attachment"></material-icon>
+            </material-button>
+        </div>
+        <div class="w3-row">
+            <material-chips *ngFor="let attachment of workItem?.attachments">
+                <material-chip  (remove)="removeAttachment(attachment)">
+                    {{attachment.name}}
                 </material-chip>
             </material-chips>
         </div>
