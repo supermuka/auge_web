@@ -71,4 +71,11 @@ class WorkItemService {
         work_work_item_pbgrpc.WorkItemGetRequest()..id = id)));
   }
 
+  /// Return [Workitem] by id
+  Future<WorkItem> getWorkItemAttachment(String id) async {
+    // return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
+    return WorkItem()..readFromProtoBuf((await _workItemServiceClient.getWorkItemAttachment(
+        work_work_item_pbgrpc.WorkItemAttachmentGetRequest()..id = id)));
+  }
+
 }

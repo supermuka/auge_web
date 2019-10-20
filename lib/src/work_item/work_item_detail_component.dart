@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:angular/angular.dart';
+import 'package:angular/security.dart';
 import 'package:angular_router/angular_router.dart';
 import 'package:auge_web/services/app_routes.dart';
 
@@ -100,6 +101,7 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
   final WorkService _workService;
   final WorkItemService _workItemService;
   final Router _router;
+  final DomSanitizationService _domSanitizationService;
   //final Location _location;
   /*
   @Input()
@@ -140,7 +142,7 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
 
   html.InputElement _uploadFile;
 
-  WorkItemDetailComponent(this._userService, this._workService, this._workItemService, this._router /*, this._location*/)  {
+  WorkItemDetailComponent(this._userService, this._workService, this._workItemService, this._router, this._domSanitizationService /*, this._location*/)  {
 
     initializeDateFormatting(Intl.defaultLocale , null);
     memberSingleSelectModel = SelectionModel.single();
@@ -502,6 +504,15 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
     //1F4CE 1f4ce
   }
 */
+  /// https://angulardart.dev/guide/security
+  SafeUrl href(WorkItemAttachment workItemAttachment) {
+    if (workItemAttachment.content.isEmpty) {
+
+    }
+    String url = 'data:application/octet-stream;base64,${workItemAttachment.content}';
+    return _domSanitizationService.bypassSecurityTrustUrl(url);
+    //return url;
+  }
 }
 
 @Component(

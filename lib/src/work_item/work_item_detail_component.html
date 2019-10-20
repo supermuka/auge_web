@@ -72,7 +72,8 @@
         <div class="w3-row">
             <material-chips *ngFor="let attachment of workItem?.attachments">
                 <material-chip  (remove)="removeAttachment(attachment)">
-                    {{attachment.name}}
+                    <!-- a download="{{attachment.name}}" href="data:application/octet-stream;base64,PD94ANDSOON">{{attachment.name}}</a -->
+                    <a download="{{attachment.name}}" href="{{href(attachment)}}">{{attachment.name}}</a>
                 </material-chip>
             </material-chips>
         </div>
