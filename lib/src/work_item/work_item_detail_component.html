@@ -71,9 +71,9 @@
         </div>
         <div class="w3-row">
             <material-chips *ngFor="let attachment of workItem?.attachments">
-                <material-chip  (remove)="removeAttachment(attachment)">
+                <material-chip  (remove)="removeAttachment(attachment)" >
                     <!-- a download="{{attachment.name}}" href="data:application/octet-stream;base64,PD94ANDSOON">{{attachment.name}}</a -->
-                    <a download="{{attachment.name}}" href="{{href(attachment)}}">{{attachment.name}}</a>
+                    <a id="download-file-{{attachment.id}}" class="text-decoration-none" [download]="attachment.name" [href]="href(attachment)" (click)="loadAttachmentContent($event, attachment)">{{attachment.name}}</a>
                 </material-chip>
             </material-chips>
         </div>
@@ -84,7 +84,6 @@
                     <material-button *ngIf="selectedCheckItem == null" [disabled]="!validCheckItemInput" icon (trigger)="addCheckItem()">
                         <material-icon icon="add"></material-icon>
                     </material-button>
-
                     <material-button *ngIf="selectedCheckItem != null" [disabled]="!validCheckItemInput" icon (trigger)="updateCheckItem(selectedCheckItem)">
                         <material-icon icon="done"></material-icon>
                     </material-button>

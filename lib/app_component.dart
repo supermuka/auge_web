@@ -21,7 +21,8 @@ import 'package:auge_web/src/app_layout/app_layout_component.template.dart' as a
     styleUrls: const [
     'app_component.css',
     ],
-    providers: const <dynamic>[AugeApiService, AuthService],
+    providers: const <dynamic>[AugeApiService,
+      AuthService],
     directives: const [
       coreDirectives,
       routerDirectives,

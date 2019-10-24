@@ -103,13 +103,7 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
   final Router _router;
   final DomSanitizationService _domSanitizationService;
   //final Location _location;
-  /*
-  @Input()
-  Work work;
 
-  @Input()
-  String selectedWorkItemId;
-*/
 
   String workId;
   String stageIdOrigin;
@@ -142,12 +136,15 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
 
   html.InputElement _uploadFile;
 
+  final String urlBaseAttachment = 'data:application/octet-stream;base64,';
+
   WorkItemDetailComponent(this._userService, this._workService, this._workItemService, this._router, this._domSanitizationService /*, this._location*/)  {
 
     initializeDateFormatting(Intl.defaultLocale , null);
     memberSingleSelectModel = SelectionModel.single();
 
     _uploadFile = html.querySelector("#upload_file");
+
 
   }
 
@@ -179,9 +176,8 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
     workItem =
         WorkItem(); // need to create, because the angular throws a exception if the query delay.
 
-    print('AAAAAA');
     _uploadFile = html.querySelector("#upload_file");
-    print(_uploadFile);
+
 
   }
 
@@ -256,9 +252,7 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
       stageSingleSelectModel.select(workItem.workStage);
     }
 
-    print('bbbbbb');
     _uploadFile = html.querySelector("#upload_file");
-    print(_uploadFile);
 
   }
 
@@ -284,6 +278,7 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
       rethrow;
     }
   }
+
 
   void closeDetail([String workItemId]) {
     //_location.back();
@@ -442,42 +437,6 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
       }
     } else {
       throw Exception('Event dataTransfer.items.length is zero');
-      /*
-      // Use DataTransfer interface to access the file(s)
-      for (var i = 0; i < ev.dataTransfer.files.length; i++) {
-
-
-       // html.File file = files.item(0);
-
-        html.FileReader reader = new html.FileReader();
-
-        reader.onLoad.listen((fileEvent) {
-          Uint8List fileContent = reader.result;
-          // Code doing stuff with fileContent goes here!
-
-          String content = String.fromCharCodes(fileContent);
-
-          print('2222');
-          print(content);
-        //  workItem.attachments..add(WorkItemAttachment()..name = file.name..content = content);
-
-
-          //Image image = decodeImage(fileContent);
-
-          //Image thumbnail = copyResize(image, width: 120, height: 120);
-
-          //user.userProfile.image = base64.encode(encodePng(thumbnail));
-
-        });
-
-        reader.onError.listen((itWentWrongEvent) {
-          // Handle the error
-        });
-
-        reader.readAsArrayBuffer(ev.dataTransfer.files[i]);
-
-      }
-      */
     }
   }
 
@@ -491,27 +450,36 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
   }
 
   void selectUploadFile() async {
-    print('selectUploadFile');
-    print(_uploadFile);
 
     _uploadFile.click();
   }
 
-/*
-  String attachmentSymbol() {
-    //return String.fromCharCode(55357);
-    return '\uD83D\uDCCE'; // '\u00a9';
-    //1F4CE 1f4ce
+
+  /// https://angulardart.dev/guide/securityloadAttachmentContent
+  SafeUrl href(WorkItemAttachment workItemAttachment)  {
+    if (workItemAttachment?.content != null && workItemAttachment.content.isNotEmpty) {
+      String url = '${urlBaseAttachment}${workItemAttachment.content}';
+      return _domSanitizationService.bypassSecurityTrustUrl(url);
+    } else {
+      return _domSanitizationService.bypassSecurityTrustUrl(null);
+    }
   }
-*/
-  /// https://angulardart.dev/guide/security
-  SafeUrl href(WorkItemAttachment workItemAttachment) {
-    if (workItemAttachment.content.isEmpty) {
+
+  void loadAttachmentContent(html.Event event, WorkItemAttachment workItemAttachment) async {
+
+    if (workItemAttachment != null && (workItemAttachment.content == null || workItemAttachment.content.isEmpty)) {
+      event.preventDefault();
+
+      WorkItemAttachment wIA = await _workItemService.getWorkItemAttachment(workItemAttachment.id);
+
+      int i = workItem.attachments.indexWhere((t) => t.id == workItemAttachment.id);
+      workItem.attachments[i] = wIA;
+
+      html.Element element = html.querySelector('#download-file-${wIA.id}');
+
+      element.click();
 
     }
-    String url = 'data:application/octet-stream;base64,${workItemAttachment.content}';
-    return _domSanitizationService.bypassSecurityTrustUrl(url);
-    //return url;
   }
 }
 

@@ -23,9 +23,14 @@ import 'package:auge_web/src/map/map_service.dart';
 
 import 'package:auge_web/services/app_routes.dart';
 
+import 'package:angular_components/laminate/popup/module.dart';
+import 'package:angular_components/material_tooltip/module.dart';
+
 @Component(
   selector: 'auge-map',
-  providers: const [MapService, ObjectiveService],
+  providers: const [MapService, ObjectiveService,
+    popupBindings,
+    materialTooltipBindings],
   templateUrl: 'map_component.html',
   styleUrls: const ['map_component.css'],
   pipes: [commonPipes],
@@ -40,7 +45,7 @@ import 'package:auge_web/services/app_routes.dart';
   ],
 )
 
-class MapComponent with CanReuse implements OnActivate {
+class MapComponent /* with CanReuse  COMENTADO POIS SE USAR, O TOOLTIP NÃO DESAPARECE QUANDO SE NAVEGA PARA OUTRA PÁGINA */ implements OnActivate {
 
   final preferredTooltipPositions = const [RelativePosition.OffsetBottomLeft, RelativePosition.OffsetBottomRight];
 
