@@ -52,7 +52,7 @@ class HistoryTimelineService {
     common_pbgrpc.DateTimeResponse dateTimeResponse = await _commonServiceClient.getDateTime(common_pbgrpc.DateTimeGetRequest()..isUtc = true);
 
     // Convert Protobuf timestamp to Dart DateTime
-    return CommonUtils.dateTimeFromTimestamp(dateTimeResponse.dateTime);
+    return /* CommonUtils.dateTimeFromTimestamp(dateTimeResponse.dateTime) */ dateTimeResponse.dateTime.toDateTime();
 
     /*
     DateTime.fromMicrosecondsSinceEpoch(

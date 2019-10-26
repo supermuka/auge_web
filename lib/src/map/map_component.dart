@@ -4,6 +4,7 @@
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
 
+import 'package:angular_components/material_icon/material_icon.dart';
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
 import 'package:angular_components/focus/keyboard_only_focus_indicator.dart';
 import 'package:angular_components/laminate/enums/alignment.dart';
@@ -38,6 +39,7 @@ import 'package:angular_components/material_tooltip/module.dart';
   directives: const [
     coreDirectives,
     routerDirectives,
+    MaterialIconComponent,
     MaterialTooltipDirective,
     ClickableTooltipTargetDirective,
     KeyboardOnlyFocusIndicatorDirective,

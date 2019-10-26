@@ -299,21 +299,41 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
 
   ItemRenderer get memberItemRenderer => (dynamic user) => user.name;
 
+  Date _dueDate;
+
   Date get dueDate {
-    Date _dueDate;
-    if (workItem.dueDate != null) {
-      _dueDate = new Date.fromTime(workItem.dueDate);
+    if (_dueDate == null && workItem.dueDate != null) {
+      _dueDate = Date.fromTime(workItem.dueDate.toLocal());
     }
+
     return _dueDate;
   }
 
-  set dueDate(Date _dueDate) {
-    if (_dueDate == null) {
+  set dueDate(Date dueDate) {
+    if (dueDate == null) {
       workItem.dueDate = null;
     } else {
-      workItem.dueDate = _dueDate.asUtcTime();
+      workItem.dueDate = DateTime(dueDate.year, dueDate.month, dueDate.day).toUtc(); //_dueDate.asUtcTime();
+      _dueDate = dueDate;
+    }
+
+  }
+
+
+  /*
+  Stream<Date> dueDateChange(Date date) {
+
+    print('dueDateChange');
+    print(date);
+
+    if (date == null) {
+      workItem.dueDate = null;
+    } else {
+      workItem.dueDate = date.asUtcTime();
     }
   }
+  */
+
 
   int get completed {
     return workItem.completed;

@@ -247,6 +247,7 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
     List<Work> worksAux = await _workService.getWorks(_workService.authService.authorizedOrganization.id, withWorkItems: true, withProfile: true);
 
     _sortWorks(worksAux);
+
     return worksAux;
   }
 
@@ -333,8 +334,6 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
   }
 
   goToWorkKanban(Work work) {
-    print('DEBUG 000');
-    print(AppRoutes.workItemsKanbanRoute.toUrl(parameters: { AppRoutesParam.workIdParameter: work.id }));
       _router.navigate(AppRoutes.workItemsKanbanRoute.toUrl(parameters: { AppRoutesParam.workIdParameter: work.id }));
   }
 }
