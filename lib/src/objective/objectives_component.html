@@ -14,12 +14,12 @@
     <div class="w3-row-padding">
         <div class="w3-col" style="width:{{mainColWidth}}">
             <material-expansionpanel-set>
-                <div #refMatExp *ngFor="let iObjective of objectives;let i = index" >
+                <div *ngFor="let iObjective of objectives;let i = index" >
                     <material-expansionpanel [alwaysHideExpandIcon]="true"
                             [hideExpandedHeader]="false"
                             [showSaveCancel]="false"
                             [expanded]="iObjective.id == expandedObjectiveId"
-                            (expandedChange)="scrollInit($event, refMatExp);setExpandedObjectiveId(iObjective.id, $event)">
+                            (expandedChange)="setExpandedObjectiveId(iObjective.id, $event)">
                         <div name class="custom-grid">
                             <span class="c100 p{{iObjective.progress}} small">
                                 <span>{{iObjective.progress}}%</span>

@@ -2,7 +2,7 @@
 // Author: Samuel C. Schwebel.
 
 import 'dart:async';
-import 'dart:html' as html;
+// import 'dart:html' as html;
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
@@ -62,7 +62,7 @@ import 'package:auge_web/src/measure/measure_progress_component.template.dart' a
     ],
     pipes: const [commonPipes])
 
-class ObjectivesComponent with CanReuse implements AfterViewInit, OnActivate, OnDestroy {
+class ObjectivesComponent with CanReuse implements /* AfterViewInit, */ OnActivate, OnDestroy {
 
   final AppLayoutService _appLayoutService;
   final ObjectiveService _objectiveService;
@@ -184,7 +184,7 @@ class ObjectivesComponent with CanReuse implements AfterViewInit, OnActivate, On
 
 
     try {
-      _objectives = await getObjetives();
+      _objectives = await getObjetives(initialObjectiveId);
      // _sortObjectives();
 
       if (initialObjectiveId != null) {
@@ -206,20 +206,21 @@ class ObjectivesComponent with CanReuse implements AfterViewInit, OnActivate, On
   }
 
 
-  Future<List<Objective>> getObjetives() async {
+  Future<List<Objective>> getObjetives(String objectiveId) async {
     List<Objective> objectivesAux =  await _objectiveService.getObjectives(
-        _objectiveService.authService.authorizedOrganization.id, withMeasures: true, withProfile: true);
+        _objectiveService.authService.authorizedOrganization.id, objectiveId: objectiveId, withMeasures: true, withProfile: true);
 
     _sortObjectives(objectivesAux);
     return objectivesAux;
   }
-
+/*
   void ngAfterViewInit() {
     if (initialObjectiveId != null) {
       html.Element e = html.document.querySelector('#initial-objective');
       if (e != null) e.scrollIntoView(html.ScrollAlignment.TOP);
     }
   }
+  */
 
   List<Objective> get objectives {
     return _searchService?.searchTerm.toString().isEmpty ? _objectives : _objectives.where((t) => t.name.contains(_searchService.searchTerm)).toList();
@@ -278,7 +279,7 @@ class ObjectivesComponent with CanReuse implements AfterViewInit, OnActivate, On
           : a.endDate.compareTo(b.endDate));
     }
   }
-
+/*
   void scrollInit(bool event, html.HtmlElement element) {
     if (event && initialObjectiveId != null) {
       if (element != null) {
@@ -293,6 +294,8 @@ class ObjectivesComponent with CanReuse implements AfterViewInit, OnActivate, On
       }
     }
   }
+
+*/
 
   setExpandedObjectiveId(String objectiveId, bool expanded) {
     if (expanded) {

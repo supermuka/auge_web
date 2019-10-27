@@ -27,12 +27,15 @@ class ObjectiveService {
 
 
   /// Return a list of [Objective]
-  Future<List<Objective>> getObjectives(String organizationId, {bool withMeasures = false, bool withProfile = false}) async {
+  Future<List<Objective>> getObjectives(String organizationId, {String objectiveId, bool withMeasures = false, bool withProfile = false}) async {
+    objective_measure_pbgrpc.ObjectiveGetRequest objectiveGetRequest = objective_measure_pbgrpc.ObjectiveGetRequest();
+    objectiveGetRequest.organizationId = organizationId;
+    if (objectiveId != null)  objectiveGetRequest.id = objectiveId;
+    objectiveGetRequest.withMeasures = withMeasures;
+    objectiveGetRequest.withUserProfile = withProfile;
+
     return (await _objectiveServiceClient.getObjectives(
-        objective_measure_pbgrpc.ObjectiveGetRequest()
-          ..organizationId = organizationId
-          ..withMeasures = withMeasures
-          ..withUserProfile = withProfile)).objectives.map((m) =>
+        objectiveGetRequest)).objectives.map((m) =>
     Objective()
       ..readFromProtoBuf(m)).toList();
 
