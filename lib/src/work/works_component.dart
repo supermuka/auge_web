@@ -8,7 +8,6 @@ import 'package:angular/angular.dart';
 
 import 'package:angular_router/angular_router.dart';
 
-
 import 'package:angular_components/material_button/material_fab.dart';
 import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
@@ -110,6 +109,17 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
       routePath: AppRoutes.workItemEditRoute,
       component: work_item_detail_component.WorkItemDetailComponentNgFactory,
     ),
+    /*
+    new RouteDefinition(
+      routePath: AppRoutes.workItemKanbanAddRoute,
+      component: work_item_detail_component.WorkItemDetailComponentNgFactory,
+    ),
+    new RouteDefinition(
+      routePath: AppRoutes.workItemKanbanEditRoute,
+      component: work_item_detail_component.WorkItemDetailComponentNgFactory,
+    ),
+    */
+
   ];
 
   WorksFilterParam worksFilterParam;

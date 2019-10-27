@@ -63,7 +63,7 @@ class AppRoutes {
       parent: worksRoute
   );
   static final workItemsKanbanRoute = new RoutePath(
-      path: 'works/:${AppRoutesParam.workIdParameter}/kanban',
+      path: 'works/:${AppRoutesParam.workIdParameter}/kanban_work_items',
       parent: appLayoutRoute
   );
   static final workStagesRoute = new RoutePath(
@@ -133,11 +133,11 @@ class AppRoutes {
       parent: worksRoute
   );
   static final workItemKanbanAddRoute = new RoutePath(
-      path: 'work_items/add',
+      path: 'add',
       parent: workItemsKanbanRoute
   );
   static final workItemKanbanEditRoute = new RoutePath(
-      path: 'work_items/:${AppRoutesParam.workItemIdParameter}/edit',
+      path: ':${AppRoutesParam.workItemIdParameter}/edit',
       parent: workItemsKanbanRoute
   );
   static final userAddRoute = new RoutePath(
@@ -153,4 +153,3 @@ class AppRoutes {
       parent: appLayoutRoute
   );
 }
-

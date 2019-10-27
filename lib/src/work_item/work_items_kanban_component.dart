@@ -113,6 +113,7 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
 
   ];
 
+
   WorkItemsKanbanComponent(this._appLayoutService, this._workService, this._workItemService, this._historyTimelineService, this._router) {
     initializeDateFormatting(Intl.defaultLocale);
 
@@ -238,7 +239,11 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
     }
   }
 
-  void selectWorkItem(WorkItem workItem) => this.selectedWorkItem = workItem;
+  void selectWorkItem(WorkItem workItem) {
+
+    this.selectedWorkItem = workItem;
+    print('selectWorkItem 11 ${this.selectedWorkItem}');
+  }
 
   String dueDateColor(WorkItem workItem) {
     return workItem.isOverdue ? 'hsl(0, 100%, 50%)' : null;
@@ -267,14 +272,29 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
   }
 
   void goToDetail([String stageId]) {
+    print('goToDetail 22 ${selectedWorkItem}');
 
     if (selectedWorkItem == null) {
+      print(AppRoutes.workItemKanbanAddRoute.toUrl(parameters: {
+        AppRoutesParam.workIdParameter: work.id }, queryParameters: {AppRoutesQueryParam.stageIdQueryParameter: stageId}));
+      /*
       _router.navigate(AppRoutes.workItemKanbanAddRoute.toUrl(parameters: {
         AppRoutesParam.workIdParameter: work.id }, queryParameters: {AppRoutesQueryParam.stageIdQueryParameter: stageId}));
 
+       */
+      _router.navigate(AppRoutes.workItemKanbanAddRoute.toUrl(parameters: {
+        AppRoutesParam.workIdParameter: work.id }));
+
     } else {
+      print(AppRoutes.workItemKanbanEditRoute.toUrl(parameters: {AppRoutesParam.workIdParameter: work.id,
+        AppRoutesParam.workItemIdParameter: selectedWorkItem.id }));
+    /*
       _router.navigate(AppRoutes.workItemKanbanEditRoute.toUrl(parameters: {AppRoutesParam.workIdParameter: work.id,
-        AppRoutesParam.workItemIdParameter: selectedWorkItem.id }, queryParameters: {AppRoutesQueryParam.stageIdQueryParameter: stageId}));
+        AppRoutesParam.workItemIdParameter: selectedWorkItem.id }));
+
+     */
+      _router.navigate(AppRoutes.workItemKanbanEditRoute.toUrl(parameters: {AppRoutesParam.workIdParameter: work.id,
+        AppRoutesParam.workItemIdParameter: selectedWorkItem.id }));
     }
   }
 

@@ -184,6 +184,7 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
   @override
   void onActivate(RouterState previous, RouterState current) async {
 
+    print('WORK ITEM onActivate ${current.parameters}');
     modalVisible = true;
 
     previousPath = previous.path;
