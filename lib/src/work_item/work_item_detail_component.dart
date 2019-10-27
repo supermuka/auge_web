@@ -184,7 +184,6 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
   @override
   void onActivate(RouterState previous, RouterState current) async {
 
-    print('WORK ITEM onActivate ${current.parameters}');
     modalVisible = true;
 
     previousPath = previous.path;
@@ -317,23 +316,7 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
       workItem.dueDate = DateTime(dueDate.year, dueDate.month, dueDate.day).toUtc(); //_dueDate.asUtcTime();
       _dueDate = dueDate;
     }
-
   }
-
-
-  /*
-  Stream<Date> dueDateChange(Date date) {
-
-    print('dueDateChange');
-    print(date);
-
-    if (date == null) {
-      workItem.dueDate = null;
-    } else {
-      workItem.dueDate = date.asUtcTime();
-    }
-  }
-  */
 
 
   int get completed {

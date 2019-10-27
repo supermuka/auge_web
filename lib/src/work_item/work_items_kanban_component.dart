@@ -242,7 +242,7 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
   void selectWorkItem(WorkItem workItem) {
 
     this.selectedWorkItem = workItem;
-    print('selectWorkItem 11 ${this.selectedWorkItem}');
+
   }
 
   String dueDateColor(WorkItem workItem) {
@@ -272,7 +272,6 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
   }
 
   void goToDetail([String stageId]) {
-    print('goToDetail 22 ${selectedWorkItem}');
 
     if (selectedWorkItem == null) {
       print(AppRoutes.workItemKanbanAddRoute.toUrl(parameters: {

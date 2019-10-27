@@ -204,7 +204,7 @@ class AppLayoutComponent with CanReuse implements OnActivate {
       ..group = null
       ..name = AppLayoutMsg.label('User Detail')
       //..viewComponent = (bool userDetailVisible) { this.userDetailVisible = userDetailVisible; }
-      ..routeUrl = AppRoutes.userEditWithAppLayoutParentRoute.toUrl(parameters: {AppRoutesParam.userIdParameter:  _authService.authUserAccess.id}));
+      ..routeUrl = AppRoutes.userEditWithAppLayoutParentRoute.toUrl(parameters: {AppRoutesParam.userIdParameter:  _authService.authenticatedUser.id}));
       //TODO incluir paramet user profile ..routeUrl =  AppRoutes.userEditWithAppLayoutParentRoute.toUrl(parameters: _authService.ser);
 
     userProfileLogoutGroupOptions.add(new OptionGroup.withLabel(userDetailOptions, null));
