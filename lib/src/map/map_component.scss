@@ -1,9 +1,11 @@
 // Original from https://codepen.io/philippkuehn/pen/QbrOaN
-
+/*
 body {
   font-family: sans-serif;
   font-size: 15px;
+  overflow: auto;
 }
+*/
 
 $border-width: 1px;
 $reverse: false;
@@ -13,12 +15,14 @@ $reverse: false;
     transform: rotate(180deg);
     transform-origin: 50%;
   }
+  // Include here to put scrollbar at bottom
+  height: calc(100vh - 64px);
   overflow: auto;
 }
 
 .tree ul {
   position: relative;
-	padding: 1em 0;
+  padding: 1em 0;
   white-space: nowrap;
   margin: 0 auto;
   text-align: center;
@@ -83,7 +87,8 @@ $reverse: false;
 
 .tree li a {
   border: $border-width solid #ccc;
-  padding: .5em .75em;
+  /* padding: .5em .75em; */
+  padding: 0 .25em;;
   text-decoration: none;
   display: inline-block;
   border-radius: 5px;
@@ -127,4 +132,13 @@ $reverse: false;
   /* width: 400px; */
    text-align: left;
    height: 100%;
+}
+
+.thin {
+ //  display: block;
+   height: 0.75em;
+}
+
+.pointer {
+   cursor: pointer;
 }

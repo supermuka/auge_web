@@ -1,5 +1,5 @@
 <div class="tree">
-    <ul *ngIf="objectivesMap.length > 0">
+    <ul *ngIf="objectivesMap.length > 0 ">
         <li *ngFor="let iObjectiveMapLevel1 of objectivesMap">
             <a clickableTooltipTarget
                keyboardOnlyFocusIndicator
@@ -7,6 +7,11 @@
                size="medium"
                #clickableRef="tooltipTarget"
                (dblclick)="goToObjectives(iObjectiveMapLevel1)">
+                <!-- div *ngIf="iObjectiveMapLevel1.alignedWithChildren.length > 0" class="pointer" (click)="collapseExpand(iObjectiveMapLevel1)">{{objectivesCollapesed.contains(iObjectiveMapLevel1) ? '+' : '-'}}</div>
+                <div *ngIf="iObjectiveMapLevel1.alignedWithChildren.length == 0">&nbsp;</div-->
+                <div class="thin">
+                    <material-icon *ngIf="iObjectiveMapLevel1.alignedWithChildren.length > 0" class="pointer" size="medium"  baseline icon="{{objectivesCollapesed.contains(iObjectiveMapLevel1) ? 'expand_more' : 'expand_less'}}" (click)="collapseExpand($event, iObjectiveMapLevel1)"></material-icon>
+                </div>
                 <span class="custom-row c100 p{{iObjectiveMapLevel1.progress}} tiny">
                     <span>{{iObjectiveMapLevel1.progress}}%</span>
                     <div class="slice">
@@ -30,13 +35,16 @@
                 <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel1?.leader) + ')'"></div><span> <strong>{{iObjectiveMapLevel1?.leader?.name}}</strong></span>
             </material-tooltip-card>
 
-            <ul *ngIf="iObjectiveMapLevel1.alignedWithChildren.length > 0">
+            <ul *ngIf="iObjectiveMapLevel1.alignedWithChildren.length > 0 && !objectivesCollapesed.contains(iObjectiveMapLevel1)">
                  <li *ngFor="let iObjectiveMapLevel2 of iObjectiveMapLevel1.alignedWithChildren">
                     <a clickableTooltipTarget
                        keyboardOnlyFocusIndicator
                        tabindex="0"
                        size="medium"
                        #clickableRef="tooltipTarget" (dblclick)="goToObjectives(iObjectiveMapLevel2)">
+                        <div class="thin">
+                            <material-icon *ngIf="iObjectiveMapLevel2.alignedWithChildren.length > 0" class="pointer" size="medium"  baseline icon="{{objectivesCollapesed.contains(iObjectiveMapLevel2) ? 'expand_more' : 'expand_less'}}" (click)="collapseExpand($event, iObjectiveMapLevel2)"></material-icon>
+                        </div>
                        <span class="custom-row c100 p{{iObjectiveMapLevel2.progress}} tiny">
                            <span>{{iObjectiveMapLevel2.progress}}%</span>
                            <div class="slice">
@@ -59,13 +67,16 @@
                         <div>{{leaderLabel}}</div>
                         <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel2?.leader) + ')'"></div><span> <strong>{{iObjectiveMapLevel2?.leader?.name}}</strong></span>
                     </material-tooltip-card>
-                    <ul *ngIf="iObjectiveMapLevel2.alignedWithChildren.length > 0">
+                    <ul *ngIf="iObjectiveMapLevel2.alignedWithChildren.length > 0 && !objectivesCollapesed.contains(iObjectiveMapLevel2)">
                         <li *ngFor="let iObjectiveMapLevel3 of iObjectiveMapLevel2.alignedWithChildren">
                             <a clickableTooltipTarget
                                keyboardOnlyFocusIndicator
                                tabindex="0"
                                size="medium"
                                #clickableRef="tooltipTarget" (dblclick)="goToObjectives(iObjectiveMapLevel3)">
+                                <div class="thin">
+                                    <material-icon *ngIf="iObjectiveMapLevel3.alignedWithChildren.length > 0" class="pointer" size="medium"  baseline icon="{{objectivesCollapesed.contains(iObjectiveMapLevel3) ? 'expand_more' : 'expand_less'}}" (click)="collapseExpand($event, iObjectiveMapLevel3)"></material-icon>
+                                </div>
                                 <span class="custom-row c100 p{{iObjectiveMapLevel3.progress}} tiny">
                                     <span>{{iObjectiveMapLevel3.progress}}%</span>
                                     <div class="slice">
@@ -88,13 +99,16 @@
                                 <div>{{leaderLabel}}</div>
                                 <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel3?.leader) + ')'"></div><span> <strong>{{iObjectiveMapLevel3?.leader?.name}}</strong></span>
                             </material-tooltip-card>
-                            <ul *ngIf="iObjectiveMapLevel3.alignedWithChildren.length > 0">
+                            <ul *ngIf="iObjectiveMapLevel3.alignedWithChildren.length > 0 && !objectivesCollapesed.contains(iObjectiveMapLevel3)">
                                 <li *ngFor="let iObjectiveMapLevel4 of iObjectiveMapLevel3.alignedWithChildren">
                                     <a clickableTooltipTarget
                                        keyboardOnlyFocusIndicator
                                        tabindex="0"
                                        size="medium"
                                        #clickableRef="tooltipTarget" (dblclick)="goToObjectives(iObjectiveMapLevel4)">
+                                        <div class="thin">
+                                            <material-icon *ngIf="iObjectiveMapLevel4.alignedWithChildren.length > 0" class="pointer" size="medium"  baseline icon="{{objectivesCollapesed.contains(iObjectiveMapLevel4) ? 'expand_more' : 'expand_less'}}" (click)="collapseExpand($event, iObjectiveMapLevel4)"></material-icon>
+                                        </div>
                                         <span class="custom-row c100 p{{iObjectiveMapLevel4.progress}} tiny">
                                             <span>{{iObjectiveMapLevel4.progress}}%</span>
                                             <div class="slice">
@@ -117,13 +131,16 @@
                                         <div>{{leaderLabel}}</div>
                                         <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel4?.leader) + ')'"></div><span> <strong>{{iObjectiveMapLevel4?.leader?.name}}</strong></span>
                                     </material-tooltip-card>
-                                    <ul *ngIf="iObjectiveMapLevel4.alignedWithChildren.length > 0">
+                                    <ul *ngIf="iObjectiveMapLevel4.alignedWithChildren.length > 0 && !objectivesCollapesed.contains(iObjectiveMapLevel4)">
                                         <li *ngFor="let iObjectiveMapLevel5 of iObjectiveMapLevel4.alignedWithChildren">
                                             <a clickableTooltipTarget
                                                keyboardOnlyFocusIndicator
                                                tabindex="0"
                                                size="medium"
                                                #clickableRef="tooltipTarget" (dblclick)="goToObjectives(iObjectiveMapLevel5)">
+                                                <div class="thin">
+                                                    <material-icon *ngIf="iObjectiveMapLevel5.alignedWithChildren.length > 0" class="pointer" size="medium"  baseline icon="{{objectivesCollapesed.contains(iObjectiveMapLevel5) ? 'expand_more' : 'expand_less'}}" (click)="collapseExpand($event, iObjectiveMapLevel5)"></material-icon>
+                                                </div>
                                             <span class="custom-row c100 p{{iObjectiveMapLevel5.progress}} tiny">
                                                 <span>{{iObjectiveMapLevel5.progress}}%</span>
                                                     <div class="slice">
@@ -146,13 +163,16 @@
                                                 <div>{{leaderLabel}}</div>
                                                 <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel5?.leader) + ')'"></div><span> <strong>{{iObjectiveMapLevel5?.leader?.name}}</strong></span>
                                             </material-tooltip-card>
-                                            <ul *ngIf="iObjectiveMapLevel5.alignedWithChildren.length > 0">
+                                            <ul *ngIf="iObjectiveMapLevel5.alignedWithChildren.length > 0 && !objectivesCollapesed.contains(iObjectiveMapLevel5)">
                                                 <li *ngFor="let iObjectiveMapLevel6 of iObjectiveMapLevel5.alignedWithChildren">
                                                     <a clickableTooltipTarget
                                                        keyboardOnlyFocusIndicator
                                                        tabindex="0"
                                                        size="medium"
                                                        #clickableRef="tooltipTarget" (dblclick)="goToObjectives(iObjectiveMapLevel6)">
+                                                        <div class="thin">
+                                                            <material-icon *ngIf="iObjectiveMapLevel6.alignedWithChildren.length > 0" class="pointer" size="medium"  baseline icon="{{objectivesCollapesed.contains(iObjectiveMapLevel6) ? 'expand_more' : 'expand_less'}}" (click)="collapseExpand($event, iObjectiveMapLevel6)"></material-icon>
+                                                        </div>
                                                         <span class="custom-row c100 p{{iObjectiveMapLevel6.progress}} tiny">
                                                             <span>{{iObjectiveMapLevel6.progress}}%</span>
                                                             <div class="slice">
@@ -175,13 +195,16 @@
                                                         <div>{{leaderLabel}}</div>
                                                         <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel6?.leader) + ')'"></div><span> <strong>{{iObjectiveMapLevel6?.leader?.name}}</strong></span>
                                                     </material-tooltip-card>
-                                                    <ul *ngIf="iObjectiveMapLevel6.alignedWithChildren.length > 0">
+                                                    <ul *ngIf="iObjectiveMapLevel6.alignedWithChildren.length > 0 && !objectivesCollapesed.contains(iObjectiveMapLevel6)">
                                                         <li *ngFor="let iObjectiveMapLevel7 of iObjectiveMapLevel6.alignedWithChildren">
                                                             <a clickableTooltipTarget
                                                                keyboardOnlyFocusIndicator
                                                                tabindex="0"
                                                                size="medium"
                                                                #clickableRef="tooltipTarget" (dblclick)="goToObjectives(iObjectiveMapLevel7)">
+                                                                <div class="thin">
+                                                                    <material-icon *ngIf="iObjectiveMapLevel7.alignedWithChildren.length > 0" class="pointer" size="medium"  baseline icon="{{objectivesCollapesed.contains(iObjectiveMapLevel7) ? 'expand_more' : 'expand_less'}}" (click)="collapseExpand($event, iObjectiveMapLevel7)"></material-icon>
+                                                                </div>
                                                                 <span class="custom-row c100 p{{iObjectiveMapLevel7.progress}} tiny">
                                                                     <span>{{iObjectiveMapLevel7.progress}}%</span>
                                                                     <div class="slice">
@@ -204,13 +227,16 @@
                                                                 <div>{{leaderLabel}}</div>
                                                                 <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel7?.leader) + ')'"></div><span> <strong>{{iObjectiveMapLevel7?.leader?.name}}</strong></span>
                                                             </material-tooltip-card>
-                                                            <ul *ngIf="iObjectiveMapLevel7.alignedWithChildren.length > 0">
+                                                            <ul *ngIf="iObjectiveMapLevel7.alignedWithChildren.length > 0 && !objectivesCollapesed.contains(iObjectiveMapLevel7)">
                                                                 <li *ngFor="let iObjectiveMapLevel8 of iObjectiveMapLevel7.alignedWithChildren">
                                                                     <a clickableTooltipTarget
                                                                        keyboardOnlyFocusIndicator
                                                                        tabindex="0"
                                                                        size="medium"
                                                                        #clickableRef="tooltipTarget" (dblclick)="goToObjectives(iObjectiveMapLevel8)">
+                                                                        <div class="thin">
+                                                                            <material-icon *ngIf="iObjectiveMapLevel8.alignedWithChildren.length > 0" class="pointer" size="medium"  baseline icon="{{objectivesCollapesed.contains(iObjectiveMapLevel8) ? 'expand_more' : 'expand_less'}}" (click)="collapseExpand($event, iObjectiveMapLevel8)"></material-icon>
+                                                                        </div>
                                                                         <span class="custom-row c100 p{{iObjectiveMapLevel8.progress}} tiny">
                                                                             <span>{{iObjectiveMapLevel8.progress}}%</span>
                                                                             <div class="slice">
@@ -233,13 +259,16 @@
                                                                         <div>{{leaderLabel}}</div>
                                                                         <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel8?.leader) + ')'"></div><span> <strong>{{iObjectiveMapLevel8?.leader?.name}}</strong></span>
                                                                     </material-tooltip-card>
-                                                                    <ul *ngIf="iObjectiveMapLevel8.alignedWithChildren.length > 0">
+                                                                    <ul *ngIf="iObjectiveMapLevel8.alignedWithChildren.length > 0 && !objectivesCollapesed.contains(iObjectiveMapLevel8)">
                                                                         <li *ngFor="let iObjectiveMapLevel9 of iObjectiveMapLevel8.alignedWithChildren">
                                                                             <a clickableTooltipTarget
                                                                                keyboardOnlyFocusIndicator
                                                                                tabindex="0"
                                                                                size="medium"
                                                                                #clickableRef="tooltipTarget" (dblclick)="goToObjectives(iObjectiveMapLevel9)">
+                                                                                <div class="thin">
+                                                                                    <material-icon *ngIf="iObjectiveMapLevel9.alignedWithChildren.length > 0" class="pointer" size="medium"  baseline icon="{{objectivesCollapesed.contains(iObjectiveMapLevel9) ? 'expand_more' : 'expand_less'}}" (click)="collapseExpand($event, iObjectiveMapLevel9)"></material-icon>
+                                                                                </div>
                                                                                 <span class="custom-row c100 p{{iObjectiveMapLevel9.progress}} tiny">
                                                                                     <span>{{iObjectiveMapLevel9.progress}}%</span>
                                                                                     <div class="slice">
@@ -262,13 +291,16 @@
                                                                                 <div>{{leaderLabel}}</div>
                                                                                 <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel9?.leader) + ')'"></div><span> <strong>{{iObjectiveMapLevel9?.leader?.name}}</strong></span>
                                                                             </material-tooltip-card>
-                                                                            <ul *ngIf="iObjectiveMapLevel9.alignedWithChildren.length > 0">
+                                                                            <ul *ngIf="iObjectiveMapLevel9.alignedWithChildren.length > 0 && !objectivesCollapesed.contains(iObjectiveMapLevel9)">
                                                                                 <li *ngFor="let iObjectiveMapLevel10 of iObjectiveMapLevel9.alignedWithChildren">
                                                                                     <a clickableTooltipTarget
                                                                                        keyboardOnlyFocusIndicator
                                                                                        tabindex="0"
                                                                                        size="medium"
                                                                                        #clickableRef="tooltipTarget" (dblclick)="goToObjectives(iObjectiveMapLevel10)">
+                                                                                        <div class="thin">
+                                                                                            <material-icon *ngIf="iObjectiveMapLevel10.alignedWithChildren.length > 0" class="pointer" size="medium"  baseline icon="{{objectivesCollapesed.contains(iObjectiveMapLevel10) ? 'expand_more' : 'expand_less'}}" (click)="collapseExpand($event, iObjectiveMapLevel10)"></material-icon>
+                                                                                        </div>
                                                                                         <span class="custom-row c100 p{{iObjectiveMapLevel10.progress}} tiny">
                                                                                             <span>{{iObjectiveMapLevel10.progress}}%</span>
                                                                                             <div class="slice">

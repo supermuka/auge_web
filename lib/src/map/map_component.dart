@@ -1,6 +1,9 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
+
+import 'dart:html' as html;
+
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
 
@@ -56,7 +59,10 @@ class MapComponent /* with CanReuse  COMENTADO POIS SE USAR, O TOOLTIP NÃO DESA
   final MapService _mapService;
   final Router _router;
 
-  List<Objective> objectivesMap = new List();
+  List<Objective> objectivesMap = List();
+
+
+  Set<Objective> objectivesCollapesed = Set();
 
   MapComponent(this._authService, this._appLayoutService, this._mapService, this._router);
 
@@ -116,5 +122,14 @@ class MapComponent /* with CanReuse  COMENTADO POIS SE USAR, O TOOLTIP NÃO DESA
 
   String groupName(String name) {
     return name ?? notInformedMsg;
+  }
+
+  collapseExpand(html.Event event, Objective objective) {
+    event.preventDefault();
+    event.stopPropagation();
+    if (objectivesCollapesed.contains(objective))
+      objectivesCollapesed.remove(objective);
+    else
+      objectivesCollapesed.add(objective);
   }
 }
