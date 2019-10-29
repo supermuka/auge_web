@@ -33,8 +33,8 @@ import 'package:angular_components/material_select/material_dropdown_select_acce
 import 'package:angular_components/model/selection/selection_model.dart';
 import 'package:angular_components/model/selection/selection_options.dart';
 import 'package:angular_components/model/ui/has_renderer.dart';
-
 import 'package:angular_components/material_yes_no_buttons/material_yes_no_buttons.dart';
+import 'package:angular_components/material_toggle/material_toggle.dart';
 
 import 'package:auge_server/model/general/organization_configuration.dart';
 import 'package:auge_server/model/general/authorization.dart';
@@ -80,6 +80,7 @@ import 'package:angular_components/model/action/async_action.dart';
       MaterialDropdownSelectComponent,
       DropdownSelectValueAccessor,
       MaterialYesNoButtonsComponent,
+      MaterialToggleComponent,
     ])
 
 /// Component uses to add and edit an [User] and [UserProfile]
@@ -146,6 +147,7 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
   static final String managedByUserLabel = FieldMsg.label('${User.className}.${User.managedByOrganizationField}');
 
   static final String profileEmailLabel =  FieldMsg.label('${UserProfile.className}.${UserProfile.eMailField}');
+  static final String profileEmailNotificationLabel =  FieldMsg.label('${UserProfile.className}.${UserProfile.eMailNotificationField}');
   static final String profilePhotoLabel = FieldMsg.label('${UserProfile.className}.${UserProfile.imageField}');
   static final String profileIdiomLabel = FieldMsg.label('${UserProfile.className}.${UserProfile.idiomLocaleField}');
 
@@ -232,6 +234,7 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
       user.inactive = false;
       user.managedByOrganization = _userService.authService.authorizedOrganization;
       user.userProfile.idiomLocale = Intl.defaultLocale;
+      user.userProfile.eMailNotification = false;
 
       //userAccess.accessRole = SystemRole.standard.index;
 

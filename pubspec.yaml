@@ -8,7 +8,11 @@ dependencies:
   angular: ^6.0.0-alpha
   angular_router: ^2.0.0-alpha+23
   angular_forms: ^2.1.2
-  angular_components: ^0.14.0-alpha
+  # angular_components: ^0.14.0-alpha
+  angular_components:
+    git:
+      url: git://github.com/s2nventures/angular_components.git
+      path: angular_components
   sass_builder: ^2.1.3
   intl: ^0.15.7
   #rpc: ^0.6.0
@@ -25,8 +29,8 @@ dependencies:
   platform_detect: ^1.3.5
   auge_server:
     path: ../auge_server/
-  protobuf: ^0.13.12
-  grpc: ^2.0.0+1
+  #protobuf: ^1.0.0
+  grpc: ^2.1.2
   #grpc:
   #  git:
   #    url: git://github.com/grpc/grpc-dart.git
@@ -48,3 +52,6 @@ dev_dependencies:
   #  git:
   #    url: git://github.com/grpc/grpc-dart.git
   #    ref: grpc-web
+
+#dependency_overrides:
+#  protobuf: ^0.13.12

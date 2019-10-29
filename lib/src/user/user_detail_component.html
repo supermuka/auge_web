@@ -15,6 +15,12 @@
                             <material-input [disabled]="!isManagedByOrganization()" type="email" autocomplete="off" class="w3-col l12" [(ngModel)]="user.userProfile.eMail" floatingLabel [label]="profileEmailLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
                         </div>
                         <div class="w3-row-padding">
+                            <material-toggle [disabled]="!isManagedByOrganization()"
+                                    [(checked)]="user.userProfile.eMailNotification"
+                                    [label]="profileEmailNotificationLabel">
+                            </material-toggle>
+                        </div>
+                        <div class="w3-row-padding">
                             <label class="w3-col l6">{{profilePhotoLabel}}</label>
                         </div>
                         <div class="w3-row-padding">
