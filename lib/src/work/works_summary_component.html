@@ -13,19 +13,52 @@
         </div>
         <material-expansionpanel-set>
             <div class="works-vertical-size" *deferredContent>
-                <div *ngFor="let iInitiative of works;let i = index">
-                    <material-expansionpanel disabled
+                <div *ngFor="let iWork of works;let i = index">
+
+                    <!-- material-expansionpanel disabled
                                              [expanded]="false"
                                              [hideExpandedHeader]="false"
                                              [showSaveCancel]="false">
                         <div name class="custom-expansionpanel-panel-specific-name-width">
                             <span class="truncate-ellipsed-parent">
-                                <span class="truncate-ellipsed">{{iInitiative.name}}</span>
+                                <span class="truncate-ellipsed">{{iWork.name}}</span>
                             </span>
-                            <div class="w3-right avatar" [style.background-image]="'url(' +  userUrlImage(iInitiative?.leader?.userProfile?.image) + ')'" [materialTooltip]="leaderLabel + ' ' + iInitiative?.leader?.name"></div>
+                            <div class="w3-right avatar" [style.background-image]="'url(' +  userUrlImage(iWork?.leader?.userProfile?.image) + ')'" [materialTooltip]="leaderLabel + ' ' + iWork?.leader?.name"></div>
                         </div>
                         <div value>
-                            <auge-work-summary [work]="iInitiative"></auge-work-summary>
+                            <auge-work-summary [work]="iWork"></auge-work-summary>
+                        </div>
+                    </material-expansionpanel -->
+
+                    <material-expansionpanel disabled
+                            [alwaysHideExpandIcon]="true"
+                            [hideExpandedHeader]="false"
+                            [showSaveCancel]="false"
+                            [expanded]="false">
+                        <div name class="custom-expansionpanel-panel-specific-name-width">
+                            <span class="truncate-ellipsed-parent">
+                                <span class="truncate-ellipsed">{{iWork.name}}</span>
+                                <!-- div class="truncate-ellipsed">{{iWork.description}}</div -->
+                            </span>
+                        </div>
+                        <div class="w3-row" value>
+                            <div class="w3-col m9">
+                                <div class="custom-grid-vertical">
+                                    <auge-work-summary [work]="iWork"></auge-work-summary>
+                                </div>
+                            </div>
+                            <div class="w3-col m3">
+                                <div class="custom-grid w3-right">
+                                    <div class="truncate-parent">
+                                        <div *ngIf="iWork.group != null" class="avatar avatar-border margin-bottom" [style.background-color]="colorFromUuid(iWork.group?.id)" [materialTooltip]="composeTooltip(groupLabel, iWork.group?.name)">
+                                            <span class="text-group-letter">{{firstLetter(iWork.group?.name)}}</span>
+                                        </div>
+                                        <div *ngIf="iWork.group == null" class="avatar margin-bottom"></div>
+                                        <div *ngIf="iWork.leader != null" class="avatar margin-top" [style.background-image]="'url(' +  userUrlImage(iWork.leader?.userProfile.image) + ')'" [materialTooltip]="composeTooltip(leaderLabel, iWork.leader?.name)"></div>
+                                        <div *ngIf="iWork.leader == null" class="avatar margin-top"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </material-expansionpanel>
                 </div>

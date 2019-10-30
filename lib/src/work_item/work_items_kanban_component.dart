@@ -304,11 +304,11 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
   }
 
   String colorFromUuid(String id) {
-    return id == null ? '#ffffff' : '#' + id.substring(0, 6);
+    return common_service.colorFromUuid(id);
   }
 
   String firstLetter(String name) {
-    return name == null ? 'G' : name.substring(0, 1).toUpperCase();
+    return common_service.firstLetter(name);
   }
 }
 

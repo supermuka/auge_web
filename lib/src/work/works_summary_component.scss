@@ -13,3 +13,18 @@
   padding-top: 0px;
   padding-bottom: 0px;
 }
+
+.custom-grid {
+  display: grid;
+  /* grid-template-columns: min-content auto; */
+  grid-template-columns: min-content auto;
+}
+
+.custom-grid-vertical {
+  display: inline-grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
+ /* grid-gap: 3px; */
+  justify-items: center;
+  align-items: center;
+}

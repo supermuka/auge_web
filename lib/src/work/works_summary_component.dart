@@ -13,6 +13,7 @@ import 'package:angular_components/material_icon/material_icon.dart';
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
 
 import 'package:auge_server/model/work/work.dart';
+import 'package:auge_server/shared/message/model_messages.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
 // import 'package:auge_web/src/auth/auth_service.dart';
@@ -56,8 +57,8 @@ class WorksSummaryComponent with CanReuse implements OnInit {
   WorksSummaryComponent(this._appLayoutService, this._workService,  this._router);
 
   static final String worksLabel =  WorkMsg.label('Works');
-  static final String groupLabel =  WorkMsg.label('Group');
-  static final String leaderLabel =  WorkMsg.label('Leader');
+  static final String groupLabel = FieldMsg.label('${Work.className}.${Work.groupField}');
+  static final String leaderLabel =  FieldMsg.label('${Work.className}.${Work.leaderField}');
 
   @override
   ngOnInit() async {
@@ -79,5 +80,20 @@ class WorksSummaryComponent with CanReuse implements OnInit {
 
   String userUrlImage(String userProfileImage) {
     return common_service.userUrlImage(userProfileImage);
+  }
+
+  String colorFromUuid(String id) {
+
+    // return id == null ? '#ffffff' : '#' + id.substring(0, 6);
+    return common_service.colorFromUuid(id);
+  }
+
+  String firstLetter(String name) {
+    // return name == null ? 'G' : name.substring(0, 1).toUpperCase();
+    return common_service.firstLetter(name);
+  }
+
+  String composeTooltip(String label, String name) {
+    return label + ' ' + ((name == null) ? '(-)' : name);
   }
 }

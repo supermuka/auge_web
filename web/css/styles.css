@@ -177,3 +177,10 @@ body {
     /* background: #2962ff; */
     background: #808080;
 }
+
+/* To present graphic and background */
+@media print {
+    body {
+      -webkit-print-color-adjust: exact;
+    }
+}

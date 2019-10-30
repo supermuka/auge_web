@@ -39,6 +39,8 @@ import 'package:auge_web/src/work/work_detail_component.dart';
 import 'package:auge_web/src/work_item/work_items_component.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/services/app_routes.dart';
+import 'package:auge_web/services/common_service.dart' as common_service;
+
 
 // ignore_for_file: uri_has_not_been_generated
 import 'package:auge_web/src/work/work_detail_component.template.dart' as work_detail_component;
@@ -305,11 +307,14 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
   }
 
   String colorFromUuid(String id) {
-    return id == null ? '#ffffff' : '#' + id.substring(0, 6);
+
+    // return id == null ? '#ffffff' : '#' + id.substring(0, 6);
+    return common_service.colorFromUuid(id);
   }
 
   String firstLetter(String name) {
-    return name == null ? 'G' : name.substring(0, 1).toUpperCase();
+    // return name == null ? 'G' : name.substring(0, 1).toUpperCase();
+    return common_service.firstLetter(name);
   }
 
   // Order by to group

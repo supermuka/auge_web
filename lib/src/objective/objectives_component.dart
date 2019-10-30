@@ -114,6 +114,7 @@ class ObjectivesComponent with CanReuse implements /* AfterViewInit, */ OnActiva
 
     // Define messages and labels
   static final String sortedByLabel = ObjectiveMsg.label('Sorted By');
+  static final String ultimateObjectiveLabel = ObjectiveMsg.label('Ultimate Objective');
 
   static final String nameLabel = FieldMsg.label('${Objective.className}.${Objective.nameField}');
   static final String alignedToLabel =  FieldMsg.label('${Objective.className}.${Objective.alignedToField}');

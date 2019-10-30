@@ -48,7 +48,8 @@
                             </material-menu>
                         </div>
                         <hr>
-                        <span><strong>{{alignedToLabel}}</strong> {{iObjective?.alignedTo?.name}}</span>
+                        <span *ngIf="iObjective.alignedTo != null"><strong>{{alignedToLabel}}</strong> {{iObjective.alignedTo?.name}}</span>
+                        <span *ngIf="iObjective.alignedTo == null"><strong>{{ultimateObjectiveLabel}}</strong></span>
                         <div class="w3-row-padding">
                             <auge-measures *ngIf="iObjective.id == expandedObjectiveId" [objective]="iObjective" [timelineParam]="timelineParam"></auge-measures>
                             <auge-works-summary *ngIf="iObjective.id == expandedObjectiveId" [objectiveId]="iObjective.id"></auge-works-summary>
