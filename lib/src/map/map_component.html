@@ -25,6 +25,14 @@
                 <span class="avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel1?.group?.id)">
                     <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjectiveMapLevel1?.group?.name)">{{firstLetter(iObjectiveMapLevel1?.group?.name)}}</span>
                 </span>
+                <!-- span class="vertical-group-leader">
+                    <div class="avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel1.group?.id)">
+                        <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjectiveMapLevel1.group?.name)">{{firstLetter(iObjectiveMapLevel1.group?.name)}}</span>
+                    </div>
+                    <br/>
+                    <div class="avatar margin-top" [style.background-image]="'url(' +  userUrlImage(iObjectiveMapLevel1.leader) + ')'" [materialTooltip]="leaderLabel + ' ' + iObjectiveMapLevel1.leader?.name">
+                    </div>
+                </span -->
             </a>
             <material-tooltip-card [for]="clickableRef" [preferredPositions]="preferredTooltipPositions">
                 <div>{{startDateLabel}}</div>

@@ -1,8 +1,4 @@
 <div class="container-list">
-    <!-- filter called by search component -->
-    <div *ngIf="visibleFilter == true">
-        <auge-works-filter [worksFilterParam]="worksFilterParam" (close)="visibleFilter = false"></auge-works-filter>
-    </div>
     <div class="w3-row-padding">
         <div class="w3-col">
             <label>{{sortedByLabel}}</label>

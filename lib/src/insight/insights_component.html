@@ -1,33 +1,12 @@
 <div class="w3-content" style="max-width:1200px">
-    <div class="w3-row">
-        <div class="w3-col m10">
+    <div class="w3-row-padding">
+        <div class="w3-col m8">
         </div>
-        <div class="w3-col m2  w3-right">
-            <label>Group</label>
-            <div class="w3-row">
-                <material-dropdown-select
-                        buttonAriaRole="combobox"
-                        [buttonText]="multiSelectGroupLabel"
-                        [options]="groupOptions"
-                        [selection]="groupMultiSelectModel"
-                        [itemRenderer]="groupItemRenderer"
-                        [listAutoFocus]="false"
-                        [activateFirstOption]="true"
-                        (visibleChange)="onDropdownVisibleChange($event)">
-                    <div header>
-                        <div class="w3-right">
-                            <material-icon icon="done_all" (click)="selectAllGroup()">
-                            </material-icon>
-                            <material-icon icon="clear" (click)="clearAllGroup()">
-                            </material-icon>
-                        </div>
-                        <material-select-searchbox
-                                label="Search..."
-                                [filterable]="groupOptions">
-                        </material-select-searchbox>
-                    </div>
-                </material-dropdown-select>
-            </div>
+        <div class="w3-col m2 w3-right">
+            <auge-group-filter (changeSelection)="groupChangeSelection($event)"></auge-group-filter>
+        </div>
+        <div class="w3-col m2 w3-right">
+            <auge-user-filter (changeSelection)="userChangeSelection($event)"></auge-user-filter>
         </div>
     </div>
     <div class="w3-row">

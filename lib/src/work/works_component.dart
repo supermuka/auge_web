@@ -31,7 +31,6 @@ import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/history_timeline/history_timeline_service.dart';
-import 'package:auge_web/src/work/works_filter_component.dart';
 import 'package:auge_web/src/work/work_summary_component.dart';
 import 'package:auge_web/src/history_timeline/history_timeline_component.dart';
 import 'package:auge_web/src/work/work_detail_component.dart';
@@ -67,7 +66,6 @@ import 'package:auge_web/src/work_item/work_item_detail_component.template.dart'
       MaterialExpansionPanelSet,
       MaterialToggleComponent,
       MaterialMenuComponent,
-      WorksFilterComponent,
       WorkSummaryComponent,
       WorkDetailComponent,
       WorkItemsComponent,
@@ -124,8 +122,6 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
 
   ];
 
-  WorksFilterParam worksFilterParam;
-
   String mainColWidth = '100%';
   bool _timelineVisible = false;
 
@@ -155,7 +151,7 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
   String _sortedBy = nameLabel;
 
   WorksComponent(this._appLayoutService, this._workService, this._objectiveService, this._searchService, this._historyTimelineService, this._router) {
-    worksFilterParam = WorksFilterParam();
+
     menuModel = new MenuModel([new MenuItemGroup([
       new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , actionWithContext: (_) => goToDetail() /* viewDetail(true) */),
       new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), actionWithContext: (_) => delete()),
@@ -205,8 +201,10 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
 
     _appLayoutService.headerTitle = WorkMsg.label('Works');
 
+
     try {
 
+      /*
       if (routerStateCurrent.parameters.containsKey(AppRoutesParam.objectiveIdParameter)) {
           String objectiveId = routerStateCurrent.parameters[AppRoutesParam
               .objectiveIdParameter];
@@ -215,6 +213,7 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
               worksFilterParam.objective = await _objectiveService.getObjective(objectiveId, withMeasures: false);
           }
       }
+      */
 
       _works = await getWorks();
 
@@ -235,23 +234,16 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
     }
   }
 
-  get visibleFilter => _searchService.visibleFilter;
-
-  set visibleFilter(bool visibleFilter) {
-    _searchService.visibleFilter = visibleFilter;
-  }
 
   List<Work> get works {
 
     return _works;
 
-    /*TODO
-
+    /*
     List<Work> worksFilter;
     worksFilter = worksFilterParam.objective == null ? _works : _works.where((t) => t.objective != null && t.objective.id == worksFilterParam.objective.id).toList();
 
     return _searchService?.searchTerm.toString().isEmpty ? worksFilter : worksFilter.where((t) => t.name.contains(_searchService.searchTerm)).toList();
-
      */
   }
 

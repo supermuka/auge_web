@@ -274,24 +274,12 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
   void goToDetail([String stageId]) {
 
     if (selectedWorkItem == null) {
-      print(AppRoutes.workItemKanbanAddRoute.toUrl(parameters: {
-        AppRoutesParam.workIdParameter: work.id }, queryParameters: {AppRoutesQueryParam.stageIdQueryParameter: stageId}));
-      /*
-      _router.navigate(AppRoutes.workItemKanbanAddRoute.toUrl(parameters: {
-        AppRoutesParam.workIdParameter: work.id }, queryParameters: {AppRoutesQueryParam.stageIdQueryParameter: stageId}));
 
-       */
       _router.navigate(AppRoutes.workItemKanbanAddRoute.toUrl(parameters: {
         AppRoutesParam.workIdParameter: work.id }));
 
     } else {
-      print(AppRoutes.workItemKanbanEditRoute.toUrl(parameters: {AppRoutesParam.workIdParameter: work.id,
-        AppRoutesParam.workItemIdParameter: selectedWorkItem.id }));
-    /*
-      _router.navigate(AppRoutes.workItemKanbanEditRoute.toUrl(parameters: {AppRoutesParam.workIdParameter: work.id,
-        AppRoutesParam.workItemIdParameter: selectedWorkItem.id }));
 
-     */
       _router.navigate(AppRoutes.workItemKanbanEditRoute.toUrl(parameters: {AppRoutesParam.workIdParameter: work.id,
         AppRoutesParam.workItemIdParameter: selectedWorkItem.id }));
     }

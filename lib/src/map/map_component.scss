@@ -136,9 +136,17 @@ $reverse: false;
 
 .thin {
  //  display: block;
-   height: 0.75em;
+   margin: 0;
+   height: 1em;
 }
 
 .pointer {
    cursor: pointer;
+}
+
+.vertical-group-leader {
+  display: inline-block;
+  //white-space: pre-line;
+  //line-break: auto;
+  //word-break:break-all;
 }

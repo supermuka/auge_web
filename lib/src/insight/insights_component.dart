@@ -1,8 +1,6 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.ExampleSelectionOptions
 
-import 'dart:async';
-
 import 'package:angular/angular.dart';
 
 import 'package:angular_router/angular_router.dart';
@@ -11,21 +9,10 @@ import 'package:angular_components/scorecard/scoreboard.dart';
 import 'package:angular_components/scorecard/scorecard.dart';
 
 import 'package:angular_components/material_icon/material_icon.dart';
-import 'package:angular_components/material_select/material_dropdown_select.dart';
-import 'package:angular_components/material_select/dropdown_button.dart';
-import 'package:angular_components/material_select/material_dropdown_select_accessor.dart';
-import 'package:angular_components/material_select/material_select_searchbox.dart';
-import 'package:angular_components/material_select/material_select_dropdown_item.dart';
-
-import 'package:angular_components/model/selection/select.dart';
-import 'package:angular_components/model/selection/string_selection_options.dart';
-import 'package:angular_components/model/selection/selection_model.dart';
-import 'package:angular_components/model/selection/selection_options.dart';
-import 'package:angular_components/model/ui/has_factory.dart';
-import 'package:angular_components/model/ui/display_name.dart';
 
 import 'package:auge_server/model/objective/objective.dart';
 import 'package:auge_server/model/work/work.dart';
+import 'package:auge_server/model/general/user.dart';
 import 'package:auge_server/model/general/group.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
@@ -33,6 +20,8 @@ import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
 import 'package:auge_web/src/group/group_service.dart';
+import 'package:auge_web/src/user/user_filter_component.dart';
+import 'package:auge_web/src/group/group_filter_component.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/work/work_service.dart';
 import 'package:auge_web/services/app_routes.dart';
@@ -46,13 +35,9 @@ import 'package:auge_web/services/app_routes.dart';
     coreDirectives,
     ScoreboardComponent,
     ScorecardComponent,
-    MaterialDropdownSelectComponent,
-    DropdownSelectValueAccessor,
-    MultiDropdownSelectValueAccessor,
-    DropdownButtonComponent,
-    MaterialSelectDropdownItemComponent,
-    MaterialSelectSearchboxComponent,
     MaterialIconComponent,
+    GroupFilterComponent,
+    UserFilterComponent,
   ])
 
 class InsightsComponent with CanReuse implements OnActivate  {
@@ -61,24 +46,16 @@ class InsightsComponent with CanReuse implements OnActivate  {
 
   AuthService _authService;
   AppLayoutService _appLayoutService;
-  final UserService _userService;
-  final GroupService _groupService;
   final ObjectiveService _objectiveService;
   final WorkService _workService;
   final Router _router;
 
   List<Objective> _objectives = List();
   List<Work> works = List();
-  List<Group> _groups = [];
+  List<Group> groupsSelectedToFilter = [];
+  List<User> usersSelectedToFilter = [];
 
-  // SelectionOptions groupOptions;
-  StringSelectionOptions<Group> groupOptions;
-  SelectionModel<Group> groupMultiSelectModel;
-
-  InsightsComponent(this._authService, this._appLayoutService, this._userService, this._groupService, this._objectiveService, this._workService, this._router) {
-    groupMultiSelectModel = SelectionModel.multi();
-
-  }
+  InsightsComponent(this._authService, this._appLayoutService, this._objectiveService, this._workService, this._router);
 
   // Define messages and labels
   static final String objectivesOverallLabel = InsightMsg.label('Objectives Overall');
@@ -140,15 +117,7 @@ class InsightsComponent with CanReuse implements OnActivate  {
             _authService.authorizedOrganization.id, withWorkItems: true);
       }
 
-      _groups = await _groupService.getGroups(_workService.authService.authorizedOrganization.id);
 
-      /*
-      groupOptions =  StringSelectionOptions<Group>(
-          _groups, toFilterableString: (Group gru) => gru.name);
-          */
-
-      groupOptions = GroupSelectionOptions(_groups);
-      // groupOptions = GroupSelectionOptions([]);
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;
@@ -158,7 +127,13 @@ class InsightsComponent with CanReuse implements OnActivate  {
   // StringSelectionOptions<Group> get groupOptions =>  GroupSelectionOptions(_groups);
 
   List<Objective> get objectives {
-    return groupMultiSelectModel.selectedValues.isEmpty ? _objectives : _objectives.where((t) => groupMultiSelectModel.selectedValues.any((tg) => tg.id == t.group.id)  ).toList();
+    List<Objective> objectiveFiltred;
+
+    objectiveFiltred = (groupsSelectedToFilter.isEmpty) ? [] : _objectives.where((t) => groupsSelectedToFilter.any((tg) => tg.id == t.group.id)  ).toList();
+
+    objectiveFiltred = (usersSelectedToFilter.isEmpty) ? [] : objectiveFiltred.where((t) => usersSelectedToFilter.any((tg) => tg.id == t.leader.id)  ).toList();
+
+    return objectiveFiltred;
   }
 
   /// Return overall progress
@@ -302,65 +277,12 @@ class InsightsComponent with CanReuse implements OnActivate  {
     return _overDueWorkItemsNumber?.toString() ?? '0';
   }
 
-  /// Label for the button for multi selection.
-  String get multiSelectGroupLabel {
-    var selectedValues = groupMultiSelectModel.selectedValues;
-    if (selectedValues.isEmpty) {
-      return "Select Group";
-    } else if (selectedValues.length == 1) {
-      return groupItemRenderer(selectedValues.first);
-    } else {
-      return "${groupItemRenderer(selectedValues.first)} + ${selectedValues.length - 1} more";
-    }
+  groupChangeSelection(List<Group> groupsSeleted) {
+    groupsSelectedToFilter = groupsSeleted;
   }
 
- // ItemRenderer<Group> get itemRenderer => (item) => (item as HasUIDisplayName).uiDisplayName;
-
-  ItemRenderer get groupItemRenderer => (dynamic group) => group.name;
-
- // StringSelectionOptions<Language> get languageOptions => languageListOptions;
-
-
- // String languageButtonLabel = 'Select Language';
-  //List<Language> get languagesList => _languagesList;
-
-  /// Languages to choose from.
-//  ExampleSelectionOptions languageListOptions =
- // ExampleSelectionOptions(_languagesList);
-
-  @ViewChild(MaterialSelectSearchboxComponent)
-  MaterialSelectSearchboxComponent searchbox;
-
-  void onDropdownVisibleChange(bool visible) {
-    if (visible) {
-      // TODO(google): Avoid using Timer.run.
-      Timer.run(() {
-        searchbox.focus();
-      });
-    }
+  userChangeSelection(List<User> usersSeleted) {
+    usersSelectedToFilter = usersSeleted;
   }
 
-  void selectAllGroup() {
-    groupMultiSelectModel = SelectionModel<Group>.multi(selectedValues: _groups);
-  }
-
-  void clearAllGroup() {
-    groupMultiSelectModel = SelectionModel<Group>.multi();
-  }
-
-
-
-}
-
-
-/// If the option does not support toString() that shows the label, the
-/// toFilterableString parameter must be passed to StringSelectionOptions.
-class GroupSelectionOptions extends StringSelectionOptions<Group>
-    implements Selectable<Group> {
-  GroupSelectionOptions(List<Group> options)
-      : super(options,
-      toFilterableString: (Group option) => option.name.toString());
-
-  @override
-  SelectableOption getSelectable(Group item) => SelectableOption.Selectable;
 }
