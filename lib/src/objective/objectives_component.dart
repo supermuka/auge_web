@@ -138,7 +138,6 @@ class ObjectivesComponent with CanReuse implements /* AfterViewInit, */ OnActiva
 
   get sortedBy => _sortedBy;
 
-
   bool get timelineVisible {
     return _timelineVisible;
   }
