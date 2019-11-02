@@ -1,0 +1,28 @@
+<div class="filter">
+    <label>User</label>
+    <div class="w3-row">
+        <material-dropdown-select
+                buttonAriaRole="combobox"
+                [buttonText]="multiSelectUserLabel"
+                [options]="userOptions"
+                [selection]="userMultiSelectModel"
+                [itemRenderer]="userItemRenderer"
+                [listAutoFocus]="false"
+                [activateFirstOption]="true"
+                [popupMatchInputWidth]="false"
+                (visibleChange)="onDropdownVisibleChange($event)">
+            <div header>
+                <div class="w3-right">
+                    <material-icon icon="done_all" (click)="selectAllUsers()">
+                    </material-icon>
+                    <material-icon icon="clear" (click)="clearAllUsers()">
+                    </material-icon>
+                </div>
+                <material-select-searchbox
+                        label="Search..."
+                        [filterable]="userOptions">
+                </material-select-searchbox>
+            </div>
+        </material-dropdown-select>
+    </div>
+</div>
