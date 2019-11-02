@@ -19,6 +19,8 @@ import 'package:angular_components/material_expansionpanel/material_expansionpan
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
 
 import 'package:auge_server/model/general/authorization.dart';
+import 'package:auge_server/model/general/group.dart';
+import 'package:auge_server/model/general/user.dart';
 import 'package:auge_server/model/objective/objective.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
@@ -32,6 +34,9 @@ import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/services/app_routes.dart';
+
+import 'package:auge_web/src/user/user_filter_component.dart';
+import 'package:auge_web/src/group/group_filter_component.dart';
 
 // ignore_for_file: uri_has_not_been_generated
 import 'package:auge_web/src/objective/objective_detail_component.template.dart' as objective_detail_component;
@@ -59,6 +64,8 @@ import 'package:auge_web/src/measure/measure_progress_component.template.dart' a
       HistoryTimelineComponent,
       WorksSummaryComponent,
       MeasuresComponent,
+      GroupFilterComponent,
+      UserFilterComponent,
     ],
     pipes: const [commonPipes])
 
@@ -97,7 +104,9 @@ class ObjectivesComponent with CanReuse implements /* AfterViewInit, */ OnActiva
     ),
   ];
 
-  List<Objective> _objectives = List();
+  List<Objective> _objectives = [];
+  List<Group> groupsSelectedToFilter = [];
+  List<User> usersSelectedToFilter = [];
 
   // Map<Objective, bool> expandedControl = Map();
   String expandedObjectiveId;
@@ -223,7 +232,17 @@ class ObjectivesComponent with CanReuse implements /* AfterViewInit, */ OnActiva
   */
 
   List<Objective> get objectives {
-    return _searchService?.searchTerm.toString().isEmpty ? _objectives : _objectives.where((t) => t.name.contains(_searchService.searchTerm)).toList();
+
+    List<Objective> objectiveFilered;
+
+    objectiveFilered = (groupsSelectedToFilter.isEmpty) ? [] : _objectives.where((t) => groupsSelectedToFilter.any((tg) => tg.id == t.group.id)  ).toList();
+
+    objectiveFilered = (usersSelectedToFilter.isEmpty) ? [] : objectiveFilered.where((t) => usersSelectedToFilter.any((tg) => tg.id == t.leader.id)  ).toList();
+
+    objectiveFilered = _searchService?.searchTerm.toString().isEmpty ? objectiveFilered : objectiveFilered.where((t) => t.name.contains(_searchService.searchTerm)).toList();
+
+    return objectiveFilered;
+    // return _searchService?.searchTerm.toString().isEmpty ? _objectives : _objectives.where((t) => t.name.contains(_searchService.searchTerm)).toList();
   }
 
   @override
@@ -317,4 +336,13 @@ class ObjectivesComponent with CanReuse implements /* AfterViewInit, */ OnActiva
       _router.navigate(AppRoutes.objectiveEditRoute.toUrl(parameters: { AppRoutesParam.objectiveIdParameter: selectedObjective.id }));
     }
   }
+
+  groupChangeSelection(List<Group> groupsSeleted) {
+    groupsSelectedToFilter = groupsSeleted;
+  }
+
+  userChangeSelection(List<User> usersSeleted) {
+    usersSelectedToFilter = usersSeleted;
+  }
+
 }

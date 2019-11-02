@@ -117,7 +117,6 @@ class InsightsComponent with CanReuse implements OnActivate  {
             _authService.authorizedOrganization.id, withWorkItems: true);
       }
 
-
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;
@@ -127,13 +126,13 @@ class InsightsComponent with CanReuse implements OnActivate  {
   // StringSelectionOptions<Group> get groupOptions =>  GroupSelectionOptions(_groups);
 
   List<Objective> get objectives {
-    List<Objective> objectiveFiltred;
+    List<Objective> objectiveFilered;
 
-    objectiveFiltred = (groupsSelectedToFilter.isEmpty) ? [] : _objectives.where((t) => groupsSelectedToFilter.any((tg) => tg.id == t.group.id)  ).toList();
+    objectiveFilered = (groupsSelectedToFilter.isEmpty) ? [] : _objectives.where((t) => groupsSelectedToFilter.any((tg) => tg.id == t.group.id)  ).toList();
 
-    objectiveFiltred = (usersSelectedToFilter.isEmpty) ? [] : objectiveFiltred.where((t) => usersSelectedToFilter.any((tg) => tg.id == t.leader.id)  ).toList();
+    objectiveFilered = (usersSelectedToFilter.isEmpty) ? [] : objectiveFilered.where((t) => usersSelectedToFilter.any((tg) => tg.id == t.leader.id)  ).toList();
 
-    return objectiveFiltred;
+    return objectiveFilered;
   }
 
   /// Return overall progress

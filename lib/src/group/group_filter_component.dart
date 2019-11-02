@@ -20,13 +20,14 @@ import 'package:angular_components/model/ui/has_factory.dart';
 import 'package:auge_server/model/general/group.dart';
 
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
+import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/group/group_service.dart';
 
 @Component(
   selector: 'auge-group-filter',
   providers: const [GroupService],
-    //styleUrls: const ['group_filter_component.css'],
-    templateUrl: 'group_filter_component.html',
+  styleUrls: const ['group_filter_component.css'],
+  templateUrl: 'group_filter_component.html',
   directives: const [
     coreDirectives,
     MaterialDropdownSelectComponent,
@@ -41,6 +42,7 @@ import 'package:auge_web/src/group/group_service.dart';
 class GroupFilterComponent implements OnInit  {
 
   final AppLayoutService _appLayoutService;
+  final AuthService _authService;
   final GroupService _groupService;
 
   List<Group> _groups = [];
@@ -53,7 +55,7 @@ class GroupFilterComponent implements OnInit  {
   @Output()
   Stream<List<Group>> get changeSelection => _groupSelection.stream;
 
-  GroupFilterComponent(this._appLayoutService, this._groupService) {
+  GroupFilterComponent(this._appLayoutService, this._authService, this._groupService) {
 
     groupMultiSelectModel = SelectionModel<Group>.multi();
 
@@ -65,15 +67,18 @@ class GroupFilterComponent implements OnInit  {
 
   }
 
-  // Define messages and labels
   @override
   void ngOnInit() async {
 
-    if (_groupService.authService.authorizedOrganization == null) return;
+    //TODO remove this with another implementation. If is necessary because Service Injector (_authService.authorizedOrganization.id) is get null
+    await Future.delayed(Duration(seconds: 0));
+
+
+    if (_authService.authorizedOrganization == null) return;
 
     try {
 
-      _groups = await _groupService.getGroups(_groupService.authService.authorizedOrganization.id);
+      _groups = await _groupService.getGroups(_authService.authorizedOrganization.id);
 
       groupOptions = GroupSelectionOptions(_groups);
 

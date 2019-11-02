@@ -1,26 +1,28 @@
-<label>Group</label>
-<div class="w3-row">
-    <material-dropdown-select
-            buttonAriaRole="combobox"
-            [buttonText]="multiSelectGroupLabel"
-            [options]="groupOptions"
-            [selection]="groupMultiSelectModel"
-            [itemRenderer]="groupItemRenderer"
-            [listAutoFocus]="false"
-            [activateFirstOption]="true"
-            [popupMatchInputWidth]="false"
-            (visibleChange)="onDropdownVisibleChange($event)">
-        <div header>
-            <div class="w3-right">
-                <material-icon icon="done_all" (click)="selectAllGroups()">
-                </material-icon>
-                <material-icon icon="clear" (click)="clearAllGroups()">
-                </material-icon>
+<div class="filter">
+    <label>Group</label>
+    <div class="w3-row">
+        <material-dropdown-select
+                buttonAriaRole="combobox"
+                [buttonText]="multiSelectGroupLabel"
+                [options]="groupOptions"
+                [selection]="groupMultiSelectModel"
+                [itemRenderer]="groupItemRenderer"
+                [listAutoFocus]="false"
+                [activateFirstOption]="true"
+                [popupMatchInputWidth]="false"
+                (visibleChange)="onDropdownVisibleChange($event)">
+            <div header>
+                <div class="w3-right">
+                    <material-icon icon="done_all" (click)="selectAllGroups()">
+                    </material-icon>
+                    <material-icon icon="clear" (click)="clearAllGroups()">
+                    </material-icon>
+                </div>
+                <material-select-searchbox
+                        label="Search..."
+                        [filterable]="groupOptions">
+                </material-select-searchbox>
             </div>
-            <material-select-searchbox
-                    label="Search..."
-                    [filterable]="groupOptions">
-            </material-select-searchbox>
-        </div>
-    </material-dropdown-select>
+        </material-dropdown-select>
+    </div>
 </div>
