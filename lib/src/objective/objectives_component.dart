@@ -30,6 +30,8 @@ import 'package:auge_web/src/history_timeline/history_timeline_component.dart';
 import 'package:auge_web/src/measure/measures_component.dart';
 import 'package:auge_web/src/work/works_summary_component.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
+import 'package:auge_web/src/group/group_service.dart';
+import 'package:auge_web/src/user/user_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
@@ -45,7 +47,7 @@ import 'package:auge_web/src/measure/measure_progress_component.template.dart' a
 
 @Component(
     selector: 'auge-objectives',
-    providers: const [ObjectiveService, HistoryTimelineService],
+    providers: const [ObjectiveService, GroupService, UserService, HistoryTimelineService],
     templateUrl: 'objectives_component.html',
     styleUrls: const [
       'objectives_component.css'
@@ -72,6 +74,8 @@ import 'package:auge_web/src/measure/measure_progress_component.template.dart' a
 class ObjectivesComponent with CanReuse implements /* AfterViewInit, */ OnActivate, OnDestroy {
 
   final AppLayoutService _appLayoutService;
+  final GroupService _groupService;
+  final UserService _userService;
   final ObjectiveService _objectiveService;
   final SearchService _searchService;
   final HistoryTimelineService _historyTimelineService;
@@ -105,7 +109,9 @@ class ObjectivesComponent with CanReuse implements /* AfterViewInit, */ OnActiva
   ];
 
   List<Objective> _objectives = [];
+  List<Group> groupsToFilter;
   List<Group> groupsSelectedToFilter = [];
+  List<User> usersToFilter;
   List<User> usersSelectedToFilter = [];
 
   // Map<Objective, bool> expandedControl = Map();
@@ -136,7 +142,7 @@ class ObjectivesComponent with CanReuse implements /* AfterViewInit, */ OnActiva
 
   String _sortedBy = nameLabel;
 
-  ObjectivesComponent(this._appLayoutService, this._objectiveService, this._searchService, this._historyTimelineService, this._router) {
+  ObjectivesComponent(this._appLayoutService, this._groupService, this._userService, this._objectiveService, this._searchService, this._historyTimelineService, this._router) {
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , actionWithContext: (_) => goToDetail()), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), actionWithContext: (_) => delete())])], icon: new Icon('menu'));
   }
 
@@ -193,6 +199,12 @@ class ObjectivesComponent with CanReuse implements /* AfterViewInit, */ OnActiva
 
 
     try {
+      // Groups to filter
+      groupsToFilter = await _groupService.getGroups(_groupService.authService.authorizedOrganization.id);
+
+      // Users to filter
+      usersToFilter = await _userService.getUsers(_userService.authService.authorizedOrganization.id);
+
       _objectives = await getObjetives(initialObjectiveId);
      // _sortObjectives();
 
@@ -239,7 +251,7 @@ class ObjectivesComponent with CanReuse implements /* AfterViewInit, */ OnActiva
 
     objectiveFilered = (usersSelectedToFilter.isEmpty) ? [] : objectiveFilered.where((t) => usersSelectedToFilter.any((tg) => tg.id == t.leader.id)  ).toList();
 
-    objectiveFilered = _searchService?.searchTerm.toString().isEmpty ? objectiveFilered : objectiveFilered.where((t) => t.name.contains(_searchService.searchTerm)).toList();
+    objectiveFilered = _searchService?.searchTerm.toString().isEmpty ? objectiveFilered : objectiveFilered.where((t) => t.name.toLowerCase().contains(_searchService.searchTerm.toLowerCase())).toList();
 
     return objectiveFilered;
     // return _searchService?.searchTerm.toString().isEmpty ? _objectives : _objectives.where((t) => t.name.contains(_searchService.searchTerm)).toList();

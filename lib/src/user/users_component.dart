@@ -120,7 +120,7 @@ class UsersComponent with CanReuse implements OnActivate {
   }
 
   List<User> get users {
-    return _searchService?.searchTerm.toString().isEmpty ? _users : _users.where((t) => t.name.contains(_searchService.searchTerm)).toList();
+    return _searchService?.searchTerm.toString().isEmpty ? _users : _users.where((t) => t.name.toLowerCase().contains(_searchService.searchTerm.toLowerCase())).toList();
   }
 
   void delete() async {

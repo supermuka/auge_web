@@ -23,7 +23,7 @@ import 'package:auge_web/src/app_layout/app_layout_component.template.dart' as a
     ],
     providers: const <dynamic>[AugeApiService,
       AuthService],
-    directives: const [
+      directives: const [
       coreDirectives,
       routerDirectives,
     ])

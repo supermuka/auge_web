@@ -18,14 +18,11 @@ import 'package:angular_components/model/selection/selection_model.dart';
 import 'package:angular_components/model/ui/has_factory.dart';
 
 import 'package:auge_server/model/general/group.dart';
-
-import 'package:auge_web/src/app_layout/app_layout_service.dart';
-import 'package:auge_web/src/auth/auth_service.dart';
-import 'package:auge_web/src/group/group_service.dart';
+import 'package:auge_server/shared/message/messages.dart';
 
 @Component(
   selector: 'auge-group-filter',
-  providers: const [GroupService],
+ // providers: const [GroupService],
   styleUrls: const ['group_filter_component.css'],
   templateUrl: 'group_filter_component.html',
   directives: const [
@@ -39,23 +36,25 @@ import 'package:auge_web/src/group/group_service.dart';
     MaterialIconComponent,
   ])
 
-class GroupFilterComponent implements OnInit  {
+class GroupFilterComponent implements AfterChanges {
 
-  final AppLayoutService _appLayoutService;
-  final AuthService _authService;
-  final GroupService _groupService;
+ // final AppLayoutService _appLayoutService;
+ // final GroupService _groupService;
 
-  List<Group> _groups = [];
+  List<Group> _groups;
 
   // SelectionOptions groupOptions;
   StringSelectionOptions<Group> groupOptions;
   SelectionModel<Group> groupMultiSelectModel;
 
+  @Input()
+  set groups(List<Group> g) => _groups = g;
+
   final _groupSelection = StreamController<List<Group>>();
   @Output()
   Stream<List<Group>> get changeSelection => _groupSelection.stream;
 
-  GroupFilterComponent(this._appLayoutService, this._authService, this._groupService) {
+  GroupFilterComponent(/* this._appLayoutService, this._groupService */) {
 
     groupMultiSelectModel = SelectionModel<Group>.multi();
 
@@ -67,28 +66,26 @@ class GroupFilterComponent implements OnInit  {
 
   }
 
+  static final String groupLabel = InsightMsg.label('Group');
+
+
+
   @override
-  void ngOnInit() async {
+  void ngAfterChanges() async {
 
-    //TODO remove this with another implementation. If is necessary because Service Injector (_authService.authorizedOrganization.id) is get null
-    await Future.delayed(Duration(seconds: 0));
+      if (_groups != null) {
 
+        // Deselect, if exists something.
+        for (var group in groupMultiSelectModel.selectedValues.toList()) {
+          groupMultiSelectModel.deselect(group);
+        }
 
-    if (_authService.authorizedOrganization == null) return;
+        groupOptions = GroupSelectionOptions(_groups);
 
-    try {
-
-      _groups = await _groupService.getGroups(_authService.authorizedOrganization.id);
-
-      groupOptions = GroupSelectionOptions(_groups);
-
-      selectAllGroups();
-
-    } catch (e) {
-      _appLayoutService.error = e.toString();
-      rethrow;
-    }
+        selectAllGroups();
+     }
   }
+
 
   /// Label for the button for multi selection.
   String get multiSelectGroupLabel {
@@ -116,8 +113,6 @@ class GroupFilterComponent implements OnInit  {
     }
   }
 
-
-
   void selectAllGroups() {
     for (Group group in _groups) {
       groupMultiSelectModel.select(group);
@@ -128,10 +123,7 @@ class GroupFilterComponent implements OnInit  {
     for (Group group in _groups) {
       groupMultiSelectModel.deselect(group);
     }
-
-
   }
-
 }
 
 /// If the option does not support toString() that shows the label, the

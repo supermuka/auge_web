@@ -26,9 +26,10 @@ import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/work/work_service.dart';
 import 'package:auge_web/services/app_routes.dart';
 
+
 @Component(
   selector: 'auge-insights',
-  providers: const [UserService, GroupService, ObjectiveService, WorkService],
+  providers: const [ObjectiveService, WorkService, GroupService, UserService],
     styleUrls: const ['insights_component.css'],
     templateUrl: 'insights_component.html',
   directives: const [
@@ -48,16 +49,22 @@ class InsightsComponent with CanReuse implements OnActivate  {
   AppLayoutService _appLayoutService;
   final ObjectiveService _objectiveService;
   final WorkService _workService;
+  final GroupService _groupService;
+  final UserService _userService;
   final Router _router;
 
-  List<Objective> _objectives = List();
-  List<Work> works = List();
+  List<Objective> _objectives = [];
+  List<Work> works = [];
+  List<Group> groupsToFilter;
   List<Group> groupsSelectedToFilter = [];
+  List<User> usersToFilter;
   List<User> usersSelectedToFilter = [];
 
-  InsightsComponent(this._authService, this._appLayoutService, this._objectiveService, this._workService, this._router);
+  InsightsComponent(this._authService, this._appLayoutService, this._objectiveService, this._workService, this._groupService, this._userService, this._router);
 
   // Define messages and labels
+  static final String userLabel = InsightMsg.label('Leader');
+
   static final String objectivesOverallLabel = InsightMsg.label('Objectives Overall');
   static final String objectivesMeasuresLabel = InsightMsg.label('Objectives and Measures');
   static final String worksWorkItemsLabel = InsightMsg.label('Works and Work Items');
@@ -111,8 +118,17 @@ class InsightsComponent with CanReuse implements OnActivate  {
 
     try {
       if (_authService.authorizedOrganization != null) {
+        // Groups to filter
+        groupsToFilter = await _groupService.getGroups(_groupService.authService.authorizedOrganization.id);
+
+        // Users to filter
+        usersToFilter = await _userService.getUsers(_userService.authService.authorizedOrganization.id);
+
+        // Objectives
         _objectives = await _objectiveService.getObjectives(
             _authService.authorizedOrganization.id, withMeasures: true);
+
+        // Works
         works = await _workService.getWorks(
             _authService.authorizedOrganization.id, withWorkItems: true);
       }
@@ -126,13 +142,13 @@ class InsightsComponent with CanReuse implements OnActivate  {
   // StringSelectionOptions<Group> get groupOptions =>  GroupSelectionOptions(_groups);
 
   List<Objective> get objectives {
-    List<Objective> objectiveFilered;
+    List<Objective> objectiveFiltered;
 
-    objectiveFilered = (groupsSelectedToFilter.isEmpty) ? [] : _objectives.where((t) => groupsSelectedToFilter.any((tg) => tg.id == t.group.id)  ).toList();
+    objectiveFiltered = (groupsSelectedToFilter.isEmpty) ? [] : _objectives.where((t) => groupsSelectedToFilter.any((tg) => tg.id == t.group.id)  ).toList();
 
-    objectiveFilered = (usersSelectedToFilter.isEmpty) ? [] : objectiveFilered.where((t) => usersSelectedToFilter.any((tg) => tg.id == t.leader.id)  ).toList();
+    objectiveFiltered = (usersSelectedToFilter.isEmpty) ? [] : objectiveFiltered.where((t) => usersSelectedToFilter.any((tg) => tg.id == t.leader.id)  ).toList();
 
-    return objectiveFilered;
+    return objectiveFiltered;
   }
 
   /// Return overall progress

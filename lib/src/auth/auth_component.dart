@@ -21,8 +21,6 @@ import 'package:angular_components/model/selection/selection_model.dart';
 import 'package:angular_components/model/selection/selection_options.dart';
 import 'package:angular_components/model/ui/has_renderer.dart';
 
-
-
 import 'auth_service.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
 

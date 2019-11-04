@@ -18,16 +18,13 @@ import 'package:angular_components/model/selection/selection_model.dart';
 import 'package:angular_components/model/ui/has_factory.dart';
 
 import 'package:auge_server/model/general/user.dart';
-
-import 'package:auge_web/src/app_layout/app_layout_service.dart';
-import 'package:auge_web/src/auth/auth_service.dart';
-import 'package:auge_web/src/user/user_service.dart';
+import 'package:auge_server/shared/message/messages.dart';
 
 @Component(
   selector: 'auge-user-filter',
-  providers: const [UserService],
-    styleUrls: const ['user_filter_component.css'],
-    templateUrl: 'user_filter_component.html',
+  // providers: const [UserService],
+  styleUrls: const ['user_filter_component.css'],
+  templateUrl: 'user_filter_component.html',
   directives: const [
     coreDirectives,
     MaterialDropdownSelectComponent,
@@ -39,13 +36,18 @@ import 'package:auge_web/src/user/user_service.dart';
     MaterialIconComponent,
   ])
 
-class UserFilterComponent implements OnInit  {
+class UserFilterComponent implements AfterChanges  {
 
-  final AppLayoutService _appLayoutService;
-  final AuthService _authService;
-  final UserService _userService;
+ // final AppLayoutService _appLayoutService;
+ //final UserService _userService;
 
-  List<User> _users = [];
+  List<User> _users;
+
+  @Input()
+  set users(List<User> us) => _users = us;
+
+  @Input()
+  String userLabel;
 
   StringSelectionOptions<User> userOptions;
   SelectionModel<User> userMultiSelectModel;
@@ -54,7 +56,7 @@ class UserFilterComponent implements OnInit  {
   @Output()
   Stream<List<User>> get changeSelection => _userSelection.stream;
 
-  UserFilterComponent(this._appLayoutService, this._authService, this._userService) {
+  UserFilterComponent(/* this._appLayoutService, this._userService */) {
 
     userMultiSelectModel = SelectionModel<User>.multi();
 
@@ -66,40 +68,31 @@ class UserFilterComponent implements OnInit  {
 
   }
 
+  static final String userOriginalLabel = InsightMsg.label('Leader');
+
   // Define messages and labels
   @override
-  void ngOnInit() async {
+  void ngAfterChanges() {
 
-    //TODO remove this with another implementation. If is necessary because Service Injector (_authService.authorizedOrganization.id) is get null
-    await Future.delayed(Duration(seconds: 0));
+    if (_users != null) {
 
-    if (_authService.authorizedOrganization == null) return;
-
-    try {
-
-      // TODO: Avoid using Timer.run.
-      /*
-      Timer.run(() {
-      });
-       */
-
-      _users = await _userService.getUsers(_authService.authorizedOrganization.id);
+      // Deselect, if exists something.
+      for (var user in userMultiSelectModel.selectedValues.toList()) {
+        userMultiSelectModel.deselect(user);
+      }
 
       userOptions = UserSelectionOptions(_users);
 
       selectAllUsers();
-
-    } catch (e) {
-      _appLayoutService.error = e.toString();
-      rethrow;
     }
+
   }
 
   /// Label for the button for multi selection.
   String get multiSelectUserLabel {
     var selectedValues = userMultiSelectModel?.selectedValues;
     if (selectedValues == null || selectedValues.isEmpty) {
-      return "Select User";
+      return "Select ${userLabel ?? userOriginalLabel}";
     } else if (selectedValues.length == 1) {
       return userItemRenderer(selectedValues.first);
     } else {

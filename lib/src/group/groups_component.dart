@@ -117,7 +117,7 @@ class GroupsComponent with CanReuse implements OnActivate, OnDestroy {
   }
 
   List<Group> get groups {
-    return _searchService?.searchTerm.toString().isEmpty ? _groups : _groups.where((t) => t.name.contains(_searchService.searchTerm)).toList();
+    return _searchService?.searchTerm.toString().isEmpty ? _groups : _groups.where((t) => t.name.toLowerCase().contains(_searchService.searchTerm.toLowerCase())).toList();
   }
 
   @override

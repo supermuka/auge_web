@@ -10,10 +10,10 @@
             </material-dropdown-select>
         </div>
         <div class="w3-col m3">
-            <auge-group-filter (changeSelection)="groupChangeSelection($event)"></auge-group-filter>
+            <auge-group-filter [groups]="groupsToFilter"  (changeSelection)="groupChangeSelection($event)"></auge-group-filter>
         </div>
         <div class="w3-col m3">
-            <auge-user-filter (changeSelection)="userChangeSelection($event)"></auge-user-filter>
+            <auge-user-filter [users]="usersToFilter" [userLlabel]="leaderLabel"  (changeSelection)="userChangeSelection($event)"></auge-user-filter>
         </div>
         <div class="w3-col m3">
             <material-toggle class="w3-right" label="Timeline" (checkedChange)="timelineVisible = $event"></material-toggle>

@@ -1,11 +1,13 @@
-<div class="w3-content" style="max-width:1200px">
-    <div class="w3-row-padding w3-right">
-        <div class="w3-col m6">
-            <auge-group-filter class="filterx" (changeSelection)="groupChangeSelection($event)"></auge-group-filter>
+<div class="w3-content container-insights">
+    <div class="w3-row-padding">
+        <div class="w3-col l3">&nbsp;</div>
+        <div class="w3-col l3">
+            <auge-group-filter [groups]="groupsToFilter" (changeSelection)="groupChangeSelection($event)" @deferred></auge-group-filter>
         </div>
-        <div class="w3-col m6">
-            <auge-user-filter class="filterx" (changeSelection)="userChangeSelection($event)"></auge-user-filter>
+        <div class="w3-col l3">
+            <auge-user-filter [users]="usersToFilter" [userLlabel]="userLabel" (changeSelection)="userChangeSelection($event)" @deferred></auge-user-filter>
         </div>
+        <div class="w3-col l3">&nbsp;</div>
     </div>
     <div class="w3-row">
         <!-- material-icon size="medium" icon="done_all">
