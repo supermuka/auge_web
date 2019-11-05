@@ -185,8 +185,11 @@ body {
 }
 
 /* To present graphic and background */
+/*
 @media print {
     body {
       -webkit-print-color-adjust: exact;
     }
 }
+
+*/

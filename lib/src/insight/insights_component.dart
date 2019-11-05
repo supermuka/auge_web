@@ -144,9 +144,9 @@ class InsightsComponent with CanReuse implements OnActivate  {
   List<Objective> get objectives {
     List<Objective> objectiveFiltered;
 
-    objectiveFiltered = (groupsSelectedToFilter.isEmpty) ? [] : _objectives.where((t) => groupsSelectedToFilter.any((tg) => tg.id == t.group.id)  ).toList();
+    objectiveFiltered = (groupsSelectedToFilter.isEmpty) ? [] : _objectives.where((t) => t.group == null || groupsSelectedToFilter.any((tg) => tg.id == t.group.id)  ).toList();
 
-    objectiveFiltered = (usersSelectedToFilter.isEmpty) ? [] : objectiveFiltered.where((t) => usersSelectedToFilter.any((tg) => tg.id == t.leader.id)  ).toList();
+    objectiveFiltered = (usersSelectedToFilter.isEmpty) ? [] : objectiveFiltered.where((t) => t.leader == null || usersSelectedToFilter.any((tg) => tg.id == t.leader.id)  ).toList();
 
     return objectiveFiltered;
   }

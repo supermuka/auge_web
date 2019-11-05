@@ -126,6 +126,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
   String expandedObjectiveId;
   Objective selectedObjective;
   String initialObjectiveId;
+  bool isFilter = false;
   //String specificObjectiveId;
   String selectedView = 'list';
   TimelineParam timelineParam = TimelineParam();
@@ -188,14 +189,18 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
             routerStatePrevious.toUrl() == AppRoutes.objectiveEditRoute.toUrl()) && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.objectiveIdQueryParameter)) return;
 
     // Expand panel whether [Id] objective is informed.
-    if (routerStateCurrent.queryParameters.containsKey(AppRoutesParam.objectiveIdParameter)) {
-      initialObjectiveId = routerStateCurrent.queryParameters[AppRoutesParam.objectiveIdParameter];
+    if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.objectiveIdQueryParameter)) {
+      initialObjectiveId = routerStateCurrent.queryParameters[AppRoutesQueryParam.objectiveIdQueryParameter];
 
+      // Filter ids informed.
+
+      if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.filter)) {
+        isFilter = (routerStateCurrent.queryParameters[AppRoutesQueryParam.filter].toLowerCase() == 'true');
+      }
 
       // Used just first time, to remove queryParam initialObjectiveId.
-      _router.navigate(routerStateCurrent.path, NavigationParams(queryParameters: Map.from(routerStateCurrent.queryParameters)..remove(AppRoutesParam.objectiveIdParameter), replace: true));
+      _router.navigate(routerStateCurrent.path, NavigationParams(queryParameters: Map.from(routerStateCurrent.queryParameters)..remove(AppRoutesQueryParam.objectiveIdQueryParameter)..remove(AppRoutesQueryParam.filter), replace: true));
       return;
-
     }
 
     _appLayoutService.headerTitle = ObjectiveMsg.label('Objectives');
@@ -209,16 +214,33 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
       // Users to filter
       usersToFilter = await _userService.getUsers(_userService.authService.authorizedOrganization.id);
 
-      _objectives = await getObjetives( /*specificObjectiveId */);
+      List<Objective> _objectivesAux = [];
+      _objectivesAux = await getObjetives( /*specificObjectiveId */);
      // _sortObjectives();
 
       if (initialObjectiveId != null) {
 
-        initialObjectivesSelectedToFilter = [_objectives.firstWhere((to) => to.id == initialObjectiveId)];
+        if (isFilter) {
+          initialObjectivesSelectedToFilter =
+          [_objectivesAux.firstWhere((to) => to.id == initialObjectiveId)];
+          isFilter = false;
+        } else {
+          initialObjectivesSelectedToFilter = null;
+        }
 
         expandedObjectiveId = initialObjectiveId;
+
+        // Modal, needs to await the dom elements creation.
+        /*
+        Future.delayed(Duration.zero, () {
+            initialObjectiveId = null;
+        });
+
+         */
        // initialObjectiveId = null;
       }
+
+      _objectives = _objectivesAux;
 
       if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.objectives.index);
 
@@ -315,7 +337,10 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
     if (event &&  initialObjectiveId != null) {
 
       if (element != null) {
+
+        element.scrollIntoView(html.ScrollAlignment.TOP);
         // Modal, needs to await the dom elements creation.
+
         new Future.delayed(Duration.zero, () {
 
             element.scrollIntoView(html.ScrollAlignment.TOP);

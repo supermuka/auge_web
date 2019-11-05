@@ -23,6 +23,7 @@ class AppRoutesQueryParam {
   static const objectiveStartDateQueryParameter = 'start_date';
   static const objectiveEndDateQueryParameter = 'end_date';
   static const measureCurrentValueQueryParameter = 'current_value';
+  static const filter = 'filter';
 }
 
 class AppRoutes {

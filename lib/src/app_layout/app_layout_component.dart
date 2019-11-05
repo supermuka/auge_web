@@ -55,7 +55,7 @@ import 'package:auge_web/src/work_item/work_items_kanban_component.template.dart
     selector: 'auge-layout',
     providers: const <dynamic>[AppLayoutService, SearchService],
     templateUrl: 'app_layout_component.html',
-    styleUrls: const [
+    styleUrls: [
     'app_layout_component.css',
     'package:angular_components/app_layout/layout.scss.css',
     ],
