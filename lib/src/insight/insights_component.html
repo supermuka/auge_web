@@ -1,5 +1,5 @@
 <div class="w3-content container-insights">
-    <div class="w3-row-padding">
+    <div class="w3-row w3-padding">
         <div class="w3-col l3">&nbsp;</div>
         <div class="w3-col l3">
             <auge-group-filter [groups]="groupsToFilter" (changeSelection)="groupChangeSelection($event)" @deferred></auge-group-filter>
@@ -24,7 +24,6 @@
                 <div class="fill"></div>
             </div>
         </div>
-
         <h3>{{objectivesMeasuresLabel}}</h3>
         <acx-scoreboard scrollable>
             <acx-scorecard class="card" elevation="1"

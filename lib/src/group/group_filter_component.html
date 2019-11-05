@@ -7,9 +7,10 @@
         [listAutoFocus]="false"
         [activateFirstOption]="true"
         [popupMatchInputWidth]="false"
-        (visibleChange)="onDropdownVisibleChange($event)">
+        (visibleChange)="onDropdownVisibleChange($event)"
+        [materialTooltip]="groupLabel">
     <div header>
-        <label>Group</label>
+        <label>{{groupLabel}}</label>
         <div class="w3-right">
             <material-icon icon="done_all" (click)="selectAllGroups()">
             </material-icon>
@@ -17,7 +18,7 @@
             </material-icon>
         </div>
         <material-select-searchbox
-                label="Search..."
+                label="{{searchLabel}}..."
                 [filterable]="groupOptions">
         </material-select-searchbox>
     </div>

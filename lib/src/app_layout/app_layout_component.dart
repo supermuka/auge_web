@@ -130,6 +130,13 @@ class AppLayoutComponent with CanReuse implements OnActivate {
       routePath: AppRoutes.objectivesRoute,
       component: objectives_component.ObjectivesComponentNgFactory,
     ),
+/*
+    new RouteDefinition(
+      routePath: AppRoutes.objectiveRoute,
+      component: objectives_component.ObjectivesComponentNgFactory,
+    ),
+
+ */
     new RouteDefinition(
       routePath: AppRoutes.groupsRoute,
       component: groups_component.GroupsComponentNgFactory,

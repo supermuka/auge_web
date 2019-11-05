@@ -7,7 +7,8 @@
         [listAutoFocus]="false"
         [activateFirstOption]="true"
         [popupMatchInputWidth]="false"
-        (visibleChange)="onDropdownVisibleChange($event)">
+        (visibleChange)="onDropdownVisibleChange($event)"
+        [materialTooltip]="userLabel ?? userOriginalLabel">
     <div header>
         <label>{{userLabel ?? userOriginalLabel}}</label>
         <div class="w3-right">
@@ -17,7 +18,7 @@
             </material-icon>
         </div>
         <material-select-searchbox
-                label="Search..."
+                label="{{searchLabel}}..."
                 [filterable]="userOptions">
         </material-select-searchbox>
     </div>

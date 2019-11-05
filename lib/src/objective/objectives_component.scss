@@ -1,4 +1,5 @@
 @import 'package:auge_web/scss/common.scss';
+//@import 'package:angular_components/scorecard/mixins';
 
 .custom-grid {
   display: grid;
@@ -17,3 +18,17 @@
 .margin-top {
   margin-top: 2px;
 }
+
+/*
+.timeline-vertical-size {
+  max-height: calc(100vh - 128px);  // minus header, margin, padding and another components height
+  overflow-y: auto;
+  padding: inherit;
+}
+*/
+
+/*
+.acx-scorecard-padding-custom {
+  @include acx-scorecard-padding(8, 8, 8, 8);
+}
+*/

@@ -79,7 +79,12 @@ class AppRoutes {
     path: 'objectives',
     parent: appLayoutRoute
   );
-
+/*
+  static final objectiveRoute = new RoutePath(
+      path: 'objectives/:${AppRoutesParam.objectiveIdParameter}',
+      parent: appLayoutRoute
+  );
+*/
   static final measuresRoute = new RoutePath(
       path: 'objectives/:${AppRoutesParam.objectiveIdParameter}/measures',
       parent: objectivesRoute

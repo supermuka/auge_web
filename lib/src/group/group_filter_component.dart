@@ -11,6 +11,7 @@ import 'package:angular_components/material_select/dropdown_button.dart';
 import 'package:angular_components/material_select/material_dropdown_select_accessor.dart';
 import 'package:angular_components/material_select/material_select_searchbox.dart';
 import 'package:angular_components/material_select/material_select_dropdown_item.dart';
+import 'package:angular_components/material_tooltip/material_tooltip.dart';
 
 import 'package:angular_components/model/selection/select.dart';
 import 'package:angular_components/model/selection/string_selection_options.dart';
@@ -27,6 +28,7 @@ import 'package:auge_server/shared/message/messages.dart';
   templateUrl: 'group_filter_component.html',
   directives: const [
     coreDirectives,
+    MaterialTooltipDirective,
     MaterialDropdownSelectComponent,
     DropdownSelectValueAccessor,
     MultiDropdownSelectValueAccessor,
@@ -67,8 +69,7 @@ class GroupFilterComponent implements AfterChanges {
   }
 
   static final String groupLabel = InsightMsg.label('Group');
-
-
+  static final String searchLabel = CommonMsg.label('Search');
 
   @override
   void ngAfterChanges() async {

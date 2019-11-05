@@ -2,7 +2,7 @@
 // Author: Samuel C. Schwebel.
 
 import 'dart:async';
-// import 'dart:html' as html;
+import 'dart:html' as html;
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
@@ -17,6 +17,7 @@ import 'package:angular_components/material_toggle/material_toggle.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel_set.dart';
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
+import 'package:angular_components/scorecard/scoreboard.dart';
 
 import 'package:auge_server/model/general/authorization.dart';
 import 'package:auge_server/model/general/group.dart';
@@ -37,8 +38,10 @@ import 'package:auge_web/src/search/search_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/services/app_routes.dart';
 
+
 import 'package:auge_web/src/user/user_filter_component.dart';
 import 'package:auge_web/src/group/group_filter_component.dart';
+import 'package:auge_web/src/objective/objective_filter_component.dart';
 
 // ignore_for_file: uri_has_not_been_generated
 import 'package:auge_web/src/objective/objective_detail_component.template.dart' as objective_detail_component;
@@ -66,12 +69,14 @@ import 'package:auge_web/src/measure/measure_progress_component.template.dart' a
       HistoryTimelineComponent,
       WorksSummaryComponent,
       MeasuresComponent,
+      ObjectiveFilterComponent,
       GroupFilterComponent,
       UserFilterComponent,
+      ScoreboardComponent,
     ],
     pipes: const [commonPipes])
 
-class ObjectivesComponent with CanReuse implements /* AfterViewInit, */ OnActivate, OnDestroy {
+class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActivate, OnDestroy {
 
   final AppLayoutService _appLayoutService;
   final GroupService _groupService;
@@ -109,6 +114,9 @@ class ObjectivesComponent with CanReuse implements /* AfterViewInit, */ OnActiva
   ];
 
   List<Objective> _objectives = [];
+  List<Objective> get objectivesToFilter => _objectives;
+  List<Objective> initialObjectivesSelectedToFilter;
+  List<Objective> objectivesSelectedToFilter = [];
   List<Group> groupsToFilter;
   List<Group> groupsSelectedToFilter = [];
   List<User> usersToFilter;
@@ -118,6 +126,7 @@ class ObjectivesComponent with CanReuse implements /* AfterViewInit, */ OnActiva
   String expandedObjectiveId;
   Objective selectedObjective;
   String initialObjectiveId;
+  //String specificObjectiveId;
   String selectedView = 'list';
   TimelineParam timelineParam = TimelineParam();
 
@@ -186,17 +195,12 @@ class ObjectivesComponent with CanReuse implements /* AfterViewInit, */ OnActiva
       // Used just first time, to remove queryParam initialObjectiveId.
       _router.navigate(routerStateCurrent.path, NavigationParams(queryParameters: Map.from(routerStateCurrent.queryParameters)..remove(AppRoutesParam.objectiveIdParameter), replace: true));
       return;
-      //  justReplacedHistoryNavigate = true;
-      //_router.navigateByUrl(routerStateCurrent.path, replace: true);
 
-    //} else {
-    //  initialObjectiveId = null;
     }
 
     _appLayoutService.headerTitle = ObjectiveMsg.label('Objectives');
 
     _appLayoutService.enabledSearch = true;
-
 
     try {
       // Groups to filter
@@ -205,12 +209,15 @@ class ObjectivesComponent with CanReuse implements /* AfterViewInit, */ OnActiva
       // Users to filter
       usersToFilter = await _userService.getUsers(_userService.authService.authorizedOrganization.id);
 
-      _objectives = await getObjetives(initialObjectiveId);
+      _objectives = await getObjetives( /*specificObjectiveId */);
      // _sortObjectives();
 
       if (initialObjectiveId != null) {
+
+        initialObjectivesSelectedToFilter = [_objectives.firstWhere((to) => to.id == initialObjectiveId)];
+
         expandedObjectiveId = initialObjectiveId;
-        initialObjectiveId = null;
+       // initialObjectiveId = null;
       }
 
       if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.objectives.index);
@@ -226,35 +233,28 @@ class ObjectivesComponent with CanReuse implements /* AfterViewInit, */ OnActiva
     }
   }
 
-
-  Future<List<Objective>> getObjetives(String objectiveId) async {
+  Future<List<Objective>> getObjetives([String objectiveId]) async {
     List<Objective> objectivesAux =  await _objectiveService.getObjectives(
         _objectiveService.authService.authorizedOrganization.id, objectiveId: objectiveId, withMeasures: true, withProfile: true);
 
     _sortObjectives(objectivesAux);
     return objectivesAux;
   }
-/*
-  void ngAfterViewInit() {
-    if (initialObjectiveId != null) {
-      html.Element e = html.document.querySelector('#initial-objective');
-      if (e != null) e.scrollIntoView(html.ScrollAlignment.TOP);
-    }
-  }
-  */
 
   List<Objective> get objectives {
 
     List<Objective> objectiveFilered;
 
-    objectiveFilered = (groupsSelectedToFilter.isEmpty) ? [] : _objectives.where((t) => groupsSelectedToFilter.any((tg) => tg.id == t.group.id)  ).toList();
+    objectiveFilered = (objectivesSelectedToFilter.isEmpty) ? [] : _objectives.where((t) => objectivesSelectedToFilter.any((tg) => tg.id == t.id)  ).toList();
 
-    objectiveFilered = (usersSelectedToFilter.isEmpty) ? [] : objectiveFilered.where((t) => usersSelectedToFilter.any((tg) => tg.id == t.leader.id)  ).toList();
+    objectiveFilered = (groupsSelectedToFilter.isEmpty) ? [] : objectiveFilered.where((t) => t.group == null || groupsSelectedToFilter.any((tg) => tg.id == t.group.id)  ).toList();
+
+    objectiveFilered = (usersSelectedToFilter.isEmpty) ? [] : objectiveFilered.where((t) => t.leader == null || usersSelectedToFilter.any((tg) => tg.id == t.leader.id)  ).toList();
 
     objectiveFilered = _searchService?.searchTerm.toString().isEmpty ? objectiveFilered : objectiveFilered.where((t) => t.name.toLowerCase().contains(_searchService.searchTerm.toLowerCase())).toList();
 
     return objectiveFilered;
-    // return _searchService?.searchTerm.toString().isEmpty ? _objectives : _objectives.where((t) => t.name.contains(_searchService.searchTerm)).toList();
+
   }
 
   @override
@@ -310,11 +310,11 @@ class ObjectivesComponent with CanReuse implements /* AfterViewInit, */ OnActiva
           : a.endDate.compareTo(b.endDate));
     }
   }
-/*
-  void scrollInit(bool event, html.HtmlElement element) {
-    if (event && initialObjectiveId != null) {
-      if (element != null) {
 
+  void scrollInit(bool event, html.HtmlElement element) {
+    if (event &&  initialObjectiveId != null) {
+
+      if (element != null) {
         // Modal, needs to await the dom elements creation.
         new Future.delayed(Duration.zero, () {
 
@@ -326,7 +326,6 @@ class ObjectivesComponent with CanReuse implements /* AfterViewInit, */ OnActiva
     }
   }
 
-*/
 
   setExpandedObjectiveId(String objectiveId, bool expanded) {
     if (expanded) {
@@ -349,12 +348,16 @@ class ObjectivesComponent with CanReuse implements /* AfterViewInit, */ OnActiva
     }
   }
 
-  groupChangeSelection(List<Group> groupsSeleted) {
-    groupsSelectedToFilter = groupsSeleted;
+  objectiveChangeSelection(List<Objective> objectivesSelected) {
+    objectivesSelectedToFilter = objectivesSelected;
   }
 
-  userChangeSelection(List<User> usersSeleted) {
-    usersSelectedToFilter = usersSeleted;
+  groupChangeSelection(List<Group> groupsSelected) {
+    groupsSelectedToFilter = groupsSelected;
+  }
+
+  userChangeSelection(List<User> usersSelected) {
+    usersSelectedToFilter = usersSelected;
   }
 
 }

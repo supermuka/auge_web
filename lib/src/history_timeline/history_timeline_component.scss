@@ -2,14 +2,8 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 */
-
 @import 'package:angular_components/css/material/material';
 @import 'package:angular_components/material_expansionpanel/mixins';
-
-.timeline-vertical-size {
-  max-height: calc(100vh - 192px);  // minus header, margin, padding and another components height
-  overflow-y: auto;
-}
 
 .expansionpanel-no-padding-margin {
   @include expansionpanel-open-panel-offset(0);

@@ -6,7 +6,7 @@
                tabindex="0"
                size="medium"
                #clickableRef="tooltipTarget"
-               (dblclick)="goToObjectives(iObjectiveMapLevel1)">
+               (dblclick)="goToObjective(iObjectiveMapLevel1)">
                 <!-- div *ngIf="iObjectiveMapLevel1.alignedWithChildren.length > 0" class="pointer" (click)="collapseExpand(iObjectiveMapLevel1)">{{objectivesCollapesed.contains(iObjectiveMapLevel1) ? '+' : '-'}}</div>
                 <div *ngIf="iObjectiveMapLevel1.alignedWithChildren.length == 0">&nbsp;</div-->
                 <div class="thin">
@@ -49,7 +49,7 @@
                        keyboardOnlyFocusIndicator
                        tabindex="0"
                        size="medium"
-                       #clickableRef="tooltipTarget" (dblclick)="goToObjectives(iObjectiveMapLevel2)">
+                       #clickableRef="tooltipTarget" (dblclick)="goToObjective(iObjectiveMapLevel2)">
                         <div class="thin">
                             <material-icon *ngIf="iObjectiveMapLevel2.alignedWithChildren.length > 0" class="pointer" size="medium"  baseline icon="{{objectivesCollapesed.contains(iObjectiveMapLevel2) ? 'expand_more' : 'expand_less'}}" (click)="collapseExpand($event, iObjectiveMapLevel2)"></material-icon>
                         </div>
@@ -81,7 +81,7 @@
                                keyboardOnlyFocusIndicator
                                tabindex="0"
                                size="medium"
-                               #clickableRef="tooltipTarget" (dblclick)="goToObjectives(iObjectiveMapLevel3)">
+                               #clickableRef="tooltipTarget" (dblclick)="goToObjective(iObjectiveMapLevel3)">
                                 <div class="thin">
                                     <material-icon *ngIf="iObjectiveMapLevel3.alignedWithChildren.length > 0" class="pointer" size="medium"  baseline icon="{{objectivesCollapesed.contains(iObjectiveMapLevel3) ? 'expand_more' : 'expand_less'}}" (click)="collapseExpand($event, iObjectiveMapLevel3)"></material-icon>
                                 </div>
@@ -113,7 +113,7 @@
                                        keyboardOnlyFocusIndicator
                                        tabindex="0"
                                        size="medium"
-                                       #clickableRef="tooltipTarget" (dblclick)="goToObjectives(iObjectiveMapLevel4)">
+                                       #clickableRef="tooltipTarget" (dblclick)="goToObjective(iObjectiveMapLevel4)">
                                         <div class="thin">
                                             <material-icon *ngIf="iObjectiveMapLevel4.alignedWithChildren.length > 0" class="pointer" size="medium"  baseline icon="{{objectivesCollapesed.contains(iObjectiveMapLevel4) ? 'expand_more' : 'expand_less'}}" (click)="collapseExpand($event, iObjectiveMapLevel4)"></material-icon>
                                         </div>
@@ -145,7 +145,7 @@
                                                keyboardOnlyFocusIndicator
                                                tabindex="0"
                                                size="medium"
-                                               #clickableRef="tooltipTarget" (dblclick)="goToObjectives(iObjectiveMapLevel5)">
+                                               #clickableRef="tooltipTarget" (dblclick)="goToObjective(iObjectiveMapLevel5)">
                                                 <div class="thin">
                                                     <material-icon *ngIf="iObjectiveMapLevel5.alignedWithChildren.length > 0" class="pointer" size="medium"  baseline icon="{{objectivesCollapesed.contains(iObjectiveMapLevel5) ? 'expand_more' : 'expand_less'}}" (click)="collapseExpand($event, iObjectiveMapLevel5)"></material-icon>
                                                 </div>
@@ -177,7 +177,7 @@
                                                        keyboardOnlyFocusIndicator
                                                        tabindex="0"
                                                        size="medium"
-                                                       #clickableRef="tooltipTarget" (dblclick)="goToObjectives(iObjectiveMapLevel6)">
+                                                       #clickableRef="tooltipTarget" (dblclick)="goToObjective(iObjectiveMapLevel6)">
                                                         <div class="thin">
                                                             <material-icon *ngIf="iObjectiveMapLevel6.alignedWithChildren.length > 0" class="pointer" size="medium"  baseline icon="{{objectivesCollapesed.contains(iObjectiveMapLevel6) ? 'expand_more' : 'expand_less'}}" (click)="collapseExpand($event, iObjectiveMapLevel6)"></material-icon>
                                                         </div>
@@ -209,7 +209,7 @@
                                                                keyboardOnlyFocusIndicator
                                                                tabindex="0"
                                                                size="medium"
-                                                               #clickableRef="tooltipTarget" (dblclick)="goToObjectives(iObjectiveMapLevel7)">
+                                                               #clickableRef="tooltipTarget" (dblclick)="goToObjective(iObjectiveMapLevel7)">
                                                                 <div class="thin">
                                                                     <material-icon *ngIf="iObjectiveMapLevel7.alignedWithChildren.length > 0" class="pointer" size="medium"  baseline icon="{{objectivesCollapesed.contains(iObjectiveMapLevel7) ? 'expand_more' : 'expand_less'}}" (click)="collapseExpand($event, iObjectiveMapLevel7)"></material-icon>
                                                                 </div>
@@ -241,7 +241,7 @@
                                                                        keyboardOnlyFocusIndicator
                                                                        tabindex="0"
                                                                        size="medium"
-                                                                       #clickableRef="tooltipTarget" (dblclick)="goToObjectives(iObjectiveMapLevel8)">
+                                                                       #clickableRef="tooltipTarget" (dblclick)="goToObjective(iObjectiveMapLevel8)">
                                                                         <div class="thin">
                                                                             <material-icon *ngIf="iObjectiveMapLevel8.alignedWithChildren.length > 0" class="pointer" size="medium"  baseline icon="{{objectivesCollapesed.contains(iObjectiveMapLevel8) ? 'expand_more' : 'expand_less'}}" (click)="collapseExpand($event, iObjectiveMapLevel8)"></material-icon>
                                                                         </div>
@@ -273,7 +273,7 @@
                                                                                keyboardOnlyFocusIndicator
                                                                                tabindex="0"
                                                                                size="medium"
-                                                                               #clickableRef="tooltipTarget" (dblclick)="goToObjectives(iObjectiveMapLevel9)">
+                                                                               #clickableRef="tooltipTarget" (dblclick)="goToObjective(iObjectiveMapLevel9)">
                                                                                 <div class="thin">
                                                                                     <material-icon *ngIf="iObjectiveMapLevel9.alignedWithChildren.length > 0" class="pointer" size="medium"  baseline icon="{{objectivesCollapesed.contains(iObjectiveMapLevel9) ? 'expand_more' : 'expand_less'}}" (click)="collapseExpand($event, iObjectiveMapLevel9)"></material-icon>
                                                                                 </div>
@@ -305,7 +305,7 @@
                                                                                        keyboardOnlyFocusIndicator
                                                                                        tabindex="0"
                                                                                        size="medium"
-                                                                                       #clickableRef="tooltipTarget" (dblclick)="goToObjectives(iObjectiveMapLevel10)">
+                                                                                       #clickableRef="tooltipTarget" (dblclick)="goToObjective(iObjectiveMapLevel10)">
                                                                                         <div class="thin">
                                                                                             <material-icon *ngIf="iObjectiveMapLevel10.alignedWithChildren.length > 0" class="pointer" size="medium"  baseline icon="{{objectivesCollapesed.contains(iObjectiveMapLevel10) ? 'expand_more' : 'expand_less'}}" (click)="collapseExpand($event, iObjectiveMapLevel10)"></material-icon>
                                                                                         </div>

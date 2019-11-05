@@ -11,7 +11,7 @@ import 'package:angular/angular.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
 import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
-import 'package:angular_components/content/deferred_content.dart';
+//import 'package:angular_components/content/deferred_content.dart';
 
 import 'package:auge_server/model/general/user.dart';
 import 'package:auge_server/model/general/history_item.dart';
@@ -38,7 +38,7 @@ export 'package:auge_web/src/history_timeline/history_timeline_service.dart';
       MaterialExpansionPanel,
       MaterialButtonComponent,
       MaterialIconComponent,
-      DeferredContentDirective,
+    //  DeferredContentDirective,
       HistoryItemTimelineDetailComponent,
     ],
     pipes:   const [DatePipe],)
