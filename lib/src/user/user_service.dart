@@ -35,17 +35,19 @@ class UserService {
   /// Return [User] list by Organization [id]
   Future<List<User>> getUsers(String organizationId, {bool withUserProfile = false}) async {
     // return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
+    Map<String, dynamic> cache = {};
     return (await _userServiceClient.getUsers(
         user_pbgrpc.UserGetRequest()..managedByOrganizationIdOrAccessedByOrganizationId = organizationId..withUserProfile = withUserProfile)).users.map((m) =>
     User()
-      ..readFromProtoBuf(m)).toList();
+      ..readFromProtoBuf(m,cache)).toList();
   }
 
   /// Return [User] list by Organization [id]
   Future<User> getUser(String id, {bool withUserProfile = false}) async {
     // return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
+    Map<String, dynamic> cache = {};
     return User()..readFromProtoBuf((await _userServiceClient.getUser(
-        user_pbgrpc.UserGetRequest()..id = id..withUserProfile = withUserProfile)));
+        user_pbgrpc.UserGetRequest()..id = id..withUserProfile = withUserProfile)), cache);
   }
 
   Future<UserIdentity> getUserIdentity(String id) async {
@@ -54,7 +56,8 @@ class UserService {
       //      userId: userId, organizationId: organizationId);
       user_identity_pbgrpc.UserIdentityGetRequest userIdentityGetRequest =  user_identity_pbgrpc.UserIdentityGetRequest();
       if (id != null) userIdentityGetRequest.id = id;
-      return UserIdentity()..readFromProtoBuf((await _userIdentityServiceClient.getUserIdentity(userIdentityGetRequest)));
+      Map<String, dynamic> cache = {};
+      return UserIdentity()..readFromProtoBuf((await _userIdentityServiceClient.getUserIdentity(userIdentityGetRequest)), cache);
     } catch (e) {
       rethrow;
     }
@@ -66,9 +69,10 @@ class UserService {
     //      userId: userId, organizationId: organizationId);
       user_identity_pbgrpc.UserIdentityGetRequest userIdentityGetRequest =  user_identity_pbgrpc.UserIdentityGetRequest();
       if (userId != null) userIdentityGetRequest.userId = userId;
+      Map<String, dynamic> cache = {};
       return (await _userIdentityServiceClient.getUserIdentities(userIdentityGetRequest)).userIdentities.map((m) =>
       UserIdentity()
-        ..readFromProtoBuf(m)).toList();
+        ..readFromProtoBuf(m, cache)).toList();
     } catch (e) {
       rethrow;
     }
@@ -80,7 +84,8 @@ class UserService {
       //      userId: userId, organizationId: organizationId);
       user_access_pbgrpc.UserAccessGetRequest userAccessGetRequest =  user_access_pbgrpc.UserAccessGetRequest();
       if (id != null) userAccessGetRequest.id = id;
-      return UserAccess()..readFromProtoBuf((await _userAccessServiceClient.getUserAccess(userAccessGetRequest)));
+      Map<String, dynamic> cache = {};
+      return UserAccess()..readFromProtoBuf((await _userAccessServiceClient.getUserAccess(userAccessGetRequest)), cache);
     } catch (e) {
       rethrow;
     }
@@ -92,10 +97,10 @@ class UserService {
       //      userId: userId, organizationId: organizationId);
       user_access_pbgrpc.UserAccessGetRequest userAccessGetRequest =  user_access_pbgrpc.UserAccessGetRequest();
       if (userId != null) userAccessGetRequest.userId = userId;
-
+      Map<String, dynamic> cache = {};
       return (await _userAccessServiceClient.getUserAccesses(userAccessGetRequest)).userAccesses.map((m) =>
       UserAccess()
-        ..readFromProtoBuf(m)).toList();
+        ..readFromProtoBuf(m, cache)).toList();
 
     } catch (e) {
       rethrow;

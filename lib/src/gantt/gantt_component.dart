@@ -151,10 +151,10 @@ class GanttComponent with CanReuse implements OnActivate {
   Map<String, List<Objective>> getObjectivesByGroup() {
     Map<String, List<Objective>> _objectivesByGroup = {};
     for (int i = 0;i<objectives.length;i++) {
-      if (!_objectivesByGroup.containsKey(objectives[i].group.id)) {
-        _objectivesByGroup[objectives[i].group.id] = List();
+      if (!_objectivesByGroup.containsKey(objectives[i].group?.id)) {
+        _objectivesByGroup[objectives[i].group?.id] = List();
       }
-      _objectivesByGroup[objectives[i].group.id].add(objectives[i]);
+      _objectivesByGroup[objectives[i].group?.id].add(objectives[i]);
     }
     return _objectivesByGroup;
   }

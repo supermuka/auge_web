@@ -40,7 +40,8 @@ class GroupService {
           ..id = groupId);
 
     // Create model from protobuf equivalent
-    return Group()..readFromProtoBuf(groupPb);
+    Map<String, dynamic> cache = {};
+    return Group()..readFromProtoBuf(groupPb, cache);
   }
 
   /// Return a list of [Group]
@@ -55,7 +56,8 @@ class GroupService {
           ..organizationId = organizationId);
 
     // Create model from protobuf equivalent
-    return groupsResponse.groups.map((g) => Group()..readFromProtoBuf(g)).toList();
+    Map<String, dynamic> cache = {};
+    return groupsResponse.groups.map((g) => Group()..readFromProtoBuf(g, cache)).toList();
   }
 
   /// Delete an [Group]

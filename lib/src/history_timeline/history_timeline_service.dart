@@ -42,9 +42,10 @@ class HistoryTimelineService {
     //history_item_pbgrpc.HistoryResponse historyResponse = await _historyItemServiceClient.getHistory(history_item_pbgrpc.HistoryItemGetRequest()..systemModuleIndex = SystemModule.objectives.index );
     currentDateTime = await getDateTime();
 
+    Map<String, dynamic> cache = {};
     return ( await _historyItemServiceClient.getHistory(history_item_pbgrpc.HistoryItemGetRequest()..organizationId = _authService.authorizedOrganization.id ..systemModuleIndex = systemModuleIndex)).history.map((m) =>
     HistoryItem()
-      ..readFromProtoBuf(m)).toList();
+      ..readFromProtoBuf(m, cache)).toList();
 
   }
 

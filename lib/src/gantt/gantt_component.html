@@ -20,11 +20,11 @@
         </div>
         <div class="gantt__row" *ngFor="let iObjectivesGroupKey of objectivesByGroup?.keys">
             <div class="gantt__row-first">
-                <span class="avatar avatar-border" [style.background-color]="colorFromUuid(objectivesByGroup[iObjectivesGroupKey].first.group.id)">
-                    <span class="text-group-letter">{{firstLetter(objectivesByGroup[iObjectivesGroupKey].first.group.name)}}</span>
+                <span class="avatar avatar-border" [style.background-color]="colorFromUuid(objectivesByGroup[iObjectivesGroupKey].first.group?.id)">
+                    <span class="text-group-letter">{{firstLetter(objectivesByGroup[iObjectivesGroupKey].first.group?.name)}}</span>
                 </span>
                 <span class="truncate-ellipsed-parent">
-                    <span class="truncate-ellipsed">{{objectivesByGroup[iObjectivesGroupKey].first.group.name}}</span>
+                    <span class="truncate-ellipsed">{{objectivesByGroup[iObjectivesGroupKey].first.group?.name}}</span>
                 </span>
             </div>
             <ul class="gantt__row-bars gantt__row--months-number-{{yearsMonthsInterval.length}}">
@@ -49,7 +49,7 @@
                        <div>{{endDateLabel}}</div>
                        <div><strong>{{iObjective.endDate | date}}</strong></div>
                        <div>{{leaderLabel}}</div>
-                       <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjective?.leader) + ')'"></div><span> <strong>{{iObjective?.leader.name}}</strong></span>
+                       <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjective?.leader) + ')'"></div><span> <strong>{{iObjective?.leader?.name}}</strong></span>
                    </material-tooltip-card>
                </li>
             </ul>
