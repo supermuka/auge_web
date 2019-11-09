@@ -68,7 +68,7 @@ class WorkItemService {
   Future<WorkItem> getWorkItem(String id) async {
     // return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
     return WorkItem()..readFromProtoBuf((await _workItemServiceClient.getWorkItem(
-        work_work_item_pbgrpc.WorkItemGetRequest()..id = id)));
+        work_work_item_pbgrpc.WorkItemGetRequest()..id = id)), {});
   }
 
   /// Return [WorkItemAttachment] by id
@@ -77,5 +77,4 @@ class WorkItemService {
     return WorkItemAttachment()..readFromProtoBuf((await _workItemServiceClient.getWorkItemAttachment(
         work_work_item_pbgrpc.WorkItemAttachmentGetRequest()..id = id..withContent = true)));
   }
-
 }

@@ -44,9 +44,10 @@ class WorkService {
     workGetRequest.withWorkItems = withWorkItems;
     workGetRequest.withUserProfile = withProfile;
 
+    Map<String, dynamic> cache = {};
     return (await _workServiceClient.getWorks(workGetRequest)).works.map((i) =>
     Work()
-      ..readFromProtoBuf(i)).toList();
+      ..readFromProtoBuf(i, cache)).toList();
   }
 
   /// Return [User] list by Organization [id]
@@ -56,7 +57,7 @@ class WorkService {
         work_work_item_pbgrpc.WorkGetRequest()
           ..id = id
           ..withWorkItems = withWorkItems
-          ..withUserProfile = withUserProfile)));
+          ..withUserProfile = withUserProfile)), {});
   }
 
   /// Return a list of [Stage]

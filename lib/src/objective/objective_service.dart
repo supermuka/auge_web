@@ -34,10 +34,11 @@ class ObjectiveService {
     objectiveGetRequest.withMeasures = withMeasures;
     objectiveGetRequest.withUserProfile = withProfile;
 
+    Map<String, dynamic> cache = {};
     return (await _objectiveServiceClient.getObjectives(
         objectiveGetRequest)).objectives.map((m) =>
     Objective()
-      ..readFromProtoBuf(m)).toList();
+      ..readFromProtoBuf(m, cache)).toList();
 
   }
 
@@ -53,7 +54,7 @@ class ObjectiveService {
             ..withMeasures = withMeasures
             ..withUserProfile = withUserProfile);
 
-      return Objective()..readFromProtoBuf(objective);
+      return Objective()..readFromProtoBuf(objective, {});
 
      // currentDateTime ??= await getDateTime();
 

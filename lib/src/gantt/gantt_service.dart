@@ -28,7 +28,8 @@ class GanttService {
       ..withMeasures = true
       ..withUserProfile = true);
 
+    Map<String, dynamic> cache = {};
     // Create model from protobuf equivalent
-    return objectivesResponse.objectives.map((o) => Objective()..readFromProtoBuf(o)).toList();
+    return objectivesResponse.objectives.map((o) => Objective()..readFromProtoBuf(o, cache)).toList();
   }
 }

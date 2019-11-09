@@ -31,7 +31,8 @@ class MapService {
           ..withUserProfile = true
           ..withMeasures = true);
 
+    Map<String, dynamic> cache = {};
     return objectivesResponse.objectives.map((o) =>
-    Objective()..readFromProtoBuf(o)).toList();
+    Objective()..readFromProtoBuf(o, cache)).toList();
   }
 }

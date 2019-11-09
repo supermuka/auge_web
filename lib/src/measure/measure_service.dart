@@ -30,11 +30,12 @@ class MeasureService {
 
   /// Return a list of [Measure] by [objectiveId]
   Future<List<Measure>> getMeasures(String objectiveId) async {
+    Map<String, dynamic> cache = {};
     return (await _measureServiceClient.getMeasures(
         objective_measure_pbgrpc.MeasureGetRequest()
           ..objectiveId = objectiveId)).measures.map((m) =>
     Measure()
-    ..readFromProtoBuf(m)).toList();
+    ..readFromProtoBuf(m, cache)).toList();
   }
 
   /// Return an [Measure] by Id
@@ -46,7 +47,7 @@ class MeasureService {
           objective_measure_pbgrpc.MeasureGetRequest()
             ..id = id);
 
-      return Measure()..readFromProtoBuf(measure);
+      return Measure()..readFromProtoBuf(measure, {});
 
     } on GrpcError catch (e) {
       /*--
@@ -69,10 +70,10 @@ class MeasureService {
         .MeasureProgressesResponse measureProgressesResponsePb = await _measureServiceClient
         .getMeasureProgresses(objective_measure_pbgrpc.MeasureProgressGetRequest()
       ..measureId = measureId);
-
+    Map<String, dynamic> cache = {};
     return measureProgressesResponsePb.measureProgresses.map((m) =>
     MeasureProgress()
-    ..readFromProtoBuf(m)).toList();
+    ..readFromProtoBuf(m, cache)).toList();
   }
 
   /// Return an [MeasureProgress] by id [MeasureProgress.id]
@@ -93,7 +94,7 @@ class MeasureService {
 
          */
       }
-      return MeasureProgress()..readFromProtoBuf(measureProgressPb);
+      return MeasureProgress()..readFromProtoBuf(measureProgressPb, {});
   }
 
   /// Return [MeasureUnit] list
