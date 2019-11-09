@@ -7,6 +7,8 @@ import 'dart:html' as html;
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
 
+import 'package:angular_components/laminate/enums/alignment.dart';
+
 import 'package:angular_components/material_button/material_fab.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
 import 'package:angular_components/material_menu/material_menu.dart';
@@ -20,8 +22,6 @@ import 'package:angular_components/material_tooltip/material_tooltip.dart';
 import 'package:angular_components/scorecard/scoreboard.dart';
 
 import 'package:auge_server/model/general/authorization.dart';
-import 'package:auge_server/model/general/group.dart';
-import 'package:auge_server/model/general/user.dart';
 import 'package:auge_server/model/objective/objective.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
@@ -34,14 +34,10 @@ import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/group/group_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
-import 'package:auge_web/src/search/search_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/services/app_routes.dart';
 
-
-import 'package:auge_web/src/user/user_filter_component.dart';
-import 'package:auge_web/src/group/group_filter_component.dart';
-import 'package:auge_web/src/objective/objective_filter_component.dart';
+import 'package:auge_web/src/filter/filter_component.dart';
 
 // ignore_for_file: uri_has_not_been_generated
 import 'package:auge_web/src/objective/objective_detail_component.template.dart' as objective_detail_component;
@@ -69,9 +65,7 @@ import 'package:auge_web/src/measure/measure_progress_component.template.dart' a
       HistoryTimelineComponent,
       WorksSummaryComponent,
       MeasuresComponent,
-      ObjectiveFilterComponent,
-      GroupFilterComponent,
-      UserFilterComponent,
+      FilterComponent,
       ScoreboardComponent,
     ],
     pipes: const [commonPipes])
@@ -82,7 +76,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
   final GroupService _groupService;
   final UserService _userService;
   final ObjectiveService _objectiveService;
-  final SearchService _searchService;
+  //final SearchService _searchService;
   final HistoryTimelineService _historyTimelineService;
   final Router _router;
 
@@ -114,19 +108,21 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
   ];
 
   List<Objective> _objectives = [];
-  List<Objective> get objectivesToFilter => _objectives;
-  List<Objective> initialObjectivesSelectedToFilter;
-  List<Objective> objectivesSelectedToFilter = [];
-  List<Group> groupsToFilter;
-  List<Group> groupsSelectedToFilter = [];
-  List<User> usersToFilter;
-  List<User> usersSelectedToFilter = [];
+ // List<Objective> get objectiveFilterOptions => _objectives;
+  List<FilterOption> objectiveFilterOptions;
+  List<FilterOption> groupFilterOptions;
+  List<FilterOption> leaderFilterOptions;
+
+  List<String> initialObjectivesIdSelectedToFilter;
+  List<String> objectivesIdSelectedToFilter = [];
+  List<String> groupsIdSelectedToFilter = [];
+  List<String> leadersIdSelectedToFilter = [];
 
   // Map<Objective, bool> expandedControl = Map();
   String expandedObjectiveId;
   Objective selectedObjective;
   String initialObjectiveId;
-  bool isFilter = false;
+  bool hasFilter = false;
   //String specificObjectiveId;
   String selectedView = 'list';
   TimelineParam timelineParam = TimelineParam();
@@ -138,6 +134,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
   MenuModel<MenuItem> menuModel;
 
     // Define messages and labels
+  static final String objectiveLabel = ObjectiveMsg.label('Objective');
   static final String sortedByLabel = ObjectiveMsg.label('Sorted By');
   static final String ultimateObjectiveLabel = ObjectiveMsg.label('Ultimate Objective');
 
@@ -152,7 +149,9 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
 
   String _sortedBy = nameLabel;
 
-  ObjectivesComponent(this._appLayoutService, this._groupService, this._userService, this._objectiveService, this._searchService, this._historyTimelineService, this._router) {
+  final preferredTooltipPositions = const [RelativePosition.AdjacentLeft, RelativePosition.OffsetBottomLeft, /* RelativePosition.OffsetBottomRight */];
+
+  ObjectivesComponent(this._appLayoutService, this._groupService, this._userService, this._objectiveService, /* this._searchService, */ this._historyTimelineService, this._router) {
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , actionWithContext: (_) => goToDetail()), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), actionWithContext: (_) => delete())])], icon: new Icon('menu'));
   }
 
@@ -183,11 +182,11 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
       _router.navigate(AppRoutes.authRoute.toUrl());
       return;
     }
-
+/*
     if (routerStatePrevious.toUrl() == AppRoutes.objectivesRoute.toUrl() ||
         (routerStatePrevious.toUrl() == AppRoutes.objectiveAddRoute.toUrl() && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.objectiveIdQueryParameter) ||
             routerStatePrevious.toUrl() == AppRoutes.objectiveEditRoute.toUrl()) && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.objectiveIdQueryParameter)) return;
-
+*/
     // Expand panel whether [Id] objective is informed.
     if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.objectiveIdQueryParameter)) {
       initialObjectiveId = routerStateCurrent.queryParameters[AppRoutesQueryParam.objectiveIdQueryParameter];
@@ -195,37 +194,39 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
       // Filter ids informed.
 
       if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.filter)) {
-        isFilter = (routerStateCurrent.queryParameters[AppRoutesQueryParam.filter].toLowerCase() == 'true');
+        hasFilter = (routerStateCurrent.queryParameters[AppRoutesQueryParam.filter].toLowerCase() == 'true');
       }
 
       // Used just first time, to remove queryParam initialObjectiveId.
+  /*
       _router.navigate(routerStateCurrent.path, NavigationParams(queryParameters: Map.from(routerStateCurrent.queryParameters)..remove(AppRoutesQueryParam.objectiveIdQueryParameter)..remove(AppRoutesQueryParam.filter), replace: true));
       return;
+   */
     }
+
 
     _appLayoutService.headerTitle = ObjectiveMsg.label('Objectives');
 
-    _appLayoutService.enabledSearch = true;
+    // _appLayoutService.enabledSearch = true;
 
     try {
       // Groups to filter
-      groupsToFilter = await _groupService.getGroups(_groupService.authService.authorizedOrganization.id);
+    //  groupsToFilter = await _groupService.getGroups(_groupService.authService.authorizedOrganization.id);
 
       // Users to filter
-      usersToFilter = await _userService.getUsers(_userService.authService.authorizedOrganization.id);
+    //  usersToFilter = await _userService.getUsers(_userService.authService.authorizedOrganization.id);
 
-      List<Objective> _objectivesAux = [];
-      _objectivesAux = await getObjetives( /*specificObjectiveId */);
+      List<Objective> objectivesAux = [];
+      objectivesAux = await getObjetives( /*specificObjectiveId */);
      // _sortObjectives();
 
       if (initialObjectiveId != null) {
 
-        if (isFilter) {
-          initialObjectivesSelectedToFilter =
-          [_objectivesAux.firstWhere((to) => to.id == initialObjectiveId)];
-          isFilter = false;
+        if (hasFilter) {
+          initialObjectivesIdSelectedToFilter = [initialObjectiveId];
+          hasFilter = false;
         } else {
-          initialObjectivesSelectedToFilter = null;
+          initialObjectivesIdSelectedToFilter = null;
         }
 
         expandedObjectiveId = initialObjectiveId;
@@ -240,7 +241,31 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
        // initialObjectiveId = null;
       }
 
-      _objectives = _objectivesAux;
+
+
+      // Select options to filter.
+      Map<String, FilterOption> objectives = {};
+      Map<String, FilterOption> groups = {};
+      Map<String, FilterOption> leaders = {};
+      for (int i = 0;i<objectivesAux.length;i++) {
+        objectives.putIfAbsent(objectivesAux[i].id, () => FilterOption(objectivesAux[i].id, objectivesAux[i].name));
+        groups.putIfAbsent(objectivesAux[i].group?.id, () => FilterOption(objectivesAux[i].group?.id, objectivesAux[i].group?.name));
+        leaders.putIfAbsent(objectivesAux[i].leader?.id, () => FilterOption(objectivesAux[i].leader?.id, objectivesAux[i].leader?.name));
+      }
+      List<FilterOption> objectiveFilterOptionsAux = objectives.values.toList();
+      if (objectiveFilterOptionsAux.length > 1)  objectiveFilterOptionsAux.sort((a, b) => a.name == null ? 1 : b.name == null ? -1 : a.name.compareTo(b.name));
+
+      List<FilterOption> groupFilterOptionsAux = groups.values.toList();
+      if (groupFilterOptionsAux.length > 1)  groupFilterOptionsAux.sort((a, b) => a.name == null ? 1 : b.name == null ? -1 : a.name.compareTo(b.name));
+
+      List<FilterOption> leaderFilterOptionsAux = leaders.values.toList();
+      if (leaderFilterOptionsAux.length > 1)  leaderFilterOptionsAux.sort((a, b) => a.name == null ? 1 : b.name == null ? -1 : a.name.compareTo(b.name));
+
+      objectiveFilterOptions =  objectiveFilterOptionsAux;
+      groupFilterOptions = groupFilterOptionsAux;
+      leaderFilterOptions = leaderFilterOptionsAux;
+
+      _objectives = objectivesAux;
 
       if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.objectives.index);
 
@@ -267,16 +292,12 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
 
     List<Objective> objectiveFilered;
 
-    objectiveFilered = (objectivesSelectedToFilter.isEmpty) ? [] : _objectives.where((t) => objectivesSelectedToFilter.any((tg) => tg.id == t.id)  ).toList();
-
-    objectiveFilered = (groupsSelectedToFilter.isEmpty) ? [] : objectiveFilered.where((t) => t.group == null || groupsSelectedToFilter.any((tg) => tg.id == t.group.id)  ).toList();
-
-    objectiveFilered = (usersSelectedToFilter.isEmpty) ? [] : objectiveFilered.where((t) => t.leader == null || usersSelectedToFilter.any((tg) => tg.id == t.leader.id)  ).toList();
-
-    objectiveFilered = _searchService?.searchTerm.toString().isEmpty ? objectiveFilered : objectiveFilered.where((t) => t.name.toLowerCase().contains(_searchService.searchTerm.toLowerCase())).toList();
+    objectiveFilered = (objectivesIdSelectedToFilter.isEmpty || groupsIdSelectedToFilter.isEmpty || leadersIdSelectedToFilter.isEmpty) ? [] : _objectives.where(
+            (t) => objectivesIdSelectedToFilter.contains(t.id)
+                  && (groupsIdSelectedToFilter.contains(t.group?.id))
+                  && (leadersIdSelectedToFilter.contains(t.leader?.id))).toList();
 
     return objectiveFilered;
-
   }
 
   @override
@@ -366,23 +387,23 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
 
   void goToDetail() {
     if (selectedObjective == null) {
-      _router.navigate(AppRoutes.objectiveAddRoute.toUrl());
+      _router.navigate(AppRoutes.objectiveAddRoute.toUrl(), NavigationParams(replace:  true));
 
     } else {
-      _router.navigate(AppRoutes.objectiveEditRoute.toUrl(parameters: { AppRoutesParam.objectiveIdParameter: selectedObjective.id }));
+      _router.navigate(AppRoutes.objectiveEditRoute.toUrl(parameters: { AppRoutesParam.objectiveIdParameter: selectedObjective.id }), NavigationParams(replace:  true));
     }
   }
 
-  objectiveChangeSelection(List<Objective> objectivesSelected) {
-    objectivesSelectedToFilter = objectivesSelected;
+  objectiveChangeSelection(List<String> objectivesIdSelected) {
+    objectivesIdSelectedToFilter = objectivesIdSelected;
   }
 
-  groupChangeSelection(List<Group> groupsSelected) {
-    groupsSelectedToFilter = groupsSelected;
+  groupChangeSelection(List<String> groupsIdSelected) {
+    groupsIdSelectedToFilter = groupsIdSelected;
   }
 
-  userChangeSelection(List<User> usersSelected) {
-    usersSelectedToFilter = usersSelected;
+  leaderChangeSelection(List<String> leadersIdSelected) {
+    leadersIdSelectedToFilter = leadersIdSelected;
   }
 
 }

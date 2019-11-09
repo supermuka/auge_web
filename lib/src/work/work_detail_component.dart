@@ -253,7 +253,7 @@ class WorkDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
   void closeDetail([String workId]) {
     //_location.back();
-     _router.navigate(previousPath, (workId != null) ? NavigationParams(queryParameters: {AppRoutesQueryParam.workIdQueryParameter: workId}) : null);
+     _router.navigate(previousPath, (workId != null) ? NavigationParams(queryParameters: {AppRoutesQueryParam.workIdQueryParameter: workId}, replace: true) : NavigationParams(replace:  true));
   }
 
   String get leaderLabelRenderer {

@@ -191,14 +191,14 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
       _router.navigate(AppRoutes.authRoute.toUrl());
       return;
     }
-
+/*
     if (routerStatePrevious.toUrl() == AppRoutes.worksRoute.toUrl() ||
         (routerStatePrevious.toUrl() == AppRoutes.workAddRoute.toUrl() && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.workIdQueryParameter) ||
          routerStatePrevious.toUrl() == AppRoutes.workEditRoute.toUrl() && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.workIdQueryParameter) ||
          routerStatePrevious.toUrl() == AppRoutes.workItemAddRoute.toUrl() && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.workItemIdQueryParameter) ||
          routerStatePrevious.toUrl() == AppRoutes.workItemEditRoute.toUrl() && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.workItemIdQueryParameter))
     ) return;
-
+*/
     _appLayoutService.headerTitle = WorkMsg.label('Works');
 
 
@@ -262,16 +262,16 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
 
   void goToDetail() {
     if (selectedWork == null) {
-      _router.navigate(AppRoutes.workAddRoute.toUrl());
+      _router.navigate(AppRoutes.workAddRoute.toUrl(), NavigationParams(replace:  true));
 
     } else {
-      _router.navigate(AppRoutes.workEditRoute.toUrl(parameters: { AppRoutesParam.workIdParameter: selectedWork.id }));
+      _router.navigate(AppRoutes.workEditRoute.toUrl(parameters: { AppRoutesParam.workIdParameter: selectedWork.id }), NavigationParams(replace:  true));
     }
   }
 
   void goToStages(Work work) {
     if (work != null) {
-      _router.navigate(AppRoutes.workStagesRoute.toUrl(parameters: { AppRoutesParam.workIdParameter: work.id }));
+      _router.navigate(AppRoutes.workStagesRoute.toUrl(parameters: { AppRoutesParam.workIdParameter: work.id }), NavigationParams(replace:  true));
     }
   }
 

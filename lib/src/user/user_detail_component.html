@@ -30,10 +30,14 @@
                             <material-button for="upload_image" [disabled]="!isManagedByOrganization()" icon (trigger)="uploadImage()">{{uploadButtonLabel}}
                                 <material-icon icon="done"></material-icon>
                             </material-button>
+
+                            [disabled]="!isManagedByOrganization()"
                             -->
-                            <input id="upload_image" [disabled]="!isManagedByOrganization()" type="file"  accept="image/png,image/jpg,image/jpeg,capture=camera" (change)="uploadImage()">
+
+                            <!-- input id="upload-profile-image"  type="file"  accept="image/png,image/jpg,image/jpeg,capture=camera" (change)="uploadImage()" -->
+                            <input type="file"  accept="image/png,image/jpg,image/jpeg,capture=camera" (change)="uploadImage()" #upload_image >
                             <div class="w3-right">
-                                <material-button icon for="upload_image" [disabled]="!isManagedByOrganization()" (trigger)="selectUploadImage()">
+                                <material-button icon for="upload-profile-image" [disabled]="!isManagedByOrganization()" (trigger)="selectUploadImage()">
                                     <material-icon icon="cloud_upload"></material-icon>
                                 </material-button>
                                 <material-button icon [disabled]="user.userProfile.image == null || !isManagedByOrganization()" (trigger)="clearImage()">

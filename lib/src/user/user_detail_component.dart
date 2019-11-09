@@ -123,13 +123,14 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
   /// When it exists, the error/exception message is presented into dialog view.
   String dialogError;
 
-  html.InputElement _uploadImage;
+  @ViewChild('upload_image', read: html.HtmlElement)
+  html.InputElement uploadImageInput;
 
   UserDetailComponent(this._userService, this._organizationService, this._location) {
     userIdentityProviderSingleSelectModel = SelectionModel<int>.single();
     userAccessOptions = List<Option>();
 
-    _uploadImage = html.querySelector("#upload_image");
+   // _uploadImage = html.querySelector("#upload_profile_image");
   }
 
   // Define messages and labels
@@ -170,7 +171,6 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
   static final String pt_BRvalueLabel = UserProfileValueMsg.label(pt_BRsymbol);
   static final String en_USvalueLabel = UserProfileValueMsg.label(en_USsymbol);
   static final String es_ESvalueLabel = UserProfileValueMsg.label(es_ESsymbol);
-
 
 
   @override
@@ -287,13 +287,13 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
   void selectUploadImage() async {
 
-    _uploadImage.click();
+    uploadImageInput.click();
   }
 
   void uploadImage() async {
  //   html.InputElement _uploadImage = html.querySelector("#upload_image");
 
-    html.FileList files = _uploadImage.files;
+    html.FileList files = uploadImageInput.files;
     if (files.length > 0) {
       html.File file = files.item(0);
 

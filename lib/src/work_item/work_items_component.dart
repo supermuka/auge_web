@@ -132,11 +132,11 @@ class WorkItemsComponent with CanReuse /* with CanReuse implements OnActivate  *
   void goToDetail() {
     if (selectedWorkItem == null) {
       _router.navigate(AppRoutes.workItemAddRoute.toUrl(parameters: {
-        AppRoutesParam.workIdParameter: work.id }));
+        AppRoutesParam.workIdParameter: work.id }), NavigationParams(replace:  true));
     } else {
       _router.navigate(AppRoutes.workItemEditRoute.toUrl(parameters: {
         AppRoutesParam.workIdParameter: work.id,
-        AppRoutesParam.workItemIdParameter: selectedWorkItem.id }));
+        AppRoutesParam.workItemIdParameter: selectedWorkItem.id }), NavigationParams(replace:  true));
     }
 
   }

@@ -55,9 +55,9 @@ class UserFilterComponent implements AfterChanges  {
   StringSelectionOptions<User> userOptions;
   SelectionModel<User> userMultiSelectModel;
 
-  final _userSelection = StreamController<List<User>>();
+  final _usersIdSelection = StreamController<Set<String>>();
   @Output()
-  Stream<List<User>> get changeSelection => _userSelection.stream;
+  Stream<Set<String>> get changeSelection => _usersIdSelection.stream;
 
   UserFilterComponent(/* this._appLayoutService, this._userService */) {
 
@@ -65,7 +65,7 @@ class UserFilterComponent implements AfterChanges  {
 
     userMultiSelectModel.selectionChanges.listen((_) {
 
-      _userSelection.add(userMultiSelectModel.selectedValues.toList());
+      _usersIdSelection.add(userMultiSelectModel.selectedValues.map((u) => u.id).toSet());
 
     });
 
@@ -104,7 +104,7 @@ class UserFilterComponent implements AfterChanges  {
     }
   }
 
-  ItemRenderer get userItemRenderer => (dynamic user) => user.name;
+  ItemRenderer get userItemRenderer => (dynamic user) => user.id != null ? user.name : '(empty)';
 
   @ViewChild(MaterialSelectSearchboxComponent)
   MaterialSelectSearchboxComponent searchbox;
@@ -137,7 +137,7 @@ class UserSelectionOptions extends StringSelectionOptions<User>
     implements Selectable<User> {
   UserSelectionOptions(List<User> options)
       : super(options,
-      toFilterableString: (User option) => option.name.toString());
+      toFilterableString: (User option) => option.id != null ? option.name.toString() : '(empty)');
 
   @override
   SelectableOption getSelectable(User item) => SelectableOption.Selectable;

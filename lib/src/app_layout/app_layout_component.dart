@@ -5,7 +5,7 @@ import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
 import 'package:angular_forms/angular_forms.dart';
 
-import 'package:angular_components/app_layout/material_persistent_drawer.dart';
+//import 'package:angular_components/app_layout/material_persistent_drawer.dart';
 import 'package:angular_components/app_layout/material_temporary_drawer.dart';
 import 'package:angular_components/content/deferred_content.dart';
 
@@ -66,7 +66,7 @@ import 'package:auge_web/src/work_item/work_items_kanban_component.template.dart
       DeferredContentDirective,
       MaterialButtonComponent,
       MaterialIconComponent,
-      MaterialPersistentDrawerDirective,
+     // MaterialPersistentDrawerDirective,
       MaterialTemporaryDrawerComponent,
       MaterialListComponent,
       MaterialListItemComponent,

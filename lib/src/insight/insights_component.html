@@ -2,10 +2,10 @@
     <div class="w3-row w3-padding">
         <div class="w3-col l3">&nbsp;</div>
         <div class="w3-col l3">
-            <auge-group-filter [groups]="groupsToFilter" (changeSelection)="groupChangeSelection($event)" @deferred></auge-group-filter>
+            <auge-filter [filterOptions]="groupFilterOptions"  [filterNameLabel]="groupLabel" (changeSelection)="groupChangeSelection($event)" @deferred></auge-filter>
         </div>
         <div class="w3-col l3">
-            <auge-user-filter [users]="usersToFilter" [userLlabel]="userLabel" (changeSelection)="userChangeSelection($event)" @deferred></auge-user-filter>
+            <auge-filter [filterOptions]="leaderFilterOptions" [filterNameLabel]="userLabel" (changeSelection)="userChangeSelection($event)" @deferred></auge-filter>
         </div>
         <div class="w3-col l3">&nbsp;</div>
     </div>

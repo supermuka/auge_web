@@ -13,9 +13,9 @@
         </div>
         <div class="w3-col m6">
             <acx-scoreboard scrollable>
-                    <auge-objective-filter [objectives]="objectivesToFilter" [initialObjectivesSelected]="initialObjectivesSelectedToFilter" (changeSelection)="objectiveChangeSelection($event)"></auge-objective-filter>
-                    <auge-group-filter [groups]="groupsToFilter"  (changeSelection)="groupChangeSelection($event)"></auge-group-filter>
-                    <auge-user-filter [users]="usersToFilter" [userLlabel]="leaderLabel"  (changeSelection)="userChangeSelection($event)"></auge-user-filter>
+                <auge-filter [filterOptions]="objectiveFilterOptions"  [filterNameLabel]="objectiveLabel" [initialFilterOptionsIdsSelected]="initialObjectivesIdSelectedToFilter" (changeSelection)="objectiveChangeSelection($event)" @deferred></auge-filter>
+                <auge-filter [filterOptions]="groupFilterOptions"  [filterNameLabel]="groupLabel" (changeSelection)="groupChangeSelection($event)" @deferred></auge-filter>
+                <auge-filter [filterOptions]="leaderFilterOptions"  [filterNameLabel]="leaderLabel" (changeSelection)="leaderChangeSelection($event)" @deferred></auge-filter>
             </acx-scoreboard>
         </div>
         <div class="w3-col m3">
@@ -25,7 +25,7 @@
     <div class="w3-row-padding">
         <div class="w3-col w3-padding-16 list-vertical-scroll" style="width:{{mainColWidth}}">
             <material-expansionpanel-set>
-                <div #refMatExp *ngFor="let iObjective of objectives;let i = index" >
+                <div #refMatExp *ngFor="let iObjective of objectives;let i = index">
                     <material-expansionpanel [alwaysHideExpandIcon]="true"
                             [hideExpandedHeader]="false"
                             [showSaveCancel]="false"
@@ -55,7 +55,7 @@
                             </div>
                         </div>
                         <div action>
-                            <material-menu [menu]="menuModel" (click)="selectObjective(iObjective)">
+                            <material-menu [preferredPositions]="preferredTooltipPositions"  [menu]="menuModel" (click)="selectObjective(iObjective)">
                             </material-menu>
                         </div>
                         <hr>

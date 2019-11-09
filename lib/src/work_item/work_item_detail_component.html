@@ -64,7 +64,7 @@
         </div>
         <div class="w3-row">
             <material-input class="w3-col material-input-disabled-color-custom-{{attachmentDragOver}}" style="width:90%;" [disabled]="true" [ngModel]="dropFileHereLabel" floatingLabel [label]="attachmentsLabel" (drop)="dropFile($event)" (dragover)="dragOver($event)" (dragleave)="dragLeave($event)"></material-input>
-            <input id="upload_file" type="file" (change)="uploadFile()">
+            <input type="file" (change)="uploadFile()" #upload_file>
             <material-button class="w3-rest w3-right" icon (trigger)="selectUploadFile()">
                 <material-icon icon="attachment"></material-icon>
             </material-button>

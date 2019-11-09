@@ -97,6 +97,7 @@ class ObjectiveDetailComponent implements OnInit, OnActivate, OnDeactivate {
   /// When it exists, the error/exception message presented into dialog view.
   String dialogError;
   String previousPath;
+  String currentPath;
 
   ObjectiveDetailComponent(this._userService, this._objectiveService, this._groupService, this._router) {
     groupSingleSelectModel = SelectionModel.single();
@@ -133,6 +134,7 @@ class ObjectiveDetailComponent implements OnInit, OnActivate, OnDeactivate {
     modalVisible = true;
 
     previousPath = previous.path;
+    currentPath = current.path;
 
     String id;
     if (current.parameters.containsKey(AppRoutesParam.objectiveIdParameter)) {
@@ -231,7 +233,8 @@ class ObjectiveDetailComponent implements OnInit, OnActivate, OnDeactivate {
   }
 
   void closeDetail([String objectiveId]) {
-    _router.navigate(previousPath, (objectiveId != null) ? NavigationParams(queryParameters: {AppRoutesQueryParam.objectiveIdQueryParameter: objectiveId}) : null);
+    _router.navigate(previousPath, (objectiveId != null) ? NavigationParams(queryParameters: {AppRoutesQueryParam.objectiveIdQueryParameter: objectiveId}, replace: true) : NavigationParams(replace: true),
+        );
   //  _location.back();
   }
 

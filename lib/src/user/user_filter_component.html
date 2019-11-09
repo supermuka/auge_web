@@ -12,10 +12,14 @@
     <div header>
         <label>{{userLabel ?? userOriginalLabel}}</label>
         <div class="w3-right">
-            <material-icon icon="done_all" (click)="selectAllUsers()">
-            </material-icon>
-            <material-icon icon="clear" (click)="clearAllUsers()">
-            </material-icon>
+            <material-button (trigger)="selectAllUsers()">
+                <material-icon icon="done_all">
+                </material-icon>
+            </material-button>
+            <material-button (trigger)="clearAllUsers()">
+                <material-icon icon="clear">
+                </material-icon>
+            </material-button>
         </div>
         <material-select-searchbox
                 label="{{searchLabel}}..."

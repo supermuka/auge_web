@@ -134,8 +134,6 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
 
   bool attachmentDragOver = false;
 
-  html.InputElement _uploadFile;
-
   final String urlBaseAttachment = 'data:application/octet-stream;base64,';
 
   WorkItemDetailComponent(this._userService, this._workService, this._workItemService, this._router, this._domSanitizationService /*, this._location*/)  {
@@ -143,10 +141,13 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
     initializeDateFormatting(Intl.defaultLocale , null);
     memberSingleSelectModel = SelectionModel.single();
 
-    _uploadFile = html.querySelector("#upload_file");
+   // _uploadFile = html.querySelector("#upload_file");
 
 
   }
+
+  @ViewChild('upload_image', read: html.HtmlElement)
+  html.InputElement uploadFileInput;
 
   // Define messages and labels
   static final String requiredValueMsg =  CommonMsg.requiredValueMsg();
@@ -176,7 +177,7 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
     workItem =
         WorkItem(); // need to create, because the angular throws a exception if the query delay.
 
-    _uploadFile = html.querySelector("#upload_file");
+   // _uploadFile = html.querySelector("#upload_file");
 
 
   }
@@ -252,7 +253,7 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
       stageSingleSelectModel.select(workItem.workStage);
     }
 
-    _uploadFile = html.querySelector("#upload_file");
+   // _uploadFile = html.querySelector("#upload_file");
 
   }
 
@@ -282,7 +283,7 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
 
   void closeDetail([String workItemId]) {
     //_location.back();
-    _router.navigate(previousPath, (workItemId != null) ? NavigationParams(queryParameters: {AppRoutesQueryParam.workItemIdQueryParameter: workItemId}) : null);
+    _router.navigate(previousPath, (workItemId != null) ? NavigationParams(queryParameters: {AppRoutesQueryParam.workItemIdQueryParameter: workItemId}, replace: true) : NavigationParams(replace:  true));
   }
 
   String get memberLabelRenderer {
@@ -418,7 +419,7 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
   void uploadFile() async {
     //   html.InputElement _uploadImage = html.querySelector("#upload_image");
 
-    html.FileList files = _uploadFile.files;
+    html.FileList files = uploadFileInput.files;
     if (files.length > 0) {
       html.File file = files.item(0);
       addAttachmentFile(file);
@@ -455,7 +456,7 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
 
   void selectUploadFile() async {
 
-    _uploadFile.click();
+    uploadFileInput.click();
   }
 
 
