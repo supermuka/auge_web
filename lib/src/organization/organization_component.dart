@@ -322,9 +322,9 @@ class OrganizationComponent implements OnInit, OnActivate, OnDeactivate {
     try {
 
       int directoryServiceStatusIndex = await _organizationService.testOrganizationDirectoryService(organizationDirectoryService);
-      testDirectoryServiceStatus = ConfigurationMsg.statusLabel(directoryServiceStatusIndex);
+      testDirectoryServiceStatus = ConfigurationMsg.statusLabel(DirectoryServiceStatus.values[directoryServiceStatusIndex].toString());
     } catch (e) {
-      testDirectoryServiceStatus = ConfigurationMsg.statusLabel(DirectoryServiceStatus.errorException.index);
+      testDirectoryServiceStatus = ConfigurationMsg.statusLabel(DirectoryServiceStatus.errorException.toString());
       dialogError = e.toString();
       rethrow;
     } finally {
@@ -337,14 +337,14 @@ class OrganizationComponent implements OnInit, OnActivate, OnDeactivate {
     syncInProgress = true;
     try {
       int directoryServiceStatusIndex = await _organizationService.syncOrganizationDirectoryService(organizationDirectoryService);
-      syncDirectoryServiceStatus = ConfigurationMsg.statusLabel(directoryServiceStatusIndex);
+      syncDirectoryServiceStatus = ConfigurationMsg.statusLabel(DirectoryServiceStatus.values[directoryServiceStatusIndex].toString());
 
       //
       organizationConfiguration =
       await _organizationService.getOrganizationConfiguration(organizationId:
           organizationId);
     } catch (e) {
-      syncDirectoryServiceStatus = ConfigurationMsg.statusLabel(DirectoryServiceStatus.errorException.index);
+      syncDirectoryServiceStatus = ConfigurationMsg.statusLabel(DirectoryServiceStatus.errorException.toString());
       dialogError = e.toString();
       rethrow;
     } finally {

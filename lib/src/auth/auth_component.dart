@@ -3,8 +3,6 @@
 
 import 'dart:async';
 //import 'dart:html' as html;
-import 'package:intl/intl.dart';
-
 import 'package:platform_detect/platform_detect.dart';
 
 import 'package:angular/angular.dart';
@@ -62,7 +60,7 @@ class AuthComponent implements OnActivate  {
 
   final Router _router;
 
-  String identification = AuthMsg.label(AuthMsg.identificationLabel);
+  String identification = AuthMsg.label(AuthMsg.domainLabel);
   String passwordStr = "1234567";
   String _dialogError;
 
@@ -86,15 +84,15 @@ class AuthComponent implements OnActivate  {
   AuthComponent(this._authService, this._router);
 
   /// Messages and labels
-  static final String headerTitleLabel =  CommonMsg.label(CommonMsg.augeLabel);
-  static final String headerSubtitleLabel = Intl.message('Objectives and Works', name: 'AuthComponent_headerSubtitleLabel'); // CommonMsg.label('Objectives and Works');
-  static final String loginButtonLabel = Intl.message('Login', name: 'AuthComponent_loginButtonLabel'); // CommonMsg.buttonLabel('Login');
-  static final String requiredValueMsg = Intl.message('Enter with a required value', name: 'AuthComponent_requiredValueMsg'); // CommonMsg.requiredValueMsg();
+  static final String headerTitleLabel =  AuthMsg.label(AuthMsg.headerTitleLabel);
+  static final String headerSubtitleLabel = AuthMsg.label(AuthMsg.headerSubtitleLabel);
+  static final String loginButtonLabel = AuthMsg.label(AuthMsg.loginLabel); // Intl.message('Login', name: 'AuthComponent_loginButtonLabel'); // CommonMsg.buttonLabel('Login');
+  static final String requiredValueMsg = CommonMsg.requiredValueMsg();
 
-  static final String identificationLabel = Intl.message('Identification', name: 'AuthComponent_identificationLabel'); // AuthMsg.label('Identification');
-  static final String passwordLabel = Intl.message('Password', name: 'AuthComponent_passwordLabel'); //AuthMsg.label('Password');
+  static final String identificationLabel = AuthMsg.label(AuthMsg.identificationLabel);
+  static final String passwordLabel = AuthMsg.label(AuthMsg.passwordLabel);
 
-  static String organizationSingleSelectLabel = Intl.message('Select', name: 'AuthComponent_organizationSingleSelectLabel'); // AuthMsg.label('Select');
+  static String organizationSingleSelectLabel = AuthMsg.label(AuthMsg.selectLabel);
 
   void onActivate(RouterState previous, RouterState current) {
 
@@ -109,7 +107,7 @@ class AuthComponent implements OnActivate  {
     // _authService.authorizedSystemRole = null;
 
     if (!browser.isChrome) {
-      dialogError = Intl.message('Browser Compatible: Chrome', name: 'AuthComponent_browserCompatible');
+      dialogError = AuthMsg.browserCompatibleErrorMsg();
     }
 
   }
@@ -125,14 +123,14 @@ class AuthComponent implements OnActivate  {
             () async  {
       if (identification.isEmpty || passwordStr.isEmpty) {
         //dialogError = AuthMsg.informIdentificationPasswordCorrectlyMsg();
-        dialogError = Intl.message('Inform an identification and password correctly.', name: 'AuthComponent_informIdentificationPasswordCorrectlyMsg');
+        dialogError = AuthMsg.informIdentificationPasswordCorrectlyMsg();
       } else {
         try {
           _authService.authUserAccess.user =
           await _authService.getAuthenticatedUser(identification, passwordStr);
           if (_authService.authUserAccess.user == null) {
             //dialogError = AuthMsg.userNotFoundMsg();
-            dialogError = Intl.message('User not found.', name: 'AuthComponent_userNotFoundMsg');
+            dialogError = AuthMsg.userNotFoundMsg();
           } else {
             authorizedUserAccesses =
             await _authService.getAuthorizedUserAccesses(
@@ -140,7 +138,7 @@ class AuthComponent implements OnActivate  {
             if (authorizedUserAccesses == null ||
                 authorizedUserAccesses.length == 0) {
               //dialogError = AuthMsg.organizationNotFoundMsg();
-              dialogError = Intl.message('Organization not found.', name: 'AuthComponent_organizationNotFoundMsg');
+              dialogError = AuthMsg.organizationNotFoundMsg();
             } else {
               configOrganizationSelection();
               // Don't cancel
@@ -150,7 +148,7 @@ class AuthComponent implements OnActivate  {
 
         } catch (e) {
           //dialogError = AuthMsg.serverApiErrorMsg();
-          dialogError = Intl.message('Server Api Error.', name: 'AuthComponent_serverApiErrorMsg');
+          dialogError = AuthMsg.serverApiErrorMsg();
           return true;
           //rethrow;
         }
@@ -186,7 +184,7 @@ class AuthComponent implements OnActivate  {
     List<AppLayoutOrganizationSelectOption> orgs = new List();
 
     //String orgGroupLabel = AuthMsg.label('Organization');
-    String orgGroupLabel = Intl.message('Organization.', name: 'AuthComponent_orgGroupLabel');
+    String orgGroupLabel = AuthMsg.organizationLabel;
 
     if (authorizedUserAccesses != null &&
         authorizedUserAccesses.isNotEmpty) {
@@ -221,7 +219,7 @@ class AuthComponent implements OnActivate  {
 
               organizationSingleSelectLabel =
                 d.first.added.first.userAccess.organization.name ??
-                    Intl.message('Select.', name: 'AuthComponent_select'); //AuthMsg.label('Select');
+                    AuthMsg.label(AuthMsg.selectLabel);
           }
         }
       });

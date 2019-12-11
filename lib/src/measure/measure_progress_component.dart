@@ -318,7 +318,7 @@ class MeasureProgressComponent implements OnInit, OnActivate, OnDeactivate  {
       event.cancel();
     }
     else if (objective.startDate != null && measureProgress.date.compareTo(objective.startDate) < 0 || objective.endDate != null && measureProgress.date.compareTo(objective.endDate) > 0) {
-      dialogError = MeasureMsg.currentDateNotBetweenStartEndDate(objective.startDate, objective.endDate);
+      dialogError = MeasureMsg.currentDateNotBetweenStartEndDate(DateFormat.yMMMd().format(objective.startDate), DateFormat.yMMMd().format(objective.endDate));
       event.cancel();
     } else {
       try {
