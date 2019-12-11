@@ -23,12 +23,12 @@ import 'package:angular_components/model/date/date.dart';
 import 'package:angular_components/material_datepicker/material_datepicker.dart';
 import 'package:angular_components/material_checkbox/material_checkbox.dart';
 
-import 'package:auge_server/model/objective/objective.dart';
-import 'package:auge_server/model/general/user.dart';
-import 'package:auge_server/model/general/group.dart';
+import 'package:auge_server/domain/objective/objective.dart';
+import 'package:auge_server/domain/general/user.dart';
+import 'package:auge_server/domain/general/group.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
-import 'package:auge_server/shared/message/model_messages.dart';
+import 'package:auge_server/shared/message/domain_messages.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
 //import 'package:auge_web/src/auth/auth_service.dart';
@@ -107,21 +107,21 @@ class ObjectiveDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
   // Define messages and labels
   static final String requiredValueMsg = CommonMsg.requiredValueMsg();
-  static final String closeButtonLabel = CommonMsg.buttonLabel('Close');
-  static final String saveButtonLabel = CommonMsg.buttonLabel('Save');
+  static final String closeButtonLabel = CommonMsg.buttonLabel(CommonMsg.closeButtonLabel);
+  static final String saveButtonLabel = CommonMsg.buttonLabel(CommonMsg.saveButtonLabel);
 
-  static final String addObjectiveLabel =  ObjectiveMsg.label('Add Objective');
-  static final String editObjectiveLabel =  ObjectiveMsg.label('Edit Objective');
-  static final String noMatchLabel =  ObjectiveMsg.label('No Match');
+  static final String addObjectiveLabel =  ObjectiveMsg.label(ObjectiveMsg.addObjectiveLabel);
+  static final String editObjectiveLabel =  ObjectiveMsg.label(ObjectiveMsg.editObjectiveLabel);
+  static final String noMatchLabel =  ObjectiveMsg.label(ObjectiveMsg.noMatchLabel);
 
-  static final String nameLabel =  FieldMsg.label('${Objective.className}.${Objective.nameField}');
-  static final String descriptionLabel =  FieldMsg.label('${Objective.className}.${Objective.descriptionField}');
-  static final String groupLabel =  FieldMsg.label('${Objective.className}.${Objective.groupField}');
-  static final String leaderLabel =  FieldMsg.label('${Objective.className}.${Objective.leaderField}');
-  static final String startDateLabel =  FieldMsg.label('${Objective.className}.${Objective.startDateField}');
-  static final String endDateLabel =  FieldMsg.label('${Objective.className}.${Objective.endDateField}');
-  static final String alignedToLabel =  FieldMsg.label('${Objective.className}.${Objective.alignedToField}');
-  static final String archivedLabel =  FieldMsg.label('${Objective.className}.${Objective.archivedField}');
+  static final String nameLabel =  ObjectiveDomainMsg.fieldLabel(Objective.nameField);
+  static final String descriptionLabel =  ObjectiveDomainMsg.fieldLabel(Objective.descriptionField); //FieldMsg.label('${Objective.className}.${Objective.descriptionField}');
+  static final String groupLabel =  ObjectiveDomainMsg.fieldLabel(Objective.groupField); //FieldMsg.label('${Objective.className}.${Objective.groupField}');
+  static final String leaderLabel =  ObjectiveDomainMsg.fieldLabel(Objective.leaderField); //FieldMsg.label('${Objective.className}.${Objective.leaderField}');
+  static final String startDateLabel =  ObjectiveDomainMsg.fieldLabel(Objective.startDateField); //FieldMsg.label('${Objective.className}.${Objective.startDateField}');
+  static final String endDateLabel =  ObjectiveDomainMsg.fieldLabel(Objective.endDateField); //FieldMsg.label('${Objective.className}.${Objective.endDateField}');
+  static final String alignedToLabel =  ObjectiveDomainMsg.fieldLabel(Objective.alignedToField); //FieldMsg.label('${Objective.className}.${Objective.alignedToField}');
+  static final String archivedLabel = ObjectiveDomainMsg.fieldLabel(Objective.archivedField); // FieldMsg.label('${Objective.className}.${Objective.archivedField}');
 
   @override
   void ngOnInit() async {

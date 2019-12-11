@@ -21,11 +21,11 @@ import 'package:angular_components/material_expansionpanel/material_expansionpan
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
 import 'package:angular_components/scorecard/scoreboard.dart';
 
-import 'package:auge_server/model/general/authorization.dart';
-import 'package:auge_server/model/objective/objective.dart';
+import 'package:auge_server/domain/general/authorization.dart';
+import 'package:auge_server/domain/objective/objective.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
-import 'package:auge_server/shared/message/model_messages.dart';
+import 'package:auge_server/shared/message/domain_messages.dart';
 
 import 'package:auge_web/src/history_timeline/history_timeline_component.dart';
 import 'package:auge_web/src/measure/measures_component.dart';
@@ -134,16 +134,19 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
   MenuModel<MenuItem> menuModel;
 
     // Define messages and labels
-  static final String objectiveLabel = ObjectiveMsg.label('Objective');
-  static final String sortedByLabel = ObjectiveMsg.label('Sorted By');
-  static final String ultimateObjectiveLabel = ObjectiveMsg.label('Ultimate Objective');
+  static final String objectiveLabel = ObjectiveMsg.label(ObjectiveMsg.objectivesLabel);
+  static final String sortedByLabel = ObjectiveMsg.label(ObjectiveMsg.sortedByLabel);
+  static final String editButtonLabel = ObjectiveMsg.label(CommonMsg.editButtonLabel);
+  static final String deleteButtonLabel = ObjectiveMsg.label(CommonMsg.deleteButtonLabel);
 
-  static final String nameLabel = FieldMsg.label('${Objective.className}.${Objective.nameField}');
-  static final String alignedToLabel =  FieldMsg.label('${Objective.className}.${Objective.alignedToField}');
-  static final String leaderLabel =  FieldMsg.label('${Objective.className}.${Objective.leaderField}');
-  static final String groupLabel =  FieldMsg.label('${Objective.className}.${Objective.groupField}');
-  static final String startDateLabel =  FieldMsg.label('${Objective.className}.${Objective.startDateField}');
-  static final String endDateLabel =  FieldMsg.label('${Objective.className}.${Objective.endDateField}');
+  static final String ultimateObjectiveLabel = ObjectiveMsg.label(ObjectiveMsg.ultimateObjectiveLabel);
+
+  static final String nameLabel = ObjectiveDomainMsg.fieldLabel(Objective.nameField);
+  static final String alignedToLabel = ObjectiveDomainMsg.fieldLabel(Objective.alignedToField); // FieldMsg.label('${Objective.className}.${Objective.alignedToField}');
+  static final String leaderLabel =  ObjectiveDomainMsg.fieldLabel(Objective.leaderField); //FieldMsg.label('${Objective.className}.${Objective.leaderField}');
+  static final String groupLabel =  ObjectiveDomainMsg.fieldLabel(Objective.groupField); //FieldMsg.label('${Objective.className}.${Objective.groupField}');
+  static final String startDateLabel = ObjectiveDomainMsg.fieldLabel(Objective.startDateField); // FieldMsg.label('${Objective.className}.${Objective.startDateField}');
+  static final String endDateLabel =  ObjectiveDomainMsg.fieldLabel(Objective.endDateField); // FieldMsg.label('${Objective.className}.${Objective.endDateField}');
 
   final objectivesSortedByOptions = [nameLabel, groupLabel, leaderLabel, startDateLabel, endDateLabel];
 
@@ -152,7 +155,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
   final preferredTooltipPositions = const [RelativePosition.AdjacentLeft, RelativePosition.OffsetBottomLeft, /* RelativePosition.OffsetBottomRight */];
 
   ObjectivesComponent(this._appLayoutService, this._groupService, this._userService, this._objectiveService, /* this._searchService, */ this._historyTimelineService, this._router) {
-    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , actionWithContext: (_) => goToDetail()), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), actionWithContext: (_) => delete())])], icon: new Icon('menu'));
+    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(editButtonLabel, icon: new Icon('edit') , actionWithContext: (_) => goToDetail()), new MenuItem(deleteButtonLabel, icon: new Icon('delete'), actionWithContext: (_) => delete())])], icon: new Icon('menu'));
   }
 
   set sortedBy(String sortedBy) {

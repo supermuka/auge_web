@@ -13,8 +13,8 @@ import 'package:angular_components/material_toggle/material_toggle.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel_set.dart';
 
-import 'package:auge_server/model/general/authorization.dart';
-import 'package:auge_server/model/general/group.dart';
+import 'package:auge_server/domain/general/authorization.dart';
+import 'package:auge_server/domain/general/group.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
 import 'package:auge_web/src/group/group_service.dart';
@@ -74,8 +74,14 @@ class GroupsComponent with CanReuse implements OnActivate, OnDestroy {
 
   MenuModel<MenuItem> menuModel;
 
+  static final buttonEditLabel = CommonMsg.buttonLabel(CommonMsg.editButtonLabel);
+  static final buttonDeleteLabel = CommonMsg.buttonLabel(CommonMsg.deleteButtonLabel);
+
+  static final activeLabel = GroupMsg.label(GroupMsg.activeLabel);
+  static final inactiveLabel = GroupMsg.label(GroupMsg.inactiveLabel);
+
   GroupsComponent(/* this._authService, */ this._appLayoutService, this._groupService, this._searchService, this._historyTimelineService, this._router) {
-    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , actionWithContext: (_) => goToDetail()), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), actionWithContext: (_) => delete())])], icon: new Icon('menu'));
+    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(buttonEditLabel, icon: new Icon('edit') , actionWithContext: (_) => goToDetail()), new MenuItem(buttonDeleteLabel, icon: new Icon('delete'), actionWithContext: (_) => delete())])], icon: new Icon('menu'));
   }
 
   bool get timelineVisible {
@@ -102,7 +108,7 @@ class GroupsComponent with CanReuse implements OnActivate, OnDestroy {
       return;
     }
 
-    _appLayoutService.headerTitle = GroupMsg.label('Groups');
+    _appLayoutService.headerTitle = GroupMsg.label(GroupMsg.groupsLabel);
 
     _appLayoutService.enabledSearch = true;
 
@@ -149,7 +155,7 @@ class GroupsComponent with CanReuse implements OnActivate, OnDestroy {
   }
 
   String groupActiveInactive(Group group) {
-    return group.inactive ? GroupMsg.label('Inactive') : GroupMsg.label('Active');
+    return group.inactive ?  inactiveLabel : activeLabel;
   }
 
   void goToDetail() {

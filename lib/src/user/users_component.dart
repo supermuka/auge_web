@@ -16,8 +16,8 @@ import 'package:angular_components/material_expansionpanel/material_expansionpan
 
 // import 'package:angular_components/content/deferred_content.dart';
 
-import 'package:auge_server/model/general/authorization.dart';
-import 'package:auge_server/model/general/user.dart';
+import 'package:auge_server/domain/general/authorization.dart';
+import 'package:auge_server/domain/general/user.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
 import 'package:auge_web/src/user/user_service.dart';
@@ -82,8 +82,11 @@ class UsersComponent with CanReuse implements OnActivate {
 
   MenuModel<MenuItem> menuModel;
 
+  static final String editButtonLabel = CommonMsg.buttonLabel('Edit');
+  static final String deleteButtonlabel = CommonMsg.buttonLabel('Delete');
+
   UsersComponent(this._appLayoutService, this._searchService, this._userService, this._historyTimelineService, this._router) {
-    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , actionWithContext: (_) => goToDetail()), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), actionWithContext: (_) => delete())])], icon: new Icon('menu'));
+    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(editButtonLabel, icon: new Icon('edit') , actionWithContext: (_) => goToDetail()), new MenuItem(deleteButtonlabel, icon: new Icon('delete'), actionWithContext: (_) => delete())])], icon: new Icon('menu'));
   }
 
   bool get timelineVisible {

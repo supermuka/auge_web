@@ -11,10 +11,9 @@ import 'package:angular_components/scorecard/scorecard.dart';
 import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
 
-import 'package:auge_server/model/objective/objective.dart';
-import 'package:auge_server/model/work/work.dart';
+import 'package:auge_server/domain/objective/objective.dart';
+import 'package:auge_server/domain/work/work.dart';
 
-import 'package:auge_server/shared/message/messages.dart';
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
@@ -23,6 +22,8 @@ import 'package:auge_web/src/filter/filter_component.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/work/work_service.dart';
 import 'package:auge_web/services/app_routes.dart';
+
+import 'package:auge_server/shared/message/messages.dart';
 
 @Component(
   selector: 'auge-insights',
@@ -98,48 +99,48 @@ class InsightsComponent with CanReuse implements OnActivate  {
   InsightsComponent(this._authService, this._appLayoutService, this._objectiveService, this._workService, this._router);
 
   // Define messages and labels
-  static final String userLabel = InsightMsg.label('Leader');
-  static final String groupLabel = InsightMsg.label('Leader');
+  static final String leaderLabel = InsightMsg.label(InsightMsg.leaderLabel);
+  static final String groupLabel = InsightMsg.label(InsightMsg.groupLabel);
 
-  static final String objectivesOverallLabel = InsightMsg.label('Objectives Overall');
-  static final String objectivesMeasuresLabel = InsightMsg.label('Objectives and Measures');
-  static final String worksWorkItemsLabel = InsightMsg.label('Works and Work Items');
+  static final String objectivesOverallLabel = InsightMsg.label(InsightMsg.objectivesOverallLabel);
+  static final String objectivesMeasuresLabel = InsightMsg.label(InsightMsg.objectivesMeasuresLabel);
+  static final String worksWorkItemsLabel = InsightMsg.label(InsightMsg.worksWorkItemsLabel);
 
-  static final String objectivesLabel =  InsightMsg.label('Objectives');
-  static final String objectivesDescriptionLabel =  InsightMsg.label('Number total of objectives');
+  static final String objectivesLabel =  InsightMsg.label(InsightMsg.objectivesLabel);
+  static final String objectivesDescriptionLabel =  InsightMsg.label(InsightMsg.objectivesDescriptionLabel);
 
-  static final String objectivesAchievedLabel =  InsightMsg.label('Objectives Achieved');
-  static final String objectivesAchievedDescriptionLabel =  InsightMsg.label('Objectives over 70% progress');
+  static final String objectivesAchievedLabel =  InsightMsg.label(InsightMsg.objectivesAchievedLabel);
+  static final String objectivesAchievedDescriptionLabel =  InsightMsg.label(InsightMsg.objectivesAchievedDescriptionLabel);
 
-  static final String objectivesRequiringAttentionLabel =  InsightMsg.label('Objectives Requiring Attention');
-  static final String objectivesRequiringAttentionDescriptionLabel =  InsightMsg.label('Objectives below 30% progress');
+  static final String objectivesRequiringAttentionLabel =  InsightMsg.label(InsightMsg.objectivesRequiringAttentionLabel);
+  static final String objectivesRequiringAttentionDescriptionLabel =  InsightMsg.label(InsightMsg.objectivesRequiringAttentionDescriptionLabel);
 
-  static final String measuresLabel =  InsightMsg.label('Measures');
-  static final String measuresDescriptionLabel =  InsightMsg.label('Number total of measures');
+  static final String measuresLabel =  InsightMsg.label(InsightMsg.measuresLabel);
+  static final String measuresDescriptionLabel =  InsightMsg.label(InsightMsg.measuresDescriptionLabel);
 
-  static final String measuresAchievedLabel =  InsightMsg.label('Measures Achieved');
-  static final String measuresAchievedDescriptionLabel =  InsightMsg.label('Measures over 70% progress');
+  static final String measuresAchievedLabel =  InsightMsg.label(InsightMsg.measuresAchievedLabel);
+  static final String measuresAchievedDescriptionLabel =  InsightMsg.label(InsightMsg.measuresAchievedDescriptionLabel);
 
-  static final String measuresRequiringAttentionLabel =  InsightMsg.label('Measures Requiring Attention');
-  static final String measuresRequiringAttentionDescriptionLabel =  InsightMsg.label('Measures below 30% progress');
+  static final String measuresRequiringAttentionLabel =  InsightMsg.label(InsightMsg.measuresRequiringAttentionLabel);
+  static final String measuresRequiringAttentionDescriptionLabel =  InsightMsg.label(InsightMsg.measuresRequiringAttentionDescriptionLabel);
 
-  static final String worksLabel =  InsightMsg.label('Works');
-  static final String worksDescriptionLabel =  InsightMsg.label('Number total of works');
+  static final String worksLabel =  InsightMsg.label(InsightMsg.worksLabel);
+  static final String worksDescriptionLabel =  InsightMsg.label(InsightMsg.worksDescriptionLabel);
 
-  static final String worksCompletedLabel =  InsightMsg.label('Works Completed');
-  static final String worksCompletedDescriptionLabel =  InsightMsg.label('Works with 100% work items completed');
+  static final String worksCompletedLabel =  InsightMsg.label(InsightMsg.worksCompletedLabel);
+  static final String worksCompletedDescriptionLabel =  InsightMsg.label(InsightMsg.worksCompletedDescriptionLabel);
 
-  static final String worksRequiringAttentionLabel =  InsightMsg.label('Works Requiring Attention');
-  static final String worksRequiringAttentionDescriptionLabel =  InsightMsg.label('Works with over due work items');
+  static final String worksRequiringAttentionLabel =  InsightMsg.label(InsightMsg.worksRequiringAttentionLabel);
+  static final String worksRequiringAttentionDescriptionLabel =  InsightMsg.label(InsightMsg.worksRequiringAttentionDescriptionLabel);
 
-  static final String workItemsLabel =  InsightMsg.label('Work Items');
-  static final String workItemsDescriptionLabel =  InsightMsg.label('Number total of work items');
+  static final String workItemsLabel =  InsightMsg.label(InsightMsg.workItemsLabel);
+  static final String workItemsDescriptionLabel =  InsightMsg.label(InsightMsg.workItemsDescriptionLabel);
 
-  static final String workItemsCompletedLabel =  InsightMsg.label('Work Items Completed');
-  static final String workItemsCompletedDescriptionLabel =  InsightMsg.label('Work items with 100% progress');
+  static final String workItemsCompletedLabel =  InsightMsg.label(InsightMsg.workItemsCompletedLabel);
+  static final String workItemsCompletedDescriptionLabel =  InsightMsg.label(InsightMsg.workItemsDescriptionLabel);
 
-  static final String workItemsRequiringAttentionLabel =  InsightMsg.label('Work Items Requiring Attention');
-  static final String workItemsRequiringAttentionDescriptionLabel =  InsightMsg.label('Over due work items');
+  static final String workItemsRequiringAttentionLabel =  InsightMsg.label(InsightMsg.workItemsRequiringAttentionLabel);
+  static final String workItemsRequiringAttentionDescriptionLabel =  InsightMsg.label(InsightMsg.workItemsRequiringAttentionDescriptionLabel);
 
   @override
   void onActivate(RouterState previous, RouterState current) async {
@@ -150,7 +151,7 @@ class InsightsComponent with CanReuse implements OnActivate  {
     }
 
     _appLayoutService.enabledSearch = false;
-    _appLayoutService.headerTitle = AppLayoutMsg.label('Insights');
+    _appLayoutService.headerTitle = InsightMsg.label(InsightMsg.insightsLabel);
 
     try {
       if (_authService.authorizedOrganization != null) {

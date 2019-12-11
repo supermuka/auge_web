@@ -29,15 +29,15 @@ import 'package:angular_components/material_datepicker/material_datepicker.dart'
 import 'package:angular_components/material_dialog/material_dialog.dart';
 import 'package:angular_components/model/action/async_action.dart';
 
-import 'package:auge_server/model/objective/objective.dart';
-import 'package:auge_server/model/objective/measure.dart';
+import 'package:auge_server/domain/objective/objective.dart';
+import 'package:auge_server/domain/objective/measure.dart';
 
 import 'package:auge_web/services/common_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/measure/measure_service.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
-import 'package:auge_server/shared/message/model_messages.dart';
+import 'package:auge_server/shared/message/domain_messages.dart';
 
 import 'package:auge_web/services/app_routes.dart';
 
@@ -112,15 +112,16 @@ class MeasureProgressComponent implements OnInit, OnActivate, OnDeactivate  {
   }
 
   // Define messages and labels
-  static final String measureProgressLabel = MeasureProgressMsg.label('Measure Progress');
-  static final String progressCurrentValuesLabel = MeasureProgressMsg.label('Progress Current Values');
-  static final String currentValueLabel = FieldMsg.label('${MeasureProgress.className}.${MeasureProgress.currentValueField}');
-  static final String dateLabel =  FieldMsg.label('${MeasureProgress.className}.${MeasureProgress.dateField}');
-  static final String commentLabel =  FieldMsg.label('${MeasureProgress.className}.${MeasureProgress.commentField}');
+  static final String measureProgressLabel = MeasureProgressMsg.label(MeasureProgressMsg.measureProgressLabel);
+  static final String progressCurrentValuesLabel = MeasureProgressMsg.label(MeasureProgressMsg.progressCurrentValuesLabel);
 
-  static final String saveButtonLabel = CommonMsg.buttonLabel('Save');
-  static final String cancelButtonLabel = CommonMsg.buttonLabel('Cancel');
-  static final String closeButtonLabel = CommonMsg.buttonLabel('Close');
+  static final String currentValueLabel = MeasureProgressDomainMsg.fieldLabel(MeasureProgress.currentValueField);
+  static final String dateLabel =  MeasureProgressDomainMsg.fieldLabel(MeasureProgress.dateField); //FieldMsg.label('${MeasureProgress.className}.${MeasureProgress.dateField}');
+  static final String commentLabel =  MeasureProgressDomainMsg.fieldLabel(MeasureProgress.commentField);  //FieldMsg.label('${MeasureProgress.className}.${MeasureProgress.commentField}');
+
+  static final String saveButtonLabel = CommonMsg.buttonLabel(CommonMsg.saveButtonLabel);
+  static final String cancelButtonLabel = CommonMsg.buttonLabel(CommonMsg.cancelButtonLabel);
+  static final String closeButtonLabel = CommonMsg.buttonLabel(CommonMsg.closeButtonLabel);
 
   static final String valueErrorMsg =  MeasureProgressMsg.valueErrorMsg();
   static final String currentValueExistsAtDateMsg =  MeasureProgressMsg.currentValueExistsAtDate();

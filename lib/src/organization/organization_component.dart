@@ -26,12 +26,12 @@ import 'package:angular_components/model/selection/selection_options.dart';
 import 'package:angular_components/model/ui/has_renderer.dart';
 import 'package:angular_components/material_spinner/material_spinner.dart';
 
-import 'package:auge_server/model/general/organization.dart';
-import 'package:auge_server/model/general/organization_configuration.dart';
-import 'package:auge_server/model/general/organization_directory_service.dart';
+import 'package:auge_server/domain/general/organization.dart';
+import 'package:auge_server/domain/general/organization_configuration.dart';
+import 'package:auge_server/domain/general/organization_directory_service.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
-import 'package:auge_server/shared/message/model_messages.dart';
+import 'package:auge_server/shared/message/domain_messages.dart';
 
 import 'package:auge_web/src/organization/organization_service.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
@@ -116,57 +116,57 @@ class OrganizationComponent implements OnInit, OnActivate, OnDeactivate {
 
   // Define messages and labels
   static final String requiredValueMsg = CommonMsg.requiredValueMsg();
-  static final String saveButtonLabel = CommonMsg.buttonLabel('Save');
-  static final String closeButtonLabel = CommonMsg.buttonLabel('Close');
+  static final String saveButtonLabel = CommonMsg.buttonLabel(CommonMsg.saveButtonLabel);
+  static final String closeButtonLabel = CommonMsg.buttonLabel(CommonMsg.closeButtonLabel);
 
   // Organization
-  static final String organizationLabel =  OrganizationMsg.label('Organization');
-  static final String addOrganizationLabel =  OrganizationMsg.label('Add Organization');
-  static final String editOrganizationLabel =  OrganizationMsg.label('Edit Organization');
+  //static final String organizationLabel =  OrganizationMsg.label(OrganizationMsg.o);
+  static final String addOrganizationLabel =  OrganizationMsg.label(OrganizationMsg.addOrganizationLabel);
+  static final String editOrganizationLabel =  OrganizationMsg.label(OrganizationMsg.editOrganizationLabel);
 
-  static final String organizationDetailLabel =  OrganizationMsg.label('Organization Detail');
+  static final String organizationDetailLabel =  OrganizationMsg.label(OrganizationMsg.organizationDetailLabel);
 
-  static final String organizationNameLabel =  FieldMsg.label('${Organization.className}.${Organization.nameField}');
-  static final String organizationCodeLabel =  FieldMsg.label('${Organization.className}.${Organization.codeField}');
+  static final String organizationNameLabel =  OrganizationDomainMsg.fieldLabel(Organization.nameField);
+  static final String organizationCodeLabel =  OrganizationDomainMsg.fieldLabel(Organization.codeField);
 
-  static final String configurationLabel =  ConfigurationMsg.label('Configuration');
-  static final String directoryServiceLabel =  ConfigurationMsg.label('Directory Service');
+  static final String configurationLabel =  ConfigurationMsg.label(ConfigurationMsg.configurationLabel);
+  static final String directoryServiceLabel =  ConfigurationMsg.label(ConfigurationMsg.directoryServiceLabel);
 
-  static final String serverAdminLabel =  ConfigurationMsg.label('Server and Admin');
-  static final String groupLabel =  ConfigurationMsg.label('Group');
-  static final String synchronizationLabel =  ConfigurationMsg.label('Synchronization');
+  static final String serverAdminLabel =  ConfigurationMsg.label(ConfigurationMsg.serverAndAdminLabel);
+  static final String groupLabel =  ConfigurationMsg.label(ConfigurationMsg.groupLabel);
+  static final String synchronizationLabel =  ConfigurationMsg.label(ConfigurationMsg.synchronizationLabel);
 
-  static final String testDirectoryServiceLabel =  ConfigurationMsg.label('Test Connection');
-  static final String syncDirectoryServiceLabel =  ConfigurationMsg.label('Sync and Save');
+  static final String testDirectoryServiceLabel =  ConfigurationMsg.label(ConfigurationMsg.testConnectionLabel);
+  static final String syncDirectoryServiceLabel =  ConfigurationMsg.label(ConfigurationMsg.syncAndSaveLabel);
 
-  static final String domainLabel = FieldMsg.label('${OrganizationConfiguration.className}.${OrganizationConfiguration.domainField}');
+  static final String domainLabel = OrganizationConfigurationDomainMsg.fieldLabel(OrganizationConfiguration.domainField);
 
-  static final String directoryServiceEnabledLabel = FieldMsg.label('${OrganizationDirectoryService.className}.${OrganizationDirectoryService.directoryServiceEnabledField}');
-  static final String hostAddressLabel =  FieldMsg.label('${OrganizationDirectoryService.className}.${OrganizationDirectoryService.hostAddressField}');
-  static final String portLabel =  FieldMsg.label('${OrganizationDirectoryService.className}.${OrganizationDirectoryService.portField}');
-  static final String sslTlsLabel =  FieldMsg.label('${OrganizationDirectoryService.className}.${OrganizationDirectoryService.sslTlsField}');
-  static final String syncBindDnLabel =  FieldMsg.label('${OrganizationDirectoryService.className}.${OrganizationDirectoryService.syncBindDnField}');
-  static final String syncBindPasswordLabel =  FieldMsg.label('${OrganizationDirectoryService.className}.${OrganizationDirectoryService.syncBindPasswordField}');
+  static final String directoryServiceEnabledLabel = OrganizationDirectoryServiceDomainMsg.fieldLabel(OrganizationDirectoryService.directoryServiceEnabledField);
+  static final String hostAddressLabel =  OrganizationDirectoryServiceDomainMsg.fieldLabel(OrganizationDirectoryService.hostAddressField);
+  static final String portLabel =  OrganizationDirectoryServiceDomainMsg.fieldLabel(OrganizationDirectoryService.portField);
+  static final String sslTlsLabel =  OrganizationDirectoryServiceDomainMsg.fieldLabel(OrganizationDirectoryService.sslTlsField);
+  static final String syncBindDnLabel =  OrganizationDirectoryServiceDomainMsg.fieldLabel(OrganizationDirectoryService.syncBindDnField);
+  static final String syncBindPasswordLabel =  OrganizationDirectoryServiceDomainMsg.fieldLabel(OrganizationDirectoryService.syncBindPasswordField);
 
-  static final String groupSearchDNLabel = FieldMsg.label('${OrganizationDirectoryService.className}.${OrganizationDirectoryService.groupSearchDNField}');
-  static final String groupSearchScopeLabel = FieldMsg.label('${OrganizationDirectoryService.className}.${OrganizationDirectoryService.groupSearchScopeField}');
-  static final String groupSearchFilterLabel = FieldMsg.label('${OrganizationDirectoryService.className}.${OrganizationDirectoryService.groupSearchFilterField}');
-  static final String groupMemberUserAttributeLabel = FieldMsg.label('${OrganizationDirectoryService.className}.${OrganizationDirectoryService.groupMemberUserAttributeField}');
+  static final String groupSearchDNLabel = OrganizationDirectoryServiceDomainMsg.fieldLabel(OrganizationDirectoryService.className);
+  static final String groupSearchScopeLabel = OrganizationDirectoryServiceDomainMsg.fieldLabel(OrganizationDirectoryService.groupSearchScopeField);
+  static final String groupSearchFilterLabel = OrganizationDirectoryServiceDomainMsg.fieldLabel(OrganizationDirectoryService.groupSearchFilterField);
+  static final String groupMemberUserAttributeLabel = OrganizationDirectoryServiceDomainMsg.fieldLabel(OrganizationDirectoryService.groupMemberUserAttributeField);
 
 
-  static final String userSearchDNLabel = FieldMsg.label('${OrganizationDirectoryService.className}.${OrganizationDirectoryService.userSearchDNField}');
-  static final String userSearchScopeLabel = FieldMsg.label('${OrganizationDirectoryService.className}.${OrganizationDirectoryService.userSearchScopeField}');
-  static final String userSearchFilterLabel = FieldMsg.label('${OrganizationDirectoryService.className}.${OrganizationDirectoryService.userSearchFilterField}');
-  static final String userProviderObjectIdAttributeLabel = FieldMsg.label('${OrganizationDirectoryService.className}.${OrganizationDirectoryService.userProviderObjectIdAttributeField}');
-  static final String userIdentificationAttributeLabel = FieldMsg.label('${OrganizationDirectoryService.className}.${OrganizationDirectoryService.userIdentificationAttributeField}');
-  static final String userFirstNameAttributeLabel = FieldMsg.label('${OrganizationDirectoryService.className}.${OrganizationDirectoryService.userFirstNameAttributeField}');
-  static final String userLastNameAttributeLabel = FieldMsg.label('${OrganizationDirectoryService.className}.${OrganizationDirectoryService.userLastNameAttributeField}');
-  static final String userEmailAttributeLabel = FieldMsg.label('${OrganizationDirectoryService.className}.${OrganizationDirectoryService.userEmailAttributeField}');
-  static final String userAttributeForGroupRelationshipLabel = FieldMsg.label('${OrganizationDirectoryService.className}.${OrganizationDirectoryService.userAttributeForGroupRelationshipField}');
+  static final String userSearchDNLabel = OrganizationDirectoryServiceDomainMsg.fieldLabel(OrganizationDirectoryService.userSearchDNField);
+  static final String userSearchScopeLabel = OrganizationDirectoryServiceDomainMsg.fieldLabel(OrganizationDirectoryService.userSearchScopeField);
+  static final String userSearchFilterLabel = OrganizationDirectoryServiceDomainMsg.fieldLabel(OrganizationDirectoryService.userSearchFilterField);
+  static final String userProviderObjectIdAttributeLabel = OrganizationDirectoryServiceDomainMsg.fieldLabel(OrganizationDirectoryService.userProviderObjectIdAttributeField);
+  static final String userIdentificationAttributeLabel = OrganizationDirectoryServiceDomainMsg.fieldLabel(OrganizationDirectoryService.userIdentificationAttributeField);
+  static final String userFirstNameAttributeLabel = OrganizationDirectoryServiceDomainMsg.fieldLabel(OrganizationDirectoryService.userFirstNameAttributeField);
+  static final String userLastNameAttributeLabel = OrganizationDirectoryServiceDomainMsg.fieldLabel(OrganizationDirectoryService.userLastNameAttributeField);
+  static final String userEmailAttributeLabel = OrganizationDirectoryServiceDomainMsg.fieldLabel(OrganizationDirectoryService.userEmailAttributeField);
+  static final String userAttributeForGroupRelationshipLabel = OrganizationDirectoryServiceDomainMsg.fieldLabel(OrganizationDirectoryService.userAttributeForGroupRelationshipField);
 
-  static final String syncIntervalLabel = FieldMsg.label('${OrganizationDirectoryService.className}.${OrganizationDirectoryService.syncIntervalField}');
-  static final String syncLastDateTimeLabel = FieldMsg.label('${OrganizationDirectoryService.className}.${OrganizationDirectoryService.syncLastDateTimeField}');
-  static final String syncLastResultLabel = FieldMsg.label('${OrganizationDirectoryService.className}.${OrganizationDirectoryService.syncLastResultField}');
+  static final String syncIntervalLabel = OrganizationDirectoryServiceDomainMsg.fieldLabel(OrganizationDirectoryService.syncIntervalField);
+  static final String syncLastDateTimeLabel = OrganizationDirectoryServiceDomainMsg.fieldLabel(OrganizationDirectoryService.syncLastDateTimeField);
+  static final String syncLastResultLabel = OrganizationDirectoryServiceDomainMsg.fieldLabel(OrganizationDirectoryService.syncLastResultField);
 
   @override
   void ngOnInit() async {

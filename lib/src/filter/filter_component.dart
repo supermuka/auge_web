@@ -2,8 +2,10 @@
 // Author: Samuel C. Schwebel.ExampleSelectionOptions
 
 import 'dart:async';
+import 'package:intl/intl.dart';
 
 import 'package:angular/angular.dart';
+
 
 import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
@@ -89,18 +91,14 @@ class FilterComponent  /* implements AfterChanges */ {
   @Output()
   Stream<List<String>> get changeSelection => _filterOptionsIdSelection.stream;
 
-  FilterComponent() {
+  FilterComponent();
 
+  static final String searchLabel =  CommonMsg.label(CommonMsg.searchLabel);
+  static final String filterLabel = CommonMsg.label(CommonMsg.filterLabel);
+  static final String moreLabel = CommonMsg.label(CommonMsg.moreLabel);
+  static final String emptyLabel = CommonMsg.label(CommonMsg.emptyLabel);
 
-
-  }
-
-  static final String searchLabel = CommonMsg.label('Search');
-  static final String filterLabel = CommonMsg.label('Filter');
-  static final String moreLabel = CommonMsg.label('more');
-  static final String emptyLabel = CommonMsg.label('empty');
-
-
+  get filterComposeLabel => '${filterLabel} ${filterNameLabel}';
 
 /*
   @override
@@ -179,7 +177,7 @@ class FilterComponent  /* implements AfterChanges */ {
 class FilterSelectionOptions extends StringSelectionOptions<FilterOption>
     implements Selectable<FilterOption> {
 
-  static final String emptyLabel = CommonMsg.label('empty');
+  static final String emptyLabel = CommonMsg.label(CommonMsg.emptyLabel);
 
   FilterSelectionOptions(List<FilterOption> options)
       : super(options,

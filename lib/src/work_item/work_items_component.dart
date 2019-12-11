@@ -21,14 +21,14 @@ import 'package:angular_components/material_menu/material_menu.dart';
 import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
 
-import 'package:auge_server/model/general/authorization.dart';
-import 'package:auge_server/model/general/user.dart';
-import 'package:auge_server/model/work/work.dart';
-import 'package:auge_server/model/work/work_item.dart';
-import 'package:auge_server/model/work/work_stage.dart';
+import 'package:auge_server/domain/general/authorization.dart';
+import 'package:auge_server/domain/general/user.dart';
+import 'package:auge_server/domain/work/work.dart';
+import 'package:auge_server/domain/work/work_item.dart';
+import 'package:auge_server/domain/work/work_stage.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
-import 'package:auge_server/shared/message/model_messages.dart';
+import 'package:auge_server/shared/message/domain_messages.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/work_item/work_item_service.dart';
@@ -75,17 +75,20 @@ class WorkItemsComponent with CanReuse /* with CanReuse implements OnActivate  *
 
   MenuModel<MenuItem> menuModel;
 
-  static final String workItemsLabel = WorkItemMsg.label('Work Items');
+  static final String editButtonLabel = CommonMsg.label(CommonMsg.editButtonLabel);
+  static final String deleteButtonLabel = CommonMsg.label(CommonMsg.deleteButtonLabel);
 
-  static final String dueDateLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.dueDateField}');
-  static final String stageLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.workStageField}');
-  static final String completedLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.completedField}');
-  static final String checkItemsLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.checkItemsField}');
+  static final String workItemsLabel = WorkItemMsg.label(WorkItemMsg.workItemsLabel);
+
+  static final String dueDateLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.dueDateField);
+  static final String stageLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.workStageField);
+  static final String completedLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.completedField);
+  static final String checkItemsLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.checkItemsField);
 
   WorkItemsComponent(this._appLayoutService, this._workItemService, this._historyTimelineService, this._router) {
     initializeDateFormatting(Intl.defaultLocale);
 
-    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , actionWithContext: (_) => goToDetail()), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), actionWithContext: (_) => delete())])], icon: new Icon('menu'));
+    menuModel = new MenuModel([new MenuItemGroup([MenuItem(editButtonLabel, icon: new Icon('edit') , actionWithContext: (_) => goToDetail()), MenuItem(deleteButtonLabel, icon: new Icon('delete'), actionWithContext: (_) => delete())])], icon: new Icon('menu'));
   }
 
   void selectWorkItem(WorkItem workItem) => this.selectedWorkItem = workItem;

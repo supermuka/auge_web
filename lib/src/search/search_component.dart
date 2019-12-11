@@ -10,6 +10,8 @@ import 'package:angular_components/model/selection/selection_options.dart';
 import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
 
+import 'package:auge_server/shared/message/messages.dart';
+
 
 import 'search_service.dart';
 
@@ -32,8 +34,8 @@ class SearchComponent with CanReuse {
   SelectionOptions searchOptions = SelectionOptions.fromList([]);
   SelectionModel searchSingleSelectModel = SelectionModel.single();
   String searchLeadingGlyph = 'search';
-  String searchLabel = 'Search...';
-  String searchEmptyPlaceholder = 'No correspondence';
+  String searchLabel = '${CommonMsg.label(CommonMsg.searchLabel)}...';
+  String searchEmptyPlaceholder = CommonMsg.label(CommonMsg.noCorrespondenceLabel); //'No correspondence';
 
   SearchComponent(this._searchService);
 

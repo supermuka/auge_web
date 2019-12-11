@@ -23,11 +23,11 @@ import 'package:angular_components/material_radio/material_radio.dart';
 import 'package:angular_components/material_radio/material_radio_group.dart';
 import 'package:angular_router/angular_router.dart';
 
-import 'package:auge_server/model/general/group.dart';
-import 'package:auge_server/model/general/user.dart';
+import 'package:auge_server/domain/general/group.dart';
+import 'package:auge_server/domain/general/user.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
-import 'package:auge_server/shared/message/model_messages.dart';
+import 'package:auge_server/shared/message/domain_messages.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/user/user_service.dart';
@@ -59,6 +59,8 @@ import 'group_detail_component.template.dart' as group_detail_component;
       MaterialChipsComponent,
       MaterialChipComponent,
     ])
+
+
 
 class GroupDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
@@ -98,20 +100,21 @@ class GroupDetailComponent implements OnInit, OnActivate, OnDeactivate {
   }
 
   // Define messages and labels
-  static final String saveButtonLabel = CommonMsg.buttonLabel('Save');
-  static final String closeButtonLabel = CommonMsg.buttonLabel('Close');
+  static final String saveButtonLabel = CommonMsg.buttonLabel(CommonMsg.saveButtonLabel);
+  static final String closeButtonLabel = CommonMsg.buttonLabel(CommonMsg.closeButtonLabel);
 
-  static final String requiredValueMsg =  CommonMsg.requiredValueMsg();
-  static final String addGroupLabel =  GroupMsg.label('Add Group');
-  static final String editGroupLabel =  GroupMsg.label('Edit Group');
-  static final String noMatchLabel =  GroupMsg.label('No Match');
+  static final String requiredValueMsg = CommonMsg.requiredValueMsg();
+  static final String addGroupLabel = GroupMsg.label(GroupMsg.addGroupLabel);
+  static final String editGroupLabel =  GroupMsg.label(GroupMsg.editGroupLabel);
+  static final String noMatchLabel =  GroupMsg.label(GroupMsg.noMatchLabel);
 
-  static final String nameLabel =  FieldMsg.label('${Group.className}.${Group.nameField}');
-  static final String superGroupLabel =  FieldMsg.label('${Group.className}.${Group.superGroupField}');
-  static final String groupTypeLabel = FieldMsg.label('${Group.className}.${Group.groupTypeField}');
-  static final String leaderLabel =  FieldMsg.label('${Group.className}.${Group.leaderField}');
-  static final String inactiveLabel =  FieldMsg.label('${Group.className}.${Group.inactiveField}');
-  static final String membersLabel =  FieldMsg.label('${Group.className}.${Group.membersField}');
+  // Define labels from fields.
+  static final String nameLabel =  GroupDomainMsg.fieldLabel(Group.nameField); // FieldMsg.label('${Group.className}.${Group.nameField}');
+  static final String superGroupLabel =  GroupDomainMsg.fieldLabel(Group.superGroupField); // FieldMsg.label('${Group.className}.${Group.superGroupField}');
+  static final String groupTypeLabel = GroupDomainMsg.fieldLabel(Group.groupTypeField);  // FieldMsg.label('${Group.className}.${Group.groupTypeField}');
+  static final String leaderLabel = GroupDomainMsg.fieldLabel(Group.leaderField);  // FieldMsg.label('${Group.className}.${Group.leaderField}');
+  static final String inactiveLabel = GroupDomainMsg.fieldLabel(Group.inactiveField); // FieldMsg.label('${Group.className}.${Group.inactiveField}');
+  static final String membersLabel = GroupDomainMsg.fieldLabel(Group.membersField); // FieldMsg.label('${Group.className}.${Group.membersField}');
 
   @override
   void ngOnInit() async {
@@ -309,3 +312,4 @@ class UserRendererComponent implements RendersValue {
     disPlayurl = 'url(' + common_service.userUrlImage((newValue as User)?.userProfile?.image)  + ')';
   }
 }
+

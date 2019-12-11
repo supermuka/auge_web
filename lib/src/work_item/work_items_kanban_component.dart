@@ -25,14 +25,14 @@ import 'package:angular_components/content/deferred_content.dart';
 import 'package:angular_components/material_menu/material_menu.dart';
 import 'package:auge_web/src/work/work_summary_component.dart';
 
-import 'package:auge_server/model/general/authorization.dart';
-import 'package:auge_server/model/general/user.dart';
-import 'package:auge_server/model/work/work.dart';
-import 'package:auge_server/model/work/work_item.dart';
-import 'package:auge_server/model/work/work_stage.dart';
+import 'package:auge_server/domain/general/authorization.dart';
+import 'package:auge_server/domain/general/user.dart';
+import 'package:auge_server/domain/work/work.dart';
+import 'package:auge_server/domain/work/work_item.dart';
+import 'package:auge_server/domain/work/work_stage.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
-import 'package:auge_server/shared/message/model_messages.dart';
+import 'package:auge_server/shared/message/domain_messages.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/work_item/work_item_service.dart';
@@ -94,12 +94,15 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
 
   MenuModel<MenuItem> menuModel;
 
-  static final String groupLabel = FieldMsg.label('${Work.className}.${Work.groupField}');
-  static final String leaderLabel =  FieldMsg.label('${Work.className}.${Work.leaderField}');
+  static final String editButtonLabel = CommonMsg.buttonLabel(CommonMsg.editButtonLabel);
+  static final String deleteButtonLabel = CommonMsg.buttonLabel(CommonMsg.deleteButtonLabel);
 
-  static final String dueDateLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.dueDateField}');
-  static final String completedLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.completedField}');
-  static final String checkItemsLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.checkItemsField}');
+  static final String groupLabel = WorkDomainMsg.fieldLabel(Work.groupField);
+  static final String leaderLabel =  WorkDomainMsg.fieldLabel(Work.leaderField);
+
+  static final String dueDateLabel =  WorkDomainMsg.fieldLabel(WorkItem.dueDateField);
+  static final String completedLabel =  WorkDomainMsg.fieldLabel(WorkItem.completedField);
+  static final String checkItemsLabel =  WorkDomainMsg.fieldLabel(WorkItem.checkItemsField);
 
   final List<RouteDefinition> routes = [
     new RouteDefinition(
@@ -113,11 +116,10 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
 
   ];
 
-
   WorkItemsKanbanComponent(this._appLayoutService, this._workService, this._workItemService, this._historyTimelineService, this._router) {
     initializeDateFormatting(Intl.defaultLocale);
 
-    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , actionWithContext: (_) => goToDetail()), new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), actionWithContext: (_) => delete())])], icon: new Icon('menu'));
+    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(editButtonLabel, icon: new Icon('edit') , actionWithContext: (_) => goToDetail()), new MenuItem(deleteButtonLabel, icon: new Icon('delete'), actionWithContext: (_) => delete())])], icon: new Icon('menu'));
   }
 
   @override

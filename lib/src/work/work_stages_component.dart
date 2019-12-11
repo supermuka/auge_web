@@ -26,13 +26,13 @@ import 'package:angular_components/model/selection/selection_options.dart';
 import 'package:angular_components/model/selection/string_selection_options.dart';
 import 'package:angular_components/model/ui/has_factory.dart';
 
-import 'package:auge_server/model/work/work_stage.dart';
+import 'package:auge_server/domain/work/work_stage.dart';
 
 import 'package:auge_web/services/common_service.dart';
 import 'package:auge_web/src/work/work_service.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
-import 'package:auge_server/shared/message/model_messages.dart';
+import 'package:auge_server/shared/message/domain_messages.dart';
 
 // ignore_for_file: uri_has_not_been_generated
 import 'work_stages_component.template.dart' as work_stages_component;
@@ -100,16 +100,16 @@ class WorkStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
   }
 
   // Define messages and labels
-  static final String workStagesLabel = StageMsg.label('Work Stages');
-  static final String selectLabel =  StageMsg.label('Select');
-  static final String stageLabel =  StageMsg.label('Stage');
+  static final String workStagesLabel = StageMsg.label(StageMsg.workStagesLabel);
+  static final String selectLabel =  StageMsg.label(StageMsg.selectLabel);
+  static final String stageLabel =  StageMsg.label(StageMsg.stageLabel);
 
-  static final String saveButtonLabel = CommonMsg.buttonLabel('Save');
-  static final String cancelButtonLabel = CommonMsg.buttonLabel('Cancel');
-  static final String closeButtonLabel = CommonMsg.buttonLabel('Close');
+  static final String saveButtonLabel = CommonMsg.buttonLabel(CommonMsg.saveButtonLabel);
+  static final String cancelButtonLabel = CommonMsg.buttonLabel(CommonMsg.cancelButtonLabel);
+  static final String closeButtonLabel = CommonMsg.buttonLabel(CommonMsg.closeButtonLabel);
 
-  static final String nameLabel =  FieldMsg.label('${WorkStage.className}.${WorkStage.nameField}');
-  static final String stateLabel =  FieldMsg.label('${WorkStage.className}.${WorkStage.stateField}');
+  static final String nameLabel =  WorkStageDomainMsg.fieldLabel(WorkStage.nameField);
+  static final String stateLabel =  WorkStageDomainMsg.fieldLabel(WorkStage.stateField);
 
   static final String stateNotInfomedMsg =  StageMsg.stateNotInfomedMsg();
 

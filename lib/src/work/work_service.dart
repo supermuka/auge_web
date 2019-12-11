@@ -8,8 +8,8 @@ import 'package:angular/core.dart';
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/services/auge_api_service.dart';
 
-import 'package:auge_server/model/work/work.dart';
-import 'package:auge_server/model/work/work_stage.dart';
+import 'package:auge_server/domain/work/work.dart';
+import 'package:auge_server/domain/work/work_stage.dart';
 
 import 'package:auge_server/src/protos/generated/google/protobuf/wrappers.pb.dart' as wrappers_pb;
 import 'package:auge_server/src/protos/generated/work/work_work_item.pbgrpc.dart' as work_work_item_pbgrpc;

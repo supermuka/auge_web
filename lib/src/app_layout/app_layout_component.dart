@@ -1,6 +1,8 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
+import 'package:intl/intl.dart';
+
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
 import 'package:angular_forms/angular_forms.dart';
@@ -33,9 +35,9 @@ import 'package:auge_web/services/common_service.dart' as common_service;
 
 import 'package:auge_server/shared/message/messages.dart';
 
-import 'package:auge_server/model/general/authorization.dart';
-import 'package:auge_server/model/general/user.dart';
-import 'package:auge_server/model/general/organization.dart';
+import 'package:auge_server/domain/general/authorization.dart';
+import 'package:auge_server/domain/general/user.dart';
+import 'package:auge_server/domain/general/organization.dart';
 
 // ignore_for_file: uri_has_not_been_generated
 import 'package:auge_web/src/app_layout/app_layout_component.template.dart' as app_layout_component;
@@ -172,25 +174,23 @@ class AppLayoutComponent with CanReuse implements OnActivate {
   /// Return [true] is authenticated role can access configuratoin
   bool isAuthorizedToAccessConfiguration;
 
-  AppLayoutComponent(this._appLayoutService, this._authService, this._router) {
-
-  }
+  AppLayoutComponent(this._appLayoutService, this._authService, this._router);
 
   // Define messages and labels
   String label(String label) =>  AppLayoutMsg.label(label);
 
   /// Messages and labels
-  static final String insightsLabel = AppLayoutMsg.label('Insights');
-  static final String objectivesMapLabel = AppLayoutMsg.label('Objectives Map');
-  static final String objectivesGanttLabel = AppLayoutMsg.label('Objectives Gantt');
-  static final String objectivesLabel = AppLayoutMsg.label('Objectives');
-  static final String worksLabel = AppLayoutMsg.label('Works');
-  static final String organizationLabel = AppLayoutMsg.label('Organization');
-  static final String configurationLabel = AppLayoutMsg.label('Configuration');
-  static final String usersLabel = AppLayoutMsg.label('Users');
-  static final String adminLabel = AppLayoutMsg.label('Admin');
-  static final String superAdminLabel = AppLayoutMsg.label('SuperAdmin');
-  static final String groupsLabel = AppLayoutMsg.label('Groups');
+  static final String insightsLabel =  AppLayoutMsg.label(AppLayoutMsg.ingightsLabel);
+  static final String objectivesMapLabel = AppLayoutMsg.label(AppLayoutMsg.objectivesMapLabel);
+  static final String objectivesGanttLabel = AppLayoutMsg.label(AppLayoutMsg.objectivesGanttLabel);
+  static final String objectivesLabel = AppLayoutMsg.label(AppLayoutMsg.objectivesLabel);
+  static final String worksLabel = AppLayoutMsg.label(AppLayoutMsg.worksLabel);
+  static final String organizationLabel = AppLayoutMsg.label(AppLayoutMsg.organizationLabel);
+  static final String configurationLabel = AppLayoutMsg.label(AppLayoutMsg.configurationLabel);
+  static final String usersLabel = AppLayoutMsg.label(AppLayoutMsg.usersLabel);
+  static final String adminLabel = AppLayoutMsg.label(AppLayoutMsg.adminLabel);
+  static final String superAdminLabel = AppLayoutMsg.label(AppLayoutMsg.superAdminLabel);
+  static final String groupsLabel = AppLayoutMsg.label(AppLayoutMsg.groupsLabel);
 
   void onActivate(RouterState previous, RouterState current)  {
 
@@ -210,7 +210,7 @@ class AppLayoutComponent with CanReuse implements OnActivate {
     List<AppLayoutSettingSelectOption> userDetailOptions = new List();
     userDetailOptions.add(new AppLayoutSettingSelectOption()
       ..group = null
-      ..name = AppLayoutMsg.label('User Detail')
+      ..name = AppLayoutMsg.label(AppLayoutMsg.userDetailLabel)
       //..viewComponent = (bool userDetailVisible) { this.userDetailVisible = userDetailVisible; }
       ..routeUrl = AppRoutes.userEditWithAppLayoutParentRoute.toUrl(parameters: {AppRoutesParam.userIdParameter:  _authService.authenticatedUser.id}));
       //TODO incluir paramet user profile ..routeUrl =  AppRoutes.userEditWithAppLayoutParentRoute.toUrl(parameters: _authService.ser);
@@ -221,7 +221,7 @@ class AppLayoutComponent with CanReuse implements OnActivate {
     List<AppLayoutSettingSelectOption> logout = new List();
     logout.add(new AppLayoutSettingSelectOption()
       ..group = null
-      ..name = AppLayoutMsg.label('Logout')
+      ..name = AppLayoutMsg.label(AppLayoutMsg.logoutLabel)
       ..routeUrl = AppRoutes.authRoute.toUrl());
 
     userProfileLogoutGroupOptions.add(new OptionGroup.withLabel(logout, null));

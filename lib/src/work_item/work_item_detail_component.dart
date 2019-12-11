@@ -44,12 +44,12 @@ import 'package:angular_components/material_chips/material_chips.dart';
 import 'package:angular_components/material_datepicker/material_datepicker.dart';
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
 
-import 'package:auge_server/model/work/work_stage.dart';
-import 'package:auge_server/model/work/work_item.dart';
-import 'package:auge_server/model/general/user.dart';
+import 'package:auge_server/domain/work/work_stage.dart';
+import 'package:auge_server/domain/work/work_item.dart';
+import 'package:auge_server/domain/general/user.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
-import 'package:auge_server/shared/message/model_messages.dart';
+import 'package:auge_server/shared/message/domain_messages.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/work/work_service.dart';
@@ -151,23 +151,22 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
 
   // Define messages and labels
   static final String requiredValueMsg =  CommonMsg.requiredValueMsg();
-  static final String saveButtonLabel = CommonMsg.buttonLabel('Save');
-  static final String closeButtonLabel = CommonMsg.buttonLabel('Close');
-  static final String addWorkItemLabel =  WorkItemMsg.label('Add Work Item');
-  static final String editWorkItemLabel =  WorkItemMsg.label('Edit Work Item');
-  static final String noMatchLabel = WorkItemMsg.label('No Match');
-  static final String selectValueLabel = WorkItemMsg.label('Select a value');
-  static final String dropFileHereLabel = WorkItemMsg.label('Drop File Here');
+  static final String saveButtonLabel = CommonMsg.buttonLabel(CommonMsg.saveButtonLabel);
+  static final String closeButtonLabel = CommonMsg.buttonLabel(CommonMsg.closeButtonLabel);
+  static final String addWorkItemLabel =  WorkItemMsg.label(WorkItemMsg.addWorkItemLabel);
+  static final String editWorkItemLabel =  WorkItemMsg.label(WorkItemMsg.editWorkItemLabel);
+  static final String noMatchLabel = WorkItemMsg.label(WorkItemMsg.noMatchLabel);
+  static final String selectValueLabel = WorkItemMsg.label(WorkItemMsg.selectAValueLabel);
+  static final String dropFileHereLabel = WorkItemMsg.label(WorkItemMsg.dropFileHereLabel);
 
-
-  static final String nameLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.nameField}');
-  static final String descriptionLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.descriptionField}');
-  static final String dueDateLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.dueDateField}');
-  static final String completedLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.completedField}');
-  static final String stageLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.workStageField}');
-  static final String assignedToLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.assignedToField}');
-  static final String attachmentsLabel = FieldMsg.label('${WorkItem.className}.${WorkItem.attachmentsField}');
-  static final String checkItemLabel =  FieldMsg.label('${WorkItem.className}.${WorkItem.checkItemsField}');
+  static final String nameLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.nameField);
+  static final String descriptionLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.descriptionField);
+  static final String dueDateLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.dueDateField);
+  static final String completedLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.completedField);
+  static final String stageLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.workStageField);
+  static final String assignedToLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.assignedToField);
+  static final String attachmentsLabel = WorkItemDomainMsg.fieldLabel(WorkItem.attachmentsField);
+  static final String checkItemLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.checkItemsField);
 
   static final String valuePercentIntervalMsg = WorkItemMsg.valuePercentIntervalMsg();
 

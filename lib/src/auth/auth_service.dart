@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:angular/core.dart';
-import 'package:auge_server/model/general/user.dart';
-import 'package:auge_server/model/general/organization.dart';
-import 'package:auge_server/model/general/user_access.dart';
+import 'package:auge_server/domain/general/user.dart';
+import 'package:auge_server/domain/general/organization.dart';
+import 'package:auge_server/domain/general/user_access.dart';
 import 'package:auge_server/shared/authorization_policy.dart';
-import 'package:auge_server/model/general/authorization.dart';
-export 'package:auge_server/model/general/authorization.dart';
+import 'package:auge_server/domain/general/authorization.dart';
+export 'package:auge_server/domain/general/authorization.dart';
 
 import 'package:auge_server/src/protos/generated/general/user_access.pbgrpc.dart' as user_access_pbgrpc;
 import 'package:auge_server/src/protos/generated/general/user_identity.pbgrpc.dart' as user_identity_pbgrpc;

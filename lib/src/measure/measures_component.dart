@@ -17,8 +17,8 @@ import 'package:angular_components/model/ui/icon.dart';
 import 'package:angular_components/model/menu/menu.dart';
 import 'package:angular_components/content/deferred_content.dart';
 
-import 'package:auge_server/model/objective/objective.dart';
-import 'package:auge_server/model/objective/measure.dart';
+import 'package:auge_server/domain/objective/objective.dart';
+import 'package:auge_server/domain/objective/measure.dart';
 
 import 'package:auge_web/services/app_routes.dart';
 
@@ -71,19 +71,23 @@ class MeasuresComponent with CanReuse {
   Measure selectedMeasure;
 
   MenuModel<MenuItem> menuModel;
-  MeasuresComponent(this._appLayoutService, this._measureService, this._historyTimelineService, this._router) {
-    menuModel = new MenuModel([new MenuItemGroup(
-        [new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , actionWithContext: (_) => goToDetail()),
-        new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), actionWithContext: (_) => delete()),
-        new MenuItem('Progress History', icon: new Icon('show_chart'), actionWithContext: (_) => goToProgress(false)) ])], icon: new Icon('menu'));
-  }
+
+  static final editButtonLabel = CommonMsg.buttonLabel(CommonMsg.editButtonLabel);
+  static final deleteButtonLabel = CommonMsg.buttonLabel(CommonMsg.deleteButtonLabel);
 
   // Define messages and labels
-  static final String measuresLabel = MeasureMsg.label('Measures');
-  static final String progressLabel =  MeasureMsg.label('Progress');
-  static final String startValueLabel =  MeasureMsg.label('Start Value');
-  static final String currentValueLabel =  MeasureMsg.label('Current Value');
-  static final String endValueLabel =  MeasureMsg.label('End Value');
+  static final String measuresLabel = MeasureMsg.label(MeasureMsg.measuresLabel);
+  static final String progressLabel =  MeasureMsg.label(MeasureMsg.progressLabel);
+  static final String startValueLabel =  MeasureMsg.label(MeasureMsg.startValueLabel);
+  static final String currentValueLabel =  MeasureMsg.label(MeasureMsg.currentValueLabel);
+  static final String endValueLabel =  MeasureMsg.label(MeasureMsg.endValueLabel);
+
+  MeasuresComponent(this._appLayoutService, this._measureService, this._historyTimelineService, this._router) {
+    menuModel = new MenuModel([new MenuItemGroup(
+        [new MenuItem(editButtonLabel, icon: new Icon('edit') , actionWithContext: (_) => goToDetail()),
+        new MenuItem(deleteButtonLabel, icon: new Icon('delete'), actionWithContext: (_) => delete()),
+        new MenuItem(progressLabel, icon: new Icon('show_chart'), actionWithContext: (_) => goToProgress(false)) ])], icon: new Icon('menu'));
+  }
 
   void selectMeasure(Measure measure) {
     selectedMeasure = measure;

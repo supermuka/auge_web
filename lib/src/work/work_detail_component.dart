@@ -22,13 +22,13 @@ import 'package:angular_components/model/selection/string_selection_options.dart
 import 'package:angular_components/model/ui/has_factory.dart';
 
 
-import 'package:auge_server/model/general/user.dart';
-import 'package:auge_server/model/work/work.dart';
-import 'package:auge_server/model/objective/objective.dart';
-import 'package:auge_server/model/general/group.dart';
+import 'package:auge_server/domain/general/user.dart';
+import 'package:auge_server/domain/work/work.dart';
+import 'package:auge_server/domain/objective/objective.dart';
+import 'package:auge_server/domain/general/group.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
-import 'package:auge_server/shared/message/model_messages.dart';
+import 'package:auge_server/shared/message/domain_messages.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
 //import 'package:auge_web/src/auth/auth_service.dart';
@@ -109,20 +109,20 @@ class WorkDetailComponent implements OnInit, OnActivate, OnDeactivate {
   }
 
   // Define messages and labels
-  static final String saveButtonLabel = CommonMsg.buttonLabel('Save');
-  static final String closeButtonLabel = CommonMsg.buttonLabel('Close');
+  static final String saveButtonLabel = CommonMsg.buttonLabel(CommonMsg.saveButtonLabel);
+  static final String closeButtonLabel = CommonMsg.buttonLabel(CommonMsg.closeButtonLabel);
   static final String requiredValueMsg = CommonMsg.requiredValueMsg();
 
-  static final String addWorkLabel =  WorkMsg.label('Add Work');
-  static final String editWorkLabel =  WorkMsg.label('Edit Work');
-  static final String noMatchLabel =  WorkMsg.label('No Match');
-  static final String selectLabel =  WorkMsg.label('Select');
+  static final String addWorkLabel =  WorkMsg.label(WorkMsg.addWorkLabel);
+  static final String editWorkLabel =  WorkMsg.label(WorkMsg.editWorkLabel);
+  static final String noMatchLabel =  WorkMsg.label(WorkMsg.noMatchLabel);
+  static final String selectLabel =  WorkMsg.label(WorkMsg.selectLabel);
 
-  static final String nameLabel =  FieldMsg.label('${Work.className}.${Work.nameField}');
-  static final String descriptionLabel =  FieldMsg.label('${Work.className}.${Work.descriptionField}');
-  static final String groupLabel =  FieldMsg.label('${Work.className}.${Work.groupField}');
-  static final String leaderLabel =  FieldMsg.label('${Work.className}.${Work.leaderField}');
-  static final String objectiveLabel =  FieldMsg.label('${Work.className}.${Work.objectiveField}');
+  static final String nameLabel =  WorkDomainMsg.fieldLabel(Work.nameField);
+  static final String descriptionLabel = WorkDomainMsg.fieldLabel(Work.descriptionField);
+  static final String groupLabel =  WorkDomainMsg.fieldLabel(Work.groupField);
+  static final String leaderLabel =  WorkDomainMsg.fieldLabel(Work.leaderField);
+  static final String objectiveLabel =  WorkDomainMsg.fieldLabel(Work.objectiveField);
 //  static final String stageLabel =  FieldMsg.label('${Stage.className}.${Stage.nameField}');
 
   @override

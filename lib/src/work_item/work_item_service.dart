@@ -2,7 +2,7 @@ import 'package:angular/core.dart';
 
 import 'package:auge_web/src/auth/auth_service.dart';
 
-import 'package:auge_server/model/work/work_item.dart';
+import 'package:auge_server/domain/work/work_item.dart';
 
 import 'package:auge_web/services/auge_api_service.dart';
 

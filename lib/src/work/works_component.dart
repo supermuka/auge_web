@@ -20,11 +20,11 @@ import 'package:angular_components/material_toggle/material_toggle.dart';
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
 import 'package:angular_components/material_select/material_dropdown_select.dart';
 
-import 'package:auge_server/model/work/work.dart';
-import 'package:auge_server/model/general/authorization.dart';
+import 'package:auge_server/domain/work/work.dart';
+import 'package:auge_server/domain/general/authorization.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
-import 'package:auge_server/shared/message/model_messages.dart';
+import 'package:auge_server/shared/message/domain_messages.dart';
 
 import 'package:auge_web/src/work/work_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
@@ -138,13 +138,17 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
   MenuModel<MenuItem> menuModel;
 
   // Define messages and labels
-  static final String sortedByLabel = WorkMsg.label('Sorted By');
-  static final String objectiveLabel =  WorkMsg.label('Objective');
 
-  static final String nameLabel =  FieldMsg.label('${Work.className}.${Work.nameField}');
-  static final String groupLabel = FieldMsg.label('${Work.className}.${Work.groupField}');
-  static final String leaderLabel =  FieldMsg.label('${Work.className}.${Work.leaderField}');
-  static final String stagesLabel =  FieldMsg.label('${Work.className}.${Work.workStagesField}');
+  static final String editButtonLabel = CommonMsg.label(CommonMsg.editButtonLabel);
+  static final String deleteButtonLabel = CommonMsg.label(CommonMsg.deleteButtonLabel);
+
+  static final String sortedByLabel = WorkMsg.label(WorkMsg.sortedByLabel);
+  static final String objectiveLabel =  WorkMsg.label(WorkMsg.objectiveLabel);
+
+  static final String nameLabel = WorkDomainMsg.fieldLabel(Work.nameField);
+  static final String groupLabel = WorkDomainMsg.fieldLabel(Work.groupField);
+  static final String leaderLabel =  WorkDomainMsg.fieldLabel(Work.leaderField);
+  static final String stagesLabel =  WorkDomainMsg.fieldLabel(Work.workStagesField);
 
   final worksSortedByOptions = [nameLabel, groupLabel, leaderLabel];
 
@@ -153,10 +157,9 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
   WorksComponent(this._appLayoutService, this._workService, this._objectiveService, this._searchService, this._historyTimelineService, this._router) {
 
     menuModel = new MenuModel([new MenuItemGroup([
-      new MenuItem(CommonMsg.buttonLabel('Edit'), icon: new Icon('edit') , actionWithContext: (_) => goToDetail() /* viewDetail(true) */),
-      new MenuItem(CommonMsg.buttonLabel('Delete'), icon: new Icon('delete'), actionWithContext: (_) => delete()),
+      new MenuItem(editButtonLabel, icon: new Icon('edit') , actionWithContext: (_) => goToDetail() /* viewDetail(true) */),
+      new MenuItem(deleteButtonLabel, icon: new Icon('delete'), actionWithContext: (_) => delete()),
       new MenuItem(stagesLabel, icon: new Icon('view_week'), actionWithContext: (_) => goToStages(selectedWork)) ])], icon: new Icon('menu'));
-
   }
 
   @override

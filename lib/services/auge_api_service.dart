@@ -13,14 +13,17 @@ export 'package:auge_server/shared/rpc_error_message.dart' show RpcErrorMessage,
 class AugeApiService {
 
   //final String _uriChannel = 'http://localhost:8080';
-  final String _protocol = window.location.protocol;
-  final String _urlChannel = window.location.hostname + ':8080';
+ // final String _protocol = window.location.protocol;
+  final String _protocol = 'https:';
+  final String _urlChannel = window.location.hostname;
+  final String _port = '8443'; // ':8080'
   //final String _urlChannel = 'auge.levius.com.br' + ':8080';
+
 
   GrpcWebClientChannel _channel;
 
   AugeApiService(this._channel) {
-    _channel = GrpcWebClientChannel.xhr(Uri.parse('$_protocol//$_urlChannel'));
+    _channel = GrpcWebClientChannel.xhr(Uri.parse('$_protocol//$_urlChannel:$_port'));
   }
 
   GrpcWebClientChannel get channel {

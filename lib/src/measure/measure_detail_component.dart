@@ -19,10 +19,10 @@ import 'package:angular_components/model/selection/selection_model.dart';
 import 'package:angular_components/model/selection/selection_options.dart';
 import 'package:angular_components/model/ui/has_renderer.dart';
 
-import 'package:auge_server/model/objective/measure.dart';
+import 'package:auge_server/domain/objective/measure.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
-import 'package:auge_server/shared/message/model_messages.dart';
+import 'package:auge_server/shared/message/domain_messages.dart';
 
 import 'package:auge_web/src/measure/measure_service.dart';
 
@@ -77,24 +77,24 @@ class MeasureDetailComponent implements OnInit, OnActivate, OnDeactivate  {
   }
 
   // Define messages and labels
-  static final String saveButtonLabel = CommonMsg.buttonLabel('Save');
-  static final String closeButtonLabel = CommonMsg.buttonLabel('Close');
+  static final String saveButtonLabel = CommonMsg.buttonLabel(CommonMsg.saveButtonLabel);
+  static final String closeButtonLabel = CommonMsg.buttonLabel(CommonMsg.closeButtonLabel);
   static final String requiredValueMsg = CommonMsg.requiredValueMsg();
 
   static final String valueErrorMsg =  MeasureMsg.valueErrorMsg();
   static final String decimalNumberErrorMsg = MeasureMsg.decimalNumberErrorMsg();
 
-  static final String addMeasureLabel =  MeasureMsg.label('Add Measure');
-  static final String editMeasureLabel =  MeasureMsg.label('Edit Measure');
+  static final String addMeasureLabel =  MeasureMsg.label(MeasureMsg.addMeasureLabel);
+  static final String editMeasureLabel =  MeasureMsg.label(MeasureMsg.editMeasureLabel);
 
-  static final String nameLabel =  FieldMsg.label('${Measure.className}.${Measure.nameField}');
-  static final String descriptionLabel =  FieldMsg.label('${Measure.className}.${Measure.descriptionField}');
-  static final String metricLabel =  FieldMsg.label('${Measure.className}.${Measure.metricField}');
-  static final String unitLabel = FieldMsg.label('${Measure.className}.${Measure.measureUnitField}');
-  static final String decimalsNumberLabel = FieldMsg.label('${Measure.className}.${Measure.decimalsNumberField}');
-  static final String startValueLabel =  FieldMsg.label('${Measure.className}.${Measure.startValueField}');
-  static final String currentValueLabel =  FieldMsg.label('${Measure.className}.${Measure.currentValueField}');
-  static final String endValueLabel =  FieldMsg.label('${Measure.className}.${Measure.endValueField}');
+  static final String nameLabel = MeasureDomainMsg.fieldLabel(Measure.nameField);
+  static final String descriptionLabel =  MeasureDomainMsg.fieldLabel(Measure.descriptionField); //FieldMsg.label('${Measure.className}.${Measure.}');
+  static final String metricLabel =  MeasureDomainMsg.fieldLabel(Measure.metricField); //FieldMsg.label('${Measure.className}.${Measure.metricField}');
+  static final String unitLabel = MeasureDomainMsg.fieldLabel(Measure.measureUnitField); // FieldMsg.label('${Measure.className}.${Measure.measureUnitField}');
+  static final String decimalsNumberLabel = MeasureDomainMsg.fieldLabel(Measure.decimalsNumberField); //FieldMsg.label('${Measure.className}.${Measure.decimalsNumberField}');
+  static final String startValueLabel =  MeasureDomainMsg.fieldLabel(Measure.startValueField); // FieldMsg.label('${Measure.className}.${Measure.startValueField}');
+  static final String currentValueLabel =  MeasureDomainMsg.fieldLabel(Measure.currentValueField); //FieldMsg.label('${Measure.className}.${Measure.currentValueField}');
+  static final String endValueLabel =  MeasureDomainMsg.fieldLabel(Measure.endValueField); // FieldMsg.label('${Measure.className}.${Measure.endValueField}');
 
   @override
   void ngOnInit() async {

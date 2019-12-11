@@ -7,8 +7,8 @@ import 'package:angular_components/focus/keyboard_only_focus_indicator.dart';
 import 'package:angular_components/laminate/enums/alignment.dart';
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
 
-import 'package:auge_server/model/work/work.dart';
-import 'package:auge_server/model/work/work_stage.dart';
+import 'package:auge_server/domain/work/work.dart';
+import 'package:auge_server/domain/work/work_stage.dart';
 
 import 'package:auge_web/src/work/work_service.dart';
 

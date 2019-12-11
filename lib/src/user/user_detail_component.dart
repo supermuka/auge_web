@@ -36,14 +36,14 @@ import 'package:angular_components/model/ui/has_renderer.dart';
 import 'package:angular_components/material_yes_no_buttons/material_yes_no_buttons.dart';
 import 'package:angular_components/material_toggle/material_toggle.dart';
 
-import 'package:auge_server/model/general/organization_configuration.dart';
-import 'package:auge_server/model/general/authorization.dart';
-import 'package:auge_server/model/general/user.dart';
-import 'package:auge_server/model/general/user_identity.dart';
-import 'package:auge_server/model/general/user_access.dart';
+import 'package:auge_server/domain/general/organization_configuration.dart';
+import 'package:auge_server/domain/general/authorization.dart';
+import 'package:auge_server/domain/general/user.dart';
+import 'package:auge_server/domain/general/user_identity.dart';
+import 'package:auge_server/domain/general/user_access.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
-import 'package:auge_server/shared/message/model_messages.dart';
+import 'package:auge_server/shared/message/domain_messages.dart';
 
 //import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
@@ -135,34 +135,34 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
   // Define messages and labels
   static final String requiredValueMsg = CommonMsg.requiredValueMsg();
-  static final String uploadButtonLabel = CommonMsg.buttonLabel('Upload');
-  static final String clearButtonLabel = CommonMsg.buttonLabel('Clear');
-  static final String saveButtonLabel = CommonMsg.buttonLabel('Save');
-  static final String closeButtonLabel = CommonMsg.buttonLabel('Close');
+  static final String uploadButtonLabel = CommonMsg.buttonLabel(CommonMsg.uploadButtonLabel);
+  static final String clearButtonLabel = CommonMsg.buttonLabel(CommonMsg.clearButtonLabel);
+  static final String saveButtonLabel = CommonMsg.buttonLabel(CommonMsg.saveButtonLabel);
+  static final String closeButtonLabel = CommonMsg.buttonLabel(CommonMsg.closeButtonLabel);
 
-  static final String addUserLabel =  UserMsg.label('Add User');
-  static final String editUserLabel =  UserMsg.label('Edit User');
+  static final String addUserLabel =  UserMsg.label(UserMsg.addUserLabel);
+  static final String editUserLabel =  UserMsg.label(UserMsg.editUserLabel);
 
-  static final String nameLabel =  FieldMsg.label('${User.className}.${User.nameField}');
-  static final String inactiveLabel = FieldMsg.label('${User.className}.${User.inactiveField}');
-  static final String managedByUserLabel = FieldMsg.label('${User.className}.${User.managedByOrganizationField}');
+  static final String nameLabel =  UserDomainMsg.fieldLabel(User.nameField);
+  static final String inactiveLabel = UserDomainMsg.fieldLabel(User.inactiveField);
+  static final String managedByUserLabel = UserDomainMsg.fieldLabel(User.managedByOrganizationField);
 
-  static final String profileEmailLabel =  FieldMsg.label('${UserProfile.className}.${UserProfile.eMailField}');
-  static final String profileEmailNotificationLabel =  FieldMsg.label('${UserProfile.className}.${UserProfile.eMailNotificationField}');
-  static final String profilePhotoLabel = FieldMsg.label('${UserProfile.className}.${UserProfile.imageField}');
-  static final String profileIdiomLabel = FieldMsg.label('${UserProfile.className}.${UserProfile.idiomLocaleField}');
+  static final String profileEmailLabel =  UserDomainMsg.fieldLabel(UserProfile.eMailField);
+  static final String profileEmailNotificationLabel =  UserDomainMsg.fieldLabel(UserProfile.eMailNotificationField);
+  static final String profilePhotoLabel = UserDomainMsg.fieldLabel(UserProfile.imageField);
+  static final String profileIdiomLabel = UserDomainMsg.fieldLabel(UserProfile.idiomLocaleField);
 
-  static final String identityIdentificationLabel = FieldMsg.label('${UserIdentity.className}.${UserIdentity.identificationField}');
-  static final String identityPasswordLabel = FieldMsg.label('${UserIdentity.className}.${UserIdentity.passwordField}');
-  static final String identityProviderLabel = FieldMsg.label('${UserIdentity.className}.${UserIdentity.providerField}');
-  static final String identityProviderObjectIdLabel = FieldMsg.label('${UserIdentity.className}.${UserIdentity.providerObjectIdField}');
+  static final String identityIdentificationLabel = UserDomainMsg.fieldLabel(UserIdentity.identificationField);
+  static final String identityPasswordLabel = UserDomainMsg.fieldLabel(UserIdentity.passwordField);
+  static final String identityProviderLabel = UserDomainMsg.fieldLabel(UserIdentity.providerField);
+  static final String identityProviderObjectIdLabel = UserDomainMsg.fieldLabel(UserIdentity.providerObjectIdField);
 
   static final String domainOrganizationConfigurationRequiredMsg = UserMsg.domainOrganizationConfigurationRequiredMsg();
   static final String identificationRequiredMsg = UserMsg.identificationRequiredMsg();
   static final String invalidIdentificationMsg = UserMsg.invalidIdentificationMsg();
 
-  static final String accessOrganizationLabel  = FieldMsg.label('${UserAccess.className}.${UserAccess.organizationField}');
-  static final String accessRoleLabel = FieldMsg.label('${UserAccess.className}.${UserAccess.accessRoleField}');
+  static final String accessOrganizationLabel  = UserDomainMsg.fieldLabel(UserAccess.organizationField);
+  static final String accessRoleLabel = UserDomainMsg.fieldLabel(UserAccess.accessRoleField);
 
   static final String pt_BRsymbol = 'pt_BR';
   static final String en_USsymbol = 'en_US';

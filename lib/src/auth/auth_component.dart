@@ -3,6 +3,7 @@
 
 import 'dart:async';
 //import 'dart:html' as html;
+import 'package:intl/intl.dart';
 
 import 'package:platform_detect/platform_detect.dart';
 
@@ -24,13 +25,15 @@ import 'package:angular_components/model/ui/has_renderer.dart';
 import 'auth_service.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
 
-import 'package:auge_server/model/general/user.dart';
-import 'package:auge_server/model/general/organization.dart';
-import 'package:auge_server/model/general/user_access.dart';
+import 'package:auge_server/domain/general/user.dart';
+import 'package:auge_server/domain/general/organization.dart';
+import 'package:auge_server/domain/general/user_access.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
 
 import 'package:auge_web/services/app_routes.dart';
+
+// import 'package:auge_web/messages/i18n/intl_messages_all.dart';
 
 @Component(
   selector: 'auge-auth',
@@ -50,6 +53,7 @@ import 'package:auge_web/services/app_routes.dart';
   ]
 )
 
+
 class AuthComponent implements OnActivate  {
 
   String appLayoutRoute = AppRoutes.appLayoutRoute.toUrl();
@@ -58,7 +62,7 @@ class AuthComponent implements OnActivate  {
 
   final Router _router;
 
-  String identification = AuthMsg.label('name@domain.com');
+  String identification = AuthMsg.label(AuthMsg.identificationLabel);
   String passwordStr = "1234567";
   String _dialogError;
 
@@ -82,15 +86,15 @@ class AuthComponent implements OnActivate  {
   AuthComponent(this._authService, this._router);
 
   /// Messages and labels
-  static final String headerTitleLabel = CommonMsg.label('AUGE');
-  static final String headerSubtitleLabel = CommonMsg.label('Objectives and Works');
-  static final String loginButtonLabel = CommonMsg.buttonLabel('Login');
-  static final String requiredValueMsg = CommonMsg.requiredValueMsg();
+  static final String headerTitleLabel =  CommonMsg.label(CommonMsg.augeLabel);
+  static final String headerSubtitleLabel = Intl.message('Objectives and Works', name: 'AuthComponent_headerSubtitleLabel'); // CommonMsg.label('Objectives and Works');
+  static final String loginButtonLabel = Intl.message('Login', name: 'AuthComponent_loginButtonLabel'); // CommonMsg.buttonLabel('Login');
+  static final String requiredValueMsg = Intl.message('Enter with a required value', name: 'AuthComponent_requiredValueMsg'); // CommonMsg.requiredValueMsg();
 
-  static final String identificationLabel = AuthMsg.label('Identification');
-  static final String passwordLabel = AuthMsg.label('Password');
+  static final String identificationLabel = Intl.message('Identification', name: 'AuthComponent_identificationLabel'); // AuthMsg.label('Identification');
+  static final String passwordLabel = Intl.message('Password', name: 'AuthComponent_passwordLabel'); //AuthMsg.label('Password');
 
-  static String organizationSingleSelectLabel = AuthMsg.label('Select');
+  static String organizationSingleSelectLabel = Intl.message('Select', name: 'AuthComponent_organizationSingleSelectLabel'); // AuthMsg.label('Select');
 
   void onActivate(RouterState previous, RouterState current) {
 
@@ -105,7 +109,7 @@ class AuthComponent implements OnActivate  {
     // _authService.authorizedSystemRole = null;
 
     if (!browser.isChrome) {
-      dialogError = AuthMsg.browserCompatibleErrorMsg();
+      dialogError = Intl.message('Browser Compatible: Chrome', name: 'AuthComponent_browserCompatible');
     }
 
   }
@@ -120,20 +124,23 @@ class AuthComponent implements OnActivate  {
     action.cancelIf( Future<bool>.sync(
             () async  {
       if (identification.isEmpty || passwordStr.isEmpty) {
-        dialogError = AuthMsg.informIdentificationPasswordCorrectlyMsg();
+        //dialogError = AuthMsg.informIdentificationPasswordCorrectlyMsg();
+        dialogError = Intl.message('Inform an identification and password correctly.', name: 'AuthComponent_informIdentificationPasswordCorrectlyMsg');
       } else {
         try {
           _authService.authUserAccess.user =
           await _authService.getAuthenticatedUser(identification, passwordStr);
           if (_authService.authUserAccess.user == null) {
-            dialogError = AuthMsg.userNotFoundMsg();
+            //dialogError = AuthMsg.userNotFoundMsg();
+            dialogError = Intl.message('User not found.', name: 'AuthComponent_userNotFoundMsg');
           } else {
             authorizedUserAccesses =
             await _authService.getAuthorizedUserAccesses(
                 _authService.authUserAccess.user.id);
             if (authorizedUserAccesses == null ||
                 authorizedUserAccesses.length == 0) {
-              dialogError = AuthMsg.organizationNotFoundMsg();
+              //dialogError = AuthMsg.organizationNotFoundMsg();
+              dialogError = Intl.message('Organization not found.', name: 'AuthComponent_organizationNotFoundMsg');
             } else {
               configOrganizationSelection();
               // Don't cancel
@@ -142,7 +149,8 @@ class AuthComponent implements OnActivate  {
           }
 
         } catch (e) {
-          dialogError = AuthMsg.serverApiErrorMsg();
+          //dialogError = AuthMsg.serverApiErrorMsg();
+          dialogError = Intl.message('Server Api Error.', name: 'AuthComponent_serverApiErrorMsg');
           return true;
           //rethrow;
         }
@@ -177,7 +185,8 @@ class AuthComponent implements OnActivate  {
     // Organizations
     List<AppLayoutOrganizationSelectOption> orgs = new List();
 
-    String orgGroupLabel = AuthMsg.label('Organization');
+    //String orgGroupLabel = AuthMsg.label('Organization');
+    String orgGroupLabel = Intl.message('Organization.', name: 'AuthComponent_orgGroupLabel');
 
     if (authorizedUserAccesses != null &&
         authorizedUserAccesses.isNotEmpty) {
@@ -212,7 +221,7 @@ class AuthComponent implements OnActivate  {
 
               organizationSingleSelectLabel =
                 d.first.added.first.userAccess.organization.name ??
-                  AuthMsg.label('Select');
+                    Intl.message('Select.', name: 'AuthComponent_select'); //AuthMsg.label('Select');
           }
         }
       });

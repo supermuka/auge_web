@@ -1,6 +1,7 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
+import 'package:auge_web/src/measure/measures_component.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -10,18 +11,18 @@ import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
 import 'package:angular_components/content/deferred_content.dart';
 
-import 'package:auge_server/model/general/user.dart';
-import 'package:auge_server/model/general/user_access.dart';
-import 'package:auge_server/model/general/group.dart';
-import 'package:auge_server/model/objective/objective.dart';
-import 'package:auge_server/model/objective/measure.dart';
-import 'package:auge_server/model/work/work.dart';
-import 'package:auge_server/model/work/work_stage.dart';
-import 'package:auge_server/model/work/work_item.dart';
+import 'package:auge_server/domain/general/user.dart';
+import 'package:auge_server/domain/general/user_access.dart';
+import 'package:auge_server/domain/general/group.dart';
+import 'package:auge_server/domain/objective/objective.dart';
+import 'package:auge_server/domain/objective/measure.dart';
+import 'package:auge_server/domain/work/work.dart';
+import 'package:auge_server/domain/work/work_stage.dart';
+import 'package:auge_server/domain/work/work_item.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_server/shared/message/messages.dart';
-import 'package:auge_server/shared/message/model_messages.dart';
+import 'package:auge_server/shared/message/domain_messages.dart';
 
 // Const to format html types
 const _typeToViewText = '0';
@@ -65,11 +66,11 @@ class HistoryItemTimelineDetailComponent /* extends Object */ implements OnInit 
     initializeDateFormatting(Intl.defaultLocale , null);
   }
 
-  static final String timelineLabel = TimelineItemdMsg.label('Timeline');
-  static final String theLabel = TimelineItemdMsg.label('the');
-  static final String valueLabel =  TimelineItemdMsg.label('value');
-  static final String changedFromLabel =  TimelineItemdMsg.label('changed from');
-  static final String wasLabel =  TimelineItemdMsg.label('was');
+  static final String timelineLabel = TimelineItemdMsg.label(TimelineItemdMsg.timelineLabel);
+  static final String theLabel = TimelineItemdMsg.label(TimelineItemdMsg.theLabel);
+  static final String valueLabel = TimelineItemdMsg.label(TimelineItemdMsg.valueLabel);
+  static final String changedFromLabel =  TimelineItemdMsg.label(TimelineItemdMsg.changedFromLabel);
+  static final String wasLabel = TimelineItemdMsg.label(TimelineItemdMsg.wasLabel);
 
   final typeToViewText =  _typeToViewText;
   final typeToViewImageAvatar = _typeToViewImageAvatar;
@@ -149,7 +150,7 @@ class UserChangedValues {
           fieldsChangedValues.putIfAbsent('${User.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewText,
-            _fieldDescriptionKey: FieldMsg.label('${User.className}.${k}')});
+            _fieldDescriptionKey: UserDomainMsg.fieldLabel(k)});
 
           if (v.containsKey(_pKey)) {
             fieldsChangedValues['${User.className}.${k}'][_pKey] =
@@ -174,7 +175,7 @@ class UserProfileChangedValues  {
         fieldsChangedValues.putIfAbsent('${UserProfile.className}.${k}', () =>
         {
           _typeToViewKey: _typeToViewText,
-          _fieldDescriptionKey: FieldMsg.label('${UserProfile.className}.${k}')});
+          _fieldDescriptionKey: UserProfileDomainMsg.fieldLabel(k)});
         if (v.containsKey(_pKey))
           fieldsChangedValues['${UserProfile.className}.${k}'][_pKey] =
           UserProfileValueMsg.label(v[_pKey]);
@@ -186,7 +187,7 @@ class UserProfileChangedValues  {
         fieldsChangedValues.putIfAbsent('${UserProfile.className}.${k}', () =>
         {
           _typeToViewKey: _typeToViewImageAvatar,
-          _fieldDescriptionKey: FieldMsg.label('${UserProfile.className}.${k}')});
+          _fieldDescriptionKey: UserProfileDomainMsg.fieldLabel(k)});
         if (v.containsKey(_pKey)) fieldsChangedValues['${UserProfile.className}.${k}'][_pKey] = v[_pKey];
         if (v.containsKey(_cKey)) fieldsChangedValues['${UserProfile.className}.${k}'][_cKey] = v[_cKey];
       }
@@ -194,7 +195,7 @@ class UserProfileChangedValues  {
         fieldsChangedValues.putIfAbsent('${UserProfile.className}.${k}', () =>
         {
           _typeToViewKey: _typeToViewText,
-          _fieldDescriptionKey: FieldMsg.label('${UserProfile.className}.${k}')});
+          _fieldDescriptionKey: UserProfileDomainMsg.fieldLabel(k)});
         if (v.containsKey(_pKey))
           fieldsChangedValues['${UserProfile.className}.${k}'][_pKey] =
           v[_pKey];
@@ -222,7 +223,7 @@ class UserAccessChangedValues  {
           fieldsChangedValues.putIfAbsent('${UserAccess.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewText,
-            _fieldDescriptionKey: FieldMsg.label('${UserAccess.className}.${k}')});
+            _fieldDescriptionKey: UserAccessDomainMsg.fieldLabel(k)});
           if (v.containsKey(_pKey))
             fieldsChangedValues['${UserAccess.className}.${k}'][_pKey] =
             v[_pKey];
@@ -246,7 +247,7 @@ class GroupChangedValues {
               '${Group.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewText,
-            _fieldDescriptionKey: FieldMsg.label('${Group.className}.${k}')
+            _fieldDescriptionKey: GroupDomainMsg.fieldLabel(k)
           });
           if (v.containsKey(_pKey))
             fieldsChangedValues['${Group.className}.${k}'][_pKey] =
@@ -259,7 +260,7 @@ class GroupChangedValues {
               '${Group.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewText,
-            _fieldDescriptionKey: FieldMsg.label('${Group.className}.${k}')
+            _fieldDescriptionKey: GroupDomainMsg.fieldLabel(k)
           });
 
           if (v.containsKey(User.nameField) &&
@@ -278,7 +279,7 @@ class GroupChangedValues {
               '${Group.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewText,
-            _fieldDescriptionKey: FieldMsg.label('${Group.className}.${k}')
+            _fieldDescriptionKey: GroupDomainMsg.fieldLabel(k)
           });
 
           if (v.containsKey(Group.nameField) &&
@@ -295,7 +296,7 @@ class GroupChangedValues {
               '${Group.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewText,
-            _fieldDescriptionKey: FieldMsg.label('${Group.className}.${k}')
+            _fieldDescriptionKey: GroupDomainMsg.fieldLabel(k)
           });
 
           if (v.containsKey(_pKey) && v[_pKey] is List) {
@@ -320,7 +321,7 @@ class GroupChangedValues {
           fieldsChangedValues.putIfAbsent('${Group.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewText,
-            _fieldDescriptionKey: FieldMsg.label('${Group.className}.${k}')});
+            _fieldDescriptionKey: GroupDomainMsg.fieldLabel(k)});
           if (v.containsKey(_pKey))
             fieldsChangedValues['${Group.className}.${k}'][_pKey] =
             v[_pKey];
@@ -344,7 +345,7 @@ class ObjectiveChangedValues {
           fieldsChangedValues.putIfAbsent('${Objective.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewDateTime,
-            _fieldDescriptionKey: FieldMsg.label('${Objective.className}.${k}')});
+            _fieldDescriptionKey: ObjectiveDomainMsg.fieldLabel(k)});
           if (v.containsKey(_pKey))
             fieldsChangedValues['${Objective.className}.${k}'][_pKey] = DateTime.parse(v[_pKey]);
           if (v.containsKey(_cKey))
@@ -355,7 +356,7 @@ class ObjectiveChangedValues {
               '${Objective.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewText,
-            _fieldDescriptionKey: FieldMsg.label('${Objective.className}.${k}')
+            _fieldDescriptionKey: ObjectiveDomainMsg.fieldLabel(k)
           });
 
           if (v.containsKey(User.nameField) &&
@@ -373,7 +374,7 @@ class ObjectiveChangedValues {
               '${Objective.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewText,
-            _fieldDescriptionKey: FieldMsg.label('${Objective.className}.${k}')
+            _fieldDescriptionKey: ObjectiveDomainMsg.fieldLabel(k)
           });
 
           if (v.containsKey(Group.nameField) &&
@@ -391,7 +392,7 @@ class ObjectiveChangedValues {
               '${Objective.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewText,
-            _fieldDescriptionKey: FieldMsg.label('${Objective.className}.${k}')
+            _fieldDescriptionKey: ObjectiveDomainMsg.fieldLabel(k)
           });
 
           if (v.containsKey(Objective.nameField) &&
@@ -407,7 +408,7 @@ class ObjectiveChangedValues {
           fieldsChangedValues.putIfAbsent('${Objective.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewText,
-            _fieldDescriptionKey: FieldMsg.label('${Objective.className}.${k}')});
+            _fieldDescriptionKey: ObjectiveDomainMsg.fieldLabel(k)});
           if (v.containsKey(_pKey))
             fieldsChangedValues['${Objective.className}.${k}'][_pKey] =
             v[_pKey];
@@ -430,7 +431,7 @@ class MeasureUnitChangedValues {
         fieldsChangedValues.putIfAbsent('${MeasureUnit.className}.${k}', () =>
         {
           _typeToViewKey: _typeToViewText,
-          _fieldDescriptionKey: FieldMsg.label(k)});
+          _fieldDescriptionKey: MeasureUnitDomainMsg.fieldLabel(k)});
         if (v.containsKey(_pKey))
           fieldsChangedValues['${MeasureUnit.className}.${k}'][_pKey] =
           v[_pKey];
@@ -456,7 +457,7 @@ class MeasureChangedValues {
               '${Measure.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewText,
-            _fieldDescriptionKey: FieldMsg.label('${Measure.className}.${k}')
+            _fieldDescriptionKey: MeasureDomainMsg.fieldLabel(k)
           });
 
           if (v.containsKey(MeasureUnit.nameField) &&
@@ -472,7 +473,7 @@ class MeasureChangedValues {
           fieldsChangedValues.putIfAbsent('${Measure.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewText,
-            _fieldDescriptionKey: FieldMsg.label('${Measure.className}.${k}')});
+            _fieldDescriptionKey: MeasureDomainMsg.fieldLabel(k)});
           if (v.containsKey(_pKey))
             fieldsChangedValues['${Measure.className}.${k}'][_pKey] =
             v[_pKey];
@@ -496,7 +497,7 @@ class MeasureProgressChangedValues {
           fieldsChangedValues.putIfAbsent('${MeasureProgress.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewDateTime,
-            _fieldDescriptionKey: FieldMsg.label('${MeasureProgress.className}.${k}')});
+            _fieldDescriptionKey: MeasureProgressDomainMsg.fieldLabel(k)});
           if (v.containsKey(_pKey))
             fieldsChangedValues['${MeasureProgress.className}.${k}'][_pKey] = DateTime.parse(v[_pKey]);
           if (v.containsKey(_cKey))
@@ -506,7 +507,7 @@ class MeasureProgressChangedValues {
           fieldsChangedValues.putIfAbsent('${MeasureProgress.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewText,
-            _fieldDescriptionKey: FieldMsg.label('${MeasureProgress.className}.${k}')});
+            _fieldDescriptionKey: MeasureProgressDomainMsg.fieldLabel(k)});
           if (v.containsKey(_pKey))
             fieldsChangedValues['${MeasureProgress.className}.${k}'][_pKey] =
             v[_pKey];
@@ -532,7 +533,7 @@ class WorkChangedValues {
             '${Work.className}.${k}', () =>
         {
           _typeToViewKey: _typeToViewText,
-          _fieldDescriptionKey: FieldMsg.label('${Work.className}.${k}')
+          _fieldDescriptionKey: WorkDomainMsg.fieldLabel(k)
         });
 
         if (v.containsKey(_pKey) && v[_pKey] is List) {
@@ -558,7 +559,7 @@ class WorkChangedValues {
         fieldsChangedValues.putIfAbsent('${Work.className}.${k}', () =>
         {
           _typeToViewKey: _typeToViewText,
-          _fieldDescriptionKey: FieldMsg.label('${Work.className}.${k}')});
+          _fieldDescriptionKey: WorkDomainMsg.fieldLabel(k)});
 
         if (v.containsKey(Group.nameField) && v[Group.nameField].containsKey(_pKey))
           fieldsChangedValues['${Work.className}.${k}'][_pKey] = v[Group.nameField][_pKey];
@@ -570,7 +571,7 @@ class WorkChangedValues {
         fieldsChangedValues.putIfAbsent('${Work.className}.${k}', () =>
         {
           _typeToViewKey: _typeToViewText,
-          _fieldDescriptionKey: FieldMsg.label('${Work.className}.${k}')});
+          _fieldDescriptionKey: WorkDomainMsg.fieldLabel(k)});
 
         if (v.containsKey(User.nameField) && v[User.nameField].containsKey(_pKey))
           fieldsChangedValues['${Work.className}.${k}'][_pKey] = v[User.nameField][_pKey];
@@ -582,7 +583,7 @@ class WorkChangedValues {
         fieldsChangedValues.putIfAbsent('${Work.className}.${k}', () =>
         {
           _typeToViewKey: _typeToViewText,
-          _fieldDescriptionKey: FieldMsg.label('${Work.className}.${k}')});
+          _fieldDescriptionKey: WorkDomainMsg.fieldLabel(k)});
 
         if (v.containsKey(Objective.nameField) && v[Objective.nameField].containsKey(_pKey))
           fieldsChangedValues['${Work.className}.${k}'][_pKey] = v[User.nameField][_pKey];
@@ -593,7 +594,7 @@ class WorkChangedValues {
           fieldsChangedValues.putIfAbsent('${Work.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewText,
-            _fieldDescriptionKey: FieldMsg.label('${Work.className}.${k}')});
+            _fieldDescriptionKey: WorkDomainMsg.fieldLabel(k)});
           if (v.containsKey(_pKey))
             fieldsChangedValues['${Work.className}.${k}'][_pKey] =
             v[_pKey];
@@ -617,7 +618,7 @@ class StageChangedValues {
           fieldsChangedValues.putIfAbsent('${WorkStage.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewText,
-            _fieldDescriptionKey: FieldMsg.label('${WorkStage.className}.${k}')});
+            _fieldDescriptionKey: WorkStageDomainMsg.fieldLabel(k)});
           if (v.containsKey(_pKey))
             fieldsChangedValues['${WorkStage.className}.${k}'][_pKey] =
             v[_pKey];
@@ -642,7 +643,7 @@ class WorkItemChangedValues {
               '${WorkItem.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewText,
-            _fieldDescriptionKey: FieldMsg.label('${WorkItem.className}.${k}')
+            _fieldDescriptionKey: WorkItemDomainMsg.fieldLabel(k)
           });
 
           if (v.containsKey(WorkStage.nameField) &&
@@ -658,7 +659,7 @@ class WorkItemChangedValues {
               '${WorkItem.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewText,
-            _fieldDescriptionKey: FieldMsg.label('${WorkItem.className}.${k}')
+            _fieldDescriptionKey: WorkItemDomainMsg.fieldLabel(k)
           });
 
           if (v.containsKey(_pKey) && v[_pKey] is List) {
@@ -682,7 +683,7 @@ class WorkItemChangedValues {
               '${WorkItem.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewText,
-            _fieldDescriptionKey: FieldMsg.label('${WorkItem.className}.${k}')
+            _fieldDescriptionKey: WorkItemDomainMsg.fieldLabel(k)
           });
 
           if (v.containsKey(_pKey) && v[_pKey] is List) {
@@ -705,7 +706,7 @@ class WorkItemChangedValues {
           fieldsChangedValues.putIfAbsent('${WorkItem.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewText,
-            _fieldDescriptionKey: FieldMsg.label('${WorkItem.className}.${k}')});
+            _fieldDescriptionKey: WorkItemDomainMsg.fieldLabel(k)});
           if (v.containsKey(_pKey))
             fieldsChangedValues['${WorkItem.className}.${k}'][_pKey] = '${v[_pKey]}%';
           if (v.containsKey(_cKey))
@@ -714,7 +715,7 @@ class WorkItemChangedValues {
           fieldsChangedValues.putIfAbsent('${WorkItem.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewDateTime,
-            _fieldDescriptionKey: FieldMsg.label('${WorkItem.className}.${k}')});
+            _fieldDescriptionKey: WorkItemDomainMsg.fieldLabel(k)});
           if (v.containsKey(_pKey))
             fieldsChangedValues['${WorkItem.className}.${k}'][_pKey] = DateTime.parse(v[_pKey]);
           if (v.containsKey(_cKey))
@@ -723,7 +724,7 @@ class WorkItemChangedValues {
           fieldsChangedValues.putIfAbsent('${WorkItem.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewText,
-            _fieldDescriptionKey: FieldMsg.label('${WorkItem.className}.${k}')});
+            _fieldDescriptionKey: WorkItemDomainMsg.fieldLabel(k)});
           if (v.containsKey(_pKey))
             fieldsChangedValues['${WorkItem.className}.${k}'][_pKey] =
             v[_pKey];

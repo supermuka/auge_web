@@ -62,5 +62,10 @@ Use to high related components and concepts.
 --low-resources-mode
 
 
+*** TRANSLATE
 
+pub run intl_translation:extract_to_arb --output-dir=lib/messages/i18n lib/src/auth/auth_component.dart 
 
+pub run intl_translation:extract_to_arb --output-dir=lib/messages/i18n lib/src/group/group_detail_component.dart 
+
+pub run intl_translation:generate_from_arb --output-dir=lib/messages/i18n --generated-file-prefix=intl_ lib/src/auth/auth_component.dart lib/messages/i18n/intl_messages_en.arb lib/messages/i18n/intl_messages_pt_BR.arb

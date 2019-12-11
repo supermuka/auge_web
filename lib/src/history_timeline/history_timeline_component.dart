@@ -1,9 +1,6 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
-
-import 'package:auge_server/shared/message/model_messages.dart';
-
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -13,12 +10,13 @@ import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
 //import 'package:angular_components/content/deferred_content.dart';
 
-import 'package:auge_server/model/general/user.dart';
-import 'package:auge_server/model/general/history_item.dart';
-import 'package:auge_server/model/general/authorization.dart';
+import 'package:auge_server/domain/general/user.dart';
+import 'package:auge_server/domain/general/history_item.dart';
+import 'package:auge_server/domain/general/authorization.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_server/shared/message/messages.dart';
+import 'package:auge_server/shared/message/domain_messages.dart';
 
 import 'package:auge_web/src/history_timeline/history_item_timeline_detail_component.dart';
 
@@ -53,16 +51,16 @@ class HistoryTimelineComponent /* extends Object implements OnInit  */ {
     initializeDateFormatting(Intl.defaultLocale , null);
   }
 
-  static final String timelineLabel = TimelineItemdMsg.label('Timeline');
-  static final String theLabel = TimelineItemdMsg.label('the');
-  static final String dayAgoLabel =  TimelineItemdMsg.label('day ago');
-  static final String daysAgoLabel =  TimelineItemdMsg.label('days ago');
-  static final String hourAgoLabel =  TimelineItemdMsg.label('hour ago');
-  static final String hoursAgoLabel =  TimelineItemdMsg.label('hours ago');
-  static final String minuteAgoLabel =  TimelineItemdMsg.label('minute ago');
-  static final String minutesAgoLabel =  TimelineItemdMsg.label('minutes ago');
-  static final String secondAgoLabel =  TimelineItemdMsg.label('second ago');
-  static final String secondsAgoLabel =  TimelineItemdMsg.label('seconds ago');
+  static final String timelineLabel = TimelineItemdMsg.label(TimelineItemdMsg.timelineLabel);
+  static final String theLabel = TimelineItemdMsg.label(TimelineItemdMsg.theLabel);
+  static final String dayAgoLabel =  TimelineItemdMsg.label(TimelineItemdMsg.dayAgoLabel);
+  static final String daysAgoLabel =  TimelineItemdMsg.label(TimelineItemdMsg.daysAgoLabel);
+  static final String hourAgoLabel =  TimelineItemdMsg.label(TimelineItemdMsg.hourAgoLabel);
+  static final String hoursAgoLabel =  TimelineItemdMsg.label(TimelineItemdMsg.hoursAgoLabel);
+  static final String minuteAgoLabel =  TimelineItemdMsg.label(TimelineItemdMsg.minuteAgoLabel);
+  static final String minutesAgoLabel =  TimelineItemdMsg.label(TimelineItemdMsg.minutesAgoLabel);
+  static final String secondAgoLabel =  TimelineItemdMsg.label(TimelineItemdMsg.secondAgoLabel);
+  static final String secondsAgoLabel =  TimelineItemdMsg.label(TimelineItemdMsg.secondsAgoLabel);
 
   get history => _historyTimelineService.history;
 

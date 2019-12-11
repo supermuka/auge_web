@@ -4,10 +4,10 @@
 import 'dart:async';
 
 import 'package:angular/core.dart';
-import 'package:auge_server/model/general/organization_directory_service.dart';
+import 'package:auge_server/domain/general/organization_directory_service.dart';
 import 'package:auge_web/src/auth/auth_service.dart';
-import 'package:auge_server/model/general/organization.dart';
-import 'package:auge_server/model/general/organization_configuration.dart';
+import 'package:auge_server/domain/general/organization.dart';
+import 'package:auge_server/domain/general/organization_configuration.dart';
 
 import 'package:auge_web/services/auge_api_service.dart';
 import 'package:auge_server/src/protos/generated/google/protobuf/wrappers.pb.dart' as wrappers_pb;

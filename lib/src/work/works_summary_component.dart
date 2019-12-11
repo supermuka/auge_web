@@ -12,8 +12,8 @@ import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
 
-import 'package:auge_server/model/work/work.dart';
-import 'package:auge_server/shared/message/model_messages.dart';
+import 'package:auge_server/domain/work/work.dart';
+import 'package:auge_server/shared/message/domain_messages.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
 // import 'package:auge_web/src/auth/auth_service.dart';
@@ -56,9 +56,9 @@ class WorksSummaryComponent with CanReuse implements OnInit {
 
   WorksSummaryComponent(this._appLayoutService, this._workService,  this._router);
 
-  static final String worksLabel =  WorkMsg.label('Works');
-  static final String groupLabel = FieldMsg.label('${Work.className}.${Work.groupField}');
-  static final String leaderLabel =  FieldMsg.label('${Work.className}.${Work.leaderField}');
+  static final String worksLabel =  WorkMsg.label(WorkMsg.worksLabel);
+  static final String groupLabel = WorkDomainMsg.fieldLabel(Work.groupField);
+  static final String leaderLabel =  WorkDomainMsg.fieldLabel(Work.leaderField);
 
   @override
   ngOnInit() async {

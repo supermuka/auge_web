@@ -2,8 +2,7 @@ import 'dart:async';
 
 import 'package:angular/core.dart';
 
-import 'package:auge_server/model/general/history_item.dart';
-import 'package:auge_server/shared/common_utils.dart';
+import 'package:auge_server/domain/general/history_item.dart';
 
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/services/auge_api_service.dart';

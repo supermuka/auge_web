@@ -1,7 +1,6 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
-
 import 'dart:html' as html;
 
 import 'package:angular/angular.dart';
@@ -12,11 +11,11 @@ import 'package:angular_components/material_tooltip/material_tooltip.dart';
 import 'package:angular_components/focus/keyboard_only_focus_indicator.dart';
 import 'package:angular_components/laminate/enums/alignment.dart';
 
-import 'package:auge_server/model/objective/objective.dart';
-import 'package:auge_server/model/general/user.dart';
+import 'package:auge_server/domain/objective/objective.dart';
+import 'package:auge_server/domain/general/user.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
-import 'package:auge_server/shared/message/model_messages.dart';
+import 'package:auge_server/shared/message/domain_messages.dart';
 
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
@@ -69,11 +68,10 @@ class MapComponent /* with CanReuse  COMENTADO POIS SE USAR, O TOOLTIP NÃO DESA
   // Define messages and labels
   static final String notInformedMsg = MapMsg.notInformedMsg();
 
-  static final String leaderLabel =  FieldMsg.label('${Objective.className}.${Objective.leaderField}');
-  static final String groupLabel =  FieldMsg.label('${Objective.className}.${Objective.groupField}');
-  static final String startDateLabel =  FieldMsg.label('${Objective.className}.${Objective.startDateField}');
-  static final String endDateLabel =  FieldMsg.label('${Objective.className}.${Objective.endDateField}');
-
+  static final String leaderLabel =  ObjectiveDomainMsg.fieldLabel(Objective.leaderField);
+  static final String groupLabel =  ObjectiveDomainMsg.fieldLabel(Objective.groupField);
+  static final String startDateLabel =  ObjectiveDomainMsg.fieldLabel(Objective.startDateField);
+  static final String endDateLabel =  ObjectiveDomainMsg.fieldLabel(Objective.endDateField);
 
   @override
   void onActivate(RouterState previous, RouterState current) async {
@@ -83,7 +81,7 @@ class MapComponent /* with CanReuse  COMENTADO POIS SE USAR, O TOOLTIP NÃO DESA
       return;
     }
 
-    _appLayoutService.headerTitle = MapMsg.label('Objectives Map');
+    _appLayoutService.headerTitle = MapMsg.label(MapMsg.objectivesMapLabel);
 
     _appLayoutService.enabledSearch = false;
 

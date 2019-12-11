@@ -8,9 +8,9 @@
         [activateFirstOption]="true"
         [popupMatchInputWidth]="false"
         (visibleChange)="onDropdownVisibleChange($event)"
-        [materialTooltip]="filterNameLabel + ' ' + filterLabel">
+        [materialTooltip]="filterComposeLabel">
     <div header>
-        <label>{{filterLabel}} {{filterNameLabel}}</label>
+        <label>{{filterComposeLabel}}</label>
         <div class="w3-right">
             <material-button icon (trigger)="selectAll">
                 <material-icon icon="done_all">
