@@ -136,8 +136,9 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
     // Define messages and labels
   static final String objectiveLabel = ObjectiveMsg.label(ObjectiveMsg.objectivesLabel);
   static final String sortedByLabel = ObjectiveMsg.label(ObjectiveMsg.sortedByLabel);
-  static final String editButtonLabel = ObjectiveMsg.label(CommonMsg.editButtonLabel);
-  static final String deleteButtonLabel = ObjectiveMsg.label(CommonMsg.deleteButtonLabel);
+
+  static final String editButtonLabel = CommonMsg.buttonLabel(CommonMsg.editButtonLabel);
+  static final String deleteButtonLabel = CommonMsg.buttonLabel(CommonMsg.deleteButtonLabel);
 
   static final String ultimateObjectiveLabel = ObjectiveMsg.label(ObjectiveMsg.ultimateObjectiveLabel);
 
@@ -208,7 +209,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
     }
 
 
-    _appLayoutService.headerTitle = ObjectiveMsg.label('Objectives');
+    _appLayoutService.headerTitle = ObjectiveMsg.label(ObjectiveMsg.objectivesLabel);
 
     // _appLayoutService.enabledSearch = true;
 
@@ -385,7 +386,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
   }
 
   String composeTooltip(String label, String name) {
-    return label + ' ' + ((name == null) ? '(-)' : name);
+    return label ?? '' + ' ' + ((name == null) ? '(-)' : name);
   }
 
   void goToDetail() {

@@ -1,6 +1,7 @@
-analyzer:
-  plugins:
-    - angular
+#analyzer:
+#  plugins:
+#    - angular
+#    - angular_analyzer_plugin
 
 # Lint rules and documentation, see http://dart-lang.github.io/linter/lints
 linter:

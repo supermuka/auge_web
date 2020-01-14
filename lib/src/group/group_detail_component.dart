@@ -93,12 +93,6 @@ class GroupDetailComponent implements OnInit, OnActivate, OnDeactivate {
   /// When it exists, the error/exception message presented into dialog view.
   String dialogError;
 
-  GroupDetailComponent(this._userService, this._groupService, this._location) {
-    superGroupSingleSelectModel = SelectionModel.single();
-    leaderSingleSelectModel = SelectionModel.single();
-    memberSingleSelectModel = SelectionModel.single();
-  }
-
   // Define messages and labels
   static final String saveButtonLabel = CommonMsg.buttonLabel(CommonMsg.saveButtonLabel);
   static final String closeButtonLabel = CommonMsg.buttonLabel(CommonMsg.closeButtonLabel);
@@ -115,6 +109,14 @@ class GroupDetailComponent implements OnInit, OnActivate, OnDeactivate {
   static final String leaderLabel = GroupDomainMsg.fieldLabel(Group.leaderField);  // FieldMsg.label('${Group.className}.${Group.leaderField}');
   static final String inactiveLabel = GroupDomainMsg.fieldLabel(Group.inactiveField); // FieldMsg.label('${Group.className}.${Group.inactiveField}');
   static final String membersLabel = GroupDomainMsg.fieldLabel(Group.membersField); // FieldMsg.label('${Group.className}.${Group.membersField}');
+
+  GroupDetailComponent(this._userService, this._groupService, this._location) {
+    superGroupSingleSelectModel = SelectionModel.single();
+    leaderSingleSelectModel = SelectionModel.single();
+    memberSingleSelectModel = SelectionModel.single();
+  }
+
+
 
   @override
   void ngOnInit() async {

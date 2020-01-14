@@ -139,8 +139,8 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
 
   // Define messages and labels
 
-  static final String editButtonLabel = CommonMsg.label(CommonMsg.editButtonLabel);
-  static final String deleteButtonLabel = CommonMsg.label(CommonMsg.deleteButtonLabel);
+  static final String editButtonLabel = CommonMsg.buttonLabel(CommonMsg.editButtonLabel);
+  static final String deleteButtonLabel = CommonMsg.buttonLabel(CommonMsg.deleteButtonLabel);
 
   static final String sortedByLabel = WorkMsg.label(WorkMsg.sortedByLabel);
   static final String objectiveLabel =  WorkMsg.label(WorkMsg.objectiveLabel);
@@ -202,7 +202,7 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
          routerStatePrevious.toUrl() == AppRoutes.workItemEditRoute.toUrl() && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.workItemIdQueryParameter))
     ) return;
 */
-    _appLayoutService.headerTitle = WorkMsg.label('Works');
+    _appLayoutService.headerTitle = WorkMsg.label( WorkMsg.worksLabel);
 
 
     try {

@@ -147,15 +147,15 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
   static final String inactiveLabel = UserDomainMsg.fieldLabel(User.inactiveField);
   static final String managedByUserLabel = UserDomainMsg.fieldLabel(User.managedByOrganizationField);
 
-  static final String profileEmailLabel =  UserDomainMsg.fieldLabel(UserProfile.eMailField);
-  static final String profileEmailNotificationLabel =  UserDomainMsg.fieldLabel(UserProfile.eMailNotificationField);
-  static final String profilePhotoLabel = UserDomainMsg.fieldLabel(UserProfile.imageField);
-  static final String profileIdiomLabel = UserDomainMsg.fieldLabel(UserProfile.idiomLocaleField);
+  static final String profileEmailLabel =  UserProfileDomainMsg.fieldLabel(UserProfile.eMailField);
+  static final String profileEmailNotificationLabel =  UserProfileDomainMsg.fieldLabel(UserProfile.eMailNotificationField);
+  static final String profilePhotoLabel = UserProfileDomainMsg.fieldLabel(UserProfile.imageField);
+  static final String profileIdiomLabel = UserProfileDomainMsg.fieldLabel(UserProfile.idiomLocaleField);
 
-  static final String identityIdentificationLabel = UserDomainMsg.fieldLabel(UserIdentity.identificationField);
-  static final String identityPasswordLabel = UserDomainMsg.fieldLabel(UserIdentity.passwordField);
-  static final String identityProviderLabel = UserDomainMsg.fieldLabel(UserIdentity.providerField);
-  static final String identityProviderObjectIdLabel = UserDomainMsg.fieldLabel(UserIdentity.providerObjectIdField);
+  static final String identityIdentificationLabel = UserIdentityDomainMsg.fieldLabel(UserIdentity.identificationField);
+  static final String identityPasswordLabel = UserIdentityDomainMsg.fieldLabel(UserIdentity.passwordField);
+  static final String identityProviderLabel = UserIdentityDomainMsg.fieldLabel(UserIdentity.providerField);
+  static final String identityProviderObjectIdLabel = UserIdentityDomainMsg.fieldLabel(UserIdentity.providerObjectIdField);
 
   static final String domainOrganizationConfigurationRequiredMsg = UserMsg.domainOrganizationConfigurationRequiredMsg();
   static final String identificationRequiredMsg = UserMsg.identificationRequiredMsg();

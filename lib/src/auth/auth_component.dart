@@ -84,8 +84,9 @@ class AuthComponent implements OnActivate  {
   AuthComponent(this._authService, this._router);
 
   /// Messages and labels
-  static final String headerTitleLabel =  AuthMsg.label(AuthMsg.headerTitleLabel);
-  static final String headerSubtitleLabel = AuthMsg.label(AuthMsg.headerSubtitleLabel);
+  static final String headerTitleLabel =  CommonMsg.label(CommonMsg.headerTitleLabel);
+  static final String headerSubtitleLabel = CommonMsg.label(CommonMsg.headerSubtitleLabel);
+
   static final String loginButtonLabel = AuthMsg.label(AuthMsg.loginLabel); // Intl.message('Login', name: 'AuthComponent_loginButtonLabel'); // CommonMsg.buttonLabel('Login');
   static final String requiredValueMsg = CommonMsg.requiredValueMsg();
 

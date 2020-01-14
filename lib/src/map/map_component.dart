@@ -60,7 +60,6 @@ class MapComponent /* with CanReuse  COMENTADO POIS SE USAR, O TOOLTIP NÃO DESA
 
   List<Objective> objectivesMap = List();
 
-
   Set<Objective> objectivesCollapesed = Set();
 
   MapComponent(this._authService, this._appLayoutService, this._mapService, this._router);

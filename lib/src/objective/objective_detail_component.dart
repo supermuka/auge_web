@@ -99,12 +99,6 @@ class ObjectiveDetailComponent implements OnInit, OnActivate, OnDeactivate {
   String previousPath;
   String currentPath;
 
-  ObjectiveDetailComponent(this._userService, this._objectiveService, this._groupService, this._router) {
-    groupSingleSelectModel = SelectionModel.single();
-    alignedToSingleSelectModel = SelectionModel.single();
-    leaderSingleSelectModel = SelectionModel.single();
-  }
-
   // Define messages and labels
   static final String requiredValueMsg = CommonMsg.requiredValueMsg();
   static final String closeButtonLabel = CommonMsg.buttonLabel(CommonMsg.closeButtonLabel);
@@ -114,7 +108,7 @@ class ObjectiveDetailComponent implements OnInit, OnActivate, OnDeactivate {
   static final String editObjectiveLabel =  ObjectiveMsg.label(ObjectiveMsg.editObjectiveLabel);
   static final String noMatchLabel =  ObjectiveMsg.label(ObjectiveMsg.noMatchLabel);
 
-  static final String nameLabel =  ObjectiveDomainMsg.fieldLabel(Objective.nameField);
+  static final String nameLabel = 'xxxx'; // ObjectiveDomainMsg.fieldLabel(Objective.nameField);
   static final String descriptionLabel =  ObjectiveDomainMsg.fieldLabel(Objective.descriptionField); //FieldMsg.label('${Objective.className}.${Objective.descriptionField}');
   static final String groupLabel =  ObjectiveDomainMsg.fieldLabel(Objective.groupField); //FieldMsg.label('${Objective.className}.${Objective.groupField}');
   static final String leaderLabel =  ObjectiveDomainMsg.fieldLabel(Objective.leaderField); //FieldMsg.label('${Objective.className}.${Objective.leaderField}');
@@ -123,10 +117,17 @@ class ObjectiveDetailComponent implements OnInit, OnActivate, OnDeactivate {
   static final String alignedToLabel =  ObjectiveDomainMsg.fieldLabel(Objective.alignedToField); //FieldMsg.label('${Objective.className}.${Objective.alignedToField}');
   static final String archivedLabel = ObjectiveDomainMsg.fieldLabel(Objective.archivedField); // FieldMsg.label('${Objective.className}.${Objective.archivedField}');
 
+  ObjectiveDetailComponent(this._userService, this._objectiveService, this._groupService, this._router) {
+    groupSingleSelectModel = SelectionModel.single();
+    alignedToSingleSelectModel = SelectionModel.single();
+    leaderSingleSelectModel = SelectionModel.single();
+  }
+
   @override
   void ngOnInit() async {
     // It's needed to create an object before, even if later to get from server side. As server side as on the server side the response takes time, angular/html render first and the object doesn't to get null.
     objective = Objective();
+
   }
 
   @override

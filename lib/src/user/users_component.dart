@@ -82,8 +82,8 @@ class UsersComponent with CanReuse implements OnActivate {
 
   MenuModel<MenuItem> menuModel;
 
-  static final String editButtonLabel = CommonMsg.buttonLabel('Edit');
-  static final String deleteButtonlabel = CommonMsg.buttonLabel('Delete');
+  static final String editButtonLabel = CommonMsg.buttonLabel(CommonMsg.editButtonLabel);
+  static final String deleteButtonlabel = CommonMsg.buttonLabel(CommonMsg.deleteButtonLabel);
 
   UsersComponent(this._appLayoutService, this._searchService, this._userService, this._historyTimelineService, this._router) {
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(editButtonLabel, icon: new Icon('edit') , actionWithContext: (_) => goToDetail()), new MenuItem(deleteButtonlabel, icon: new Icon('delete'), actionWithContext: (_) => delete())])], icon: new Icon('menu'));
