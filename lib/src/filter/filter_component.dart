@@ -2,10 +2,8 @@
 // Author: Samuel C. Schwebel.ExampleSelectionOptions
 
 import 'dart:async';
-import 'package:intl/intl.dart';
 
 import 'package:angular/angular.dart';
-
 
 import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
@@ -22,6 +20,7 @@ import 'package:angular_components/model/selection/selection_model.dart';
 import 'package:angular_components/model/ui/has_factory.dart';
 
 import 'package:auge_server/shared/message/messages.dart';
+import 'package:quiver/async.dart';
 
 @Component(
   selector: 'auge-filter',
@@ -52,6 +51,10 @@ class FilterComponent  /* implements AfterChanges */ {
   @Input()
   String filterNameLabel;
 
+
+  @Input()
+  bool filterOptionsSelectAll = false;
+
   @Input()
   set filterOptions(List<FilterOption> _filterOptions) {
 
@@ -61,6 +64,8 @@ class FilterComponent  /* implements AfterChanges */ {
      // for (FilterOption option in filterOptionMultiSelectModel.selectedValues) {
      //   filterOptionMultiSelectModel.deselect(option);
      // }
+      filterStringSelectionOptions = FilterSelectionOptions(_filterOptions);
+
       filterOptionMultiSelectModel = SelectionModel<FilterOption>.multi();
 
       filterOptionMultiSelectModel.selectionChanges.listen((_) {
@@ -69,10 +74,12 @@ class FilterComponent  /* implements AfterChanges */ {
 
       });
 
-      filterStringSelectionOptions = FilterSelectionOptions(_filterOptions);
 
-      // By default, select all
-      selectAll();
+
+      // By default, select all.
+      if (filterOptionsSelectAll) {
+        selectAll();
+      }
 
     }
 
@@ -81,9 +88,9 @@ class FilterComponent  /* implements AfterChanges */ {
   @Input()
   set initialFilterOptionsIdsSelected(List<String> _initialFilterOptionsIdsSelected) {
     if (_initialFilterOptionsIdsSelected != null) {
-    selectSpecific(_initialFilterOptionsIdsSelected);
-    } else {
-    selectAll();
+      selectSpecific(_initialFilterOptionsIdsSelected);
+    } else if (filterOptionsSelectAll) {
+      selectAll();
     }
   }
 
@@ -152,16 +159,20 @@ class FilterComponent  /* implements AfterChanges */ {
   void selectSpecific(List<String> filterOptionsIdToSelection) {
    // clearAll();
 
-    List<FilterOption> specificFilterOptions = filterStringSelectionOptions.optionsList.where((o) => filterOptionsIdToSelection.contains(o.id));
+    List<FilterOption> specificFilterOptions = filterStringSelectionOptions.optionsList.where((o) => filterOptionsIdToSelection.contains(o.id)).toList();
 
     for (FilterOption filterOption in specificFilterOptions) {
+
       filterOptionMultiSelectModel.select(filterOption);
     }
   }
 
   void selectAll() {
-    for (FilterOption filterOpetion in filterStringSelectionOptions.optionsList) {
-      filterOptionMultiSelectModel.select(filterOpetion);
+    if (filterStringSelectionOptions != null) {
+      for (FilterOption filterOption in filterStringSelectionOptions
+          .optionsList) {
+        filterOptionMultiSelectModel.select(filterOption);
+      }
     }
   }
 

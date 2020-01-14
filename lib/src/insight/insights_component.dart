@@ -512,4 +512,5 @@ class InsightsComponent with CanReuse implements OnActivate  {
     aggregateWorksMeasurement();
   }
 
+
 }
