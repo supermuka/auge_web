@@ -14,8 +14,8 @@
         <div class="w3-col m6">
             <acx-scoreboard scrollable>
                 <auge-filter [filterOptions]="objectiveFilterOptions"  [filterNameLabel]="objectiveLabel" [initialFilterOptionsIdsSelected]="initialObjectivesIdSelectedToFilter" (changeSelection)="objectiveChangeSelection($event)" @deferred></auge-filter>
-                <auge-filter [filterOptions]="groupFilterOptions"  [filterNameLabel]="groupLabel" [filterOptionsSelectAll]="true" (changeSelection)="groupChangeSelection($event)" @deferred></auge-filter>
-                <auge-filter [filterOptions]="leaderFilterOptions"  [filterNameLabel]="leaderLabel" [filterOptionsSelectAll]="true" (changeSelection)="leaderChangeSelection($event)" @deferred></auge-filter>
+                <auge-filter [filterOptions]="groupFilterOptions"  [filterNameLabel]="groupLabel" [initialFilterOptionsIdsSelected]="[]"  (changeSelection)="groupChangeSelection($event)" @deferred></auge-filter>
+                <auge-filter [filterOptions]="leaderFilterOptions"  [filterNameLabel]="leaderLabel" [initialFilterOptionsIdsSelected]="[]"  (changeSelection)="leaderChangeSelection($event)" @deferred></auge-filter>
             </acx-scoreboard>
         </div>
         <div class="w3-col m3">

@@ -48,12 +48,12 @@ class FilterComponent  /* implements AfterChanges */ {
   StringSelectionOptions<FilterOption> filterStringSelectionOptions;
   SelectionModel<FilterOption> filterOptionMultiSelectModel;
 
+  bool optionsNullAndInitialCalled = false;
+  List<String> _initialFilterOptionsIdsSelected;
+
+
   @Input()
   String filterNameLabel;
-
-
-  @Input()
-  bool filterOptionsSelectAll = false;
 
   @Input()
   set filterOptions(List<FilterOption> _filterOptions) {
@@ -74,23 +74,32 @@ class FilterComponent  /* implements AfterChanges */ {
 
       });
 
-
-
-      // By default, select all.
-      if (filterOptionsSelectAll) {
-        selectAll();
+      // Call again when options was null and initial already called
+      if (optionsNullAndInitialCalled) {
+        if (this._initialFilterOptionsIdsSelected != null && this._initialFilterOptionsIdsSelected.isNotEmpty) {
+          selectSpecific(this._initialFilterOptionsIdsSelected);
+        } else {
+          selectAll();
+        }
       }
 
     }
-
   }
 
+  /// Put ids to select specific or empty list `[]` to select all. If null, nothing is selected.
   @Input()
   set initialFilterOptionsIdsSelected(List<String> _initialFilterOptionsIdsSelected) {
-    if (_initialFilterOptionsIdsSelected != null) {
-      selectSpecific(_initialFilterOptionsIdsSelected);
-    } else if (filterOptionsSelectAll) {
-      selectAll();
+    if (filterStringSelectionOptions == null) {
+      optionsNullAndInitialCalled = true;
+      this._initialFilterOptionsIdsSelected = _initialFilterOptionsIdsSelected;
+    } else {
+      // if _initialFilterOptionsIdsSelected == [] all is selected.  This [] is used to dispatch this `set` and as we don't used empty filter on initial screen, this alternative was used to this finality.
+      if (_initialFilterOptionsIdsSelected != null &&
+          _initialFilterOptionsIdsSelected.isNotEmpty) {
+        selectSpecific(_initialFilterOptionsIdsSelected);
+      } else {
+        selectAll();
+      }
     }
   }
 
@@ -168,11 +177,9 @@ class FilterComponent  /* implements AfterChanges */ {
   }
 
   void selectAll() {
-    if (filterStringSelectionOptions != null) {
-      for (FilterOption filterOption in filterStringSelectionOptions
-          .optionsList) {
-        filterOptionMultiSelectModel.select(filterOption);
-      }
+    for (FilterOption filterOption in filterStringSelectionOptions
+        .optionsList) {
+      filterOptionMultiSelectModel.select(filterOption);
     }
   }
 
