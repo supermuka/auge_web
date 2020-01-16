@@ -7,10 +7,6 @@
   grid-template-columns: min-content auto;
 }
 
-.truncate-parent {
-  min-width: 0;
-}
-
 .margin-bottom {
   margin-bottom: 2px;
 }
@@ -19,16 +15,16 @@
   margin-top: 2px;
 }
 
-/*
-.timeline-vertical-size {
-  max-height: calc(100vh - 128px);  // minus header, margin, padding and another components height
-  overflow-y: auto;
-  padding: inherit;
-}
-*/
 
-/*
-.acx-scorecard-padding-custom {
-  @include acx-scorecard-padding(8, 8, 8, 8);
+// based on material_expansionpanel mixin
+$_panel: 'div.panel.themeable';
+
+.expansionpanel-panel-value-min-width {
+  ::ng-deep > #{$_panel} > header .panel-description {
+    background-color: red;
+    min-width: 40px;
+    padding-left: 2px;
+    //padding-right: 2px;
+    float: right;
+  }
 }
-*/

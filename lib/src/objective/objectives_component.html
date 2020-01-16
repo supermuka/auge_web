@@ -14,8 +14,8 @@
         <div class="w3-col m6">
             <acx-scoreboard scrollable>
                 <auge-filter [filterOptions]="objectiveFilterOptions"  [filterNameLabel]="objectiveLabel" [initialFilterOptionsIdsSelected]="initialObjectivesIdSelectedToFilter" (changeSelection)="objectiveChangeSelection($event)" @deferred></auge-filter>
-                <auge-filter [filterOptions]="groupFilterOptions"  [filterNameLabel]="groupLabel" [initialFilterOptionsIdsSelected]="[]"  (changeSelection)="groupChangeSelection($event)" @deferred></auge-filter>
-                <auge-filter [filterOptions]="leaderFilterOptions"  [filterNameLabel]="leaderLabel" [initialFilterOptionsIdsSelected]="[]"  (changeSelection)="leaderChangeSelection($event)" @deferred></auge-filter>
+                <auge-filter [filterOptions]="groupFilterOptions"  [filterNameLabel]="groupLabel" [initialFilterOptionsIdsSelected]="initialFilterOptionsIdsSelected"   (changeSelection)="groupChangeSelection($event)" @deferred></auge-filter>
+                <auge-filter [filterOptions]="leaderFilterOptions"  [filterNameLabel]="leaderLabel" [initialFilterOptionsIdsSelected]="initialFilterOptionsIdsSelected"  (changeSelection)="leaderChangeSelection($event)" @deferred></auge-filter>
             </acx-scoreboard>
         </div>
         <div class="w3-col m3">
@@ -26,7 +26,9 @@
         <div class="w3-col w3-padding-16 list-vertical-scroll" style="width:{{mainColWidth}}">
             <material-expansionpanel-set>
                 <div #refMatExp *ngFor="let iObjective of objectives;let i = index">
-                    <material-expansionpanel [alwaysHideExpandIcon]="true"
+                    <material-expansionpanel
+                            class="expansionpanel-panel-value-min-width"
+                            [alwaysHideExpandIcon]="true"
                             [hideExpandedHeader]="false"
                             [showSaveCancel]="false"
                             [expanded]="iObjective.id == expandedObjectiveId"
@@ -39,18 +41,20 @@
                                     <div class="fill"></div>
                                 </div>
                             </span>
-                            <span class="truncate-parent">
+                            <span class="truncate-ellipsed-parent">
                                 <h4 class="truncate-ellipsed">{{iObjective.name}}</h4>
                                 <div>{{iObjective.startDate | date}}<span>&nbsp;·&nbsp;</span>{{iObjective.endDate | date}}</div>
                             </span>
                         </div>
-                        <div value class="custom-grid w3-right">
-                            <div class="truncate-parent">
+                        <!-- div value class="custom-grid w3-right" -->
+                        <div value class="custom-grid w3-right zzz">
+                            <!-- div class="truncate-ellipsed-parent" -->
+                            <div>
                                 <div *ngIf="iObjective.group != null" class="avatar avatar-border margin-bottom" [style.background-color]="colorFromUuid(iObjective.group?.id)" [materialTooltip]="composeTooltip(groupLabel, iObjective.group?.name)">
                                     <span class="text-group-letter">{{firstLetter(iObjective.group?.name)}}</span>
                                 </div>
                                 <div *ngIf="iObjective.group == null" class="avatar margin-bottom"></div>
-                                <div *ngIf="iObjective.leader != null" class="avatar margin-top" [style.background-image]="'url(' +  userUrlImage(iObjective.leader?.userProfile.image) + ')'" [materialTooltip]="composeTooltip(leaderLabel, iObjective.leader?.name)"></div>
+                                <div *ngIf="iObjective.leader != null" class="avatar margin-top"  [style.background-image]="'url(' +  userUrlImage(iObjective.leader?.userProfile.image) + ')'" [materialTooltip]="composeTooltip(leaderLabel, iObjective.leader?.name)"></div>
                                 <div *ngIf="iObjective.leader == null" class="avatar margin-top"></div>
                             </div>
                         </div>

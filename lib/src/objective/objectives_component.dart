@@ -118,6 +118,9 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
   List<String> groupsIdSelectedToFilter = [];
   List<String> leadersIdSelectedToFilter = [];
 
+  // Just used to default and controler when dispatcher ´set´
+  List<String> initialFilterOptionsIdsSelected;
+
   // Map<Objective, bool> expandedControl = Map();
   String expandedObjectiveId;
   Objective selectedObjective;
@@ -268,6 +271,11 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
       objectiveFilterOptions =  objectiveFilterOptionsAux;
       groupFilterOptions = groupFilterOptionsAux;
       leaderFilterOptions = leaderFilterOptionsAux;
+
+      initialFilterOptionsIdsSelected = [];
+
+      // If not have initial id, set field to empty list `[]` to dispatch angular behaviour
+      if (initialObjectivesIdSelectedToFilter == null) initialObjectivesIdSelectedToFilter = [];
 
       _objectives = objectivesAux;
 
