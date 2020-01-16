@@ -409,5 +409,4 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
   leaderChangeSelection(List<String> leadersIdSelected) {
     leadersIdSelectedToFilter = leadersIdSelected;
   }
-
 }

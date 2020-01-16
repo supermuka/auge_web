@@ -48,8 +48,8 @@ class FilterComponent  /* implements AfterChanges */ {
   StringSelectionOptions<FilterOption> filterStringSelectionOptions;
   SelectionModel<FilterOption> filterOptionMultiSelectModel;
 
-  bool optionsNullAndInitialCalled = false;
-  List<String> _initialFilterOptionsIdsSelected;
+ // bool optionsNullAndInitialCalled = false;
+ // List<String> _initialFilterOptionsIdsSelected;
 
 
   @Input()
@@ -75,6 +75,7 @@ class FilterComponent  /* implements AfterChanges */ {
       });
 
       // Call again when options was null and initial already called
+      /*
       if (optionsNullAndInitialCalled) {
         if (this._initialFilterOptionsIdsSelected != null && this._initialFilterOptionsIdsSelected.isNotEmpty) {
           selectSpecific(this._initialFilterOptionsIdsSelected);
@@ -83,17 +84,20 @@ class FilterComponent  /* implements AfterChanges */ {
         }
       }
 
+       */
+
     }
   }
 
   /// Put ids to select specific or empty list `[]` to select all. If null, nothing is selected.
   @Input()
   set initialFilterOptionsIdsSelected(List<String> _initialFilterOptionsIdsSelected) {
-    if (filterStringSelectionOptions == null) {
-      optionsNullAndInitialCalled = true;
-      this._initialFilterOptionsIdsSelected = _initialFilterOptionsIdsSelected;
-    } else {
+    //if (filterStringSelectionOptions == null) {
+    //  optionsNullAndInitialCalled = true;
+    //  this._initialFilterOptionsIdsSelected = _initialFilterOptionsIdsSelected;
+    //} else {
       // if _initialFilterOptionsIdsSelected == [] all is selected.  This [] is used to dispatch this `set` and as we don't used empty filter on initial screen, this alternative was used to this finality.
+    if (filterStringSelectionOptions != null) {
       if (_initialFilterOptionsIdsSelected != null &&
           _initialFilterOptionsIdsSelected.isNotEmpty) {
         selectSpecific(_initialFilterOptionsIdsSelected);

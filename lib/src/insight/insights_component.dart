@@ -88,13 +88,14 @@ class InsightsComponent with CanReuse implements OnActivate  {
   /// Return a total number of over due work items
   String overDueWorkItemsNumber;
 
-
   List<Objective> _objectives = [];
-  List<Work> works = [];
+  List<Work> _works = [];
   List<FilterOption> groupFilterOptions;
   List<String> groupsIdSelectedToFilter = [];
   List<FilterOption> leaderFilterOptions;
   List<String> usersIdSelectedToFilter = [];
+
+  List<String> initialFilterOptionsIdsSelected = [];
 
   InsightsComponent(this._authService, this._appLayoutService, this._objectiveService, this._workService, this._router);
 
@@ -167,6 +168,11 @@ class InsightsComponent with CanReuse implements OnActivate  {
         objectivesAux = await _objectiveService.getObjectives(
             _authService.authorizedOrganization.id, withMeasures: true);
 
+        // Works
+        List<Work> worksAux;
+        worksAux = await _workService.getWorks(
+            _authService.authorizedOrganization.id, withWorkItems: true);
+
         // Select options to filter.
         Map<String, FilterOption> groups = {};
         Map<String, FilterOption> leaders = {};
@@ -174,6 +180,11 @@ class InsightsComponent with CanReuse implements OnActivate  {
           groups.putIfAbsent(objectivesAux[i].group?.id, () => FilterOption(objectivesAux[i].group?.id, objectivesAux[i].group?.name));
           leaders.putIfAbsent(objectivesAux[i].leader?.id, () => FilterOption(objectivesAux[i].leader?.id, objectivesAux[i].leader?.name));
         }
+        for (int i = 0;i<worksAux.length;i++) {
+          groups.putIfAbsent(worksAux[i].group?.id, () => FilterOption(worksAux[i].group?.id, worksAux[i].group?.name));
+          leaders.putIfAbsent(worksAux[i].leader?.id, () => FilterOption(worksAux[i].leader?.id, worksAux[i].leader?.name));
+        }
+
         List<FilterOption> groupFilterOptionsAux = groups.values.toList();
         if (groupFilterOptionsAux.length > 1)  groupFilterOptionsAux.sort((a, b) => a.name == null ? 1 : b.name == null ? -1 : a.name.compareTo(b.name));
 
@@ -182,11 +193,13 @@ class InsightsComponent with CanReuse implements OnActivate  {
 
         groupFilterOptions = groupFilterOptionsAux;
         leaderFilterOptions = leaderFilterOptionsAux;
-        _objectives = objectivesAux;
 
-        // Works
-        works = await _workService.getWorks(
-            _authService.authorizedOrganization.id, withWorkItems: true);
+        // Select all with empty list
+        initialFilterOptionsIdsSelected = [];
+
+        _objectives = objectivesAux;
+        _works = worksAux;
+
       }
 
     } catch (e) {
@@ -314,7 +327,6 @@ class InsightsComponent with CanReuse implements OnActivate  {
   }
 
 
-// StringSelectionOptions<Group> get groupOptions =>  GroupSelectionOptions(_groups);
   List<Objective> get objectives {
     List<Objective> objectiveFiltred;
 
@@ -323,6 +335,16 @@ class InsightsComponent with CanReuse implements OnActivate  {
             && (usersIdSelectedToFilter.contains(t.leader?.id)) ).toList();
 
     return objectiveFiltred;
+  }
+
+  List<Work> get works {
+    List<Work> workFiltred;
+
+    workFiltred = (usersIdSelectedToFilter.isEmpty) || groupsIdSelectedToFilter.isEmpty ? [] : _works.where(
+            (t) => (groupsIdSelectedToFilter.contains(t.group?.id))
+            && (usersIdSelectedToFilter.contains(t.leader?.id)) ).toList();
+
+    return workFiltred;
   }
 
 
