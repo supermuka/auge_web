@@ -15,16 +15,23 @@
   margin-top: 2px;
 }
 
-
 // based on material_expansionpanel mixin
 $_panel: 'div.panel.themeable';
+
+$_min_width: 40px;
 
 .expansionpanel-panel-value-min-width {
   ::ng-deep > #{$_panel} > header .panel-description {
     background-color: red;
-    min-width: 40px;
-    padding-left: 2px;
+    min-width: $_min_width;
+    padding-left: 0;
+    padding-right: 0;
+    //margin-right: 0;
     //padding-right: 2px;
     float: right;
   }
+}
+
+.custom-width {
+  min-width: $_min_width;
 }

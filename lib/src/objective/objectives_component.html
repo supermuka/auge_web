@@ -47,9 +47,9 @@
                             </span>
                         </div>
                         <!-- div value class="custom-grid w3-right" -->
-                        <div value class="custom-grid w3-right zzz">
+                        <div value class="custom-grid w3-right">
                             <!-- div class="truncate-ellipsed-parent" -->
-                            <div>
+                            <div class="custom-width">
                                 <div *ngIf="iObjective.group != null" class="avatar avatar-border margin-bottom" [style.background-color]="colorFromUuid(iObjective.group?.id)" [materialTooltip]="composeTooltip(groupLabel, iObjective.group?.name)">
                                     <span class="text-group-letter">{{firstLetter(iObjective.group?.name)}}</span>
                                 </div>
