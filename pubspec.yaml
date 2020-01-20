@@ -32,8 +32,8 @@ dependencies:
   auge_server:
     path: ../auge_server/
   #protobuf: ^1.0.0
-  grpc: ^2.1.2
-  quiver: 2.1.1
+  grpc: ^2.1.3
+  quiver: ^2.1.2
   #grpc:
   #  git:
   #    url: git://github.com/grpc/grpc-dart.git

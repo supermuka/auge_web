@@ -118,5 +118,54 @@ class AuthService  {
   bool get isSuperAdmin {
     return authUserAccess?.accessRole == SystemRole.superAdmin.index;
   }
-  // bool get isAuthenticatedUserAndSelectedOrganization => authenticatedUser != null && selectedOrganization != null;
+
+  Future<NewPasswordCodeEMail> generateNewPasswordCodeAndSendEmail(String identification) async {
+    String code;
+    String eMail;
+    if (identification.isNotEmpty) {
+      try {
+
+        user_identity_pbgrpc.NewPasswordCodeResponse newPasswordCodeResponse = await _userIdentityServiceClient
+            .generateNewPasswordCodeAndSendEmail(
+            user_identity_pbgrpc.NewPasswordCodeRequest()
+              ..identification = identification);
+
+        if (newPasswordCodeResponse != null && newPasswordCodeResponse.hasCode()) {
+
+          code = newPasswordCodeResponse.code;
+          eMail = newPasswordCodeResponse.eMail;
+
+        }
+
+      } on GrpcError catch (e) {
+        if (e.code == StatusCode.notFound) {
+          return null;
+        } else {
+          print(e);
+          rethrow;
+        }
+      } catch (e) {
+        print(e);
+        rethrow;
+      }
+    }
+    return NewPasswordCodeEMail()..code = code..eMail = eMail;
+  }
+
+  Future<void> saveNewPassword(String identification, String password) async {
+
+    try {
+      await _userIdentityServiceClient.updateUserIdentityPassword(user_identity_pbgrpc.UserIdentityPasswordRequest()..identification = identification..password = password);
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+
+  }
+
+}
+
+class NewPasswordCodeEMail {
+  String code;
+  String eMail;
 }

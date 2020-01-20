@@ -28,7 +28,6 @@ import 'package:auge_server/shared/message/domain_messages.dart';
 
 import 'package:auge_web/src/work/work_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
-import 'package:auge_web/src/search/search_service.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/history_timeline/history_timeline_service.dart';
 import 'package:auge_web/src/work/work_summary_component.dart';
@@ -38,8 +37,6 @@ import 'package:auge_web/src/work/work_detail_component.dart';
 import 'package:auge_web/src/work_item/work_items_component.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/services/app_routes.dart';
-import 'package:auge_web/services/common_service.dart' as common_service;
-
 
 // ignore_for_file: uri_has_not_been_generated
 import 'package:auge_web/src/work/work_detail_component.template.dart' as work_detail_component;
@@ -76,8 +73,6 @@ import 'package:auge_web/src/work_item/work_item_detail_component.template.dart'
 class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
 
   final WorkService _workService;
-  final ObjectiveService _objectiveService;
-  final SearchService _searchService;
   final HistoryTimelineService _historyTimelineService;
   final AppLayoutService _appLayoutService;
   final Router _router;
@@ -154,7 +149,7 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
 
   String _sortedBy = nameLabel;
 
-  WorksComponent(this._appLayoutService, this._workService, this._objectiveService, this._searchService, this._historyTimelineService, this._router) {
+  WorksComponent(this._appLayoutService, this._workService, this._historyTimelineService, this._router) {
 
     menuModel = new MenuModel([new MenuItemGroup([
       new MenuItem(editButtonLabel, icon: new Icon('edit') , actionWithContext: (_) => goToDetail() /* viewDetail(true) */),

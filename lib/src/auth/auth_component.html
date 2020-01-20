@@ -4,56 +4,146 @@
             <div header>
                 <h3>{{headerTitleLabel}}</h3>
                 <h4>{{headerSubtitleLabel}}</h4>
-                <h6>Beta version</h6>
+                <h6>Beta</h6>
             </div>
-            <material-stepper legalJumps="backwards"
-                              orientation="vertical"
-                              size="default">
-                <template step name="Login"
-                          (continue)="authenticateAuthorizate($event)"
-                           #stepA="step">
-                    <div class="step-a">
-                        <material-input [label]="identificationLabel"
-                                        type="email"
-                                        autoFocus floatingLabel
-                                        required
-                                        [requiredErrorMsg]="requiredValueMsg"
-                                        [(ngModel)]="identification">
-                        </material-input>
-                        <br/>
-                        <material-input [label]="passwordLabel"
-                                        type="password"
-                                        floatingLabel
-                                        required
-                                        [requiredErrorMsg]="requiredValueMsg"
-                                        [(ngModel)]="passwordStr">
-                        </material-input>
-                    </div>
-                </template>
-                <template [summary]="stepA">
-                    <div class="step-a">
-                        <span class="avatar" [style.background-image]="'url(' + userUrlImage(authenticatedUser) + ')'"></span><strong>{{authenticatedUser?.name}}</strong>
-                    </div>
-                </template>
-                <template step name="Organization"
-                          (continue)="goToAppLayout($event)"
-                           #stepB="step">
-                    <div class="step-b">
-                        <material-dropdown-select class="button-look"
-                                                  slide="y"
-                                                  [buttonText]="organizationSingleSelectLabel"
-                                                  [selection]="organizationSingleSelectModel"
-                                                  [options]="organizationOptions"
-                                                  [itemRenderer]="itemRenderer">
-                        </material-dropdown-select>
-                    </div>
-                </template>
-                <template [summary]="stepB">
-                    <div class="step-b">
-                        <span><strong>{{authorizedOrganization?.name}}</strong></span>
-                    </div>
-                </template>
-            </material-stepper>
+            <!-- div class="w3-right-align">
+                <material-button raised dense (trigger)="isLoginAndIsntNewPassword = false">New Password</material-button>
+            </div -->
+            <div *ngIf="isLoginAndIsntNewPassword">
+                <material-stepper legalJumps="backwards"
+                                  orientation="vertical"
+                                  size="default">
+                    <template step name="Login"
+                              (continue)="authenticateAuthorizate($event)"
+                               #stepA="step">
+                        <div class="step-a">
+                            <material-input [label]="identificationLabel"
+                                            type="email"
+                                            autoFocus floatingLabel
+                                            required
+                                            [requiredErrorMsg]="requiredValueMsg"
+                                            [(ngModel)]="identification">
+                            </material-input>
+                            <br/>
+                            <material-input [label]="passwordLabel"
+                                            type="password"
+                                            floatingLabel
+                                            required
+                                            [requiredErrorMsg]="requiredValueMsg"
+                                            [(ngModel)]="passwordStr">
+                            </material-input>
+                            <div class="w3-right-align">
+                              <label class="hand" (click)="isLoginAndIsntNewPassword = false">New Password?</label>
+                             </div>
+                        </div>
+                    </template>
+                    <template [summary]="stepA">
+                        <div class="step-a">
+                            <span class="avatar" [style.background-image]="'url(' + userUrlImage(authenticatedUser) + ')'"></span><strong>{{authenticatedUser?.name}}</strong>
+                        </div>
+                    </template>
+                    <template step name="Organization"
+                              (continue)="goToAppLayout($event)"
+                               #stepB="step">
+                        <div class="step-b">
+                            <material-dropdown-select class="button-look"
+                                                      slide="y"
+                                                      [buttonText]="organizationSingleSelectLabel"
+                                                      [selection]="organizationSingleSelectModel"
+                                                      [options]="organizationOptions"
+                                                      [itemRenderer]="itemRenderer">
+                            </material-dropdown-select>
+                        </div>
+                    </template>
+                    <template [summary]="stepB">
+                        <div class="step-b">
+                            <span><strong>{{authorizedOrganization?.name}}</strong></span>
+                        </div>
+                    </template>
+                </material-stepper>
+            </div>
+            <!-- NEW PASSWORD -->
+            <div *ngIf="!isLoginAndIsntNewPassword">
+                    <material-button class="right-button" icon (trigger)="isLoginAndIsntNewPassword = true">
+                        <material-icon icon="arrow_back"></material-icon>
+                    </material-button>
+                    <!-- h4>New Password</h4 -->
+                    <material-stepper legalJumps="backwards"
+                                  orientation="vertical"
+                                  size="default">
+                    <template step name="Request Code to New Password"
+                              (continue)="generateCodeAndSendEMail($event)"
+                              #stepPasswordA="step">
+                        <div class="step-password-a">
+                            <material-input [label]="identificationLabel"
+                                            type="email"
+                                            autoFocus floatingLabel
+                                            required
+                                            [requiredErrorMsg]="requiredValueMsg"
+                                            [(ngModel)]="identification">
+                            </material-input>
+                        </div>
+                    </template>
+                    <template [summary]="stepPasswordA">
+                        <div class="step-password-a">
+                            <span><strong>{{informFollowTheCodeSentToEMailMsg}} {{passwordCodeEMailSent}}.</strong></span>
+                        </div>
+                    </template>
+                    <template step name="Inform the Code"
+                              (continue)="validCode($event)"
+                              #stepPasswordB="step">
+                        <div class="step-password-b">
+                            <material-input [label]="passwordCodeLabel"
+                                            type="number"
+                                            floatingLabel
+                                            required
+                                            [requiredErrorMsg]="requiredValueMsg"
+                                            [(ngModel)]="passwordCode">
+                            </material-input>
+                        </div>
+                    </template>
+                    <template [summary]="stepPasswordB">
+                        <div class="step-password-b">
+                            <span><strong>{{codeValidateMsg}}</strong></span>
+                        </div>
+                    </template>
+                    <template step name="Define New Password"
+                              yesText="savelLabel"
+                              (continue)="saveNewPassword($event)"
+                              #stepPasswordC="step">
+                        <div class="step-password-c">
+                            <material-input [label]="newPasswordLabel"
+                                            type="password"
+                                            floatingLabel
+                                            required
+                                            [requiredErrorMsg]="requiredValueMsg"
+                                            [(ngModel)]="newPassword">
+                            </material-input>
+                            <span>
+                                <material-icon *ngIf="showNewPasswordIcon && newPasswordCheck" icon="check"></material-icon>
+                                <material-icon *ngIf="showNewPasswordIcon && !newPasswordCheck" icon="warning"></material-icon>
+                            </span>
+                            <br/>
+                            <material-input [label]="repeatNewPasswordLabel"
+                                            type="password"
+                                            floatingLabel
+                                            required
+                                            [requiredErrorMsg]="requiredValueMsg"
+                                            [(ngModel)]="repeatNewPassword">
+                            </material-input>
+                            <span>
+                                <material-icon *ngIf="showRepeatNewPasswordIcon && repeatedNewPasswordCheck" icon="check"></material-icon>
+                                <material-icon *ngIf="showRepeatNewPasswordIcon && !repeatedNewPasswordCheck" icon="warning"></material-icon>
+                            </span>
+                        </div>
+                    </template>
+                    <template [summary]="stepPasswordC">
+                        <div class="step-password-c">
+                            <span><strong>Ok</strong></span>
+                        </div>
+                    </template>
+                </material-stepper>
+            </div>
         </material-dialog>
     </div>
 </div>

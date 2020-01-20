@@ -2,13 +2,13 @@
 // Author: Samuel C. Schwebel.
 
 import 'dart:async';
-//import 'dart:html' as html;
 import 'package:platform_detect/platform_detect.dart';
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
 import 'package:angular_components/material_dialog/material_dialog.dart';
 import 'package:angular_components/material_input/material_input.dart';
+import 'package:angular_components/material_icon/material_icon.dart';
 import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_stepper/material_step.dart';
 import 'package:angular_components/material_stepper/material_stepper.dart';
@@ -31,17 +31,17 @@ import 'package:auge_server/shared/message/messages.dart';
 
 import 'package:auge_web/services/app_routes.dart';
 
-// import 'package:auge_web/messages/i18n/intl_messages_all.dart';
-
 @Component(
   selector: 'auge-auth',
   templateUrl: 'auth_component.html',
   styleUrls: const ['auth_component.css'],
   providers: const [scrollHostProviders],
   directives: const [
+    coreDirectives,
     routerDirectives,
     materialInputDirectives,
     MaterialDialogComponent,
+    MaterialIconComponent,
     MaterialStepperComponent,
     StepDirective,
     SummaryDirective,
@@ -51,7 +51,6 @@ import 'package:auge_web/services/app_routes.dart';
   ]
 )
 
-
 class AuthComponent implements OnActivate  {
 
   String appLayoutRoute = AppRoutes.appLayoutRoute.toUrl();
@@ -60,9 +59,20 @@ class AuthComponent implements OnActivate  {
 
   final Router _router;
 
+  bool isLoginAndIsntNewPassword = true;
+
   String identification = AuthMsg.label(AuthMsg.domainLabel);
   String passwordStr = "1234567";
   String _dialogError;
+
+  String passwordCode;
+
+  String newPassword;
+  String repeatNewPassword;
+
+
+  String passwordCodeGenerated;
+  String passwordCodeEMailSent;
 
   String get dialogError => _dialogError;
 
@@ -93,6 +103,14 @@ class AuthComponent implements OnActivate  {
   static final String identificationLabel = AuthMsg.label(AuthMsg.identificationLabel);
   static final String passwordLabel = AuthMsg.label(AuthMsg.passwordLabel);
 
+  // New Password
+  static final String passwordCodeLabel = AuthMsg.label(AuthMsg.passwordCodeLabel);
+  static final String newPasswordLabel = AuthMsg.label(AuthMsg.newPasswordLabel);
+  static final String repeatNewPasswordLabel = AuthMsg.label(AuthMsg.repeatNewPasswordLabel);
+
+  static final String informFollowTheCodeSentToEMailMsg = AuthMsg.informBelowTheCodeSentToEMailMsg();
+  static final String codeValidateMsg = AuthMsg.codeValidateMsg();
+
   static String organizationSingleSelectLabel = AuthMsg.label(AuthMsg.selectLabel);
 
   void onActivate(RouterState previous, RouterState current) {
@@ -110,7 +128,6 @@ class AuthComponent implements OnActivate  {
     if (!browser.isChrome) {
       dialogError = AuthMsg.browserCompatibleErrorMsg();
     }
-
   }
 
   void authenticateAuthorizate(AsyncAction<bool> action) async {
@@ -254,6 +271,71 @@ class AuthComponent implements OnActivate  {
   }
 
   ItemRenderer get itemRenderer => (dynamic item) => item.name;
+
+  generateCodeAndSendEMail(AsyncAction<bool> action) async {
+    action.cancelIf( Future<bool>.sync(
+        () async {
+      if (identification.isEmpty || identification.indexOf('@') == -1) {
+        //dialogError = AuthMsg.informIdentificationPasswordCorrectlyMsg();
+        dialogError = AuthMsg.informIdentificationCorrectlyMsg();
+        return true;
+      } else {
+        NewPasswordCodeEMail newPasswordCodeEMail = await _authService.generateNewPasswordCodeAndSendEmail(identification);
+        if (newPasswordCodeEMail == null || newPasswordCodeEMail.code == null) {
+          dialogError = AuthMsg.codeNotGeneratedMsg();
+          return true;
+        }
+
+        passwordCodeGenerated = newPasswordCodeEMail.code;
+        passwordCodeEMailSent = newPasswordCodeEMail.eMail;
+
+      }
+      return false;
+    }));
+  }
+
+  validCode(AsyncAction<bool> action) {
+    action.cancelIf( Future<bool>.sync(
+        () async {
+
+          print('DEBUG');
+          print(passwordCodeGenerated);
+          print(passwordCode);
+          if (passwordCodeGenerated.isEmpty || passwordCodeGenerated != passwordCode) {
+            return true;
+          }
+
+          return false;
+
+        }));
+  }
+
+  saveNewPassword(AsyncAction<bool> action) {
+    action.cancelIf(Future<bool>.sync(
+        () async {
+          try {
+            await _authService.saveNewPassword(identification, newPassword);
+          } catch (e) {
+            //dialogError = AuthMsg.serverApiErrorMsg();
+            dialogError = AuthMsg.passwordNotSavedMsg();
+            return true;
+          }
+
+          isLoginAndIsntNewPassword = true;
+          // Don't cancel
+          return false;
+        }
+      )
+    );
+  }
+
+  bool get showNewPasswordIcon => newPassword == null ? false : newPassword.isNotEmpty;
+
+  bool get showRepeatNewPasswordIcon => repeatNewPassword == null ? false : repeatNewPassword.isNotEmpty;
+
+  bool get repeatedNewPasswordCheck => (newPassword == repeatNewPassword);
+
+  bool get newPasswordCheck => newPassword != null && newPassword.isNotEmpty && newPassword.trim().length >= 8;
 }
 
 class AppLayoutOrganizationSelectOption {

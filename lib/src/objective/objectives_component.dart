@@ -73,8 +73,6 @@ import 'package:auge_web/src/measure/measure_progress_component.template.dart' a
 class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActivate, OnDestroy {
 
   final AppLayoutService _appLayoutService;
-  final GroupService _groupService;
-  final UserService _userService;
   final ObjectiveService _objectiveService;
   //final SearchService _searchService;
   final HistoryTimelineService _historyTimelineService;
@@ -158,7 +156,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
 
   final preferredTooltipPositions = const [RelativePosition.AdjacentLeft, RelativePosition.OffsetBottomLeft, /* RelativePosition.OffsetBottomRight */];
 
-  ObjectivesComponent(this._appLayoutService, this._groupService, this._userService, this._objectiveService, /* this._searchService, */ this._historyTimelineService, this._router) {
+  ObjectivesComponent(this._appLayoutService, this._objectiveService, /* this._searchService, */ this._historyTimelineService, this._router) {
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(editButtonLabel, icon: new Icon('edit') , actionWithContext: (_) => goToDetail()), new MenuItem(deleteButtonLabel, icon: new Icon('delete'), actionWithContext: (_) => delete())])], icon: new Icon('menu'));
   }
 
