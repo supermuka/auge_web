@@ -6,14 +6,12 @@
                 <h4>{{headerSubtitleLabel}}</h4>
                 <h6>Beta</h6>
             </div>
-            <!-- div class="w3-right-align">
-                <material-button raised dense (trigger)="isLoginAndIsntNewPassword = false">New Password</material-button>
-            </div -->
+            <!-- LOGIN  -->
             <div *ngIf="isLoginAndIsntNewPassword">
                 <material-stepper legalJumps="backwards"
                                   orientation="vertical"
                                   size="default">
-                    <template step name="Login"
+                    <template step [name]="loginLabel"
                               (continue)="authenticateAuthorizate($event)"
                                #stepA="step">
                         <div class="step-a">
@@ -42,7 +40,7 @@
                             <span class="avatar" [style.background-image]="'url(' + userUrlImage(authenticatedUser) + ')'"></span><strong>{{authenticatedUser?.name}}</strong>
                         </div>
                     </template>
-                    <template step name="Organization"
+                    <template step [name]="organizationLabel"
                               (continue)="goToAppLayout($event)"
                                #stepB="step">
                         <div class="step-b">
@@ -62,6 +60,7 @@
                     </template>
                 </material-stepper>
             </div>
+
             <!-- NEW PASSWORD -->
             <div *ngIf="!isLoginAndIsntNewPassword">
                     <material-button class="right-button" icon (trigger)="isLoginAndIsntNewPassword = true">
@@ -71,7 +70,7 @@
                     <material-stepper legalJumps="backwards"
                                   orientation="vertical"
                                   size="default">
-                    <template step name="Request Code to New Password"
+                    <template step [name]="requestCodeToNewPasswordLabel"
                               (continue)="generateCodeAndSendEMail($event)"
                               #stepPasswordA="step">
                         <div class="step-password-a">
@@ -89,7 +88,7 @@
                             <span><strong>{{informFollowTheCodeSentToEMailMsg}} {{passwordCodeEMailSent}}.</strong></span>
                         </div>
                     </template>
-                    <template step name="Inform the Code"
+                    <template step [name]="informCodeLabel"
                               (continue)="validCode($event)"
                               #stepPasswordB="step">
                         <div class="step-password-b">
@@ -103,12 +102,11 @@
                         </div>
                     </template>
                     <template [summary]="stepPasswordB">
-                        <div class="step-password-b">
+                        <div *ngIf="stepPasswordB.complete == true" class="step-password-b">
                             <span><strong>{{codeValidateMsg}}</strong></span>
                         </div>
                     </template>
-                    <template step name="Define New Password"
-                              yesText="savelLabel"
+                    <template step [name]="defineNewPasswordLabel"
                               (continue)="saveNewPassword($event)"
                               #stepPasswordC="step">
                         <div class="step-password-c">
@@ -137,12 +135,10 @@
                             </span>
                         </div>
                     </template>
-                    <template [summary]="stepPasswordC">
-                        <div class="step-password-c">
-                            <span><strong>Ok</strong></span>
-                        </div>
-                    </template>
                 </material-stepper>
+                <div *ngIf="stepPasswordC.complete == true">
+                    <span class="w3-right"><strong>{{newPasswordSavedMsg}}</strong></span>
+                </div>
             </div>
         </material-dialog>
     </div>

@@ -97,21 +97,30 @@ class AuthComponent implements OnActivate  {
   static final String headerTitleLabel =  CommonMsg.label(CommonMsg.headerTitleLabel);
   static final String headerSubtitleLabel = CommonMsg.label(CommonMsg.headerSubtitleLabel);
 
-  static final String loginButtonLabel = AuthMsg.label(AuthMsg.loginLabel); // Intl.message('Login', name: 'AuthComponent_loginButtonLabel'); // CommonMsg.buttonLabel('Login');
+  static final String loginLabel = AuthMsg.label(AuthMsg.loginLabel);
+  static final String organizationLabel = AuthMsg.label(AuthMsg.organizationLabel);
+
   static final String requiredValueMsg = CommonMsg.requiredValueMsg();
 
   static final String identificationLabel = AuthMsg.label(AuthMsg.identificationLabel);
   static final String passwordLabel = AuthMsg.label(AuthMsg.passwordLabel);
 
   // New Password
+  static final String requestCodeToNewPasswordLabel = AuthMsg.label(AuthMsg.requestCodeToNewPasswordLabel);
+  static final String informCodeLabel = AuthMsg.label(AuthMsg.informCodeLabel);
+  static final String defineNewPasswordLabel = AuthMsg.label(AuthMsg.defineNewPasswordLabel);
+
   static final String passwordCodeLabel = AuthMsg.label(AuthMsg.passwordCodeLabel);
   static final String newPasswordLabel = AuthMsg.label(AuthMsg.newPasswordLabel);
   static final String repeatNewPasswordLabel = AuthMsg.label(AuthMsg.repeatNewPasswordLabel);
+  static final String saveLabel = AuthMsg.label(AuthMsg.saveLabel);
 
   static final String informFollowTheCodeSentToEMailMsg = AuthMsg.informBelowTheCodeSentToEMailMsg();
   static final String codeValidateMsg = AuthMsg.codeValidateMsg();
+  static final String newPasswordSavedMsg = AuthMsg.newPasswordSavedMsg();
 
   static String organizationSingleSelectLabel = AuthMsg.label(AuthMsg.selectLabel);
+
 
   void onActivate(RouterState previous, RouterState current) {
 
@@ -297,16 +306,10 @@ class AuthComponent implements OnActivate  {
   validCode(AsyncAction<bool> action) {
     action.cancelIf( Future<bool>.sync(
         () async {
-
-          print('DEBUG');
-          print(passwordCodeGenerated);
-          print(passwordCode);
           if (passwordCodeGenerated.isEmpty || passwordCodeGenerated != passwordCode) {
             return true;
           }
-
           return false;
-
         }));
   }
 
@@ -321,7 +324,10 @@ class AuthComponent implements OnActivate  {
             return true;
           }
 
-          isLoginAndIsntNewPassword = true;
+          Future.delayed(const Duration(seconds: 3)).whenComplete(() {
+            isLoginAndIsntNewPassword = true;
+          });
+
           // Don't cancel
           return false;
         }
@@ -336,6 +342,7 @@ class AuthComponent implements OnActivate  {
   bool get repeatedNewPasswordCheck => (newPassword == repeatNewPassword);
 
   bool get newPasswordCheck => newPassword != null && newPassword.isNotEmpty && newPassword.trim().length >= 8;
+
 }
 
 class AppLayoutOrganizationSelectOption {
