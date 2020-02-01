@@ -1,7 +1,7 @@
 <div class="container-list">
     <div class="w3-row-padding">
         <div class="w3-col">
-            <material-toggle class="w3-right" label="Timeline" (checkedChange)="timelineVisible = $event"></material-toggle>
+            <material-toggle class="w3-right" [label]="timelineLabel" (checkedChange)="timelineVisible = $event"></material-toggle>
         </div>
     </div>
     <div class="w3-row-padding">

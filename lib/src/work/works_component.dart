@@ -79,42 +79,30 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
  // final AuthService _authService;
 
   final List<RouteDefinition> routes = [
-    new RouteDefinition(
+    RouteDefinition(
       routePath: AppRoutes.workAddRoute,
       component: work_detail_component.WorkDetailComponentNgFactory,
     ),
-    new RouteDefinition(
+    RouteDefinition(
       routePath: AppRoutes.workEditRoute,
       component: work_detail_component.WorkDetailComponentNgFactory,
     ),
-    new RouteDefinition(
+    RouteDefinition(
       routePath: AppRoutes.workItemsKanbanRoute,
       component: work_items_kanban_component.WorkItemsKanbanComponentNgFactory,
     ),
-
-    new RouteDefinition(
+    RouteDefinition(
       routePath: AppRoutes.workStagesRoute,
       component: work_stages_component.WorkStagesComponentNgFactory,
     ),
-    new RouteDefinition(
+    RouteDefinition(
       routePath: AppRoutes.workItemAddRoute,
       component: work_item_detail_component.WorkItemDetailComponentNgFactory,
     ),
-    new RouteDefinition(
+    RouteDefinition(
       routePath: AppRoutes.workItemEditRoute,
       component: work_item_detail_component.WorkItemDetailComponentNgFactory,
     ),
-    /*
-    new RouteDefinition(
-      routePath: AppRoutes.workItemKanbanAddRoute,
-      component: work_item_detail_component.WorkItemDetailComponentNgFactory,
-    ),
-    new RouteDefinition(
-      routePath: AppRoutes.workItemKanbanEditRoute,
-      component: work_item_detail_component.WorkItemDetailComponentNgFactory,
-    ),
-    */
-
   ];
 
   String mainColWidth = '100%';
@@ -137,13 +125,17 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
   static final String editButtonLabel = CommonMsg.buttonLabel(CommonMsg.editButtonLabel);
   static final String deleteButtonLabel = CommonMsg.buttonLabel(CommonMsg.deleteButtonLabel);
 
+  static final String timelineLabel = TimelineItemdMsg.label(TimelineItemdMsg.timelineLabel);
+
   static final String sortedByLabel = WorkMsg.label(WorkMsg.sortedByLabel);
   static final String objectiveLabel =  WorkMsg.label(WorkMsg.objectiveLabel);
 
   static final String nameLabel = WorkDomainMsg.fieldLabel(Work.nameField);
   static final String groupLabel = WorkDomainMsg.fieldLabel(Work.groupField);
-  static final String leaderLabel =  WorkDomainMsg.fieldLabel(Work.leaderField);
-  static final String stagesLabel =  WorkDomainMsg.fieldLabel(Work.workStagesField);
+  static final String leaderLabel = WorkDomainMsg.fieldLabel(Work.leaderField);
+  static final String stagesLabel = WorkDomainMsg.fieldLabel(Work.workStagesField);
+
+  static final String headerTitle = WorkMsg.label( WorkMsg.worksLabel);
 
   final worksSortedByOptions = [nameLabel, groupLabel, leaderLabel];
 
@@ -151,10 +143,10 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
 
   WorksComponent(this._appLayoutService, this._workService, this._historyTimelineService, this._router) {
 
-    menuModel = new MenuModel([new MenuItemGroup([
-      new MenuItem(editButtonLabel, icon: new Icon('edit') , actionWithContext: (_) => goToDetail() /* viewDetail(true) */),
-      new MenuItem(deleteButtonLabel, icon: new Icon('delete'), actionWithContext: (_) => delete()),
-      new MenuItem(stagesLabel, icon: new Icon('view_week'), actionWithContext: (_) => goToStages(selectedWork)) ])], icon: new Icon('menu'));
+    menuModel = new MenuModel([MenuItemGroup([
+      MenuItem(editButtonLabel, icon: Icon('edit') , actionWithContext: (_) => goToDetail() /* viewDetail(true) */),
+      MenuItem(deleteButtonLabel, icon: Icon('delete'), actionWithContext: (_) => delete()),
+      MenuItem(stagesLabel, icon: Icon('view_week'), actionWithContext: (_) => goToStages(selectedWork)) ])], icon: Icon('menu'));
   }
 
   @override
@@ -197,7 +189,7 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
          routerStatePrevious.toUrl() == AppRoutes.workItemEditRoute.toUrl() && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.workItemIdQueryParameter))
     ) return;
 */
-    _appLayoutService.headerTitle = WorkMsg.label( WorkMsg.worksLabel);
+    _appLayoutService.headerTitle = headerTitle;
 
 
     try {
@@ -269,10 +261,13 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
 
   void goToStages(Work work) {
     if (work != null) {
-      _router.navigate(AppRoutes.workStagesRoute.toUrl(parameters: { AppRoutesParam.workIdParameter: work.id }), NavigationParams(replace:  true));
+      _router.navigate(AppRoutes.workStagesRoute.toUrl(parameters: { AppRoutesParam.workIdParameter: work.id }) /*, NavigationParams(replace:  true) */);
     }
   }
 
+  goToWorkKanban(Work work) {
+    _router.navigate(AppRoutes.workItemsKanbanRoute.toUrl(parameters: { AppRoutesParam.workIdParameter: work.id }));
+  }
 
   void stopPropagation(MouseEvent me) {
     me.stopPropagation();
@@ -338,7 +333,4 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
     }
   }
 
-  goToWorkKanban(Work work) {
-      _router.navigate(AppRoutes.workItemsKanbanRoute.toUrl(parameters: { AppRoutesParam.workIdParameter: work.id }));
-  }
 }

@@ -71,7 +71,6 @@ class AppRoutes {
       path: ':${AppRoutesParam.workIdParameter}/stages',
       parent: worksRoute
   );
-
   static final worksByObjectiveRoute = new RoutePath(
       path: 'works/:${AppRoutesParam.objectiveIdParameter}',
       parent: appLayoutRoute

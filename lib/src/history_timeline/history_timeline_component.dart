@@ -52,7 +52,6 @@ class HistoryTimelineComponent /* extends Object implements OnInit  */ {
   }
 
   static final String timelineLabel = TimelineItemdMsg.label(TimelineItemdMsg.timelineLabel);
-  static final String theLabel = TimelineItemdMsg.label(TimelineItemdMsg.theLabel);
   static final String dayAgoLabel =  TimelineItemdMsg.label(TimelineItemdMsg.dayAgoLabel);
   static final String daysAgoLabel =  TimelineItemdMsg.label(TimelineItemdMsg.daysAgoLabel);
   static final String hourAgoLabel =  TimelineItemdMsg.label(TimelineItemdMsg.hourAgoLabel);

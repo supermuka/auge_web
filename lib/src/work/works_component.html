@@ -8,7 +8,7 @@
                                       [(selection)]="sortedBy"
                                       [options]="worksSortedByOptions">
             </material-dropdown-select>
-            <material-toggle class="w3-right" label="Timeline" (checkedChange)="timelineVisible = $event"></material-toggle>
+            <material-toggle class="w3-right" [label]="timelineLabel" (checkedChange)="timelineVisible = $event"></material-toggle>
         </div>
     </div>
     <div class="w3-row-padding">

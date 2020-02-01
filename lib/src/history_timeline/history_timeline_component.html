@@ -8,7 +8,7 @@
             <div *ngFor="let historyItem of history">
                 <div>
                     <span class="avatar" [style.background-image]="'url(' + userUrlImage(historyItem.user) + ')'"></span>
-                    <span>{{systemFunctionInPastLabel(historyItem.systemFunctionIndex)}} {{theLabel}} {{classNameLabel(historyItem.objectClassName)}} <strong>{{historyItem.description}}</strong></span>
+                    <span>{{systemFunctionInPastLabel(historyItem.systemFunctionIndex)}} {{classNameLabel(historyItem.objectClassName)}} <strong>{{historyItem.description}}</strong></span>
                 </div>
                 <div>
                     <span>{{elapsedTime(historyItem.dateTime, currentDateTime)}}</span>

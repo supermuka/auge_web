@@ -66,7 +66,6 @@ class HistoryItemTimelineDetailComponent /* extends Object */ implements OnInit 
   }
 
   static final String timelineLabel = TimelineItemdMsg.label(TimelineItemdMsg.timelineLabel);
-  static final String theLabel = TimelineItemdMsg.label(TimelineItemdMsg.theLabel);
   static final String valueLabel = TimelineItemdMsg.label(TimelineItemdMsg.valueLabel);
   static final String changedFromLabel =  TimelineItemdMsg.label(TimelineItemdMsg.changedFromLabel);
   static final String wasLabel = TimelineItemdMsg.label(TimelineItemdMsg.wasLabel);

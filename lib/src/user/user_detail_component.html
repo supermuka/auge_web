@@ -80,10 +80,13 @@
                         </div>
                         <div class="w3-padding-small">
                             <div *ngFor="let iUserIdentity of userIdentities">
-                                <material-expansionpanel  disabled [alwaysHideExpandIcon]="true"
+                                <material-expansionpanel  disabled
+                                                          [alwaysHideExpandIcon]="true"
                                                           [hideExpandedHeader]="true"
                                                           [showSaveCancel]="true"
                                                           [expanded]="iUserIdentity != null && iUserIdentity == userIdentity"
+                                                          [cancelText]="cancelButtonLabel"
+                                                          [saveText]="saveButtonLabel"
                                                           (expandedChange)="expandedChangeUserIdentity(iUserIdentity, $event)"
                                                           (save)="saveUserIdentity(iUserIdentity, $event)"
                                                           (cancel)="cancelUserIdentity(iUserIdentity, $event)"
@@ -164,6 +167,8 @@
                                                           [showSaveCancel]="true"
                                                           [expanded]="iUserAccess != null && iUserAccess == userAccess"
                                                           (expandedChange)="expandedChangeUserAccess(iUserAccess, $event)"
+                                                          [cancelText]="cancelButtonLabel"
+                                                          [saveText]="saveButtonLabel"
                                                           (save)="saveUserAccess(iUserAccess, $event)"
                                                           (cancel)="cancelUserAccess(iUserAccess, $event)"
                                                           expandIcon="edit">
@@ -187,6 +192,7 @@
                                                 <material-input disabled [ngModel]="userAccess.organization.name" floatingLabel [label]="accessOrganizationLabel"></material-input>
                                             </div>
                                         </div>
+                                        <label>{{accessRoleLabel}}</label>
                                         <div class="w3-row">
                                             <material-radio-group  [(ngModel)]="userAccess.accessRole" class="radio-per-line">
                                                 <material-radio *ngFor="let option of userAccessOptions"

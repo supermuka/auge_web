@@ -77,8 +77,11 @@ class GroupsComponent with CanReuse implements OnActivate, OnDestroy {
   static final buttonEditLabel = CommonMsg.buttonLabel(CommonMsg.editButtonLabel);
   static final buttonDeleteLabel = CommonMsg.buttonLabel(CommonMsg.deleteButtonLabel);
 
+  static final timelineLabel = TimelineItemdMsg.label(TimelineItemdMsg.timelineLabel);
+
   static final activeLabel = GroupMsg.label(GroupMsg.activeLabel);
   static final inactiveLabel = GroupMsg.label(GroupMsg.inactiveLabel);
+  static final headerTitle = GroupMsg.label(GroupMsg.groupsLabel);
 
   GroupsComponent(/* this._authService, */ this._appLayoutService, this._groupService, this._searchService, this._historyTimelineService, this._router) {
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(buttonEditLabel, icon: new Icon('edit') , actionWithContext: (_) => goToDetail()), new MenuItem(buttonDeleteLabel, icon: new Icon('delete'), actionWithContext: (_) => delete())])], icon: new Icon('menu'));
@@ -108,7 +111,7 @@ class GroupsComponent with CanReuse implements OnActivate, OnDestroy {
       return;
     }
 
-    _appLayoutService.headerTitle = GroupMsg.label(GroupMsg.groupsLabel);
+    _appLayoutService.headerTitle = headerTitle;
 
     _appLayoutService.enabledSearch = true;
 

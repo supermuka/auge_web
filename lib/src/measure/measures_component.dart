@@ -83,10 +83,10 @@ class MeasuresComponent with CanReuse {
   static final String endValueLabel =  MeasureMsg.label(MeasureMsg.endValueLabel);
 
   MeasuresComponent(this._appLayoutService, this._measureService, this._historyTimelineService, this._router) {
-    menuModel = new MenuModel([new MenuItemGroup(
-        [new MenuItem(editButtonLabel, icon: new Icon('edit') , actionWithContext: (_) => goToDetail()),
-        new MenuItem(deleteButtonLabel, icon: new Icon('delete'), actionWithContext: (_) => delete()),
-        new MenuItem(progressLabel, icon: new Icon('show_chart'), actionWithContext: (_) => goToProgress(false)) ])], icon: new Icon('menu'));
+    menuModel = MenuModel([MenuItemGroup(
+        [MenuItem(editButtonLabel, icon: Icon('edit') , actionWithContext: (_) => goToDetail()),
+        MenuItem(deleteButtonLabel, icon: Icon('delete'), actionWithContext: (_) => delete()),
+        MenuItem(progressLabel, icon: Icon('show_chart'), actionWithContext: (_) => goToProgress(false)) ])], icon: Icon('menu'));
   }
 
   void selectMeasure(Measure measure) {

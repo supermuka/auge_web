@@ -97,12 +97,16 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
   static final String editButtonLabel = CommonMsg.buttonLabel(CommonMsg.editButtonLabel);
   static final String deleteButtonLabel = CommonMsg.buttonLabel(CommonMsg.deleteButtonLabel);
 
+  static final timelineLabel = TimelineItemdMsg.label(TimelineItemdMsg.timelineLabel);
+
   static final String groupLabel = WorkDomainMsg.fieldLabel(Work.groupField);
   static final String leaderLabel =  WorkDomainMsg.fieldLabel(Work.leaderField);
 
-  static final String dueDateLabel =  WorkDomainMsg.fieldLabel(WorkItem.dueDateField);
-  static final String completedLabel =  WorkDomainMsg.fieldLabel(WorkItem.completedField);
-  static final String checkItemsLabel =  WorkDomainMsg.fieldLabel(WorkItem.checkItemsField);
+  static final String dueDateLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.dueDateField);
+  static final String completedLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.completedField);
+  static final String checkItemsLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.checkItemsField);
+
+  static final String headerTitle = WorkItemMsg.label(WorkItemMsg.workKanbanLabel);
 
   final List<RouteDefinition> routes = [
     new RouteDefinition(
@@ -119,7 +123,7 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
   WorkItemsKanbanComponent(this._appLayoutService, this._workService, this._workItemService, this._historyTimelineService, this._router) {
     initializeDateFormatting(Intl.defaultLocale);
 
-    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(editButtonLabel, icon: new Icon('edit') , actionWithContext: (_) => goToDetail()), new MenuItem(deleteButtonLabel, icon: new Icon('delete'), actionWithContext: (_) => delete())])], icon: new Icon('menu'));
+    menuModel = MenuModel([MenuItemGroup([MenuItem(editButtonLabel, icon: Icon('edit') , actionWithContext: (_) => goToDetail()), MenuItem(deleteButtonLabel, icon: Icon('delete'), actionWithContext: (_) => delete())])], icon: Icon('menu'));
   }
 
   @override
@@ -147,7 +151,7 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
         }
       }
 
-      _appLayoutService.headerTitle = WorkItemMsg.label('Work Kanban');
+      _appLayoutService.headerTitle = headerTitle;
 
       if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.works.index);
 

@@ -97,7 +97,7 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
   OrganizationConfiguration organizationConfiguration;
 
-  final List<String> tabLabels = <String>[UserMsg.label('Profile'), UserMsg.label('Identity'), UserMsg.label('Access')];
+  final List<String> tabLabels = <String>[UserMsg.label(UserMsg.profileLabel), UserMsg.label(UserMsg.identityLabel), UserMsg.label(UserMsg.accessLabel)];
 
   // Identity Provider
   List<int> _userIdentityProviders = [];
@@ -138,6 +138,7 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
   static final String uploadButtonLabel = CommonMsg.buttonLabel(CommonMsg.uploadButtonLabel);
   static final String clearButtonLabel = CommonMsg.buttonLabel(CommonMsg.clearButtonLabel);
   static final String saveButtonLabel = CommonMsg.buttonLabel(CommonMsg.saveButtonLabel);
+  static final String cancelButtonLabel = CommonMsg.buttonLabel(CommonMsg.cancelButtonLabel);
   static final String closeButtonLabel = CommonMsg.buttonLabel(CommonMsg.closeButtonLabel);
 
   static final String addUserLabel =  UserMsg.label(UserMsg.addUserLabel);
@@ -161,8 +162,8 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
   static final String identificationRequiredMsg = UserMsg.identificationRequiredMsg();
   static final String invalidIdentificationMsg = UserMsg.invalidIdentificationMsg();
 
-  static final String accessOrganizationLabel  = UserDomainMsg.fieldLabel(UserAccess.organizationField);
-  static final String accessRoleLabel = UserDomainMsg.fieldLabel(UserAccess.accessRoleField);
+  static final String accessOrganizationLabel  = UserAccessDomainMsg.fieldLabel(UserAccess.organizationField);
+  static final String accessRoleLabel = UserAccessDomainMsg.fieldLabel(UserAccess.accessRoleField);
 
   static final String pt_BRsymbol = 'pt_BR';
   static final String en_USsymbol = 'en_US';

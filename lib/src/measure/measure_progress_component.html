@@ -28,6 +28,8 @@
                                                      [hideExpandedHeader]="true"
                                                      [showSaveCancel]="true"
                                                      [expanded]="iMeasureProgress != null && iMeasureProgress == selectedMeasureProgress"
+                                                     [cancelText]="cancelButtonLabel"
+                                                     [saveText]="saveButtonLabel"
                                                      (save)="saveMeasureProgress(iMeasureProgress, $event)"
                                                      (cancel)="cancelMeasureProgress(iMeasureProgress, $event)"
                                                      expandIcon="edit">

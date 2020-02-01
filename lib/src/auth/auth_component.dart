@@ -51,7 +51,7 @@ import 'package:auge_web/services/app_routes.dart';
   ]
 )
 
-class AuthComponent implements OnActivate  {
+class AuthComponent implements OnActivate {
 
   String appLayoutRoute = AppRoutes.appLayoutRoute.toUrl();
 
@@ -97,7 +97,7 @@ class AuthComponent implements OnActivate  {
   static final String headerTitleLabel =  CommonMsg.label(CommonMsg.headerTitleLabel);
   static final String headerSubtitleLabel = CommonMsg.label(CommonMsg.headerSubtitleLabel);
 
-  static final String loginLabel = AuthMsg.label(AuthMsg.loginLabel);
+  final String loginLabel = AuthMsg.label(AuthMsg.loginLabel);
   static final String organizationLabel = AuthMsg.label(AuthMsg.organizationLabel);
 
   static final String requiredValueMsg = CommonMsg.requiredValueMsg();
@@ -121,8 +121,8 @@ class AuthComponent implements OnActivate  {
 
   static String organizationSingleSelectLabel = AuthMsg.label(AuthMsg.selectLabel);
 
-
   void onActivate(RouterState previous, RouterState current) {
+
 
     // Needs to set auth attributes again
    // _authService.authenticatedUser = null;

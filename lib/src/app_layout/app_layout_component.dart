@@ -175,7 +175,7 @@ class AppLayoutComponent with CanReuse implements OnActivate {
   AppLayoutComponent(this._appLayoutService, this._authService, this._router);
 
   // Define messages and labels
-  String label(String label) =>  AppLayoutMsg.label(label);
+ // String label(String label) =>  AppLayoutMsg.label(label);
 
   /// Messages and labels
   static final String insightsLabel =  AppLayoutMsg.label(AppLayoutMsg.ingightsLabel);

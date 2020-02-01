@@ -57,6 +57,7 @@ dev_dependencies:
   #    ref: grpc-web
 
 dependency_overrides:
+  quiver: 2.1.1
 #  protobuf: ^0.13.12
   #intl: ^0.15.0
   #analyzer: ^0.37.0

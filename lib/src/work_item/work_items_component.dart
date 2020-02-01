@@ -75,8 +75,8 @@ class WorkItemsComponent with CanReuse /* with CanReuse implements OnActivate  *
 
   MenuModel<MenuItem> menuModel;
 
-  static final String editButtonLabel = CommonMsg.label(CommonMsg.editButtonLabel);
-  static final String deleteButtonLabel = CommonMsg.label(CommonMsg.deleteButtonLabel);
+  static final String editButtonLabel = CommonMsg.buttonLabel(CommonMsg.editButtonLabel);
+  static final String deleteButtonLabel = CommonMsg.buttonLabel(CommonMsg.deleteButtonLabel);
 
   static final String workItemsLabel = WorkItemMsg.label(WorkItemMsg.workItemsLabel);
 
@@ -88,7 +88,7 @@ class WorkItemsComponent with CanReuse /* with CanReuse implements OnActivate  *
   WorkItemsComponent(this._appLayoutService, this._workItemService, this._historyTimelineService, this._router) {
     initializeDateFormatting(Intl.defaultLocale);
 
-    menuModel = new MenuModel([new MenuItemGroup([MenuItem(editButtonLabel, icon: new Icon('edit') , actionWithContext: (_) => goToDetail()), MenuItem(deleteButtonLabel, icon: new Icon('delete'), actionWithContext: (_) => delete())])], icon: new Icon('menu'));
+    menuModel = MenuModel([MenuItemGroup([MenuItem(editButtonLabel, icon: Icon('edit') , actionWithContext: (_) => goToDetail()), MenuItem(deleteButtonLabel, icon: Icon('delete'), actionWithContext: (_) => delete())])], icon: Icon('menu'));
   }
 
   void selectWorkItem(WorkItem workItem) => this.selectedWorkItem = workItem;

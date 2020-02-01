@@ -1,7 +1,6 @@
 <div class="container-list">
     <div class="w3-row-padding">
         <div class="w3-col m3">
-
             <label>{{sortedByLabel}}</label>
             <material-dropdown-select class="w3-margin-left"
                                       [disabled]="objectives.isEmpty"
@@ -9,7 +8,6 @@
                                       [(selection)]="sortedBy"
                                       [options]="objectivesSortedByOptions">
             </material-dropdown-select>
-
         </div>
         <div class="w3-col m6">
             <acx-scoreboard scrollable>
@@ -19,7 +17,7 @@
             </acx-scoreboard>
         </div>
         <div class="w3-col m3">
-            <material-toggle class="w3-right" label="Timeline" (checkedChange)="timelineVisible = $event"></material-toggle>
+            <material-toggle class="w3-right" [label]="timeLineLabel" (checkedChange)="timelineVisible = $event"></material-toggle>
         </div>
     </div>
     <div class="w3-row-padding">

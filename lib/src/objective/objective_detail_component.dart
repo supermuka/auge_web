@@ -108,7 +108,7 @@ class ObjectiveDetailComponent implements OnInit, OnActivate, OnDeactivate {
   static final String editObjectiveLabel =  ObjectiveMsg.label(ObjectiveMsg.editObjectiveLabel);
   static final String noMatchLabel =  ObjectiveMsg.label(ObjectiveMsg.noMatchLabel);
 
-  static final String nameLabel = 'xxxx'; // ObjectiveDomainMsg.fieldLabel(Objective.nameField);
+  static final String nameLabel = ObjectiveDomainMsg.fieldLabel(Objective.nameField);
   static final String descriptionLabel =  ObjectiveDomainMsg.fieldLabel(Objective.descriptionField); //FieldMsg.label('${Objective.className}.${Objective.descriptionField}');
   static final String groupLabel =  ObjectiveDomainMsg.fieldLabel(Objective.groupField); //FieldMsg.label('${Objective.className}.${Objective.groupField}');
   static final String leaderLabel =  ObjectiveDomainMsg.fieldLabel(Objective.leaderField); //FieldMsg.label('${Objective.className}.${Objective.leaderField}');

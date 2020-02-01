@@ -141,6 +141,8 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
   static final String editButtonLabel = CommonMsg.buttonLabel(CommonMsg.editButtonLabel);
   static final String deleteButtonLabel = CommonMsg.buttonLabel(CommonMsg.deleteButtonLabel);
 
+  static final String timeLineLabel = TimelineItemdMsg.label(TimelineItemdMsg.timelineLabel);
+
   static final String ultimateObjectiveLabel = ObjectiveMsg.label(ObjectiveMsg.ultimateObjectiveLabel);
 
   static final String nameLabel = ObjectiveDomainMsg.fieldLabel(Objective.nameField);
@@ -149,6 +151,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
   static final String groupLabel =  ObjectiveDomainMsg.fieldLabel(Objective.groupField); //FieldMsg.label('${Objective.className}.${Objective.groupField}');
   static final String startDateLabel = ObjectiveDomainMsg.fieldLabel(Objective.startDateField); // FieldMsg.label('${Objective.className}.${Objective.startDateField}');
   static final String endDateLabel =  ObjectiveDomainMsg.fieldLabel(Objective.endDateField); // FieldMsg.label('${Objective.className}.${Objective.endDateField}');
+  static final String headerTitle = ObjectiveMsg.label(ObjectiveMsg.objectivesLabel);
 
   final objectivesSortedByOptions = [nameLabel, groupLabel, leaderLabel, startDateLabel, endDateLabel];
 
@@ -210,7 +213,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
     }
 
 
-    _appLayoutService.headerTitle = ObjectiveMsg.label(ObjectiveMsg.objectivesLabel);
+    _appLayoutService.headerTitle = headerTitle;
 
     // _appLayoutService.enabledSearch = true;
 

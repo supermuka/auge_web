@@ -25,6 +25,8 @@
                                          [hideExpandedHeader]="true"
                                          [showSaveCancel]="true"
                                          [expanded]="iWorkStage == selectedWorkStage"
+                                         [cancelText]="cancelButtonLabel"
+                                         [saveText]="saveButtonLabel"
                                          (save)="saveWorkStage(iWorkStage, $event)"
                                          (cancel)="cancelWorkStage(iWorkStage, $event)"
                                          expandIcon="edit">

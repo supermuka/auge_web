@@ -85,8 +85,12 @@ class UsersComponent with CanReuse implements OnActivate {
   static final String editButtonLabel = CommonMsg.buttonLabel(CommonMsg.editButtonLabel);
   static final String deleteButtonlabel = CommonMsg.buttonLabel(CommonMsg.deleteButtonLabel);
 
+  static final timelineLabel = TimelineItemdMsg.label(TimelineItemdMsg.timelineLabel);
+
+  static final String headerTitle = UserMsg.label(UserMsg.userLabel);
+
   UsersComponent(this._appLayoutService, this._searchService, this._userService, this._historyTimelineService, this._router) {
-    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(editButtonLabel, icon: new Icon('edit') , actionWithContext: (_) => goToDetail()), new MenuItem(deleteButtonlabel, icon: new Icon('delete'), actionWithContext: (_) => delete())])], icon: new Icon('menu'));
+    menuModel = MenuModel([MenuItemGroup([MenuItem(editButtonLabel, icon: Icon('edit') , actionWithContext: (_) => goToDetail()), MenuItem(deleteButtonlabel, icon: Icon('delete'), actionWithContext: (_) => delete())])], icon: Icon('menu'));
   }
 
   bool get timelineVisible {
@@ -108,7 +112,7 @@ class UsersComponent with CanReuse implements OnActivate {
       _router.navigate(AppRoutes.authRoute.toUrl());
       return;
     }
-    _appLayoutService.headerTitle = UserMsg.label('Users');
+    _appLayoutService.headerTitle = headerTitle;
     _appLayoutService.enabledSearch = true;
 
     try {
@@ -141,7 +145,7 @@ class UsersComponent with CanReuse implements OnActivate {
     }
   }
 
-  void selectUser(User user) {
+  void selectUser(User user) async {
     selectedUser = user;
   }
 
