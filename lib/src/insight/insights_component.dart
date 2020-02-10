@@ -11,8 +11,8 @@ import 'package:angular_components/scorecard/scorecard.dart';
 import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
 
-import 'package:auge_server/domain/objective/objective.dart';
-import 'package:auge_server/domain/work/work.dart';
+import 'package:auge_shared/domain/objective/objective.dart';
+import 'package:auge_shared/domain/work/work.dart';
 
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
@@ -21,9 +21,9 @@ import 'package:auge_web/src/group/group_service.dart';
 import 'package:auge_web/src/filter/filter_component.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/work/work_service.dart';
-import 'package:auge_web/services/app_routes.dart';
+import 'package:auge_web/route/app_routes.dart';
 
-import 'package:auge_server/shared/message/messages.dart';
+import 'package:auge_shared/message/messages.dart';
 
 @Component(
   selector: 'auge-insights',

@@ -22,14 +22,16 @@ import 'package:angular_components/model/ui/has_renderer.dart';
 
 import 'auth_service.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
+import 'package:auge_web/route/app_routes.dart';
 
-import 'package:auge_server/domain/general/user.dart';
-import 'package:auge_server/domain/general/organization.dart';
-import 'package:auge_server/domain/general/user_access.dart';
+import 'package:auge_shared/domain/general/user.dart';
+import 'package:auge_shared/domain/general/organization.dart';
+import 'package:auge_shared/domain/general/user_access.dart';
 
-import 'package:auge_server/shared/message/messages.dart';
+import 'package:auge_shared/message/messages.dart';
 
-import 'package:auge_web/services/app_routes.dart';
+
+
 
 @Component(
   selector: 'auge-auth',
@@ -121,8 +123,20 @@ class AuthComponent implements OnActivate {
 
   static String organizationSingleSelectLabel = AuthMsg.label(AuthMsg.selectLabel);
 
-  void onActivate(RouterState previous, RouterState current) {
+  String routerPreviousUrl;
 
+  void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) {
+
+    routerPreviousUrl = routerStatePrevious?.toUrl();
+
+    //queryParameters = routerStateCurrent.queryParameters;
+/*
+    if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.objectiveIdQueryParameter)) {
+      id =
+      routerStateCurrent.queryParameters[AppRoutesQueryParam
+          .objectiveIdQueryParameter];
+    }
+*/
 
     // Needs to set auth attributes again
    // _authService.authenticatedUser = null;
@@ -187,7 +201,11 @@ class AuthComponent implements OnActivate {
   goToAppLayout(AsyncAction<bool> action) {
 
     action.cancelIf(Future<bool>.sync(() {
-      _router.navigate(AppRoutes.appLayoutRoute.toUrl(), NavigationParams(reload: true));
+      if (routerPreviousUrl != null && routerPreviousUrl.isNotEmpty) {
+        _router.navigateByUrl(routerPreviousUrl /*, reload: true */);
+      } else {
+        _router.navigate(AppRoutes.appLayoutRoute.toUrl(), NavigationParams(reload: true));
+      }
 
       // Don't cancel
       return false;

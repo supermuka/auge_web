@@ -4,8 +4,6 @@
 import 'dart:html' as html;
 
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
-import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
@@ -25,14 +23,14 @@ import 'package:angular_components/content/deferred_content.dart';
 import 'package:angular_components/material_menu/material_menu.dart';
 import 'package:auge_web/src/work/work_summary_component.dart';
 
-import 'package:auge_server/domain/general/authorization.dart';
-import 'package:auge_server/domain/general/user.dart';
-import 'package:auge_server/domain/work/work.dart';
-import 'package:auge_server/domain/work/work_item.dart';
-import 'package:auge_server/domain/work/work_stage.dart';
+import 'package:auge_shared/domain/general/authorization.dart';
+import 'package:auge_shared/domain/general/user.dart';
+import 'package:auge_shared/domain/work/work.dart';
+import 'package:auge_shared/domain/work/work_item.dart';
+import 'package:auge_shared/domain/work/work_stage.dart';
 
-import 'package:auge_server/shared/message/messages.dart';
-import 'package:auge_server/shared/message/domain_messages.dart';
+import 'package:auge_shared/message/messages.dart';
+import 'package:auge_shared/message/domain_messages.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/work_item/work_item_service.dart';
@@ -41,7 +39,7 @@ import 'package:auge_web/src/history_timeline/history_timeline_service.dart';
 
 import 'package:auge_web/src/work_item/work_item_detail_component.dart';
 
-import 'package:auge_web/services/app_routes.dart';
+import 'package:auge_web/route/app_routes.dart';
 
 // ignore_for_file: uri_has_not_been_generated
 import 'package:auge_web/src/work_item/work_item_detail_component.template.dart' as work_item_detail_component;
@@ -121,7 +119,7 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
   ];
 
   WorkItemsKanbanComponent(this._appLayoutService, this._workService, this._workItemService, this._historyTimelineService, this._router) {
-    initializeDateFormatting(Intl.defaultLocale);
+    // initializeDateFormatting(Intl.defaultLocale);
 
     menuModel = MenuModel([MenuItemGroup([MenuItem(editButtonLabel, icon: Icon('edit') , actionWithContext: (_) => goToDetail()), MenuItem(deleteButtonLabel, icon: Icon('delete'), actionWithContext: (_) => delete())])], icon: Icon('menu'));
   }
@@ -294,7 +292,7 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
   String stateHslColor(State state) => WorkService.getStateHslColor(state);
 
   String composeTooltip(String label, String name) {
-    return label + ' ' + ((name == null) ? '(-)' : name);
+    return  '${label} ${name}';
   }
 
   String colorFromUuid(String id) {

@@ -19,7 +19,7 @@ import 'package:angular_components/model/selection/string_selection_options.dart
 import 'package:angular_components/model/selection/selection_model.dart';
 import 'package:angular_components/model/ui/has_factory.dart';
 
-import 'package:auge_server/shared/message/messages.dart';
+import 'package:auge_shared/message/messages.dart';
 
 @Component(
   selector: 'auge-filter',

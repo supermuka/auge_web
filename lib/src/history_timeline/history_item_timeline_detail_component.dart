@@ -1,8 +1,6 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
-import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:angular/angular.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
@@ -10,18 +8,18 @@ import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
 import 'package:angular_components/content/deferred_content.dart';
 
-import 'package:auge_server/domain/general/user.dart';
-import 'package:auge_server/domain/general/user_access.dart';
-import 'package:auge_server/domain/general/group.dart';
-import 'package:auge_server/domain/objective/objective.dart';
-import 'package:auge_server/domain/objective/measure.dart';
-import 'package:auge_server/domain/work/work.dart';
-import 'package:auge_server/domain/work/work_stage.dart';
-import 'package:auge_server/domain/work/work_item.dart';
+import 'package:auge_shared/domain/general/user.dart';
+import 'package:auge_shared/domain/general/user_access.dart';
+import 'package:auge_shared/domain/general/group.dart';
+import 'package:auge_shared/domain/objective/objective.dart';
+import 'package:auge_shared/domain/objective/measure.dart';
+import 'package:auge_shared/domain/work/work.dart';
+import 'package:auge_shared/domain/work/work_stage.dart';
+import 'package:auge_shared/domain/work/work_item.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
-import 'package:auge_server/shared/message/messages.dart';
-import 'package:auge_server/shared/message/domain_messages.dart';
+import 'package:auge_shared/message/messages.dart';
+import 'package:auge_shared/message/domain_messages.dart';
 
 // Const to format html types
 const _typeToViewText = '0';
@@ -62,7 +60,7 @@ class HistoryItemTimelineDetailComponent /* extends Object */ implements OnInit 
   Map<String, Map<dynamic, dynamic>> fieldsChangedValues;
 
   HistoryItemTimelineDetailComponent() {
-    initializeDateFormatting(Intl.defaultLocale , null);
+    // initializeDateFormatting(Intl.defaultLocale , null);
   }
 
   static final String timelineLabel = TimelineItemdMsg.label(TimelineItemdMsg.timelineLabel);

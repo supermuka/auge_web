@@ -2,8 +2,6 @@
 // Author: Samuel C. Schwebel.
 
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
-import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
@@ -21,14 +19,14 @@ import 'package:angular_components/material_menu/material_menu.dart';
 import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
 
-import 'package:auge_server/domain/general/authorization.dart';
-import 'package:auge_server/domain/general/user.dart';
-import 'package:auge_server/domain/work/work.dart';
-import 'package:auge_server/domain/work/work_item.dart';
-import 'package:auge_server/domain/work/work_stage.dart';
+import 'package:auge_shared/domain/general/authorization.dart';
+import 'package:auge_shared/domain/general/user.dart';
+import 'package:auge_shared/domain/work/work.dart';
+import 'package:auge_shared/domain/work/work_item.dart';
+import 'package:auge_shared/domain/work/work_stage.dart';
 
-import 'package:auge_server/shared/message/messages.dart';
-import 'package:auge_server/shared/message/domain_messages.dart';
+import 'package:auge_shared/message/messages.dart';
+import 'package:auge_shared/message/domain_messages.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/work_item/work_item_service.dart';
@@ -36,7 +34,7 @@ import 'package:auge_web/src/work/work_service.dart';
 import 'package:auge_web/src/history_timeline/history_timeline_service.dart';
 import 'package:auge_web/src/work_item/work_item_detail_component.dart';
 
-import 'package:auge_web/services/app_routes.dart';
+import 'package:auge_web/route/app_routes.dart';
 
 @Component(
     selector: 'auge-work-items',
@@ -86,7 +84,7 @@ class WorkItemsComponent with CanReuse /* with CanReuse implements OnActivate  *
   static final String checkItemsLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.checkItemsField);
 
   WorkItemsComponent(this._appLayoutService, this._workItemService, this._historyTimelineService, this._router) {
-    initializeDateFormatting(Intl.defaultLocale);
+    // initializeDateFormatting(Intl.defaultLocale);
 
     menuModel = MenuModel([MenuItemGroup([MenuItem(editButtonLabel, icon: Icon('edit') , actionWithContext: (_) => goToDetail()), MenuItem(deleteButtonLabel, icon: Icon('delete'), actionWithContext: (_) => delete())])], icon: Icon('menu'));
   }

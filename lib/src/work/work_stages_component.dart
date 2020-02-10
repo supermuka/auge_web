@@ -3,7 +3,7 @@
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
-import 'package:auge_web/services/app_routes.dart';
+import 'package:auge_web/route/app_routes.dart';
 
 import 'package:angular_components/focus/focus.dart';
 import 'package:angular_components/laminate/components/modal/modal.dart';
@@ -26,13 +26,13 @@ import 'package:angular_components/model/selection/selection_options.dart';
 import 'package:angular_components/model/selection/string_selection_options.dart';
 import 'package:angular_components/model/ui/has_factory.dart';
 
-import 'package:auge_server/domain/work/work_stage.dart';
+import 'package:auge_shared/domain/work/work_stage.dart';
 
 import 'package:auge_web/services/common_service.dart';
 import 'package:auge_web/src/work/work_service.dart';
 
-import 'package:auge_server/shared/message/messages.dart';
-import 'package:auge_server/shared/message/domain_messages.dart';
+import 'package:auge_shared/message/messages.dart';
+import 'package:auge_shared/message/domain_messages.dart';
 
 // ignore_for_file: uri_has_not_been_generated
 import 'work_stages_component.template.dart' as work_stages_component;
@@ -88,7 +88,6 @@ class WorkStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
   List<State> _states;
 
   WorkStagesComponent(this._workService, this._location) {
-   // initializeDateFormatting(Intl.defaultLocale , null);
 
     stateSingleSelectModel = SelectionModel.single()
       ..selectionChanges.listen((es) {

@@ -6,7 +6,6 @@ import 'dart:html' as html;
 import 'package:chartjs/chartjs.dart';
 
 import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
@@ -29,17 +28,17 @@ import 'package:angular_components/material_datepicker/material_datepicker.dart'
 import 'package:angular_components/material_dialog/material_dialog.dart';
 import 'package:angular_components/model/action/async_action.dart';
 
-import 'package:auge_server/domain/objective/objective.dart';
-import 'package:auge_server/domain/objective/measure.dart';
+import 'package:auge_shared/domain/objective/objective.dart';
+import 'package:auge_shared/domain/objective/measure.dart';
 
 import 'package:auge_web/services/common_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/measure/measure_service.dart';
 
-import 'package:auge_server/shared/message/messages.dart';
-import 'package:auge_server/shared/message/domain_messages.dart';
+import 'package:auge_shared/message/messages.dart';
+import 'package:auge_shared/message/domain_messages.dart';
 
-import 'package:auge_web/services/app_routes.dart';
+import 'package:auge_web/route/app_routes.dart';
 
 @Component(
     selector: 'auge-measure-progress',
@@ -108,7 +107,7 @@ class MeasureProgressComponent implements OnInit, OnActivate, OnDeactivate  {
   Chart chart;
 
   MeasureProgressComponent(this._objectiveService, this._measureService, this._location) {
-    initializeDateFormatting(Intl.defaultLocale , null);
+    // initializeDateFormatting(Intl.defaultLocale , null);
   }
 
   // Define messages and labels

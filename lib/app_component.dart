@@ -4,7 +4,7 @@ import 'package:angular/angular.dart';
 
 import 'package:angular_router/angular_router.dart';
 
-import 'package:auge_web/services/app_routes.dart';
+import 'package:auge_web/route/app_routes.dart';
 import 'package:auge_web/services/auge_api_service.dart';
 import 'package:auge_web/src/auth/auth_service.dart';
 
@@ -26,7 +26,7 @@ import 'package:auge_web/src/app_layout/app_layout_component.template.dart' as a
       routerDirectives,
     ])
 
-class AppComponent with CanReuse {
+class AppComponent with CanReuse  {
 
   final List<RouteDefinition> routes = [
     new RouteDefinition(
@@ -41,5 +41,7 @@ class AppComponent with CanReuse {
   ];
 
   AppComponent();
+
+
 
 }

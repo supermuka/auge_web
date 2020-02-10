@@ -5,13 +5,10 @@ import 'dart:html' as html;
 import 'dart:convert' show base64;
 import 'dart:typed_data' show Uint8List;
 
-import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
-
 import 'package:angular/angular.dart';
 import 'package:angular/security.dart';
 import 'package:angular_router/angular_router.dart';
-import 'package:auge_web/services/app_routes.dart';
+import 'package:auge_web/route/app_routes.dart';
 
 import 'package:angular_components/focus/focus.dart';
 import 'package:angular_components/laminate/components/modal/modal.dart';
@@ -44,12 +41,12 @@ import 'package:angular_components/material_chips/material_chips.dart';
 import 'package:angular_components/material_datepicker/material_datepicker.dart';
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
 
-import 'package:auge_server/domain/work/work_stage.dart';
-import 'package:auge_server/domain/work/work_item.dart';
-import 'package:auge_server/domain/general/user.dart';
+import 'package:auge_shared/domain/work/work_stage.dart';
+import 'package:auge_shared/domain/work/work_item.dart';
+import 'package:auge_shared/domain/general/user.dart';
 
-import 'package:auge_server/shared/message/messages.dart';
-import 'package:auge_server/shared/message/domain_messages.dart';
+import 'package:auge_shared/message/messages.dart';
+import 'package:auge_shared/message/domain_messages.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/work/work_service.dart';
@@ -138,7 +135,7 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
 
   WorkItemDetailComponent(this._userService, this._workService, this._workItemService, this._router, this._domSanitizationService /*, this._location*/)  {
 
-    initializeDateFormatting(Intl.defaultLocale , null);
+    // initializeDateFormatting(Intl.defaultLocale , null);
     memberSingleSelectModel = SelectionModel.single();
 
    // _uploadFile = html.querySelector("#upload_file");

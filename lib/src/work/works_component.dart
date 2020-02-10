@@ -20,11 +20,11 @@ import 'package:angular_components/material_toggle/material_toggle.dart';
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
 import 'package:angular_components/material_select/material_dropdown_select.dart';
 
-import 'package:auge_server/domain/work/work.dart';
-import 'package:auge_server/domain/general/authorization.dart';
+import 'package:auge_shared/domain/work/work.dart';
+import 'package:auge_shared/domain/general/authorization.dart';
 
-import 'package:auge_server/shared/message/messages.dart';
-import 'package:auge_server/shared/message/domain_messages.dart';
+import 'package:auge_shared/message/messages.dart';
+import 'package:auge_shared/message/domain_messages.dart';
 
 import 'package:auge_web/src/work/work_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
@@ -36,7 +36,7 @@ import 'package:auge_web/src/work/work_detail_component.dart';
 //import 'package:auge_web/src/work/work_stages_component.dart';
 import 'package:auge_web/src/work_item/work_items_component.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
-import 'package:auge_web/services/app_routes.dart';
+import 'package:auge_web/route/app_routes.dart';
 
 // ignore_for_file: uri_has_not_been_generated
 import 'package:auge_web/src/work/work_detail_component.template.dart' as work_detail_component;
@@ -322,7 +322,7 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
   }
 
   String composeTooltip(String label, String name) {
-    return label + ' ' + ((name == null) ? '(-)' : name);
+    return '${label} ${name}';
   }
 
   setExpandedWorkId(String workId, bool expanded) {

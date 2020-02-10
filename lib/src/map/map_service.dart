@@ -7,9 +7,9 @@ import 'package:angular/core.dart';
 
 import 'package:auge_web/services/auge_api_service.dart';
 
-import 'package:auge_server/domain/objective/objective.dart';
+import 'package:auge_shared/domain/objective/objective.dart';
 
-import 'package:auge_server/src/protos/generated/objective/objective_measure.pbgrpc.dart' as objective_measure_pbgrpc;
+import 'package:auge_shared/protos/generated/objective/objective_measure.pbgrpc.dart' as objective_measure_pbgrpc;
 
 @Injectable()
 class MapService {

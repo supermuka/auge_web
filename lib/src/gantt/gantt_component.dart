@@ -1,5 +1,4 @@
 import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
@@ -9,18 +8,18 @@ import 'package:angular_components/material_tooltip/material_tooltip.dart';
 import 'package:angular_components/focus/keyboard_only_focus_indicator.dart';
 import 'package:angular_components/laminate/enums/alignment.dart';
 
-import 'package:auge_server/domain/objective/objective.dart';
-import 'package:auge_server/domain/general/user.dart';
+import 'package:auge_shared/domain/objective/objective.dart';
+import 'package:auge_shared/domain/general/user.dart';
 
-import 'package:auge_server/shared/message/messages.dart';
-import 'package:auge_server/shared/message/domain_messages.dart';
+import 'package:auge_shared/message/messages.dart';
+import 'package:auge_shared/message/domain_messages.dart';
 
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/gantt/gantt_service.dart';
-import 'package:auge_web/services/app_routes.dart';
+import 'package:auge_web/route/app_routes.dart';
 
 @Component(
   selector: 'auge-gantt',
@@ -55,7 +54,7 @@ class GanttComponent with CanReuse implements OnActivate {
   String selectedYear;
 
   GanttComponent(this._authService, this._appLayoutService, this._ganttService, this._router) {
-    initializeDateFormatting(Intl.defaultLocale , null);
+    // initializeDateFormatting(Intl.defaultLocale , null);
   }
 
   // Define messages and labels

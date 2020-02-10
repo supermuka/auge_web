@@ -28,14 +28,14 @@ import 'package:auge_web/src/search/search_service.dart';
 
 import 'package:auge_web/src/user/user_detail_component.dart';
 
-import 'package:auge_web/services/app_routes.dart';
+import 'package:auge_web/route/app_routes.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
 
-import 'package:auge_server/shared/message/messages.dart';
+import 'package:auge_shared/message/messages.dart';
 
-import 'package:auge_server/domain/general/authorization.dart';
-import 'package:auge_server/domain/general/user.dart';
-import 'package:auge_server/domain/general/organization.dart';
+import 'package:auge_shared/domain/general/authorization.dart';
+import 'package:auge_shared/domain/general/user.dart';
+import 'package:auge_shared/domain/general/organization.dart';
 
 // ignore_for_file: uri_has_not_been_generated
 import 'package:auge_web/src/app_layout/app_layout_component.template.dart' as app_layout_component;
@@ -102,31 +102,31 @@ class AppLayoutComponent with CanReuse implements OnActivate {
       component: organizations_component.OrganizationsComponentNgFactory,
     ),
      */
-    new RouteDefinition(
+    RouteDefinition(
       routePath: AppRoutes.userEditWithAppLayoutParentRoute,
       component: user_detail_component.UserDetailComponentNgFactory,
     ),
-    new RouteDefinition(
+    RouteDefinition(
       routePath: AppRoutes.usersRoute,
       component: users_component.UsersComponentNgFactory,
     ),
-    new RouteDefinition(
+    RouteDefinition(
       routePath: AppRoutes.worksRoute,
       component: works_component.WorksComponentNgFactory,
     ),
-    new RouteDefinition(
+    RouteDefinition(
       routePath: AppRoutes.worksByObjectiveRoute,
       component: works_component.WorksComponentNgFactory,
     ),
-    new RouteDefinition(
+    RouteDefinition(
       routePath: AppRoutes.mapRoute,
       component: map_component.MapComponentNgFactory,
     ),
-    new RouteDefinition(
+    RouteDefinition(
       routePath: AppRoutes.ganttRoute,
       component: gantt_component.GanttComponentNgFactory,
     ),
-    new RouteDefinition(
+    RouteDefinition(
       routePath: AppRoutes.objectivesRoute,
       component: objectives_component.ObjectivesComponentNgFactory,
     ),
@@ -137,15 +137,15 @@ class AppLayoutComponent with CanReuse implements OnActivate {
     ),
 
  */
-    new RouteDefinition(
+    RouteDefinition(
       routePath: AppRoutes.groupsRoute,
       component: groups_component.GroupsComponentNgFactory,
     ),
-    new RouteDefinition(
+    RouteDefinition(
       routePath: AppRoutes.organizationRoute,
       component: organization_component.OrganizationComponentNgFactory,
     ),
-    new RouteDefinition(
+    RouteDefinition(
       routePath: AppRoutes.workItemsKanbanRoute,
       component: work_items_kanban_component.WorkItemsKanbanComponentNgFactory,
     ),
@@ -228,7 +228,7 @@ class AppLayoutComponent with CanReuse implements OnActivate {
 
     // Model Listening
     userProfileLogoutSingleSelectModel =
-    new SelectionModel.single()..selectionChanges.listen((d) async {
+    SelectionModel.single()..selectionChanges.listen((d) async {
       if (d != null && d.isNotEmpty && d.first.added.isNotEmpty) {
         if (d.first?.added?.first?.routeUrl != null) {
           await goTo(d.first.added.first.routeUrl, reload: true);
@@ -237,7 +237,17 @@ class AppLayoutComponent with CanReuse implements OnActivate {
         }
       }
       userProfileLogoutSingleSelectModel.clear();
-  });
+    });
+/*
+    if (current.queryParameters.length == 1) {
+      if (current.queryParameters.containsKey(AppRoutesQueryParam.objectiveIdQueryParameter)) {
+        goTo(objectivesRouteUrl, queryParameters: current.queryParameters);
+      } else if (current.queryParameters.containsKey(AppRoutesQueryParam.workItemIdQueryParameter)) {
+        goTo(worksRouteUrl, queryParameters: current.queryParameters);
+      }
+    }
+
+ */
   }
 
   bool get isAdmin {

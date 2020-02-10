@@ -13,16 +13,16 @@ import 'package:angular_components/material_toggle/material_toggle.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel_set.dart';
 
-import 'package:auge_server/domain/general/authorization.dart';
-import 'package:auge_server/domain/general/group.dart';
+import 'package:auge_shared/domain/general/authorization.dart';
+import 'package:auge_shared/domain/general/group.dart';
 
-import 'package:auge_server/shared/message/messages.dart';
+import 'package:auge_shared/message/messages.dart';
 import 'package:auge_web/src/group/group_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/src/history_timeline/history_timeline_component.dart';
 
-import 'package:auge_web/services/app_routes.dart';
+import 'package:auge_web/route/app_routes.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
 
 // ignore_for_file: uri_has_not_been_generated

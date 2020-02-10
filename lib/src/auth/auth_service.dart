@@ -1,16 +1,16 @@
 import 'dart:async';
 
 import 'package:angular/core.dart';
-import 'package:auge_server/domain/general/user.dart';
-import 'package:auge_server/domain/general/organization.dart';
-import 'package:auge_server/domain/general/user_access.dart';
-import 'package:auge_server/shared/authorization_policy.dart';
-import 'package:auge_server/domain/general/authorization.dart';
-export 'package:auge_server/domain/general/authorization.dart';
+import 'package:auge_shared/domain/general/user.dart';
+import 'package:auge_shared/domain/general/organization.dart';
+import 'package:auge_shared/domain/general/user_access.dart';
+import 'package:auge_shared/auth/authorization_policy.dart';
+import 'package:auge_shared/domain/general/authorization.dart';
+export 'package:auge_shared/domain/general/authorization.dart';
 
-import 'package:auge_server/src/protos/generated/general/user_access.pbgrpc.dart' as user_access_pbgrpc;
-import 'package:auge_server/src/protos/generated/general/user_identity.pbgrpc.dart' as user_identity_pbgrpc;
-// import 'package:auge_server/src/protos/generated/general/user.pbgrpc.dart' as user_pbgrpc;
+import 'package:auge_shared/protos/generated/general/user_access.pbgrpc.dart' as user_access_pbgrpc;
+import 'package:auge_shared/protos/generated/general/user_identity.pbgrpc.dart' as user_identity_pbgrpc;
+// import 'package:auge_shared/protos/generated/general/user.pbgrpc.dart' as user_pbgrpc;
 
 import 'package:auge_web/services/auge_api_service.dart';
 

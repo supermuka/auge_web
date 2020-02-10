@@ -1,22 +1,19 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
-import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
-
 import 'package:angular/angular.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
 import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
 //import 'package:angular_components/content/deferred_content.dart';
 
-import 'package:auge_server/domain/general/user.dart';
-import 'package:auge_server/domain/general/history_item.dart';
-import 'package:auge_server/domain/general/authorization.dart';
+import 'package:auge_shared/domain/general/user.dart';
+import 'package:auge_shared/domain/general/history_item.dart';
+import 'package:auge_shared/domain/general/authorization.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
-import 'package:auge_server/shared/message/messages.dart';
-import 'package:auge_server/shared/message/domain_messages.dart';
+import 'package:auge_shared/message/messages.dart';
+import 'package:auge_shared/message/domain_messages.dart';
 
 import 'package:auge_web/src/history_timeline/history_item_timeline_detail_component.dart';
 
@@ -48,7 +45,7 @@ class HistoryTimelineComponent /* extends Object implements OnInit  */ {
   Map<HistoryItem, bool> expandedControl = Map();
 
   HistoryTimelineComponent(this._historyTimelineService) {
-    initializeDateFormatting(Intl.defaultLocale , null);
+    // initializeDateFormatting(Intl.defaultLocale , null);
   }
 
   static final String timelineLabel = TimelineItemdMsg.label(TimelineItemdMsg.timelineLabel);

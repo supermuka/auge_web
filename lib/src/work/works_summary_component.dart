@@ -12,16 +12,16 @@ import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
 
-import 'package:auge_server/domain/work/work.dart';
-import 'package:auge_server/shared/message/domain_messages.dart';
+import 'package:auge_shared/domain/work/work.dart';
+import 'package:auge_shared/message/domain_messages.dart';
 
-import 'package:auge_server/shared/message/messages.dart';
+import 'package:auge_shared/message/messages.dart';
 // import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/src/work/work_service.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/work/work_summary_component.dart';
-import 'package:auge_web/services/app_routes.dart';
+import 'package:auge_web/route/app_routes.dart';
 
 @Component(
     selector: 'auge-works-summary',
@@ -94,6 +94,6 @@ class WorksSummaryComponent with CanReuse implements OnInit {
   }
 
   String composeTooltip(String label, String name) {
-    return label + ' ' + ((name == null) ? '(-)' : name);
+    return  '${label} ${name}';
   }
 }

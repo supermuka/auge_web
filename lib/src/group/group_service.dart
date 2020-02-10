@@ -9,11 +9,11 @@ import 'package:auge_web/src/auth/auth_service.dart';
 
 import 'package:auge_web/services/auge_api_service.dart';
 
-import 'package:auge_server/domain/general/group.dart';
+import 'package:auge_shared/domain/general/group.dart';
 
-import 'package:auge_server/src/protos/generated/google/protobuf/wrappers.pb.dart' as wrappers_pb;
+import 'package:auge_shared/protos/generated/google/protobuf/wrappers.pb.dart' as wrappers_pb;
 
-import 'package:auge_server/src/protos/generated/general/group.pbgrpc.dart' as group_pbgrpc;
+import 'package:auge_shared/protos/generated/general/group.pbgrpc.dart' as group_pbgrpc;
 
 @Injectable()
 class GroupService {

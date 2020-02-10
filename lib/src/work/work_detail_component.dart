@@ -3,7 +3,7 @@
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
-import 'package:auge_web/services/app_routes.dart';
+import 'package:auge_web/route/app_routes.dart';
 
 import 'package:angular_components/focus/focus.dart';
 import 'package:angular_components/laminate/components/modal/modal.dart';
@@ -22,13 +22,13 @@ import 'package:angular_components/model/selection/string_selection_options.dart
 import 'package:angular_components/model/ui/has_factory.dart';
 
 
-import 'package:auge_server/domain/general/user.dart';
-import 'package:auge_server/domain/work/work.dart';
-import 'package:auge_server/domain/objective/objective.dart';
-import 'package:auge_server/domain/general/group.dart';
+import 'package:auge_shared/domain/general/user.dart';
+import 'package:auge_shared/domain/work/work.dart';
+import 'package:auge_shared/domain/objective/objective.dart';
+import 'package:auge_shared/domain/general/group.dart';
 
-import 'package:auge_server/shared/message/messages.dart';
-import 'package:auge_server/shared/message/domain_messages.dart';
+import 'package:auge_shared/message/messages.dart';
+import 'package:auge_shared/message/domain_messages.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
 //import 'package:auge_web/src/auth/auth_service.dart';

@@ -4,16 +4,16 @@
 import 'dart:async';
 
 import 'package:angular/core.dart';
-import 'package:auge_server/domain/general/organization_directory_service.dart';
+import 'package:auge_shared/domain/general/organization_directory_service.dart';
 import 'package:auge_web/src/auth/auth_service.dart';
-import 'package:auge_server/domain/general/organization.dart';
-import 'package:auge_server/domain/general/organization_configuration.dart';
+import 'package:auge_shared/domain/general/organization.dart';
+import 'package:auge_shared/domain/general/organization_configuration.dart';
 
 import 'package:auge_web/services/auge_api_service.dart';
-import 'package:auge_server/src/protos/generated/google/protobuf/wrappers.pb.dart' as wrappers_pb;
-import 'package:auge_server/src/protos/generated/general/organization.pbgrpc.dart' as organization_pbgrpc;
-import 'package:auge_server/src/protos/generated/general/organization_configuration.pbgrpc.dart' as organization_configuration_pbgrpc;
-import 'package:auge_server/src/protos/generated/general/organization_directory_service.pbgrpc.dart' as organization_directory_service_pbgrpc;
+import 'package:auge_shared/protos/generated/google/protobuf/wrappers.pb.dart' as wrappers_pb;
+import 'package:auge_shared/protos/generated/general/organization.pbgrpc.dart' as organization_pbgrpc;
+import 'package:auge_shared/protos/generated/general/organization_configuration.pbgrpc.dart' as organization_configuration_pbgrpc;
+import 'package:auge_shared/protos/generated/general/organization_directory_service.pbgrpc.dart' as organization_directory_service_pbgrpc;
 import 'package:grpc/grpc_web.dart';
 
 @Injectable()

@@ -10,7 +10,7 @@ import 'package:intl/intl.dart';
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
-import 'package:auge_web/services/app_routes.dart';
+import 'package:auge_web/route/app_routes.dart';
 
 import 'package:angular_components/focus/focus.dart';
 import 'package:angular_components/laminate/components/modal/modal.dart';
@@ -36,14 +36,14 @@ import 'package:angular_components/model/ui/has_renderer.dart';
 import 'package:angular_components/material_yes_no_buttons/material_yes_no_buttons.dart';
 import 'package:angular_components/material_toggle/material_toggle.dart';
 
-import 'package:auge_server/domain/general/organization_configuration.dart';
-import 'package:auge_server/domain/general/authorization.dart';
-import 'package:auge_server/domain/general/user.dart';
-import 'package:auge_server/domain/general/user_identity.dart';
-import 'package:auge_server/domain/general/user_access.dart';
+import 'package:auge_shared/domain/general/organization_configuration.dart';
+import 'package:auge_shared/domain/general/authorization.dart';
+import 'package:auge_shared/domain/general/user.dart';
+import 'package:auge_shared/domain/general/user_identity.dart';
+import 'package:auge_shared/domain/general/user_access.dart';
 
-import 'package:auge_server/shared/message/messages.dart';
-import 'package:auge_server/shared/message/domain_messages.dart';
+import 'package:auge_shared/message/messages.dart';
+import 'package:auge_shared/message/domain_messages.dart';
 
 //import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/user/user_service.dart';

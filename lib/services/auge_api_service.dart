@@ -6,7 +6,7 @@ import 'package:angular/core.dart';
 
 import 'package:grpc/grpc_web.dart';
 
-export 'package:auge_server/shared/rpc_error_message.dart' show RpcErrorMessage, RpcErrorDetailMessage;
+export 'package:auge_shared/message/rpc_error_message.dart' show RpcErrorMessage, RpcErrorDetailMessage;
 
 /// Provide services for Server APIs access
 @Injectable()

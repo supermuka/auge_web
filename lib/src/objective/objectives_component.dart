@@ -21,11 +21,11 @@ import 'package:angular_components/material_expansionpanel/material_expansionpan
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
 import 'package:angular_components/scorecard/scoreboard.dart';
 
-import 'package:auge_server/domain/general/authorization.dart';
-import 'package:auge_server/domain/objective/objective.dart';
+import 'package:auge_shared/domain/general/authorization.dart';
+import 'package:auge_shared/domain/objective/objective.dart';
 
-import 'package:auge_server/shared/message/messages.dart';
-import 'package:auge_server/shared/message/domain_messages.dart';
+import 'package:auge_shared/message/messages.dart';
+import 'package:auge_shared/message/domain_messages.dart';
 
 import 'package:auge_web/src/history_timeline/history_timeline_component.dart';
 import 'package:auge_web/src/measure/measures_component.dart';
@@ -35,7 +35,7 @@ import 'package:auge_web/src/group/group_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
-import 'package:auge_web/services/app_routes.dart';
+import 'package:auge_web/route/app_routes.dart';
 
 import 'package:auge_web/src/filter/filter_component.dart';
 
@@ -395,7 +395,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
   }
 
   String composeTooltip(String label, String name) {
-    return label ?? '' + ' ' + ((name == null) ? '(-)' : name);
+    return '${label} ${name}';
   }
 
   void goToDetail() {

@@ -19,14 +19,14 @@ import 'package:angular_components/model/selection/selection_model.dart';
 import 'package:angular_components/model/selection/selection_options.dart';
 import 'package:angular_components/model/ui/has_renderer.dart';
 
-import 'package:auge_server/domain/objective/measure.dart';
+import 'package:auge_shared/domain/objective/measure.dart';
 
-import 'package:auge_server/shared/message/messages.dart';
-import 'package:auge_server/shared/message/domain_messages.dart';
+import 'package:auge_shared/message/messages.dart';
+import 'package:auge_shared/message/domain_messages.dart';
 
 import 'package:auge_web/src/measure/measure_service.dart';
 
-import 'package:auge_web/services/app_routes.dart';
+import 'package:auge_web/route/app_routes.dart';
 
 @Component(
     selector: 'auge-measure-detail',

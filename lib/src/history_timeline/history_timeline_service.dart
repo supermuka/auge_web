@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:angular/core.dart';
 
-import 'package:auge_server/domain/general/history_item.dart';
+import 'package:auge_shared/domain/general/history_item.dart';
 
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/services/auge_api_service.dart';
 
-import 'package:auge_server/src/protos/generated/general/common.pbgrpc.dart' as common_pbgrpc;
-import 'package:auge_server/src/protos/generated/general/history_item.pbgrpc.dart' as history_item_pbgrpc;
+import 'package:auge_shared/protos/generated/general/common.pbgrpc.dart' as common_pbgrpc;
+import 'package:auge_shared/protos/generated/general/history_item.pbgrpc.dart' as history_item_pbgrpc;
 
 @Injectable()
 class HistoryTimelineService {

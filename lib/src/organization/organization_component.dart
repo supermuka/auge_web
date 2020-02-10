@@ -5,7 +5,7 @@ import 'dart:convert' show json;
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
-import 'package:auge_web/services/app_routes.dart';
+import 'package:auge_web/route/app_routes.dart';
 
 import 'package:angular_components/focus/focus.dart';
 import 'package:angular_components/laminate/components/modal/modal.dart';
@@ -26,12 +26,12 @@ import 'package:angular_components/model/selection/selection_options.dart';
 import 'package:angular_components/model/ui/has_renderer.dart';
 import 'package:angular_components/material_spinner/material_spinner.dart';
 
-import 'package:auge_server/domain/general/organization.dart';
-import 'package:auge_server/domain/general/organization_configuration.dart';
-import 'package:auge_server/domain/general/organization_directory_service.dart';
+import 'package:auge_shared/domain/general/organization.dart';
+import 'package:auge_shared/domain/general/organization_configuration.dart';
+import 'package:auge_shared/domain/general/organization_directory_service.dart';
 
-import 'package:auge_server/shared/message/messages.dart';
-import 'package:auge_server/shared/message/domain_messages.dart';
+import 'package:auge_shared/message/messages.dart';
+import 'package:auge_shared/message/domain_messages.dart';
 
 import 'package:auge_web/src/organization/organization_service.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;

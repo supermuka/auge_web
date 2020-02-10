@@ -10,7 +10,7 @@ import 'package:angular_components/model/selection/selection_options.dart';
 import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
 
-import 'package:auge_server/shared/message/messages.dart';
+import 'package:auge_shared/message/messages.dart';
 
 
 import 'search_service.dart';
