@@ -79,27 +79,27 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
   final Router _router;
 
   final List<RouteDefinition> routes = [
-    new RouteDefinition(
+    RouteDefinition(
       routePath: AppRoutes.objectiveAddRoute,
       component: objective_detail_component.ObjectiveDetailComponentNgFactory,
     ),
-    new RouteDefinition(
+    RouteDefinition(
       routePath: AppRoutes.objectiveEditRoute,
       component: objective_detail_component.ObjectiveDetailComponentNgFactory,
     ),
-    new RouteDefinition(
+    RouteDefinition(
       routePath: AppRoutes.measureAddRoute,
       component: measure_detail_component.MeasureDetailComponentNgFactory,
     ),
-    new RouteDefinition(
+    RouteDefinition(
       routePath: AppRoutes.measureEditRoute,
       component: measure_detail_component.MeasureDetailComponentNgFactory,
     ),
-    new RouteDefinition(
+    RouteDefinition(
       routePath: AppRoutes.measureProgressesRoute,
       component: measure_progress_component.MeasureProgressComponentNgFactory,
     ),
-    new RouteDefinition(
+    RouteDefinition(
       routePath: AppRoutes.measureProgressesAddRoute,
       component: measure_progress_component.MeasureProgressComponentNgFactory,
     ),
@@ -135,13 +135,13 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
   MenuModel<MenuItem> menuModel;
 
     // Define messages and labels
-  static final String objectiveLabel = ObjectiveMsg.label(ObjectiveMsg.objectivesLabel);
+  static final String objectiveLabel = ObjectiveMsg.label(ObjectiveMsg.objectiveLabel);
   static final String sortedByLabel = ObjectiveMsg.label(ObjectiveMsg.sortedByLabel);
 
   static final String editButtonLabel = CommonMsg.buttonLabel(CommonMsg.editButtonLabel);
   static final String deleteButtonLabel = CommonMsg.buttonLabel(CommonMsg.deleteButtonLabel);
 
-  static final String timeLineLabel = TimelineItemdMsg.label(TimelineItemdMsg.timelineLabel);
+  static final String timelineLabel = TimelineItemdMsg.label(TimelineItemdMsg.timelineLabel);
 
   static final String ultimateObjectiveLabel = ObjectiveMsg.label(ObjectiveMsg.ultimateObjectiveLabel);
 
@@ -239,14 +239,6 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
 
         expandedObjectiveId = initialObjectiveId;
 
-        // Modal, needs to await the dom elements creation.
-        /*
-        Future.delayed(Duration.zero, () {
-            initialObjectiveId = null;
-        });
-
-         */
-       // initialObjectiveId = null;
       }
 
 
@@ -375,7 +367,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
         element.scrollIntoView(html.ScrollAlignment.TOP);
         // Modal, needs to await the dom elements creation.
 
-        new Future.delayed(Duration.zero, () {
+        Future.delayed(Duration.zero, () {
 
             element.scrollIntoView(html.ScrollAlignment.TOP);
             initialObjectiveId = null;

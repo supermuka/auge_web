@@ -19,6 +19,7 @@ import 'package:angular_components/material_expansionpanel/material_expansionpan
 import 'package:angular_components/material_toggle/material_toggle.dart';
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
 import 'package:angular_components/material_select/material_dropdown_select.dart';
+import 'package:angular_components/scorecard/scoreboard.dart';
 
 import 'package:auge_shared/domain/work/work.dart';
 import 'package:auge_shared/domain/general/authorization.dart';
@@ -44,6 +45,8 @@ import 'package:auge_web/src/work/work_stages_component.template.dart' as work_s
 import 'package:auge_web/src/work_item/work_items_kanban_component.template.dart' as work_items_kanban_component;
 import 'package:auge_web/src/work_item/work_item_detail_component.template.dart' as work_item_detail_component;
 
+import 'package:auge_web/src/filter/filter_component.dart';
+
 @Component(
     selector: 'auge-works',
     providers: const [WorkService, ObjectiveService, HistoryTimelineService],
@@ -67,6 +70,8 @@ import 'package:auge_web/src/work_item/work_item_detail_component.template.dart'
       WorkDetailComponent,
       WorkItemsComponent,
       HistoryTimelineComponent,
+      ScoreboardComponent,
+      FilterComponent,
       //WorkStagesComponent,
     ])
 
@@ -110,7 +115,22 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
 
   List<Work> _works = List();
   Work selectedWork;
+  String initialWorkId;
   String expandedWorkId;
+  bool hasFilter = false;
+
+  List<FilterOption> workFilterOptions;
+  List<FilterOption> groupFilterOptions;
+  List<FilterOption> leaderFilterOptions;
+
+  List<String> initialWorksIdSelectedToFilter;
+  List<String> worksIdSelectedToFilter = [];
+  List<String> groupsIdSelectedToFilter = [];
+  List<String> leadersIdSelectedToFilter = [];
+
+  // Just used to default and controler when dispatcher ´set´
+  List<String> initialFilterOptionsIdsSelected;
+
   // To control workItem [list or [kanban]
   //SelectionView workItemSelectionView;
 
@@ -129,6 +149,8 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
 
   static final String sortedByLabel = WorkMsg.label(WorkMsg.sortedByLabel);
   static final String objectiveLabel =  WorkMsg.label(WorkMsg.objectiveLabel);
+  static final String workLabel =  WorkMsg.label(WorkMsg.workLabel);
+  static final String worksLabel =  WorkMsg.label(WorkMsg.worksLabel);
 
   static final String nameLabel = WorkDomainMsg.fieldLabel(Work.nameField);
   static final String groupLabel = WorkDomainMsg.fieldLabel(Work.groupField);
@@ -189,6 +211,24 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
          routerStatePrevious.toUrl() == AppRoutes.workItemEditRoute.toUrl() && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.workItemIdQueryParameter))
     ) return;
 */
+
+    // Expand panel whether [Id] objective is informed.
+    if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.workIdQueryParameter)) {
+      initialWorkId = routerStateCurrent.queryParameters[AppRoutesQueryParam.workIdQueryParameter];
+
+      // Filter ids informed.
+
+      if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.filter)) {
+        hasFilter = (routerStateCurrent.queryParameters[AppRoutesQueryParam.filter].toLowerCase() == 'true');
+      }
+
+      // Used just first time, to remove queryParam initialObjectiveId.
+      /*
+      _router.navigate(routerStateCurrent.path, NavigationParams(queryParameters: Map.from(routerStateCurrent.queryParameters)..remove(AppRoutesQueryParam.objectiveIdQueryParameter)..remove(AppRoutesQueryParam.filter), replace: true));
+      return;
+   */
+    }
+
     _appLayoutService.headerTitle = headerTitle;
 
 
@@ -205,14 +245,57 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
       }
       */
 
-      _works = await getWorks();
+      List<Work> worksAux = await getWorks();
 
-      if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.works.index);
+      if (initialWorkId != null) {
 
+        if (hasFilter) {
+          initialWorksIdSelectedToFilter = [initialWorkId];
+          hasFilter = false;
+        } else {
+          initialWorksIdSelectedToFilter = null;
+        }
+
+        //expandedObjectiveId = initialObjectiveId;
+        setExpandedWorkId(initialWorkId, true);
+
+      }
+/*
       if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.workIdQueryParameter)) {
         setExpandedWorkId(routerStateCurrent.queryParameters[AppRoutesQueryParam
             .workIdQueryParameter], true);
       }
+*/
+      // Select options to filter.
+      Map<String, FilterOption> works = {};
+      Map<String, FilterOption> groups = {};
+      Map<String, FilterOption> leaders = {};
+      for (int i = 0;i<worksAux.length;i++) {
+        works.putIfAbsent(worksAux[i].id, () => FilterOption(worksAux[i].id, worksAux[i].name));
+        groups.putIfAbsent(worksAux[i].group?.id, () => FilterOption(worksAux[i].group?.id, worksAux[i].group?.name));
+        leaders.putIfAbsent(worksAux[i].leader?.id, () => FilterOption(worksAux[i].leader?.id, worksAux[i].leader?.name));
+      }
+      List<FilterOption> objectiveFilterOptionsAux = works.values.toList();
+      if (objectiveFilterOptionsAux.length > 1)  objectiveFilterOptionsAux.sort((a, b) => a.name == null ? 1 : b.name == null ? -1 : a.name.compareTo(b.name));
+
+      List<FilterOption> groupFilterOptionsAux = groups.values.toList();
+      if (groupFilterOptionsAux.length > 1)  groupFilterOptionsAux.sort((a, b) => a.name == null ? 1 : b.name == null ? -1 : a.name.compareTo(b.name));
+
+      List<FilterOption> leaderFilterOptionsAux = leaders.values.toList();
+      if (leaderFilterOptionsAux.length > 1)  leaderFilterOptionsAux.sort((a, b) => a.name == null ? 1 : b.name == null ? -1 : a.name.compareTo(b.name));
+
+      workFilterOptions =  objectiveFilterOptionsAux;
+      groupFilterOptions = groupFilterOptionsAux;
+      leaderFilterOptions = leaderFilterOptionsAux;
+
+      initialFilterOptionsIdsSelected = [];
+
+      // If not have initial id, set field to empty list `[]` to dispatch angular behaviour
+      if (initialWorksIdSelectedToFilter == null) initialWorksIdSelectedToFilter = [];
+
+      _works = worksAux;
+
+      if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.works.index);
 
    //   workItemSelectionView.selected = workItemSelectionView.selected ?? 'list';
 
@@ -227,7 +310,16 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
 
   List<Work> get works {
 
-    return _works;
+    List<Work> workFilered;
+
+    workFilered = (worksIdSelectedToFilter.isEmpty || groupsIdSelectedToFilter.isEmpty || leadersIdSelectedToFilter.isEmpty) ? [] : _works.where(
+            (t) => worksIdSelectedToFilter.contains(t.id)
+            && (groupsIdSelectedToFilter.contains(t.group?.id))
+            && (leadersIdSelectedToFilter.contains(t.leader?.id))).toList();
+
+    return workFilered;
+
+    // return _works;
 
     /*
     List<Work> worksFilter;
@@ -331,6 +423,18 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
     } else {
       expandedWorkId = null;
     }
+  }
+
+  workChangeSelection(List<String> worksIdSelected) {
+    worksIdSelectedToFilter = worksIdSelected;
+  }
+
+  groupChangeSelection(List<String> groupsIdSelected) {
+    groupsIdSelectedToFilter = groupsIdSelected;
+  }
+
+  leaderChangeSelection(List<String> leadersIdSelected) {
+    leadersIdSelectedToFilter = leadersIdSelected;
   }
 
 }

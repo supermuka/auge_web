@@ -47,8 +47,7 @@ dev_dependencies:
   build_runner: ^1.7.2
   build_web_compilers: ^2.1.2
   webdriver: ^2.1.0
-  #dwds: ^1.0.1
-  #angular_analyzer_plugin: ^1.0.0-alpha+1
+  angular_analyzer_plugin: ^1.0.0-alpha+1
 
   #googleapis: 0.53.0
   #protobuf: ^0.13.11
