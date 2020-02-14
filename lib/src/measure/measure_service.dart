@@ -111,7 +111,7 @@ class MeasureService {
       //List<MeasureUnit> measureUnits =  await _augeApiService.objectiveAugeApi.getMeasureUnits();
 
       // Translate name
-      measureUnits.forEach((f) => f.name = MeasureMsg.measureUnitLabel(f.name));
+      measureUnits.forEach((f) => f.name = MeasureMsg.measureUnitLabel('${f.name}Label'));
       return measureUnits;
 
     // Translate name
