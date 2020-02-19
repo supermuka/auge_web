@@ -319,7 +319,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
     try {
 
       await _objectiveService.deleteObjective(selectedObjective);
-      objectives.remove(selectedObjective);
+      _objectives.remove(selectedObjective);
       //objectives.timeline = await _objectiveService.getTimeline(objective.id);
       _historyTimelineService.refreshHistory(SystemModule.objectives.index);
 
