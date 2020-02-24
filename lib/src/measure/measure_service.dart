@@ -64,12 +64,12 @@ class MeasureService {
   }
 
   /// Return an [MeasureProgress] by [Measure.id]
-  Future<List<MeasureProgress>> getMeasureProgresses(String measureId) async {
+  Future<List<MeasureProgress>> getMeasureProgresses(String measureId, {bool withMeasure = false}) async {
 
     objective_measure_pbgrpc
         .MeasureProgressesResponse measureProgressesResponsePb = await _measureServiceClient
         .getMeasureProgresses(objective_measure_pbgrpc.MeasureProgressGetRequest()
-      ..measureId = measureId);
+      ..measureId = measureId..withMeasure = withMeasure);
     Map<String, dynamic> cache = {};
     return measureProgressesResponsePb.measureProgresses.map((m) =>
     MeasureProgress()

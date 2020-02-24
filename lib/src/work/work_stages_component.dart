@@ -196,9 +196,15 @@ class WorkStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
         String stageId = await _workService.saveStage(
             workId, workStage);
         // Returns a new instance to get the generated data on the server side as well as having the last update.
-        selectedWorkStage = await _workService.getWorkStage(stageId);
+        WorkStage newWorkStage = await _workService.getWorkStage(stageId);
         //  }
 
+        int index = workStages.indexWhere((t) => t.id == newWorkStage.id);
+        if (index != -1) {
+          workStages[index] = newWorkStage;
+        } else {
+          workStages.add(newWorkStage);
+        }
         // stages = await _workService.getStages(selectedWork.id);
         _sortStages();
 

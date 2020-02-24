@@ -373,7 +373,7 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
     try {
 
       await _workService.deleteWork(selectedWork);
-      works.remove(selectedWork);
+      _works.remove(selectedWork);
 
       if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.works.index);
 

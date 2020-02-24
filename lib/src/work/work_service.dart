@@ -13,7 +13,6 @@ import 'package:auge_shared/domain/work/work_stage.dart';
 
 import 'package:auge_shared/protos/generated/google/protobuf/wrappers.pb.dart' as wrappers_pb;
 import 'package:auge_shared/protos/generated/work/work_work_item.pbgrpc.dart' as work_work_item_pbgrpc;
-import 'package:auge_shared/protos/generated/work/work_stage.pbgrpc.dart' as work_stage_pbgrpc;
 
 @Injectable()
 class WorkService {
@@ -21,14 +20,14 @@ class WorkService {
   final AugeApiService _augeApiService;
 
   work_work_item_pbgrpc.WorkServiceClient _workServiceClient;
-  work_stage_pbgrpc.WorkStageServiceClient _workStageServiceClient;
+  work_work_item_pbgrpc.WorkStageServiceClient _workStageServiceClient;
 
 
   WorkService(this._authService, this._augeApiService) {
     _workServiceClient =
         work_work_item_pbgrpc.WorkServiceClient(_augeApiService.channel);
     _workStageServiceClient =
-        work_stage_pbgrpc.WorkStageServiceClient(_augeApiService.channel);
+        work_work_item_pbgrpc.WorkStageServiceClient(_augeApiService.channel);
   }
 
   get authService => _authService;
@@ -62,17 +61,19 @@ class WorkService {
 
   /// Return a list of [Stage]
   Future<List<WorkStage>> getWorkStages(String workId) async {
-    return (await _workStageServiceClient.getWorkStages(work_stage_pbgrpc.WorkStageGetRequest()..workId = workId)).workStages.map((s) =>
+    Map<String, dynamic> cache = {};
+    return (await _workStageServiceClient.getWorkStages(work_work_item_pbgrpc.WorkStageGetRequest()..workId = workId)).workStages.map((s) =>
     WorkStage()
-      ..readFromProtoBuf(s)).toList();
+      ..readFromProtoBuf(s, cache)).toList();
   }
 
   /// Return [WorkStage] by Work [id]
   Future<WorkStage> getWorkStage(String id) async {
     // return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
+    Map<String, dynamic> cache = {};
     return WorkStage()..readFromProtoBuf((await _workStageServiceClient.getWorkStage(
-        work_stage_pbgrpc.WorkStageGetRequest()
-          ..id = id)));
+        work_work_item_pbgrpc.WorkStageGetRequest()
+          ..id = id)), cache);
   }
 /*
   /// Return a list of [State]
@@ -130,7 +131,7 @@ class WorkService {
   Future<String> saveStage(String workId, WorkStage workStage) async {
     try {
 
-      work_stage_pbgrpc.WorkStageRequest workStageRequest = work_stage_pbgrpc.WorkStageRequest()
+      work_work_item_pbgrpc.WorkStageRequest workStageRequest = work_work_item_pbgrpc.WorkStageRequest()
         ..workId = workId
         ..workStage = workStage.writeToProtoBuf()
         ..authUserId = _authService.authenticatedUser.id
@@ -157,7 +158,7 @@ class WorkService {
   void deleteWorkStage(WorkStage workStage) async {
     try {
 
-      work_stage_pbgrpc.WorkStageDeleteRequest workStageDeleteRequest = work_stage_pbgrpc.WorkStageDeleteRequest()
+      work_work_item_pbgrpc.WorkStageDeleteRequest workStageDeleteRequest = work_work_item_pbgrpc.WorkStageDeleteRequest()
         ..workStageId = workStage.id
         ..workStageVersion = workStage.version
         ..authOrganizationId = _authService.authorizedOrganization.id

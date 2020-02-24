@@ -153,20 +153,9 @@ class MeasuresComponent with CanReuse {
 
   void goToProgress(bool addCurrentValue) {
 
-    print('DEBUG INI');
-    print(selectedMeasure.currentValue);
-    print(addCurrentValue);
-
-      _router.navigate(AppRoutes.measureProgressesAddRoute.toUrl(parameters: {
+    _router.navigate(AppRoutes.measureProgressesAddRoute.toUrl(parameters: {
         AppRoutesParam.objectiveIdParameter: objective.id,
         AppRoutesParam.measureIdParameter: selectedMeasure.id }), NavigationParams(queryParameters: {
-
-
-        AppRoutesQueryParam.measureNameQueryParameter: selectedMeasure.name,
-        if (selectedMeasure.measureUnit != null) AppRoutesQueryParam.measureMeasureUnitSymbolQueryParameter: selectedMeasure.measureUnit.symbol,
-        if (selectedMeasure.startValue != null) AppRoutesQueryParam.measureStartValueQueryParameter: selectedMeasure.startValue.toString(),
-        if (selectedMeasure.endValue != null) AppRoutesQueryParam.measureEndValueQueryParameter: selectedMeasure.endValue.toString(),
-
 
         if (selectedMeasure.currentValue != null && addCurrentValue) AppRoutesQueryParam.measureCurrentValueQueryParameter: selectedMeasure.currentValue.toString(),
 
