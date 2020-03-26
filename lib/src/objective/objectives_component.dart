@@ -70,7 +70,7 @@ import 'package:auge_web/src/measure/measure_progress_component.template.dart' a
     ],
     pipes: const [commonPipes])
 
-class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActivate, OnDestroy {
+class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActivate, OnDeactivate, OnDestroy {
 
   final AppLayoutService _appLayoutService;
   final ObjectiveService _objectiveService;
@@ -241,8 +241,6 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
 
       }
 
-
-
       // Select options to filter.
       Map<String, FilterOption> objectives = {};
       Map<String, FilterOption> groups = {};
@@ -266,7 +264,6 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
       leaderFilterOptions = leaderFilterOptionsAux;
 
       initialFilterOptionsIdsSelected = [];
-
       // If not have initial id, set field to empty list `[]` to dispatch angular behaviour
       if (initialObjectivesIdSelectedToFilter == null) initialObjectivesIdSelectedToFilter = [];
 
@@ -305,9 +302,17 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
     return objectiveFilered;
   }
 
+  // This is necessary, to control when this component is recalled when navagate to
+  @override
+  void onDeactivate(RouterState current, RouterState next) {
+    initialObjectivesIdSelectedToFilter = null;
+    expandedObjectiveId = null;
+  }
+
   @override
   ngOnDestroy() async {
     _appLayoutService.enabledSearch = false;
+
   }
 
   void selectObjective(Objective objective) {

@@ -96,6 +96,7 @@ class FilterComponent  /* implements AfterChanges */ {
     //  this._initialFilterOptionsIdsSelected = _initialFilterOptionsIdsSelected;
     //} else {
       // if _initialFilterOptionsIdsSelected == [] all is selected.  This [] is used to dispatch this `set` and as we don't used empty filter on initial screen, this alternative was used to this finality.
+
     if (filterStringSelectionOptions != null) {
       if (_initialFilterOptionsIdsSelected != null &&
           _initialFilterOptionsIdsSelected.isNotEmpty) {

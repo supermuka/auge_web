@@ -10,7 +10,6 @@ import 'package:angular_components/laminate/enums/alignment.dart';
 
 import 'package:auge_shared/domain/objective/objective.dart';
 import 'package:auge_shared/domain/general/user.dart';
-
 import 'package:auge_shared/message/messages.dart';
 import 'package:auge_shared/message/domain_messages.dart';
 

@@ -30,9 +30,6 @@ import 'package:auge_shared/domain/general/user_access.dart';
 
 import 'package:auge_shared/message/messages.dart';
 
-
-
-
 @Component(
   selector: 'auge-auth',
   templateUrl: 'auth_component.html',
@@ -99,7 +96,7 @@ class AuthComponent implements OnActivate {
   static final String headerTitleLabel =  CommonMsg.label(CommonMsg.headerTitleLabel);
   static final String headerSubtitleLabel = CommonMsg.label(CommonMsg.headerSubtitleLabel);
 
-  final String loginLabel = AuthMsg.label(AuthMsg.loginLabel);
+  static final String loginLabel = AuthMsg.label(AuthMsg.loginLabel);
   static final String organizationLabel = AuthMsg.label(AuthMsg.organizationLabel);
 
   static final String requiredValueMsg = CommonMsg.requiredValueMsg();
