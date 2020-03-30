@@ -75,7 +75,11 @@ class WorksSummaryComponent with CanReuse implements OnInit {
   }
 
   void goToWorks() {
-    _router.navigate(AppRoutes.worksByObjectiveRoute.toUrl(parameters: { AppRoutesParam.objectiveIdParameter:objectiveId}));
+    _router.navigate(AppRoutes.worksByObjectiveRoute.toUrl(parameters: { AppRoutesParam.objectiveIdParameter: objectiveId}));
+  }
+
+  void goToWorkItemsKanban(String workId) {
+    _router.navigate(AppRoutes.workItemsKanbanViaObjectiveRoute.toUrl(parameters: { AppRoutesParam.objectiveIdParameter: objectiveId, AppRoutesParam.workIdParameter: workId}));
   }
 
   String userUrlImage(String userProfileImage) {

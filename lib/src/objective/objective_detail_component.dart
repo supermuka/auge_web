@@ -237,10 +237,7 @@ class ObjectiveDetailComponent implements OnInit, OnActivate, OnDeactivate {
   void closeDetail([String objectiveId]) {
     _router.navigate(previousPath, (objectiveId != null) ? NavigationParams(queryParameters: {AppRoutesQueryParam.objectiveIdQueryParameter: objectiveId}, replace: true) : NavigationParams(replace: true),
     );
-    /*
-    _router.navigate(previousPath, (objectiveId != null) ? NavigationParams(queryParameters: {AppRoutesQueryParam.objectiveIdQueryParameter: objectiveId}, replace: true) : NavigationParams(replace: true),
-        );
-  */
+
     //  _location.back();
   }
 

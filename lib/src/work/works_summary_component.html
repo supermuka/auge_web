@@ -6,11 +6,11 @@
         <div name>
             <span><strong>{{worksLabel}}</strong></span>
         </div>
-        <div action>
+        <!-- div action>
             <material-button icon (trigger)="goToWorks()">
                 <material-icon icon="launch"></material-icon>
             </material-button>
-        </div>
+        </div -->
         <material-expansionpanel-set>
             <div class="works-vertical-size" *deferredContent>
                 <div *ngFor="let iWork of works;let i = index">
@@ -59,6 +59,11 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div action>
+                            <material-button icon (trigger)="goToWorkItemsKanban(iWork.id)">
+                                <material-icon icon="launch"></material-icon>
+                            </material-button>
                         </div>
                     </material-expansionpanel>
                 </div>

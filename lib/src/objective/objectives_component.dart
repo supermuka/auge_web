@@ -44,6 +44,7 @@ import 'package:auge_web/src/objective/objective_detail_component.template.dart'
 import 'package:auge_web/src/measure/measure_detail_component.template.dart' as measure_detail_component;
 import 'package:auge_web/src/measure/measure_progress_component.template.dart' as measure_progress_component;
 
+
 @Component(
     selector: 'auge-objectives',
     providers: const [ObjectiveService, GroupService, UserService, HistoryTimelineService],
@@ -103,6 +104,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
       routePath: AppRoutes.measureProgressesAddRoute,
       component: measure_progress_component.MeasureProgressComponentNgFactory,
     ),
+
   ];
 
  // Map<String, String> queryParametersToFoward;
@@ -327,7 +329,6 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
   }
 */
 
-  @override
   Future<List<Objective>> getObjetives([String objectiveId]) async {
     List<Objective> objectivesAux =  await _objectiveService.getObjectives(
         _objectiveService.authService.authorizedOrganization.id, objectiveId: objectiveId, withMeasures: true, withProfile: true);

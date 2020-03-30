@@ -48,7 +48,6 @@ import 'package:auge_web/src/gantt/gantt_component.template.dart' as gantt_compo
 import 'package:auge_web/src/objective/objectives_component.template.dart' as objectives_component;
 import 'package:auge_web/src/group/groups_component.template.dart' as groups_component;
 import 'package:auge_web/src/organization/organization_component.template.dart' as organization_component;
-
 import 'package:auge_web/src/work_item/work_items_kanban_component.template.dart' as work_items_kanban_component;
 
 @Component(
@@ -147,6 +146,10 @@ class AppLayoutComponent with CanReuse implements OnActivate {
     ),
     RouteDefinition(
       routePath: AppRoutes.workItemsKanbanRoute,
+      component: work_items_kanban_component.WorkItemsKanbanComponentNgFactory,
+    ),
+    RouteDefinition(
+      routePath: AppRoutes.workItemsKanbanViaObjectiveRoute,
       component: work_items_kanban_component.WorkItemsKanbanComponentNgFactory,
     ),
   ];
@@ -270,9 +273,14 @@ class AppLayoutComponent with CanReuse implements OnActivate {
     return (_authService.authenticatedUser != null);
   }
 
-  void goTo(String url, {bool reload = false, bool replace = false, bool updateUrl = false}) {
+  void goTo(String url, {bool reload = false}) {
     if (url != null) {
-      _router.navigate(url, NavigationParams(reload: reload, replace: replace, updateUrl: updateUrl));
+      if (reload) {
+        _router.navigate(url, NavigationParams(reload: reload));
+      } else {
+        _router.navigate(url);
+      }
+
      // _router.navigateByUrl(url, reload: reload, replace: replace);
     }
   }

@@ -45,6 +45,10 @@ class AppRoutes {
       path:  AppRoutesPath.workItemsKanbanRoute, // 'works/:${AppRoutesParam.workIdParameter}/kanban_work_items',
       parent: appLayoutRoute
   );
+  static final workItemsKanbanViaObjectiveRoute = RoutePath(
+      path:  AppRoutesPath.workItemsKanbanViaObjectiveRoute, // 'works/:${AppRoutesParam.workIdParameter}/kanban_work_items',
+      parent: appLayoutRoute
+  );
   static final workStagesRoute = RoutePath(
       path: AppRoutesPath.workStagesRoutePath, // ':${AppRoutesParam.workIdParameter}/stages',
       parent: worksRoute
