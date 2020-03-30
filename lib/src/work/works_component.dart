@@ -117,7 +117,7 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
   Work selectedWork;
   String initialWorkId;
   String expandedWorkId;
-  bool hasFilter = false;
+ // bool hasFilter = false;
 
   List<FilterOption> workFilterOptions;
   List<FilterOption> groupFilterOptions;
@@ -196,6 +196,18 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
     }
     // (!_timelineVisible) ?mainColWidth = '100%' : mainColWidth = '75%';
   }
+/*
+  @override
+  Future<bool> canReuse(RouterState current, RouterState next) async {
+    // To treat CanReuse. Just define cache 'true' when this component is called from/to yours children
+    if (current.routePath?.path == next.routePath?.parent?.path || current.routePath?.parent?.path == next.routePath?.path) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+ */
 
   void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
 
@@ -217,11 +229,11 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
       initialWorkId = routerStateCurrent.queryParameters[AppRoutesQueryParam.workIdQueryParameter];
 
       // Filter ids informed.
-
+/*
       if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.filter)) {
         hasFilter = (routerStateCurrent.queryParameters[AppRoutesQueryParam.filter].toLowerCase() == 'true');
       }
-
+*/
       // Used just first time, to remove queryParam initialObjectiveId.
       /*
       _router.navigate(routerStateCurrent.path, NavigationParams(queryParameters: Map.from(routerStateCurrent.queryParameters)..remove(AppRoutesQueryParam.objectiveIdQueryParameter)..remove(AppRoutesQueryParam.filter), replace: true));
@@ -249,13 +261,20 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
 
       if (initialWorkId != null) {
 
+     //   if (hasFilter) {
+          initialWorksIdSelectedToFilter = [initialWorkId];
+       //   hasFilter = false;
+        } else {
+          initialWorksIdSelectedToFilter = null;
+
+/*
         if (hasFilter) {
           initialWorksIdSelectedToFilter = [initialWorkId];
           hasFilter = false;
         } else {
           initialWorksIdSelectedToFilter = null;
         }
-
+*/
         //expandedObjectiveId = initialObjectiveId;
         setExpandedWorkId(initialWorkId, true);
 

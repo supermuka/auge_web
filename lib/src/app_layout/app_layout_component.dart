@@ -270,9 +270,10 @@ class AppLayoutComponent with CanReuse implements OnActivate {
     return (_authService.authenticatedUser != null);
   }
 
-  void goTo(String url, {bool reload = false}) {
+  void goTo(String url, {bool reload = false, bool replace = false, bool updateUrl = false}) {
     if (url != null) {
-      _router.navigate(url, NavigationParams(reload: reload));
+      _router.navigate(url, NavigationParams(reload: reload, replace: replace, updateUrl: updateUrl));
+     // _router.navigateByUrl(url, reload: reload, replace: replace);
     }
   }
 

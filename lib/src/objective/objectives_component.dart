@@ -70,7 +70,7 @@ import 'package:auge_web/src/measure/measure_progress_component.template.dart' a
     ],
     pipes: const [commonPipes])
 
-class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActivate, OnDeactivate, OnDestroy {
+class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActivate, OnDestroy {
 
   final AppLayoutService _appLayoutService;
   final ObjectiveService _objectiveService;
@@ -105,19 +105,21 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
     ),
   ];
 
+ // Map<String, String> queryParametersToFoward;
+
   List<Objective> _objectives = [];
  // List<Objective> get objectiveFilterOptions => _objectives;
   List<FilterOption> objectiveFilterOptions;
   List<FilterOption> groupFilterOptions;
   List<FilterOption> leaderFilterOptions;
 
-  List<String> initialObjectivesIdSelectedToFilter;
   List<String> objectivesIdSelectedToFilter = [];
   List<String> groupsIdSelectedToFilter = [];
   List<String> leadersIdSelectedToFilter = [];
 
   // Just used to default and controler when dispatcher ´set´
   List<String> initialFilterOptionsIdsSelected;
+  List<String> initialFilterOptionsIdsSelectedObjectives;
 
   // Map<Objective, bool> expandedControl = Map();
   String expandedObjectiveId;
@@ -190,6 +192,11 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
       _router.navigate(AppRoutes.authRoute.toUrl());
       return;
     }
+
+    //queryParametersToFoward = routerStateCurrent.queryParameters;
+
+    //initialFilterOptionsIdsSelected = null;
+    //initialFilterOptionsIdsSelectedObjectives = null;
 /*
     if (routerStatePrevious.toUrl() == AppRoutes.objectivesRoute.toUrl() ||
         (routerStatePrevious.toUrl() == AppRoutes.objectiveAddRoute.toUrl() && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.objectiveIdQueryParameter) ||
@@ -200,10 +207,11 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
       initialObjectiveId = routerStateCurrent.queryParameters[AppRoutesQueryParam.objectiveIdQueryParameter];
 
       // Filter ids informed.
-
+      /*
       if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.filter)) {
         hasFilter = (routerStateCurrent.queryParameters[AppRoutesQueryParam.filter].toLowerCase() == 'true');
       }
+       */
 
       // Used just first time, to remove queryParam initialObjectiveId.
   /*
@@ -228,18 +236,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
       objectivesAux = await getObjetives( /*specificObjectiveId */);
      // _sortObjectives();
 
-      if (initialObjectiveId != null) {
 
-        if (hasFilter) {
-          initialObjectivesIdSelectedToFilter = [initialObjectiveId];
-          hasFilter = false;
-        } else {
-          initialObjectivesIdSelectedToFilter = null;
-        }
-
-        expandedObjectiveId = initialObjectiveId;
-
-      }
 
       // Select options to filter.
       Map<String, FilterOption> objectives = {};
@@ -263,25 +260,74 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
       groupFilterOptions = groupFilterOptionsAux;
       leaderFilterOptions = leaderFilterOptionsAux;
 
-      initialFilterOptionsIdsSelected = [];
       // If not have initial id, set field to empty list `[]` to dispatch angular behaviour
-      if (initialObjectivesIdSelectedToFilter == null) initialObjectivesIdSelectedToFilter = [];
+      initialFilterOptionsIdsSelected = [];
+
+      if (initialObjectiveId != null) {
+        initialFilterOptionsIdsSelectedObjectives = [initialObjectiveId];
+
+     /*   if (hasFilter) {
+          initialFilterOptionsIdsSelectedObjectives = [initialObjectiveId];
+
+        } else {
+          initialFilterOptionsIdsSelectedObjectives = null;
+        }
+*/
+      //expandedObjectiveId = initialObjectiveId;
+  //    } else {
+     //   initialFilterOptionsIdsSelectedObjectives = [];
+      } else {
+          if (initialFilterOptionsIdsSelectedObjectives == null || initialFilterOptionsIdsSelectedObjectives.isEmpty) {
+            initialFilterOptionsIdsSelectedObjectives = [];
+          } else {
+            // Need to make to dispatcher angular input
+            List<String> l = initialFilterOptionsIdsSelectedObjectives;
+            initialFilterOptionsIdsSelectedObjectives = []..addAll(l);
+
+
+          }
+
+       }
+
 
       _objectives = objectivesAux;
 
       if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.objectives.index);
 
-      if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.objectiveIdQueryParameter)) {
-        setExpandedObjectiveId(routerStateCurrent.queryParameters[AppRoutesQueryParam
-            .objectiveIdQueryParameter], true);
-      }
+    //  if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.objectiveIdQueryParameter)) {
+    //    setExpandedObjectiveId(initialObjectiveId, true);
+    //  }
+/*
+
+      // TODO: Needs to find a better way to set null to `expandedObjectiveId`
+      if (expandedObjectiveId != null && !(routerStatePrevious.routePath.path == routerStateCurrent.routePath.parent.path || routerStateCurrent.routePath.path == routerStatePrevious.routePath.parent.path)) {
+        expandedObjectiveId = null;
+      } else {
+        */
+        if (initialObjectiveId != null) {
+          setExpandedObjectiveId(initialObjectiveId, true);
+        }
+    //  }
 
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;
     }
   }
+/*
+  Future<bool> canReuse(RouterState current, RouterState next) async {
 
+    // To treat CanReuse. Just define cache 'true' when this component is called from/to yours children
+    if (current.routePath?.path == next.routePath?.parent?.path || current.routePath?.parent?.path == next.routePath?.path) {
+      return true;
+    } else {
+      return false;
+    }
+
+  }
+*/
+
+  @override
   Future<List<Objective>> getObjetives([String objectiveId]) async {
     List<Objective> objectivesAux =  await _objectiveService.getObjectives(
         _objectiveService.authService.authorizedOrganization.id, objectiveId: objectiveId, withMeasures: true, withProfile: true);
@@ -303,16 +349,17 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
   }
 
   // This is necessary, to control when this component is recalled when navagate to
+  /*
   @override
   void onDeactivate(RouterState current, RouterState next) {
     initialObjectivesIdSelectedToFilter = null;
     expandedObjectiveId = null;
   }
+*/
 
   @override
   ngOnDestroy() async {
     _appLayoutService.enabledSearch = false;
-
   }
 
   void selectObjective(Objective objective) {
@@ -369,7 +416,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
 
       if (element != null) {
 
-        element.scrollIntoView(html.ScrollAlignment.TOP);
+        //element.scrollIntoView(html.ScrollAlignment.TOP);
         // Modal, needs to await the dom elements creation.
 
         Future.delayed(Duration.zero, () {
@@ -381,7 +428,6 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
       }
     }
   }
-
 
   setExpandedObjectiveId(String objectiveId, bool expanded) {
     if (expanded) {

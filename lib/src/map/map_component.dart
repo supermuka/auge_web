@@ -49,7 +49,7 @@ import 'package:angular_components/material_tooltip/module.dart';
   ],
 )
 
-class MapComponent /* with CanReuse  COMENTADO POIS SE USAR, O TOOLTIP NÃO DESAPARECE QUANDO SE NAVEGA PARA OUTRA PÁGINA */ implements OnActivate {
+class MapComponent with CanReuse  /* COMENTADO POIS SE USAR, O TOOLTIP NÃO DESAPARECE QUANDO SE NAVEGA PARA OUTRA PÁGINA */ implements OnActivate {
 
   final preferredTooltipPositions = const [RelativePosition.OffsetBottomLeft, RelativePosition.OffsetBottomRight];
 
@@ -107,7 +107,7 @@ class MapComponent /* with CanReuse  COMENTADO POIS SE USAR, O TOOLTIP NÃO DESA
 
   void goToObjective(Objective objective) async {
 
-    _router.navigateByUrl(AppRoutes.objectivesRoute.toUrl(queryParameters: { AppRoutesQueryParam.objectiveIdQueryParameter: objective.id,  AppRoutesQueryParam.filter: 'true'}));
+    _router.navigateByUrl(AppRoutes.objectivesRoute.toUrl(queryParameters: { AppRoutesQueryParam.objectiveIdQueryParameter: objective.id /*,  AppRoutesQueryParam.filter: 'true' */}));
   }
 
   String colorFromUuid(String id) {

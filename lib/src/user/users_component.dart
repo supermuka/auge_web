@@ -106,6 +106,18 @@ class UsersComponent with CanReuse implements OnActivate {
     }
     // (!_timelineVisible) ?mainColWidth = '100%' : mainColWidth = '75%';
   }
+/*
+  @override
+  Future<bool> canReuse(RouterState current, RouterState next) async {
+    // To treat CanReuse. Just define cache 'true' when this component is called from/to yours children
+    if (current.routePath?.path == next.routePath?.parent?.path || current.routePath?.parent?.path == next.routePath?.path) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+ */
 
   void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
     if (_userService.authService.authorizedOrganization == null || _userService.authService.authenticatedUser == null) {

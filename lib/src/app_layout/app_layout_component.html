@@ -15,7 +15,7 @@
             </material-list-item>
         </div>
         <div group>
-            <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(objectivesRouteUrl, reload: true)">
+            <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(objectivesRouteUrl)">
                 <material-icon icon="visibility"></material-icon>{{objectivesLabel}}
             </material-list-item>
             <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(worksRouteUrl)">

@@ -91,12 +91,8 @@ class FilterComponent  /* implements AfterChanges */ {
   /// Put ids to select specific or empty list `[]` to select all. If null, nothing is selected.
   @Input()
   set initialFilterOptionsIdsSelected(List<String> _initialFilterOptionsIdsSelected) {
-    //if (filterStringSelectionOptions == null) {
-    //  optionsNullAndInitialCalled = true;
-    //  this._initialFilterOptionsIdsSelected = _initialFilterOptionsIdsSelected;
-    //} else {
-      // if _initialFilterOptionsIdsSelected == [] all is selected.  This [] is used to dispatch this `set` and as we don't used empty filter on initial screen, this alternative was used to this finality.
 
+     // if _initialFilterOptionsIdsSelected == [] all is selected.  This [] is used to dispatch this `set` and as we don't used empty filter on initial screen, this alternative was used to this finality.
     if (filterStringSelectionOptions != null) {
       if (_initialFilterOptionsIdsSelected != null &&
           _initialFilterOptionsIdsSelected.isNotEmpty) {
@@ -119,29 +115,6 @@ class FilterComponent  /* implements AfterChanges */ {
   static final String emptyLabel = CommonMsg.label(CommonMsg.emptyLabel);
 
   get filterComposeLabel => '${filterLabel} ${filterNameLabel}';
-
-/*
-  @override
-  void ngAfterChanges()  {
-
-      if (_filterOptions != null) {
-
-        // Deselect, if exists something.
-        for (FilterOption option in filterOptionMultiSelectModel.selectedValues) {
-          filterOptionMultiSelectModel.deselect(option);
-        }
-
-        filterStringSelectionOptions = FilterSelectionOptions(_filterOptions);
-
-        if (initialFilterOptionsIdsSelected != null) {
-          selectSpecific(initialFilterOptionsIdsSelected);
-        } else {
-          selectAll();
-        }
-     }
-  }
-  */
-
 
   /// Label for the button for multi selection.
   String get multiSelectFilterLabel {
@@ -171,7 +144,6 @@ class FilterComponent  /* implements AfterChanges */ {
 
   void selectSpecific(List<String> filterOptionsIdToSelection) {
    // clearAll();
-
     List<FilterOption> specificFilterOptions = filterStringSelectionOptions.optionsList.where((o) => filterOptionsIdToSelection.contains(o.id)).toList();
 
     for (FilterOption filterOption in specificFilterOptions) {
@@ -181,6 +153,7 @@ class FilterComponent  /* implements AfterChanges */ {
   }
 
   void selectAll() {
+
     for (FilterOption filterOption in filterStringSelectionOptions
         .optionsList) {
       filterOptionMultiSelectModel.select(filterOption);

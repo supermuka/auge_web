@@ -128,7 +128,18 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
   void ngOnInit() {
     work = Work();
   }
+/*
+  @override
+  Future<bool> canReuse(RouterState current, RouterState next) async {
+    // To treat CanReuse. Just define cache 'true' when this component is called from/to yours children
+    if (current.routePath?.path == next.routePath?.parent?.path || current.routePath?.parent?.path == next.routePath?.path) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
+ */
 
   @override
   void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
