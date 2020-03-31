@@ -268,16 +268,6 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
       if (initialObjectiveId != null) {
         initialFilterOptionsIdsSelectedObjectives = [initialObjectiveId];
 
-     /*   if (hasFilter) {
-          initialFilterOptionsIdsSelectedObjectives = [initialObjectiveId];
-
-        } else {
-          initialFilterOptionsIdsSelectedObjectives = null;
-        }
-*/
-      //expandedObjectiveId = initialObjectiveId;
-  //    } else {
-     //   initialFilterOptionsIdsSelectedObjectives = [];
       } else {
           if (initialFilterOptionsIdsSelectedObjectives == null || initialFilterOptionsIdsSelectedObjectives.isEmpty) {
             initialFilterOptionsIdsSelectedObjectives = [];
@@ -285,12 +275,8 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
             // Need to make to dispatcher angular input
             List<String> l = initialFilterOptionsIdsSelectedObjectives;
             initialFilterOptionsIdsSelectedObjectives = []..addAll(l);
-
-
           }
-
        }
-
 
       _objectives = objectivesAux;
 

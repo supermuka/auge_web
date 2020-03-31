@@ -123,13 +123,13 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
   List<FilterOption> groupFilterOptions;
   List<FilterOption> leaderFilterOptions;
 
-  List<String> initialWorksIdSelectedToFilter;
   List<String> worksIdSelectedToFilter = [];
   List<String> groupsIdSelectedToFilter = [];
   List<String> leadersIdSelectedToFilter = [];
 
   // Just used to default and controler when dispatcher ´set´
   List<String> initialFilterOptionsIdsSelected;
+  List<String> initialFilterOptionsIdsSelectedWorks;
 
   // To control workItem [list or [kanban]
   //SelectionView workItemSelectionView;
@@ -259,26 +259,7 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
 
       List<Work> worksAux = await getWorks();
 
-      if (initialWorkId != null) {
 
-     //   if (hasFilter) {
-          initialWorksIdSelectedToFilter = [initialWorkId];
-       //   hasFilter = false;
-        } else {
-          initialWorksIdSelectedToFilter = null;
-
-/*
-        if (hasFilter) {
-          initialWorksIdSelectedToFilter = [initialWorkId];
-          hasFilter = false;
-        } else {
-          initialWorksIdSelectedToFilter = null;
-        }
-*/
-        //expandedObjectiveId = initialObjectiveId;
-        setExpandedWorkId(initialWorkId, true);
-
-      }
 /*
       if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.workIdQueryParameter)) {
         setExpandedWorkId(routerStateCurrent.queryParameters[AppRoutesQueryParam
@@ -309,8 +290,29 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
 
       initialFilterOptionsIdsSelected = [];
 
+      if (initialWorkId != null) {
+
+        //   if (hasFilter) {
+        initialFilterOptionsIdsSelectedWorks = [initialWorkId];
+        //   hasFilter = false;
+      } else {
+        /*
+        initialWorksIdSelectedToFilter = null;
+
+        //expandedObjectiveId = initialObjectiveId;
+        setExpandedWorkId(initialWorkId, true);
+*/
+        if (initialFilterOptionsIdsSelectedWorks == null || initialFilterOptionsIdsSelectedWorks.isEmpty) {
+          initialFilterOptionsIdsSelectedWorks = [];
+        } else {
+          // Need to make to dispatcher angular input
+          List<String> l = initialFilterOptionsIdsSelectedWorks;
+          initialFilterOptionsIdsSelectedWorks = []..addAll(l);
+        }
+
+      }
+
       // If not have initial id, set field to empty list `[]` to dispatch angular behaviour
-      if (initialWorksIdSelectedToFilter == null) initialWorksIdSelectedToFilter = [];
 
       _works = worksAux;
 
