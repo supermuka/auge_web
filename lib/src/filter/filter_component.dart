@@ -39,7 +39,7 @@ import 'package:auge_shared/message/messages.dart';
     MaterialIconComponent,
   ])
 
-class FilterComponent  /* implements AfterChanges */ {
+class FilterComponent /* implements  implements AfterChanges */ {
 
  // List<FilterOption> _filterOptions;
 
@@ -55,6 +55,37 @@ class FilterComponent  /* implements AfterChanges */ {
   String filterNameLabel;
 
   @Input()
+  set filter(Filter _filter) {
+    filterStringSelectionOptions = FilterSelectionOptions(_filter.filterOptions);
+
+    List<FilterOption> selectedValues;
+    if (_filter.initialIdsToFilter == null) {
+      selectedValues = null;
+    } else if (_filter.initialIdsToFilter.isEmpty)  {
+      selectedValues = [];
+    } else if (_filter.initialIdsToFilter.isNotEmpty) {
+      selectedValues = _filter.filterOptions.where((test) => _filter.initialIdsToFilter.indexWhere((testOld) => testOld == test.id) != -1).toList();
+
+    // To preserve selected values whether exists for new options.
+    } else if (filterOptionMultiSelectModel != null && filterOptionMultiSelectModel.selectedValues.length != 0) {
+      List<FilterOption> selectedValuesOld = filterOptionMultiSelectModel.selectedValues.toList();
+
+      selectedValues = _filter.filterOptions.where((test) => selectedValuesOld.indexWhere((testOld) => testOld.id == test.id) != -1).toList();
+    }
+    filterOptionMultiSelectModel = SelectionModel<FilterOption>.multi();
+
+    filterOptionMultiSelectModel.selectionChanges.listen((_) {
+      _filterOptionsIdSelection.add( filterOptionMultiSelectModel.selectedValues.map((m) => m?.id).toList());
+    });
+
+    if (selectedValues == null) {
+      selectAll();
+    } else if (selectedValues != null && selectedValues.length > 0) {
+      selectSpecifics(selectedValues);
+    }
+  }
+
+  @Input()
   set filterOptions(List<FilterOption> _filterOptions) {
 
     if (_filterOptions != null) {
@@ -63,10 +94,26 @@ class FilterComponent  /* implements AfterChanges */ {
      // for (FilterOption option in filterOptionMultiSelectModel.selectedValues) {
      //   filterOptionMultiSelectModel.deselect(option);
      // }
+
       filterStringSelectionOptions = FilterSelectionOptions(_filterOptions);
 
-      filterOptionMultiSelectModel = SelectionModel<FilterOption>.multi();
+      // To preserve selected values whether exists for new options.
+      /*
+      List<FilterOption> selectedValues;
+      if (filterOptionMultiSelectModel != null && filterOptionMultiSelectModel.selectedValues.length != 0) {
+        List<FilterOption> selectedValuesOld = filterOptionMultiSelectModel.selectedValues.toList();
 
+        selectedValues = _filterOptions.where((test) => selectedValuesOld.indexWhere((testOld) => testOld.id == test.id) != -1).toList();
+      }
+
+      if (selectedValues != null && selectedValues.length > 0)  {
+        filterOptionMultiSelectModel = SelectionModel<FilterOption>.multi(selectedValues: selectedValues);
+      } else {
+       */
+        filterOptionMultiSelectModel = SelectionModel<FilterOption>.multi();
+       /*
+      }
+*/
       filterOptionMultiSelectModel.selectionChanges.listen((_) {
 
         _filterOptionsIdSelection.add( filterOptionMultiSelectModel.selectedValues.map((m) => m?.id).toList());
@@ -103,6 +150,7 @@ class FilterComponent  /* implements AfterChanges */ {
     }
   }
 
+
   final _filterOptionsIdSelection = StreamController<List<String>>();
   @Output()
   Stream<List<String>> get changeSelection => _filterOptionsIdSelection.stream;
@@ -133,12 +181,20 @@ class FilterComponent  /* implements AfterChanges */ {
   @ViewChild(MaterialSelectSearchboxComponent)
   MaterialSelectSearchboxComponent searchbox;
 
+
   void onDropdownVisibleChange(bool visible) {
     if (visible) {
       // TODO(google): Avoid using Timer.run.
       Timer.run(() {
         searchbox.focus();
       });
+    }
+  }
+
+  void selectSpecifics(List<FilterOption> filterOptionsIdToSelection) {
+    // clearAll();
+    for (FilterOption filterOption in filterOptionsIdToSelection) {
+      filterOptionMultiSelectModel.select(filterOption);
     }
   }
 
@@ -151,6 +207,7 @@ class FilterComponent  /* implements AfterChanges */ {
       filterOptionMultiSelectModel.select(filterOption);
     }
   }
+
 
   void selectAll() {
 
@@ -165,6 +222,31 @@ class FilterComponent  /* implements AfterChanges */ {
       filterOptionMultiSelectModel.deselect(filterOption);
     }
   }
+
+  ///
+/*
+  @Input()
+  set filter(Filter filter) {
+    if (filter.filterOptions != null) {
+      filterStringSelectionOptions =
+          FilterSelectionOptions(filter.filterOptions);
+
+      filterOptionMultiSelectModel = SelectionModel<FilterOption>.multi();
+
+      filterOptionMultiSelectModel.selectionChanges.listen((_) {
+        _filterOptionsIdSelection.add(
+            filterOptionMultiSelectModel.selectedValues.map((m) => m?.id)
+                .toList());
+      });
+
+      if (filter.initialIdsToFilter == null) {
+        selectAll();
+      } else {
+        selectSpecific(filter.initialIdsToFilter);
+      }
+    }
+  }
+*/
 }
 
 /// If the option does not support toString() that shows the label, the
@@ -182,9 +264,18 @@ class FilterSelectionOptions extends StringSelectionOptions<FilterOption>
   SelectableOption getSelectable(FilterOption item) => SelectableOption.Selectable;
 }
 
+
 class FilterOption {
   final String id;
   final String name;
 
   FilterOption(this.id, this.name);
+}
+
+class Filter {
+  List<FilterOption> filterOptions;
+  List<String> initialIdsToFilter;
+
+  Filter(this.filterOptions, this.initialIdsToFilter);
+
 }

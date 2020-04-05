@@ -107,7 +107,7 @@ class MapComponent /* with CanReuse   COMENTADO POIS SE USAR, O TOOLTIP NÃO DES
 
   void goToObjective(Objective objective) async {
 
-    _router.navigateByUrl(AppRoutes.objectivesRoute.toUrl(queryParameters: { AppRoutesQueryParam.objectiveIdQueryParameter: objective.id /*,  AppRoutesQueryParam.filter: 'true' */}));
+    _router.navigateByUrl(AppRoutes.objectivesRoute.toUrl(queryParameters: { AppRoutesQueryParam.objectiveIdQueryParameter: objective.id, /* AppRoutesQueryParam.filter: 'true' */}));
   }
 
   String colorFromUuid(String id) {

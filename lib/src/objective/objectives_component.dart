@@ -71,7 +71,7 @@ import 'package:auge_web/src/measure/measure_progress_component.template.dart' a
     ],
     pipes: const [commonPipes])
 
-class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActivate, OnDestroy {
+class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActivate, OnDestroy {
 
   final AppLayoutService _appLayoutService;
   final ObjectiveService _objectiveService;
@@ -115,6 +115,8 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
   List<FilterOption> groupFilterOptions;
   List<FilterOption> leaderFilterOptions;
 
+  List<FilterOption> optionsListTest;
+
   List<String> objectivesIdSelectedToFilter = [];
   List<String> groupsIdSelectedToFilter = [];
   List<String> leadersIdSelectedToFilter = [];
@@ -122,12 +124,13 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
   // Just used to default and controler when dispatcher ´set´
   List<String> initialFilterOptionsIdsSelected;
   List<String> initialFilterOptionsIdsSelectedObjectives;
+  Filter objectiveFilter;
 
   // Map<Objective, bool> expandedControl = Map();
   String expandedObjectiveId;
   Objective selectedObjective;
   String initialObjectiveId;
-  bool hasFilter = false;
+  bool filterIds = false;
   //String specificObjectiveId;
   String selectedView = 'list';
   TimelineParam timelineParam = TimelineParam();
@@ -188,12 +191,18 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
     }
   }
 
+
+  @override
   void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
 
     if (_objectiveService.authService.authorizedOrganization == null || _objectiveService.authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
       return;
     }
+
+    print('DEBUG routerStatePrevious.routePath.path ${routerStatePrevious.routePath.path}');
+    print('DEBUG routerStateCurrent.routePath.parent.path ${routerStateCurrent.routePath.parent.path}');
+    if (routerStatePrevious.routePath.path == routerStateCurrent.routePath.parent.path) return;
 
     //queryParametersToFoward = routerStateCurrent.queryParameters;
 
@@ -209,11 +218,10 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
       initialObjectiveId = routerStateCurrent.queryParameters[AppRoutesQueryParam.objectiveIdQueryParameter];
 
       // Filter ids informed.
-      /*
       if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.filter)) {
-        hasFilter = (routerStateCurrent.queryParameters[AppRoutesQueryParam.filter].toLowerCase() == 'true');
+        filterIds = (routerStateCurrent.queryParameters[AppRoutesQueryParam.filter].toLowerCase() == 'true');
       }
-       */
+
 
       // Used just first time, to remove queryParam initialObjectiveId.
   /*
@@ -236,48 +244,81 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */  OnActi
 
       List<Objective> objectivesAux = [];
       objectivesAux = await getObjetives( /*specificObjectiveId */);
-     // _sortObjectives();
-
-
+      // _sortObjectives();
 
       // Select options to filter.
       Map<String, FilterOption> objectives = {};
       Map<String, FilterOption> groups = {};
       Map<String, FilterOption> leaders = {};
-      for (int i = 0;i<objectivesAux.length;i++) {
-        objectives.putIfAbsent(objectivesAux[i].id, () => FilterOption(objectivesAux[i].id, objectivesAux[i].name));
-        groups.putIfAbsent(objectivesAux[i].group?.id, () => FilterOption(objectivesAux[i].group?.id, objectivesAux[i].group?.name));
-        leaders.putIfAbsent(objectivesAux[i].leader?.id, () => FilterOption(objectivesAux[i].leader?.id, objectivesAux[i].leader?.name));
+      for (int i = 0; i < objectivesAux.length; i++) {
+        objectives.putIfAbsent(objectivesAux[i].id, () =>
+            FilterOption(objectivesAux[i].id, objectivesAux[i].name));
+        groups.putIfAbsent(objectivesAux[i].group?.id, () => FilterOption(
+            objectivesAux[i].group?.id, objectivesAux[i].group?.name));
+        leaders.putIfAbsent(objectivesAux[i].leader?.id, () => FilterOption(
+            objectivesAux[i].leader?.id, objectivesAux[i].leader?.name));
       }
-      List<FilterOption> objectiveFilterOptionsAux = objectives.values.toList();
-      if (objectiveFilterOptionsAux.length > 1)  objectiveFilterOptionsAux.sort((a, b) => a.name == null ? 1 : b.name == null ? -1 : a.name.compareTo(b.name));
+      List<FilterOption> objectiveFilterOptionsAux = objectives.values
+          .toList();
+      if (objectiveFilterOptionsAux.length > 1) objectiveFilterOptionsAux
+          .sort((a, b) =>
+      a.name == null ? 1 : b.name == null ? -1 : a.name.compareTo(b.name));
 
       List<FilterOption> groupFilterOptionsAux = groups.values.toList();
-      if (groupFilterOptionsAux.length > 1)  groupFilterOptionsAux.sort((a, b) => a.name == null ? 1 : b.name == null ? -1 : a.name.compareTo(b.name));
+      if (groupFilterOptionsAux.length > 1) groupFilterOptionsAux.sort((a,
+          b) =>
+      a.name == null ? 1 : b.name == null ? -1 : a.name.compareTo(b.name));
 
       List<FilterOption> leaderFilterOptionsAux = leaders.values.toList();
-      if (leaderFilterOptionsAux.length > 1)  leaderFilterOptionsAux.sort((a, b) => a.name == null ? 1 : b.name == null ? -1 : a.name.compareTo(b.name));
+      if (leaderFilterOptionsAux.length > 1) leaderFilterOptionsAux.sort((a,
+          b) =>
+      a.name == null ? 1 : b.name == null ? -1 : a.name.compareTo(b.name));
 
-      objectiveFilterOptions =  objectiveFilterOptionsAux;
+      objectiveFilterOptions = objectiveFilterOptionsAux;
       groupFilterOptions = groupFilterOptionsAux;
       leaderFilterOptions = leaderFilterOptionsAux;
 
+      if (initialFilterOptionsIdsSelected == null) initialFilterOptionsIdsSelected = [];
+        // initialFilterOptionsIdsSelectedObjectives = [];
+
+      if (initialObjectiveId != null && filterIds) {
+        initialFilterOptionsIdsSelectedObjectives = [initialObjectiveId];
+      } else if (initialFilterOptionsIdsSelectedObjectives == null) {
+        initialFilterOptionsIdsSelectedObjectives = [];
+      }
+
+      objectiveFilter = Filter(objectiveFilterOptionsAux, initialObjectiveId == null ? null : [initialObjectiveId]);
+
+
+/*
+      if (objectiveFilter == null) {
+        objectiveFilter = Filter(objectiveFilterOptions,
+            initialObjectiveId == null ? null : [initialObjectiveId]);
+      } else {
+        objectiveFilter.filterOptions = objectiveFilterOptions;
+      }
+*/
+
+
       // If not have initial id, set field to empty list `[]` to dispatch angular behaviour
-      initialFilterOptionsIdsSelected = [];
+      /*
+      if (initialFilterOptionsIdsSelected == null) initialFilterOptionsIdsSelected = [];
 
       if (initialObjectiveId != null) {
         initialFilterOptionsIdsSelectedObjectives = [initialObjectiveId];
 
-      } else {
-          if (initialFilterOptionsIdsSelectedObjectives == null || initialFilterOptionsIdsSelectedObjectives.isEmpty) {
+      } else  {
+          if (initialFilterOptionsIdsSelectedObjectives == null || initialFilterOptionsIdsSelectedObjectives.isEmpty)  {
             initialFilterOptionsIdsSelectedObjectives = [];
+
           } else {
             // Need to make to dispatcher angular input
             List<String> l = initialFilterOptionsIdsSelectedObjectives;
             initialFilterOptionsIdsSelectedObjectives = []..addAll(l);
+
           }
        }
-
+*/
       _objectives = objectivesAux;
 
       if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.objectives.index);
