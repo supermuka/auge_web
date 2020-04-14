@@ -85,6 +85,7 @@ class FilterComponent /* implements  implements AfterChanges */ {
     }
   }
 
+  /*
   @Input()
   set filterOptions(List<FilterOption> _filterOptions) {
 
@@ -134,7 +135,9 @@ class FilterComponent /* implements  implements AfterChanges */ {
 
     }
   }
+*/
 
+  /*
   /// Put ids to select specific or empty list `[]` to select all. If null, nothing is selected.
   @Input()
   set initialFilterOptionsIdsSelected(List<String> _initialFilterOptionsIdsSelected) {
@@ -150,6 +153,7 @@ class FilterComponent /* implements  implements AfterChanges */ {
     }
   }
 
+   */
 
   final _filterOptionsIdSelection = StreamController<List<String>>();
   @Output()
@@ -197,7 +201,7 @@ class FilterComponent /* implements  implements AfterChanges */ {
       filterOptionMultiSelectModel.select(filterOption);
     }
   }
-
+/*
   void selectSpecific(List<String> filterOptionsIdToSelection) {
    // clearAll();
     List<FilterOption> specificFilterOptions = filterStringSelectionOptions.optionsList.where((o) => filterOptionsIdToSelection.contains(o.id)).toList();
@@ -208,7 +212,7 @@ class FilterComponent /* implements  implements AfterChanges */ {
     }
   }
 
-
+*/
   void selectAll() {
 
     for (FilterOption filterOption in filterStringSelectionOptions

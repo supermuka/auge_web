@@ -108,9 +108,7 @@ body {
 
 .avatar-size {
   display: inline-block;
-
   vertical-align: middle;
-
   text-align: center;
 
   width: 40px;
@@ -133,7 +131,9 @@ body {
 
   /* This image is 687 wide by 1024 tall, similar to your aspect ratio */
   /* background-image: url(''); */
+  display: inline-block;
   vertical-align: middle;
+  text-align: center;
 
   /* make a square container */
   width: 24px;
@@ -148,13 +148,10 @@ body {
   background-position: center;
 
   /* baseado no left-icon no material_chip */
-  margin-left: -4px;
-  margin-right: 4px;
-  padding: 3px;
 
   /* round the edges to a circle with border radius 1/2 container size */
-  /* border-radius: 50%; */
-  display: inline-block;
+  border-radius: 50%;
+
 }
 
 .text-group-letter {

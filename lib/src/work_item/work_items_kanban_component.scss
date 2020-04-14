@@ -18,6 +18,8 @@ header {
 
 .custom-expansionpanel-panel-specific-name-width {
   width: 100%;
+  min-width: 100px;
+  max-width: 100px;
 }
 
 .container-flex-row {
@@ -78,7 +80,7 @@ header {
 }
 
 .column-stage {
-  padding: 2px;
+  padding: 0px;
   margin: 0px;
 }
 
@@ -86,3 +88,28 @@ header {
    border-right: 1px solid $mat-gray;
 }
 
+.name-ellipse {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.panel-name-max-width {
+  @include expansionpanel-panel-name-max-width(320px);
+  //max-width: 50px;
+}
+
+.no-border {
+  @include expansionpanel-no-border();
+}
+
+.flat-on-collapse-theme {
+  @include expansionpanel-flat-on-collapse-theme();
+}
+
+
+.shadow {
+  @include expansionpanel-shadow(2px);
+}

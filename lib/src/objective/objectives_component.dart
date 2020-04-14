@@ -111,20 +111,23 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
 
   List<Objective> _objectives = [];
  // List<Objective> get objectiveFilterOptions => _objectives;
+  /*
   List<FilterOption> objectiveFilterOptions;
   List<FilterOption> groupFilterOptions;
   List<FilterOption> leaderFilterOptions;
 
   List<FilterOption> optionsListTest;
-
+*/
   List<String> objectivesIdSelectedToFilter = [];
   List<String> groupsIdSelectedToFilter = [];
   List<String> leadersIdSelectedToFilter = [];
 
-  // Just used to default and controler when dispatcher ´set´
-  List<String> initialFilterOptionsIdsSelected;
+  //List<String> initialFilterOptionsIdsSelected;
   List<String> initialFilterOptionsIdsSelectedObjectives;
+
   Filter objectiveFilter;
+  Filter groupFilter;
+  Filter leaderFilter;
 
   // Map<Objective, bool> expandedControl = Map();
   String expandedObjectiveId;
@@ -200,8 +203,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
       return;
     }
 
-    print('DEBUG routerStatePrevious.routePath.path ${routerStatePrevious.routePath.path}');
-    print('DEBUG routerStateCurrent.routePath.parent.path ${routerStateCurrent.routePath.parent.path}');
+    // If previous path equal current parent path, doent´s need to call this again. I.e. add or edit detail.
     if (routerStatePrevious.routePath.path == routerStateCurrent.routePath.parent.path) return;
 
     //queryParametersToFoward = routerStateCurrent.queryParameters;
@@ -273,22 +275,24 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
       if (leaderFilterOptionsAux.length > 1) leaderFilterOptionsAux.sort((a,
           b) =>
       a.name == null ? 1 : b.name == null ? -1 : a.name.compareTo(b.name));
-
+/*
       objectiveFilterOptions = objectiveFilterOptionsAux;
       groupFilterOptions = groupFilterOptionsAux;
       leaderFilterOptions = leaderFilterOptionsAux;
 
       if (initialFilterOptionsIdsSelected == null) initialFilterOptionsIdsSelected = [];
         // initialFilterOptionsIdsSelectedObjectives = [];
+*/
 
       if (initialObjectiveId != null && filterIds) {
         initialFilterOptionsIdsSelectedObjectives = [initialObjectiveId];
-      } else if (initialFilterOptionsIdsSelectedObjectives == null) {
-        initialFilterOptionsIdsSelectedObjectives = [];
+      } else if (!filterIds) {
+        initialFilterOptionsIdsSelectedObjectives = null;
       }
 
-      objectiveFilter = Filter(objectiveFilterOptionsAux, initialObjectiveId == null ? null : [initialObjectiveId]);
-
+      objectiveFilter = Filter(objectiveFilterOptionsAux, initialFilterOptionsIdsSelectedObjectives);
+      groupFilter = Filter(groupFilterOptionsAux, null);
+      leaderFilter = Filter(leaderFilterOptionsAux, null);
 
 /*
       if (objectiveFilter == null) {
@@ -319,7 +323,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
           }
        }
 */
-      _objectives = objectivesAux;
+       _objectives = objectivesAux;
 
       if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.objectives.index);
 

@@ -17,10 +17,12 @@ import 'package:angular_components/material_checkbox/material_checkbox.dart';
 import 'package:angular_components/material_toggle/material_toggle.dart';
 import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
+import 'package:angular_components/material_menu/material_menu.dart';
 import 'package:angular_components/model/menu/menu.dart';
 import 'package:angular_components/model/ui/icon.dart';
+
 import 'package:angular_components/content/deferred_content.dart';
-import 'package:angular_components/material_menu/material_menu.dart';
+
 import 'package:auge_web/src/work/work_summary_component.dart';
 
 import 'package:auge_shared/domain/general/authorization.dart';

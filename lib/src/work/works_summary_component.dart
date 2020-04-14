@@ -42,17 +42,17 @@ import 'package:auge_web/route/app_routes.dart';
       WorkSummaryComponent,
     ])
 
-class WorksSummaryComponent with CanReuse implements OnInit {
+class WorksSummaryComponent /* with CanReuse */ implements OnInit {
 
   final WorkService _workService;
   final Router _router;
  // final AuthService _authService;
   final AppLayoutService _appLayoutService;
 
+  List<Work> works;
+
   @Input()
   String objectiveId;
-
-  List<Work> works = [];
 
   WorksSummaryComponent(this._appLayoutService, this._workService,  this._router);
 
@@ -62,16 +62,20 @@ class WorksSummaryComponent with CanReuse implements OnInit {
 
   @override
   ngOnInit() async {
-    try {
+
       if (objectiveId != null) {
-        works = await _workService.getWorks(
-            this._workService.authService.authorizedOrganization.id, objectiveId: objectiveId,
-            withWorkItems: true, withProfile: true);
+        try {
+          works = await _workService.getWorks(
+                this._workService.authService.authorizedOrganization.id,
+                objectiveId: objectiveId,
+                withWorkItems: true, withProfile: true);
+        } catch (e) {
+          _appLayoutService.error = e.toString();
+          rethrow;
+        }
+
       }
-    } catch (e) {
-      _appLayoutService.error = e.toString();
-      rethrow;
-    }
+
   }
 
   void goToWorks() {

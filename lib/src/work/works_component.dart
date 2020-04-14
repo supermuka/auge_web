@@ -116,20 +116,26 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
   List<Work> _works = List();
   Work selectedWork;
   String initialWorkId;
+  bool filterIds = false;
   String expandedWorkId;
  // bool hasFilter = false;
-
+/*
   List<FilterOption> workFilterOptions;
   List<FilterOption> groupFilterOptions;
   List<FilterOption> leaderFilterOptions;
+*/
 
   List<String> worksIdSelectedToFilter = [];
   List<String> groupsIdSelectedToFilter = [];
   List<String> leadersIdSelectedToFilter = [];
 
   // Just used to default and controler when dispatcher ´set´
-  List<String> initialFilterOptionsIdsSelected;
+ // List<String> initialFilterOptionsIdsSelected;
   List<String> initialFilterOptionsIdsSelectedWorks;
+
+  Filter workFilter;
+  Filter groupFilter;
+  Filter leaderFilter;
 
   // To control workItem [list or [kanban]
   //SelectionView workItemSelectionView;
@@ -215,6 +221,9 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
       _router.navigate(AppRoutes.authRoute.toUrl());
       return;
     }
+
+    // If previous path equal current parent path, doent´s need to call this again. I.e. add or edit detail.
+    if (routerStatePrevious.routePath.path == routerStateCurrent.routePath.parent.path) return;
 /*
     if (routerStatePrevious.toUrl() == AppRoutes.worksRoute.toUrl() ||
         (routerStatePrevious.toUrl() == AppRoutes.workAddRoute.toUrl() && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.workIdQueryParameter) ||
@@ -227,6 +236,11 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
     // Expand panel whether [Id] objective is informed.
     if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.workIdQueryParameter)) {
       initialWorkId = routerStateCurrent.queryParameters[AppRoutesQueryParam.workIdQueryParameter];
+
+      // Filter ids informed.
+      if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.filter)) {
+        filterIds = (routerStateCurrent.queryParameters[AppRoutesQueryParam.filter].toLowerCase() == 'true');
+      }
 
       // Filter ids informed.
 /*
@@ -275,8 +289,8 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
         groups.putIfAbsent(worksAux[i].group?.id, () => FilterOption(worksAux[i].group?.id, worksAux[i].group?.name));
         leaders.putIfAbsent(worksAux[i].leader?.id, () => FilterOption(worksAux[i].leader?.id, worksAux[i].leader?.name));
       }
-      List<FilterOption> objectiveFilterOptionsAux = works.values.toList();
-      if (objectiveFilterOptionsAux.length > 1)  objectiveFilterOptionsAux.sort((a, b) => a.name == null ? 1 : b.name == null ? -1 : a.name.compareTo(b.name));
+      List<FilterOption> workFilterOptionsAux = works.values.toList();
+      if (workFilterOptionsAux.length > 1)  workFilterOptionsAux.sort((a, b) => a.name == null ? 1 : b.name == null ? -1 : a.name.compareTo(b.name));
 
       List<FilterOption> groupFilterOptionsAux = groups.values.toList();
       if (groupFilterOptionsAux.length > 1)  groupFilterOptionsAux.sort((a, b) => a.name == null ? 1 : b.name == null ? -1 : a.name.compareTo(b.name));
@@ -284,11 +298,13 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
       List<FilterOption> leaderFilterOptionsAux = leaders.values.toList();
       if (leaderFilterOptionsAux.length > 1)  leaderFilterOptionsAux.sort((a, b) => a.name == null ? 1 : b.name == null ? -1 : a.name.compareTo(b.name));
 
+      /*
       workFilterOptions =  objectiveFilterOptionsAux;
       groupFilterOptions = groupFilterOptionsAux;
       leaderFilterOptions = leaderFilterOptionsAux;
 
       initialFilterOptionsIdsSelected = [];
+
 
       if (initialWorkId != null) {
 
@@ -311,8 +327,17 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
         }
 
       }
+      */
 
-      // If not have initial id, set field to empty list `[]` to dispatch angular behaviour
+      if (initialWorkId != null && filterIds) {
+        initialFilterOptionsIdsSelectedWorks = [initialWorkId];
+      } else if (!filterIds) {
+        initialFilterOptionsIdsSelectedWorks = null;
+      }
+
+      workFilter = Filter(workFilterOptionsAux, initialFilterOptionsIdsSelectedWorks);
+      groupFilter = Filter(groupFilterOptionsAux, null);
+      leaderFilter = Filter(leaderFilterOptionsAux, null);
 
       _works = worksAux;
 

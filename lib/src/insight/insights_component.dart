@@ -90,9 +90,13 @@ class InsightsComponent with CanReuse implements OnActivate  {
 
   List<Objective> _objectives = [];
   List<Work> _works = [];
-  List<FilterOption> groupFilterOptions;
+
+  Filter groupFilter;
+  Filter leaderFilter;
+
+ // List<FilterOption> groupFilterOptions;
   List<String> groupsIdSelectedToFilter = [];
-  List<FilterOption> leaderFilterOptions;
+ // List<FilterOption> leaderFilterOptions;
   List<String> usersIdSelectedToFilter = [];
 
   List<String> initialFilterOptionsIdsSelected = [];
@@ -191,11 +195,13 @@ class InsightsComponent with CanReuse implements OnActivate  {
         List<FilterOption> leaderFilterOptionsAux = leaders.values.toList();
         if (leaderFilterOptionsAux.length > 1)  leaderFilterOptionsAux.sort((a, b) => a.name == null ? 1 : b.name == null ? -1 : a.name.compareTo(b.name));
 
-        groupFilterOptions = groupFilterOptionsAux;
-        leaderFilterOptions = leaderFilterOptionsAux;
+      //  groupFilterOptions = groupFilterOptionsAux;
+      //  leaderFilterOptions = leaderFilterOptionsAux;
 
+        groupFilter = Filter(groupFilterOptionsAux, null);
+        leaderFilter = Filter(leaderFilterOptionsAux, null);
         // Select all with empty list
-        initialFilterOptionsIdsSelected = [];
+    //    initialFilterOptionsIdsSelected = [];
 
         _objectives = objectivesAux;
         _works = worksAux;

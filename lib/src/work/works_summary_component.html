@@ -12,24 +12,9 @@
             </material-button>
         </div -->
         <material-expansionpanel-set>
-            <div class="works-vertical-size" *deferredContent>
+            <div class="works-vertical-size">
+            <!-- div class="works-vertical-size" *deferredContent -->
                 <div *ngFor="let iWork of works;let i = index">
-
-                    <!-- material-expansionpanel disabled
-                                             [expanded]="false"
-                                             [hideExpandedHeader]="false"
-                                             [showSaveCancel]="false">
-                        <div name class="custom-expansionpanel-panel-specific-name-width">
-                            <span class="truncate-ellipsed-parent">
-                                <span class="truncate-ellipsed">{{iWork.name}}</span>
-                            </span>
-                            <div class="w3-right avatar" [style.background-image]="'url(' +  userUrlImage(iWork?.leader?.userProfile?.image) + ')'" [materialTooltip]="leaderLabel + ' ' + iWork?.leader?.name"></div>
-                        </div>
-                        <div value>
-                            <auge-work-summary [work]="iWork"></auge-work-summary>
-                        </div>
-                    </material-expansionpanel -->
-
                     <material-expansionpanel disabled
                             [alwaysHideExpandIcon]="true"
                             [hideExpandedHeader]="false"
@@ -38,7 +23,7 @@
                         <div name class="custom-expansionpanel-panel-specific-name-width">
                             <span class="truncate-ellipsed-parent">
                                 <span class="truncate-ellipsed">{{iWork.name}}</span>
-                                <!-- div class="truncate-ellipsed">{{iWork.description}}</div -->
+
                             </span>
                         </div>
                         <div class="w3-row" value>

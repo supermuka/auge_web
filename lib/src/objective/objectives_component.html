@@ -12,9 +12,9 @@
         <div class="w3-col m6">
             <acx-scoreboard scrollable>
                 <!-- auge-filter [filterOptions]="objectiveFilterOptions" [optionsList]="optionsListTest" [filterNameLabel]="objectiveLabel" [initialFilterOptionsIdsSelected]="initialFilterOptionsIdsSelectedObjectives" (changeSelection)="objectiveChangeSelection($event)" @deferred></auge-filter -->
-                <auge-filter [filter]="objectiveFilter"  [filterNameLabel]="objectiveLabel" (changeSelection)="objectiveChangeSelection($event)" @deferred></auge-filter>
-                <auge-filter [filterOptions]="groupFilterOptions"  [filterNameLabel]="groupLabel" [initialFilterOptionsIdsSelected]="initialFilterOptionsIdsSelected"   (changeSelection)="groupChangeSelection($event)" @deferred></auge-filter>
-                <auge-filter [filterOptions]="leaderFilterOptions"  [filterNameLabel]="leaderLabel" [initialFilterOptionsIdsSelected]="initialFilterOptionsIdsSelected"  (changeSelection)="leaderChangeSelection($event)" @deferred></auge-filter>
+                <auge-filter [filter]="objectiveFilter" [filterNameLabel]="objectiveLabel" (changeSelection)="objectiveChangeSelection($event)" @deferred></auge-filter>
+                <auge-filter [filter]="groupFilter" [filterNameLabel]="groupLabel" (changeSelection)="groupChangeSelection($event)" @deferred></auge-filter>
+                <auge-filter [filter]="leaderFilter" [filterNameLabel]="leaderLabel" (changeSelection)="leaderChangeSelection($event)" @deferred></auge-filter>
             </acx-scoreboard>
         </div>
         <div class="w3-col m3">
@@ -58,7 +58,7 @@
                             </div>
                         </div>
                         <div action>
-                            <material-menu [preferredPositions]="preferredTooltipPositions"  [menu]="menuModel" (click)="selectObjective(iObjective)">
+                            <material-menu [preferredPositions]="preferredTooltipPositions" [menu]="menuModel" (click)="selectObjective(iObjective)">
                             </material-menu>
                         </div>
                         <hr>
