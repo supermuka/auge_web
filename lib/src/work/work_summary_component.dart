@@ -36,7 +36,7 @@ class WorkSummaryComponent {
   Work work;
 
   // Define messages and labels
-  static final String workItemsOverDueLabel =  WorkMsg.label('Work Items Over Due');
+  static final String workItemsOverDueLabel =  WorkMsg.label(WorkMsg.workItemsOverDueLabel);
 
   String circleColor(Work work)  {
     String color;

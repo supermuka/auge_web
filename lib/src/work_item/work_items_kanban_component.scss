@@ -113,3 +113,7 @@ header {
 .shadow {
   @include expansionpanel-shadow(2px);
 }
+
+.no-header-contents-padding {
+  @include expansionpanel-no-header-contents-padding();
+}

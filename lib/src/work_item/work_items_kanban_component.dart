@@ -39,6 +39,7 @@ import 'package:auge_web/src/work_item/work_item_service.dart';
 import 'package:auge_web/src/work/work_service.dart';
 import 'package:auge_web/src/history_timeline/history_timeline_service.dart';
 
+import 'package:auge_web/src/history_timeline/history_timeline_component.dart';
 import 'package:auge_web/src/work_item/work_item_detail_component.dart';
 
 import 'package:auge_web/route/app_routes.dart';
@@ -69,6 +70,7 @@ import 'package:auge_web/src/work_item/work_item_detail_component.template.dart'
       WorkSummaryComponent,
       MaterialButtonComponent,
       MaterialIconComponent,
+      HistoryTimelineComponent,
     ],
     pipes: const [commonPipes])
 
@@ -93,6 +95,8 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
   KanbanColumn kanbanColumnDnD;
 
   MenuModel<MenuItem> menuModel;
+
+  Map<String, bool> checkItensExpandedControl = {};
 
   static final String editButtonLabel = CommonMsg.buttonLabel(CommonMsg.editButtonLabel);
   static final String deleteButtonLabel = CommonMsg.buttonLabel(CommonMsg.deleteButtonLabel);
@@ -237,17 +241,19 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
       work.workItems.remove(selectedWorkItem);
 
       KanbanColumn kanbanColumnDelete;
+      WorkItem workItemKanban;
       for (var kcStage in kanbanColumns) {
         for (var cWI in kcStage.columnWorkItems) {
           if (cWI.id == selectedWorkItem.id) {
             kanbanColumnDelete = kcStage;
+            workItemKanban = cWI;
             break;
           }
         }
         if (kanbanColumnDelete != null) break;
       }
 
-      kanbanColumnDelete.columnWorkItems.remove(selectedWorkItem);
+      kanbanColumnDelete.columnWorkItems.remove(workItemKanban);
 
 
     } catch (e) {
@@ -278,8 +284,24 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
       //TODO maybe this needs to be updated with parent onActivate.
       workItem = await _workItemService.getWorkItem(workItem.id);
       int i = work.workItems.indexWhere((it) => it.id == workItem.id);
+
       if (i != -1) {
         work.workItems[i] = workItem;
+
+        KanbanColumn kanbanColumnUpdate;
+        int indexWorkItemKanban;
+        for (var kcStage in kanbanColumns) {
+          for (indexWorkItemKanban = 0;indexWorkItemKanban<kcStage.columnWorkItems.length;indexWorkItemKanban++) {
+            if (kcStage.columnWorkItems[indexWorkItemKanban].id == workItem.id) {
+              kanbanColumnUpdate = kcStage;
+              break;
+            }
+          }
+          if (kanbanColumnUpdate != null) break;
+        }
+
+        if (kanbanColumnUpdate != null && indexWorkItemKanban != null) kanbanColumnUpdate.columnWorkItems[indexWorkItemKanban] = workItem;
+
         _historyTimelineService.refreshHistory(SystemModule.works.index);
       }
     } catch (e) {
@@ -315,6 +337,7 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
   String firstLetter(String name) {
     return common_service.firstLetter(name);
   }
+
 }
 
 class KanbanColumn {
