@@ -7,6 +7,7 @@ import 'package:angular_components/material_expansionpanel/material_expansionpan
 import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
 import 'package:angular_components/content/deferred_content.dart';
+import 'package:auge_shared/domain/general/unit_of_measurement.dart';
 
 import 'package:auge_shared/domain/general/user.dart';
 import 'package:auge_shared/domain/general/user_access.dart';
@@ -418,21 +419,21 @@ class ObjectiveChangedValues {
 }
 
 // MEASURE UNIT
-class MeasureUnitChangedValues {
+class UnitOfMeasurementChangedValues {
 
   static void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
     changedValues?.forEach((k, v) {
       // if (k != Group.idField && k != Group.versionField) {
       if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
-        fieldsChangedValues.putIfAbsent('${MeasureUnit.className}.${k}', () =>
+        fieldsChangedValues.putIfAbsent('${UnitOfMeasurement.className}.${k}', () =>
         {
           _typeToViewKey: _typeToViewText,
-          _fieldDescriptionKey: MeasureUnitDomainMsg.fieldLabel(k)});
+          _fieldDescriptionKey: UnitOfMeasurementDomainMsg.fieldLabel(k)});
         if (v.containsKey(_pKey))
-          fieldsChangedValues['${MeasureUnit.className}.${k}'][_pKey] =
+          fieldsChangedValues['${UnitOfMeasurement.className}.${k}'][_pKey] =
           v[_pKey];
         if (v.containsKey(_cKey))
-          fieldsChangedValues['${MeasureUnit.className}.${k}'][_cKey] =
+          fieldsChangedValues['${UnitOfMeasurement.className}.${k}'][_cKey] =
           v[_cKey];
       }
       // }
@@ -448,7 +449,7 @@ class MeasureChangedValues {
 
     changedValues?.forEach((k, v) {
       if (k != Measure.idField && k != Measure.versionField) {
-        if (k == Measure.measureUnitField) {
+        if (k == Measure.unitOfMeasurementField) {
           fieldsChangedValues.putIfAbsent(
               '${Measure.className}.${k}', () =>
           {
@@ -456,14 +457,14 @@ class MeasureChangedValues {
             _fieldDescriptionKey: MeasureDomainMsg.fieldLabel(k)
           });
 
-          if (v.containsKey(MeasureUnit.nameField) &&
-              v[MeasureUnit.nameField].containsKey(_pKey))
+          if (v.containsKey(UnitOfMeasurement.nameField) &&
+              v[UnitOfMeasurement.nameField].containsKey(_pKey))
             fieldsChangedValues['${Measure.className}.${k}'][_pKey] =
-            v[MeasureUnit.nameField][_pKey];
-          if (v.containsKey(MeasureUnit.nameField) &&
-              v[MeasureUnit.nameField].containsKey(_cKey))
+            v[UnitOfMeasurement.nameField][_pKey];
+          if (v.containsKey(UnitOfMeasurement.nameField) &&
+              v[UnitOfMeasurement.nameField].containsKey(_cKey))
             fieldsChangedValues['${Measure.className}.${k}'][_cKey] =
-            v[MeasureUnit.nameField][_cKey];
+            v[UnitOfMeasurement.nameField][_cKey];
         }
         else if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
           fieldsChangedValues.putIfAbsent('${Measure.className}.${k}', () =>
@@ -698,15 +699,24 @@ class WorkItemChangedValues {
             });
             fieldsChangedValues['${WorkItem.className}.${k}'][_cKey] = sb.toString();
           }
-        } else if (k == WorkItem.completedField) {
+        } else if (k == WorkItem.plannedValueField) {
           fieldsChangedValues.putIfAbsent('${WorkItem.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewText,
             _fieldDescriptionKey: WorkItemDomainMsg.fieldLabel(k)});
           if (v.containsKey(_pKey))
-            fieldsChangedValues['${WorkItem.className}.${k}'][_pKey] = '${v[_pKey]}%';
+            fieldsChangedValues['${WorkItem.className}.${k}'][_pKey] = '${v[_pKey]}';
           if (v.containsKey(_cKey))
-            fieldsChangedValues['${WorkItem.className}.${k}'][_cKey] = '${v[_cKey]}%';
+            fieldsChangedValues['${WorkItem.className}.${k}'][_cKey] = '${v[_cKey]}';
+        } else if (k == WorkItem.actualValueField) {
+          fieldsChangedValues.putIfAbsent('${WorkItem.className}.${k}', () =>
+          {
+            _typeToViewKey: _typeToViewText,
+            _fieldDescriptionKey: WorkItemDomainMsg.fieldLabel(k)});
+          if (v.containsKey(_pKey))
+            fieldsChangedValues['${WorkItem.className}.${k}'][_pKey] = '${v[_pKey]}';
+          if (v.containsKey(_cKey))
+            fieldsChangedValues['${WorkItem.className}.${k}'][_cKey] = '${v[_cKey]}';
         } else if (k == WorkItem.dueDateField) {
           fieldsChangedValues.putIfAbsent('${WorkItem.className}.${k}', () =>
           {

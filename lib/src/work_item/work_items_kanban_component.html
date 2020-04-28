@@ -141,22 +141,30 @@
                                                 </div>
                                             </div -->
                                             <div>
-                                                <div>
-                                                    <span class="w3-col l2">
-                                                        {{iColumnWorkItem.completed}}%
-                                                    </span>
-                                                    <span>
-                                                        <material-slider [(value)]="iColumnWorkItem.completed"
+                                                <div *ngIf="iColumnWorkItem.plannedValue != null">
+                                                    <div class="w3-center">
+                                                        <span class="w3-left">
+                                                            {{iColumnWorkItem.plannedValue}}
+                                                        </span>
+                                                        <span class="w3-center">
+                                                            {{iColumnWorkItem.actualValue}}
+                                                        </span>
+                                                        <span class="w3-right">
+                                                            {{remainingValue(iColumnWorkItem.plannedValue, iColumnWorkItem.actualValue)}}
+                                                        </span>
+                                                    </div>
+                                                    <div>
+                                                        <material-slider [disabled]="whileUpdatingDisabled" [(value)]="iColumnWorkItem.actualValue"
                                                                          [min]="0"
                                                                          [max]="100"
-                                                                         materialTooltip="{{completedLabel}}" (click)="updateWorkItem(iColumnWorkItem)">
+                                                                         materialTooltip="{{actualValueLabel}}" (click)="updateWorkItem(iColumnWorkItem)">
                                                         </material-slider>
-                                                    </span>
+                                                    </div>
                                                 </div>
                                                 <material-expansionpanel *ngIf="iColumnWorkItem.checkItems.length > 0" name="{{checkItemsLabel}}" [(expanded)]="checkItensExpandedControl[iColumnWorkItem.id]"  [showSaveCancel]="false" class="no-border">
                                                     <div>
                                                         <div *ngFor="let iCheckItem of iColumnWorkItem.checkItems">
-                                                            <material-checkbox [(ngModel)]="iCheckItem.finished" [label]="iCheckItem.name" (click)="updateWorkItem(iColumnWorkItem)"></material-checkbox>
+                                                            <material-checkbox [disabled]="whileUpdatingDisabled" [(ngModel)]="iCheckItem.finished" [label]="iCheckItem.name" (click)="updateWorkItem(iColumnWorkItem)"></material-checkbox>
                                                         </div>
                                                     </div>
                                                 </material-expansionpanel>

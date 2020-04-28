@@ -10,6 +10,8 @@ import 'package:angular/security.dart';
 import 'package:angular_router/angular_router.dart';
 import 'package:auge_web/route/app_routes.dart';
 
+import 'package:angular_components/material_expansionpanel/material_expansionpanel_set.dart';
+import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
 import 'package:angular_components/focus/focus.dart';
 import 'package:angular_components/laminate/components/modal/modal.dart';
 import 'package:angular_components/laminate/popup/module.dart';
@@ -41,6 +43,7 @@ import 'package:angular_components/material_chips/material_chips.dart';
 import 'package:angular_components/material_datepicker/material_datepicker.dart';
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
 
+import 'package:auge_shared/domain/general/unit_of_measurement.dart';
 import 'package:auge_shared/domain/work/work_stage.dart';
 import 'package:auge_shared/domain/work/work_item.dart';
 import 'package:auge_shared/domain/general/user.dart';
@@ -68,6 +71,8 @@ import 'work_item_detail_component.template.dart' as work_item_detail_component;
       routerDirectives,
       materialInputDirectives,
       materialNumberInputDirectives,
+      MaterialExpansionPanelSet,
+      MaterialExpansionPanel,
       MaterialAutoSuggestInputComponent,
       AutoFocusDirective,
       MaterialDialogComponent,
@@ -106,6 +111,10 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
   String stageIdOrigin;
   WorkItem workItem;
 
+  List<UnitOfMeasurement> _unitsOfMeasurement = [];
+  SelectionOptions unitOfMeasurementOptions;
+  SelectionModel unitOfMeasurementSingleSelectModel;
+
   String memberInputText = '';
   SelectionOptions memberOptions;
   SelectionOptions stageOptions;
@@ -137,6 +146,7 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
 
     // initializeDateFormatting(Intl.defaultLocale , null);
     memberSingleSelectModel = SelectionModel.single();
+    unitOfMeasurementSingleSelectModel = SelectionModel.single();
 
    // _uploadFile = html.querySelector("#upload_file");
 
@@ -155,17 +165,23 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
   static final String noMatchLabel = WorkItemMsg.label(WorkItemMsg.noMatchLabel);
   static final String selectValueLabel = WorkItemMsg.label(WorkItemMsg.selectAValueLabel);
   static final String dropFileHereLabel = WorkItemMsg.label(WorkItemMsg.dropFileHereLabel);
+  static final String remainingValueLabel = WorkItemDomainMsg.fieldLabel(WorkItemMsg.remainingValueLabel); //
+
 
   static final String nameLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.nameField);
   static final String descriptionLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.descriptionField);
   static final String dueDateLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.dueDateField);
-  static final String completedLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.completedField);
+  //static final String completedLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.completedField);
+  static final String plannedValueLabel = WorkItemDomainMsg.fieldLabel(WorkItem.plannedValueField);
+  static final String actualValueLabel = WorkItemDomainMsg.fieldLabel(WorkItem.actualValueField);
+  static final String unitLabel = WorkItemDomainMsg.fieldLabel(WorkItem.unitOfMeasurementField); // FieldMsg.label('${Measure.className}.${Measure.unitOfMeasurementField}');
   static final String stageLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.workStageField);
   static final String assignedToLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.assignedToField);
   static final String attachmentsLabel = WorkItemDomainMsg.fieldLabel(WorkItem.attachmentsField);
   static final String checkItemLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.checkItemsField);
 
   static final String valuePercentIntervalMsg = WorkItemMsg.valuePercentIntervalMsg();
+  static final String archivedLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.archivedField);
 
   @override
   void ngOnInit() async {
@@ -174,8 +190,6 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
         WorkItem(); // need to create, because the angular throws a exception if the query delay.
 
    // _uploadFile = html.querySelector("#upload_file");
-
-
   }
 
   @override
@@ -251,6 +265,28 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
 
    // _uploadFile = html.querySelector("#upload_file");
 
+
+    try {
+      _unitsOfMeasurement = await _workItemService.getUnitsOfMeasurement();
+    } catch (e) {
+      dialogError = e.toString();
+      rethrow;
+    }
+
+    unitOfMeasurementOptions = SelectionOptions.fromList(_unitsOfMeasurement);
+
+    unitOfMeasurementSingleSelectModel.selectionChanges.listen((unit) {
+      if (unit.isNotEmpty && unit.first.added != null && unit.first.added.length != 0 && unit.first.added?.first != null) {
+        workItem.unitOfMeasurement = unit.first.added.first;
+      }
+    });
+
+    if (workItem.unitOfMeasurement != null) {
+      unitOfMeasurementSingleSelectModel.select(workItem.unitOfMeasurement);
+    } else if (unitOfMeasurementOptions.optionsList.isNotEmpty) {
+      unitOfMeasurementSingleSelectModel.select(unitOfMeasurementOptions.optionsList.first);
+    }
+
   }
 
   @override
@@ -315,7 +351,7 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
     }
   }
 
-
+/*
   int get completed {
     return workItem.completed;
   }
@@ -328,6 +364,7 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
       workItem.completed = completed;
     }
   }
+ */
 
   FactoryRenderer get factoryRenderer => (_) => work_item_detail_component.MemberRendererComponentNgFactory;
 
@@ -482,6 +519,24 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
 
     }
   }
+
+  double get remainingValue => workItem.plannedValue == null || workItem.actualValue == null ? null : workItem.plannedValue-workItem.actualValue;
+
+  // Label for the button for single selection.
+  String get unitOfMeasurementSingleSelectLabel {
+    String nameLabel;
+    if ((unitOfMeasurementSingleSelectModel != null) &&
+        (unitOfMeasurementSingleSelectModel.selectedValues != null) &&
+        (unitOfMeasurementSingleSelectModel.selectedValues.length > 0)) {
+
+      nameLabel = unitOfMeasurementSingleSelectModel.selectedValues.first.name;
+    }
+    return nameLabel ;
+  }
+
+  ItemRenderer get unitOfMeasurementItemRenderer => (dynamic unit) => unit.name + (unit.symbol == null || unit.symbol.trim().length == 0 ? '' : ' (' + unit.symbol + ')');
+
+
 }
 
 @Component(

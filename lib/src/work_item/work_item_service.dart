@@ -3,20 +3,26 @@ import 'package:angular/core.dart';
 import 'package:auge_web/src/auth/auth_service.dart';
 
 import 'package:auge_shared/domain/work/work_item.dart';
+import 'package:auge_shared/domain/general/unit_of_measurement.dart';
 
 import 'package:auge_web/services/auge_api_service.dart';
+import 'package:auge_shared/message/messages.dart';
 
+import 'package:auge_shared/protos/generated/google/protobuf/empty.pb.dart' as empty_pb;
 import 'package:auge_shared/protos/generated/google/protobuf/wrappers.pb.dart' as wrappers_pb;
 import 'package:auge_shared/protos/generated/work/work_work_item.pbgrpc.dart' as work_work_item_pbgrpc;
+import 'package:auge_shared/protos/generated/general/unit_of_measurement.pbgrpc.dart' as unit_of_measurement_pbgrpc;
 
 @Injectable()
 class WorkItemService {
   final AuthService _authService;
   final AugeApiService _augeApiService;
   work_work_item_pbgrpc.WorkItemServiceClient _workItemServiceClient;
+  unit_of_measurement_pbgrpc.UnitOfMeasurementServiceClient _unitOfMeasurementServiceClient;
 
   WorkItemService(this._authService, this._augeApiService) {
     _workItemServiceClient = work_work_item_pbgrpc.WorkItemServiceClient(_augeApiService.channel);
+    _unitOfMeasurementServiceClient = unit_of_measurement_pbgrpc.UnitOfMeasurementServiceClient(_augeApiService.channel);
 
   }
 
@@ -76,5 +82,26 @@ class WorkItemService {
     // return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
     return WorkItemAttachment()..readFromProtoBuf((await _workItemServiceClient.getWorkItemAttachment(
         work_work_item_pbgrpc.WorkItemAttachmentGetRequest()..id = id..withContent = true)));
+  }
+
+  /// Return [unitOfMeasurement] list
+  Future<List<UnitOfMeasurement>> getUnitsOfMeasurement() async {
+
+    // List<UnitOfMeasurement> measureUnits = await _augeApiService.objectiveAugeApi.getMeasureUnits();
+    unit_of_measurement_pbgrpc.UnitsOfMeasurementResponse unitsOfMeasurementResponsePb = await _unitOfMeasurementServiceClient
+        .getUnitsOfMeasurement(empty_pb.Empty());
+
+    List<UnitOfMeasurement> unitsOfMeasurement =  unitsOfMeasurementResponsePb.unitsOfMeasurement.map((m) =>
+    UnitOfMeasurement()
+      ..readFromProtoBuf(m)).toList();
+
+    //List<MeasureUnit> measureUnits =  await _augeApiService.objectiveAugeApi.getMeasureUnits();
+
+    // Translate name
+    unitsOfMeasurement.forEach((f) => f.name = UnitOfMeasurementMsg.UnitOfMeasurementLabel('${f.name}Label'));
+    return unitsOfMeasurement;
+
+    // Translate name
+    // measureUnits.forEach((f) => f.name = MeasureMessage.measureUnitLabel(f.name));
   }
 }

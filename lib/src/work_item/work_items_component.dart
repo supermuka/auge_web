@@ -80,7 +80,7 @@ class WorkItemsComponent with CanReuse /* with CanReuse implements OnActivate  *
 
   static final String dueDateLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.dueDateField);
   static final String stageLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.workStageField);
-  static final String completedLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.completedField);
+  static final String actualValueLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.actualValueField);
   static final String checkItemsLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.checkItemsField);
 
   WorkItemsComponent(this._appLayoutService, this._workItemService, this._historyTimelineService, this._router) {

@@ -107,7 +107,7 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
   static final String leaderLabel =  WorkDomainMsg.fieldLabel(Work.leaderField);
 
   static final String dueDateLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.dueDateField);
-  static final String completedLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.completedField);
+  static final String actualValueLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.actualValueField);
   static final String checkItemsLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.checkItemsField);
 
   static final String headerTitle = WorkItemMsg.label(WorkItemMsg.workKanbanLabel);
@@ -123,6 +123,8 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
     ),
 
   ];
+
+  bool whileUpdatingDisabled = false;
 
   WorkItemsKanbanComponent(this._appLayoutService, this._workService, this._workItemService, this._historyTimelineService, this._router) {
     // initializeDateFormatting(Intl.defaultLocale);
@@ -277,12 +279,18 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
   }
 
   void updateWorkItem(WorkItem workItem) async {
+
+    if (whileUpdatingDisabled) return;
+
+    whileUpdatingDisabled = true;
+
     try {
 
       await _workItemService.saveWorkItem(work.id, workItem);
 
       //TODO maybe this needs to be updated with parent onActivate.
       workItem = await _workItemService.getWorkItem(workItem.id);
+
       int i = work.workItems.indexWhere((it) => it.id == workItem.id);
 
       if (i != -1) {
@@ -303,10 +311,13 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
         if (kanbanColumnUpdate != null && indexWorkItemKanban != null) kanbanColumnUpdate.columnWorkItems[indexWorkItemKanban] = workItem;
 
         _historyTimelineService.refreshHistory(SystemModule.works.index);
+
       }
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;
+    } finally {
+      whileUpdatingDisabled = false;
     }
   }
 
@@ -336,6 +347,10 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
 
   String firstLetter(String name) {
     return common_service.firstLetter(name);
+  }
+
+  double remainingValue(double planned, double actual) {
+    return planned == null || actual == null ? null : planned - actual;
   }
 
 }

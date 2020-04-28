@@ -63,6 +63,9 @@
                                          [limit]="10">
             </material-auto-suggest-input>
         </div>
+        <div class="w3-row">
+            <material-checkbox [(ngModel)]="work.archived" [label]="archivedLabel"></material-checkbox>
+        </div>
         <div footer>
             <material-button [disabled]="!validInput" (trigger)="saveWork()">{{saveButtonLabel}}
                 <!-- material-icon icon="save"></material-icon -->

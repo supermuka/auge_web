@@ -1,17 +1,20 @@
+@import 'package:auge_web/scss/common.scss';
 @import 'package:angular_components/css/material/material';
 @import 'package:angular_components/css/material/shadow';
-@import 'package:auge_web/scss/common';
 @import 'package:angular_components/material_input/mixins';
 
+/*
 .width-200 {
    width: 200px;
-   /* word-wrap: break-word; */
    white-space: pre-wrap;
 }
+*/
 
+/*
 material-input {
   padding: 4px;
 }
+*/
 
 material-dropdown-select { width: 250px; min-width: 250px; }
 
@@ -23,10 +26,12 @@ material-dropdown-select { width: 250px; min-width: 250px; }
    line-height: 1;
 }
 
+/*
 .material-list-item {
     padding: -16px;
     margin: -16px;
 }
+*/
 
 .material-input-disabled-color-custom-true {
   @include material-input-disabled-underline-color($mat-blue-500);
@@ -42,3 +47,23 @@ input[type="file"] {
    text-decoration:none;
 }
 
+.input-bottom-section-margin {
+  @include input-bottom-section-margin(0px);
+}
+
+.input-padding {
+  @include input-padding(0px);
+}
+
+.buttom-delete-right {
+  ::ng-deep div:last-child {
+    margin-left: auto;
+  }
+}
+
+.no-padding-left-first {
+  ::ng-deep div:first-child {
+    margin-left: 0;
+    padding-left: 0;
+  }
+}

@@ -5,28 +5,34 @@
             <h3 *ngIf="workItem.id != null">{{editWorkItemLabel}}</h3>
         </div>
         <div class="w3-row">
-            <div class="w3-col m8">
+            <div class="w3-col m12">
               <material-input autoFocus type="text" [(ngModel)]="workItem.name" style="width:100%" floatingLabel [label]="nameLabel" required [requiredErrorMsg]="requiredValueMsg"></material-input>
             </div>
-            <div class="w3-col m4">
+
+        </div>
+        <div class="w3-row">
+           <material-input type="text" [(ngModel)]="workItem.description" style="width:100%;height:100%" floatingLabel multiline rows="5" [label]="descriptionLabel"></material-input>
+        </div>
+        <div class="w3-row">
+            <div class="w3-col m5">
                 <div class="input-container">
                     <label>{{dueDateLabel}}</label>
-                    <material-datepicker [(date)]="dueDate"
+                    <material-datepicker
+                                         [(date)]="dueDate"
                                          [minDate]="limitToDueDateRange.start"
                                          [maxDate]="limitToDueDateRange.end"
                                          [required]="false">
                     </material-datepicker>
                 </div>
             </div>
-        </div>
-        <div class="w3-row">
-           <material-input type="text" [(ngModel)]="workItem.description" style="width:100%;height:100%" floatingLabel multiline rows="5" [label]="descriptionLabel"></material-input>
-        </div>
-        <div class="w3-row" >
-            <div class="w3-col m8">
+            <div class="w3-col m2">
+                <span>&nbsp;</span>
+            </div>
+            <div class="w3-col m5">
                 <div class="input-container">
                     <label>{{stageLabel}}</label>
-                    <material-dropdown-select [disabled]="stageIdOrigin != null"
+                    <material-dropdown-select
+                                              [disabled]="stageIdOrigin != null"
                                               [buttonText]="stageSingleSelectLabel"
                                               [selection]="stageSingleSelectModel"
                                               [options]="stageOptions"
@@ -34,12 +40,37 @@
                     </material-dropdown-select>
                 </div>
             </div>
-            <div class="w3-col m4">
-                <material-input class="w3-right" type="number" [(ngModel)]="completed" trailingText="%" [rightAlign]="true"  floatingLabel [label]="completedLabel" [error]="errorCompleted"></material-input>
+        </div>
+        <div class="w3-row">
+            <div class="w3-col m7">
+                <span class="input-container">
+                    <label>{{unitLabel}}</label>
+                    <material-dropdown-select [buttonText]="unitOfMeasurementSingleSelectLabel"
+                                              [selection]="unitOfMeasurementSingleSelectModel"
+                                              [options]="unitOfMeasurementOptions"
+                                              [itemRenderer]="unitOfMeasurementItemRenderer">
+                    </material-dropdown-select>
+                </span>
+            </div>
+            <div class="w3-col m5">
+               <material-input type="number" [(ngModel)]="workItem.plannedValue" floatingLabel [label]="plannedValueLabel"></material-input>
             </div>
         </div>
         <div class="w3-row">
-            <material-auto-suggest-input style="width: 100%"
+            <div class="w3-col m5">
+                <material-input  type="number" [ngModel]="workItem.actualValue" disabled floatingLabel [label]="actualValueLabel"></material-input>
+            </div>
+            <div class="w3-col m2">
+                <material-button icon>
+                    <material-icon icon="edit"></material-icon>
+                </material-button>
+            </div>
+            <div class="w3-col m5">
+                <material-input  type="number" [ngModel]="remainingValue" disabled floatingLabel [label]="remainingValueLabel"></material-input>
+            </div>
+        </div>
+        <div class="w3-row">
+            <material-auto-suggest-input class="input-bottom-section-margin input-padding" style="width: 100%"
                     [(inputText)]="memberInputText"
                     [filterSuggestions]="true"
                     [popupMatchInputWidth]="true"
@@ -55,32 +86,40 @@
             </material-auto-suggest-input>
         </div>
         <div class="w3-row">
-            <material-chips *ngFor="let member of workItem?.assignedTo">
-                <material-chip [hasLeftIcon]="true" (remove)="removeMember(member)">
-                    <div left-icon class="avatar" [style.background-image]="'url(' +  userUrlImage(member)  + ')'"></div>
-                    {{member.name}}
-                </material-chip>
+            <material-chips>
+                <div class="w3-col m4" *ngFor="let member of workItem?.assignedTo">
+                    <material-chip class="buttom-delete-right no-padding-left-first" [hasLeftIcon]="true" (remove)="removeMember(member)">
+                        <span left-icon class="avatar" [style.background-image]="'url(' +  userUrlImage(member)  + ')'"></span>
+                        {{member.name}}
+                    </material-chip>
+                </div>
             </material-chips>
-        </div>
-        <div class="w3-row">
-            <material-input class="w3-col material-input-disabled-color-custom-{{attachmentDragOver}}" style="width:90%;" [disabled]="true" [ngModel]="dropFileHereLabel" floatingLabel [label]="attachmentsLabel" (drop)="dropFile($event)" (dragover)="dragOver($event)" (dragleave)="dragLeave($event)"></material-input>
-            <input type="file" (change)="uploadFile()" #upload_file>
-            <material-button class="w3-rest w3-right" icon (trigger)="selectUploadFile()">
-                <material-icon icon="attachment"></material-icon>
-            </material-button>
         </div>
         <div class="w3-row">
             <material-chips *ngFor="let attachment of workItem?.attachments">
-                <material-chip  (remove)="removeAttachment(attachment)" >
-                    <!-- a download="{{attachment.name}}" href="data:application/octet-stream;base64,PD94ANDSOON">{{attachment.name}}</a -->
-                    <a id="download-file-{{attachment.id}}" class="text-decoration-none" [download]="attachment.name" [href]="href(attachment)" (click)="loadAttachmentContent($event, attachment)">{{attachment.name}}</a>
-                </material-chip>
+                <div *ngFor="let attachment of workItem?.attachments">
+                    <material-chip class="w3-col" (remove)="removeAttachment(attachment)" >
+                        <a id="download-file-{{attachment.id}}" class="text-decoration-none" [download]="attachment.name" [href]="href(attachment)" (click)="loadAttachmentContent($event, attachment)">{{attachment.name}}</a>
+                    </material-chip>
+                </div>
             </material-chips>
         </div>
-        <div class="w3-row">
-            <div class="material-shadow-box-list" elevation="2">
-                <material-input [(ngModel)]="checkItemEntry" floatingLabel [label]="checkItemLabel"></material-input>
-                <span>
+        <div class="w3-row w3-margin-top">
+            <div class="w3-col m10">
+                <material-input class="w3-col material-input-disabled-color-custom-{{attachmentDragOver}}" style="width:100%" [disabled]="true" [ngModel]="dropFileHereLabel" floatingLabel [label]="attachmentsLabel" (drop)="dropFile($event)" (dragover)="dragOver($event)" (dragleave)="dragLeave($event)"></material-input>
+                <input type="file" (change)="uploadFile()" #upload_file>
+            </div>
+            <div class="w3-col m2">
+                <material-button class="w3-rest w3-right" icon (trigger)="selectUploadFile()">
+                    <material-icon icon="attachment"></material-icon>
+                </material-button>
+            </div>
+        </div>
+        <material-expansionpanel [disabled]="true" [alwaysHideExpandIcon]="true" [hideExpandedHeader]="true" [expanded]="true"  [showSaveCancel]="false" class="no-border-">
+            <div>
+                <div class="w3-row">
+                    <material-input class="w3-col m10" [(ngModel)]="checkItemEntry" floatingLabel [label]="checkItemLabel"></material-input>
+                    <span class="w3-col m2">
                     <material-button *ngIf="selectedCheckItem == null" [disabled]="!validCheckItemInput" icon (trigger)="addCheckItem()">
                         <material-icon icon="add"></material-icon>
                     </material-button>
@@ -88,24 +127,51 @@
                         <material-icon icon="done"></material-icon>
                     </material-button>
                 </span>
-                <material-list *ngFor="let iCheckItem of workItem.checkItems">
-                    <material-list-item class="material-list-item" (trigger)="selectCheckItem(iCheckItem)">
-                        <material-checkbox class="width-200" [(ngModel)]="iCheckItem.finished" [label]="iCheckItem.name"></material-checkbox>
-                        <span class="material-list-item-secondary">
+                </div>
+                <div *ngFor="let iCheckItem of workItem.checkItems">
+                    <div (click)="selectCheckItem(iCheckItem)">
+                        <div class="w3-col m10">
+                            <material-checkbox [(ngModel)]="iCheckItem.finished" [label]="iCheckItem.name"></material-checkbox>
+                        </div>
+                        <div class="w3-col m2">
                             <material-fab mini (trigger)="removeCheckItem(iCheckItem)">
                                 <material-icon icon="clear"></material-icon>
                             </material-fab>
-                        </span>
-                    </material-list-item>
-                </material-list>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </material-expansionpanel>
+        <!-- div class="material-shadow-box-list" elevation="2">
+            <div class="w3-row">
+                <material-input class="w3-col m10" [(ngModel)]="checkItemEntry" floatingLabel [label]="checkItemLabel"></material-input>
+                <span class="w3-col m2">
+                    <material-button *ngIf="selectedCheckItem == null" [disabled]="!validCheckItemInput" icon (trigger)="addCheckItem()">
+                        <material-icon icon="add"></material-icon>
+                    </material-button>
+                    <material-button *ngIf="selectedCheckItem != null" [disabled]="!validCheckItemInput" icon (trigger)="updateCheckItem(selectedCheckItem)">
+                        <material-icon icon="done"></material-icon>
+                    </material-button>
+                </span>
+            </div>
+            <material-list>
+                <div *ngFor="let iCheckItem of workItem.checkItems">
+                    <material-list-item (trigger)="selectCheckItem(iCheckItem)">
+                        <material-checkbox style="width: 100%" [(ngModel)]="iCheckItem.finished" [label]="iCheckItem.name"></material-checkbox>
+                        <material-fab mini (trigger)="removeCheckItem(iCheckItem)">
+                            <material-icon icon="clear"></material-icon>
+                        </material-fab>
+                    </material-list-item>
+                </div>
+            </material-list>
+        </div -->
+        <div class="w3-row">
+            <material-checkbox [(ngModel)]="workItem.archived" [label]="archivedLabel"></material-checkbox>
         </div>
         <div footer>
             <material-button [disabled]="!validInput" (trigger)="saveWorkItem()">{{saveButtonLabel}}
-                <!-- material-icon icon="save"></material-icon -->
             </material-button>
             <material-button (trigger)="closeDetail()">{{closeButtonLabel}}
-                <!-- material-icon icon="close"></material-icon -->
             </material-button>
         </div>
     </material-dialog>

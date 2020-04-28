@@ -5,6 +5,7 @@ import 'package:angular/core.dart';
 import 'package:auge_web/src/auth/auth_service.dart';
 
 import 'package:auge_shared/domain/objective/measure.dart';
+import 'package:auge_shared/domain/general/unit_of_measurement.dart';
 
 import 'package:auge_web/services/auge_api_service.dart';
 import 'package:auge_shared/message/messages.dart';
@@ -12,6 +13,7 @@ import 'package:auge_shared/message/messages.dart';
 import 'package:auge_shared/protos/generated/google/protobuf/empty.pb.dart' as empty_pb;
 import 'package:auge_shared/protos/generated/google/protobuf/wrappers.pb.dart' as wrappers_pb;
 import 'package:auge_shared/protos/generated/objective/objective_measure.pbgrpc.dart' as objective_measure_pbgrpc;
+import 'package:auge_shared/protos/generated/general/unit_of_measurement.pbgrpc.dart' as unit_of_measurement_pbgrpc;
 
 import 'package:grpc/grpc_web.dart';
 
@@ -21,9 +23,11 @@ class MeasureService {
   final AuthService _authService;
   final AugeApiService _augeApiService;
   objective_measure_pbgrpc.MeasureServiceClient _measureServiceClient;
+  unit_of_measurement_pbgrpc.UnitOfMeasurementServiceClient _unitOfMeasurementServiceClient;
 
   MeasureService(this._authService, this._augeApiService) {
      _measureServiceClient = objective_measure_pbgrpc.MeasureServiceClient(_augeApiService.channel);
+     _unitOfMeasurementServiceClient = unit_of_measurement_pbgrpc.UnitOfMeasurementServiceClient(_augeApiService.channel);
   }
 
   /// Delete a [Measure]
@@ -86,7 +90,7 @@ class MeasureService {
       } on GrpcError {
         /*--
       } on DetailedApiRequestError catch (e) {
-        if (e.status == 204 && e.errors.firstWhere((ed) => ed.reason == RpcErrorDetailMessage.measureUnitsDataNotFoundReason, orElse: null ) != null)
+        if (e.status == 204 && e.errors.firstWhere((ed) => ed.reason == RpcErrorDetailMessage.unitOfMeasurementsDataNotFoundReason, orElse: null ) != null)
           return null;
         else {
           rethrow;
@@ -97,22 +101,22 @@ class MeasureService {
       return MeasureProgress()..readFromProtoBuf(measureProgressPb, {});
   }
 
-  /// Return [MeasureUnit] list
-  Future<List<MeasureUnit>> getMeasureUnits() async {
+  /// Return [unitOfMeasurement] list
+  Future<List<UnitOfMeasurement>> getUnitsOfMeasurement() async {
 
-    // List<MeasureUnit> measureUnits = await _augeApiService.objectiveAugeApi.getMeasureUnits();
-    objective_measure_pbgrpc.MeasureUnitsResponse measureUnitsResponsePb = await _measureServiceClient
-        .getMeasureUnits(empty_pb.Empty());
+    // List<UnitOfMeasurement> measureUnits = await _augeApiService.objectiveAugeApi.getMeasureUnits();
+    unit_of_measurement_pbgrpc.UnitsOfMeasurementResponse unitsOfMeasurementResponsePb = await _unitOfMeasurementServiceClient
+        .getUnitsOfMeasurement(empty_pb.Empty());
 
-    List<MeasureUnit> measureUnits =  measureUnitsResponsePb.measureUnits.map((m) =>
-    MeasureUnit()
+    List<UnitOfMeasurement> unitsOfMeasurement =  unitsOfMeasurementResponsePb.unitsOfMeasurement.map((m) =>
+    UnitOfMeasurement()
       ..readFromProtoBuf(m)).toList();
 
       //List<MeasureUnit> measureUnits =  await _augeApiService.objectiveAugeApi.getMeasureUnits();
 
       // Translate name
-      measureUnits.forEach((f) => f.name = MeasureMsg.measureUnitLabel('${f.name}Label'));
-      return measureUnits;
+    unitsOfMeasurement.forEach((f) => f.name = MeasureMsg.UnitOfMeasurementLabel('${f.name}Label'));
+      return unitsOfMeasurement;
 
     // Translate name
     // measureUnits.forEach((f) => f.name = MeasureMessage.measureUnitLabel(f.name));

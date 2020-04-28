@@ -29,13 +29,13 @@
                         <div value>
                             <div class="w3-row-padding">
                                 <span class="w3-col l1">
-                                    {{iWorkItem.completed}}%
+                                    {{iWorkItem.actualValue}}
                                 </span>
                                 <span class="w3-col l6">
-                                    <material-slider [(value)]="iWorkItem.completed"
+                                    <material-slider [(value)]="iWorkItem.actualValue"
                                                      [min]="0"
                                                      [max]="100"
-                                                     materialTooltip="{{completedLabel}}" (click)="updateWorkItem(iWorkItem)">
+                                                     materialTooltip="{{actualValueLabel}}" (click)="updateWorkItem(iWorkItem)">
                                     </material-slider>
                                 </span>
                                 <span class="w3-col l3">

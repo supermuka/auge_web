@@ -35,7 +35,7 @@ import 'package:auge_web/src/work/work_summary_component.dart';
 import 'package:auge_web/src/history_timeline/history_timeline_component.dart';
 import 'package:auge_web/src/work/work_detail_component.dart';
 //import 'package:auge_web/src/work/work_stages_component.dart';
-import 'package:auge_web/src/work_item/work_items_component.dart';
+//import 'package:auge_web/src/work_item/work_items_component.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/route/app_routes.dart';
 
@@ -68,14 +68,14 @@ import 'package:auge_web/src/filter/filter_component.dart';
       MaterialMenuComponent,
       WorkSummaryComponent,
       WorkDetailComponent,
-      WorkItemsComponent,
+     // WorkItemsComponent,
       HistoryTimelineComponent,
       ScoreboardComponent,
       FilterComponent,
       //WorkStagesComponent,
     ])
 
-class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
+class WorksComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy */ {
 
   final WorkService _workService;
   final HistoryTimelineService _historyTimelineService;
@@ -345,7 +345,7 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
 
    //   workItemSelectionView.selected = workItemSelectionView.selected ?? 'list';
 
-      _appLayoutService.enabledSearch = true;
+     // _appLayoutService.enabledSearch = true;
 
     } catch (e) {
       _appLayoutService.error = e.toString();
@@ -382,12 +382,12 @@ class WorksComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
 
     return worksAux;
   }
-
+/*
   @override
   ngOnDestroy() async {
-    _appLayoutService.enabledSearch = false;
+//    _appLayoutService.enabledSearch = false;
   }
-
+*/
   void goToDetail() {
     if (selectedWork == null) {
       _router.navigate(AppRoutes.workAddRoute.toUrl(), NavigationParams(replace:  true));

@@ -401,11 +401,11 @@ class MeasureProgressComponent implements OnInit, OnActivate, OnDeactivate  {
     //   validInput = errorControl.isEmpty;
   }
 
-  // String get unitLeadingText => measure?.measureUnit == null ? null : measure.measureUnit.symbol;
-  String get unitLeadingText => measure.measureUnit.symbol == null ? null : measure.measureUnit.symbol.contains(r'$') ? measure.measureUnit.symbol : null;
+  // String get unitLeadingText => measure?.unitOfMeasurement == null ? null : measure.unitOfMeasurement.symbol;
+  String get unitLeadingText => measure.unitOfMeasurement.symbol == null ? null : measure.unitOfMeasurement.symbol.contains(r'$') ? measure.unitOfMeasurement.symbol : null;
 
-  //String get unitTrailingText => measure?.measureUnit == null ? null :  measure.measureUnit.symbol;
-  String get unitTrailingText => measure.measureUnit.symbol == null ? null :measure.measureUnit.symbol.contains(r'$') ? measure.measureUnit.symbol : null;
+  //String get unitTrailingText => measure?.unitOfMeasurement == null ? null :  measure.unitOfMeasurement.symbol;
+  String get unitTrailingText => measure.unitOfMeasurement.symbol == null ? null : measure.unitOfMeasurement.symbol.contains(r'$') ? measure.unitOfMeasurement.symbol : null;
 
   Date getDate(MeasureProgress measureProgress) {
     Date _date;

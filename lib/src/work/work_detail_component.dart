@@ -16,11 +16,11 @@ import 'package:angular_components/material_input/material_input.dart';
 import 'package:angular_components/material_select/material_dropdown_select.dart';
 import 'package:angular_components/material_select/dropdown_button.dart';
 import 'package:angular_components/material_select/material_dropdown_select_accessor.dart';
+import 'package:angular_components/material_checkbox/material_checkbox.dart';
 import 'package:angular_components/model/selection/selection_model.dart';
 import 'package:angular_components/model/selection/selection_options.dart';
 import 'package:angular_components/model/selection/string_selection_options.dart';
 import 'package:angular_components/model/ui/has_factory.dart';
-
 
 import 'package:auge_shared/domain/general/user.dart';
 import 'package:auge_shared/domain/work/work.dart';
@@ -60,6 +60,7 @@ import 'work_detail_component.template.dart' as work_detail_component;
     MaterialDropdownSelectComponent,
     DropdownSelectValueAccessor,
     DropdownButtonComponent,
+    MaterialCheckboxComponent,
   ])
 class WorkDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
@@ -123,6 +124,7 @@ class WorkDetailComponent implements OnInit, OnActivate, OnDeactivate {
   static final String groupLabel =  WorkDomainMsg.fieldLabel(Work.groupField);
   static final String leaderLabel =  WorkDomainMsg.fieldLabel(Work.leaderField);
   static final String objectiveLabel =  WorkDomainMsg.fieldLabel(Work.objectiveField);
+  static final String archivedLabel =  WorkDomainMsg.fieldLabel(Work.archivedField);
 //  static final String stageLabel =  FieldMsg.label('${Stage.className}.${Stage.nameField}');
 
   @override

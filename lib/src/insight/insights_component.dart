@@ -13,6 +13,7 @@ import 'package:angular_components/material_icon/material_icon.dart';
 
 import 'package:auge_shared/domain/objective/objective.dart';
 import 'package:auge_shared/domain/work/work.dart';
+import 'package:auge_shared/domain/work/work_stage.dart';
 
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
@@ -299,7 +300,8 @@ class InsightsComponent with CanReuse implements OnActivate  {
       }
 
       for (int ii=0;ii<works[i].workItems.length;ii++) {
-        if (works[i].workItems[ii].completed == 100) {
+        //if (works[i].workItems[ii].completed == 100) {
+        if (works[i].workItems[ii].workStage.index == State.completed.index) {
           _completedWorkWorkItemsNumber++;
         }
         if (works[i].workItemsOverDueCount > 0) {

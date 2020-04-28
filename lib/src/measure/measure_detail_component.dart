@@ -18,6 +18,7 @@ import 'package:angular_components/material_select/material_dropdown_select_acce
 import 'package:angular_components/model/selection/selection_model.dart';
 import 'package:angular_components/model/selection/selection_options.dart';
 import 'package:angular_components/model/ui/has_renderer.dart';
+import 'package:auge_shared/domain/general/unit_of_measurement.dart';
 
 import 'package:auge_shared/domain/objective/measure.dart';
 
@@ -58,9 +59,9 @@ class MeasureDetailComponent implements OnInit, OnActivate, OnDeactivate  {
   String objectiveId;
   Measure measure;
 
-  List<MeasureUnit> _measureUnits = [];
-  SelectionOptions measureUnitOptions;
-  SelectionModel measureUnitSingleSelectModel;
+  List<UnitOfMeasurement> _unitsOfMeasurement = [];
+  SelectionOptions unitOfMeasurementOptions;
+  SelectionModel unitOfMeasurementSingleSelectModel;
 
   /// When it exists, the error/exception message is presented into dialog view.
   String dialogError;
@@ -73,7 +74,7 @@ class MeasureDetailComponent implements OnInit, OnActivate, OnDeactivate  {
  // bool validInput = false;
 
   MeasureDetailComponent(this._measureService, this._location) {
-    measureUnitSingleSelectModel = SelectionModel.single();
+    unitOfMeasurementSingleSelectModel = SelectionModel.single();
   }
 
   // Define messages and labels
@@ -90,7 +91,7 @@ class MeasureDetailComponent implements OnInit, OnActivate, OnDeactivate  {
   static final String nameLabel = MeasureDomainMsg.fieldLabel(Measure.nameField);
   static final String descriptionLabel =  MeasureDomainMsg.fieldLabel(Measure.descriptionField); //FieldMsg.label('${Measure.className}.${Measure.}');
   static final String metricLabel =  MeasureDomainMsg.fieldLabel(Measure.metricField); //FieldMsg.label('${Measure.className}.${Measure.metricField}');
-  static final String unitLabel = MeasureDomainMsg.fieldLabel(Measure.measureUnitField); // FieldMsg.label('${Measure.className}.${Measure.measureUnitField}');
+  static final String unitLabel = MeasureDomainMsg.fieldLabel(Measure.unitOfMeasurementField); // FieldMsg.label('${Measure.className}.${Measure.unitOfMeasurementField}');
   static final String decimalsNumberLabel = MeasureDomainMsg.fieldLabel(Measure.decimalsNumberField); //FieldMsg.label('${Measure.className}.${Measure.decimalsNumberField}');
   static final String startValueLabel =  MeasureDomainMsg.fieldLabel(Measure.startValueField); // FieldMsg.label('${Measure.className}.${Measure.startValueField}');
   static final String currentValueLabel =  MeasureDomainMsg.fieldLabel(Measure.currentValueField); //FieldMsg.label('${Measure.className}.${Measure.currentValueField}');
@@ -124,24 +125,24 @@ class MeasureDetailComponent implements OnInit, OnActivate, OnDeactivate  {
     }
 
     try {
-      _measureUnits = await _measureService.getMeasureUnits();
+      _unitsOfMeasurement = await _measureService.getUnitsOfMeasurement();
     } catch (e) {
       dialogError = e.toString();
       rethrow;
     }
 
-    measureUnitOptions = new SelectionOptions.fromList(_measureUnits);
+    unitOfMeasurementOptions = SelectionOptions.fromList(_unitsOfMeasurement);
 
-    measureUnitSingleSelectModel.selectionChanges.listen((unit) {
+    unitOfMeasurementSingleSelectModel.selectionChanges.listen((unit) {
         if (unit.isNotEmpty && unit.first.added != null && unit.first.added.length != 0 && unit.first.added?.first != null) {
-          measure.measureUnit = unit.first.added.first;
+          measure.unitOfMeasurement = unit.first.added.first;
         }
       });
 
-    if (measure.measureUnit != null) {
-      measureUnitSingleSelectModel.select(measure.measureUnit);
-    } else if (measureUnitOptions.optionsList.isNotEmpty) {
-      measureUnitSingleSelectModel.select(measureUnitOptions.optionsList.first);
+    if (measure.unitOfMeasurement != null) {
+      unitOfMeasurementSingleSelectModel.select(measure.unitOfMeasurement);
+    } else if (unitOfMeasurementOptions.optionsList.isNotEmpty) {
+      unitOfMeasurementSingleSelectModel.select(unitOfMeasurementOptions.optionsList.first);
     }
   }
 
@@ -171,18 +172,18 @@ class MeasureDetailComponent implements OnInit, OnActivate, OnDeactivate  {
   }
 
   // Label for the button for single selection.
-  String get measureUnitSingleSelectLabel {
+  String get unitOfMeasurementSingleSelectLabel {
     String nameLabel;
-    if ((measureUnitSingleSelectModel != null) &&
-        (measureUnitSingleSelectModel.selectedValues != null) &&
-        (measureUnitSingleSelectModel.selectedValues.length > 0)) {
+    if ((unitOfMeasurementSingleSelectModel != null) &&
+        (unitOfMeasurementSingleSelectModel.selectedValues != null) &&
+        (unitOfMeasurementSingleSelectModel.selectedValues.length > 0)) {
 
-      nameLabel = measureUnitSingleSelectModel.selectedValues.first.name;
+      nameLabel = unitOfMeasurementSingleSelectModel.selectedValues.first.name;
     }
     return nameLabel ;
   }
 
-  ItemRenderer get measureUnitItemRenderer => (dynamic unit) => unit.name + (unit.symbol == null || unit.symbol.trim().length == 0 ? '' : ' (' + unit.symbol + ')');
+  ItemRenderer get unitOfMeasurementItemRenderer => (dynamic unit) => unit.name + (unit.symbol == null || unit.symbol.trim().length == 0 ? '' : ' (' + unit.symbol + ')');
 
   bool validValue(double startValue, double currentValue, double endValue) {
     if (startValue != null && endValue != null && startValue == endValue) {
@@ -261,12 +262,11 @@ class MeasureDetailComponent implements OnInit, OnActivate, OnDeactivate  {
     } else {
       return true;
     }
-
   }
 
-  // String get unitLeadingText => measure?.measureUnit == null ? null : measure.measureUnit.symbol;
-  String get unitLeadingText => measure?.measureUnit?.symbol == null ? null : measure.measureUnit.symbol.contains(r'$') ? measure.measureUnit.symbol : null;
+  // String get unitLeadingText => measure?.unitOfMeasurement == null ? null : measure.unitOfMeasurement.symbol;
+  String get unitLeadingText => measure?.unitOfMeasurement?.symbol == null ? null : measure.unitOfMeasurement.symbol.contains(r'$') ? measure.unitOfMeasurement.symbol : null;
 
-  //String get unitTrailingText => measure?.measureUnit == null ? null :  measure.measureUnit.symbol;
-  String get unitTrailingText => measure?.measureUnit?.symbol == null ? null : !measure.measureUnit.symbol.contains(r'$') ? measure.measureUnit.symbol : null;
+  //String get unitTrailingText => measure?.unitOfMeasurement == null ? null :  measure.unitOfMeasurement.symbol;
+  String get unitTrailingText => measure?.unitOfMeasurement?.symbol == null ? null : !measure.unitOfMeasurement.symbol.contains(r'$') ? measure.unitOfMeasurement.symbol : null;
 }

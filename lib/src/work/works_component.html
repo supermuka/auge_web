@@ -24,12 +24,19 @@
         <div class="w3-col" style="width:{{mainColWidth}}">
             <material-expansionpanel-set>
                 <div *ngFor="let iWork of works;let i = index">
-
-                    <material-expansionpanel
+                    <!-- material-expansionpanel
                             [alwaysHideExpandIcon]="true"
                             [hideExpandedHeader]="false"
                             [showSaveCancel]="false"
                             [expanded]="iWork.id == expandedWorkId"
+                            (expandedChange)="setExpandedWorkId(iWork.id, $event)" -->
+
+                    <material-expansionpanel
+                            [disabled]="true"
+                            [alwaysHideExpandIcon]="true"
+                            [hideExpandedHeader]="false"
+                            [showSaveCancel]="false"
+                            [expanded]="false"
                             (expandedChange)="setExpandedWorkId(iWork.id, $event)">
                         <div name class="custom-expansionpanel-panel-specific-name-width">
                             <span class="truncate-ellipsed-parent">
@@ -63,11 +70,11 @@
                                 <material-icon icon="launch"></material-icon>
                             </material-button>
                         </div>
-                        <hr class="hr-margin">
+                        <!-- hr class="hr-margin">
                         <span *ngIf="iWork.objective != null"><strong>{{objectiveLabel}}:</strong> {{iWork.objective?.name}}</span>
                         <div class="w3-row-padding" >
                             <auge-work-items [work]="iWork"></auge-work-items>
-                        </div>
+                        </div -->
                     </material-expansionpanel>
                 </div>
             </material-expansionpanel-set>
