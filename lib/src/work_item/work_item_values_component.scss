@@ -1,0 +1,11 @@
+@import 'package:auge_web/scss/common.scss';
+@import 'package:angular_components/material_expansionpanel/mixins';
+
+material-dialog {
+  height: 600px;
+  max-height: 600px;
+}
+
+.flat-on-collapse-theme {
+  @include expansionpanel-flat-on-collapse-theme();
+}

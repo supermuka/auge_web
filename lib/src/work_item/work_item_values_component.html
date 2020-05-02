@@ -1,0 +1,90 @@
+<modal [visible]="modalVisible">
+    <material-dialog headered [error]="dialogError">
+        <div header>
+            <h3>{{actualValueLabel}}</h3>
+        </div>
+        <div class="w3-row">
+            <div class="w3-col m4">
+                <material-input type="number" floatingLabel disabled [label]="plannedValueLabel" [ngModel]="workItem?.plannedValue"></material-input>
+            </div>
+            <div class="w3-col m4">
+                <material-input type="number" floatingLabel disabled [label]="actualValueLabel" [ngModel]="workItem?.actualValue"></material-input>
+            </div>
+            <div class="w3-rest">
+                <material-input type="number" floatingLabel disabled [label]="remainingValueLabel" [ngModel]="remainingValue(workItem?.plannedValue, workItem?.actualValue)"></material-input>
+            </div>
+        </div>
+        <div class="w3-row">
+            <material-expansionpanel disabled
+                                     [alwaysHideExpandIcon]="true"
+                                     [expanded]="true"
+                                     [showSaveCancel]="false">
+                <div name>
+                    <span>{{dateAndActualValueLabel}}</span>
+                </div>
+                <div action>
+                    <material-button icon (trigger)="selectWorkItemValue(null)">
+                        <material-icon icon="add"></material-icon>
+                    </material-button>
+                </div>
+                <div class="w3-padding-small">
+                    <div *ngFor="let iWorkItemValue of workItemValues">
+                        <material-expansionpanel class="flat-on-collapse-theme"
+                                                 [alwaysHideExpandIcon]="true"
+                                                 [hideExpandedHeader]="true"
+                                                 [showSaveCancel]="true"
+                                                 [expanded]="iWorkItemValue != null && iWorkItemValue == selectedWorkItemValue"
+                                                 [cancelText]="cancelButtonLabel"
+                                                 [saveText]="saveButtonLabel"
+                                                 (save)="saveWorkItemValue(iWorkItemValue, $event)"
+                                                 (cancel)="cancelWorkItemValue(iWorkItemValue, $event)"
+                                                 expandIcon="edit">
+                            <div name>
+                                <span>{{iWorkItemValue.date | date}}</span>
+                            </div>
+                            <div value>
+                                <span class="w3-right">{{iWorkItemValue.actualValue | number}}</span>
+                                <span class="truncate-ellipsed-parent">
+                                    <span class="truncate-ellipsed">{{iWorkItemValue.comment}}</span>
+                                </span>
+                            </div>
+                            <div action>
+                                <material-button icon (trigger)="selectWorkItemValue(iWorkItemValue)">
+                                    <material-icon icon="edit"></material-icon>
+                                </material-button>
+                                <material-button icon (trigger)="delete(iWorkItemValue)">
+                                    <material-icon icon="delete"></material-icon>
+                                </material-button>
+                            </div>
+                            <div class="w3-row-padding">
+                                <div class="w3-col l6">
+                                    <div class="input-container">
+                                        <label>{{dateLabel}}</label>
+                                        <material-datepicker [date]="getDate(iWorkItemValue)"
+                                                             (dateChange)="setDate(iWorkItemValue, $event)"
+                                                             [minDate]="limitToDateRange.start"
+                                                             [maxDate]="limitToDateRange.end"
+                                                             [required]="true">
+                                        </material-datepicker>
+                                    </div>
+                                </div>
+                                <div class="w3-col l6">
+                                    <material-input autoFocus type="number" [ngModel]="iWorkItemValue.actualValue"  [rightAlign]="true" floatingLabel [label]="actualValueLabel" [error]="showActualValueErrorMsg" [leadingText]="unitLeadingText" [trailingText]="unitTrailingText" (change)="changedActualValue(iWorkItemValue, $event)"></material-input>
+                                </div>
+                            </div>
+                            <div class="w3-row">
+                                <div class="w3-col l12">
+                                    <material-input floatingLabel multiline rows="2" [label]="commentLabel" [(ngModel)]="iWorkItemValue.comment" style="width: 100%;"></material-input>
+                                </div>
+                            </div>
+                        </material-expansionpanel>
+                    </div>
+                </div>
+            </material-expansionpanel>
+        </div>
+        <div footer>
+            <material-button (trigger)="closeWorkItemValue()">{{closeButtonLabel}}
+            </material-button>
+        </div>
+    </material-dialog>
+</modal>
