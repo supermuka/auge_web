@@ -1,0 +1,31 @@
+.tooltip-card-bar {
+  display: inline-block;
+  flex-direction: row;
+  height: 16px;
+  width: 16px;
+  line-height: 1;
+}
+
+.progress-bar {
+  display: flex;
+  height: 24px;
+  align-items: center;
+  flex-wrap: nowrap;
+  /*  justify-items: center; */
+}
+
+.progress-bar span {
+  display: inline-flex;
+  min-width: 0px;
+}
+
+.circle {
+  display: inline-block;
+  border-radius: 50%;
+  margin: 0 8px;
+  width: 24px;
+  height: 24px;
+  background-color: #9e9e9e;
+  vertical-align: middle;
+  /* width and height can be anything, as long as they're equal */
+}

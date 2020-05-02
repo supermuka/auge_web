@@ -1,0 +1,1 @@
+final List<dynamic> styles = ['.expansionpanel-no-padding-margin._ngcontent-%ID%  div.panel.themeable.open{margin-top:0}'];

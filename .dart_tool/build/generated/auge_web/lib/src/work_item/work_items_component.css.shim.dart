@@ -1,0 +1,1 @@
+final List<dynamic> styles = ['.expansionpanel-flat-on-collapse-theme-no-border._ngcontent-%ID%  div.panel.themeable:not(.open){box-shadow:0px 0px 0px 0px}.custom-expansionpanel-panel-specific-name-width._ngcontent-%ID%{width:360px;min-width:120px}.custom-container-list._ngcontent-%ID%{margin-top:0px;margin-bottom:0px;padding-top:0px;padding-bottom:0px}'];

@@ -14,7 +14,7 @@
            <material-input type="text" [(ngModel)]="workItem.description" style="width:100%;height:100%" floatingLabel multiline rows="5" [label]="descriptionLabel"></material-input>
         </div>
         <div class="w3-row">
-            <div class="w3-col m5">
+            <div class="w3-col m6">
                 <div class="input-container">
                     <label>{{dueDateLabel}}</label>
                     <material-datepicker
@@ -25,10 +25,10 @@
                     </material-datepicker>
                 </div>
             </div>
-            <div class="w3-col m2">
+            <!-- div class="w3-col m1">
                 <span>&nbsp;</span>
-            </div>
-            <div class="w3-col m5">
+            </div -->
+            <div class="w3-rest">
                 <div class="input-container">
                     <label>{{stageLabel}}</label>
                     <material-dropdown-select
@@ -42,47 +42,19 @@
             </div>
         </div>
         <div class="w3-row">
-            <div class="w3-col m7">
-                <span class="input-container">
-                    <label>{{unitLabel}}</label>
-                    <material-dropdown-select [buttonText]="unitOfMeasurementSingleSelectLabel"
-                                              [selection]="unitOfMeasurementSingleSelectModel"
-                                              [options]="unitOfMeasurementOptions"
-                                              [itemRenderer]="unitOfMeasurementItemRenderer">
-                    </material-dropdown-select>
-                </span>
-            </div>
-            <div class="w3-col m5">
-               <material-input type="number" [(ngModel)]="workItem.plannedValue" floatingLabel [label]="plannedValueLabel"></material-input>
-            </div>
-        </div>
-        <div class="w3-row">
-            <div class="w3-col m5">
-                <material-input  type="number" [ngModel]="workItem.actualValue" disabled floatingLabel [label]="actualValueLabel"></material-input>
-            </div>
-            <div class="w3-col m2">
-                <material-button icon>
-                    <material-icon icon="edit"></material-icon>
-                </material-button>
-            </div>
-            <div class="w3-col m5">
-                <material-input  type="number" [ngModel]="remainingValue" disabled floatingLabel [label]="remainingValueLabel"></material-input>
-            </div>
-        </div>
-        <div class="w3-row">
             <material-auto-suggest-input class="input-bottom-section-margin input-padding" style="width: 100%"
-                    [(inputText)]="memberInputText"
-                    [filterSuggestions]="true"
-                    [popupMatchInputWidth]="true"
-                    [showClearIcon]="true"
-                    [trailingGlyph]="'search'"
-                    [label]="assignedToLabel"
-                    [emptyPlaceholder]="noMatchLabel"
-                    [selection]="memberSingleSelectModel"
-                    [selectionOptions]="memberOptions"
-                    [itemRenderer]="memberItemRenderer"
-                    [factoryRenderer]="factoryRenderer"
-                    [limit]="10">
+                                         [(inputText)]="memberInputText"
+                                         [filterSuggestions]="true"
+                                         [popupMatchInputWidth]="true"
+                                         [showClearIcon]="true"
+                                         [trailingGlyph]="'search'"
+                                         [label]="assignedToLabel"
+                                         [emptyPlaceholder]="noMatchLabel"
+                                         [selection]="memberSingleSelectModel"
+                                         [selectionOptions]="memberOptions"
+                                         [itemRenderer]="memberItemRenderer"
+                                         [factoryRenderer]="factoryRenderer"
+                                         [limit]="10">
             </material-auto-suggest-input>
         </div>
         <div class="w3-row">
@@ -91,15 +63,6 @@
                     <material-chip class="buttom-delete-right no-padding-left-first" [hasLeftIcon]="true" (remove)="removeMember(member)">
                         <span left-icon class="avatar" [style.background-image]="'url(' +  userUrlImage(member)  + ')'"></span>
                         {{member.name}}
-                    </material-chip>
-                </div>
-            </material-chips>
-        </div>
-        <div class="w3-row">
-            <material-chips *ngFor="let attachment of workItem?.attachments">
-                <div *ngFor="let attachment of workItem?.attachments">
-                    <material-chip class="w3-col" (remove)="removeAttachment(attachment)" >
-                        <a id="download-file-{{attachment.id}}" class="text-decoration-none" [download]="attachment.name" [href]="href(attachment)" (click)="loadAttachmentContent($event, attachment)">{{attachment.name}}</a>
                     </material-chip>
                 </div>
             </material-chips>
@@ -115,10 +78,52 @@
                 </material-button>
             </div>
         </div>
-        <material-expansionpanel [disabled]="true" [alwaysHideExpandIcon]="true" [hideExpandedHeader]="true" [expanded]="true"  [showSaveCancel]="false" class="no-border-">
+        <div class="w3-row">
+            <material-chips *ngFor="let attachment of workItem?.attachments">
+                <div *ngFor="let attachment of workItem?.attachments">
+                    <material-chip class="w3-col" (remove)="removeAttachment(attachment)" >
+                        <a id="download-file-{{attachment.id}}" class="text-decoration-none" [download]="attachment.name" [href]="href(attachment)" (click)="loadAttachmentContent($event, attachment)">{{attachment.name}}</a>
+                    </material-chip>
+                </div>
+            </material-chips>
+        </div>
+        <material-expansionpanel class="expansionpanel-no-border-{{valuePanelExpanded}}" name="{{plannedActualLabel}}" [(expanded)]="valuePanelExpanded" [showSaveCancel]="false">
             <div>
                 <div class="w3-row">
-                    <material-input class="w3-col m10" [(ngModel)]="checkItemEntry" floatingLabel [label]="checkItemLabel"></material-input>
+                    <div class="w3-col m7">
+                        <span class="input-container">
+                            <label>{{unitLabel}}</label>
+                            <material-dropdown-select
+                                                      [buttonText]="unitOfMeasurementSingleSelectLabel"
+                                                      [selection]="unitOfMeasurementSingleSelectModel"
+                                                      [options]="unitOfMeasurementOptions"
+                                                      [itemRenderer]="unitOfMeasurementItemRenderer">
+                            </material-dropdown-select>
+                        </span>
+                    </div>
+                    <div class="w3-col m5">
+                       <material-input type="number" [(ngModel)]="workItem.plannedValue" floatingLabel [label]="plannedValueLabel"></material-input>
+                    </div>
+                </div>
+                <div class="w3-row">
+                    <div class="w3-col m5">
+                        <material-input  type="number" [ngModel]="workItem.actualValue" disabled floatingLabel [label]="actualValueLabel"></material-input>
+                    </div>
+                    <div class="w3-col m2">
+                        <material-button icon>
+                            <material-icon icon="edit"></material-icon>
+                        </material-button>
+                    </div>
+                    <div class="w3-col m5">
+                        <material-input  type="number" [ngModel]="remainingValue" disabled floatingLabel [label]="remainingValueLabel"></material-input>
+                    </div>
+                </div>
+            </div>
+        </material-expansionpanel>
+        <material-expansionpanel class="expansionpanel-no-border-{{checkItemPanelExpanded}}" name="{{checkItemsLabel}}" [(expanded)]="checkItemPanelExpanded"  [showSaveCancel]="false">
+            <div>
+                <div class="w3-row">
+                    <material-input class="w3-col m10" [(ngModel)]="checkItemEntry" floatingLabel [label]="checkItemNameLabel"></material-input>
                     <span class="w3-col m2">
                     <material-button *ngIf="selectedCheckItem == null" [disabled]="!validCheckItemInput" icon (trigger)="addCheckItem()">
                         <material-icon icon="add"></material-icon>
@@ -142,6 +147,7 @@
                 </div>
             </div>
         </material-expansionpanel>
+
         <!-- div class="material-shadow-box-list" elevation="2">
             <div class="w3-row">
                 <material-input class="w3-col m10" [(ngModel)]="checkItemEntry" floatingLabel [label]="checkItemLabel"></material-input>

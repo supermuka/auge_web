@@ -1,0 +1,1 @@
+final List<dynamic> styles = ['/*\n// Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.\n// Author: Samuel C. Schwebel.\n*/\n.font-size-small {\n  font-size: small;\n  color: rgba(0, 0, 0, 0.54);\n  /* \$mat-gray-500; */\n}\n'];

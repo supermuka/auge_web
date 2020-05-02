@@ -46,6 +46,7 @@ import 'package:auge_web/route/app_routes.dart';
 
 // ignore_for_file: uri_has_not_been_generated
 import 'package:auge_web/src/work_item/work_item_detail_component.template.dart' as work_item_detail_component;
+import 'package:auge_web/src/work_item/work_item_values_component.template.dart' as work_item_values_component;
 
 @Component(
     selector: 'auge-work-items-kanban',
@@ -113,13 +114,17 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
   static final String headerTitle = WorkItemMsg.label(WorkItemMsg.workKanbanLabel);
 
   final List<RouteDefinition> routes = [
-    new RouteDefinition(
+    RouteDefinition(
       routePath: AppRoutes.workItemKanbanAddRoute,
       component: work_item_detail_component.WorkItemDetailComponentNgFactory,
     ),
-    new RouteDefinition(
+    RouteDefinition(
       routePath: AppRoutes.workItemKanbanEditRoute,
       component: work_item_detail_component.WorkItemDetailComponentNgFactory,
+    ),
+    RouteDefinition(
+      routePath: AppRoutes.workItemKanbanValuesRoute,
+      component: work_item_values_component.WorkItemValuesComponentNgFactory,
     ),
 
   ];
@@ -164,7 +169,9 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
             .workIdParameter];
 
         if (workId != null || workId.isNotEmpty) {
+          print('DEBUG AAA ${workId}');
           work = await _workService.getWork(workId, withWorkItems: true);
+          print('DEBUG BBB ${workId}');
         }
       }
 
@@ -322,17 +329,19 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
   }
 
   void goToDetail([String stageId]) {
-
     if (selectedWorkItem == null) {
-
       _router.navigate(AppRoutes.workItemKanbanAddRoute.toUrl(parameters: {
         AppRoutesParam.workIdParameter: work.id }), NavigationParams(replace:  true));
 
     } else {
-
       _router.navigate(AppRoutes.workItemKanbanEditRoute.toUrl(parameters: {AppRoutesParam.workIdParameter: work.id,
         AppRoutesParam.workItemIdParameter: selectedWorkItem.id }), NavigationParams(replace:  true));
     }
+  }
+
+  void goToValues(String workItemId) {
+    _router.navigate(AppRoutes.workItemKanbanValuesRoute.toUrl(parameters: {
+      AppRoutesParam.workIdParameter: work.id, AppRoutesParam.workItemIdParameter: workItemId }), NavigationParams(replace:  true));
   }
 
   String stateHslColor(State state) => WorkService.getStateHslColor(state);

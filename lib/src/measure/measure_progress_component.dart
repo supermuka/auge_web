@@ -100,9 +100,9 @@ class MeasureProgressComponent implements OnInit, OnActivate, OnDeactivate  {
 
   MeasureProgress selectedMeasureProgress;
 
-  String showStartValueErrorMsg;
+  //String showStartValueErrorMsg;
   String showCurrentValueErrorMsg;
-  String showEndValueErrorMsg;
+  //String showEndValueErrorMsg;
 
   MenuModel<MenuItem> menuModel;
 
@@ -376,7 +376,7 @@ class MeasureProgressComponent implements OnInit, OnActivate, OnDeactivate  {
     }
     return true;
   }
-
+/*
   void changedStartValue(String startValue) {
     if (!validValue(double.tryParse(startValue), measure.currentValue, measure.endValue)) {
       //   errorControl.add(validStartValue);
@@ -387,7 +387,7 @@ class MeasureProgressComponent implements OnInit, OnActivate, OnDeactivate  {
     }
 //    validInput = errorControl.isEmpty;
   }
-
+*/
   void changedCurrentValue(MeasureProgress measureProgress, var currentValue) {
     if (!validValue(measure.startValue, double.tryParse(currentValue), measure.endValue)) {
       // errorControl.add(validCurrentValue);

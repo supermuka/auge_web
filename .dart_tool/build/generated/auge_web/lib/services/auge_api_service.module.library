@@ -1,0 +1,1 @@
+{"isEntrypoint":true,"deps":["angular|lib/core.dart","grpc|lib/grpc_web.dart","auge_shared|lib/message/rpc_error_message.dart"],"parts":[],"conditionalDeps":[],"sdkDeps":["html"],"hasMain":false}

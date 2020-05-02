@@ -1,0 +1,30 @@
+.width-flex {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+.custom-expansionpanel-panel-specific-name-width {
+  width: 600px;
+}
+
+.custom-slider {
+  margin-left: 16px;
+  width-min: 90px;
+}
+
+/*
+.measures-vertical-size {
+  max-height: calc(25vh - 48px);
+  overflow-y: auto;
+}
+*/
+.custom-container-list {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}

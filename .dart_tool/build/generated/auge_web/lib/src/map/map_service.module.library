@@ -1,0 +1,1 @@
+{"isEntrypoint":false,"deps":["angular|lib/core.dart","auge_web|lib/services/auge_api_service.dart","auge_shared|lib/domain/objective/objective.dart","auge_shared|lib/protos/generated/objective/objective_measure.pbgrpc.dart"],"parts":[],"conditionalDeps":[],"sdkDeps":["async"],"hasMain":false}

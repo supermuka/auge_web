@@ -13,6 +13,8 @@ import 'package:auge_shared/protos/generated/google/protobuf/wrappers.pb.dart' a
 import 'package:auge_shared/protos/generated/work/work_work_item.pbgrpc.dart' as work_work_item_pbgrpc;
 import 'package:auge_shared/protos/generated/general/unit_of_measurement.pbgrpc.dart' as unit_of_measurement_pbgrpc;
 
+import 'package:grpc/grpc_web.dart';
+
 @Injectable()
 class WorkItemService {
   final AuthService _authService;
@@ -103,5 +105,102 @@ class WorkItemService {
 
     // Translate name
     // measureUnits.forEach((f) => f.name = MeasureMessage.measureUnitLabel(f.name));
+  }
+
+  /// Return an [WorkItemValue]
+  Future<List<WorkItemValue>> getWorkItemValues(String workItemId, {bool withWorkItem = false}) async {
+
+    work_work_item_pbgrpc
+        .WorkItemValuesResponse workItemValuesResponsePb = await _workItemServiceClient
+        .getWorkItemValues(work_work_item_pbgrpc.WorkItemValueGetRequest()
+      ..workItemId = workItemId..withWorkItem = withWorkItem);
+    Map<String, dynamic> cache = {};
+    return workItemValuesResponsePb.workItemValues.map((m) =>
+    WorkItemValue()
+      ..readFromProtoBuf(m, cache)).toList();
+  }
+
+  /// Return an [WorkItemValue] by id [WorkItemValue.id]
+  Future<WorkItemValue> getWorkItemValue(String workItemValueId) async {
+    work_work_item_pbgrpc.WorkItemValue workItemValuePb;
+    try {
+      workItemValuePb = await _workItemServiceClient
+          .getWorkItemValue(work_work_item_pbgrpc.WorkItemValueGetRequest()..id = workItemValueId);
+
+    } on GrpcError {
+      /*--
+      } on DetailedApiRequestError catch (e) {
+        if (e.status == 204 && e.errors.firstWhere((ed) => ed.reason == RpcErrorDetailMessage.unitOfMeasurementsDataNotFoundReason, orElse: null ) != null)
+          return null;
+        else {
+          rethrow;
+        }
+
+         */
+    }
+    return WorkItemValue()..readFromProtoBuf(workItemValuePb, {});
+  }
+
+  /// Save (create) a [WorkItemValue]
+  Future<String> saveWorkItemValue(String workItemId, WorkItemValue workItemValue) async {
+
+    work_work_item_pbgrpc.WorkItemValueRequest workItemValueRequest = work_work_item_pbgrpc.WorkItemValueRequest()
+      ..workItemValue = workItemValue.writeToProtoBuf()
+      ..workItemId = workItemId
+      ..authOrganizationId = _authService.authorizedOrganization.id
+      ..authUserId = _authService.authenticatedUser.id;
+
+    try {
+
+      if (workItemValue.id == null) {
+        wrappers_pb.StringValue idResponse = await _workItemServiceClient
+            .createWorkItemValue(workItemValueRequest);
+
+        // ID - primary key generated on server-side.
+        return idResponse?.value;
+      } else {
+
+        await _workItemServiceClient
+            .updateWorkItemValue(workItemValueRequest);
+
+        return workItemValueRequest.workItemValue.id;
+      }
+
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Save (update) a [WorkItemValue]
+  void updateWorkItemValue(String workItemId, WorkItemValue workItemValue) async {
+
+    work_work_item_pbgrpc.WorkItemValueRequest workItemValueRequest = work_work_item_pbgrpc.WorkItemValueRequest()
+      ..workItemValue = workItemValue.writeToProtoBuf()
+      ..workItemId = workItemId
+      ..authOrganizationId = _authService.authorizedOrganization.id
+      ..authUserId = _authService.authenticatedUser.id;
+
+    try {
+      await _workItemServiceClient
+          .updateWorkItemValue(workItemValueRequest);
+
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Delete a [WorkItemValue]
+  void deleteWorkItemValue(WorkItemValue workItemValue) async {
+
+    work_work_item_pbgrpc.WorkItemValueDeleteRequest workItemValueDeleteRequest = work_work_item_pbgrpc.WorkItemValueDeleteRequest()
+      ..workItemValueId = workItemValue.id
+      ..workItemValueVersion = workItemValue.version
+      ..authOrganizationId = _authService.authorizedOrganization.id
+      ..authUserId = _authService.authenticatedUser.id;
+    try {
+      await _workItemServiceClient.deleteWorkItemValue(workItemValueDeleteRequest);
+    } catch (e) {
+      rethrow;
+    }
   }
 }

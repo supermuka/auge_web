@@ -1,0 +1,1 @@
+final List<dynamic> styles = ['/*\n// Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.\n// Author: Samuel C. Schwebel.\n*/\n.expansionpanel-no-padding-margin ::ng-deep div.panel.themeable.open {\n  margin-top: 0;\n}\n'];

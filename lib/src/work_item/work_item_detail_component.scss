@@ -2,6 +2,8 @@
 @import 'package:angular_components/css/material/material';
 @import 'package:angular_components/css/material/shadow';
 @import 'package:angular_components/material_input/mixins';
+//@import 'package:angular_components/material_select/mixins';
+@import 'package:angular_components/material_expansionpanel/mixins';
 
 /*
 .width-200 {
@@ -67,3 +69,34 @@ input[type="file"] {
     padding-left: 0;
   }
 }
+
+/*
+.material-select-dropdown-padding {
+  @include material-select-dropdown-padding(0px);
+}
+
+.dropdown-icon-spacing {
+  @include dropdown-icon-spacing(0px);
+}
+*/
+
+.expansionpanel-no-border-false {
+  @include expansionpanel-no-border();
+}
+/*
+.no-content-margin {
+  @include expansionpanel-no-content-margin();
+}
+
+.flat-on-collapse-theme {
+  @include expansionpanel-flat-on-collapse-theme();
+}
+
+.expansionpanel-border-width {
+  @include expansionpanel-border-width(10px);
+}
+
+.expansionpanel-open-border-width {
+  @include expansionpanel-open-border-width(5px);
+}
+*/

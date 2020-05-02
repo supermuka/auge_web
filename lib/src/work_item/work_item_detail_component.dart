@@ -142,6 +142,9 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
 
   final String urlBaseAttachment = 'data:application/octet-stream;base64,';
 
+  bool valuePanelExpanded = false;
+  bool checkItemPanelExpanded = false;
+
   WorkItemDetailComponent(this._userService, this._workService, this._workItemService, this._router, this._domSanitizationService /*, this._location*/)  {
 
     // initializeDateFormatting(Intl.defaultLocale , null);
@@ -165,7 +168,9 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
   static final String noMatchLabel = WorkItemMsg.label(WorkItemMsg.noMatchLabel);
   static final String selectValueLabel = WorkItemMsg.label(WorkItemMsg.selectAValueLabel);
   static final String dropFileHereLabel = WorkItemMsg.label(WorkItemMsg.dropFileHereLabel);
-  static final String remainingValueLabel = WorkItemDomainMsg.fieldLabel(WorkItemMsg.remainingValueLabel); //
+  static final String checkItemNameLabel = WorkItemMsg.label(WorkItemMsg.checkItemNameLabel);
+  static final String plannedActualLabel = WorkItemMsg.label(WorkItemMsg.remainingValueLabel);
+  static final String remainingValueLabel = WorkItemMsg.label(WorkItemMsg.remainingValueLabel);
 
 
   static final String nameLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.nameField);
@@ -178,7 +183,7 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
   static final String stageLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.workStageField);
   static final String assignedToLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.assignedToField);
   static final String attachmentsLabel = WorkItemDomainMsg.fieldLabel(WorkItem.attachmentsField);
-  static final String checkItemLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.checkItemsField);
+  static final String checkItemsLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.checkItemsField);
 
   static final String valuePercentIntervalMsg = WorkItemMsg.valuePercentIntervalMsg();
   static final String archivedLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.archivedField);
@@ -221,10 +226,15 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
       rethrow;
     }
 
+    valuePanelExpanded = workItem.plannedValue != null || workItem.actualValue != null;
+    checkItemPanelExpanded = workItem.checkItems.isNotEmpty;
+
     // If Stage Id is passed
     if (current.queryParameters.containsKey(AppRoutesQueryParam.stageIdQueryParameter)) {
       stageIdOrigin = current.queryParameters[AppRoutesQueryParam.stageIdQueryParameter];
     }
+
+
 
     memberOptions = new StringSelectionOptions<User>(
         _users, toFilterableString: (User user) => user.name);
@@ -286,6 +296,8 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
     } else if (unitOfMeasurementOptions.optionsList.isNotEmpty) {
       unitOfMeasurementSingleSelectModel.select(unitOfMeasurementOptions.optionsList.first);
     }
+
+
 
   }
 

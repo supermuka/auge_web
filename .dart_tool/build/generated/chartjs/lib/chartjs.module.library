@@ -1,0 +1,1 @@
+{"isEntrypoint":true,"deps":["js|lib/js.dart","chartjs|lib/src/func.dart"],"parts":[],"conditionalDeps":[],"sdkDeps":["html"],"hasMain":false}

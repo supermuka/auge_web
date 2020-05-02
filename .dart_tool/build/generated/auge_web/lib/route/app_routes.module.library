@@ -1,0 +1,1 @@
+{"isEntrypoint":true,"deps":["auge_shared|lib/route/app_routes_definition.dart","angular_router|lib/angular_router.dart"],"parts":[],"conditionalDeps":[],"sdkDeps":[],"hasMain":false}

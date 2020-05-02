@@ -1,0 +1,1 @@
+{"isEntrypoint":false,"deps":["kernel|lib/ast.dart","kernel|lib/type_environment.dart","kernel|lib/visitor.dart","front_end|lib/src/fasta/messages.dart","front_end|lib/src/fasta/problems.dart","front_end|lib/src/fasta/type_inference/inference_helper.dart"],"parts":[],"conditionalDeps":[],"sdkDeps":["core"],"hasMain":false}

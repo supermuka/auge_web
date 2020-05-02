@@ -1,0 +1,1 @@
+final List<dynamic> styles = ['material-dropdown-select._ngcontent-%ID%{width:256px;min-width:256px;max-width:256px;margin-left:4px;margin-right:4px}'];

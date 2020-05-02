@@ -1,0 +1,1 @@
+{"isEntrypoint":false,"deps":["front_end|lib/src/fasta/messages.dart","front_end|lib/src/fasta/scope.dart","front_end|lib/src/fasta/builder/library_builder.dart","front_end|lib/src/fasta/builder/metadata_builder.dart","front_end|lib/src/fasta/builder/type_declaration_builder.dart"],"parts":[],"conditionalDeps":[],"sdkDeps":[],"hasMain":false}

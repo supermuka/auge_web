@@ -122,6 +122,10 @@ class AppRoutes {
       path: ':${AppRoutesParam.workItemIdParameter}/edit',
       parent: workItemsKanbanRoute
   );
+  static final workItemKanbanValuesRoute = RoutePath(
+      path: ':${AppRoutesParam.workItemIdParameter}/values',
+      parent: workItemsKanbanRoute
+  );
   static final userAddRoute = RoutePath(
       path: 'add',
       parent: usersRoute

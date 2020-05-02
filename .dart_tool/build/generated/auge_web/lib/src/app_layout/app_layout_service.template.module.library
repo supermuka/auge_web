@@ -1,0 +1,1 @@
+{"isEntrypoint":false,"deps":["auge_web|lib/src/app_layout/app_layout_service.dart","angular|lib/src/di/reflector.dart","angular|lib/core.template.dart","auge_web|lib/services/common_service.template.dart"],"parts":[],"conditionalDeps":[],"sdkDeps":[],"hasMain":false}

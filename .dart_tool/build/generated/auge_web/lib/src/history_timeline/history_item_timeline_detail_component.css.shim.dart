@@ -1,0 +1,1 @@
+final List<dynamic> styles = ['.font-size-small._ngcontent-%ID%{font-size:small;color:rgba(0,0,0,0.54)}'];

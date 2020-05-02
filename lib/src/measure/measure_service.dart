@@ -67,40 +67,6 @@ class MeasureService {
       }
   }
 
-  /// Return an [MeasureProgress] by [Measure.id]
-  Future<List<MeasureProgress>> getMeasureProgresses(String measureId, {bool withMeasure = false}) async {
-
-    objective_measure_pbgrpc
-        .MeasureProgressesResponse measureProgressesResponsePb = await _measureServiceClient
-        .getMeasureProgresses(objective_measure_pbgrpc.MeasureProgressGetRequest()
-      ..measureId = measureId..withMeasure = withMeasure);
-    Map<String, dynamic> cache = {};
-    return measureProgressesResponsePb.measureProgresses.map((m) =>
-    MeasureProgress()
-    ..readFromProtoBuf(m, cache)).toList();
-  }
-
-  /// Return an [MeasureProgress] by id [MeasureProgress.id]
-  Future<MeasureProgress> getMeasureProgressById(String measureProgressId) async {
-    objective_measure_pbgrpc.MeasureProgress measureProgressPb;
-      try {
-        measureProgressPb = await _measureServiceClient
-            .getMeasureProgress(objective_measure_pbgrpc.MeasureProgressGetRequest()..id = measureProgressId);
-
-      } on GrpcError {
-        /*--
-      } on DetailedApiRequestError catch (e) {
-        if (e.status == 204 && e.errors.firstWhere((ed) => ed.reason == RpcErrorDetailMessage.unitOfMeasurementsDataNotFoundReason, orElse: null ) != null)
-          return null;
-        else {
-          rethrow;
-        }
-
-         */
-      }
-      return MeasureProgress()..readFromProtoBuf(measureProgressPb, {});
-  }
-
   /// Return [unitOfMeasurement] list
   Future<List<UnitOfMeasurement>> getUnitsOfMeasurement() async {
 
@@ -146,6 +112,55 @@ class MeasureService {
     } catch (e) {
       rethrow;
     }
+  }
+
+  /// Delete a [Measure]
+  void deleteMeasure(Measure measure) async {
+
+    objective_measure_pbgrpc.MeasureDeleteRequest measureDeleteRequest = objective_measure_pbgrpc.MeasureDeleteRequest()
+      ..measureId = measure.id
+      ..measureVersion = measure.version
+      ..authOrganizationId = _authService.authorizedOrganization.id
+      ..authUserId = _authService.authenticatedUser.id;
+    try {
+      await _measureServiceClient.deleteMeasure(measureDeleteRequest);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Return an [MeasureProgress] by [Measure.id]
+  Future<List<MeasureProgress>> getMeasureProgresses(String measureId, {bool withMeasure = false}) async {
+
+    objective_measure_pbgrpc
+        .MeasureProgressesResponse measureProgressesResponsePb = await _measureServiceClient
+        .getMeasureProgresses(objective_measure_pbgrpc.MeasureProgressGetRequest()
+      ..measureId = measureId..withMeasure = withMeasure);
+    Map<String, dynamic> cache = {};
+    return measureProgressesResponsePb.measureProgresses.map((m) =>
+    MeasureProgress()
+      ..readFromProtoBuf(m, cache)).toList();
+  }
+
+  /// Return an [MeasureProgress] by id [MeasureProgress.id]
+  Future<MeasureProgress> getMeasureProgressById(String measureProgressId) async {
+    objective_measure_pbgrpc.MeasureProgress measureProgressPb;
+    try {
+      measureProgressPb = await _measureServiceClient
+          .getMeasureProgress(objective_measure_pbgrpc.MeasureProgressGetRequest()..id = measureProgressId);
+
+    } on GrpcError {
+      /*--
+      } on DetailedApiRequestError catch (e) {
+        if (e.status == 204 && e.errors.firstWhere((ed) => ed.reason == RpcErrorDetailMessage.unitOfMeasurementsDataNotFoundReason, orElse: null ) != null)
+          return null;
+        else {
+          rethrow;
+        }
+
+         */
+    }
+    return MeasureProgress()..readFromProtoBuf(measureProgressPb, {});
   }
 
   /// Save (create) a [MeasureProgress]
@@ -196,20 +211,7 @@ class MeasureService {
     }
   }
 
-  /// Delete a [Measure]
-  void deleteMeasure(Measure measure) async {
 
-    objective_measure_pbgrpc.MeasureDeleteRequest measureDeleteRequest = objective_measure_pbgrpc.MeasureDeleteRequest()
-      ..measureId = measure.id
-      ..measureVersion = measure.version
-      ..authOrganizationId = _authService.authorizedOrganization.id
-      ..authUserId = _authService.authenticatedUser.id;
-    try {
-      await _measureServiceClient.deleteMeasure(measureDeleteRequest);
-    } catch (e) {
-      rethrow;
-    }
-  }
 
   /// Delete a [MeasureProgress]
   void deleteMeasureProgress(MeasureProgress measureProgress) async {

@@ -1,0 +1,1 @@
+{"isEntrypoint":true,"deps":["auge_web|lib/route/app_routes.dart","angular_router|lib/angular_router.template.dart"],"parts":[],"conditionalDeps":[],"sdkDeps":[],"hasMain":false}

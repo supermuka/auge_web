@@ -1,0 +1,54 @@
+/*
+material-dialog {
+   height: 560px;
+}
+*/
+:host .step-a {
+  margin-top: 32px;
+  width: 320px;
+}
+:host .step-b {
+  margin-top: 32px;
+  width: 320px;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.child {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+material-input {
+  width: 300px;
+}
+
+div [header] > h4 {
+  color: #a1c2fa;
+  /* color: $mat-blue-A100; */
+  /* color: $mat-light-blue; */
+  /* color: $mat-blue-A700; */
+  /* color: $mat-blue; */
+}
+
+div [header] > h6 {
+  color: #f5f5f5;
+}
+
+.hand {
+  cursor: pointer;
+}
+
+.right-button {
+  position: relative;
+  z-index: 99;
+  float: right;
+}
