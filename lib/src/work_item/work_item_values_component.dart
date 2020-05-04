@@ -175,6 +175,8 @@ class WorkItemValuesComponent implements OnInit, OnActivate, OnDeactivate  {
         workItemValues =
         await _workItemService.getWorkItemValues(workItem.id);
 
+        workItem = await _workItemService.getWorkItem(workItem.id);
+
       } catch (e) {
         dialogError = e.toString();
         event.cancel();

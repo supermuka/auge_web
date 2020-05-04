@@ -100,7 +100,7 @@ class WorkItemService {
     //List<MeasureUnit> measureUnits =  await _augeApiService.objectiveAugeApi.getMeasureUnits();
 
     // Translate name
-    unitsOfMeasurement.forEach((f) => f.name = UnitOfMeasurementMsg.UnitOfMeasurementLabel('${f.name}Label'));
+    unitsOfMeasurement.forEach((f) => f.name = UnitOfMeasurementMsg.unitNameLabel('${f.name}Label'));
     return unitsOfMeasurement;
 
     // Translate name

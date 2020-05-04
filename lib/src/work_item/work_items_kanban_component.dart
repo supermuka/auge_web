@@ -131,10 +131,10 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
 
   bool whileUpdatingDisabled = false;
 
+
   WorkItemsKanbanComponent(this._appLayoutService, this._workService, this._workItemService, this._historyTimelineService, this._router) {
     // initializeDateFormatting(Intl.defaultLocale);
-
-    menuModel = MenuModel([MenuItemGroup([MenuItem(editButtonLabel, icon: Icon('edit') , actionWithContext: (_) => goToDetail()), MenuItem(deleteButtonLabel, icon: Icon('delete'), actionWithContext: (_) => delete())])], icon: Icon('menu'));
+    menuModel = MenuModel([MenuItemGroup([MenuItem(editButtonLabel, icon: Icon('edit') , actionWithContext: (_) => goToDetail()), MenuItem(deleteButtonLabel, icon: Icon('delete'), actionWithContext: (_) => delete()), MenuItem(actualValueLabel, icon: Icon('show_chart'), actionWithContext: (_) => goToValues())])], icon: Icon('menu'));
   }
 
   @override
@@ -169,9 +169,7 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
             .workIdParameter];
 
         if (workId != null || workId.isNotEmpty) {
-          print('DEBUG AAA ${workId}');
           work = await _workService.getWork(workId, withWorkItems: true);
-          print('DEBUG BBB ${workId}');
         }
       }
 
@@ -339,9 +337,11 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
     }
   }
 
-  void goToValues(String workItemId) {
+  void goToValues([WorkItem workItem]) {
+    if (workItem == null) workItem = selectedWorkItem;
+    if (!hasPlannedOrActual(workItem)) return;
     _router.navigate(AppRoutes.workItemKanbanValuesRoute.toUrl(parameters: {
-      AppRoutesParam.workIdParameter: work.id, AppRoutesParam.workItemIdParameter: workItemId }), NavigationParams(replace:  true));
+      AppRoutesParam.workIdParameter: work.id, AppRoutesParam.workItemIdParameter: workItem.id }) /*, NavigationParams(replace:  true) */);
   }
 
   String stateHslColor(State state) => WorkService.getStateHslColor(state);
@@ -360,6 +360,14 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
 
   double remainingValue(double planned, double actual) {
     return planned == null || actual == null ? null : planned - actual;
+  }
+
+  bool hasPlannedOrActual(WorkItem workItem) {
+    return workItem != null && (workItem.plannedValue != null ||  workItem.actualValue != null);
+  }
+
+  void disEnableItemMenuActual() {
+      menuModel.itemGroups.last.last.enabled = hasPlannedOrActual(selectedWorkItem);
   }
 
 }
