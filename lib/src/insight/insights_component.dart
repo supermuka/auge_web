@@ -156,8 +156,9 @@ class InsightsComponent with CanReuse implements OnActivate  {
       return;
     }
 
-    _appLayoutService.enabledSearch = false;
     _appLayoutService.headerTitle = InsightMsg.label(InsightMsg.insightsLabel);
+    _appLayoutService.enabledSearch = false;
+    _appLayoutService.systemModuleIndex = null;
 
     try {
       if (_authService.authorizedOrganization != null) {

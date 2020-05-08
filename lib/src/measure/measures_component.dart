@@ -27,7 +27,6 @@ import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/measure/measure_detail_component.dart';
 import 'package:auge_web/src/measure/measure_progress_component.dart';
 import 'package:auge_web/src/measure/measure_service.dart';
-import 'package:auge_web/src/history_timeline/history_timeline_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 
 @Component(
@@ -59,14 +58,10 @@ class MeasuresComponent with CanReuse {
 
   final AppLayoutService _appLayoutService;
   final MeasureService _measureService;
-  final HistoryTimelineService _historyTimelineService;
   final Router _router;
 
   @Input()
   Objective objective;
-
-  @Input()
-  TimelineParam timelineParam;
 
   Measure selectedMeasure;
 
@@ -82,7 +77,7 @@ class MeasuresComponent with CanReuse {
   static final String currentValueLabel =  MeasureMsg.label(MeasureMsg.currentValueLabel);
   static final String endValueLabel =  MeasureMsg.label(MeasureMsg.endValueLabel);
 
-  MeasuresComponent(this._appLayoutService, this._measureService, this._historyTimelineService, this._router) {
+  MeasuresComponent(this._appLayoutService, this._measureService, this._router) {
     menuModel = MenuModel([MenuItemGroup(
         [MenuItem(editButtonLabel, icon: Icon('edit') , actionWithContext: (_) => goToDetail()),
         MenuItem(deleteButtonLabel, icon: Icon('delete'), actionWithContext: (_) => delete()),
@@ -99,9 +94,6 @@ class MeasuresComponent with CanReuse {
 
       await _measureService.deleteMeasure(selectedMeasure);
       objective.measures.remove(selectedMeasure);
-
-      // This is necessary, because this component is not used with a router, where the refresh is mame into onActivate. It is uses into [objects_components]
-      if (timelineParam != null && timelineParam.timelineVisible) _historyTimelineService.refreshHistory(SystemModule.objectives.index);
 
     } catch (e) {
       _appLayoutService.error = e.toString();
@@ -162,9 +154,4 @@ class MeasuresComponent with CanReuse {
         if (objective.startDate != null) AppRoutesQueryParam.objectiveStartDateQueryParameter: objective.startDate.toIso8601String(),
         if (objective.endDate != null) AppRoutesQueryParam.objectiveEndDateQueryParameter: objective.endDate.toIso8601String()}));
   }
-}
-
-/// Used just to pass by reference the parent [timelineVisible]
-class TimelineParam {
-  bool timelineVisible = false;
 }

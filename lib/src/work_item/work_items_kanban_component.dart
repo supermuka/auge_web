@@ -37,9 +37,6 @@ import 'package:auge_shared/message/domain_messages.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/work_item/work_item_service.dart';
 import 'package:auge_web/src/work/work_service.dart';
-import 'package:auge_web/src/history_timeline/history_timeline_service.dart';
-
-import 'package:auge_web/src/history_timeline/history_timeline_component.dart';
 import 'package:auge_web/src/work_item/work_item_detail_component.dart';
 
 import 'package:auge_web/route/app_routes.dart';
@@ -50,7 +47,7 @@ import 'package:auge_web/src/work_item/work_item_values_component.template.dart'
 
 @Component(
     selector: 'auge-work-items-kanban',
-    providers: const [WorkService, WorkItemService, HistoryTimelineService],
+    providers: const [WorkService, WorkItemService],
       templateUrl: 'work_items_kanban_component.html',
       styleUrls: const [
       'work_items_kanban_component.css'
@@ -71,20 +68,15 @@ import 'package:auge_web/src/work_item/work_item_values_component.template.dart'
       WorkSummaryComponent,
       MaterialButtonComponent,
       MaterialIconComponent,
-      HistoryTimelineComponent,
     ],
     pipes: const [commonPipes])
 
-class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDestroy {
+class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy */ {
 
   final AppLayoutService _appLayoutService;
   final WorkService _workService;
   final WorkItemService _workItemService;
-  final HistoryTimelineService _historyTimelineService;
   final Router _router;
-
-  String mainColWidth = '100%';
-  bool _timelineVisible = false;
 
   Work work;
 
@@ -101,8 +93,6 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
 
   static final String editButtonLabel = CommonMsg.buttonLabel(CommonMsg.editButtonLabel);
   static final String deleteButtonLabel = CommonMsg.buttonLabel(CommonMsg.deleteButtonLabel);
-
-  static final timelineLabel = TimelineItemdMsg.label(TimelineItemdMsg.timelineLabel);
 
   static final String groupLabel = WorkDomainMsg.fieldLabel(Work.groupField);
   static final String leaderLabel =  WorkDomainMsg.fieldLabel(Work.leaderField);
@@ -132,7 +122,7 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
   bool whileUpdatingDisabled = false;
 
 
-  WorkItemsKanbanComponent(this._appLayoutService, this._workService, this._workItemService, this._historyTimelineService, this._router) {
+  WorkItemsKanbanComponent(this._appLayoutService, this._workService, this._workItemService, this._router) {
     // initializeDateFormatting(Intl.defaultLocale);
     menuModel = MenuModel([MenuItemGroup([MenuItem(editButtonLabel, icon: Icon('edit') , actionWithContext: (_) => goToDetail()), MenuItem(deleteButtonLabel, icon: Icon('delete'), actionWithContext: (_) => delete()), MenuItem(actualValueLabel, icon: Icon('show_chart'), actionWithContext: (_) => goToValues())])], icon: Icon('menu'));
   }
@@ -174,8 +164,7 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
       }
 
       _appLayoutService.headerTitle = headerTitle;
-
-      if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.works.index);
+      _appLayoutService.systemModuleIndex = SystemModule.works.index;
 
       _appLayoutService.enabledSearch = true;
 
@@ -197,25 +186,12 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
     });
 
   }
-
+/*
   @override
   ngOnDestroy() async {
     _appLayoutService.enabledSearch = false;
   }
-
-  bool get timelineVisible {
-    return _timelineVisible;
-  }
-  set timelineVisible(bool visible) {
-    _timelineVisible = visible;
-    if (_timelineVisible) {
-      mainColWidth = '75%';
-      _historyTimelineService.refreshHistory(SystemModule.works.index);
-    } else {
-      mainColWidth = '100%';
-    }
-  }
-
+*/
   void drag(html.MouseEvent ev, KanbanColumn kanbanColumn, WorkItem workItem) {
     kanbanColumnDnD = kanbanColumn;
     workItemDnD = workItem;
@@ -314,8 +290,6 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
         }
 
         if (kanbanColumnUpdate != null && indexWorkItemKanban != null) kanbanColumnUpdate.columnWorkItems[indexWorkItemKanban] = workItem;
-
-        _historyTimelineService.refreshHistory(SystemModule.works.index);
 
       }
     } catch (e) {

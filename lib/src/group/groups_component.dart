@@ -20,7 +20,7 @@ import 'package:auge_shared/message/messages.dart';
 import 'package:auge_web/src/group/group_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
-import 'package:auge_web/src/history_timeline/history_timeline_component.dart';
+//import 'package:auge_web/src/history_timeline/history_timeline_component.dart';
 
 import 'package:auge_web/route/app_routes.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
@@ -34,7 +34,7 @@ import 'package:auge_web/src/group/group_detail_component.template.dart' as grou
     styleUrls: const [
       'groups_component.css'
     ],
-    providers: const [GroupService, HistoryTimelineService],
+    providers: const [GroupService],
     directives: const [
       coreDirectives,
       routerDirectives,
@@ -44,15 +44,13 @@ import 'package:auge_web/src/group/group_detail_component.template.dart' as grou
       MaterialExpansionPanelSet,
       MaterialToggleComponent,
       MaterialMenuComponent,
-      HistoryTimelineComponent,
     ])
 
-class GroupsComponent with CanReuse implements OnActivate, OnDestroy {
+class GroupsComponent with CanReuse implements OnActivate /*, OnDeactivate, OnDestroy */ {
 //  final AuthService _authService;
   final AppLayoutService _appLayoutService;
   final GroupService _groupService;
   final SearchService _searchService;
-  final HistoryTimelineService _historyTimelineService;
   final Router _router;
 
   final List<RouteDefinition> routes = [
@@ -69,37 +67,19 @@ class GroupsComponent with CanReuse implements OnActivate, OnDestroy {
   List<Group> _groups = new List();
   Group selectedGroup;
 
-  String mainColWidth = '100%';
-  bool _timelineVisible = false;
-
   MenuModel<MenuItem> menuModel;
 
   static final buttonEditLabel = CommonMsg.buttonLabel(CommonMsg.editButtonLabel);
   static final buttonDeleteLabel = CommonMsg.buttonLabel(CommonMsg.deleteButtonLabel);
 
-  static final timelineLabel = TimelineItemdMsg.label(TimelineItemdMsg.timelineLabel);
-
   static final activeLabel = GroupMsg.label(GroupMsg.activeLabel);
   static final inactiveLabel = GroupMsg.label(GroupMsg.inactiveLabel);
   static final headerTitle = GroupMsg.label(GroupMsg.groupsLabel);
 
-  GroupsComponent(/* this._authService, */ this._appLayoutService, this._groupService, this._searchService, this._historyTimelineService, this._router) {
+  GroupsComponent(/* this._authService, */ this._appLayoutService, this._groupService, this._searchService, this._router) {
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(buttonEditLabel, icon: new Icon('edit') , actionWithContext: (_) => goToDetail()), new MenuItem(buttonDeleteLabel, icon: new Icon('delete'), actionWithContext: (_) => delete())])], icon: new Icon('menu'));
   }
 
-  bool get timelineVisible {
-    return _timelineVisible;
-  }
-  set timelineVisible(bool visible) {
-    _timelineVisible = visible;
-    if (_timelineVisible) {
-      mainColWidth = '75%';
-      _historyTimelineService.refreshHistory(SystemModule.groups.index);
-    } else {
-      mainColWidth = '100%';
-    }
-    // (!_timelineVisible) ?mainColWidth = '100%' : mainColWidth = '75%';
-  }
 /*
   Future<bool> canReuse(RouterState current, RouterState next) async {
     // To treat CanReuse. Just define cache 'true' when this component is called from/to yours children
@@ -123,27 +103,30 @@ class GroupsComponent with CanReuse implements OnActivate, OnDestroy {
     }
 
     _appLayoutService.headerTitle = headerTitle;
-
     _appLayoutService.enabledSearch = true;
+    _appLayoutService.systemModuleIndex = SystemModule.groups.index;
 
     try {
       _groups = await _groupService.getGroups(_groupService.authService.authorizedOrganization.id);
 
-      if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.groups.index);
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;
     }
   }
 
+
+
   List<Group> get groups {
     return _searchService?.searchTerm.toString().isEmpty ? _groups : _groups.where((t) => t.name.toLowerCase().contains(_searchService.searchTerm.toLowerCase())).toList();
   }
-
+/*
   @override
   ngOnDestroy() async {
     _appLayoutService.enabledSearch = false;
+   // _appLayoutService.systemModuleIndex = null;
   }
+  */
 
   void selectGroup(Group group) {
     selectedGroup = group;
@@ -153,7 +136,6 @@ class GroupsComponent with CanReuse implements OnActivate, OnDestroy {
     try {
       await _groupService.deleteGroup(selectedGroup);
       groups.remove(selectedGroup);
-      _historyTimelineService.refreshHistory(SystemModule.groups.index);
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;

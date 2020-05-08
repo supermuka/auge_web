@@ -2,6 +2,7 @@
 // Author: Samuel C. Schwebel.
 
 import 'package:angular/angular.dart';
+import 'package:angular_router/angular_router.dart';
 import 'package:auge_web/route/app_routes.dart';
 
 import 'package:angular_components/focus/focus.dart';
@@ -21,7 +22,7 @@ import 'package:angular_components/material_chips/material_chip.dart';
 import 'package:angular_components/material_chips/material_chips.dart';
 import 'package:angular_components/material_radio/material_radio.dart';
 import 'package:angular_components/material_radio/material_radio_group.dart';
-import 'package:angular_router/angular_router.dart';
+
 
 import 'package:auge_shared/domain/general/group.dart';
 import 'package:auge_shared/domain/general/user.dart';

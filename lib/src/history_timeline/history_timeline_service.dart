@@ -32,17 +32,25 @@ class HistoryTimelineService {
   // get authService => _authService;
 
   void refreshHistory(int systemModuleIndex) async {
-    history = await _getHistory(systemModuleIndex);
+    history = await getHistory(systemModuleIndex);
   }
 
   /// Return a list of [TimelineItem]
-  Future<List<HistoryItem>> _getHistory(int systemModuleIndex) async {
+  Future<List<HistoryItem>> getHistory([int systemModuleIndex]) async {
     
     //history_item_pbgrpc.HistoryResponse historyResponse = await _historyItemServiceClient.getHistory(history_item_pbgrpc.HistoryItemGetRequest()..systemModuleIndex = SystemModule.objectives.index );
     currentDateTime = await getDateTime();
 
     Map<String, dynamic> cache = {};
-    return ( await _historyItemServiceClient.getHistory(history_item_pbgrpc.HistoryItemGetRequest()..organizationId = _authService.authorizedOrganization.id ..systemModuleIndex = systemModuleIndex)).history.map((m) =>
+
+    history_item_pbgrpc.HistoryItemGetRequest historyItemGetRequest = history_item_pbgrpc.HistoryItemGetRequest();
+    historyItemGetRequest.organizationId = _authService.authorizedOrganization.id;
+    if (systemModuleIndex != null) {
+      historyItemGetRequest.systemModuleIndex = systemModuleIndex;
+    }
+
+
+    return ( await _historyItemServiceClient.getHistory(historyItemGetRequest)).history.map((m) =>
     HistoryItem()
       ..readFromProtoBuf(m, cache)).toList();
 

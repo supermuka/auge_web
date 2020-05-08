@@ -30,9 +30,7 @@ import 'package:auge_shared/message/domain_messages.dart';
 import 'package:auge_web/src/work/work_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
-import 'package:auge_web/src/history_timeline/history_timeline_service.dart';
 import 'package:auge_web/src/work/work_summary_component.dart';
-import 'package:auge_web/src/history_timeline/history_timeline_component.dart';
 import 'package:auge_web/src/work/work_detail_component.dart';
 //import 'package:auge_web/src/work/work_stages_component.dart';
 //import 'package:auge_web/src/work_item/work_items_component.dart';
@@ -49,7 +47,7 @@ import 'package:auge_web/src/filter/filter_component.dart';
 
 @Component(
     selector: 'auge-works',
-    providers: const [WorkService, ObjectiveService, HistoryTimelineService],
+    providers: const [WorkService, ObjectiveService],
     templateUrl: 'works_component.html',
     styleUrls: const [
       'works_component.css'
@@ -69,7 +67,6 @@ import 'package:auge_web/src/filter/filter_component.dart';
       WorkSummaryComponent,
       WorkDetailComponent,
      // WorkItemsComponent,
-      HistoryTimelineComponent,
       ScoreboardComponent,
       FilterComponent,
       //WorkStagesComponent,
@@ -78,7 +75,6 @@ import 'package:auge_web/src/filter/filter_component.dart';
 class WorksComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy */ {
 
   final WorkService _workService;
-  final HistoryTimelineService _historyTimelineService;
   final AppLayoutService _appLayoutService;
   final Router _router;
  // final AuthService _authService;
@@ -109,9 +105,6 @@ class WorksComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy *
       component: work_item_detail_component.WorkItemDetailComponentNgFactory,
     ),
   ];
-
-  String mainColWidth = '100%';
-  bool _timelineVisible = false;
 
   List<Work> _works = List();
   Work selectedWork;
@@ -151,8 +144,6 @@ class WorksComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy *
   static final String editButtonLabel = CommonMsg.buttonLabel(CommonMsg.editButtonLabel);
   static final String deleteButtonLabel = CommonMsg.buttonLabel(CommonMsg.deleteButtonLabel);
 
-  static final String timelineLabel = TimelineItemdMsg.label(TimelineItemdMsg.timelineLabel);
-
   static final String sortedByLabel = WorkMsg.label(WorkMsg.sortedByLabel);
   static final String objectiveLabel =  WorkMsg.label(WorkMsg.objectiveLabel);
   static final String workLabel =  WorkMsg.label(WorkMsg.workLabel);
@@ -169,7 +160,7 @@ class WorksComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy *
 
   String _sortedBy = nameLabel;
 
-  WorksComponent(this._appLayoutService, this._workService, this._historyTimelineService, this._router) {
+  WorksComponent(this._appLayoutService, this._workService, this._router) {
 
     menuModel = new MenuModel([MenuItemGroup([
       MenuItem(editButtonLabel, icon: Icon('edit') , actionWithContext: (_) => goToDetail() /* viewDetail(true) */),
@@ -189,19 +180,6 @@ class WorksComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy *
 
   get sortedBy => _sortedBy;
 
-  bool get timelineVisible {
-    return _timelineVisible;
-  }
-  set timelineVisible(bool visible) {
-    _timelineVisible = visible;
-    if (_timelineVisible) {
-      mainColWidth = '75%';
-      _historyTimelineService.refreshHistory(SystemModule.works.index);
-    } else {
-      mainColWidth = '100%';
-    }
-    // (!_timelineVisible) ?mainColWidth = '100%' : mainColWidth = '75%';
-  }
 /*
   @override
   Future<bool> canReuse(RouterState current, RouterState next) async {
@@ -256,7 +234,7 @@ class WorksComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy *
     }
 
     _appLayoutService.headerTitle = headerTitle;
-
+    _appLayoutService.systemModuleIndex = SystemModule.works.index;
 
     try {
 
@@ -341,8 +319,6 @@ class WorksComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy *
 
       _works = worksAux;
 
-      if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.works.index);
-
    //   workItemSelectionView.selected = workItemSelectionView.selected ?? 'list';
 
      // _appLayoutService.enabledSearch = true;
@@ -420,8 +396,6 @@ class WorksComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy *
 
       await _workService.deleteWork(selectedWork);
       _works.remove(selectedWork);
-
-      if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.works.index);
 
     } catch (e) {
       _appLayoutService.error = e.toString();

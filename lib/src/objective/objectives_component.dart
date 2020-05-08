@@ -27,7 +27,6 @@ import 'package:auge_shared/domain/objective/objective.dart';
 import 'package:auge_shared/message/messages.dart';
 import 'package:auge_shared/message/domain_messages.dart';
 
-import 'package:auge_web/src/history_timeline/history_timeline_component.dart';
 import 'package:auge_web/src/measure/measures_component.dart';
 import 'package:auge_web/src/work/works_summary_component.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
@@ -47,7 +46,7 @@ import 'package:auge_web/src/measure/measure_progress_component.template.dart' a
 
 @Component(
     selector: 'auge-objectives',
-    providers: const [ObjectiveService, GroupService, UserService, HistoryTimelineService],
+    providers: const [ObjectiveService, GroupService, UserService],
     templateUrl: 'objectives_component.html',
     styleUrls: const [
       'objectives_component.css'
@@ -63,7 +62,6 @@ import 'package:auge_web/src/measure/measure_progress_component.template.dart' a
       MaterialExpansionPanelSet,
       MaterialTooltipDirective,
       MaterialMenuComponent,
-      HistoryTimelineComponent,
       WorksSummaryComponent,
       MeasuresComponent,
       FilterComponent,
@@ -71,12 +69,11 @@ import 'package:auge_web/src/measure/measure_progress_component.template.dart' a
     ],
     pipes: const [commonPipes])
 
-class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActivate, OnDestroy {
+class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActivate /*, OnDestroy */ {
 
   final AppLayoutService _appLayoutService;
   final ObjectiveService _objectiveService;
   //final SearchService _searchService;
-  final HistoryTimelineService _historyTimelineService;
   final Router _router;
 
   final List<RouteDefinition> routes = [
@@ -135,12 +132,6 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
   String initialObjectiveId;
   bool filterIds = false;
   //String specificObjectiveId;
-  String selectedView = 'list';
-  TimelineParam timelineParam = TimelineParam();
-
-  String mainColWidth = '100%';
-  // Just to pass information about timeline visible to sub-components
-  bool _timelineVisible = false;
 
   MenuModel<MenuItem> menuModel;
 
@@ -150,8 +141,6 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
 
   static final String editButtonLabel = CommonMsg.buttonLabel(CommonMsg.editButtonLabel);
   static final String deleteButtonLabel = CommonMsg.buttonLabel(CommonMsg.deleteButtonLabel);
-
-  static final String timelineLabel = TimelineItemdMsg.label(TimelineItemdMsg.timelineLabel);
 
   static final String ultimateObjectiveLabel = ObjectiveMsg.label(ObjectiveMsg.ultimateObjectiveLabel);
 
@@ -169,7 +158,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
 
   final preferredTooltipPositions = const [RelativePosition.AdjacentLeft, RelativePosition.OffsetBottomLeft, /* RelativePosition.OffsetBottomRight */];
 
-  ObjectivesComponent(this._appLayoutService, this._objectiveService, /* this._searchService, */ this._historyTimelineService, this._router) {
+  ObjectivesComponent(this._appLayoutService, this._objectiveService, this._router) {
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(editButtonLabel, icon: new Icon('edit') , actionWithContext: (_) => goToDetail()), new MenuItem(deleteButtonLabel, icon: new Icon('delete'), actionWithContext: (_) => delete())])], icon: new Icon('menu'));
   }
 
@@ -179,21 +168,6 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
   }
 
   get sortedBy => _sortedBy;
-
-  bool get timelineVisible {
-    return _timelineVisible;
-  }
-  set timelineVisible(bool visible) {
-    _timelineVisible = visible;
-    timelineParam.timelineVisible = _timelineVisible;
-    if (_timelineVisible) {
-      mainColWidth = '75%';
-      _historyTimelineService.refreshHistory(SystemModule.objectives.index);
-    } else {
-      mainColWidth = '100%';
-    }
-  }
-
 
   @override
   void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
@@ -232,8 +206,8 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
    */
     }
 
-
     _appLayoutService.headerTitle = headerTitle;
+    _appLayoutService.systemModuleIndex = SystemModule.objectives.index;
 
     // _appLayoutService.enabledSearch = true;
 
@@ -325,7 +299,6 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
 */
        _objectives = objectivesAux;
 
-      if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.objectives.index);
 
     //  if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.objectiveIdQueryParameter)) {
     //    setExpandedObjectiveId(initialObjectiveId, true);
@@ -388,11 +361,13 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
     expandedObjectiveId = null;
   }
 */
-
+/*
   @override
   ngOnDestroy() async {
     _appLayoutService.enabledSearch = false;
   }
+
+ */
 
   void selectObjective(Objective objective) {
     selectedObjective = objective;
@@ -404,8 +379,6 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
 
       await _objectiveService.deleteObjective(selectedObjective);
       _objectives.remove(selectedObjective);
-      //objectives.timeline = await _objectiveService.getTimeline(objective.id);
-      _historyTimelineService.refreshHistory(SystemModule.objectives.index);
 
     } catch (e) {
       _appLayoutService.error = e.toString();

@@ -86,7 +86,7 @@ class AuthComponent implements OnActivate {
   List<UserAccess> authorizedUserAccesses;
 
   // Dropdown Select to Organization and SuperAdmin
-  List<OptionGroup<AppLayoutOrganizationSelectOption>> organizationGroupOptions = new List();
+  List<OptionGroup<AppLayoutOrganizationSelectOption>> organizationGroupOptions = List();
   SelectionOptions organizationOptions;
   SelectionModel organizationSingleSelectModel;
 
@@ -223,7 +223,7 @@ class AuthComponent implements OnActivate {
     organizationGroupOptions.clear();
 
     // Organizations
-    List<AppLayoutOrganizationSelectOption> orgs = new List();
+    List<AppLayoutOrganizationSelectOption> orgs = List();
 
     //String orgGroupLabel = AuthMsg.label('Organization');
     String orgGroupLabel = AuthMsg.organizationLabel;

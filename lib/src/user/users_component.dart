@@ -23,7 +23,6 @@ import 'package:auge_shared/message/messages.dart';
 import 'package:auge_web/src/user/user_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/src/search/search_service.dart';
-import 'package:auge_web/src/history_timeline/history_timeline_component.dart';
 
 import 'package:auge_web/route/app_routes.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
@@ -33,7 +32,7 @@ import 'package:auge_web/src/user/user_detail_component.template.dart' as user_d
 
 @Component(
     selector: 'auge-users',
-    providers: const [UserService, HistoryTimelineService],
+    providers: const [UserService],
     templateUrl: 'users_component.html',
     styleUrls: const [
       'users_component.css'
@@ -47,7 +46,6 @@ import 'package:auge_web/src/user/user_detail_component.template.dart' as user_d
       MaterialExpansionPanelSet,
       MaterialMenuComponent,
       MaterialToggleComponent,
-      HistoryTimelineComponent,
     ])
 
 class UsersComponent with CanReuse implements OnActivate {
@@ -55,7 +53,6 @@ class UsersComponent with CanReuse implements OnActivate {
   final AppLayoutService _appLayoutService;
   final SearchService _searchService;
   final UserService _userService;
-  final HistoryTimelineService _historyTimelineService;
   final Router _router;
 
   final List<RouteDefinition> routes = [
@@ -77,47 +74,16 @@ class UsersComponent with CanReuse implements OnActivate {
 
   User selectedUser;
 
-  String mainColWidth = '100%';
-  bool _timelineVisible = false;
-
   MenuModel<MenuItem> menuModel;
 
   static final String editButtonLabel = CommonMsg.buttonLabel(CommonMsg.editButtonLabel);
   static final String deleteButtonlabel = CommonMsg.buttonLabel(CommonMsg.deleteButtonLabel);
 
-  static final timelineLabel = TimelineItemdMsg.label(TimelineItemdMsg.timelineLabel);
-
   static final String headerTitle = UserMsg.label(UserMsg.userLabel);
 
-  UsersComponent(this._appLayoutService, this._searchService, this._userService, this._historyTimelineService, this._router) {
+  UsersComponent(this._appLayoutService, this._searchService, this._userService, this._router) {
     menuModel = MenuModel([MenuItemGroup([MenuItem(editButtonLabel, icon: Icon('edit') , actionWithContext: (_) => goToDetail()), MenuItem(deleteButtonlabel, icon: Icon('delete'), actionWithContext: (_) => delete())])], icon: Icon('menu'));
   }
-
-  bool get timelineVisible {
-    return _timelineVisible;
-  }
-  set timelineVisible(bool visible) {
-    _timelineVisible = visible;
-    if (_timelineVisible) {
-      mainColWidth = '75%';
-      _historyTimelineService.refreshHistory(SystemModule.users.index);
-    } else {
-      mainColWidth = '100%';
-    }
-    // (!_timelineVisible) ?mainColWidth = '100%' : mainColWidth = '75%';
-  }
-/*
-  @override
-  Future<bool> canReuse(RouterState current, RouterState next) async {
-    // To treat CanReuse. Just define cache 'true' when this component is called from/to yours children
-    if (current.routePath?.path == next.routePath?.parent?.path || current.routePath?.parent?.path == next.routePath?.path) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
- */
 
   void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
     if (_userService.authService.authorizedOrganization == null || _userService.authService.authenticatedUser == null) {
@@ -126,12 +92,12 @@ class UsersComponent with CanReuse implements OnActivate {
     }
     _appLayoutService.headerTitle = headerTitle;
     _appLayoutService.enabledSearch = true;
+    _appLayoutService.systemModuleIndex = SystemModule.users.index;
 
     try {
       // _users = await _userService.getUsers(_userService.authService.selectedOrganization?.id, withProfile: true);
       _users = await _userService.getUsers(_userService.authService.authorizedOrganization?.id, withUserProfile: true);
 
-      if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.users.index);
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;
@@ -148,7 +114,6 @@ class UsersComponent with CanReuse implements OnActivate {
       await _userService.deleteUser(selectedUser);
 
       users.remove(selectedUser);
-      if (timelineVisible) _historyTimelineService.refreshHistory(SystemModule.users.index);
 
     } catch (e) {
      // print('${e.runtimeType}, ${e}');

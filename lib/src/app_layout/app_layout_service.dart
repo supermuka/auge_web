@@ -4,10 +4,12 @@ import 'package:auge_web/services/common_service.dart';
 @Injectable()
 class AppLayoutService {
 
-  /// Enabled search on app header
-  bool enabledSearch = false;
 
   String headerTitle = 'AUGE';
+  /// Enabled search on app header
+  bool enabledSearch = false;
+  /// Index for history timeline
+  int systemModuleIndex;
 
   /// When it exists, shows up.
   String _error;

@@ -81,8 +81,8 @@ class MapComponent /* with CanReuse   COMENTADO POIS SE USAR, O TOOLTIP NÃO DES
     }
 
     _appLayoutService.headerTitle = MapMsg.label(MapMsg.objectivesMapLabel);
-
     _appLayoutService.enabledSearch = false;
+    _appLayoutService.systemModuleIndex =  null;
 
     try {
       objectivesMap = await _mapService.getObjectivesMap(_authService.authorizedOrganization.id);

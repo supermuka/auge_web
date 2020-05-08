@@ -138,5 +138,8 @@ class AppRoutes {
       path: 'users/:${AppRoutesParam.userIdParameter}/auth/edit',
       parent: appLayoutRoute
   );
-
+  static final historyTimelineRoute = RoutePath(
+      path: 'history',
+      parent: appLayoutRoute
+  );
 }

@@ -3,8 +3,19 @@
 // Author: Samuel C. Schwebel.
 */
 @import 'package:angular_components/css/material/material';
-@import 'package:angular_components/material_expansionpanel/mixins';
+@import 'package:angular_components/material_select/mixins';
 
-.expansionpanel-no-padding-margin {
-  @include expansionpanel-open-panel-offset(0);
+.custom-width {
+  width: 360px;
+  max-width: 360px;
+  min-width: 360px;
+  height: 100%;
+}
+
+.dropdown-color {
+  color: $mat-white;
+}
+
+.button-look {
+    @include button-look;
 }

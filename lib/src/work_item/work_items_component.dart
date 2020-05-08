@@ -31,7 +31,6 @@ import 'package:auge_shared/message/domain_messages.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/work_item/work_item_service.dart';
 import 'package:auge_web/src/work/work_service.dart';
-import 'package:auge_web/src/history_timeline/history_timeline_service.dart';
 import 'package:auge_web/src/work_item/work_item_detail_component.dart';
 
 import 'package:auge_web/route/app_routes.dart';
@@ -63,7 +62,6 @@ class WorkItemsComponent with CanReuse /* with CanReuse implements OnActivate  *
 
   final AppLayoutService _appLayoutService;
   final WorkItemService _workItemService;
-  final HistoryTimelineService _historyTimelineService;
   final Router _router;
 
   @Input()
@@ -83,7 +81,7 @@ class WorkItemsComponent with CanReuse /* with CanReuse implements OnActivate  *
   static final String actualValueLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.actualValueField);
   static final String checkItemsLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.checkItemsField);
 
-  WorkItemsComponent(this._appLayoutService, this._workItemService, this._historyTimelineService, this._router) {
+  WorkItemsComponent(this._appLayoutService, this._workItemService, this._router) {
     // initializeDateFormatting(Intl.defaultLocale);
 
     menuModel = MenuModel([MenuItemGroup([MenuItem(editButtonLabel, icon: Icon('edit') , actionWithContext: (_) => goToDetail()), MenuItem(deleteButtonLabel, icon: Icon('delete'), actionWithContext: (_) => delete())])], icon: Icon('menu'));
@@ -115,7 +113,6 @@ class WorkItemsComponent with CanReuse /* with CanReuse implements OnActivate  *
       int i = work.workItems.indexWhere((it) => it.id == workItem.id);
       if (i != -1) {
         work.workItems[i] = workItem;
-        _historyTimelineService.refreshHistory(SystemModule.works.index);
       }
     } catch (e) {
       _appLayoutService.error = e.toString();

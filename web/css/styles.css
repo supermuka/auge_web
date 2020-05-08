@@ -39,11 +39,12 @@ body {
   /* min-width: 400px; */
 }
 
-
+/*
 .list-vertical-scroll {
-  max-height: calc(100vh - 192px);  /* minus header, margin, padding and another components height */
+  max-height: calc(100vh - 192px);  // minus header, margin, padding and another components height
   overflow-y: auto;
 }
+*/
 
 .truncate-ellipsed-parent {
   min-width: 0;

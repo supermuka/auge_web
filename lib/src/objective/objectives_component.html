@@ -9,7 +9,7 @@
                                       [options]="objectivesSortedByOptions">
             </material-dropdown-select>
         </div>
-        <div class="w3-col m6">
+        <div class="w3-col m9">
             <acx-scoreboard scrollable>
                 <!-- auge-filter [filterOptions]="objectiveFilterOptions" [optionsList]="optionsListTest" [filterNameLabel]="objectiveLabel" [initialFilterOptionsIdsSelected]="initialFilterOptionsIdsSelectedObjectives" (changeSelection)="objectiveChangeSelection($event)" @deferred></auge-filter -->
                 <auge-filter [filter]="objectiveFilter" [filterNameLabel]="objectiveLabel" (changeSelection)="objectiveChangeSelection($event)" @deferred></auge-filter>
@@ -17,13 +17,10 @@
                 <auge-filter [filter]="leaderFilter" [filterNameLabel]="leaderLabel" (changeSelection)="leaderChangeSelection($event)" @deferred></auge-filter>
             </acx-scoreboard>
         </div>
-        <div class="w3-col m3">
-            <material-toggle class="w3-right" [label]="timelineLabel" (checkedChange)="timelineVisible = $event"></material-toggle>
-        </div>
     </div>
     <div class="w3-row-padding">
-        <div class="w3-col w3-padding-16 list-vertical-scroll" style="width:{{mainColWidth}}">
-            <material-expansionpanel-set>
+        <div class="w3-col w3-padding-16">
+            <material-expansionpanel-set class="scrollable-child">
                 <div #refMatExp *ngFor="let iObjective of objectives;let i = index">
                     <material-expansionpanel
                             class="expansionpanel-panel-value-min-width"
@@ -65,15 +62,12 @@
                         <span *ngIf="iObjective.alignedTo != null"><strong>{{alignedToLabel}}</strong> {{iObjective.alignedTo?.name}}</span>
                         <span *ngIf="iObjective.alignedTo == null"><strong>{{ultimateObjectiveLabel}}</strong></span>
                         <div class="w3-row-padding">
-                            <auge-measures *ngIf="iObjective.id == expandedObjectiveId" [objective]="iObjective" [timelineParam]="timelineParam"></auge-measures>
+                            <auge-measures *ngIf="iObjective.id == expandedObjectiveId" [objective]="iObjective"></auge-measures>
                             <auge-works-summary *ngIf="iObjective.id == expandedObjectiveId" [objectiveId]="iObjective.id"></auge-works-summary>
                         </div>
                     </material-expansionpanel>
                 </div>
             </material-expansionpanel-set>
-        </div>
-        <div *ngIf="timelineVisible == true" class="w3-col w3-right" style="width:25%">
-            <auge-history-timeline></auge-history-timeline>
         </div>
     </div>
     <material-fab class="material-fab-add" raised (trigger)="selectObjective(null);goToDetail()">

@@ -1,11 +1,6 @@
 <div class="container-list">
     <div class="w3-row-padding">
         <div class="w3-col">
-            <material-toggle class="w3-right" [label]="timelineLabel" (checkedChange)="timelineVisible = $event"></material-toggle>
-        </div>
-    </div>
-    <div class="w3-row-padding">
-        <div class="w3-col" style="width:{{mainColWidth}}">
             <material-expansionpanel-set>
                 <div *ngFor="let iUser of users">
                     <material-expansionpanel class="expansionpanel-no-padding-margin"
@@ -26,9 +21,6 @@
                     </material-expansionpanel>
                 </div>
             </material-expansionpanel-set>
-        </div>
-        <div *ngIf="timelineVisible == true" class="w3-col w3-right" style="width:25%">
-            <auge-history-timeline></auge-history-timeline>
         </div>
     </div>
     <material-fab class="material-fab-add" raised (trigger)="selectUser(null);goToDetail()">

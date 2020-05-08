@@ -9,19 +9,16 @@
                                       [options]="worksSortedByOptions">
             </material-dropdown-select>
         </div>
-        <div class="w3-col m6">
+        <div class="w3-col m9">
             <acx-scoreboard scrollable>
                 <auge-filter [filter]="workFilter" [filterNameLabel]="workLabel" (changeSelection)="workChangeSelection($event)" @deferred></auge-filter>
                 <auge-filter [filter]="groupFilter" [filterNameLabel]="groupLabel" (changeSelection)="groupChangeSelection($event)" @deferred></auge-filter>
                 <auge-filter [filter]="leaderFilter" [filterNameLabel]="leaderLabel" (changeSelection)="leaderChangeSelection($event)" @deferred></auge-filter>
             </acx-scoreboard>
         </div>
-        <div class="w3-col m3">
-            <material-toggle class="w3-right" [label]="timelineLabel" (checkedChange)="timelineVisible = $event"></material-toggle>
-        </div>
     </div>
     <div class="w3-row-padding">
-        <div class="w3-col" style="width:{{mainColWidth}}">
+        <div class="w3-col">
             <material-expansionpanel-set>
                 <div *ngFor="let iWork of works;let i = index">
                     <!-- material-expansionpanel
@@ -78,9 +75,6 @@
                     </material-expansionpanel>
                 </div>
             </material-expansionpanel-set>
-        </div>
-        <div *ngIf="timelineVisible == true" class="w3-col w3-right" style="width:25%">
-            <auge-history-timeline></auge-history-timeline>
         </div>
     </div>
     <material-fab class="material-fab-add" raised (trigger)="selectWork(null);goToDetail()">

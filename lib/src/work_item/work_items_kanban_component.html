@@ -1,11 +1,6 @@
 <div>
     <div class="w3-row-padding">
         <div class="w3-col">
-            <material-toggle class="w3-right" [label]="timelineLabel" (checkedChange)="timelineVisible = $event"></material-toggle>
-        </div>
-    </div>
-    <div class="w3-row-padding">
-        <div class="w3-col" style="width:{{mainColWidth}}">
             <material-expansionpanel
                     [alwaysHideExpandIcon]="true"
                     [hideExpandedHeader]="false"
@@ -178,9 +173,6 @@
                 </div>
             </material-expansionpanel>
          </div>
-        <div *ngIf="timelineVisible == true" class="w3-col w3-right" style="width:25%">
-            <auge-history-timeline></auge-history-timeline>
-        </div>
     </div>
 </div>
 <router-outlet [routes]="routes"></router-outlet>

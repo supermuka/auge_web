@@ -49,6 +49,7 @@ import 'package:auge_web/src/objective/objectives_component.template.dart' as ob
 import 'package:auge_web/src/group/groups_component.template.dart' as groups_component;
 import 'package:auge_web/src/organization/organization_component.template.dart' as organization_component;
 import 'package:auge_web/src/work_item/work_items_kanban_component.template.dart' as work_items_kanban_component;
+import 'package:auge_web/src/history_timeline/history_timeline_component.template.dart' as history_timeline_component;
 
 @Component(
     selector: 'auge-layout',
@@ -75,32 +76,32 @@ import 'package:auge_web/src/work_item/work_items_kanban_component.template.dart
       UserDetailComponent,
     ])
 
-class AppLayoutComponent with CanReuse implements OnActivate {
+class AppLayoutComponent with CanReuse implements OnInit, OnActivate {
 
-  String get insightsRouteUrl => AppRoutes.insightslRoute.toUrl();
-  String get mapRouteUrl => AppRoutes.mapRoute.toUrl();
-  String get ganttRouteUrl => AppRoutes.ganttRoute.toUrl();
-  String get objectivesRouteUrl => AppRoutes.objectivesRoute.toUrl();
-  String get worksRouteUrl => AppRoutes.worksRoute.toUrl();
-  String get usersRouteUrl => AppRoutes.usersRoute.toUrl();
-  String get groupsRouteUrl => AppRoutes.groupsRoute.toUrl();
-  String get organizationRouteUrl =>  AppRoutes.organizationRoute.toUrl(parameters: { AppRoutesParam.organizationIdParameter: this._authService.authorizedOrganization.id });
+
+  final AppLayoutService _appLayoutService;
+  final AuthService _authService;
+  final Router _router;
+
+  String insightsRouteUrl;
+  String mapRouteUrl;
+  String ganttRouteUrl;
+  String objectivesRouteUrl;
+  String worksRouteUrl;
+  String usersRouteUrl;
+  String groupsRouteUrl;
+  String organizationRouteUrl;
+  String historyTimelineRouteUrl;
 
   final List<RouteDefinition> routes = [
-    new RouteDefinition(
+    RouteDefinition(
       routePath: AppRoutes.appLayoutRoute,
       component: app_layout_component.AppLayoutComponentNgFactory,
     ),
-    new RouteDefinition(
+    RouteDefinition(
       routePath: AppRoutes.insightslRoute,
       component: insights_component.InsightsComponentNgFactory,
     ),
-    /*
-    new RouteDefinition(
-      routePath: AppRoutes.organizationsRoute,
-      component: organizations_component.OrganizationsComponentNgFactory,
-    ),
-     */
     RouteDefinition(
       routePath: AppRoutes.userEditWithAppLayoutParentRoute,
       component: user_detail_component.UserDetailComponentNgFactory,
@@ -129,13 +130,6 @@ class AppLayoutComponent with CanReuse implements OnActivate {
       routePath: AppRoutes.objectivesRoute,
       component: objectives_component.ObjectivesComponentNgFactory,
     ),
-/*
-    new RouteDefinition(
-      routePath: AppRoutes.objectiveRoute,
-      component: objectives_component.ObjectivesComponentNgFactory,
-    ),
-
- */
     RouteDefinition(
       routePath: AppRoutes.groupsRoute,
       component: groups_component.GroupsComponentNgFactory,
@@ -152,11 +146,15 @@ class AppLayoutComponent with CanReuse implements OnActivate {
       routePath: AppRoutes.workItemsKanbanViaObjectiveRoute,
       component: work_items_kanban_component.WorkItemsKanbanComponentNgFactory,
     ),
+    RouteDefinition(
+      routePath: AppRoutes.workItemsKanbanViaObjectiveRoute,
+      component: work_items_kanban_component.WorkItemsKanbanComponentNgFactory,
+    ),
+    RouteDefinition(
+      routePath: AppRoutes.historyTimelineRoute,
+      component: history_timeline_component.HistoryTimelineComponentNgFactory,
+    ),
   ];
-
-  final AppLayoutService _appLayoutService;
-  final AuthService _authService;
-  Router _router;
 
   // Dropdown Select to User Profile and Logout
   List<OptionGroup<AppLayoutSettingSelectOption>> userProfileLogoutGroupOptions = new List();
@@ -175,7 +173,10 @@ class AppLayoutComponent with CanReuse implements OnActivate {
   /// Return [true] is authenticated role can access configuratoin
   bool isAuthorizedToAccessConfiguration;
 
-  AppLayoutComponent(this._appLayoutService, this._authService, this._router);
+
+  AppLayoutComponent(this._appLayoutService, this._authService, this._router) {
+
+  }
 
   // Define messages and labels
  // String label(String label) =>  AppLayoutMsg.label(label);
@@ -193,12 +194,27 @@ class AppLayoutComponent with CanReuse implements OnActivate {
   static final String superAdminLabel = AppLayoutMsg.label(AppLayoutMsg.superAdminLabel);
   static final String groupsLabel = AppLayoutMsg.label(AppLayoutMsg.groupsLabel);
 
+  void ngOnInit() {
+
+    //
+
+  }
+
   void onActivate(RouterState previous, RouterState current)  {
 
     if (_authService.authorizedOrganization == null || _authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
       return;
     }
+    insightsRouteUrl = AppRoutes.insightslRoute.toUrl();
+    mapRouteUrl = AppRoutes.mapRoute.toUrl();
+    ganttRouteUrl = AppRoutes.ganttRoute.toUrl();
+    objectivesRouteUrl = AppRoutes.objectivesRoute.toUrl();
+    worksRouteUrl = AppRoutes.worksRoute.toUrl();
+    usersRouteUrl = AppRoutes.usersRoute.toUrl();
+    groupsRouteUrl = AppRoutes.groupsRoute.toUrl();
+    organizationRouteUrl =  AppRoutes.organizationRoute.toUrl(parameters: { AppRoutesParam.organizationIdParameter: _authService.authorizedOrganization.id });
+    historyTimelineRouteUrl = AppRoutes.historyTimelineRoute.toUrl();
 
     isAuthorizedToAccessUsers =_authService.isAuthorizedForAccessRole(SystemModule.users);
     isAuthorizedToAccessGroups = _authService.isAuthorizedForAccessRole(SystemModule.groups);
@@ -280,10 +296,9 @@ class AppLayoutComponent with CanReuse implements OnActivate {
       } else {
         _router.navigate(url);
       }
-
-     // _router.navigateByUrl(url, reload: reload, replace: replace);
     }
   }
+
 
   bool get hasAuthorizedOrganization {
     return _authService.authorizedOrganization != null;
@@ -306,6 +321,7 @@ class AppLayoutComponent with CanReuse implements OnActivate {
   Organization get authorizedOrganization {
     return _authService.authorizedOrganization;
   }
+
 }
 
 class AppLayoutSettingSelectOption {

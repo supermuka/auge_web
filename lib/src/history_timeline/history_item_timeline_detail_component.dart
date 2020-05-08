@@ -64,10 +64,10 @@ class HistoryItemTimelineDetailComponent /* extends Object */ implements OnInit 
     // initializeDateFormatting(Intl.defaultLocale , null);
   }
 
-  static final String timelineLabel = TimelineItemdMsg.label(TimelineItemdMsg.timelineLabel);
-  static final String valueLabel = TimelineItemdMsg.label(TimelineItemdMsg.valueLabel);
-  static final String changedFromLabel =  TimelineItemdMsg.label(TimelineItemdMsg.changedFromLabel);
-  static final String wasLabel = TimelineItemdMsg.label(TimelineItemdMsg.wasLabel);
+  static final String timelineLabel = TimelineMsg.label(TimelineMsg.timelineLabel);
+  static final String valueLabel = TimelineMsg.label(TimelineMsg.valueLabel);
+  static final String changedFromLabel =  TimelineMsg.label(TimelineMsg.changedFromLabel);
+  static final String wasLabel = TimelineMsg.label(TimelineMsg.wasLabel);
 
   final typeToViewText =  _typeToViewText;
   final typeToViewImageAvatar = _typeToViewImageAvatar;
