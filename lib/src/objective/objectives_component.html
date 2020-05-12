@@ -10,8 +10,7 @@
             </material-dropdown-select>
         </div>
         <div class="w3-col m9">
-            <acx-scoreboard scrollable>
-                <!-- auge-filter [filterOptions]="objectiveFilterOptions" [optionsList]="optionsListTest" [filterNameLabel]="objectiveLabel" [initialFilterOptionsIdsSelected]="initialFilterOptionsIdsSelectedObjectives" (changeSelection)="objectiveChangeSelection($event)" @deferred></auge-filter -->
+            <acx-scoreboard class=" w3-right" scrollable>
                 <auge-filter [filter]="objectiveFilter" [filterNameLabel]="objectiveLabel" (changeSelection)="objectiveChangeSelection($event)" @deferred></auge-filter>
                 <auge-filter [filter]="groupFilter" [filterNameLabel]="groupLabel" (changeSelection)="groupChangeSelection($event)" @deferred></auge-filter>
                 <auge-filter [filter]="leaderFilter" [filterNameLabel]="leaderLabel" (changeSelection)="leaderChangeSelection($event)" @deferred></auge-filter>

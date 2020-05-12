@@ -1,32 +1,34 @@
-<div class="w3-row">
-    <div class="progress-bar w3-col s6 l10" clickableTooltipTarget
-          keyboardOnlyFocusIndicator
-          tabindex="0"
-          size="medium"
-          #clickableRef="tooltipTarget">
-        <span *ngFor="let istate of work.stateWorkItemsCount.keys">
-            <span [style.background-color]="'hsl(' + stateHslColor(istate) + ')'" [style.width]="widthState(work?.workItemsCount, work?.stateWorkItemsCount[istate], progressBarWidth) + 'px'">&nbsp;</span>
-        </span>
-        <material-tooltip-card [for]="clickableRef" [preferredPositions]="preferredTooltipPositions">
-            <div *ngFor="let istage of work.stageWorkItemsCount.keys; let iee = index">
-                <div *ngIf="iee == 0 || work.stageWorkItemsCount.keys.elementAt(iee-1).state.index != istage.state.index">
-                    <br/>
-                    <div class="tooltip-card-bar" [style.background-color]="'hsl(' + stateHslColor(istage.state) + ')'"></div>
-                    &nbsp;<strong>{{stateName(istage.state)}}</strong><br/>
+<div class="w3-hide-medium w3-hide-small">
+    <div class="w3-row">
+        <div class="progress-bar w3-col l10" clickableTooltipTarget
+              keyboardOnlyFocusIndicator
+              tabindex="0"
+              size="medium"
+              #clickableRef="tooltipTarget">
+            <span *ngFor="let istate of work.stateWorkItemsCount.keys">
+                <span [style.background-color]="'hsl(' + stateHslColor(istate) + ')'" [style.width]="widthState(work?.workItemsCount, work?.stateWorkItemsCount[istate], progressBarWidth) + 'px'">&nbsp;</span>
+            </span>
+            <material-tooltip-card [for]="clickableRef" [preferredPositions]="preferredTooltipPositions">
+                <div *ngFor="let istage of work.stageWorkItemsCount.keys; let iee = index">
+                    <div *ngIf="iee == 0 || work.stageWorkItemsCount.keys.elementAt(iee-1).state.index != istage.state.index">
+                        <br/>
+                        <div class="tooltip-card-bar" [style.background-color]="'hsl(' + stateHslColor(istage.state) + ')'"></div>
+                        &nbsp;<strong>{{stateName(istage.state)}}</strong><br/>
+                    </div>
+                    <b>{{work?.stageWorkItemsCount[istage]}}</b>&nbsp;{{istage.name}}
                 </div>
-                <b>{{work?.stageWorkItemsCount[istage]}}</b>&nbsp;{{istage.name}}
-            </div>
-        </material-tooltip-card>
-    </div>
-    <div class="w3-col s6 l2">
-        <span *ngIf="work.workItemsCount != 0" class="circle" [style.background-color]="circleColor(work)" clickableTooltipTarget
-             keyboardOnlyFocusIndicator
-             tabindex="0"
-             size="medium"
-             #clickableRefCircle="tooltipTarget">
-            <material-tooltip-card [for]="clickableRefCircle" >
-                <p><b>{{work.workItemsOverDueCount}} / {{work.workItemsCount}}</b>&nbsp;{{workItemsOverDueLabel}}</p>
             </material-tooltip-card>
-        </span>&nbsp;
+        </div>
+        <div class="w3-rest">
+            <span *ngIf="work.workItemsCount != 0" class="circle" [style.background-color]="circleColor(work)" clickableTooltipTarget
+                 keyboardOnlyFocusIndicator
+                 tabindex="0"
+                 size="medium"
+                 #clickableRefCircle="tooltipTarget">
+                <material-tooltip-card [for]="clickableRefCircle" >
+                    <p><b>{{work.workItemsOverDueCount}} / {{work.workItemsCount}}</b>&nbsp;{{workItemsOverDueLabel}}</p>
+                </material-tooltip-card>
+            </span>&nbsp;
+        </div>
     </div>
 </div>

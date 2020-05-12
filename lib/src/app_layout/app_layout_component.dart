@@ -22,9 +22,9 @@ import 'package:angular_components/model/selection/selection_options.dart';
 import 'package:angular_components/model/ui/has_factory.dart';
 
 import 'package:auge_web/src/auth/auth_service.dart';
-import 'package:auge_web/src/search/search_component.dart';
+//import 'package:auge_web/src/search/search_component.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
-import 'package:auge_web/src/search/search_service.dart';
+//import 'package:auge_web/src/search/search_service.dart';
 
 import 'package:auge_web/src/user/user_detail_component.dart';
 
@@ -53,7 +53,7 @@ import 'package:auge_web/src/history_timeline/history_timeline_component.templat
 
 @Component(
     selector: 'auge-layout',
-    providers: const <dynamic>[AppLayoutService, SearchService],
+    providers: const <dynamic>[AppLayoutService /*, SearchService*/],
     templateUrl: 'app_layout_component.html',
     styleUrls: [
     'app_layout_component.css',
@@ -72,7 +72,7 @@ import 'package:auge_web/src/history_timeline/history_timeline_component.templat
       MaterialListItemComponent,
       MaterialDropdownSelectComponent,
       DropdownSelectValueAccessor,
-      SearchComponent,
+     /* SearchComponent,*/
       UserDetailComponent,
     ])
 
