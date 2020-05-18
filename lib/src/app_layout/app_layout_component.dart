@@ -22,7 +22,7 @@ import 'package:angular_components/model/selection/selection_options.dart';
 import 'package:angular_components/model/ui/has_factory.dart';
 
 import 'package:auge_web/src/auth/auth_service.dart';
-//import 'package:auge_web/src/search/search_component.dart';
+import 'package:auge_web/src/search_filter/search_filter_component.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 //import 'package:auge_web/src/search/search_service.dart';
 
@@ -51,9 +51,11 @@ import 'package:auge_web/src/organization/organization_component.template.dart' 
 import 'package:auge_web/src/work_item/work_items_kanban_component.template.dart' as work_items_kanban_component;
 import 'package:auge_web/src/history_timeline/history_timeline_component.template.dart' as history_timeline_component;
 
+import 'package:auge_web/src/search_filter/search_filter_service.dart';
+
 @Component(
     selector: 'auge-layout',
-    providers: const <dynamic>[AppLayoutService /*, SearchService*/],
+    providers: const <dynamic>[AppLayoutService, SearchFilterService],
     templateUrl: 'app_layout_component.html',
     styleUrls: [
     'app_layout_component.css',
@@ -74,9 +76,10 @@ import 'package:auge_web/src/history_timeline/history_timeline_component.templat
       DropdownSelectValueAccessor,
      /* SearchComponent,*/
       UserDetailComponent,
+      SearchFilterComponent,
     ])
 
-class AppLayoutComponent with CanReuse implements OnInit, OnActivate {
+class AppLayoutComponent with CanReuse implements OnActivate {
 
 
   final AppLayoutService _appLayoutService;
@@ -194,12 +197,6 @@ class AppLayoutComponent with CanReuse implements OnInit, OnActivate {
   static final String superAdminLabel = AppLayoutMsg.label(AppLayoutMsg.superAdminLabel);
   static final String groupsLabel = AppLayoutMsg.label(AppLayoutMsg.groupsLabel);
 
-  void ngOnInit() {
-
-    //
-
-  }
-
   void onActivate(RouterState previous, RouterState current)  {
 
     if (_authService.authorizedOrganization == null || _authService.authenticatedUser == null) {
@@ -305,11 +302,11 @@ class AppLayoutComponent with CanReuse implements OnInit, OnActivate {
   }
 
   ItemRenderer get itemRenderer => (dynamic item) => item.name;
-
+/*
   bool get enabledSearch {
     return _appLayoutService.enabledSearch;
   }
-
+*/
    userUrlImage() {
     return common_service.userUrlImage(_authService.authenticatedUser?.userProfile?.image);
   }

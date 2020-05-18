@@ -69,7 +69,7 @@ class GanttComponent with CanReuse implements OnActivate {
     }
 
     _appLayoutService.headerTitle = GanttMsg.label(GanttMsg.objectivesGanttLabel);
-    _appLayoutService.enabledSearch = false;
+ //   _appLayoutService.enabledSearch = false;
     _appLayoutService.systemModuleIndex =  null;
 
     try {

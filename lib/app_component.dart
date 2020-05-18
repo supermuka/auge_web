@@ -42,6 +42,4 @@ class AppComponent with CanReuse  {
 
   AppComponent();
 
-
-
 }

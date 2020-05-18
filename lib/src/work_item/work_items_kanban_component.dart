@@ -166,7 +166,7 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
       _appLayoutService.headerTitle = headerTitle;
       _appLayoutService.systemModuleIndex = SystemModule.works.index;
 
-      _appLayoutService.enabledSearch = true;
+//      _appLayoutService.enabledSearch = true;
 
     } catch (e) {
       _appLayoutService.error = e.toString();

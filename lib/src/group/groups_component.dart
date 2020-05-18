@@ -103,7 +103,7 @@ class GroupsComponent with CanReuse implements OnActivate /*, OnDeactivate, OnDe
     }
 
     _appLayoutService.headerTitle = headerTitle;
-    _appLayoutService.enabledSearch = true;
+//    _appLayoutService.enabledSearch = true;
     _appLayoutService.systemModuleIndex = SystemModule.groups.index;
 
     try {
@@ -114,8 +114,6 @@ class GroupsComponent with CanReuse implements OnActivate /*, OnDeactivate, OnDe
       rethrow;
     }
   }
-
-
 
   List<Group> get groups {
    // return _searchService?.searchTerm.toString().isEmpty ? _groups : _groups.where((t) => t.name.toLowerCase().contains(_searchService.searchTerm.toLowerCase())).toList();

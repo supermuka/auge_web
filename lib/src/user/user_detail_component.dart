@@ -308,7 +308,9 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
         Image thumbnail = copyResize(image, width: 120, height: 120);
 
+
         user.userProfile.image = base64.encode(encodePng(thumbnail));
+
 
       });
 

@@ -1,6 +1,6 @@
 <div class="container-list">
     <div class="w3-row-padding">
-        <div class="w3-col m3">
+        <!--div class="w3-col l3">
             <label>{{sortedByLabel}}</label>
             <material-dropdown-select class="w3-margin-left"
                                       [disabled]="objectives.isEmpty"
@@ -8,14 +8,14 @@
                                       [(selection)]="sortedBy"
                                       [options]="objectivesSortedByOptions">
             </material-dropdown-select>
-        </div>
-        <div class="w3-col m9">
-            <acx-scoreboard class=" w3-right" scrollable>
+        </div -->
+        <!-- div class="w3-col l7">
+            <acx-scoreboard scrollable>
                 <auge-filter [filter]="objectiveFilter" [filterNameLabel]="objectiveLabel" (changeSelection)="objectiveChangeSelection($event)" @deferred></auge-filter>
                 <auge-filter [filter]="groupFilter" [filterNameLabel]="groupLabel" (changeSelection)="groupChangeSelection($event)" @deferred></auge-filter>
                 <auge-filter [filter]="leaderFilter" [filterNameLabel]="leaderLabel" (changeSelection)="leaderChangeSelection($event)" @deferred></auge-filter>
             </acx-scoreboard>
-        </div>
+        </div -->
     </div>
     <div class="w3-row-padding">
         <div class="w3-col w3-padding-16">
@@ -37,8 +37,8 @@
                                 </div>
                             </span>
                             <span class="truncate-ellipsed-parent">
-                                <h4 class="truncate-ellipsed">{{iObjective.name}}</h4>
-                                <div>{{iObjective.startDate | date}}<span>&nbsp;·&nbsp;</span>{{iObjective.endDate | date}}</div>
+                                <h4 class="truncate-ellipsed text-decoration-line-through-{{iObjective.archived}}">{{iObjective.name}}</h4>
+                                <div class="text-decoration-line-through-{{iObjective.archived}}">{{iObjective.startDate | date}}<span>&nbsp;·&nbsp;</span>{{iObjective.endDate | date}}</div>
                             </span>
                         </div>
                         <!-- div value class="custom-grid w3-right" -->

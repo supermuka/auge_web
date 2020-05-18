@@ -17,12 +17,15 @@ import 'package:auge_shared/domain/work/work_stage.dart';
 
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
+import 'package:auge_web/src/search_filter/search_filter_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
 import 'package:auge_web/src/group/group_service.dart';
 import 'package:auge_web/src/filter/filter_component.dart';
+
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/work/work_service.dart';
 import 'package:auge_web/route/app_routes.dart';
+import 'package:auge_web/src/search_filter/search_filter_component.dart';
 
 import 'package:auge_shared/message/messages.dart';
 
@@ -44,8 +47,9 @@ class InsightsComponent with CanReuse implements OnActivate  {
 
   final ScoreboardType selectable = ScoreboardType.selectable;
 
-  AuthService _authService;
-  AppLayoutService _appLayoutService;
+  final AuthService _authService;
+  final AppLayoutService _appLayoutService;
+  final SearchFilterService _searchFilterService;
   final ObjectiveService _objectiveService;
   final WorkService _workService;
   final Router _router;
@@ -89,8 +93,8 @@ class InsightsComponent with CanReuse implements OnActivate  {
   /// Return a total number of over due work items
   String overDueWorkItemsNumber;
 
-  List<Objective> _objectives = [];
-  List<Work> _works = [];
+  List<Objective> objectives = [];
+  List<Work> works = [];
 
   Filter groupFilter;
   Filter leaderFilter;
@@ -102,7 +106,7 @@ class InsightsComponent with CanReuse implements OnActivate  {
 
   List<String> initialFilterOptionsIdsSelected = [];
 
-  InsightsComponent(this._authService, this._appLayoutService, this._objectiveService, this._workService, this._router);
+  InsightsComponent(this._authService, this._appLayoutService, this._objectiveService, this._workService, this._searchFilterService, this._router);
 
   // Define messages and labels
   static final String leaderLabel = InsightMsg.label(InsightMsg.leaderLabel);
@@ -157,28 +161,29 @@ class InsightsComponent with CanReuse implements OnActivate  {
     }
 
     _appLayoutService.headerTitle = InsightMsg.label(InsightMsg.insightsLabel);
-    _appLayoutService.enabledSearch = false;
+   // _appLayoutService.enabledSearch = false;
     _appLayoutService.systemModuleIndex = null;
+
+    _searchFilterService.filterRouteUrl = '';
 
     try {
       if (_authService.authorizedOrganization != null) {
-        // Groups to filter
-        //groupsToFilter = await _groupService.getGroups(_groupService.authService.authorizedOrganization.id);
 
-        // Users to filter
-        //usersToFilter = await _userService.getUsers(_userService.authService.authorizedOrganization.id);
 
         // Objectives
-        List<Objective> objectivesAux;
+       // List<Objective> objectivesAux;
 
-        objectivesAux = await _objectiveService.getObjectives(
+
+        objectives = await _objectiveService.getObjectives(
             _authService.authorizedOrganization.id, withMeasures: true);
 
+
         // Works
-        List<Work> worksAux;
-        worksAux = await _workService.getWorks(
+     //   List<Work> worksAux;
+        works = await _workService.getWorks(
             _authService.authorizedOrganization.id, withWorkItems: true);
 
+        /*
         // Select options to filter.
         Map<String, FilterOption> groups = {};
         Map<String, FilterOption> leaders = {};
@@ -186,6 +191,7 @@ class InsightsComponent with CanReuse implements OnActivate  {
           groups.putIfAbsent(objectivesAux[i].group?.id, () => FilterOption(objectivesAux[i].group?.id, objectivesAux[i].group?.name));
           leaders.putIfAbsent(objectivesAux[i].leader?.id, () => FilterOption(objectivesAux[i].leader?.id, objectivesAux[i].leader?.name));
         }
+
         for (int i = 0;i<worksAux.length;i++) {
           groups.putIfAbsent(worksAux[i].group?.id, () => FilterOption(worksAux[i].group?.id, worksAux[i].group?.name));
           leaders.putIfAbsent(worksAux[i].leader?.id, () => FilterOption(worksAux[i].leader?.id, worksAux[i].leader?.name));
@@ -197,26 +203,26 @@ class InsightsComponent with CanReuse implements OnActivate  {
         List<FilterOption> leaderFilterOptionsAux = leaders.values.toList();
         if (leaderFilterOptionsAux.length > 1)  leaderFilterOptionsAux.sort((a, b) => a.name == null ? 1 : b.name == null ? -1 : a.name.compareTo(b.name));
 
-      //  groupFilterOptions = groupFilterOptionsAux;
-      //  leaderFilterOptions = leaderFilterOptionsAux;
 
         groupFilter = Filter(groupFilterOptionsAux, null);
         leaderFilter = Filter(leaderFilterOptionsAux, null);
-        // Select all with empty list
-    //    initialFilterOptionsIdsSelected = [];
-
+*/
+/*
         _objectives = objectivesAux;
         _works = worksAux;
+*/
+
+        aggregateObjectivesMeasurement();
+        aggregateWorksMeasurement();
 
       }
-
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;
     }
   }
 
-  aggregateObjectivesMeasurement() {
+  aggregateObjectivesMeasurement() async {
 
       int _objectivesNumber = objectives.length;
       int _sumOverallProgress = 0;
@@ -282,7 +288,7 @@ class InsightsComponent with CanReuse implements OnActivate  {
 
   }
 
-  aggregateWorksMeasurement() {
+  aggregateWorksMeasurement() async {
 
     int _worksNumber = works.length;
     int _completedWorksNumber = 0;
@@ -334,9 +340,9 @@ class InsightsComponent with CanReuse implements OnActivate  {
     overDueWorkItemsNumber = _overDueWorkItemsNumber?.toString() ?? '0';
 
   }
-
-
+/*
   List<Objective> get objectives {
+
     List<Objective> objectiveFiltred;
 
     objectiveFiltred = (usersIdSelectedToFilter.isEmpty) || groupsIdSelectedToFilter.isEmpty ? [] : _objectives.where(
@@ -344,9 +350,12 @@ class InsightsComponent with CanReuse implements OnActivate  {
             && (usersIdSelectedToFilter.contains(t.leader?.id)) ).toList();
 
     return objectiveFiltred;
+
   }
 
   List<Work> get works {
+
+
     List<Work> workFiltred;
 
     workFiltred = (usersIdSelectedToFilter.isEmpty) || groupsIdSelectedToFilter.isEmpty ? [] : _works.where(
@@ -354,8 +363,9 @@ class InsightsComponent with CanReuse implements OnActivate  {
             && (usersIdSelectedToFilter.contains(t.leader?.id)) ).toList();
 
     return workFiltred;
-  }
 
+  }
+*/
 
 
 /*
@@ -527,21 +537,4 @@ class InsightsComponent with CanReuse implements OnActivate  {
     return _overDueWorkItemsNumber?.toString() ?? '0';
   }
  */
-
-
-  groupChangeSelection(List<String> groupsIdSelected) {
-    groupsIdSelectedToFilter = groupsIdSelected;
-
-    aggregateObjectivesMeasurement();
-    aggregateWorksMeasurement();
-  }
-
-  userChangeSelection(List<String> usersIdSelected) {
-    usersIdSelectedToFilter = usersIdSelected;
-
-    aggregateObjectivesMeasurement();
-    aggregateWorksMeasurement();
-  }
-
-
 }

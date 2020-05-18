@@ -47,16 +47,17 @@
                                  class="material-drawer-button" (trigger)="drawer.toggle()">
                     <material-icon icon="menu"></material-icon>
                 </material-button>
-                <div class="hide-title-small-width-enabled-search-{{enabledSearch}}">
+                <span class="material-header-title">{{headerTitle}}</span>
+                <!-- div>
                    <span class="material-header-title">{{headerTitle}}</span>
-                </div>
+                </div  style="margin-left: 72px;" -->
                 <div class="material-spacer"></div>
-                <!-- auge-search *ngIf="enabledSearch == true"></auge-search -->
+                <!-- TODO: to see another way to align search-filter to center, without to use margin-left -->
+                <auge-search-filter style="margin-left: 72px;"></auge-search-filter>
                 <div class="material-spacer"></div>
                 <nav class="material-navigation centralized">
-                    <span class="spacer"></span>
                     <material-button icon (trigger)="goTo(historyTimelineRouteUrl)">
-                        <material-icon icon="history"></material-icon>
+                        <material-icon  icon="history"></material-icon>
                     </material-button>
                     <span class="avatar" [style.background-image]="'url(' + userUrlImage() + ')'"></span>
                     <material-dropdown-select class="button-look"

@@ -91,7 +91,7 @@ class UsersComponent with CanReuse implements OnActivate {
       return;
     }
     _appLayoutService.headerTitle = headerTitle;
-    _appLayoutService.enabledSearch = true;
+//    _appLayoutService.enabledSearch = true;
     _appLayoutService.systemModuleIndex = SystemModule.users.index;
 
     try {

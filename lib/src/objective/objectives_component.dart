@@ -14,12 +14,13 @@ import 'package:angular_components/material_icon/material_icon.dart';
 import 'package:angular_components/material_menu/material_menu.dart';
 import 'package:angular_components/model/ui/icon.dart';
 import 'package:angular_components/model/menu/menu.dart';
-import 'package:angular_components/material_select/material_dropdown_select.dart';
+
 import 'package:angular_components/material_toggle/material_toggle.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel_set.dart';
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
 import 'package:angular_components/scorecard/scoreboard.dart';
+import 'package:angular_components/material_checkbox/material_checkbox.dart';
 
 import 'package:auge_shared/domain/general/authorization.dart';
 import 'package:auge_shared/domain/objective/objective.dart';
@@ -34,11 +35,11 @@ import 'package:auge_web/src/group/group_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
+import 'package:auge_web/src/search_filter/search_filter_service.dart';
 import 'package:auge_web/route/app_routes.dart';
 
-import 'package:auge_web/src/filter/filter_component.dart';
-
 // ignore_for_file: uri_has_not_been_generated
+import 'package:auge_web/src/objective/objectives_filter_component.template.dart' as objectives_filter_component;
 import 'package:auge_web/src/objective/objective_detail_component.template.dart' as objective_detail_component;
 import 'package:auge_web/src/measure/measure_detail_component.template.dart' as measure_detail_component;
 import 'package:auge_web/src/measure/measure_progress_component.template.dart' as measure_progress_component;
@@ -56,7 +57,6 @@ import 'package:auge_web/src/measure/measure_progress_component.template.dart' a
       routerDirectives,
       MaterialFabComponent,
       MaterialIconComponent,
-      MaterialDropdownSelectComponent,
       MaterialToggleComponent,
       MaterialExpansionPanel,
       MaterialExpansionPanelSet,
@@ -64,8 +64,8 @@ import 'package:auge_web/src/measure/measure_progress_component.template.dart' a
       MaterialMenuComponent,
       WorksSummaryComponent,
       MeasuresComponent,
-      FilterComponent,
       ScoreboardComponent,
+      MaterialCheckboxComponent,
     ],
     pipes: const [commonPipes])
 
@@ -73,7 +73,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
 
   final AppLayoutService _appLayoutService;
   final ObjectiveService _objectiveService;
-  //final SearchService _searchService;
+  final SearchFilterService _searchFilterService;
   final Router _router;
 
   final List<RouteDefinition> routes = [
@@ -101,7 +101,10 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
       routePath: AppRoutes.measureProgressesAddRoute,
       component: measure_progress_component.MeasureProgressComponentNgFactory,
     ),
-
+    RouteDefinition(
+      routePath: AppRoutes.objectivesFilterRoute,
+      component: objectives_filter_component.ObjectivesFilterComponentNgFactory,
+    ),
   ];
 
  // Map<String, String> queryParametersToFoward;
@@ -122,10 +125,6 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
   //List<String> initialFilterOptionsIdsSelected;
   List<String> initialFilterOptionsIdsSelectedObjectives;
 
-  Filter objectiveFilter;
-  Filter groupFilter;
-  Filter leaderFilter;
-
   // Map<Objective, bool> expandedControl = Map();
   String expandedObjectiveId;
   Objective selectedObjective;
@@ -133,11 +132,12 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
   bool filterIds = false;
   //String specificObjectiveId;
 
+  bool withArchived = false;
   MenuModel<MenuItem> menuModel;
 
     // Define messages and labels
   static final String objectiveLabel = ObjectiveMsg.label(ObjectiveMsg.objectiveLabel);
-  static final String sortedByLabel = ObjectiveMsg.label(ObjectiveMsg.sortedByLabel);
+
 
   static final String editButtonLabel = CommonMsg.buttonLabel(CommonMsg.editButtonLabel);
   static final String deleteButtonLabel = CommonMsg.buttonLabel(CommonMsg.deleteButtonLabel);
@@ -151,27 +151,18 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
   static final String startDateLabel = ObjectiveDomainMsg.fieldLabel(Objective.startDateField); // FieldMsg.label('${Objective.className}.${Objective.startDateField}');
   static final String endDateLabel =  ObjectiveDomainMsg.fieldLabel(Objective.endDateField); // FieldMsg.label('${Objective.className}.${Objective.endDateField}');
   static final String headerTitle = ObjectiveMsg.label(ObjectiveMsg.objectivesLabel);
-
-  final objectivesSortedByOptions = [nameLabel, groupLabel, leaderLabel, startDateLabel, endDateLabel];
-
-  String _sortedBy = nameLabel;
+  static final String archivedLabel = ObjectiveDomainMsg.fieldLabel(Objective.archivedField); // FieldMsg.label('${Objective.className}.${Objective.archivedField}');
 
   final preferredTooltipPositions = const [RelativePosition.AdjacentLeft, RelativePosition.OffsetBottomLeft, /* RelativePosition.OffsetBottomRight */];
 
-  ObjectivesComponent(this._appLayoutService, this._objectiveService, this._router) {
+  ObjectivesComponent(this._appLayoutService, this._objectiveService, this._searchFilterService, this._router) {
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(editButtonLabel, icon: new Icon('edit') , actionWithContext: (_) => goToDetail()), new MenuItem(deleteButtonLabel, icon: new Icon('delete'), actionWithContext: (_) => delete())])], icon: new Icon('menu'));
   }
-
-  set sortedBy(String sortedBy) {
-    _sortedBy = sortedBy;
-    _sortObjectives(_objectives);
-  }
-
-  get sortedBy => _sortedBy;
 
   @override
   void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
 
+    print('DEBUGaaa');
     if (_objectiveService.authService.authorizedOrganization == null || _objectiveService.authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
       return;
@@ -180,15 +171,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
     // If previous path equal current parent path, doent´s need to call this again. I.e. add or edit detail.
     if (routerStatePrevious.routePath.path == routerStateCurrent.routePath.parent.path) return;
 
-    //queryParametersToFoward = routerStateCurrent.queryParameters;
-
-    //initialFilterOptionsIdsSelected = null;
-    //initialFilterOptionsIdsSelectedObjectives = null;
-/*
-    if (routerStatePrevious.toUrl() == AppRoutes.objectivesRoute.toUrl() ||
-        (routerStatePrevious.toUrl() == AppRoutes.objectiveAddRoute.toUrl() && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.objectiveIdQueryParameter) ||
-            routerStatePrevious.toUrl() == AppRoutes.objectiveEditRoute.toUrl()) && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.objectiveIdQueryParameter)) return;
-*/
+    print('DEBUGbbb');
     // Expand panel whether [Id] objective is informed.
     if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.objectiveIdQueryParameter)) {
       initialObjectiveId = routerStateCurrent.queryParameters[AppRoutesQueryParam.objectiveIdQueryParameter];
@@ -198,151 +181,77 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
         filterIds = (routerStateCurrent.queryParameters[AppRoutesQueryParam.filter].toLowerCase() == 'true');
       }
 
-
       // Used just first time, to remove queryParam initialObjectiveId.
-  /*
-      _router.navigate(routerStateCurrent.path, NavigationParams(queryParameters: Map.from(routerStateCurrent.queryParameters)..remove(AppRoutesQueryParam.objectiveIdQueryParameter)..remove(AppRoutesQueryParam.filter), replace: true));
-      return;
-   */
+    }
+/*
+    List<String> groupIds;
+    if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.groupIdsQueryParameter)) {
+      groupIds =
+      routerStateCurrent.queryParameters[AppRoutesQueryParam
+          .groupIdsQueryParameter].split(',');
     }
 
+    List<String> leaderUserIds;
+    if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.leaderUserIdsQueryParameter)) {
+      leaderUserIds =
+      routerStateCurrent.queryParameters[AppRoutesQueryParam
+          .leaderUserIdsQueryParameter].split(',');
+    }
+*/
     _appLayoutService.headerTitle = headerTitle;
     _appLayoutService.systemModuleIndex = SystemModule.objectives.index;
+    _searchFilterService.filterRouteUrl = AppRoutes.objectivesFilterRoute.toUrl();
+    _searchFilterService.filteredItems = _objectiveService.objectiveFilterOrder.filteredItems;
 
     // _appLayoutService.enabledSearch = true;
 
+    if (initialObjectiveId != null && filterIds) {
+      initialFilterOptionsIdsSelectedObjectives = [initialObjectiveId];
+    } else if (!filterIds) {
+      initialFilterOptionsIdsSelectedObjectives = null;
+    }
+
     try {
-      // Groups to filter
-    //  groupsToFilter = await _groupService.getGroups(_groupService.authService.authorizedOrganization.id);
-
-      // Users to filter
-    //  usersToFilter = await _userService.getUsers(_userService.authService.authorizedOrganization.id);
-
       List<Objective> objectivesAux = [];
-      objectivesAux = await getObjetives( /*specificObjectiveId */);
-      // _sortObjectives();
+      objectivesAux = await getObjetives(withArchived: _objectiveService.objectiveFilterOrder.archived,
+          groupIds: _objectiveService.objectiveFilterOrder.groupIds,
+          leaderUserIds: _objectiveService.objectiveFilterOrder.leaderUserIds);
 
-      // Select options to filter.
-      Map<String, FilterOption> objectives = {};
-      Map<String, FilterOption> groups = {};
-      Map<String, FilterOption> leaders = {};
-      for (int i = 0; i < objectivesAux.length; i++) {
-        objectives.putIfAbsent(objectivesAux[i].id, () =>
-            FilterOption(objectivesAux[i].id, objectivesAux[i].name));
-        groups.putIfAbsent(objectivesAux[i].group?.id, () => FilterOption(
-            objectivesAux[i].group?.id, objectivesAux[i].group?.name));
-        leaders.putIfAbsent(objectivesAux[i].leader?.id, () => FilterOption(
-            objectivesAux[i].leader?.id, objectivesAux[i].leader?.name));
-      }
-      List<FilterOption> objectiveFilterOptionsAux = objectives.values
-          .toList();
-      if (objectiveFilterOptionsAux.length > 1) objectiveFilterOptionsAux
-          .sort((a, b) =>
-      a.name == null ? 1 : b.name == null ? -1 : a.name.compareTo(b.name));
+      _orderObjectives(objectivesAux, _objectiveService.objectiveFilterOrder.orderedBy);
 
-      List<FilterOption> groupFilterOptionsAux = groups.values.toList();
-      if (groupFilterOptionsAux.length > 1) groupFilterOptionsAux.sort((a,
-          b) =>
-      a.name == null ? 1 : b.name == null ? -1 : a.name.compareTo(b.name));
-
-      List<FilterOption> leaderFilterOptionsAux = leaders.values.toList();
-      if (leaderFilterOptionsAux.length > 1) leaderFilterOptionsAux.sort((a,
-          b) =>
-      a.name == null ? 1 : b.name == null ? -1 : a.name.compareTo(b.name));
-/*
-      objectiveFilterOptions = objectiveFilterOptionsAux;
-      groupFilterOptions = groupFilterOptionsAux;
-      leaderFilterOptions = leaderFilterOptionsAux;
-
-      if (initialFilterOptionsIdsSelected == null) initialFilterOptionsIdsSelected = [];
-        // initialFilterOptionsIdsSelectedObjectives = [];
-*/
-
-      if (initialObjectiveId != null && filterIds) {
-        initialFilterOptionsIdsSelectedObjectives = [initialObjectiveId];
-      } else if (!filterIds) {
-        initialFilterOptionsIdsSelectedObjectives = null;
-      }
-
-      objectiveFilter = Filter(objectiveFilterOptionsAux, initialFilterOptionsIdsSelectedObjectives);
-      groupFilter = Filter(groupFilterOptionsAux, null);
-      leaderFilter = Filter(leaderFilterOptionsAux, null);
-
-/*
-      if (objectiveFilter == null) {
-        objectiveFilter = Filter(objectiveFilterOptions,
-            initialObjectiveId == null ? null : [initialObjectiveId]);
-      } else {
-        objectiveFilter.filterOptions = objectiveFilterOptions;
-      }
-*/
-
-
-      // If not have initial id, set field to empty list `[]` to dispatch angular behaviour
-      /*
-      if (initialFilterOptionsIdsSelected == null) initialFilterOptionsIdsSelected = [];
-
-      if (initialObjectiveId != null) {
-        initialFilterOptionsIdsSelectedObjectives = [initialObjectiveId];
-
-      } else  {
-          if (initialFilterOptionsIdsSelectedObjectives == null || initialFilterOptionsIdsSelectedObjectives.isEmpty)  {
-            initialFilterOptionsIdsSelectedObjectives = [];
-
-          } else {
-            // Need to make to dispatcher angular input
-            List<String> l = initialFilterOptionsIdsSelectedObjectives;
-            initialFilterOptionsIdsSelectedObjectives = []..addAll(l);
-
-          }
-       }
-*/
-       _objectives = objectivesAux;
-
-
-    //  if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.objectiveIdQueryParameter)) {
-    //    setExpandedObjectiveId(initialObjectiveId, true);
-    //  }
-/*
-
-      // TODO: Needs to find a better way to set null to `expandedObjectiveId`
-      if (expandedObjectiveId != null && !(routerStatePrevious.routePath.path == routerStateCurrent.routePath.parent.path || routerStateCurrent.routePath.path == routerStatePrevious.routePath.parent.path)) {
-        expandedObjectiveId = null;
-      } else {
-        */
-        if (initialObjectiveId != null) {
-          setExpandedObjectiveId(initialObjectiveId, true);
-        }
-    //  }
-
+      _objectives = objectivesAux;
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;
     }
-  }
-/*
-  Future<bool> canReuse(RouterState current, RouterState next) async {
 
-    // To treat CanReuse. Just define cache 'true' when this component is called from/to yours children
-    if (current.routePath?.path == next.routePath?.parent?.path || current.routePath?.parent?.path == next.routePath?.path) {
-      return true;
-    } else {
-      return false;
+    if (initialObjectiveId != null) {
+      setExpandedObjectiveId(initialObjectiveId, true);
     }
 
   }
-*/
 
-  Future<List<Objective>> getObjetives([String objectiveId]) async {
+  void getData() async {
+
+  }
+
+  Future<List<Objective>> getObjetives({String objectiveId, bool withArchived, Set<String> groupIds, Set<String> leaderUserIds}) async {
     List<Objective> objectivesAux =  await _objectiveService.getObjectives(
-        _objectiveService.authService.authorizedOrganization.id, objectiveId: objectiveId, withMeasures: true, withProfile: true);
+        _objectiveService.authService.authorizedOrganization.id,
+        objectiveId: objectiveId,
+        withMeasures: true,
+        withProfile: true,
+        withArchived: withArchived,
+        groupIds: groupIds?.toList(),
+        leaderUserIds: leaderUserIds?.toList());
 
-    _sortObjectives(objectivesAux);
     return objectivesAux;
   }
 
   List<Objective> get objectives {
+    return _objectives;
 
+    /*
     List<Objective> objectiveFilered;
 
     objectiveFilered = (objectivesIdSelectedToFilter.isEmpty || groupsIdSelectedToFilter.isEmpty || leadersIdSelectedToFilter.isEmpty) ? [] : _objectives.where(
@@ -351,6 +260,8 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
                   && (leadersIdSelectedToFilter.contains(t.leader?.id))).toList();
 
     return objectiveFilered;
+    */
+
   }
 
   // This is necessary, to control when this component is recalled when navagate to
@@ -396,24 +307,6 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
 
   String firstLetter(String name) {
     return common_service.firstLetter(name);
-  }
-
-  // Sorted by
-  void _sortObjectives(List<Objective> objectivesToSort) {
-    if (_sortedBy == nameLabel) {
-      objectivesToSort.sort((a, b) => a?.name == null || b?.name == null ? -1 : a.name.compareTo(b.name));
-    } else if (_sortedBy == groupLabel) {
-      objectivesToSort.sort((a, b) => a?.group == null || b?.group == null ? -1 : a.group.name.compareTo(b.group.name));
-    } else if (_sortedBy == leaderLabel) {
-      objectivesToSort.sort((a, b) => a?.leader == null || b?.leader == null ? -1 : a.leader.name.compareTo(b.leader.name));
-    } else if (_sortedBy == startDateLabel) {
-      objectivesToSort.sort((a, b) => a?.startDate == null || b?.startDate == null ? -1 : a.startDate.compareTo(b.startDate));
-    } else if (_sortedBy == endDateLabel) {
-      objectivesToSort.sort((a, b) =>
-      a?.endDate == null || b?.endDate == null
-          ? -1
-          : a.endDate.compareTo(b.endDate));
-    }
   }
 
   void scrollInit(bool event, html.HtmlElement element) {
@@ -466,4 +359,23 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
   leaderChangeSelection(List<String> leadersIdSelected) {
     leadersIdSelectedToFilter = leadersIdSelected;
   }
+
+  // Ordered by
+  void _orderObjectives(List<Objective> objectivesToSort, String orderedBy) {
+    if (orderedBy == nameLabel) {
+      objectivesToSort.sort((a, b) => a?.name == null || b?.name == null ? -1 : a.name.compareTo(b.name));
+    } else if (orderedBy == groupLabel) {
+      objectivesToSort.sort((a, b) => a?.group == null || b?.group == null ? -1 : a.group.name.compareTo(b.group.name));
+    } else if (orderedBy == leaderLabel) {
+      objectivesToSort.sort((a, b) => a?.leader == null || b?.leader == null ? -1 : a.leader.name.compareTo(b.leader.name));
+    } else if (orderedBy == startDateLabel) {
+      objectivesToSort.sort((a, b) => a?.startDate == null || b?.startDate == null ? -1 : a.startDate.compareTo(b.startDate));
+    } else if (orderedBy == endDateLabel) {
+      objectivesToSort.sort((a, b) =>
+      a?.endDate == null || b?.endDate == null
+          ? -1
+          : a.endDate.compareTo(b.endDate));
+    }
+  }
+
 }

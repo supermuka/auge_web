@@ -98,7 +98,6 @@ class ObjectiveDetailComponent implements OnInit, OnActivate, OnDeactivate {
   String dialogError;
 
   String previousPath;
-  String currentPath;
 
   // Define messages and labels
   static final String requiredValueMsg = CommonMsg.requiredValueMsg();
@@ -136,7 +135,6 @@ class ObjectiveDetailComponent implements OnInit, OnActivate, OnDeactivate {
     modalVisible = true;
 
     previousPath = previous.path;
-    currentPath = current.path;
 
     String id;
     if (current.parameters.containsKey(AppRoutesParam.objectiveIdParameter)) {

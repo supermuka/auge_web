@@ -23,7 +23,7 @@ import 'package:auge_shared/domain/objective/measure.dart';
 import 'package:auge_web/route/app_routes.dart';
 
 import 'package:auge_shared/message/messages.dart';
-import 'package:auge_web/src/auth/auth_service.dart';
+//import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/measure/measure_detail_component.dart';
 import 'package:auge_web/src/measure/measure_progress_component.dart';
 import 'package:auge_web/src/measure/measure_service.dart';

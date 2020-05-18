@@ -102,12 +102,11 @@ class HistoryTimelineComponent implements OnActivate /* extends Object implement
 
     systemModuleOptions = SelectionOptions.fromList(options);
 
-    print('DEBUG-A ${_appLayoutService.systemModuleIndex}');
     // Model Listening
     systemModuleIndex = _appLayoutService.systemModuleIndex;
     systemModuleSingleSelectModel = SelectionModel.single()
       ..selectionChanges.listen((d) async {
-        print('DEBUG-D');
+
 
         if (d != null && d.isNotEmpty) {
           if (d.first.removed.isNotEmpty && d.first.added.isEmpty) {
@@ -119,7 +118,7 @@ class HistoryTimelineComponent implements OnActivate /* extends Object implement
           if (systemModuleIndex !=
               d.first.added.first.first) {
 */
-            print('DEBUG-F');
+
             systemModuleIndex =
                 d.first.added.first.first;
 
@@ -134,11 +133,10 @@ class HistoryTimelineComponent implements OnActivate /* extends Object implement
 
     if (systemModuleSingleSelectModel.isEmpty && systemModuleOptions.optionsList.isNotEmpty) {
       int optionIndex = systemModuleOptions.optionsList.indexWhere((test) => test.first == systemModuleIndex);
-      print('DEBUG-C ${optionIndex}');
+
       if (optionIndex == -1) {
         systemModuleSingleSelectModel.select(systemModuleOptions.optionsList.first);
       } else {
-        print('DEBUG-CC ${systemModuleOptions.optionsList[optionIndex]} ${systemModuleOptions.optionsList[optionIndex]?.first}');
         systemModuleSingleSelectModel.select(systemModuleOptions.optionsList[optionIndex]);
       }
     }

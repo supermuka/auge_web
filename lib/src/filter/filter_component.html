@@ -1,29 +1,39 @@
 <material-dropdown-select
-        buttonAriaRole="combobox"
-        [buttonText]="multiSelectFilterLabel"
-        [options]="filterStringSelectionOptions"
-        [selection]="filterOptionMultiSelectModel"
-        [itemRenderer]="filterItemRenderer"
-        [listAutoFocus]="false"
-        [activateFirstOption]="true"
-        [popupMatchInputWidth]="false"
-        (visibleChange)="onDropdownVisibleChange($event)"
-        [materialTooltip]="filterComposeLabel">
+    id="materialDropdownSelectFilter"
+    buttonAriaRole="combobox"
+    [buttonText]="multiSelectFilterLabel"
+    [options]="filterStringSelectionOptions"
+    [selection]="filterOptionMultiSelectModel"
+    [itemRenderer]="filterItemRenderer"
+    [listAutoFocus]="false"
+    [activateFirstOption]="true"
+    [popupMatchInputWidth]="false"
+    (focus)="focus($event)"
+    (visibleChange)="onDropdownVisibleChange($event)"
+    [materialTooltip]="filterComposeLabel">
     <div header>
         <label>{{filterComposeLabel}}</label>
-        <div class="w3-right">
-            <material-button icon (trigger)="selectAll">
-                <material-icon icon="done_all">
-                </material-icon>
-            </material-button>
-            <material-button icon (trigger)="clearAll">
-                <material-icon icon="clear">
-                </material-icon>
-            </material-button>
-        </div>
         <material-select-searchbox
                 label="{{searchLabel}}..."
                 [filterable]="filterStringSelectionOptions">
         </material-select-searchbox>
+    </div>
+    <div footer>
+        <span>
+            <material-button dense (trigger)="selectAll()">Check
+                <!-- material-icon light icon="check_box">
+                </material-icon -->
+            </material-button>
+            <material-button dense (trigger)="clearAll()">Uncheck
+                <!-- material-icon light icon="check_box_outline_blank">
+                </material-icon -->
+            </material-button>
+        </span>
+        <span class="w3-right">
+            <material-button dense (trigger)="apply()">{{applyButtonLabel}}
+            </material-button>
+            <material-button dense autoFocus (trigger)="close()">{{closeButtonLabel}}
+            </material-button>
+        </span>
     </div>
 </material-dropdown-select>

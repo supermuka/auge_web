@@ -5,6 +5,7 @@ import 'dart:async';
 
 import 'package:angular/angular.dart';
 
+import 'package:angular_components/focus/focus.dart';
 import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
 import 'package:angular_components/material_select/material_dropdown_select.dart';
@@ -28,6 +29,7 @@ import 'package:auge_shared/message/messages.dart';
   templateUrl: 'filter_component.html',
   directives: const [
     coreDirectives,
+    AutoFocusDirective,
     MaterialTooltipDirective,
     MaterialDropdownSelectComponent,
     DropdownSelectValueAccessor,
@@ -50,6 +52,8 @@ class FilterComponent /* implements  implements AfterChanges */ {
  // bool optionsNullAndInitialCalled = false;
  // List<String> _initialFilterOptionsIdsSelected;
 
+  @ViewChild(MaterialDropdownSelectComponent)
+  MaterialDropdownSelectComponent materialDropdownSelectComponent;
 
   @Input()
   String filterNameLabel;
@@ -85,75 +89,6 @@ class FilterComponent /* implements  implements AfterChanges */ {
     }
   }
 
-  /*
-  @Input()
-  set filterOptions(List<FilterOption> _filterOptions) {
-
-    if (_filterOptions != null) {
-
-      // Deselect, if exists something.
-     // for (FilterOption option in filterOptionMultiSelectModel.selectedValues) {
-     //   filterOptionMultiSelectModel.deselect(option);
-     // }
-
-      filterStringSelectionOptions = FilterSelectionOptions(_filterOptions);
-
-      // To preserve selected values whether exists for new options.
-      /*
-      List<FilterOption> selectedValues;
-      if (filterOptionMultiSelectModel != null && filterOptionMultiSelectModel.selectedValues.length != 0) {
-        List<FilterOption> selectedValuesOld = filterOptionMultiSelectModel.selectedValues.toList();
-
-        selectedValues = _filterOptions.where((test) => selectedValuesOld.indexWhere((testOld) => testOld.id == test.id) != -1).toList();
-      }
-
-      if (selectedValues != null && selectedValues.length > 0)  {
-        filterOptionMultiSelectModel = SelectionModel<FilterOption>.multi(selectedValues: selectedValues);
-      } else {
-       */
-        filterOptionMultiSelectModel = SelectionModel<FilterOption>.multi();
-       /*
-      }
-*/
-      filterOptionMultiSelectModel.selectionChanges.listen((_) {
-
-        _filterOptionsIdSelection.add( filterOptionMultiSelectModel.selectedValues.map((m) => m?.id).toList());
-
-      });
-
-      // Call again when options was null and initial already called
-      /*
-      if (optionsNullAndInitialCalled) {
-        if (this._initialFilterOptionsIdsSelected != null && this._initialFilterOptionsIdsSelected.isNotEmpty) {
-          selectSpecific(this._initialFilterOptionsIdsSelected);
-        } else {
-          selectAll();
-        }
-      }
-
-       */
-
-    }
-  }
-*/
-
-  /*
-  /// Put ids to select specific or empty list `[]` to select all. If null, nothing is selected.
-  @Input()
-  set initialFilterOptionsIdsSelected(List<String> _initialFilterOptionsIdsSelected) {
-
-     // if _initialFilterOptionsIdsSelected == [] all is selected.  This [] is used to dispatch this `set` and as we don't used empty filter on initial screen, this alternative was used to this finality.
-    if (filterStringSelectionOptions != null) {
-      if (_initialFilterOptionsIdsSelected != null &&
-          _initialFilterOptionsIdsSelected.isNotEmpty) {
-        selectSpecific(_initialFilterOptionsIdsSelected);
-      } else {
-        selectAll();
-      }
-    }
-  }
-
-   */
 
   final _filterOptionsIdSelection = StreamController<List<String>>();
   @Output()
@@ -165,6 +100,9 @@ class FilterComponent /* implements  implements AfterChanges */ {
   static final String filterLabel = CommonMsg.label(CommonMsg.filterLabel);
   static final String moreLabel = CommonMsg.label(CommonMsg.moreLabel);
   static final String emptyLabel = CommonMsg.label(CommonMsg.emptyLabel);
+
+  static final String applyButtonLabel = CommonMsg.buttonLabel(CommonMsg.applyButtonLabel);
+  static final String closeButtonLabel = CommonMsg.buttonLabel(CommonMsg.closeButtonLabel);
 
   get filterComposeLabel => '${filterLabel} ${filterNameLabel}';
 
@@ -187,6 +125,7 @@ class FilterComponent /* implements  implements AfterChanges */ {
 
 
   void onDropdownVisibleChange(bool visible) {
+    print('DEBUG VisibleChange');
     if (visible) {
       // TODO(google): Avoid using Timer.run.
       Timer.run(() {
@@ -227,30 +166,22 @@ class FilterComponent /* implements  implements AfterChanges */ {
     }
   }
 
-  ///
-/*
-  @Input()
-  set filter(Filter filter) {
-    if (filter.filterOptions != null) {
-      filterStringSelectionOptions =
-          FilterSelectionOptions(filter.filterOptions);
+  void apply() {
+    print('DEBUG ${materialDropdownSelectComponent.toString()}');
+    materialDropdownSelectComponent.close();
+  }
 
-      filterOptionMultiSelectModel = SelectionModel<FilterOption>.multi();
+  void close() {
+    print('DEBUG ${materialDropdownSelectComponent.toString()}');
+    materialDropdownSelectComponent.close();
+  }
 
-      filterOptionMultiSelectModel.selectionChanges.listen((_) {
-        _filterOptionsIdSelection.add(
-            filterOptionMultiSelectModel.selectedValues.map((m) => m?.id)
-                .toList());
-      });
+  void focus(bool event) {
+    if (event) {
 
-      if (filter.initialIdsToFilter == null) {
-        selectAll();
-      } else {
-        selectSpecific(filter.initialIdsToFilter);
-      }
     }
   }
-*/
+
 }
 
 /// If the option does not support toString() that shows the label, the

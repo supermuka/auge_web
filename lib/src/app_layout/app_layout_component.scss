@@ -20,10 +20,11 @@
   justify-content: center;
 }
 
+/*
 .spacer {
   padding-left: 20px;
 }
-
+*/
 .menu-drawer {
   border: 1px;
   border-style:  outset;
@@ -43,12 +44,13 @@
   margin-left: 20px;
   margin-right: 20px;
 }
-
+/*
 .hide-title-small-width-enabled-search-true {
     @media (max-width: 800px) {
        display:none;
     }
 }
+*/
 
 /* copy from material-dialog */
 .error {
@@ -68,4 +70,10 @@
     border-top: 1px $mat-gray-300 solid;
     padding: $mat-grid $mat-grid * 3;
   }
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

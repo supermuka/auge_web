@@ -1,5 +1,5 @@
 <div>
-   <material-auto-suggest-input class="material-input-theme-search" [(inputText)]="searchTerm"
+   <material-auto-suggest-input *ngIf="enableSearch()" class="material-input-theme-search" [(inputText)]="searchTerm"
                                 [filterSuggestions]="false"
                                 [popupMatchInputWidth]="false"
                                 [showClearIcon]="true"
@@ -9,7 +9,9 @@
                                 [selection]="searchSingleSelectModel"
                                 [selectionOptions]="searchOptions">
    </material-auto-suggest-input>
-   <material-button *ngIf="visibleFilter != null" (trigger)="viewFilter()">
+   <material-button icon *ngIf="enableFilter()" (trigger)="goToFilter()">
       <material-icon icon="filter_list"></material-icon>
+      <span style="font-size: x-small;vertical-align: text-bottom;width:0px;height:0px;" *ngIf="filteredItems != null && filteredItems > 0">{{filteredItems}}</span>
    </material-button>
+
 </div>

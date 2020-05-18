@@ -12,13 +12,13 @@ import 'package:angular_components/material_icon/material_icon.dart';
 
 import 'package:auge_shared/message/messages.dart';
 
-
-import 'search_service.dart';
+import 'search_filter_service.dart';
 
 @Component(
-  selector: 'auge-search',
-  templateUrl: 'search_component.html',
-  styleUrls: const ['search_component.css'],
+  selector: 'auge-search-filter',
+  templateUrl: 'search_filter_component.html',
+  styleUrls: const ['search_filter_component.css'],
+ // providers: const [],
   directives: const [
     coreDirectives,
     routerDirectives,
@@ -27,32 +27,35 @@ import 'search_service.dart';
     MaterialAutoSuggestInputComponent,
   ],
 )
-class SearchComponent with CanReuse {
+class SearchFilterComponent with CanReuse {
 
-  final SearchService _searchService;
+  final SearchFilterService _searchFilterService;
+  final Router _router;
 
   SelectionOptions searchOptions = SelectionOptions.fromList([]);
   SelectionModel searchSingleSelectModel = SelectionModel.single();
   String searchLeadingGlyph = 'search';
   String searchLabel = '${CommonMsg.label(CommonMsg.searchLabel)}...';
-  String searchEmptyPlaceholder = CommonMsg.label(CommonMsg.noCorrespondenceLabel); //'No correspondence';
 
-  SearchComponent(this._searchService);
+  bool filterVisible = false;
+
+  SearchFilterComponent(this._searchFilterService, this._router);
+
+  get filteredItems => this._searchFilterService.filteredItems;
 
   get searchTerm {
-    return _searchService.searchTerm;
+    return _searchFilterService.searchTerm;
   }
 
   set searchTerm(String term) {
-    _searchService.searchTerm = term;
+    _searchFilterService.searchTerm = term;
   }
 
-  void viewFilter() {
-    _searchService.visibleFilter = !_searchService.visibleFilter;
-  }
+  bool enableSearch() => (_searchFilterService.searchTerm != null);
 
-  /// When null, the filter button does not appear
-  bool get visibleFilter {
-    return _searchService.visibleFilter;
+  bool enableFilter() => (_searchFilterService.filterRouteUrl != null);
+
+  void goToFilter() {
+    _router.navigate(_searchFilterService.filterRouteUrl /*, NavigationParams(replace:  true)*/);
   }
 }

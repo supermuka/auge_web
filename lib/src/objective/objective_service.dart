@@ -19,27 +19,37 @@ class ObjectiveService {
 
   DateTime currentDateTime;
 
+  ObjectiveFilterOrder objectiveFilterOrder;
+
   ObjectiveService(this._authService, this._augeApiService) {
     _objectiveServiceClient = objective_measure_pbgrpc.ObjectiveServiceClient(_augeApiService.channel);
+    objectiveFilterOrder = ObjectiveFilterOrder();
   }
 
   get authService => _authService;
 
 
   /// Return a list of [Objective]
-  Future<List<Objective>> getObjectives(String organizationId, {String objectiveId, bool withMeasures = false, bool withProfile = false}) async {
+  Future<List<Objective>> getObjectives(String organizationId, {String objectiveId, bool withMeasures = false, bool withProfile = false, bool withArchived = false, List<String> groupIds, List<String> leaderUserIds}) async {
+
     objective_measure_pbgrpc.ObjectiveGetRequest objectiveGetRequest = objective_measure_pbgrpc.ObjectiveGetRequest();
     objectiveGetRequest.organizationId = organizationId;
     if (objectiveId != null)  objectiveGetRequest.id = objectiveId;
     objectiveGetRequest.withMeasures = withMeasures;
     objectiveGetRequest.withUserProfile = withProfile;
+    if (withArchived != null) objectiveGetRequest.withArchived = withArchived;
+    if (groupIds != null && groupIds.isNotEmpty) objectiveGetRequest.groupIds.addAll(groupIds);
+    if (leaderUserIds != null && leaderUserIds.isNotEmpty) objectiveGetRequest.leaderUserIds.addAll(leaderUserIds);
+
+    objective_measure_pbgrpc.ObjectivesResponse or = await _objectiveServiceClient.getObjectives(
+        objectiveGetRequest);
 
     Map<String, dynamic> cache = {};
-    return (await _objectiveServiceClient.getObjectives(
-        objectiveGetRequest)).objectives.map((m) =>
+    List<Objective> o = or.objectives.map((m) =>
     Objective()
       ..readFromProtoBuf(m, cache)).toList();
 
+    return o;
   }
 
   /// Return an [Objective] by Id
@@ -115,4 +125,20 @@ class ObjectiveService {
       rethrow;
     }
   }
+}
+
+/// Used to change data between Objectives Component and Filter
+class ObjectiveFilterOrder {
+
+  // Filter
+  Set<String> groupIds;
+  Set<String> leaderUserIds;
+  bool archived;
+
+  // Filtered Items
+  int filteredItems;
+
+  //Ordered by
+  String orderedBy;
+
 }

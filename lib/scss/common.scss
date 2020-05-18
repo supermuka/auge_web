@@ -1,6 +1,7 @@
 @import 'package:angular_components/css/material/material';
 @import 'package:angular_components/material_expansionpanel/mixins';
 @import 'package:angular_components/material_button/mixins';
+@import 'package:angular_components/material_checkbox/mixins';
 
 .dialog-custom {
    min-width: 360px;
@@ -86,4 +87,8 @@
    flex-shrink: 0;
    padding: $mat-grid * 2 $mat-grid $mat-grid * 2 $mat-grid;
    border-top: 1px $mat-gray-300 solid;
+}
+
+.checkbox-no-margin {
+  @include checkbox-no-margin();
 }

@@ -19,7 +19,7 @@ import 'package:angular_components/material_menu/material_menu.dart';
 import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
 
-import 'package:auge_shared/domain/general/authorization.dart';
+//import 'package:auge_shared/domain/general/authorization.dart';
 import 'package:auge_shared/domain/general/user.dart';
 import 'package:auge_shared/domain/work/work.dart';
 import 'package:auge_shared/domain/work/work_item.dart';

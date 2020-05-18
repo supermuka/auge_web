@@ -1,5 +1,6 @@
 @import 'package:auge_web/scss/common.scss';
 //@import 'package:angular_components/scorecard/mixins';
+@import 'package:angular_components/material_checkbox/mixins';
 
 .custom-grid {
   display: grid;
@@ -35,3 +36,5 @@ $_min_width: 32px;
 .custom-width {
   min-width: $_min_width;
 }
+
+
