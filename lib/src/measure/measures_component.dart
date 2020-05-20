@@ -1,6 +1,8 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
+import 'dart:html' as html;
+
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
 
@@ -153,5 +155,7 @@ class MeasuresComponent with CanReuse {
 
         if (objective.startDate != null) AppRoutesQueryParam.objectiveStartDateQueryParameter: objective.startDate.toIso8601String(),
         if (objective.endDate != null) AppRoutesQueryParam.objectiveEndDateQueryParameter: objective.endDate.toIso8601String()}));
+
   }
+
 }

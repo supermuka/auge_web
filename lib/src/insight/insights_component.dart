@@ -164,6 +164,8 @@ class InsightsComponent with CanReuse implements OnActivate  {
    // _appLayoutService.enabledSearch = false;
     _appLayoutService.systemModuleIndex = null;
 
+    _searchFilterService.enableSearch = false;
+    _searchFilterService.enableFilter = true;
     _searchFilterService.filterRouteUrl = '';
 
     try {

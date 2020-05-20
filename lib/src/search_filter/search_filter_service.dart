@@ -6,9 +6,11 @@ import 'package:angular/core.dart';
 @Injectable()
 class SearchFilterService {
 
-  // If null, it does not appear the input search
-  String searchTerm;
-  // If null, it does not appear the filter button.
+  // If true, it  appear the input search
+  bool enableSearch = false;
+  String searchTerm = '';
+  // If true, it  appear the filter button.
+  bool enableFilter = false;
   String filterRouteUrl;
   int filteredItems;
  // bool visibleFilter = false;

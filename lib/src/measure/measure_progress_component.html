@@ -4,79 +4,85 @@
             <h3>{{measureProgressLabel}}</h3>
         </div>
         <div class="w3-row">
-            <div class="w3-col l6">
-                <div class="wrapper-chart">
-                    <canvas #canvas height="360" width="400"></canvas>
-                </div>
+            <div class="w3-col l12">
+                <material-input disabled [ngModel]="measure?.name" floatingLabel [label]="measureLabel" ></material-input>
             </div>
-            <div class="w3-col l6">
-                <material-expansionpanel class="wrapper-progress" disabled
-                                         [alwaysHideExpandIcon]="true"
-                                         [expanded]="true"
-                                         [showSaveCancel]="false">
-                    <div name>
-                        <span><strong>{{progressCurrentValuesLabel}}</strong></span>
-                    </div>
-                    <div action>
-                        <material-button icon (trigger)="selectMeasureProgress(null)">
-                            <material-icon icon="add"></material-icon>
-                        </material-button>
-                    </div>
-                    <div class="w3-padding-small">
-                        <div *ngFor="let iMeasureProgress of measureProgresses">
-                            <material-expansionpanel  disabled [alwaysHideExpandIcon]="true"
-                                                     [hideExpandedHeader]="true"
-                                                     [showSaveCancel]="true"
-                                                     [expanded]="iMeasureProgress != null && iMeasureProgress == selectedMeasureProgress"
-                                                     [cancelText]="cancelButtonLabel"
-                                                     [saveText]="saveButtonLabel"
-                                                     (save)="saveMeasureProgress(iMeasureProgress, $event)"
-                                                     (cancel)="cancelMeasureProgress(iMeasureProgress, $event)"
-                                                     expandIcon="edit">
-                                <div name>
-                                    <span>{{iMeasureProgress.date | date}}</span>
-                                </div>
-                                <div value>
-                                    <span class="w3-right">{{iMeasureProgress.currentValue | number}}</span>
-                                    <span class="truncate-ellipsed-parent">
-                                        <span class="truncate-ellipsed">{{iMeasureProgress.comment}}</span>
-                                    </span>
-                                    <!-- span>{{iMeasureProgress.comment}}</span -->
-                                </div>
-                                <div action>
-                                    <material-button icon (trigger)="selectMeasureProgress(iMeasureProgress)">
-                                        <material-icon icon="edit"></material-icon>
-                                    </material-button>
-                                    <material-button icon (trigger)="delete(iMeasureProgress)">
-                                        <material-icon icon="delete"></material-icon>
-                                    </material-button>
-                                </div>
-                                <div class="w3-row-padding">
-                                    <div class="w3-col l6">
-                                        <div class="input-container">
-                                            <label>{{dateLabel}}</label>
-                                            <material-datepicker [date]="getDate(iMeasureProgress)"
-                                                                 (dateChange)="setDate(iMeasureProgress, $event)"
-                                                                 [minDate]="limitToDateRange.start"
-                                                                 [maxDate]="limitToDateRange.end"
-                                                                 [required]="true">
-                                            </material-datepicker>
-                                        </div>
-                                    </div>
-                                    <div class="w3-col l6">
-                                        <material-input autoFocus type="number" [ngModel]="iMeasureProgress.currentValue"  [rightAlign]="true" floatingLabel [label]="currentValueLabel" [error]="showCurrentValueErrorMsg" [leadingText]="unitLeadingText" [trailingText]="unitTrailingText" (change)="changedCurrentValue(iMeasureProgress, $event)"></material-input>
-                                    </div>
-                                </div>
-                                <div class="w3-row">
-                                    <div class="w3-col l12">
-                                        <material-input floatingLabel multiline rows="2" [label]="commentLabel" [(ngModel)]="iMeasureProgress.comment" style="width: 100%;"></material-input>
+        </div>
+        <material-tab-strip (beforeTabChange)="onBeforeTabChange($event)"
+                            (tabChange)="onTabChange($event)"
+                            [tabLabels]="tabLabels">
+        </material-tab-strip>
+        <div *ngIf="tabIndex == 0" class="w3-row">
+            <material-expansionpanel class="wrapper-progress" disabled
+                                     [alwaysHideExpandIcon]="true"
+                                     [expanded]="true"
+                                     [showSaveCancel]="false">
+                <div name>
+                    <span><strong>{{progressValuesLabel}}</strong></span>
+                </div>
+                <div action>
+                    <material-button icon (trigger)="selectMeasureProgress(null)">
+                        <material-icon icon="add"></material-icon>
+                    </material-button>
+                </div>
+                <div class="w3-padding-small">
+                    <div *ngFor="let iMeasureProgress of measureProgresses">
+                        <material-expansionpanel  disabled [alwaysHideExpandIcon]="true"
+                                                 [hideExpandedHeader]="true"
+                                                 [showSaveCancel]="true"
+                                                 [expanded]="iMeasureProgress != null && iMeasureProgress == selectedMeasureProgress"
+                                                 [cancelText]="cancelButtonLabel"
+                                                 [saveText]="saveButtonLabel"
+                                                 (save)="saveMeasureProgress(iMeasureProgress, $event)"
+                                                 (cancel)="cancelMeasureProgress(iMeasureProgress, $event)"
+                                                 expandIcon="edit">
+                            <div name>
+                                <span>{{iMeasureProgress.date | date}}</span>
+                            </div>
+                            <div value>
+                                <span class="w3-right">{{iMeasureProgress.currentValue | number}}</span>
+                                <span class="truncate-ellipsed-parent">
+                                    <span class="truncate-ellipsed">{{iMeasureProgress.comment}}</span>
+                                </span>
+                                <!-- span>{{iMeasureProgress.comment}}</span -->
+                            </div>
+                            <div action>
+                                <material-button icon (trigger)="selectMeasureProgress(iMeasureProgress)">
+                                    <material-icon icon="edit"></material-icon>
+                                </material-button>
+                                <material-button icon (trigger)="delete(iMeasureProgress)">
+                                    <material-icon icon="delete"></material-icon>
+                                </material-button>
+                            </div>
+                            <div class="w3-row-padding">
+                                <div class="w3-col l6">
+                                    <div class="input-container">
+                                        <label>{{dateLabel}}</label>
+                                        <material-datepicker [date]="getDate(iMeasureProgress)"
+                                                             (dateChange)="setDate(iMeasureProgress, $event)"
+                                                             [minDate]="limitToDateRange.start"
+                                                             [maxDate]="limitToDateRange.end"
+                                                             [required]="true">
+                                        </material-datepicker>
                                     </div>
                                 </div>
-                            </material-expansionpanel>
-                        </div>
+                                <div class="w3-col l6">
+                                    <material-input autoFocus type="number" [ngModel]="iMeasureProgress.currentValue"  [rightAlign]="true" floatingLabel [label]="currentValueLabel" [error]="showCurrentValueErrorMsg" [leadingText]="unitLeadingText" [trailingText]="unitTrailingText" (change)="changedCurrentValue(iMeasureProgress, $event)"></material-input>
+                                </div>
+                            </div>
+                            <div class="w3-row">
+                                <div class="w3-col l12">
+                                    <material-input floatingLabel multiline rows="2" [label]="commentLabel" [(ngModel)]="iMeasureProgress.comment" style="width: 100%;"></material-input>
+                                </div>
+                            </div>
+                        </material-expansionpanel>
                     </div>
-                </material-expansionpanel>
-
+                </div>
+            </material-expansionpanel>
+        </div>
+        <div *ngIf="tabIndex == 1">
+            <div class="wrapper-chart">
+                <canvas #canvas height="400" width="600"></canvas>
             </div>
         </div>
         <div footer>

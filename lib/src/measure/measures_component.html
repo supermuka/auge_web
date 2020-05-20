@@ -23,7 +23,7 @@
                         <div value class="custom-slider">
                             <!--material-progress materialTooltip="{{progressLabel + ' ' + iMeasure.progress.toString() + '%'}}" [activeProgress]="iMeasure.progress"></material-progress-->
                             <!-- material-slider [(value)]="iMeasure.currentValueInt"  [min]="iMeasure.startValueInt" [max]="iMeasure.endValueInt" (valueChange)="updateMeasure($event)"></material-slider -->
-                            <material-slider [disabled]="objective.archived || iMeasure.minValue == null || iMeasure.maxValue == null" [value]="iMeasure.valueRelatedMinMax" [step]="iMeasure.stepValue" [min]="iMeasure.minValue" [max]="iMeasure.maxValue" (valueChange)="changeCurrentValue(iMeasure, $event);selectMeasure(iMeasure);goToProgress(true)"  materialTooltip="{{progressLabel + ' ' + iMeasure.progress.toString() + '%'}}"></material-slider>
+                            <material-slider [disabled]="objective.archived || iMeasure.minValue == null || iMeasure.maxValue == null" [value]="iMeasure.valueRelatedMinMax" [step]="iMeasure.stepValue" [min]="iMeasure.minValue" [max]="iMeasure.maxValue" (valueChange)="changeCurrentValue(iMeasure, $event);selectMeasure(iMeasure);goToProgress(true);$event.stopPropagation()"  materialTooltip="{{progressLabel + ' ' + iMeasure.progress.toString() + '%'}}"></material-slider>
                             <div class="width-flex">
                                 <span materialTooltip="{{startValueLabel}}">{{iMeasure.startValue | number:'.' + iMeasure?.decimalsNumber?.toString()}}</span>
                                 <span materialTooltip="{{currentValueLabel}}">{{iMeasure.currentValue | number:'.' + iMeasure?.decimalsNumber?.toString()}}</span>

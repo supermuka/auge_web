@@ -1,5 +1,5 @@
 <material-drawer id="drawer" temporary #drawer="drawer">
-    <material-list class="menu-drawer" *deferredContent>
+    <material-list elevation="2" class="menu-drawer" *deferredContent>
         <div group class="centralized">
             <h4><strong>{{authorizedOrganization.name}}</strong></h4>
         </div>
@@ -40,37 +40,35 @@
     </material-list>
 </material-drawer>
 <div class="material-content">
-    <div class="header-panel">
-        <header class="material-header">
-            <div class="material-header-row">
-                <material-button icon
-                                 class="material-drawer-button" (trigger)="drawer.toggle()">
-                    <material-icon icon="menu"></material-icon>
+    <header class="material-header">
+        <div class="material-header-row">
+            <material-button icon
+                             class="material-drawer-button" (trigger)="drawer.toggle()">
+                <material-icon icon="menu"></material-icon>
+            </material-button>
+            <span class="material-header-title w3-hide-small">{{headerTitle}}</span>
+            <!-- div>
+               <span class="material-header-title">{{headerTitle}}</span>
+            </div  style="margin-left: 72px;" -->
+             <!-- TODO: to see another way to align search-filter to center, without to use margin-left -->
+            <div class="material-spacer"></div>
+            <auge-search-filter style="margin-left: 72px;"></auge-search-filter>
+            <div class="material-spacer"></div>
+            <nav class="material-navigation centralized">
+                <material-button icon (trigger)="goTo(historyTimelineRouteUrl)">
+                    <material-icon icon="history"></material-icon>
                 </material-button>
-                <span class="material-header-title">{{headerTitle}}</span>
-                <!-- div>
-                   <span class="material-header-title">{{headerTitle}}</span>
-                </div  style="margin-left: 72px;" -->
-                <div class="material-spacer"></div>
-                <!-- TODO: to see another way to align search-filter to center, without to use margin-left -->
-                <auge-search-filter style="margin-left: 72px;"></auge-search-filter>
-                <div class="material-spacer"></div>
-                <nav class="material-navigation centralized">
-                    <material-button icon (trigger)="goTo(historyTimelineRouteUrl)">
-                        <material-icon  icon="history"></material-icon>
-                    </material-button>
-                    <span class="avatar" [style.background-image]="'url(' + userUrlImage() + ')'"></span>
-                    <material-dropdown-select class="button-look"
-                                              slide="y"
-                                              [selection]="userProfileLogoutSingleSelectModel"
-                                              [options]="userProfileLogoutOptions"
-                                              [itemRenderer]="itemRenderer">
-                    </material-dropdown-select>
-                </nav>
-            </div>
-        </header>
-        <div class="error" [class.expanded]="error != null">{{error}}</div>
-    </div>
+                <span class="avatar" [style.background-image]="'url(' + userUrlImage() + ')'"></span>
+                <material-dropdown-select class="button-look"
+                                          slide="y"
+                                          [selection]="userProfileLogoutSingleSelectModel"
+                                          [options]="userProfileLogoutOptions"
+                                          [itemRenderer]="itemRenderer">
+                </material-dropdown-select>
+            </nav>
+        </div>
+    </header>
+    <div class="error" [class.expanded]="error != null">{{error}}</div>
     <div class="main">
         <router-outlet [routes]="routes"></router-outlet>
     </div>

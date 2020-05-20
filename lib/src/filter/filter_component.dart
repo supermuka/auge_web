@@ -125,7 +125,6 @@ class FilterComponent /* implements  implements AfterChanges */ {
 
 
   void onDropdownVisibleChange(bool visible) {
-    print('DEBUG VisibleChange');
     if (visible) {
       // TODO(google): Avoid using Timer.run.
       Timer.run(() {

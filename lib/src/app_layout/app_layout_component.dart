@@ -58,8 +58,8 @@ import 'package:auge_web/src/search_filter/search_filter_service.dart';
     providers: const <dynamic>[AppLayoutService, SearchFilterService],
     templateUrl: 'app_layout_component.html',
     styleUrls: [
-    'app_layout_component.css',
-    'package:angular_components/app_layout/layout.scss.css',
+      'package:angular_components/app_layout/layout.scss.css',
+      'app_layout_component.css',
     ],
     directives: const [
       coreDirectives,

@@ -162,7 +162,6 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
   @override
   void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
 
-    print('DEBUGaaa');
     if (_objectiveService.authService.authorizedOrganization == null || _objectiveService.authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
       return;
@@ -171,7 +170,6 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
     // If previous path equal current parent path, doent´s need to call this again. I.e. add or edit detail.
     if (routerStatePrevious.routePath.path == routerStateCurrent.routePath.parent.path) return;
 
-    print('DEBUGbbb');
     // Expand panel whether [Id] objective is informed.
     if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.objectiveIdQueryParameter)) {
       initialObjectiveId = routerStateCurrent.queryParameters[AppRoutesQueryParam.objectiveIdQueryParameter];
@@ -200,10 +198,13 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
 */
     _appLayoutService.headerTitle = headerTitle;
     _appLayoutService.systemModuleIndex = SystemModule.objectives.index;
+
+    // Enabled search and filter
+    _searchFilterService.enableSearch = true;
+    _searchFilterService.enableFilter = true;
     _searchFilterService.filterRouteUrl = AppRoutes.objectivesFilterRoute.toUrl();
     _searchFilterService.filteredItems = _objectiveService.objectiveFilterOrder.filteredItems;
 
-    // _appLayoutService.enabledSearch = true;
 
     if (initialObjectiveId != null && filterIds) {
       initialFilterOptionsIdsSelectedObjectives = [initialObjectiveId];
@@ -212,6 +213,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
     }
 
     try {
+
       List<Objective> objectivesAux = [];
       objectivesAux = await getObjetives(withArchived: _objectiveService.objectiveFilterOrder.archived,
           groupIds: _objectiveService.objectiveFilterOrder.groupIds,
@@ -220,6 +222,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
       _orderObjectives(objectivesAux, _objectiveService.objectiveFilterOrder.orderedBy);
 
       _objectives = objectivesAux;
+
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;
@@ -248,8 +251,10 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
     return objectivesAux;
   }
 
+
+
   List<Objective> get objectives {
-    return _objectives;
+    return (_searchFilterService.searchTerm == null || _searchFilterService.searchTerm.isEmpty) ? _objectives : _objectives.where((test) => test.name.contains(_searchFilterService.searchTerm)).toList();
 
     /*
     List<Objective> objectiveFilered;

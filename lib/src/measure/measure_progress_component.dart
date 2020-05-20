@@ -1,6 +1,8 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
+import 'dart:async';
+
 import 'dart:html' as html;
 
 import 'package:chartjs/chartjs.dart';
@@ -27,6 +29,10 @@ import 'package:angular_components/model/date/date.dart';
 import 'package:angular_components/material_datepicker/material_datepicker.dart';
 import 'package:angular_components/material_dialog/material_dialog.dart';
 import 'package:angular_components/model/action/async_action.dart';
+import 'package:angular_components/material_tab/fixed_material_tab_strip.dart';
+import 'package:angular_components/material_tab/tab_change_event.dart';
+import 'package:angular_components/utils/browser/dom_service/angular_2.dart';
+import 'package:angular_components/utils/browser/window/module.dart';
 
 import 'package:auge_shared/domain/objective/measure.dart';
 
@@ -40,7 +46,7 @@ import 'package:auge_web/route/app_routes.dart';
 
 @Component(
     selector: 'auge-measure-progress',
-    providers: [overlayBindings, datepickerBindings, MeasureService],
+    providers: [domServiceBinding, windowBindings, overlayBindings, datepickerBindings, MeasureService],
     templateUrl: 'measure_progress_component.html',
     styleUrls: const ['measure_progress_component.css'],
     directives: const [
@@ -58,6 +64,7 @@ import 'package:auge_web/route/app_routes.dart';
       MaterialIconComponent,
       MaterialDatepickerComponent,
       MaterialMenuComponent,
+      FixedMaterialTabStripComponent,
     ],
     pipes: const [commonPipes])
 
@@ -111,13 +118,24 @@ class MeasureProgressComponent implements OnInit, OnActivate, OnDeactivate  {
 
   Chart chart;
 
+  int tabIndex = 0;
+
+
+
+
   MeasureProgressComponent(/*this._objectiveService, */ this._measureService, this._location) {
     // initializeDateFormatting(Intl.defaultLocale , null);
   }
 
   // Define messages and labels
+  static final String measureLabel = MeasureProgressMsg.label(MeasureProgressMsg.measureLabel);
   static final String measureProgressLabel = MeasureProgressMsg.label(MeasureProgressMsg.measureProgressLabel);
-  static final String progressCurrentValuesLabel = MeasureProgressMsg.label(MeasureProgressMsg.progressCurrentValuesLabel);
+  static final String progressValuesLabel = MeasureProgressMsg.label(MeasureProgressMsg.progressValuesLabel);
+
+  static final tabLabels = <String>[
+    MeasureProgressMsg.label(MeasureProgressMsg.valuesLabel),
+    MeasureProgressMsg.label(MeasureProgressMsg.chartLabel)
+  ];
 
   static final String currentValueLabel = MeasureProgressDomainMsg.fieldLabel(MeasureProgress.currentValueField);
   static final String dateLabel =  MeasureProgressDomainMsg.fieldLabel(MeasureProgress.dateField); //FieldMsg.label('${MeasureProgress.className}.${MeasureProgress.dateField}');
@@ -181,7 +199,7 @@ class MeasureProgressComponent implements OnInit, OnActivate, OnDeactivate  {
       objectiveEndDate = null;
     }
 
-    buildChart();
+    //buildChart();
 
   }
 
@@ -207,7 +225,7 @@ class MeasureProgressComponent implements OnInit, OnActivate, OnDeactivate  {
 
     ChartConfiguration config = ChartConfiguration(
         type: 'line', data: data, options: new ChartOptions(responsive: true,
-      title: ChartTitleOptions(display: true, text: 'Measure ' + measure.name),
+      title: ChartTitleOptions(display: true /*, text: 'Measure ' + measure.name */),
 
     ));
 
@@ -440,5 +458,16 @@ class MeasureProgressComponent implements OnInit, OnActivate, OnDeactivate  {
     measureProgresses.sort((a, b) => a.date == null || b.date == null  ? -1 : a.date.compareTo(b.date)*-1);
   }
   */
+
+  void onBeforeTabChange(TabChangeEvent event) {
+    tabIndex = event.newIndex;
+  }
+
+  void onTabChange(TabChangeEvent event) {
+    if (event.newIndex == 1)
+      Timer.run(() {
+        buildChart();
+      });
+  }
 
 }

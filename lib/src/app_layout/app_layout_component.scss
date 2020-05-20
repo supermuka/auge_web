@@ -1,37 +1,44 @@
 @import 'package:angular_components/css/material/material';
 @import 'package:angular_components/material_select/mixins';
-//@import 'package:angular_components/material_button/mixins';
+//@import 'package:angular_components/css/material/shadow';
 
+//@import 'package:angular_components/material_button/mixins';
+/*
 :host {
   display: block;
   height: 600px;
   position: relative;
-  top: 0%;
+  top: 0;
   clear: both;
 }
 
 .button-look {
    @include button-look();
 }
-
+*/
 .centralized {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+.menu-drawer {
+  border: 1px;
+  border-style:  outset;
+  overflow-y: auto;
+}
 /*
 .spacer {
   padding-left: 20px;
 }
-*/
+
 .menu-drawer {
   border: 1px;
   border-style:  outset;
   overflow-y: auto;
 }
 
-.material-content .header-panel {
+.header-panel {
   position: fixed;
   overflow: hidden;
   top: 0;
@@ -39,18 +46,53 @@
   z-index: 2;
 }
 
-.main {
-  margin-top: 64px; /* $mat-header-height: 64px; needs because was used position: fixed on header panel */
-  margin-left: 20px;
-  margin-right: 20px;
+*/
+
+material-drawer {
+  @extend material-drawer;
+  position: fixed;
+  top: 64px;
+  height: 600px;
+  z-index: 2;
+}
+
+.material-content {
+  @extend .material-content;
+  header {
+    position: fixed;
+    overflow: hidden;
+    top: 0;
+    width: 100%;
+    z-index: 2;
+  }
+}
+
+.material-header-row {
+  .material-header-title {
+    @extend .material-header-title;
+    left: $mat-grid * 6;
+  }
 }
 /*
-.hide-title-small-width-enabled-search-true {
+material-list {
+  @include material-shadow();
+}
+*/
+////
+
+
+.main {
+  margin-top: 64px; // $mat-header-height: 64px; needs because was used position: fixed on header panel
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+
+.hide-title-small {
     @media (max-width: 800px) {
        display:none;
     }
 }
-*/
 
 /* copy from material-dialog */
 .error {
@@ -70,10 +112,4 @@
     border-top: 1px $mat-gray-300 solid;
     padding: $mat-grid $mat-grid * 3;
   }
-}
-
-.center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }

@@ -34,10 +34,10 @@ class SearchFilterComponent with CanReuse {
 
   SelectionOptions searchOptions = SelectionOptions.fromList([]);
   SelectionModel searchSingleSelectModel = SelectionModel.single();
+
   String searchLeadingGlyph = 'search';
   String searchLabel = '${CommonMsg.label(CommonMsg.searchLabel)}...';
 
-  bool filterVisible = false;
 
   SearchFilterComponent(this._searchFilterService, this._router);
 
@@ -51,9 +51,9 @@ class SearchFilterComponent with CanReuse {
     _searchFilterService.searchTerm = term;
   }
 
-  bool enableSearch() => (_searchFilterService.searchTerm != null);
+  bool enableSearch() => (_searchFilterService.enableSearch);
 
-  bool enableFilter() => (_searchFilterService.filterRouteUrl != null);
+  bool enableFilter() => (_searchFilterService.enableFilter);
 
   void goToFilter() {
     _router.navigate(_searchFilterService.filterRouteUrl /*, NavigationParams(replace:  true)*/);
