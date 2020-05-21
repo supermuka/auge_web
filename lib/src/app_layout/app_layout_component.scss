@@ -16,6 +16,11 @@
    @include button-look();
 }
 */
+
+.button-look {
+  @include button-look();
+}
+
 .centralized {
   display: flex;
   align-items: center;

@@ -102,7 +102,7 @@ class AppLayoutComponent with CanReuse implements OnActivate {
       component: app_layout_component.AppLayoutComponentNgFactory,
     ),
     RouteDefinition(
-      routePath: AppRoutes.insightslRoute,
+      routePath: AppRoutes.insightsRoute,
       component: insights_component.InsightsComponentNgFactory,
     ),
     RouteDefinition(
@@ -181,8 +181,7 @@ class AppLayoutComponent with CanReuse implements OnActivate {
 
   }
 
-  // Define messages and labels
- // String label(String label) =>  AppLayoutMsg.label(label);
+
 
   /// Messages and labels
   static final String insightsLabel =  AppLayoutMsg.label(AppLayoutMsg.ingightsLabel);
@@ -203,7 +202,7 @@ class AppLayoutComponent with CanReuse implements OnActivate {
       _router.navigate(AppRoutes.authRoute.toUrl());
       return;
     }
-    insightsRouteUrl = AppRoutes.insightslRoute.toUrl();
+    insightsRouteUrl = AppRoutes.insightsRoute.toUrl();
     mapRouteUrl = AppRoutes.mapRoute.toUrl();
     ganttRouteUrl = AppRoutes.ganttRoute.toUrl();
     objectivesRouteUrl = AppRoutes.objectivesRoute.toUrl();
@@ -248,22 +247,10 @@ class AppLayoutComponent with CanReuse implements OnActivate {
       if (d != null && d.isNotEmpty && d.first.added.isNotEmpty) {
         if (d.first?.added?.first?.routeUrl != null) {
           await goTo(d.first.added.first.routeUrl, reload: true);
-       /* } else if (d?.first?.added?.first?.viewComponent != null) {
-          d?.first?.added?.first?.viewComponent(true); */
         }
       }
       userProfileLogoutSingleSelectModel.clear();
     });
-/*
-    if (current.queryParameters.length == 1) {
-      if (current.queryParameters.containsKey(AppRoutesQueryParam.objectiveIdQueryParameter)) {
-        goTo(objectivesRouteUrl, queryParameters: current.queryParameters);
-      } else if (current.queryParameters.containsKey(AppRoutesQueryParam.workItemIdQueryParameter)) {
-        goTo(worksRouteUrl, queryParameters: current.queryParameters);
-      }
-    }
-
- */
   }
 
   bool get isAdmin {

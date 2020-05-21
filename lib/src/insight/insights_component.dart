@@ -2,7 +2,6 @@
 // Author: Samuel C. Schwebel.ExampleSelectionOptions
 
 import 'package:angular/angular.dart';
-
 import 'package:angular_router/angular_router.dart';
 
 import 'package:angular_components/scorecard/scoreboard.dart';
@@ -20,27 +19,33 @@ import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/src/search_filter/search_filter_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
 import 'package:auge_web/src/group/group_service.dart';
-import 'package:auge_web/src/filter/filter_component.dart';
+//import 'package:auge_web/src/filter/filter_component.dart';
 
+import 'package:auge_web/src/insight/insight_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/work/work_service.dart';
 import 'package:auge_web/route/app_routes.dart';
-import 'package:auge_web/src/search_filter/search_filter_component.dart';
+//import 'package:auge_web/src/search_filter/search_filter_component.dart';
 
 import 'package:auge_shared/message/messages.dart';
 
+// ignore_for_file: uri_has_not_been_generated
+import 'package:auge_web/src/insight/insights_component.template.dart' as insights_component;
+import 'package:auge_web/src/insight/insights_filter_component.template.dart' as insights_filter_component;
+import 'package:auge_web/src/objective/objectives_filter_component.template.dart' as objectives_filter_component;
+
 @Component(
   selector: 'auge-insights',
-  providers: const [ObjectiveService, WorkService, GroupService, UserService],
+  providers: const [InsightService, ObjectiveService, WorkService, GroupService, UserService],
     styleUrls: const ['insights_component.css'],
     templateUrl: 'insights_component.html',
   directives: const [
     coreDirectives,
+    routerDirectives,
     ScoreboardComponent,
     ScorecardComponent,
     MaterialButtonComponent,
     MaterialIconComponent,
-    FilterComponent,
   ])
 
 class InsightsComponent with CanReuse implements OnActivate  {
@@ -49,10 +54,24 @@ class InsightsComponent with CanReuse implements OnActivate  {
 
   final AuthService _authService;
   final AppLayoutService _appLayoutService;
+  final InsightService _insightService;
   final SearchFilterService _searchFilterService;
   final ObjectiveService _objectiveService;
   final WorkService _workService;
   final Router _router;
+
+  final List<RouteDefinition> routes = [
+    RouteDefinition(
+      routePath: AppRoutes.insightsFilterRoute,
+      component: insights_filter_component.InsightsFilterComponentNgFactory,
+    ),
+/*
+    RouteDefinition(
+      routePath: AppRoutes.objectivesFilterRoute,
+      component: insights_filter_component.InsightsFilterComponentNgFactory, /* objectives_filter_component.ObjectivesFilterComponentNgFactory, */
+    ),
+  */
+  ];
 
   /// Return overall progress
   String overallProgress;
@@ -96,9 +115,6 @@ class InsightsComponent with CanReuse implements OnActivate  {
   List<Objective> objectives = [];
   List<Work> works = [];
 
-  Filter groupFilter;
-  Filter leaderFilter;
-
  // List<FilterOption> groupFilterOptions;
   List<String> groupsIdSelectedToFilter = [];
  // List<FilterOption> leaderFilterOptions;
@@ -106,7 +122,7 @@ class InsightsComponent with CanReuse implements OnActivate  {
 
   List<String> initialFilterOptionsIdsSelected = [];
 
-  InsightsComponent(this._authService, this._appLayoutService, this._objectiveService, this._workService, this._searchFilterService, this._router);
+  InsightsComponent(this._authService, this._appLayoutService, this._insightService, this._objectiveService, this._workService, this._searchFilterService, this._router);
 
   // Define messages and labels
   static final String leaderLabel = InsightMsg.label(InsightMsg.leaderLabel);
@@ -166,53 +182,29 @@ class InsightsComponent with CanReuse implements OnActivate  {
 
     _searchFilterService.enableSearch = false;
     _searchFilterService.enableFilter = true;
-    _searchFilterService.filterRouteUrl = '';
+    _searchFilterService.filterRouteUrl = AppRoutes.insightsFilterRoute.toUrl();
+
+    _searchFilterService.filteredItems = _insightService.insightsFilterOrder.filteredItems;
+
 
     try {
       if (_authService.authorizedOrganization != null) {
 
-
         // Objectives
        // List<Objective> objectivesAux;
 
-
         objectives = await _objectiveService.getObjectives(
-            _authService.authorizedOrganization.id, withMeasures: true);
+            _objectiveService.authService.authorizedOrganization.id,
+            withMeasures: true,
+            groupIds:  _insightService.insightsFilterOrder.groupIds?.toList(),
+            leaderUserIds: _insightService.insightsFilterOrder.leaderUserIds?.toList());
 
+        print(_insightService.insightsFilterOrder.groupIds?.toList());
 
         // Works
-     //   List<Work> worksAux;
+        //TODO include groups and leaders
         works = await _workService.getWorks(
             _authService.authorizedOrganization.id, withWorkItems: true);
-
-        /*
-        // Select options to filter.
-        Map<String, FilterOption> groups = {};
-        Map<String, FilterOption> leaders = {};
-        for (int i = 0;i<objectivesAux.length;i++) {
-          groups.putIfAbsent(objectivesAux[i].group?.id, () => FilterOption(objectivesAux[i].group?.id, objectivesAux[i].group?.name));
-          leaders.putIfAbsent(objectivesAux[i].leader?.id, () => FilterOption(objectivesAux[i].leader?.id, objectivesAux[i].leader?.name));
-        }
-
-        for (int i = 0;i<worksAux.length;i++) {
-          groups.putIfAbsent(worksAux[i].group?.id, () => FilterOption(worksAux[i].group?.id, worksAux[i].group?.name));
-          leaders.putIfAbsent(worksAux[i].leader?.id, () => FilterOption(worksAux[i].leader?.id, worksAux[i].leader?.name));
-        }
-
-        List<FilterOption> groupFilterOptionsAux = groups.values.toList();
-        if (groupFilterOptionsAux.length > 1)  groupFilterOptionsAux.sort((a, b) => a.name == null ? 1 : b.name == null ? -1 : a.name.compareTo(b.name));
-
-        List<FilterOption> leaderFilterOptionsAux = leaders.values.toList();
-        if (leaderFilterOptionsAux.length > 1)  leaderFilterOptionsAux.sort((a, b) => a.name == null ? 1 : b.name == null ? -1 : a.name.compareTo(b.name));
-
-
-        groupFilter = Filter(groupFilterOptionsAux, null);
-        leaderFilter = Filter(leaderFilterOptionsAux, null);
-*/
-/*
-        _objectives = objectivesAux;
-        _works = worksAux;
-*/
 
         aggregateObjectivesMeasurement();
         aggregateWorksMeasurement();
@@ -241,11 +233,9 @@ class InsightsComponent with CanReuse implements OnActivate  {
           _achievedObjectivesNumber++;
         }
 
-
         if (objectives[i].progress < 30) {
           _requiringAttentionObjectivesNumber++;
         }
-
 
         _measuresNumber = _measuresNumber + objectives[i].measures.length;
 
@@ -320,7 +310,6 @@ class InsightsComponent with CanReuse implements OnActivate  {
           _overDueWorkItemsNumber++;
         }
       }
-
     }
 
     /// Return a total number of works
@@ -342,201 +331,4 @@ class InsightsComponent with CanReuse implements OnActivate  {
     overDueWorkItemsNumber = _overDueWorkItemsNumber?.toString() ?? '0';
 
   }
-/*
-  List<Objective> get objectives {
-
-    List<Objective> objectiveFiltred;
-
-    objectiveFiltred = (usersIdSelectedToFilter.isEmpty) || groupsIdSelectedToFilter.isEmpty ? [] : _objectives.where(
-            (t) => (groupsIdSelectedToFilter.contains(t.group?.id))
-            && (usersIdSelectedToFilter.contains(t.leader?.id)) ).toList();
-
-    return objectiveFiltred;
-
-  }
-
-  List<Work> get works {
-
-
-    List<Work> workFiltred;
-
-    workFiltred = (usersIdSelectedToFilter.isEmpty) || groupsIdSelectedToFilter.isEmpty ? [] : _works.where(
-            (t) => (groupsIdSelectedToFilter.contains(t.group?.id))
-            && (usersIdSelectedToFilter.contains(t.leader?.id)) ).toList();
-
-    return workFiltred;
-
-  }
-*/
-
-
-/*
-  /// Return overall progress
-  int get overallProgress {
-    int _sumOverallProgress = 0;
-    for (int i=0;i<objectives.length;i++) {
-      _sumOverallProgress = _sumOverallProgress + objectives[i].progress ?? 0;
-    }
-    return objectives.length > 0 && _sumOverallProgress > 0 ? (_sumOverallProgress ~/ objectives.length) : 0;
-  }
-*/
-
-/*
-  /// Return a total number of objectives
-  String get objectivesNumber {
-    return objectives?.length?.toString() ?? '0';
-  }
-*/
-
-/*
-  /// Return a total number of achieved objectives with progress over 70%
-  String get achievedObjectivesNumber {
-    int _achievedObjectivesNumber = 0;
-    for (int i=0;i<objectives.length;i++) {
-      if (objectives[i].progress > 70) {
-        _achievedObjectivesNumber++;
-      }
-    }
-    return _achievedObjectivesNumber?.toString() ?? '0';
-  }
-
- */
-
-/*
-  /// Return a total number of objectives with progress less that 30%
-  String get requiringAttentionObjectivesNumber {
-    int _requiringAttentionObjectivesNumber = 0;
-    for (int i=0;i<objectives.length;i++) {
-      if (objectives[i].progress < 30) {
-        _requiringAttentionObjectivesNumber++;
-      }
-    }
-    return _requiringAttentionObjectivesNumber?.toString() ?? '0';
-  }
-
- */
-
-/*
-  /// Return a total number of measures
-  String get measuresNumber {
-    int _measuresNumber = 0;
-    for (int i=0;i<objectives.length;i++) {
-      _measuresNumber = _measuresNumber + objectives[i].measures.length;
-    }
-    return _measuresNumber?.toString() ?? '0';
-  }
-
- */
-/*
-  /// Return a total number of achieved measures with progress over 70%
-  String get achievedMeasuresNumber {
-    int _achievedMeasuresNumber = 0;
-    for (int i=0;i<objectives.length;i++) {
-      for (int ii=0;ii<objectives[i].measures.length;ii++) {
-        if (objectives[i].measures[ii].progress > 70) {
-          _achievedMeasuresNumber++;
-        }
-      }
-    }
-    return _achievedMeasuresNumber?.toString() ?? '0';
-  }
-*/
-/*
-  /// Return a total number of measures with progress less that 30%
-  String get requiringAttentionMeasuresNumber {
-    int _requiringAttentionMeasuresNumber = 0;
-    for (int i=0;i<objectives.length;i++) {
-      for (int ii=0;ii<objectives[i].measures.length;ii++) {
-        if (objectives[i].measures[ii].progress < 30) {
-          _requiringAttentionMeasuresNumber++;
-        }
-      }
-    }
-    return _requiringAttentionMeasuresNumber?.toString() ?? '0';
-  }
-*/
-
-/*
-  /// Return a total number of works
-  String get worksNumber {
-    return works.length?.toString() ?? '0';
-  }
- */
-/*
-  /// Return a total number of works completed = all work items completed
-  String get completedWorksNumber {
-
-    int _completedWorksNumber = 0;
-
-    for (int i=0;i<works.length;i++) {
-      int _completedWorkWorkItemsNumber = 0;
-      for (int ii=0;ii<works[i].workItems.length;ii++) {
-        if (works[i].workItems[ii].completed == 100) {
-          _completedWorkWorkItemsNumber++;
-        }
-      }
-      if (works[i].workItems.length != 0 && works[i].workItems.length == _completedWorkWorkItemsNumber) {
-        _completedWorksNumber++;
-      }
-    }
-    return _completedWorksNumber?.toString() ?? '0';
-  }
-*/
-
-/*
-  /// Return a total number of works with over due work items
-  String get overDueWorksNumber {
-    int _overDueWorksNumber = 0;
-    for (int i=0;i<works.length;i++) {
-      if (works[i].workItemsOverDueCount > 0) {
-        _overDueWorksNumber++;
-      }
-    }
-    return _overDueWorksNumber?.toString() ?? '0';
-  }
-
- */
-
-/*
-  /// Return a total number of measures
-  String get workItemsNumber {
-    int _workItemsNumber = 0;
-    for (int i=0;i<works.length;i++) {
-      _workItemsNumber = _workItemsNumber + works[i].workItems.length;
-    }
-    return _workItemsNumber?.toString() ?? '0';
-  }
-
- */
-
-/*
-  /// Return a total number of completed work items with progress equal 100%
-  String get completedWorkItemsNumber {
-    int _completedWorkItemsNumber = 0;
-    for (int i=0;i<works.length;i++) {
-      for (int ii=0;ii<works[i].workItems.length;ii++) {
-        if (works[i].workItems[ii].completed == 100) {
-          _completedWorkItemsNumber++;
-        }
-      }
-    }
-    return _completedWorkItemsNumber?.toString() ?? '0';
-  }
-
- */
-
-  /// Return a total number of over due work items
-/*
-  String get overDueWorkItemsNumber {
-    int _overDueWorkItemsNumber = 0;
-    for (int i=0;i<works.length;i++) {
-      for (int ii=0;ii<works[i].workItems.length;ii++) {
-        if (works[i].workItems[ii].isOverdue) {
-          _overDueWorkItemsNumber++;
-        }
-      }
-    }
-    return _overDueWorkItemsNumber?.toString() ?? '0';
-  }
- */
 }

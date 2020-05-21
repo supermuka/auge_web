@@ -11,8 +11,11 @@
    </material-auto-suggest-input>
    <div *ngIf="enableFilter()">
       <material-button icon (trigger)="goToFilter()">
+         <div class="fixed-width"></div>
          <material-icon icon="filter_list"></material-icon>
-         <span style="font-size: x-small;" *ngIf="filteredItems != null && filteredItems > 0">{{filteredItems}}</span>
+         <div class="fixed-width">
+            <span class="size-subscript" *ngIf="filteredItems != null && filteredItems > 0">{{filteredItems}}</span>
+         </div>
       </material-button>
    </div>
 </div>

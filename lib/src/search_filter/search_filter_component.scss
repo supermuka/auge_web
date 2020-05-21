@@ -19,3 +19,14 @@
   align-items: center;
   justify-content: center;
 }
+
+.fixed-width {
+  //width: $mat-grid - 2;
+  min-width: $mat-grid - 2;
+}
+
+.size-subscript {
+  font-size: x-small;
+  vertical-align: sub;
+}
+

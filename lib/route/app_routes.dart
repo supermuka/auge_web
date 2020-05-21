@@ -12,10 +12,14 @@ class AppRoutes {
   static final appLayoutRoute = RoutePath(
     path: AppRoutesPath.appLayoutRoutePath,
   );
-  static final insightslRoute = RoutePath(
-    path: AppRoutesPath.insightslRoutePath,
+  static final insightsRoute = RoutePath(
+    path: AppRoutesPath.insightsRoutePath,
     parent: appLayoutRoute,
     useAsDefault: true,
+  );
+  static final insightsFilterRoute = RoutePath(
+      path: AppRoutesPath.insightsFilterRoutePath,
+      parent: insightsRoute
   );
   static final usersRoute = RoutePath(
       path: AppRoutesPath.usersRoutePath,

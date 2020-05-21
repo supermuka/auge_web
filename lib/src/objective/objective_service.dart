@@ -19,11 +19,11 @@ class ObjectiveService {
 
   DateTime currentDateTime;
 
-  ObjectiveFilterOrder objectiveFilterOrder;
+  ObjectivesFilterOrder objectivesFilterOrder;
 
   ObjectiveService(this._authService, this._augeApiService) {
     _objectiveServiceClient = objective_measure_pbgrpc.ObjectiveServiceClient(_augeApiService.channel);
-    objectiveFilterOrder = ObjectiveFilterOrder();
+    objectivesFilterOrder = ObjectivesFilterOrder();
   }
 
   get authService => _authService;
@@ -128,7 +128,7 @@ class ObjectiveService {
 }
 
 /// Used to change data between Objectives Component and Filter
-class ObjectiveFilterOrder {
+class ObjectivesFilterOrder {
 
   // Filter
   Set<String> groupIds;

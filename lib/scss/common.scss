@@ -92,3 +92,16 @@
 .checkbox-no-margin {
   @include checkbox-no-margin();
 }
+
+
+/// Used at first on [material-auto-suggest-input]
+[footer] {
+  display: flex;
+  align-items: center;
+  height: $mat-grid * 4;
+  padding: $mat-grid;
+
+  &.end-justified {
+    justify-content: flex-end;
+  }
+}

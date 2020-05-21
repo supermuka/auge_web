@@ -181,21 +181,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
 
       // Used just first time, to remove queryParam initialObjectiveId.
     }
-/*
-    List<String> groupIds;
-    if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.groupIdsQueryParameter)) {
-      groupIds =
-      routerStateCurrent.queryParameters[AppRoutesQueryParam
-          .groupIdsQueryParameter].split(',');
-    }
 
-    List<String> leaderUserIds;
-    if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.leaderUserIdsQueryParameter)) {
-      leaderUserIds =
-      routerStateCurrent.queryParameters[AppRoutesQueryParam
-          .leaderUserIdsQueryParameter].split(',');
-    }
-*/
     _appLayoutService.headerTitle = headerTitle;
     _appLayoutService.systemModuleIndex = SystemModule.objectives.index;
 
@@ -203,7 +189,9 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
     _searchFilterService.enableSearch = true;
     _searchFilterService.enableFilter = true;
     _searchFilterService.filterRouteUrl = AppRoutes.objectivesFilterRoute.toUrl();
-    _searchFilterService.filteredItems = _objectiveService.objectiveFilterOrder.filteredItems;
+    //_searchFilterService.filterRouteUrl = AppRoutes.objectivesFilterRoute.toUrl();
+    _searchFilterService.filteredItems = _objectiveService.objectivesFilterOrder.filteredItems;
+
 
 
     if (initialObjectiveId != null && filterIds) {
@@ -215,11 +203,20 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
     try {
 
       List<Objective> objectivesAux = [];
+      objectivesAux = await _objectiveService.getObjectives(
+          _objectiveService.authService.authorizedOrganization.id,
+          objectiveId: initialObjectiveId,
+          withMeasures: true,
+          withProfile: true,
+          withArchived: withArchived,
+          groupIds: _objectiveService.objectivesFilterOrder.groupIds?.toList(),
+          leaderUserIds: _objectiveService.objectivesFilterOrder.leaderUserIds?.toList());
+      /*
       objectivesAux = await getObjetives(withArchived: _objectiveService.objectiveFilterOrder.archived,
           groupIds: _objectiveService.objectiveFilterOrder.groupIds,
           leaderUserIds: _objectiveService.objectiveFilterOrder.leaderUserIds);
-
-      _orderObjectives(objectivesAux, _objectiveService.objectiveFilterOrder.orderedBy);
+*/
+      _orderObjectives(objectivesAux, _objectiveService.objectivesFilterOrder.orderedBy);
 
       _objectives = objectivesAux;
 
@@ -237,7 +234,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
   void getData() async {
 
   }
-
+/*
   Future<List<Objective>> getObjetives({String objectiveId, bool withArchived, Set<String> groupIds, Set<String> leaderUserIds}) async {
     List<Objective> objectivesAux =  await _objectiveService.getObjectives(
         _objectiveService.authService.authorizedOrganization.id,
@@ -250,7 +247,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
 
     return objectivesAux;
   }
-
+*/
 
 
   List<Objective> get objectives {

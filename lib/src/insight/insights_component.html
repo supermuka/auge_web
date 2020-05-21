@@ -1,14 +1,4 @@
 <div class="w3-content container-insights">
-    <!-- div class="w3-row w3-padding">
-        <div class="w3-col l3">&nbsp;</div>
-        <div class="w3-col l3">
-            <auge-filter [filter]="groupFilter" [filterNameLabel]="groupLabel" (changeSelection)="groupChangeSelection($event)" @deferred></auge-filter>
-        </div>
-        <div class="w3-col l3">
-            <auge-filter [filter]="leaderFilter" [filterNameLabel]="leaderLabel" (changeSelection)="userChangeSelection($event)" @deferred></auge-filter>
-        </div>
-        <div class="w3-col l3">&nbsp;</div>
-    </div -->
     <div class="w3-row">
         <!-- material-icon size="medium" icon="done_all">
         </material-icon>
@@ -104,3 +94,4 @@
         </acx-scoreboard>
     </div>
 </div>
+<router-outlet [routes]="routes"></router-outlet>

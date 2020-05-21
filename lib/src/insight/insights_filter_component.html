@@ -1,0 +1,57 @@
+<modal [visible]="modalVisible">
+    <material-dialog headered [error]="dialogError">
+        <div header>
+            <h3>{{objectivesFilterLabel}}</h3>
+        </div>
+        <div class="w3-row">
+            <material-auto-suggest-input [(inputText)]="groupInputText"
+                                         [filterSuggestions]="true"
+                                         [popupMatchInputWidth]="true"
+                                         [showClearIcon]="true"
+                                         [leadingGlyph]="'search'"
+                                         [label]="groupLabel"
+                                         [floatingLabel]="true"
+                                         [emptyPlaceholder]="noMatchLabel"
+                                         [selection]="groupMultiSelectModel"
+                                         [selectionOptions]="groupOptions"
+                                         [itemRenderer]="groupItemRenderer"
+                                         [limit]="10"
+                                         (showPopupChange)="showPopupChangeGroup($event)">
+                <div footer class="end-justified">
+                    <material-button dense (trigger)="groupMultiSelectModel.clear()">
+                        {{clearButtonLabel}}
+                    </material-button>
+                </div>
+            </material-auto-suggest-input>
+        </div>
+        <div class="w3-row">
+            <material-auto-suggest-input
+                                         [(inputText)]="leaderInputText"
+                                         [filterSuggestions]="true"
+                                         [popupMatchInputWidth]="true"
+                                         [showClearIcon]="true"
+                                         [leadingGlyph]="'search'"
+                                         [label]="leaderLabel"
+                                         [floatingLabel]="true"
+                                         [emptyPlaceholder]="noMatchLabel"
+                                         [selection]="leaderMultiSelectModel"
+                                         [selectionOptions]="leaderOptions"
+                                         [itemRenderer]="leaderItemRenderer"
+                                         [factoryRenderer]="leaderFactoryRenderer"
+                                         [limit]="10"
+                                         (showPopupChange)="showPopupChangeLeader($event)">
+                <div footer class="end-justified">
+                    <material-button dense (trigger)="leaderMultiSelectModel.clear()" >
+                        {{clearButtonLabel}}
+                    </material-button>
+                </div>
+            </material-auto-suggest-input>
+        </div>
+        <div footer>
+            <material-button (trigger)="applyFilter()">{{applyButtonLabel}}
+            </material-button>
+            <material-button autoFocus (trigger)="closeFilter()">{{closeButtonLabel}}
+            </material-button>
+        </div>
+    </material-dialog>
+</modal>
