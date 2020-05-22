@@ -95,6 +95,7 @@ class AuthComponent implements OnActivate {
   /// Messages and labels
   static final String headerTitleLabel =  CommonMsg.label(CommonMsg.headerTitleLabel);
   static final String headerSubtitleLabel = CommonMsg.label(CommonMsg.headerSubtitleLabel);
+  static String organizationSingleSelectLabel = CommonMsg.label(CommonMsg.selectLabel);
 
   static final String loginLabel = AuthMsg.label(AuthMsg.loginLabel);
   static final String organizationLabel = AuthMsg.label(AuthMsg.organizationLabel);
@@ -117,8 +118,6 @@ class AuthComponent implements OnActivate {
   static final String informFollowTheCodeSentToEMailMsg = AuthMsg.informBelowTheCodeSentToEMailMsg();
   static final String codeValidateMsg = AuthMsg.codeValidateMsg();
   static final String newPasswordSavedMsg = AuthMsg.newPasswordSavedMsg();
-
-  static String organizationSingleSelectLabel = AuthMsg.label(AuthMsg.selectLabel);
 
   String routerPreviousUrl;
 
@@ -261,7 +260,7 @@ class AuthComponent implements OnActivate {
 
               organizationSingleSelectLabel =
                 d.first.added.first.userAccess.organization.name ??
-                    AuthMsg.label(AuthMsg.selectLabel);
+                    CommonMsg.label(CommonMsg.selectLabel);
           }
         }
       });

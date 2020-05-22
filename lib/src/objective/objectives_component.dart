@@ -47,7 +47,7 @@ import 'package:auge_web/src/measure/measure_progress_component.template.dart' a
 
 @Component(
     selector: 'auge-objectives',
-    providers: const [ObjectiveService, GroupService, UserService],
+    providers: const [ObjectiveService /*, GroupService, UserService*/],
     templateUrl: 'objectives_component.html',
     styleUrls: const [
       'objectives_component.css'
@@ -111,13 +111,6 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
 
   List<Objective> _objectives = [];
  // List<Objective> get objectiveFilterOptions => _objectives;
-  /*
-  List<FilterOption> objectiveFilterOptions;
-  List<FilterOption> groupFilterOptions;
-  List<FilterOption> leaderFilterOptions;
-
-  List<FilterOption> optionsListTest;
-*/
   List<String> objectivesIdSelectedToFilter = [];
   List<String> groupsIdSelectedToFilter = [];
   List<String> leadersIdSelectedToFilter = [];
@@ -132,7 +125,6 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
   bool filterIds = false;
   //String specificObjectiveId;
 
-  bool withArchived = false;
   MenuModel<MenuItem> menuModel;
 
     // Define messages and labels
@@ -189,7 +181,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
     _searchFilterService.enableSearch = true;
     _searchFilterService.enableFilter = true;
     _searchFilterService.filterRouteUrl = AppRoutes.objectivesFilterRoute.toUrl();
-    //_searchFilterService.filterRouteUrl = AppRoutes.objectivesFilterRoute.toUrl();
+
     _searchFilterService.filteredItems = _objectiveService.objectivesFilterOrder.filteredItems;
 
 
@@ -208,7 +200,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
           objectiveId: initialObjectiveId,
           withMeasures: true,
           withProfile: true,
-          withArchived: withArchived,
+          withArchived: _objectiveService.objectivesFilterOrder.archived,
           groupIds: _objectiveService.objectivesFilterOrder.groupIds?.toList(),
           leaderUserIds: _objectiveService.objectivesFilterOrder.leaderUserIds?.toList());
       /*
@@ -363,17 +355,17 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
   }
 
   // Ordered by
-  void _orderObjectives(List<Objective> objectivesToSort, String orderedBy) {
+  void _orderObjectives(List<Objective> objectivesToOrder, String orderedBy) {
     if (orderedBy == nameLabel) {
-      objectivesToSort.sort((a, b) => a?.name == null || b?.name == null ? -1 : a.name.compareTo(b.name));
+      objectivesToOrder.sort((a, b) => a?.name == null || b?.name == null ? -1 : a.name.compareTo(b.name));
     } else if (orderedBy == groupLabel) {
-      objectivesToSort.sort((a, b) => a?.group == null || b?.group == null ? -1 : a.group.name.compareTo(b.group.name));
+      objectivesToOrder.sort((a, b) => a?.group == null || b?.group == null ? -1 : a.group.name.compareTo(b.group.name));
     } else if (orderedBy == leaderLabel) {
-      objectivesToSort.sort((a, b) => a?.leader == null || b?.leader == null ? -1 : a.leader.name.compareTo(b.leader.name));
+      objectivesToOrder.sort((a, b) => a?.leader == null || b?.leader == null ? -1 : a.leader.name.compareTo(b.leader.name));
     } else if (orderedBy == startDateLabel) {
-      objectivesToSort.sort((a, b) => a?.startDate == null || b?.startDate == null ? -1 : a.startDate.compareTo(b.startDate));
+      objectivesToOrder.sort((a, b) => a?.startDate == null || b?.startDate == null ? -1 : a.startDate.compareTo(b.startDate));
     } else if (orderedBy == endDateLabel) {
-      objectivesToSort.sort((a, b) =>
+      objectivesToOrder.sort((a, b) =>
       a?.endDate == null || b?.endDate == null
           ? -1
           : a.endDate.compareTo(b.endDate));

@@ -80,6 +80,7 @@ class InsightsFilterComponent with CanReuse implements OnActivate, OnDeactivate 
   static final String searchLabel =  CommonMsg.label(CommonMsg.searchLabel);
   static final String filterLabel = CommonMsg.label(CommonMsg.filterLabel);
   static final String moreLabel = CommonMsg.label(CommonMsg.moreLabel);
+  static final String noMatchLabel =  CommonMsg.label(CommonMsg.noMatchLabel);
 
   static final String applyButtonLabel = CommonMsg.buttonLabel(CommonMsg.applyButtonLabel);
   static final String closeButtonLabel = CommonMsg.buttonLabel(CommonMsg.closeButtonLabel);
@@ -87,7 +88,7 @@ class InsightsFilterComponent with CanReuse implements OnActivate, OnDeactivate 
 
   static final String orderedByLabel = ObjectiveMsg.label(ObjectiveMsg.orderedByLabel);
   static final String requiredValueMsg = CommonMsg.requiredValueMsg();
-  static final String noMatchLabel =  ObjectiveMsg.label(ObjectiveMsg.noMatchLabel);
+
   static final String objectivesFilterLabel = ObjectiveMsg.label(ObjectiveMsg.objectivesFilterLabel);
 
   // Define labels from fields.

@@ -163,9 +163,11 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
   static final String requiredValueMsg =  CommonMsg.requiredValueMsg();
   static final String saveButtonLabel = CommonMsg.buttonLabel(CommonMsg.saveButtonLabel);
   static final String closeButtonLabel = CommonMsg.buttonLabel(CommonMsg.closeButtonLabel);
+  static final String noMatchLabel = CommonMsg.label(CommonMsg.noMatchLabel);
+
   static final String addWorkItemLabel =  WorkItemMsg.label(WorkItemMsg.addWorkItemLabel);
   static final String editWorkItemLabel =  WorkItemMsg.label(WorkItemMsg.editWorkItemLabel);
-  static final String noMatchLabel = WorkItemMsg.label(WorkItemMsg.noMatchLabel);
+
   static final String selectValueLabel = WorkItemMsg.label(WorkItemMsg.selectAValueLabel);
   static final String dropFileHereLabel = WorkItemMsg.label(WorkItemMsg.dropFileHereLabel);
   static final String checkItemNameLabel = WorkItemMsg.label(WorkItemMsg.checkItemNameLabel);

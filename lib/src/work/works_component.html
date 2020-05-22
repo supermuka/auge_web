@@ -1,33 +1,8 @@
 <div class="container-list">
     <div class="w3-row-padding">
-        <div class="w3-col m3">
-            <label>{{sortedByLabel}}</label>
-            <material-dropdown-select class="w3-margin-left"
-                                      [disabled]="works.isEmpty"
-                                      buttonText="{{sortedBy}}"
-                                      [(selection)]="sortedBy"
-                                      [options]="worksSortedByOptions">
-            </material-dropdown-select>
-        </div>
-        <div class="w3-col m9">
-            <acx-scoreboard scrollable>
-                <auge-filter [filter]="workFilter" [filterNameLabel]="workLabel" (changeSelection)="workChangeSelection($event)" @deferred></auge-filter>
-                <auge-filter [filter]="groupFilter" [filterNameLabel]="groupLabel" (changeSelection)="groupChangeSelection($event)" @deferred></auge-filter>
-                <auge-filter [filter]="leaderFilter" [filterNameLabel]="leaderLabel" (changeSelection)="leaderChangeSelection($event)" @deferred></auge-filter>
-            </acx-scoreboard>
-        </div>
-    </div>
-    <div class="w3-row-padding">
         <div class="w3-col">
             <material-expansionpanel-set>
                 <div *ngFor="let iWork of works;let i = index">
-                    <!-- material-expansionpanel
-                            [alwaysHideExpandIcon]="true"
-                            [hideExpandedHeader]="false"
-                            [showSaveCancel]="false"
-                            [expanded]="iWork.id == expandedWorkId"
-                            (expandedChange)="setExpandedWorkId(iWork.id, $event)" -->
-
                     <material-expansionpanel
                             [disabled]="true"
                             [alwaysHideExpandIcon]="true"
@@ -67,11 +42,6 @@
                                 <material-icon icon="launch"></material-icon>
                             </material-button>
                         </div>
-                        <!-- hr class="hr-margin">
-                        <span *ngIf="iWork.objective != null"><strong>{{objectiveLabel}}:</strong> {{iWork.objective?.name}}</span>
-                        <div class="w3-row-padding" >
-                            <auge-work-items [work]="iWork"></auge-work-items>
-                        </div -->
                     </material-expansionpanel>
                 </div>
             </material-expansionpanel-set>

@@ -27,23 +27,21 @@ import 'package:auge_shared/domain/general/authorization.dart';
 import 'package:auge_shared/message/messages.dart';
 import 'package:auge_shared/message/domain_messages.dart';
 
+import 'package:auge_web/src/search_filter/search_filter_service.dart';
 import 'package:auge_web/src/work/work_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/work/work_summary_component.dart';
 import 'package:auge_web/src/work/work_detail_component.dart';
-//import 'package:auge_web/src/work/work_stages_component.dart';
-//import 'package:auge_web/src/work_item/work_items_component.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/route/app_routes.dart';
 
 // ignore_for_file: uri_has_not_been_generated
+import 'package:auge_web/src/work/works_filter_component.template.dart' as works_filter_component;
 import 'package:auge_web/src/work/work_detail_component.template.dart' as work_detail_component;
 import 'package:auge_web/src/work/work_stages_component.template.dart' as work_stages_component;
 import 'package:auge_web/src/work_item/work_items_kanban_component.template.dart' as work_items_kanban_component;
 import 'package:auge_web/src/work_item/work_item_detail_component.template.dart' as work_item_detail_component;
-
-import 'package:auge_web/src/filter/filter_component.dart';
 
 @Component(
     selector: 'auge-works',
@@ -68,14 +66,14 @@ import 'package:auge_web/src/filter/filter_component.dart';
       WorkDetailComponent,
      // WorkItemsComponent,
       ScoreboardComponent,
-      FilterComponent,
       //WorkStagesComponent,
     ])
 
 class WorksComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy */ {
 
-  final WorkService _workService;
   final AppLayoutService _appLayoutService;
+  final WorkService _workService;
+  final SearchFilterService _searchFilterService;
   final Router _router;
  // final AuthService _authService;
 
@@ -104,6 +102,10 @@ class WorksComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy *
       routePath: AppRoutes.workItemEditRoute,
       component: work_item_detail_component.WorkItemDetailComponentNgFactory,
     ),
+    RouteDefinition(
+      routePath: AppRoutes.worksFilterRoute,
+      component: works_filter_component.WorksFilterComponentNgFactory,
+    ),
   ];
 
   List<Work> _works = List();
@@ -111,31 +113,13 @@ class WorksComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy *
   String initialWorkId;
   bool filterIds = false;
   String expandedWorkId;
- // bool hasFilter = false;
-/*
-  List<FilterOption> workFilterOptions;
-  List<FilterOption> groupFilterOptions;
-  List<FilterOption> leaderFilterOptions;
-*/
 
   List<String> worksIdSelectedToFilter = [];
   List<String> groupsIdSelectedToFilter = [];
   List<String> leadersIdSelectedToFilter = [];
 
   // Just used to default and controler when dispatcher ´set´
- // List<String> initialFilterOptionsIdsSelected;
   List<String> initialFilterOptionsIdsSelectedWorks;
-
-  Filter workFilter;
-  Filter groupFilter;
-  Filter leaderFilter;
-
-  // To control workItem [list or [kanban]
-  //SelectionView workItemSelectionView;
-
-  // List<bool> wideControl = new List();
-  // List<bool> expandedControl = new List();
-  //Map<Work, bool> wideControl = Map();
 
   MenuModel<MenuItem> menuModel;
 
@@ -144,7 +128,6 @@ class WorksComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy *
   static final String editButtonLabel = CommonMsg.buttonLabel(CommonMsg.editButtonLabel);
   static final String deleteButtonLabel = CommonMsg.buttonLabel(CommonMsg.deleteButtonLabel);
 
-  static final String sortedByLabel = WorkMsg.label(WorkMsg.sortedByLabel);
   static final String objectiveLabel =  WorkMsg.label(WorkMsg.objectiveLabel);
   static final String workLabel =  WorkMsg.label(WorkMsg.workLabel);
   static final String worksLabel =  WorkMsg.label(WorkMsg.worksLabel);
@@ -158,9 +141,8 @@ class WorksComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy *
 
   final worksSortedByOptions = [nameLabel, groupLabel, leaderLabel];
 
-  String _sortedBy = nameLabel;
 
-  WorksComponent(this._appLayoutService, this._workService, this._router) {
+  WorksComponent(this._appLayoutService, this._searchFilterService, this._workService, this._router) {
 
     menuModel = new MenuModel([MenuItemGroup([
       MenuItem(editButtonLabel, icon: Icon('edit') , actionWithContext: (_) => goToDetail() /* viewDetail(true) */),
@@ -172,13 +154,6 @@ class WorksComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy *
   void ngOnInit() async {
    // workItemSelectionView = SelectionView();
   }
-
-  set sortedBy(String sortedBy) {
-    _sortedBy = sortedBy;
-    _sortWorks(_works);
-  }
-
-  get sortedBy => _sortedBy;
 
 /*
   @override
@@ -202,14 +177,7 @@ class WorksComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy *
 
     // If previous path equal current parent path, doent´s need to call this again. I.e. add or edit detail.
     if (routerStatePrevious.routePath.path == routerStateCurrent.routePath.parent.path) return;
-/*
-    if (routerStatePrevious.toUrl() == AppRoutes.worksRoute.toUrl() ||
-        (routerStatePrevious.toUrl() == AppRoutes.workAddRoute.toUrl() && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.workIdQueryParameter) ||
-         routerStatePrevious.toUrl() == AppRoutes.workEditRoute.toUrl() && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.workIdQueryParameter) ||
-         routerStatePrevious.toUrl() == AppRoutes.workItemAddRoute.toUrl() && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.workItemIdQueryParameter) ||
-         routerStatePrevious.toUrl() == AppRoutes.workItemEditRoute.toUrl() && !routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.workItemIdQueryParameter))
-    ) return;
-*/
+
 
     // Expand panel whether [Id] objective is informed.
     if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.workIdQueryParameter)) {
@@ -220,21 +188,17 @@ class WorksComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy *
         filterIds = (routerStateCurrent.queryParameters[AppRoutesQueryParam.filter].toLowerCase() == 'true');
       }
 
-      // Filter ids informed.
-/*
-      if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.filter)) {
-        hasFilter = (routerStateCurrent.queryParameters[AppRoutesQueryParam.filter].toLowerCase() == 'true');
-      }
-*/
-      // Used just first time, to remove queryParam initialObjectiveId.
-      /*
-      _router.navigate(routerStateCurrent.path, NavigationParams(queryParameters: Map.from(routerStateCurrent.queryParameters)..remove(AppRoutesQueryParam.objectiveIdQueryParameter)..remove(AppRoutesQueryParam.filter), replace: true));
-      return;
-   */
     }
 
     _appLayoutService.headerTitle = headerTitle;
     _appLayoutService.systemModuleIndex = SystemModule.works.index;
+
+    // Enabled search and filter
+    _searchFilterService.enableSearch = true;
+    _searchFilterService.enableFilter = true;
+    _searchFilterService.filterRouteUrl = AppRoutes.worksFilterRoute.toUrl();
+
+    _searchFilterService.filteredItems = _workService.worksFilterOrder.filteredItems;
 
     try {
 
@@ -249,7 +213,14 @@ class WorksComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy *
       }
       */
 
-      List<Work> worksAux = await getWorks();
+      List<Work> worksAux = await _workService.getWorks(_workService.authService.authorizedOrganization.id,
+          withWorkItems: true,
+          withProfile: true,
+          withArchived: _workService.worksFilterOrder.archived,
+          groupIds: _workService.worksFilterOrder.groupIds?.toList(),
+          leaderUserIds: _workService.worksFilterOrder.leaderUserIds?.toList());
+
+      _orderWorks(_works, _workService.worksFilterOrder.orderedBy);
 
 
 /*
@@ -258,23 +229,6 @@ class WorksComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy *
             .workIdQueryParameter], true);
       }
 */
-      // Select options to filter.
-      Map<String, FilterOption> works = {};
-      Map<String, FilterOption> groups = {};
-      Map<String, FilterOption> leaders = {};
-      for (int i = 0;i<worksAux.length;i++) {
-        works.putIfAbsent(worksAux[i].id, () => FilterOption(worksAux[i].id, worksAux[i].name));
-        groups.putIfAbsent(worksAux[i].group?.id, () => FilterOption(worksAux[i].group?.id, worksAux[i].group?.name));
-        leaders.putIfAbsent(worksAux[i].leader?.id, () => FilterOption(worksAux[i].leader?.id, worksAux[i].leader?.name));
-      }
-      List<FilterOption> workFilterOptionsAux = works.values.toList();
-      if (workFilterOptionsAux.length > 1)  workFilterOptionsAux.sort((a, b) => a.name == null ? 1 : b.name == null ? -1 : a.name.compareTo(b.name));
-
-      List<FilterOption> groupFilterOptionsAux = groups.values.toList();
-      if (groupFilterOptionsAux.length > 1)  groupFilterOptionsAux.sort((a, b) => a.name == null ? 1 : b.name == null ? -1 : a.name.compareTo(b.name));
-
-      List<FilterOption> leaderFilterOptionsAux = leaders.values.toList();
-      if (leaderFilterOptionsAux.length > 1)  leaderFilterOptionsAux.sort((a, b) => a.name == null ? 1 : b.name == null ? -1 : a.name.compareTo(b.name));
 
       /*
       workFilterOptions =  objectiveFilterOptionsAux;
@@ -313,10 +267,6 @@ class WorksComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy *
         initialFilterOptionsIdsSelectedWorks = null;
       }
 
-      workFilter = Filter(workFilterOptionsAux, initialFilterOptionsIdsSelectedWorks);
-      groupFilter = Filter(groupFilterOptionsAux, null);
-      leaderFilter = Filter(leaderFilterOptionsAux, null);
-
       _works = worksAux;
 
    //   workItemSelectionView.selected = workItemSelectionView.selected ?? 'list';
@@ -332,6 +282,9 @@ class WorksComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy *
 
   List<Work> get works {
 
+    return (_searchFilterService.searchTerm == null || _searchFilterService.searchTerm.isEmpty) ? _works : _works.where((test) => test.name.contains(_searchFilterService.searchTerm)).toList();
+
+    /*
     List<Work> workFilered;
 
     workFilered = (worksIdSelectedToFilter.isEmpty || groupsIdSelectedToFilter.isEmpty || leadersIdSelectedToFilter.isEmpty) ? [] : _works.where(
@@ -341,20 +294,12 @@ class WorksComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy *
 
     return workFilered;
 
-    // return _works;
-
-    /*
-    List<Work> worksFilter;
-    worksFilter = worksFilterParam.objective == null ? _works : _works.where((t) => t.objective != null && t.objective.id == worksFilterParam.objective.id).toList();
-
-    return _searchService?.searchTerm.toString().isEmpty ? worksFilter : worksFilter.where((t) => t.name.contains(_searchService.searchTerm)).toList();
      */
+
   }
 
   Future<List<Work>> getWorks() async {
     List<Work> worksAux = await _workService.getWorks(_workService.authService.authorizedOrganization.id, withWorkItems: true, withProfile: true);
-
-    _sortWorks(worksAux);
 
     return worksAux;
   }
@@ -415,14 +360,14 @@ class WorksComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy *
   }
 
   // Order by to group
-  void _sortWorks(List<Work> worksToSort) {
+  void _orderWorks(List<Work> worksToOrder, String orderBy) {
 
-    if (_sortedBy == nameLabel) {
-      worksToSort.sort((a, b) => a?.name == null || b?.name == null ? -1 : a.name.compareTo(b.name));
-    } else if (_sortedBy == groupLabel) {
-      worksToSort.sort((a, b) => a?.group == null || b?.group == null ? -1 : a.group.name.compareTo(b.group.name));
-    } else if (_sortedBy == leaderLabel) {
-      worksToSort.sort((a, b) =>
+    if (orderBy == nameLabel) {
+      worksToOrder.sort((a, b) => a?.name == null || b?.name == null ? -1 : a.name.compareTo(b.name));
+    } else if (orderBy == groupLabel) {
+      worksToOrder.sort((a, b) => a?.group == null || b?.group == null ? -1 : a.group.name.compareTo(b.group.name));
+    } else if (orderBy == leaderLabel) {
+      worksToOrder.sort((a, b) =>
       a?.leader == null || b?.leader == null
           ? -1
           : a.leader.name.compareTo(b.leader.name));

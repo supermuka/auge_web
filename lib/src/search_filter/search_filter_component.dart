@@ -56,8 +56,6 @@ class SearchFilterComponent with CanReuse {
   bool enableFilter() => (_searchFilterService.enableFilter);
 
   void goToFilter() async {
-    print('DEBUG XX ${_searchFilterService.filterRouteUrl}');
-    var x = await _router.navigate(_searchFilterService.filterRouteUrl /*, NavigationParams(replace:  true)*/);
-    print('DEBUG XXX ${x}');
+    await _router.navigate(_searchFilterService.filterRouteUrl /*, NavigationParams(replace:  true)*/);
   }
 }

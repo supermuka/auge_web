@@ -100,12 +100,12 @@ class WorkStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
 
   // Define messages and labels
   static final String workStagesLabel = StageMsg.label(StageMsg.workStagesLabel);
-  static final String selectLabel =  StageMsg.label(StageMsg.selectLabel);
   static final String stageLabel =  StageMsg.label(StageMsg.stageLabel);
 
   static final String saveButtonLabel = CommonMsg.buttonLabel(CommonMsg.saveButtonLabel);
   static final String cancelButtonLabel = CommonMsg.buttonLabel(CommonMsg.cancelButtonLabel);
   static final String closeButtonLabel = CommonMsg.buttonLabel(CommonMsg.closeButtonLabel);
+  static final String selectLabel =  CommonMsg.label(CommonMsg.selectLabel);
 
   static final String nameLabel =  WorkStageDomainMsg.fieldLabel(WorkStage.nameField);
   static final String stateLabel =  WorkStageDomainMsg.fieldLabel(WorkStage.stateField);

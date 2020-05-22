@@ -131,9 +131,9 @@ class ObjectiveService {
 class ObjectivesFilterOrder {
 
   // Filter
-  Set<String> groupIds;
-  Set<String> leaderUserIds;
-  bool archived;
+  Set<String> groupIds = {};
+  Set<String> leaderUserIds = {};
+  bool archived = false;
 
   // Filtered Items
   int filteredItems;

@@ -113,11 +113,12 @@ class WorkDetailComponent implements OnInit, OnActivate, OnDeactivate {
   static final String saveButtonLabel = CommonMsg.buttonLabel(CommonMsg.saveButtonLabel);
   static final String closeButtonLabel = CommonMsg.buttonLabel(CommonMsg.closeButtonLabel);
   static final String requiredValueMsg = CommonMsg.requiredValueMsg();
+  static final String noMatchLabel =  CommonMsg.label(CommonMsg.noMatchLabel);
+  static final String selectLabel =  CommonMsg.label(CommonMsg.selectLabel);
 
   static final String addWorkLabel =  WorkMsg.label(WorkMsg.addWorkLabel);
   static final String editWorkLabel =  WorkMsg.label(WorkMsg.editWorkLabel);
-  static final String noMatchLabel =  WorkMsg.label(WorkMsg.noMatchLabel);
-  static final String selectLabel =  WorkMsg.label(WorkMsg.selectLabel);
+
 
   static final String nameLabel =  WorkDomainMsg.fieldLabel(Work.nameField);
   static final String descriptionLabel = WorkDomainMsg.fieldLabel(Work.descriptionField);

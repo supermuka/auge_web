@@ -22,18 +22,20 @@ class WorkService {
   work_work_item_pbgrpc.WorkServiceClient _workServiceClient;
   work_work_item_pbgrpc.WorkStageServiceClient _workStageServiceClient;
 
+  WorksFilterOrder worksFilterOrder;
 
   WorkService(this._authService, this._augeApiService) {
     _workServiceClient =
         work_work_item_pbgrpc.WorkServiceClient(_augeApiService.channel);
     _workStageServiceClient =
         work_work_item_pbgrpc.WorkStageServiceClient(_augeApiService.channel);
+    worksFilterOrder = WorksFilterOrder();
   }
 
   get authService => _authService;
 
   /// Return a list of [Work]
-  Future<List<Work>> getWorks(String organizationId, {String objectiveId, bool withWorkItems = false, bool withProfile = false}) async {
+  Future<List<Work>> getWorks(String organizationId, {String objectiveId, bool withWorkItems = false, bool withProfile = false, bool withArchived = false, List<String> groupIds, List<String> leaderUserIds}) async {
     //-- return await _augeApiService.workAugeApi.getWorks(organizationId, objectiveId: objectiveId, withWorkItems: withWorkItems);
     work_work_item_pbgrpc.WorkGetRequest workGetRequest = work_work_item_pbgrpc.WorkGetRequest();
     workGetRequest.organizationId = organizationId;
@@ -42,6 +44,9 @@ class WorkService {
     }
     workGetRequest.withWorkItems = withWorkItems;
     workGetRequest.withUserProfile = withProfile;
+    if (withArchived != null) workGetRequest.withArchived = withArchived;
+    if (groupIds != null && groupIds.isNotEmpty) workGetRequest.groupIds.addAll(groupIds);
+    if (leaderUserIds != null && leaderUserIds.isNotEmpty) workGetRequest.leaderUserIds.addAll(leaderUserIds);
 
     Map<String, dynamic> cache = {};
     return (await _workServiceClient.getWorks(workGetRequest)).works.map((i) =>
@@ -182,4 +187,20 @@ class WorkService {
     }
     return hslColor;
   }
+}
+
+/// Used to change data between Objectives Component and Filter
+class WorksFilterOrder {
+
+  // Filter
+  Set<String> groupIds = {};
+  Set<String> leaderUserIds = {};
+  bool archived = false;
+
+  // Filtered Items
+  int filteredItems;
+
+  //Ordered by
+  String orderedBy;
+
 }

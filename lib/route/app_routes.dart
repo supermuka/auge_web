@@ -37,6 +37,10 @@ class AppRoutes {
       path: AppRoutesPath.worksRoutePath,
       parent: appLayoutRoute
   );
+  static final worksFilterRoute = RoutePath(
+      path: AppRoutesPath.worksFilterRoutePath,
+      parent: worksRoute
+  );
   static final workAddRoute = RoutePath(
       path: AppRoutesPath.workAddRoutePath,
       parent: worksRoute

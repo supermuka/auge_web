@@ -97,11 +97,12 @@ class GroupDetailComponent implements OnInit, OnActivate, OnDeactivate {
   // Define messages and labels
   static final String saveButtonLabel = CommonMsg.buttonLabel(CommonMsg.saveButtonLabel);
   static final String closeButtonLabel = CommonMsg.buttonLabel(CommonMsg.closeButtonLabel);
+  static final String noMatchLabel =  CommonMsg.label(CommonMsg.noMatchLabel);
 
   static final String requiredValueMsg = CommonMsg.requiredValueMsg();
   static final String addGroupLabel = GroupMsg.label(GroupMsg.addGroupLabel);
   static final String editGroupLabel =  GroupMsg.label(GroupMsg.editGroupLabel);
-  static final String noMatchLabel =  GroupMsg.label(GroupMsg.noMatchLabel);
+
 
   // Define labels from fields.
   static final String nameLabel =  GroupDomainMsg.fieldLabel(Group.nameField); // FieldMsg.label('${Group.className}.${Group.nameField}');

@@ -30,9 +30,8 @@ import 'package:auge_web/route/app_routes.dart';
 import 'package:auge_shared/message/messages.dart';
 
 // ignore_for_file: uri_has_not_been_generated
-import 'package:auge_web/src/insight/insights_component.template.dart' as insights_component;
 import 'package:auge_web/src/insight/insights_filter_component.template.dart' as insights_filter_component;
-import 'package:auge_web/src/objective/objectives_filter_component.template.dart' as objectives_filter_component;
+
 
 @Component(
   selector: 'auge-insights',
@@ -204,7 +203,10 @@ class InsightsComponent with CanReuse implements OnActivate  {
         // Works
         //TODO include groups and leaders
         works = await _workService.getWorks(
-            _authService.authorizedOrganization.id, withWorkItems: true);
+            _authService.authorizedOrganization.id,
+            withWorkItems: true,
+            groupIds:  _insightService.insightsFilterOrder.groupIds?.toList(),
+            leaderUserIds: _insightService.insightsFilterOrder.leaderUserIds?.toList());
 
         aggregateObjectivesMeasurement();
         aggregateWorksMeasurement();
