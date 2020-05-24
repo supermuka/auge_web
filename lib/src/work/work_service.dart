@@ -55,13 +55,26 @@ class WorkService {
   }
 
   /// Return [User] list by Organization [id]
-  Future<Work> getWork(String id, {bool withWorkItems = false, bool withUserProfile = false}) async {
+  Future<Work> getWork(String id, {bool withWorkItems = false,
+    bool withUserProfile = false,
+    bool withArchived = false,
+    Set<String> leaderUserIds,
+    Set<String> groupIds,
+    bool workItemWithArchived = false,
+    Set<String> workItemAssignedToIds}) async {
     // return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
-    return Work()..readFromProtoBuf((await _workServiceClient.getWork(
-        work_work_item_pbgrpc.WorkGetRequest()
-          ..id = id
-          ..withWorkItems = withWorkItems
-          ..withUserProfile = withUserProfile)), {});
+    work_work_item_pbgrpc.WorkGetRequest workGetRequest = work_work_item_pbgrpc.WorkGetRequest();
+
+    workGetRequest.id = id;
+    workGetRequest.withWorkItems = withWorkItems;
+    workGetRequest.withUserProfile = withUserProfile;
+    workGetRequest.withArchived = withArchived;
+    if (leaderUserIds != null && leaderUserIds.isNotEmpty) workGetRequest.leaderUserIds.addAll(leaderUserIds);
+    if (groupIds != null && groupIds.isNotEmpty) workGetRequest.groupIds.addAll(groupIds);
+    workGetRequest.workItemWithArchived = workItemWithArchived;
+    if (workItemAssignedToIds != null && workItemAssignedToIds.isNotEmpty) workGetRequest.workItemAssignedToIds.addAll(workItemAssignedToIds);
+
+    return Work()..readFromProtoBuf(await _workServiceClient.getWork(workGetRequest), {});
   }
 
   /// Return a list of [Stage]
@@ -189,7 +202,7 @@ class WorkService {
   }
 }
 
-/// Used to change data between Objectives Component and Filter
+/// Used to change data between [Works] Component and Filter
 class WorksFilterOrder {
 
   // Filter

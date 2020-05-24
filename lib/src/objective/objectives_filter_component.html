@@ -7,6 +7,8 @@
             <material-auto-suggest-input
                                          [(inputText)]="groupInputText"
                                          [filterSuggestions]="true"
+                                         [shouldClearInputOnSelection]="true"
+                                         [shouldClearSelectionOnInput]="false"
                                          [popupMatchInputWidth]="true"
                                          [showClearIcon]="true"
                                          [trailingGlyph]="'search'"
@@ -24,6 +26,8 @@
             <material-auto-suggest-input
                                          [(inputText)]="leaderInputText"
                                          [filterSuggestions]="true"
+                                         [shouldClearInputOnSelection]="true"
+                                         [shouldClearSelectionOnInput]="false"
                                          [popupMatchInputWidth]="true"
                                          [showClearIcon]="true"
                                          [trailingGlyph]="'search'"

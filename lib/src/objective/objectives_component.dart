@@ -31,8 +31,6 @@ import 'package:auge_shared/message/domain_messages.dart';
 import 'package:auge_web/src/measure/measures_component.dart';
 import 'package:auge_web/src/work/works_summary_component.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
-import 'package:auge_web/src/group/group_service.dart';
-import 'package:auge_web/src/user/user_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/src/search_filter/search_filter_service.dart';

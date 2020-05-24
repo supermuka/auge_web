@@ -22,13 +22,19 @@ class WorkItemService {
   work_work_item_pbgrpc.WorkItemServiceClient _workItemServiceClient;
   unit_of_measurement_pbgrpc.UnitOfMeasurementServiceClient _unitOfMeasurementServiceClient;
 
+  WorkItemsFilterOrder workItemsFilterOrder;
+
   WorkItemService(this._authService, this._augeApiService) {
     _workItemServiceClient = work_work_item_pbgrpc.WorkItemServiceClient(_augeApiService.channel);
     _unitOfMeasurementServiceClient = unit_of_measurement_pbgrpc.UnitOfMeasurementServiceClient(_augeApiService.channel);
 
+    workItemsFilterOrder = WorkItemsFilterOrder();
+
   }
 
   AuthService get authService => _authService;
+
+
 
   /// Delete a [WorkItem]
   void deleteWorkItem(WorkItem workItem) async {
@@ -203,4 +209,19 @@ class WorkItemService {
       rethrow;
     }
   }
+}
+
+/// Used to change data between Work Item Component and Filter
+class WorkItemsFilterOrder {
+
+  // Filter
+  Set<String> assignedToUserIds = {};
+  bool archived = false;
+
+  // Filtered Items
+  int filteredItems;
+
+  //Ordered by
+  String orderedBy;
+
 }

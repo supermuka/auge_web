@@ -6,6 +6,8 @@
         <div class="w3-row">
             <material-auto-suggest-input [(inputText)]="groupInputText"
                                          [filterSuggestions]="true"
+                                         [shouldClearInputOnSelection]="true"
+                                         [shouldClearSelectionOnInput]="false"
                                          [popupMatchInputWidth]="true"
                                          [showClearIcon]="true"
                                          [leadingGlyph]="'search'"
@@ -28,6 +30,8 @@
             <material-auto-suggest-input
                                          [(inputText)]="leaderInputText"
                                          [filterSuggestions]="true"
+                                         [shouldClearInputOnSelection]="true"
+                                         [shouldClearSelectionOnInput]="false"
                                          [popupMatchInputWidth]="true"
                                          [showClearIcon]="true"
                                          [leadingGlyph]="'search'"
@@ -48,10 +52,8 @@
             </material-auto-suggest-input>
         </div>
         <div footer>
-            <material-button (trigger)="applyFilter()">{{applyButtonLabel}}
-            </material-button>
-            <material-button autoFocus (trigger)="closeFilter()">{{closeButtonLabel}}
-            </material-button>
+            <material-button (trigger)="applyFilter()">{{applyButtonLabel}}</material-button>
+            <material-button autoFocus (trigger)="closeFilter()">{{closeButtonLabel}}</material-button>
         </div>
     </material-dialog>
 </modal>

@@ -23,6 +23,7 @@ import 'package:angular_components/model/ui/icon.dart';
 
 import 'package:angular_components/content/deferred_content.dart';
 
+
 import 'package:auge_web/src/work/work_summary_component.dart';
 
 import 'package:auge_shared/domain/general/authorization.dart';
@@ -34,6 +35,7 @@ import 'package:auge_shared/domain/work/work_stage.dart';
 import 'package:auge_shared/message/messages.dart';
 import 'package:auge_shared/message/domain_messages.dart';
 
+import 'package:auge_web/src/search_filter/search_filter_service.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/work_item/work_item_service.dart';
 import 'package:auge_web/src/work/work_service.dart';
@@ -42,6 +44,7 @@ import 'package:auge_web/src/work_item/work_item_detail_component.dart';
 import 'package:auge_web/route/app_routes.dart';
 
 // ignore_for_file: uri_has_not_been_generated
+import 'package:auge_web/src/work_item/work_items_filter_component.template.dart' as work_items_filter_component;
 import 'package:auge_web/src/work_item/work_item_detail_component.template.dart' as work_item_detail_component;
 import 'package:auge_web/src/work_item/work_item_values_component.template.dart' as work_item_values_component;
 
@@ -76,9 +79,11 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
   final AppLayoutService _appLayoutService;
   final WorkService _workService;
   final WorkItemService _workItemService;
+  final SearchFilterService _searchFilterService;
   final Router _router;
 
   Work work;
+ // String workId;
 
   WorkItem selectedWorkItem;
   List<KanbanColumn> kanbanColumns;
@@ -116,13 +121,16 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
       routePath: AppRoutes.workItemKanbanValuesRoute,
       component: work_item_values_component.WorkItemValuesComponentNgFactory,
     ),
-
+    RouteDefinition(
+      routePath: AppRoutes.workItemsKanbanFilterRoute,
+      component: work_items_filter_component.WorkItemsFilterComponentNgFactory,
+    ),
   ];
 
   bool whileUpdatingDisabled = false;
 
 
-  WorkItemsKanbanComponent(this._appLayoutService, this._workService, this._workItemService, this._router) {
+  WorkItemsKanbanComponent(this._appLayoutService, this._searchFilterService, this._workService, this._workItemService, this._router) {
     // initializeDateFormatting(Intl.defaultLocale);
     menuModel = MenuModel([MenuItemGroup([MenuItem(editButtonLabel, icon: Icon('edit') , actionWithContext: (_) => goToDetail()), MenuItem(deleteButtonLabel, icon: Icon('delete'), actionWithContext: (_) => delete()), MenuItem(actualValueLabel, icon: Icon('show_chart'), actionWithContext: (_) => goToValues())])], icon: Icon('menu'));
   }
@@ -131,18 +139,6 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
   void ngOnInit() {
     work = Work();
   }
-/*
-  @override
-  Future<bool> canReuse(RouterState current, RouterState next) async {
-    // To treat CanReuse. Just define cache 'true' when this component is called from/to yours children
-    if (current.routePath?.path == next.routePath?.parent?.path || current.routePath?.parent?.path == next.routePath?.path) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
- */
 
   @override
   void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
@@ -152,20 +148,26 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
       return;
     }
 
+    //Work work;
     try {
 
       if (routerStateCurrent.parameters.containsKey(AppRoutesParam.workIdParameter)) {
         String workId = routerStateCurrent.parameters[AppRoutesParam
             .workIdParameter];
+          work = await _workService.getWork(workId, withWorkItems: true, workItemAssignedToIds: _workItemService.workItemsFilterOrder.assignedToUserIds, workItemWithArchived: _workItemService.workItemsFilterOrder.archived,  );
 
-        if (workId != null || workId.isNotEmpty) {
-          work = await _workService.getWork(workId, withWorkItems: true);
-        }
+      } else {
+        throw Exception('Work Id does not informed.');
       }
 
       _appLayoutService.headerTitle = headerTitle;
       _appLayoutService.systemModuleIndex = SystemModule.works.index;
 
+      _searchFilterService.enableSearch = true;
+      _searchFilterService.enableFilter = true;
+      _searchFilterService.filterRouteUrl = AppRoutes.workItemsKanbanFilterRoute.toUrl(parameters: {AppRoutesParam.workIdParameter: work.id});
+
+      _searchFilterService.filteredItems = _workService.worksFilterOrder.filteredItems;
 //      _appLayoutService.enabledSearch = true;
 
     } catch (e) {
@@ -176,7 +178,7 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
     kanbanColumns = List();
 
     // Define os estados com base no que está na iniciativa
-    work.workStages.forEach((es) { kanbanColumns.add(new KanbanColumn()..workStage = es);
+    work.workStages.forEach((es) { kanbanColumns.add(KanbanColumn(_searchFilterService)..workStage = es);
     } );
 
     // Distribui os itens de trabalho para cada coluna (estágio)
@@ -186,12 +188,7 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
     });
 
   }
-/*
-  @override
-  ngOnDestroy() async {
-    _appLayoutService.enabledSearch = false;
-  }
-*/
+
   void drag(html.MouseEvent ev, KanbanColumn kanbanColumn, WorkItem workItem) {
     kanbanColumnDnD = kanbanColumn;
     workItemDnD = workItem;
@@ -237,7 +234,6 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
       }
 
       kanbanColumnDelete.columnWorkItems.remove(workItemKanban);
-
 
     } catch (e) {
       _appLayoutService.error = e.toString();
@@ -347,10 +343,18 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
 }
 
 class KanbanColumn {
-  WorkStage workStage;
-  List<WorkItem> columnWorkItems;
 
-  KanbanColumn() {
-    columnWorkItems = List();
+  SearchFilterService _searchFilterService;
+  WorkStage workStage;
+  List<WorkItem> _columnWorkItems;
+
+
+  KanbanColumn(this._searchFilterService) {
+    _columnWorkItems = List();
+  }
+
+  List<WorkItem> get columnWorkItems {
+    return (_searchFilterService.searchTerm == null || _searchFilterService.searchTerm.isEmpty) ? _columnWorkItems : _columnWorkItems.where((test) => test.name.contains(_searchFilterService.searchTerm)).toList();
+
   }
 }

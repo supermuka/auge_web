@@ -68,8 +68,9 @@
             </nav>
         </div>
     </header>
-    <div class="error" [class.expanded]="error != null">{{error}}</div>
     <div class="main">
+        <div class="error" [class.expanded]="error != null">{{error}}</div>
         <router-outlet [routes]="routes"></router-outlet>
     </div>
+
 </div>
