@@ -50,20 +50,11 @@
                                                              [hideExpandedHeader]="false"
                                                              [alwaysHideExpandIcon]="true"
                                                              [showSaveCancel]="false">
-                                        <!-- div name class="custom-expansionpanel-panel-specific-name-width" -->
                                         <div name>
                                             <span class="name-ellipse">
                                                 {{iColumnWorkItem.name}}
                                             </span>
-                                            <!-- span class="w3-col l12 truncate-ellipsed-parent">
-                                                <span class="truncate-ellipsed">{{iColumnWorkItem.name}}</span>
-                                            </span>
-                                            <span class="w3-col l12 w3-right" *ngFor="let member of iColumnWorkItem.assignedTo">&nbsp;
-                                                <span class="avatar" [style.background-image]="'url(' +  userUrlImage(member)  + ')'" [materialTooltip]="member.name"></span>
-                                            </span -->
-
                                         </div>
-                                        <!-- class="w3-col l12 w3-right"  -->
                                         <div value class="w3-right-align">
                                             <span *ngFor="let member of iColumnWorkItem.assignedTo">
                                                 <span class="avatar-icon" [style.background-image]="'url(' +  userUrlImage(member)  + ')'" [materialTooltip]="member.name"></span>
@@ -72,68 +63,10 @@
                                                 <span materialTooltip="{{dueDateLabel}}" [style.color]="dueDateColor(iColumnWorkItem)">{{iColumnWorkItem.dueDate | date:'shortDate'}}</span>
                                             </div>
                                         </div>
-
-                                        <!-- div value>
-                                            <div class="w3-row-padding">
-                                            <span class="w3-col l2">
-                                                {{iColumnWorkItem.completed}}%
-                                            </span>
-                                                <span class="w3-col l10">
-                                                <material-slider [(value)]="iColumnWorkItem.completed"
-                                                                 [min]="0"
-                                                                 [max]="100"
-                                                                 materialTooltip="{{completedLabel}}" (click)="updateWorkItem(iColumnWorkItem)">
-                                                </material-slider>
-                                            </span>
-                                            </div>
-                                            <div class="w3-row-padding">
-                                            <span class="w3-col l12">
-                                                <span materialTooltip="{{dueDateLabel}}" [style.color]="dueDateColor(iColumnWorkItem)">{{iColumnWorkItem.dueDate | date}}</span>
-                                            </span>
-                                            </div>
-                                            <div class="w3-row w3-col l12">
-                                                <material-expansionpanel *ngIf="iColumnWorkItem.checkItems.length > 0" name="{{checkItemsLabel}}" autoDismissable [showSaveCancel]="false" class="expansionpanel-flat-on-collapse-theme-no-border">
-                                                    <div *deferredContent>
-                                                        <div *ngFor="let iCheckItem of iColumnWorkItem.checkItems">
-                                                            <material-checkbox class="width-200" [(ngModel)]="iCheckItem.finished" [label]="iCheckItem.name" (click)="updateWorkItem(iColumnWorkItem)"></material-checkbox>
-                                                        </div>
-                                                    </div>
-                                                </material-expansionpanel>
-                                            </div>
-                                        </div -->
                                         <div action>
                                             <material-menu [menu]="menuModel" (click)="selectWorkItem(iColumnWorkItem);disEnableItemMenuActual()">
                                             </material-menu>
                                         </div>
-
-                                        <!-- div value>
-                                            <div class="w3-row-padding">
-                                            <span class="w3-col l2">
-                                                {{iColumnWorkItem.completed}}%
-                                            </span>
-                                                <span class="w3-col l10">
-                                                <material-slider [(value)]="iColumnWorkItem.completed"
-                                                                 [min]="0"
-                                                                 [max]="100"
-                                                                 materialTooltip="{{completedLabel}}" (click)="updateWorkItem(iColumnWorkItem)">
-                                                </material-slider>
-                                            </span>
-                                            </div>
-                                            <div class="w3-row-padding">
-                                            <span class="w3-col l12">
-                                                <span materialTooltip="{{dueDateLabel}}" [style.color]="dueDateColor(iColumnWorkItem)">{{iColumnWorkItem.dueDate | date}}</span>
-                                            </span>
-                                            </div>
-                                            <div class="w3-row w3-col l12">
-                                                <material-expansionpanel *ngIf="iColumnWorkItem.checkItems.length > 0" name="{{checkItemsLabel}}" autoDismissable [showSaveCancel]="false" class="expansionpanel-flat-on-collapse-theme-no-border">
-                                                    <div *deferredContent>
-                                                        <div *ngFor="let iCheckItem of iColumnWorkItem.checkItems">
-                                                            <material-checkbox class="width-200" [(ngModel)]="iCheckItem.finished" [label]="iCheckItem.name" (click)="updateWorkItem(iColumnWorkItem)"></material-checkbox>
-                                                        </div>
-                                                    </div>
-                                                </material-expansionpanel>
-                                            </div>
-                                        </div -->
                                         <div>
                                             <div *ngIf="hasPlannedOrActual(iColumnWorkItem)">
                                                 <div class="w3-center">
@@ -173,5 +106,4 @@
         </material-expansionpanel>
      </div>
 </div>
-
 <router-outlet [routes]="routes"></router-outlet>

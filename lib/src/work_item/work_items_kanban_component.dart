@@ -102,6 +102,7 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
   static final String groupLabel = WorkDomainMsg.fieldLabel(Work.groupField);
   static final String leaderLabel =  WorkDomainMsg.fieldLabel(Work.leaderField);
 
+  static final String nameLabel = WorkItemDomainMsg.fieldLabel(WorkItem.nameField);
   static final String dueDateLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.dueDateField);
   static final String actualValueLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.actualValueField);
   static final String checkItemsLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.checkItemsField);
@@ -129,7 +130,6 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
 
   bool whileUpdatingDisabled = false;
 
-
   WorkItemsKanbanComponent(this._appLayoutService, this._searchFilterService, this._workService, this._workItemService, this._router) {
     // initializeDateFormatting(Intl.defaultLocale);
     menuModel = MenuModel([MenuItemGroup([MenuItem(editButtonLabel, icon: Icon('edit') , actionWithContext: (_) => goToDetail()), MenuItem(deleteButtonLabel, icon: Icon('delete'), actionWithContext: (_) => delete()), MenuItem(actualValueLabel, icon: Icon('show_chart'), actionWithContext: (_) => goToValues())])], icon: Icon('menu'));
@@ -156,6 +156,8 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
             .workIdParameter];
           work = await _workService.getWork(workId, withWorkItems: true, workItemAssignedToIds: _workItemService.workItemsFilterOrder.assignedToUserIds, workItemWithArchived: _workItemService.workItemsFilterOrder.archived,  );
 
+        _orderWorkItems(work.workItems, _workItemService.workItemsFilterOrder.orderedBy);
+
       } else {
         throw Exception('Work Id does not informed.');
       }
@@ -167,7 +169,7 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
       _searchFilterService.enableFilter = true;
       _searchFilterService.filterRouteUrl = AppRoutes.workItemsKanbanFilterRoute.toUrl(parameters: {AppRoutesParam.workIdParameter: work.id});
 
-      _searchFilterService.filteredItems = _workService.worksFilterOrder.filteredItems;
+      _searchFilterService.filteredItems = _workItemService.workItemsFilterOrder.filteredItems;
 //      _appLayoutService.enabledSearch = true;
 
     } catch (e) {
@@ -212,6 +214,8 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
 
     kanbanColumnDnD = null;
     workItemDnD = null;
+
+    _orderWorkItems(kanbanColumnDrop.columnWorkItems, _workItemService.workItemsFilterOrder.orderedBy);
   }
 
   void delete() async {
@@ -287,6 +291,7 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
 
         if (kanbanColumnUpdate != null && indexWorkItemKanban != null) kanbanColumnUpdate.columnWorkItems[indexWorkItemKanban] = workItem;
 
+        _orderWorkItems(kanbanColumnUpdate.columnWorkItems, _workItemService.workItemsFilterOrder.orderedBy);
       }
     } catch (e) {
       _appLayoutService.error = e.toString();
@@ -340,6 +345,16 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
       menuModel.itemGroups.last.last.enabled = hasPlannedOrActual(selectedWorkItem);
   }
 
+  // Order by
+  void _orderWorkItems(List<WorkItem> workItemsToOrder, String orderBy) {
+    if (orderBy == nameLabel) {
+      workItemsToOrder.sort((a, b) => a?.name == null || b?.name == null ? -1 : a.name.compareTo(b.name));
+      // if orderBy == null, default order.
+    } else if (orderBy == null || orderBy == dueDateLabel) {
+      workItemsToOrder.sort((a, b) => a?.dueDate == null || b?.dueDate == null ? -1 : a.dueDate.compareTo(b.dueDate));
+    }
+  }
+
 }
 
 class KanbanColumn {
@@ -355,6 +370,10 @@ class KanbanColumn {
 
   List<WorkItem> get columnWorkItems {
     return (_searchFilterService.searchTerm == null || _searchFilterService.searchTerm.isEmpty) ? _columnWorkItems : _columnWorkItems.where((test) => test.name.contains(_searchFilterService.searchTerm)).toList();
-
   }
+
+  set columnWorkItems(List<WorkItem> kc) {
+    _columnWorkItems = kc;
+  }
+
 }

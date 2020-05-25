@@ -198,7 +198,7 @@ class InsightsComponent with CanReuse implements OnActivate  {
             groupIds:  _insightService.insightsFilterOrder.groupIds?.toList(),
             leaderUserIds: _insightService.insightsFilterOrder.leaderUserIds?.toList());
 
-        print(_insightService.insightsFilterOrder.groupIds?.toList());
+        aggregateObjectivesMeasurement();
 
         // Works
         //TODO include groups and leaders
@@ -208,7 +208,7 @@ class InsightsComponent with CanReuse implements OnActivate  {
             groupIds:  _insightService.insightsFilterOrder.groupIds?.toList(),
             leaderUserIds: _insightService.insightsFilterOrder.leaderUserIds?.toList());
 
-        aggregateObjectivesMeasurement();
+
         aggregateWorksMeasurement();
 
       }

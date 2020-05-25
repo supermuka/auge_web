@@ -112,7 +112,7 @@ class WorksComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy *
   Work selectedWork;
   String initialWorkId;
   bool filterIds = false;
-  String expandedWorkId;
+ // String expandedWorkId;
 
   List<String> worksIdSelectedToFilter = [];
   List<String> groupsIdSelectedToFilter = [];
@@ -128,9 +128,11 @@ class WorksComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy *
   static final String editButtonLabel = CommonMsg.buttonLabel(CommonMsg.editButtonLabel);
   static final String deleteButtonLabel = CommonMsg.buttonLabel(CommonMsg.deleteButtonLabel);
 
+  static final String descriptionLabel = WorkDomainMsg.fieldLabel(Work.descriptionField);
   static final String objectiveLabel =  WorkMsg.label(WorkMsg.objectiveLabel);
   static final String workLabel =  WorkMsg.label(WorkMsg.workLabel);
   static final String worksLabel =  WorkMsg.label(WorkMsg.worksLabel);
+
 
   static final String nameLabel = WorkDomainMsg.fieldLabel(Work.nameField);
   static final String groupLabel = WorkDomainMsg.fieldLabel(Work.groupField);
@@ -359,7 +361,7 @@ class WorksComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy *
     return common_service.firstLetter(name);
   }
 
-  // Order by to group
+  // Order by
   void _orderWorks(List<Work> worksToOrder, String orderBy) {
 
     if (orderBy == nameLabel) {
@@ -381,7 +383,7 @@ class WorksComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy *
   String composeTooltip(String label, String name) {
     return '${label} ${name}';
   }
-
+/*
   setExpandedWorkId(String workId, bool expanded) {
     if (expanded) {
       expandedWorkId = workId;
@@ -389,7 +391,7 @@ class WorksComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy *
       expandedWorkId = null;
     }
   }
-
+*/
   workChangeSelection(List<String> worksIdSelected) {
     worksIdSelectedToFilter = worksIdSelected;
   }

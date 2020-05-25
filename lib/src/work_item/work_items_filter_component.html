@@ -1,0 +1,45 @@
+<modal [visible]="modalVisible">
+    <material-dialog headered [error]="dialogError">
+        <div header>
+            <h3>{{workItemsFilterLabel}}</h3>
+        </div>
+        <div class="w3-row">
+            <material-auto-suggest-input
+                                         [(inputText)]="assignedToInputText"
+                                         [filterSuggestions]="true"
+                                         [shouldClearInputOnSelection]="true"
+                                         [shouldClearSelectionOnInput]="true"
+                                         [popupMatchInputWidth]="true"
+                                         [showClearIcon]="true"
+                                         [trailingGlyph]="'search'"
+                                         [label]="assignedToLabel"
+                                         [floatingLabel]="true"
+                                         [selection]="assignedToMultiSelectModel"
+                                         [selectionOptions]="assignedToOptions"
+                                         [itemRenderer]="assignedToItemRenderer"
+                                         [factoryRenderer]="assignedToFactoryRenderer"
+                                         [limit]="10"
+                                         (showPopupChange)="showPopupChangeAssignedTo($event)"
+                                         (clear)="clearAssignedTo()">
+            </material-auto-suggest-input>
+        </div>
+        <div class="w3-row">
+            <material-checkbox class="checkbox-no-margin" [(ngModel)]="archived" [label]="archivedLabel"></material-checkbox>
+        </div>
+        <div class="w3-row">
+            <label>{{orderedByLabel}}</label>
+            <material-dropdown-select class="w3-right" buttonText="{{orderedBy}}"
+                                      [(selection)]="orderedBy"
+                                      [options]="workItemsOrderedByOptions">
+            </material-dropdown-select>
+        </div>
+        <div footer>
+            <material-button (trigger)="applyFilter()">{{applyButtonLabel}}
+                <!-- material-icon icon="save"></material-icon -->
+            </material-button>
+            <material-button autoFocus (trigger)="closeFilter()">{{closeButtonLabel}}
+                <!-- material-icon icon="close"></material-icon -->
+            </material-button>
+        </div>
+    </material-dialog>
+</modal>

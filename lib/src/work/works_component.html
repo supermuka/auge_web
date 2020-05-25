@@ -4,16 +4,13 @@
             <material-expansionpanel-set>
                 <div *ngFor="let iWork of works;let i = index">
                     <material-expansionpanel
-                            [disabled]="true"
                             [alwaysHideExpandIcon]="true"
                             [hideExpandedHeader]="false"
                             [showSaveCancel]="false"
-                            [expanded]="false"
-                            (expandedChange)="setExpandedWorkId(iWork.id, $event)">
+                            [expanded]="false">
                         <div name class="custom-expansionpanel-panel-specific-name-width">
                             <span class="truncate-ellipsed-parent">
                                 <span class="truncate-ellipsed"><strong>{{iWork.name}}</strong></span>
-                                <div class="truncate-ellipsed">{{iWork.description}}</div>
                             </span>
                         </div>
                         <div class="w3-row" value>
@@ -41,6 +38,11 @@
                             <material-button icon (trigger)="goToWorkKanban(iWork)">
                                 <material-icon icon="launch"></material-icon>
                             </material-button>
+                        </div>
+                        <div>{{iWork.description}}</div>
+                        <div *ngIf="iWork.objective != null">
+                            <br/>
+                            <strong>{{objectiveLabel}}</strong> {{iWork.objective.name}}
                         </div>
                     </material-expansionpanel>
                 </div>
