@@ -1,11 +1,14 @@
 import 'dart:async';
 
 import 'package:angular/core.dart';
+import 'package:angular_components/model/date/date.dart';
 
 import 'package:auge_shared/domain/general/history_item.dart';
+import 'package:auge_shared/src/util/common_utils.dart';
 
-import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/services/auge_api_service.dart';
+import 'package:auge_web/src/auth/auth_service.dart';
+
 
 import 'package:auge_shared/protos/generated/general/common.pbgrpc.dart' as common_pbgrpc;
 import 'package:auge_shared/protos/generated/general/history_item.pbgrpc.dart' as history_item_pbgrpc;
@@ -31,12 +34,8 @@ class HistoryTimelineService {
 
   // get authService => _authService;
 
-  void refreshHistory(int systemModuleIndex) async {
-    history = await getHistory(systemModuleIndex);
-  }
-
   /// Return a list of [TimelineItem]
-  Future<List<HistoryItem>> getHistory([int systemModuleIndex]) async {
+  Future<List<HistoryItem>> getHistory({int systemModuleIndex, DateTime fromDateTime, int rowsLimit}) async {
     
     //history_item_pbgrpc.HistoryResponse historyResponse = await _historyItemServiceClient.getHistory(history_item_pbgrpc.HistoryItemGetRequest()..systemModuleIndex = SystemModule.objectives.index );
     currentDateTime = await getDateTime();
@@ -48,7 +47,12 @@ class HistoryTimelineService {
     if (systemModuleIndex != null) {
       historyItemGetRequest.systemModuleIndex = systemModuleIndex;
     }
-
+    if (fromDateTime != null) {
+      historyItemGetRequest.fromDateTime = CommonUtils.timestampFromDateTime(fromDateTime);
+    }
+    if (rowsLimit != null) {
+      historyItemGetRequest.rowsLimit = rowsLimit;
+    }
 
     return ( await _historyItemServiceClient.getHistory(historyItemGetRequest)).history.map((m) =>
     HistoryItem()
@@ -62,11 +66,7 @@ class HistoryTimelineService {
     // Convert Protobuf timestamp to Dart DateTime
     return /* CommonUtils.dateTimeFromTimestamp(dateTimeResponse.dateTime) */ dateTimeResponse.dateTime.toDateTime();
 
-    /*
-    DateTime.fromMicrosecondsSinceEpoch(
-        dateTimeResponse.dateTime.seconds.toInt() * 1000000 +
-            dateTimeResponse.dateTime.nanos ~/ 1000);
-*/
   }
+
 }
 

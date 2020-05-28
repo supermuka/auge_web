@@ -8,12 +8,14 @@ import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_shared/domain/general/user.dart';
 import 'package:auge_shared/domain/general/user_identity.dart';
 import 'package:auge_shared/domain/general/user_access.dart';
+import 'package:auge_shared/domain/general/user_control.dart';
 
 import 'package:auge_web/services/auge_api_service.dart';
 import 'package:auge_shared/protos/generated/google/protobuf/wrappers.pb.dart' as wrappers_pb;
 import 'package:auge_shared/protos/generated/general/user.pbgrpc.dart' as user_pbgrpc;
 import 'package:auge_shared/protos/generated/general/user_identity.pbgrpc.dart' as user_identity_pbgrpc;
 import 'package:auge_shared/protos/generated/general/user_access.pbgrpc.dart' as user_access_pbgrpc;
+import 'package:auge_shared/protos/generated/general/user_control.pbgrpc.dart' as user_control_pbgrpc;
 
 @Injectable()
 class UserService {
@@ -23,11 +25,13 @@ class UserService {
   user_pbgrpc.UserServiceClient _userServiceClient;
   user_identity_pbgrpc.UserIdentityServiceClient _userIdentityServiceClient;
   user_access_pbgrpc.UserAccessServiceClient _userAccessServiceClient;
+  user_control_pbgrpc.UserControlServiceClient _userControlServiceClient;
 
   UserService(this._authService, this._augeApiService) {
     _userServiceClient = user_pbgrpc.UserServiceClient(_augeApiService.channel);
     _userIdentityServiceClient = user_identity_pbgrpc.UserIdentityServiceClient(_augeApiService.channel);
     _userAccessServiceClient = user_access_pbgrpc.UserAccessServiceClient(_augeApiService.channel);
+    _userControlServiceClient = user_control_pbgrpc.UserControlServiceClient(_augeApiService.channel);
   }
 
   AuthService get authService => _authService;
@@ -106,29 +110,6 @@ class UserService {
       rethrow;
     }
   }
-
-  /*
-  /// Save (create or update) an [User]
-  void saveUser(User user) async {
-
-    user_pbgrpc.UserRequest userRequest = user_pbgrpc.UserRequest()
-      ..user = user.writeToProtoBuf()
-      ..authUserId = _authService.authenticatedUser.id;
-
-    try {
-      if (user.id == null) {
-        common_pbgrpc.IdResponse idResponse = await _userServiceClient.createUser(userRequest);
-
-        // ID - primary key generated on server-side.
-        user.id = idResponse.id;
-      } else {
-        await _userServiceClient.updateUser(userRequest);
-      }
-    } catch (e) {
-      rethrow;
-    }
-  }
-*/
 
   /// Save (create or update) an [User]
   void saveUser(User user) async {
@@ -258,6 +239,35 @@ class UserService {
 
   List<UserIdentityProvider> getUserIdentityProviders() {
     return UserIdentityProvider.values;
+  }
+
+  Future<UserControl> getUserControl(String userId) async {
+    try {
+      user_control_pbgrpc.UserControlGetRequest userControlGetRequest =  user_control_pbgrpc.UserControlGetRequest();
+      if (userId != null) userControlGetRequest.userId = userId;
+      Map<String, dynamic> cache = {};
+      return UserControl()..readFromProtoBuf((await _userControlServiceClient.getUserControl(
+          user_control_pbgrpc.UserControlGetRequest()..userId = userId)), cache);
+
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Save (create or update) an [UserControl]
+  void saveUserControl(UserControl userControl) async {
+    user_control_pbgrpc.UserControlRequest userControlRequest = (user_control_pbgrpc.UserControlRequest()
+      ..userControl = userControl.writeToProtoBuf()
+      ..authOrganizationId = _authService.authorizedOrganization.id
+      ..authUserId = _authService.authenticatedUser.id);
+    try {
+      await _userControlServiceClient
+            .createOrUpdateUserControl(userControlRequest);
+
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
   }
 
 }

@@ -185,11 +185,6 @@ class WorksComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy *
     if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.workIdQueryParameter)) {
       initialWorkId = routerStateCurrent.queryParameters[AppRoutesQueryParam.workIdQueryParameter];
 
-      // Filter ids informed.
-      if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.filter)) {
-        filterIds = (routerStateCurrent.queryParameters[AppRoutesQueryParam.filter].toLowerCase() == 'true');
-      }
-
     }
 
     _appLayoutService.headerTitle = headerTitle;
@@ -262,12 +257,6 @@ class WorksComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy *
 
       }
       */
-
-      if (initialWorkId != null && filterIds) {
-        initialFilterOptionsIdsSelectedWorks = [initialWorkId];
-      } else if (!filterIds) {
-        initialFilterOptionsIdsSelectedWorks = null;
-      }
 
       _works = worksAux;
 

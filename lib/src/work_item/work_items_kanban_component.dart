@@ -96,6 +96,8 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
 
   Map<String, bool> checkItensExpandedControl = {};
 
+  bool whileUpdatingDisabled = false;
+
   static final String editButtonLabel = CommonMsg.buttonLabel(CommonMsg.editButtonLabel);
   static final String deleteButtonLabel = CommonMsg.buttonLabel(CommonMsg.deleteButtonLabel);
 
@@ -128,7 +130,6 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
     ),
   ];
 
-  bool whileUpdatingDisabled = false;
 
   WorkItemsKanbanComponent(this._appLayoutService, this._searchFilterService, this._workService, this._workItemService, this._router) {
     // initializeDateFormatting(Intl.defaultLocale);
@@ -355,6 +356,8 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
     }
   }
 
+  bool isUpdatingOrArchived(bool archived)  => (whileUpdatingDisabled || archived) ?? true;
+
 }
 
 class KanbanColumn {
@@ -375,5 +378,6 @@ class KanbanColumn {
   set columnWorkItems(List<WorkItem> kc) {
     _columnWorkItems = kc;
   }
+
 
 }

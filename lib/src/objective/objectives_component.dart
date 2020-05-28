@@ -108,13 +108,6 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
  // Map<String, String> queryParametersToFoward;
 
   List<Objective> _objectives = [];
- // List<Objective> get objectiveFilterOptions => _objectives;
-  List<String> objectivesIdSelectedToFilter = [];
-  List<String> groupsIdSelectedToFilter = [];
-  List<String> leadersIdSelectedToFilter = [];
-
-  //List<String> initialFilterOptionsIdsSelected;
-  List<String> initialFilterOptionsIdsSelectedObjectives;
 
   // Map<Objective, bool> expandedControl = Map();
   String expandedObjectiveId;
@@ -160,13 +153,14 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
     // If previous path equal current parent path, doent´s need to call this again. I.e. add or edit detail.
     if (routerStatePrevious.routePath.path == routerStateCurrent.routePath.parent.path) return;
 
+    bool search = false;
     // Expand panel whether [Id] objective is informed.
     if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.objectiveIdQueryParameter)) {
       initialObjectiveId = routerStateCurrent.queryParameters[AppRoutesQueryParam.objectiveIdQueryParameter];
 
       // Filter ids informed.
-      if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.filter)) {
-        filterIds = (routerStateCurrent.queryParameters[AppRoutesQueryParam.filter].toLowerCase() == 'true');
+      if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.search)) {
+        search = (routerStateCurrent.queryParameters[AppRoutesQueryParam.search].toLowerCase() == 'true');
       }
 
       // Used just first time, to remove queryParam initialObjectiveId.
@@ -182,20 +176,12 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
 
     _searchFilterService.filteredItems = _objectiveService.objectivesFilterOrder.filteredItems;
 
-
-
-    if (initialObjectiveId != null && filterIds) {
-      initialFilterOptionsIdsSelectedObjectives = [initialObjectiveId];
-    } else if (!filterIds) {
-      initialFilterOptionsIdsSelectedObjectives = null;
-    }
-
     try {
 
       List<Objective> objectivesAux = [];
       objectivesAux = await _objectiveService.getObjectives(
           _objectiveService.authService.authorizedOrganization.id,
-          objectiveId: initialObjectiveId,
+          /* objectiveId: initialObjectiveId, */
           withMeasures: true,
           withProfile: true,
           withArchived: _objectiveService.objectivesFilterOrder.archived,
@@ -209,6 +195,10 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
       _orderObjectives(objectivesAux, _objectiveService.objectivesFilterOrder.orderedBy);
 
       _objectives = objectivesAux;
+
+      if (search && initialObjectiveId != null) {
+        _searchFilterService.searchTerm = _objectives.firstWhere((t) => t.id == initialObjectiveId)?.name;
+      }
 
     } catch (e) {
       _appLayoutService.error = e.toString();
@@ -243,34 +233,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
   List<Objective> get objectives {
     return (_searchFilterService.searchTerm == null || _searchFilterService.searchTerm.isEmpty) ? _objectives : _objectives.where((test) => test.name.contains(_searchFilterService.searchTerm)).toList();
 
-    /*
-    List<Objective> objectiveFilered;
-
-    objectiveFilered = (objectivesIdSelectedToFilter.isEmpty || groupsIdSelectedToFilter.isEmpty || leadersIdSelectedToFilter.isEmpty) ? [] : _objectives.where(
-            (t) => objectivesIdSelectedToFilter.contains(t.id)
-                  && (groupsIdSelectedToFilter.contains(t.group?.id))
-                  && (leadersIdSelectedToFilter.contains(t.leader?.id))).toList();
-
-    return objectiveFilered;
-    */
-
   }
-
-  // This is necessary, to control when this component is recalled when navagate to
-  /*
-  @override
-  void onDeactivate(RouterState current, RouterState next) {
-    initialObjectivesIdSelectedToFilter = null;
-    expandedObjectiveId = null;
-  }
-*/
-/*
-  @override
-  ngOnDestroy() async {
-    _appLayoutService.enabledSearch = false;
-  }
-
- */
 
   void selectObjective(Objective objective) {
     selectedObjective = objective;
@@ -338,18 +301,6 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
     } else {
       _router.navigate(AppRoutes.objectiveEditRoute.toUrl(parameters: { AppRoutesParam.objectiveIdParameter: selectedObjective.id }), NavigationParams(replace:  true));
     }
-  }
-
-  objectiveChangeSelection(List<String> objectivesIdSelected) {
-    objectivesIdSelectedToFilter = objectivesIdSelected;
-  }
-
-  groupChangeSelection(List<String> groupsIdSelected) {
-    groupsIdSelectedToFilter = groupsIdSelected;
-  }
-
-  leaderChangeSelection(List<String> leadersIdSelected) {
-    leadersIdSelectedToFilter = leadersIdSelected;
   }
 
   // Ordered by

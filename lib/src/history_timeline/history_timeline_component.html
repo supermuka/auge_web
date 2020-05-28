@@ -1,4 +1,4 @@
-<modal  [visible]="modalVisible" >
+<modal [visible]="modalVisible" >
     <material-dialog  class="custom-width" headered>
         <div header>
             <h3>{{timelineLabel}}</h3>
@@ -14,29 +14,33 @@
         </div>
         <div class="w3-row">
             <div class="w3-col">
-                    <div *ngFor="let historyItem of history">
-                        <div>
-                            <span class="avatar" [style.background-image]="'url(' + userUrlImage(historyItem.user) + ')'"></span>
-                            <span>{{systemFunctionInPastLabel(historyItem.systemFunctionIndex)}} {{classNameLabel(historyItem.objectClassName)}} <strong>{{historyItem.description}}</strong></span>
-                        </div>
-                        <div>
-                            <span>{{elapsedTime(historyItem.dateTime, currentDateTime)}}</span>
-                            <span class="w3-right">
-                                <material-button icon (trigger)="collapseExpandControl(historyItem)">
-                                    <material-icon *ngIf="expandedControl[historyItem] == null || !expandedControl[historyItem]" icon="expand_more"></material-icon>
-                                    <material-icon *ngIf="expandedControl[historyItem] != null && expandedControl[historyItem]" icon="expand_less"></material-icon>
-                                </material-button>
-                            </span>
-                        </div>
-                        <div *ngIf="expandedControl[historyItem] != null && expandedControl[historyItem]">
-                            <auge-history-item-timeline-detail [objectClassName]="historyItem.objectClassName" [changedValues]="historyItem.changedValues"></auge-history-item-timeline-detail>
-                        </div>
+                <div *ngFor="let historyItem of history">
+                    <div>
+                        <span class="avatar" [style.background-image]="'url(' + userUrlImage(historyItem.user) + ')'"></span>
+                        <span>{{systemFunctionInPastLabel(historyItem.systemFunctionIndex)}} {{classNameLabel(historyItem.objectClassName)}} <strong>{{historyItem.description}}</strong></span>
                     </div>
+                    <div>
+                        <span>{{elapsedTime(historyItem.dateTime, currentDateTime)}}</span>
+                        <span class="w3-right">
+                            <material-button icon (trigger)="collapseExpandControl(historyItem)">
+                                <material-icon *ngIf="expandedControl[historyItem] == null || !expandedControl[historyItem]" icon="expand_more"></material-icon>
+                                <material-icon *ngIf="expandedControl[historyItem] != null && expandedControl[historyItem]" icon="expand_less"></material-icon>
+                            </material-button>
+                        </span>
+                    </div>
+                    <div *ngIf="expandedControl[historyItem] != null && expandedControl[historyItem]">
+                        <auge-history-item-timeline-detail [objectClassName]="historyItem.objectClassName" [changedValues]="historyItem.changedValues"></auge-history-item-timeline-detail>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="w3-row">
+            <div class="w3-col w3-center">
+                <material-button raised (trigger)="loadMore()">Carregar Mais</material-button>
             </div>
         </div>
         <div footer>
             <material-button autoFocus (trigger)="closeDetail()">{{closeButtonLabel}}
-                <!-- material-icon icon="close"></material-icon -->
             </material-button>
         </div>
     </material-dialog>

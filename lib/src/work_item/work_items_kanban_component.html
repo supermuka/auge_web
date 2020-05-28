@@ -51,7 +51,7 @@
                                                              [alwaysHideExpandIcon]="true"
                                                              [showSaveCancel]="false">
                                         <div name>
-                                            <span class="name-ellipse">
+                                            <span class="name-ellipse text-decoration-line-through-{{iColumnWorkItem.archived}}">
                                                 {{iColumnWorkItem.name}}
                                             </span>
                                         </div>
@@ -60,7 +60,7 @@
                                                 <span class="avatar-icon" [style.background-image]="'url(' +  userUrlImage(member)  + ')'" [materialTooltip]="member.name"></span>
                                             </span>
                                             <div>
-                                                <span materialTooltip="{{dueDateLabel}}" [style.color]="dueDateColor(iColumnWorkItem)">{{iColumnWorkItem.dueDate | date:'shortDate'}}</span>
+                                                <span class="text-decoration-line-through-{{iColumnWorkItem.archived}}" materialTooltip="{{dueDateLabel}}" [style.color]="dueDateColor(iColumnWorkItem)">{{iColumnWorkItem.dueDate | date:'shortDate'}}</span>
                                             </div>
                                         </div>
                                         <div action>
@@ -81,7 +81,7 @@
                                                     </span>
                                                 </div>
                                                 <div>
-                                                    <material-slider [disabled]="whileUpdatingDisabled" [(value)]="iColumnWorkItem.actualValue"
+                                                    <material-slider [disabled]="whileUpdatingDisabled || iColumnWorkItem.archived" [(value)]="iColumnWorkItem.actualValue"
                                                                      [min]="0"
                                                                      [max]="100"
                                                                      materialTooltip="{{actualValueLabel}}" (click)="goToValues(iColumnWorkItem)">
@@ -91,7 +91,7 @@
                                             <material-expansionpanel *ngIf="iColumnWorkItem.checkItems.length > 0" name="{{checkItemsLabel}}" [(expanded)]="checkItensExpandedControl[iColumnWorkItem.id]"  [showSaveCancel]="false" class="no-border">
                                                 <div>
                                                     <div *ngFor="let iCheckItem of iColumnWorkItem.checkItems">
-                                                        <material-checkbox [disabled]="whileUpdatingDisabled" [(ngModel)]="iCheckItem.finished" [label]="iCheckItem.name" (click)="updateWorkItem(iColumnWorkItem)"></material-checkbox>
+                                                        <material-checkbox [disabled]="whileUpdatingDisabled || iColumnWorkItem.archived" [(ngModel)]="iCheckItem.finished" [label]="iCheckItem.name" (click)="updateWorkItem(iColumnWorkItem)"></material-checkbox>
                                                     </div>
                                                 </div>
                                             </material-expansionpanel>
