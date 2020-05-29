@@ -1,5 +1,5 @@
 <modal [visible]="modalVisible" >
-    <material-dialog  class="custom-width" headered>
+    <material-dialog  class="custom-width" headered  [error]="dialogError">
         <div header>
             <h3>{{timelineLabel}}</h3>
             <div class="w3-right">
@@ -14,6 +14,12 @@
         </div>
         <div class="w3-row">
             <div class="w3-col">
+                <div *ngIf="history?.isEmpty" class="w3-center">
+                    <strong>{{noNewRecordsLabel}}</strong>
+                </div>
+                <div *ngIf="history != null && history.isNotEmpty && fromDateTime != null" class="w3-center">
+                    <strong>{{newRecords}}</strong>
+                </div>
                 <div *ngFor="let historyItem of history">
                     <div>
                         <span class="avatar" [style.background-image]="'url(' + userUrlImage(historyItem.user) + ')'"></span>
@@ -35,8 +41,8 @@
             </div>
         </div>
         <div class="w3-row">
-            <div class="w3-col w3-center">
-                <material-button raised (trigger)="loadMore()">Carregar Mais</material-button>
+            <div class="w3-col w3-padding w3-center">
+                <material-button raised (trigger)="loadMore()">{{loadMoreLabel}}</material-button>
             </div>
         </div>
         <div footer>

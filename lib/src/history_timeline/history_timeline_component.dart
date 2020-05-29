@@ -74,6 +74,9 @@ class HistoryTimelineComponent implements OnActivate /* extends Object implement
   SelectionOptions systemModuleOptions;
   SelectionModel systemModuleSingleSelectModel;
 
+  /// When it exists, the error/exception message presented into dialog view.
+  String dialogError;
+
   int systemModuleIndex;
   UserControl userControl;
   DateTime fromDateTime;
@@ -89,6 +92,9 @@ class HistoryTimelineComponent implements OnActivate /* extends Object implement
   static final String minutesAgoLabel =  TimelineMsg.label(TimelineMsg.minutesAgoLabel);
   static final String secondAgoLabel =  TimelineMsg.label(TimelineMsg.secondAgoLabel);
   static final String secondsAgoLabel =  TimelineMsg.label(TimelineMsg.secondsAgoLabel);
+  static final String noNewRecordsLabel = TimelineMsg.label(TimelineMsg.noNewRecordsLabel);
+  static final String newRecords = TimelineMsg.label(TimelineMsg.newRecordsLabel);
+  static final String loadMoreLabel = TimelineMsg.label(TimelineMsg.loadMoreLabel);
 
   static String selectModuleSingleSelectLabel = TimelineMsg.label(TimelineMsg.selectModuleLabel);
 
@@ -115,7 +121,13 @@ class HistoryTimelineComponent implements OnActivate /* extends Object implement
 
     systemModuleOptions = SelectionOptions.fromList(options);
 
-    userControl = await _userService.getUserControl(_userService.authService.authenticatedUser.id);
+    try {
+      userControl = await _userService.getUserControl(_userService.authService.authenticatedUser.id);
+      //  groupTypes = await _groupService.getGroupTypes();
+    } catch (e) {
+      dialogError = e.toString();
+      rethrow;
+    }
 
     fromDateTime = userControl.dateTimeLastNotification;
 

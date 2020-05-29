@@ -70,8 +70,7 @@ class InsightsFilterComponent with CanReuse implements OnActivate, OnDeactivate 
   SelectionOptions leaderOptions;
   SelectionModel leaderMultiSelectModel;
 
-  List<Group> _groups;
-  List<User> _users;
+
 
   /// When it exists, the error/exception message presented into dialog view.
   String dialogError;
@@ -104,6 +103,9 @@ class InsightsFilterComponent with CanReuse implements OnActivate, OnDeactivate 
   @override
   void onActivate(RouterState previous, RouterState current) async {
     modalVisible = true;
+
+    List<Group> _groups;
+    List<User> _users;
 
     try {
       _groups = await _groupService.getGroups(_groupService.authService.authorizedOrganization.id);

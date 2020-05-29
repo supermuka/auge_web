@@ -73,8 +73,7 @@ class WorksFilterComponent with CanReuse implements OnActivate, OnDeactivate {
   SelectionOptions leaderOptions;
   SelectionModel leaderMultiSelectModel;
 
-  List<Group> _groups;
-  List<User> _users;
+
 
   bool archived = false;
 
@@ -110,9 +109,11 @@ class WorksFilterComponent with CanReuse implements OnActivate, OnDeactivate {
   void onActivate(RouterState previous, RouterState current) async {
     modalVisible = true;
 
+    List<Group> _groups;
+    List<User> _users;
     try {
       _groups = await _groupService.getGroups(_groupService.authService.authorizedOrganization.id);
-      _users = await _userService.getUsers(_groupService.authService.authorizedOrganization.id /*, withUserProfile: true*/);
+      _users = await _userService.getUsers(_groupService.authService.authorizedOrganization.id, withUserProfile: true);
     //  groupTypes = await _groupService.getGroupTypes();
     } catch (e) {
       dialogError = e.toString();

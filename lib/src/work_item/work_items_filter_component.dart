@@ -66,7 +66,7 @@ class WorkItemsFilterComponent with CanReuse implements OnActivate, OnDeactivate
   SelectionOptions assignedToOptions;
   SelectionModel assignedToMultiSelectModel;
 
-  List<User> _users;
+
 
   bool archived = false;
 
@@ -103,6 +103,7 @@ class WorkItemsFilterComponent with CanReuse implements OnActivate, OnDeactivate
   void onActivate(RouterState previous, RouterState current) async {
     modalVisible = true;
 
+    List<User> _users;
     try {
       _users = await _userService.getUsers(_workItemService.authService.authorizedOrganization.id, withUserProfile: true);
     } catch (e) {
