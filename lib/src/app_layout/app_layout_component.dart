@@ -20,15 +20,18 @@ import 'package:angular_components/material_select/material_dropdown_select_acce
 import 'package:angular_components/model/selection/selection_model.dart';
 import 'package:angular_components/model/selection/selection_options.dart';
 import 'package:angular_components/model/ui/has_factory.dart';
+import 'package:auge_web/src/history_timeline/history_component.dart';
+
+import 'package:auge_web/src/search_filter/search_filter_component.dart';
 
 import 'package:auge_web/src/auth/auth_service.dart';
-import 'package:auge_web/src/search_filter/search_filter_component.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
-//import 'package:auge_web/src/search/search_service.dart';
+import 'package:auge_web/src/search_filter/search_filter_service.dart';
 
 import 'package:auge_web/src/user/user_detail_component.dart';
 
 import 'package:auge_web/route/app_routes.dart';
+import 'package:auge_web/src/history_timeline/history_timeline_service.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
 
 import 'package:auge_shared/message/messages.dart';
@@ -51,11 +54,9 @@ import 'package:auge_web/src/organization/organization_component.template.dart' 
 import 'package:auge_web/src/work_item/work_items_kanban_component.template.dart' as work_items_kanban_component;
 import 'package:auge_web/src/history_timeline/history_timeline_component.template.dart' as history_timeline_component;
 
-import 'package:auge_web/src/search_filter/search_filter_service.dart';
-
 @Component(
     selector: 'auge-layout',
-    providers: const <dynamic>[AppLayoutService, SearchFilterService],
+    providers: const <dynamic>[AppLayoutService, SearchFilterService, HistoryTimelineService],
     templateUrl: 'app_layout_component.html',
     styleUrls: [
       'package:angular_components/app_layout/layout.scss.css',
@@ -77,6 +78,7 @@ import 'package:auge_web/src/search_filter/search_filter_service.dart';
      /* SearchComponent,*/
       UserDetailComponent,
       SearchFilterComponent,
+      HistoryComponent,
     ])
 
 class AppLayoutComponent with CanReuse implements OnActivate {
@@ -84,6 +86,7 @@ class AppLayoutComponent with CanReuse implements OnActivate {
 
   final AppLayoutService _appLayoutService;
   final AuthService _authService;
+  final HistoryTimelineService _historyTimelineService;
   final Router _router;
 
   String insightsRouteUrl;
@@ -94,7 +97,6 @@ class AppLayoutComponent with CanReuse implements OnActivate {
   String usersRouteUrl;
   String groupsRouteUrl;
   String organizationRouteUrl;
-  String historyTimelineRouteUrl;
 
   final List<RouteDefinition> routes = [
     RouteDefinition(
@@ -177,10 +179,9 @@ class AppLayoutComponent with CanReuse implements OnActivate {
   bool isAuthorizedToAccessConfiguration;
 
 
-  AppLayoutComponent(this._appLayoutService, this._authService, this._router) {
+  AppLayoutComponent(this._appLayoutService, this._authService, this._historyTimelineService, this._router) {
 
   }
-
 
 
   /// Messages and labels
@@ -196,12 +197,14 @@ class AppLayoutComponent with CanReuse implements OnActivate {
   static final String superAdminLabel = AppLayoutMsg.label(AppLayoutMsg.superAdminLabel);
   static final String groupsLabel = AppLayoutMsg.label(AppLayoutMsg.groupsLabel);
 
-  void onActivate(RouterState previous, RouterState current)  {
+  void onActivate(RouterState previous, RouterState current) async {
 
     if (_authService.authorizedOrganization == null || _authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
       return;
     }
+
+
     insightsRouteUrl = AppRoutes.insightsRoute.toUrl();
     mapRouteUrl = AppRoutes.mapRoute.toUrl();
     ganttRouteUrl = AppRoutes.ganttRoute.toUrl();
@@ -210,7 +213,7 @@ class AppLayoutComponent with CanReuse implements OnActivate {
     usersRouteUrl = AppRoutes.usersRoute.toUrl();
     groupsRouteUrl = AppRoutes.groupsRoute.toUrl();
     organizationRouteUrl =  AppRoutes.organizationRoute.toUrl(parameters: { AppRoutesParam.organizationIdParameter: _authService.authorizedOrganization.id });
-    historyTimelineRouteUrl = AppRoutes.historyTimelineRoute.toUrl();
+  //  historyTimelineRouteUrl = AppRoutes.historyTimelineRoute.toUrl();
 
     isAuthorizedToAccessUsers =_authService.isAuthorizedForAccessRole(SystemModule.users);
     isAuthorizedToAccessGroups = _authService.isAuthorizedForAccessRole(SystemModule.groups);
@@ -221,7 +224,7 @@ class AppLayoutComponent with CanReuse implements OnActivate {
 
     // User Options
     List<AppLayoutSettingSelectOption> userDetailOptions = new List();
-    userDetailOptions.add(new AppLayoutSettingSelectOption()
+    userDetailOptions.add(AppLayoutSettingSelectOption()
       ..group = null
       ..name = AppLayoutMsg.label(AppLayoutMsg.userDetailLabel)
       //..viewComponent = (bool userDetailVisible) { this.userDetailVisible = userDetailVisible; }
@@ -237,9 +240,9 @@ class AppLayoutComponent with CanReuse implements OnActivate {
       ..name = AppLayoutMsg.label(AppLayoutMsg.logoutLabel)
       ..routeUrl = AppRoutes.authRoute.toUrl());
 
-    userProfileLogoutGroupOptions.add(new OptionGroup.withLabel(logout, null));
+    userProfileLogoutGroupOptions.add(OptionGroup.withLabel(logout, null));
 
-    userProfileLogoutOptions = new SelectionOptions.withOptionGroups(userProfileLogoutGroupOptions);
+    userProfileLogoutOptions = SelectionOptions.withOptionGroups(userProfileLogoutGroupOptions);
 
     // Model Listening
     userProfileLogoutSingleSelectModel =
@@ -251,6 +254,14 @@ class AppLayoutComponent with CanReuse implements OnActivate {
       }
       userProfileLogoutSingleSelectModel.clear();
     });
+
+    // Refresh/update timeline count
+    try {
+      _historyTimelineService.refreshHistoryCount();
+    } catch (e) {
+      _appLayoutService.error = e.toString();
+      throw e;
+    }
   }
 
   bool get isAdmin {

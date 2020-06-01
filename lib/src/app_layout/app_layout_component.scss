@@ -118,3 +118,13 @@ material-list {
     padding: $mat-grid $mat-grid * 3;
   }
 }
+
+.fixed-width {
+  //width: $mat-grid - 2;
+  min-width: $mat-grid - 2;
+}
+
+.size-subscript {
+  font-size: x-small;
+  vertical-align: sub;
+}

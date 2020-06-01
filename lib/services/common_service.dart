@@ -19,9 +19,9 @@ Timer startTimeoutTimer(Function handleTimeout, [int milliseconds] ) {
   return new Timer(duration, handleTimeout);
 }
 
-Timer repeatingTimer(Function handleTimeout, [int milliseconds] ) {
+Timer repeatingTimer(int milliseconds, Function handleTimeout) {
   Duration duration = Duration(milliseconds: milliseconds == null ? durationMilliseconds : milliseconds);
-  return new Timer.periodic(duration, handleTimeout);
+  return Timer.periodic(duration, handleTimeout);
 }
 
 String colorFromUuid(String id) {

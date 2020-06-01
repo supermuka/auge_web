@@ -39,7 +39,7 @@ import 'package:auge_web/route/app_routes.dart';
     styleUrls: const [
       'history_timeline_component.css'
     ],
-    providers: const [HistoryTimelineService, UserService],
+    providers: const [/*HistoryTimelineService,*/ UserService],
     directives: const [
       coreDirectives,
       MaterialDialogComponent,

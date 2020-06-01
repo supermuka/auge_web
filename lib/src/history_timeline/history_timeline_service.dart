@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:angular/core.dart';
-import 'package:angular_components/model/date/date.dart';
 
 import 'package:auge_shared/domain/general/history_item.dart';
+import 'package:auge_shared/protos/generated/google/protobuf/wrappers.pb.dart';
 import 'package:auge_shared/src/util/common_utils.dart';
 
 import 'package:auge_web/services/auge_api_service.dart';
@@ -25,48 +25,71 @@ class HistoryTimelineService {
   // Shared history on components related
   List<HistoryItem> history;
 
+  // Shared history count
+  int historyCount;
+
   DateTime currentDateTime;
 
   HistoryTimelineService(this._authService, this._augeApiService) {
-    _commonServiceClient = common_pbgrpc.CommonServiceClient(_augeApiService.channel);
-    _historyItemServiceClient = history_item_pbgrpc.HistoryItemServiceClient(_augeApiService.channel);
+    _commonServiceClient =
+        common_pbgrpc.CommonServiceClient(_augeApiService.channel);
+    _historyItemServiceClient =
+        history_item_pbgrpc.HistoryItemServiceClient(_augeApiService.channel);
   }
 
   // get authService => _authService;
 
   /// Return a list of [TimelineItem]
-  Future<List<HistoryItem>> getHistory({int systemModuleIndex, DateTime fromDateTime, int rowsLimit}) async {
-    
+  Future<List<HistoryItem>> getHistory(
+      {int systemModuleIndex, DateTime fromDateTime, int rowsLimit}) async {
     //history_item_pbgrpc.HistoryResponse historyResponse = await _historyItemServiceClient.getHistory(history_item_pbgrpc.HistoryItemGetRequest()..systemModuleIndex = SystemModule.objectives.index );
     currentDateTime = await getDateTime();
 
     Map<String, dynamic> cache = {};
 
-    history_item_pbgrpc.HistoryItemGetRequest historyItemGetRequest = history_item_pbgrpc.HistoryItemGetRequest();
-    historyItemGetRequest.organizationId = _authService.authorizedOrganization.id;
+    history_item_pbgrpc
+        .HistoryItemGetRequest historyItemGetRequest = history_item_pbgrpc
+        .HistoryItemGetRequest();
+    historyItemGetRequest.organizationId =
+        _authService.authorizedOrganization.id;
     if (systemModuleIndex != null) {
       historyItemGetRequest.systemModuleIndex = systemModuleIndex;
     }
     if (fromDateTime != null) {
-      historyItemGetRequest.fromDateTime = CommonUtils.timestampFromDateTime(fromDateTime);
+      historyItemGetRequest.fromDateTime =
+          CommonUtils.timestampFromDateTime(fromDateTime);
     }
     if (rowsLimit != null) {
       historyItemGetRequest.rowsLimit = rowsLimit;
     }
 
-    return ( await _historyItemServiceClient.getHistory(historyItemGetRequest)).history.map((m) =>
+    return (await _historyItemServiceClient.getHistory(historyItemGetRequest))
+        .history.map((m) =>
     HistoryItem()
       ..readFromProtoBuf(m, cache)).toList();
-
   }
 
   Future<DateTime> getDateTime() async {
-    common_pbgrpc.DateTimeResponse dateTimeResponse = await _commonServiceClient.getDateTime(common_pbgrpc.DateTimeGetRequest()..isUtc = true);
+    common_pbgrpc.DateTimeResponse dateTimeResponse = await _commonServiceClient
+        .getDateTime(common_pbgrpc.DateTimeGetRequest()
+      ..isUtc = true);
 
     // Convert Protobuf timestamp to Dart DateTime
-    return /* CommonUtils.dateTimeFromTimestamp(dateTimeResponse.dateTime) */ dateTimeResponse.dateTime.toDateTime();
-
+    return /* CommonUtils.dateTimeFromTimestamp(dateTimeResponse.dateTime) */ dateTimeResponse
+        .dateTime.toDateTime();
   }
 
-}
+  refreshHistoryCount() async {
+    try {
+      Int32Value counter = await _historyItemServiceClient.getHistoryCount(
+          history_item_pbgrpc.HistoryCountGetRequest()
+            ..authOrganizationId = _authService.authorizedOrganization.id
+            ..authUserId = _authService.authenticatedUser.id);
 
+      // refresh history count
+      historyCount = counter.value;
+    } catch (e) {
+      throw e;
+    }
+  }
+}

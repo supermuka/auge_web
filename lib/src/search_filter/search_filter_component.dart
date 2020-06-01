@@ -18,7 +18,7 @@ import 'search_filter_service.dart';
   selector: 'auge-search-filter',
   templateUrl: 'search_filter_component.html',
   styleUrls: const ['search_filter_component.css'],
- // providers: const [],
+  //providers: const [SearchFilterService],
   directives: const [
     coreDirectives,
     routerDirectives,
@@ -37,7 +37,6 @@ class SearchFilterComponent with CanReuse {
 
   String searchLeadingGlyph = 'search';
   String searchLabel = '${CommonMsg.label(CommonMsg.searchLabel)}...';
-
 
   SearchFilterComponent(this._searchFilterService, this._router);
 
