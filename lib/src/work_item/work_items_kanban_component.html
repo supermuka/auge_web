@@ -16,7 +16,10 @@
             <div class="w3-row" value>
                 <div class="w3-col m9">
                     <div class="custom-grid-vertical">
-                        <auge-work-summary [work]="work"></auge-work-summary>
+                        <auge-work-summary [workItemsCount]="work.workItemsCount"
+                                           [workItemsOverDueCount]="work.workItemsOverDueCount"
+                                           [stateWorkItemsCount]="work.stateWorkItemsCount"
+                                           [stageWorkItemsCount]="work.stageWorkItemsCount"></auge-work-summary>
                     </div>
                 </div>
                 <div class="w3-col m3">

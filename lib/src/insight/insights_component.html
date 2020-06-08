@@ -1,20 +1,18 @@
-<div class="w3-content container-insights">
+<div class="container-list">
     <div class="w3-row">
-        <!-- material-icon size="medium" icon="done_all">
-        </material-icon>
-        <material-icon size="medium" icon="clear">
-        </material-icon -->
-        <div class="center">
-            <h3>{{objectivesOverallLabel}}</h3>
-        </div>
-        <div class="center c100 p{{overallProgress}} big">
+        <h4 style="margin: 0">
+            {{objectivesMeasuresLabel}}
+            <material-button icon (trigger)="goToObjectives()">
+                <material-icon baseline icon="launch"></material-icon>
+            </material-button>
+        </h4>
+        <div class="center c100 p{{overallProgress}} normal" [materialTooltip]="objectivesOverallLabel">
             <span>{{overallProgress}}%</span>
             <div class="slice">
                 <div class="bar"></div>
                 <div class="fill"></div>
             </div>
         </div>
-        <h3>{{objectivesMeasuresLabel}}</h3>
         <acx-scoreboard scrollable @deferred>
             <acx-scorecard class="card" elevation="1"
                            [label]="objectivesLabel"
@@ -53,7 +51,16 @@
                            changeType="NEGATIVE">
             </acx-scorecard>
         </acx-scoreboard>
-        <h3>{{worksWorkItemsLabel}}</h3>
+        <h4 style="margin: 0">
+            {{worksWorkItemsLabel}}
+            <material-button icon  (trigger)="goToWorks()">
+                <material-icon baseline icon="launch"></material-icon>
+            </material-button>
+        </h4>
+        <auge-work-summary class="center"
+                           [workItemsCount]="workItemsCount"
+                           [workItemsOverDueCount]="workItemsOverDueCount"
+                           [stateWorkItemsCount]="stateWorkItemsCount" @deferred></auge-work-summary>
         <acx-scoreboard scrollable @deferred>
             <acx-scorecard class="card" elevation="1"
                            [label]="worksLabel"
@@ -92,6 +99,12 @@
                            changeType="NEGATIVE">
             </acx-scorecard>
         </acx-scoreboard>
+        <h4 style="margin: 0">
+            Meus Itens de Trabalho
+            <material-button icon>
+                <material-icon baseline icon="launch"></material-icon>
+            </material-button>
+        </h4>
     </div>
 </div>
 <router-outlet [routes]="routes"></router-outlet>

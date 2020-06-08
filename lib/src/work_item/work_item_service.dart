@@ -81,8 +81,23 @@ class WorkItemService {
   /// Return [WorkItem] by id
   Future<WorkItem> getWorkItem(String id) async {
     // return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
-    return WorkItem()..readFromProtoBuf((await _workItemServiceClient.getWorkItem(
-        work_work_item_pbgrpc.WorkItemGetRequest()..id = id)), {});
+
+    return WorkItem()..readFromProtoBuf((await _workItemServiceClient.getWorkItem(work_work_item_pbgrpc.WorkItemGetRequest()..id = id)), {});
+  }
+
+  /// Return a list of [WorkItem]
+  Future<List<WorkItem>> getWorkItems({Set<String> assignedToIds, bool withWork, bool withArchived = false}) async {
+    // return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
+    work_work_item_pbgrpc.WorkItemGetRequest workItemGetRequest = work_work_item_pbgrpc.WorkItemGetRequest();
+    workItemGetRequest.organizationId = _authService.authorizedOrganization.id;
+    workItemGetRequest.withArchived = withArchived;
+    if (assignedToIds != null) workItemGetRequest.assignedToIds.addAll(assignedToIds);
+    // return WorkItem()..readFromProtoBuf((await _workItemServiceClient.getWorkItems(workItemGetRequest)), {});
+    if (withWork != null) workItemGetRequest.withWork = withWork;
+    Map<String, dynamic> cache = {};
+    return (await _workItemServiceClient.getWorkItems(workItemGetRequest)).workItems.map((i) =>
+    WorkItem()
+      ..readFromProtoBuf(i, cache)).toList();
   }
 
   /// Return [WorkItemAttachment] by id

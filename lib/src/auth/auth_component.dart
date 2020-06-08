@@ -118,6 +118,9 @@ class AuthComponent implements OnActivate {
   static final String informFollowTheCodeSentToEMailMsg = AuthMsg.informBelowTheCodeSentToEMailMsg();
   static final String codeValidateMsg = AuthMsg.codeValidateMsg();
   static final String newPasswordSavedMsg = AuthMsg.newPasswordSavedMsg();
+  static final String informIdentificationCorrectlyMsg = AuthMsg.informIdentificationCorrectlyMsg();
+
+  String error;
 
   String routerPreviousUrl;
 
@@ -356,6 +359,14 @@ class AuthComponent implements OnActivate {
   bool get repeatedNewPasswordCheck => (newPassword == repeatNewPassword);
 
   bool get newPasswordCheck => newPassword != null && newPassword.isNotEmpty && newPassword.trim().length >= 8;
+
+  void blurIdentification() {
+    if (identification.isNotEmpty && identification.indexOf('@') == -1) {
+      error = informIdentificationCorrectlyMsg;
+    } else {
+      error = null;
+    }
+  }
 
 }
 

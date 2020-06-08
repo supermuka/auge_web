@@ -62,6 +62,9 @@
 .c100.big {
   font-size: 240px;
 }
+.c100.normal {
+  font-size: 120px;
+}
 .c100.small {
   font-size: 80px;
 }

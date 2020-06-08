@@ -32,16 +32,27 @@ class WorkSummaryComponent {
   static final int progressBarWidth = 360;
   final preferredTooltipPositions = const [RelativePosition.OffsetBottomLeft, RelativePosition.OffsetBottomRight];
 
+ // @Input()
+ // Work work;
+
   @Input()
-  Work work;
+  int workItemsCount;
+
+  @Input()
+  int workItemsOverDueCount;
+
+  @Input()
+  Map<State, int> stateWorkItemsCount = {};
+
+  @Input()
+  Map<WorkStage, int> stageWorkItemsCount = {};
+
 
   // Define messages and labels
   static final String workItemsOverDueLabel =  WorkMsg.label(WorkMsg.workItemsOverDueLabel);
 
-  String circleColor(Work work)  {
+  String circleColor()  {
     String color;
-    int workItemsOverDueCount = work.workItemsOverDueCount;
-    int workItemsCount = work.workItemsCount;
 
     if (workItemsOverDueCount == 0) {
       color =  '#0f9d58'; // $mat-green-500: #0f9d58; // 'hsl(120, 100%, 50%)';
@@ -60,4 +71,5 @@ class WorkSummaryComponent {
   String stateHslColor(State state) => WorkService.getStateHslColor(state);
 
   String stateName(State state) => StateMsg.label(state.toString());
+
 }

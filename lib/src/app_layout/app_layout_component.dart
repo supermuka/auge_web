@@ -52,6 +52,7 @@ import 'package:auge_web/src/objective/objectives_component.template.dart' as ob
 import 'package:auge_web/src/group/groups_component.template.dart' as groups_component;
 import 'package:auge_web/src/organization/organization_component.template.dart' as organization_component;
 import 'package:auge_web/src/work_item/work_items_kanban_component.template.dart' as work_items_kanban_component;
+import 'package:auge_web/src/work_item/work_items_component.template.dart' as work_items_component;
 import 'package:auge_web/src/history_timeline/history_timeline_component.template.dart' as history_timeline_component;
 
 @Component(
@@ -94,6 +95,7 @@ class AppLayoutComponent with CanReuse implements OnActivate {
   String ganttRouteUrl;
   String objectivesRouteUrl;
   String worksRouteUrl;
+  String workItemsRouteUrl;
   String usersRouteUrl;
   String groupsRouteUrl;
   String organizationRouteUrl;
@@ -152,8 +154,8 @@ class AppLayoutComponent with CanReuse implements OnActivate {
       component: work_items_kanban_component.WorkItemsKanbanComponentNgFactory,
     ),
     RouteDefinition(
-      routePath: AppRoutes.workItemsKanbanViaObjectiveRoute,
-      component: work_items_kanban_component.WorkItemsKanbanComponentNgFactory,
+      routePath: AppRoutes.workItemsRoute,
+      component: work_items_component.WorkItemsComponentNgFactory,
     ),
     RouteDefinition(
       routePath: AppRoutes.historyTimelineRoute,
@@ -196,6 +198,7 @@ class AppLayoutComponent with CanReuse implements OnActivate {
   static final String adminLabel = AppLayoutMsg.label(AppLayoutMsg.adminLabel);
   static final String superAdminLabel = AppLayoutMsg.label(AppLayoutMsg.superAdminLabel);
   static final String groupsLabel = AppLayoutMsg.label(AppLayoutMsg.groupsLabel);
+  static final String workItemsLabel = AppLayoutMsg.label(AppLayoutMsg.workItemsLabel);
 
   void onActivate(RouterState previous, RouterState current) async {
 
@@ -210,6 +213,7 @@ class AppLayoutComponent with CanReuse implements OnActivate {
     ganttRouteUrl = AppRoutes.ganttRoute.toUrl();
     objectivesRouteUrl = AppRoutes.objectivesRoute.toUrl();
     worksRouteUrl = AppRoutes.worksRoute.toUrl();
+    workItemsRouteUrl = AppRoutes.workItemsRoute.toUrl();
     usersRouteUrl = AppRoutes.usersRoute.toUrl();
     groupsRouteUrl = AppRoutes.groupsRoute.toUrl();
     organizationRouteUrl =  AppRoutes.organizationRoute.toUrl(parameters: { AppRoutesParam.organizationIdParameter: _authService.authorizedOrganization.id });

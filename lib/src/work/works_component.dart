@@ -69,7 +69,7 @@ import 'package:auge_web/src/work_item/work_item_detail_component.template.dart'
       //WorkStagesComponent,
     ])
 
-class WorksComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy */ {
+class WorksComponent with CanReuse implements OnActivate /*, OnDestroy */ {
 
   final AppLayoutService _appLayoutService;
   final WorkService _workService;
@@ -152,10 +152,6 @@ class WorksComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy *
       MenuItem(stagesLabel, icon: Icon('view_week'), actionWithContext: (_) => goToStages(selectedWork)) ])], icon: Icon('menu'));
   }
 
-  @override
-  void ngOnInit() async {
-   // workItemSelectionView = SelectionView();
-  }
 
 /*
   @override
@@ -199,17 +195,6 @@ class WorksComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy *
 
     try {
 
-      /*
-      if (routerStateCurrent.parameters.containsKey(AppRoutesParam.objectiveIdParameter)) {
-          String objectiveId = routerStateCurrent.parameters[AppRoutesParam
-              .objectiveIdParameter];
-
-          if (objectiveId != null || objectiveId.isNotEmpty) {
-              worksFilterParam.objective = await _objectiveService.getObjective(objectiveId, withMeasures: false);
-          }
-      }
-      */
-
       List<Work> worksAux = await _workService.getWorks(_workService.authService.authorizedOrganization.id,
           withWorkItems: true,
           withProfile: true,
@@ -219,44 +204,6 @@ class WorksComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy *
 
       _orderWorks(_works, _workService.worksFilterOrder.orderedBy);
 
-
-/*
-      if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.workIdQueryParameter)) {
-        setExpandedWorkId(routerStateCurrent.queryParameters[AppRoutesQueryParam
-            .workIdQueryParameter], true);
-      }
-*/
-
-      /*
-      workFilterOptions =  objectiveFilterOptionsAux;
-      groupFilterOptions = groupFilterOptionsAux;
-      leaderFilterOptions = leaderFilterOptionsAux;
-
-      initialFilterOptionsIdsSelected = [];
-
-
-      if (initialWorkId != null) {
-
-        //   if (hasFilter) {
-        initialFilterOptionsIdsSelectedWorks = [initialWorkId];
-        //   hasFilter = false;
-      } else {
-        /*
-        initialWorksIdSelectedToFilter = null;
-
-        //expandedObjectiveId = initialObjectiveId;
-        setExpandedWorkId(initialWorkId, true);
-*/
-        if (initialFilterOptionsIdsSelectedWorks == null || initialFilterOptionsIdsSelectedWorks.isEmpty) {
-          initialFilterOptionsIdsSelectedWorks = [];
-        } else {
-          // Need to make to dispatcher angular input
-          List<String> l = initialFilterOptionsIdsSelectedWorks;
-          initialFilterOptionsIdsSelectedWorks = []..addAll(l);
-        }
-
-      }
-      */
 
       _works = worksAux;
 

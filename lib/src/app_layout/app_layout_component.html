@@ -19,7 +19,10 @@
                 <material-icon icon="visibility"></material-icon>{{objectivesLabel}}
             </material-list-item>
             <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(worksRouteUrl)">
-                <material-icon icon="timeline"></material-icon>{{worksLabel}}
+                <material-icon icon="work"></material-icon>{{worksLabel}}
+            </material-list-item>
+            <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(workItemsRouteUrl)">
+                <material-icon icon="list"></material-icon>{{workItemsLabel}}
             </material-list-item>
         </div>
         <div *ngIf="isAdmin || isSuperAdmin" group>
@@ -73,5 +76,4 @@
         <div class="error" [class.expanded]="error != null">{{error}}</div>
         <router-outlet [routes]="routes"></router-outlet>
     </div>
-
 </div>

@@ -9,6 +9,7 @@ import 'package:angular_components/scorecard/scorecard.dart';
 
 import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
+import 'package:angular_components/material_tooltip/material_tooltip.dart';
 
 import 'package:auge_shared/domain/objective/objective.dart';
 import 'package:auge_shared/domain/work/work.dart';
@@ -20,6 +21,7 @@ import 'package:auge_web/src/search_filter/search_filter_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
 import 'package:auge_web/src/group/group_service.dart';
 //import 'package:auge_web/src/filter/filter_component.dart';
+import 'package:auge_web/src/work/work_summary_component.dart';
 
 import 'package:auge_web/src/insight/insight_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
@@ -43,8 +45,10 @@ import 'package:auge_web/src/insight/insights_filter_component.template.dart' as
     routerDirectives,
     ScoreboardComponent,
     ScorecardComponent,
+    MaterialTooltipDirective,
     MaterialButtonComponent,
     MaterialIconComponent,
+    WorkSummaryComponent,
   ])
 
 class InsightsComponent with CanReuse implements OnActivate  {
@@ -120,6 +124,10 @@ class InsightsComponent with CanReuse implements OnActivate  {
   List<String> usersIdSelectedToFilter = [];
 
   List<String> initialFilterOptionsIdsSelected = [];
+
+  int workItemsCount = 0;
+  int workItemsOverDueCount = 0;
+  Map<State, int> stateWorkItemsCount = {};
 
   InsightsComponent(this._authService, this._appLayoutService, this._insightService, this._objectiveService, this._workService, this._searchFilterService, this._router);
 
@@ -291,28 +299,36 @@ class InsightsComponent with CanReuse implements OnActivate  {
     int _completedWorkWorkItemsNumber = 0;
     int _overDueWorkItemsNumber = 0;
 
-    for (int i=0;i<works.length;i++) {
+    stateWorkItemsCount.clear();
+
+    for (int i=0;i<_worksNumber;i++) {
       int _completedWorkWorkItemsNumber = 0;
 
       _workItemsNumber = _workItemsNumber + works[i].workItems.length;
 
-      if (works[i].workItems.length != 0 && works[i].workItems.length == _completedWorkWorkItemsNumber) {
-        _completedWorksNumber++;
-      }
-
       for (int ii=0;ii<works[i].workItems.length;ii++) {
-        //if (works[i].workItems[ii].completed == 100) {
+
         if (works[i].workItems[ii].workStage.index == State.completed.index) {
           _completedWorkWorkItemsNumber++;
         }
-        if (works[i].workItemsOverDueCount > 0) {
-          _overDueWorksNumber++;
-        }
+
         if (works[i].workItems[ii].isOverdue) {
           _overDueWorkItemsNumber++;
         }
+        stateWorkItemsCount.update(State.values[works[i].workItems[ii].workStage.state.index], (v) => v = v + 1, ifAbsent: () => 1);
       }
+
+      if (works[i].workItems.length != 0 && works[i].workItems.length == _completedWorkWorkItemsNumber) {
+        _completedWorksNumber++;
+      } else if (works[i].workItemsOverDueCount > 0) {
+        _overDueWorksNumber++;
+      }
+
     }
+
+    // used on view
+    workItemsCount = _workItemsNumber;
+    workItemsOverDueCount = _overDueWorkItemsNumber;
 
     /// Return a total number of works
     worksNumber = _worksNumber?.toString() ?? '0';
@@ -332,5 +348,13 @@ class InsightsComponent with CanReuse implements OnActivate  {
     /// Return a total number of over due work items
     overDueWorkItemsNumber = _overDueWorkItemsNumber?.toString() ?? '0';
 
+  }
+
+  goToObjectives() {
+    _router.navigate(AppRoutes.objectivesRoute.toUrl());
+  }
+
+  goToWorks() {
+    _router.navigate(AppRoutes.worksRoute.toUrl());
   }
 }

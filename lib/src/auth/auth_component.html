@@ -15,12 +15,15 @@
                               (continue)="authenticateAuthorizate($event)"
                                #stepA="step">
                         <div class="step-a">
-                            <material-input [label]="identificationLabel"
-                                            type="email"
+                            <material-input class="error-text-nowrap"
+                                            [label]="identificationLabel"
+                                            type="text"
                                             autoFocus floatingLabel
                                             required
+                                            [error]="error"
                                             [requiredErrorMsg]="requiredValueMsg"
-                                            [(ngModel)]="identification">
+                                            [(ngModel)]="identification"
+                                            (blur)="blurIdentification()">
                             </material-input>
                             <br/>
                             <material-input [label]="passwordLabel"
