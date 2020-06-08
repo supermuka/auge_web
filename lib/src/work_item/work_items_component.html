@@ -1,0 +1,66 @@
+<div class="container-list">
+    <div class="w3-row-padding">
+        <div class="w3-col">
+            <material-expansionpanel-set>
+                <div *ngFor="let iWorkItem of workItems">
+                    <material-expansionpanel [hideExpandedHeader]="false"
+                                             [alwaysHideExpandIcon]="true"
+                                             [showSaveCancel]="false">
+                        <div name>
+                            <span class="name-ellipse text-decoration-line-through-{{iWorkItem.archived}}">
+                                {{iWorkItem.name}}
+                            </span>
+                        </div>
+                        <div value class="w3-right-align">
+                            <span *ngFor="let member of iWorkItem.assignedTo">
+                                <span class="avatar-icon" [style.background-image]="'url(' +  userUrlImage(member)  + ')'" [materialTooltip]="member.name"></span>
+                            </span>
+                            <div>
+                                <span class="text-decoration-line-through-{{iWorkItem.archived}}" materialTooltip="{{dueDateLabel}}" [style.color]="dueDateColor(iWorkItem)">{{iWorkItem.dueDate | date:'shortDate'}}</span>
+                            </div>
+                        </div>
+                        <div action>
+                            <material-button icon (trigger)="goToKanban(iWorkItem)">
+                                <material-icon icon="launch"></material-icon>
+                            </material-button>
+                        </div>
+                        <div>
+                            <div>
+                                <strong>{{workLabel}}</strong> {{iWorkItem.work.name}}
+                            </div>
+                            <br/>
+                            <div *ngIf="hasPlannedOrActual(iWorkItem)">
+                                <div class="w3-center">
+                                    <span class="w3-left">
+                                        {{iWorkItem.plannedValue}}
+                                    </span>
+                                    <span class="w3-center">
+                                        {{iWorkItem.actualValue}}
+                                    </span>
+                                    <span class="w3-right">
+                                        {{remainingValue(iWorkItem.plannedValue, iWorkItem.actualValue)}}
+                                    </span>
+                                </div>
+                                <div>
+                                    <material-slider [disabled]="true" [(value)]="iWorkItem.actualValue"
+                                                     [min]="0"
+                                                     [max]="100"
+                                                     materialTooltip="{{actualValueLabel}}">
+                                    </material-slider>
+                                </div>
+                            </div>
+                            <material-expansionpanel *ngIf="iWorkItem.checkItems.length > 0" name="{{checkItemsLabel}}" [(expanded)]="checkItensExpandedControl[iWorkItem.id]"  [showSaveCancel]="false" class="no-border">
+                                <div>
+                                    <div *ngFor="let iCheckItem of iWorkItem.checkItems">
+                                        <material-checkbox [disabled]="true" [(ngModel)]="iCheckItem.finished" [label]="iCheckItem.name"></material-checkbox>
+                                    </div>
+                                </div>
+                            </material-expansionpanel>
+                        </div>
+                    </material-expansionpanel>
+                </div>
+            </material-expansionpanel-set>
+        </div>
+    </div>
+</div>
+<router-outlet [routes]="routes"></router-outlet>

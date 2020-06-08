@@ -1,14 +1,20 @@
+@import 'package:auge_web/scss/common.scss';
+@import 'package:angular_components/css/material/material';
+@import 'package:angular_components/material_expansionpanel/mixins';
+
 header {
-  text-align: center;
-  vertical-align: middle;
-  background-color: #9e9e9e;
-  margin: 0px;
-  padding: 0px;
-  height: 36px;
+    text-align: center;
+    vertical-align: middle;
+    background-color: $mat-gray;
+    margin: 0px;
+    padding: 0px;
+    height: 36px;
 }
 
-.expansionpanel-flat-on-collapse-theme-no-border ::ng-deep div.panel.themeable:not(.open) {
-  box-shadow: 0px 0px 0px 0px;
+.expansionpanel-flat-on-collapse-theme-no-border {
+  ::ng-deep #{$_panel}:not(.open) {
+    box-shadow: 0px 0px 0px 0px;
+  }
 }
 
 .custom-expansionpanel-panel-specific-name-width {
@@ -31,15 +37,18 @@ header {
   flex-direction: column;
   align-items: stretch;
   overflow-y: auto;
+
   margin-left: 2px;
   margin-right: 2px;
   padding-left: 2px;
   padding-right: 2px;
+
   min-width: 360px;
   max-width: 480px;
   width: 480px;
   height: 100%;
   min-height: 75vh;
+  //max-height: 90vh;
 }
 
 /*
@@ -47,6 +56,7 @@ header {
   min-width: 400px;
 }
 */
+
 .custom-grid {
   display: grid;
   /* grid-template-columns: min-content auto; */
@@ -57,7 +67,7 @@ header {
   display: inline-grid;
   grid-template-rows: 1fr;
   grid-template-columns: 1fr;
-  /* grid-gap: 3px; */
+ /* grid-gap: 3px; */
   justify-items: center;
   align-items: center;
 }
@@ -76,7 +86,7 @@ header {
 }
 
 .column-divider:not(:last-child) {
-  border-right: 1px solid #9e9e9e;
+   border-right: 1px solid $mat-gray;
 }
 
 .name-ellipse {
@@ -87,27 +97,24 @@ header {
   text-overflow: ellipsis;
 }
 
-.panel-name-max-width ::ng-deep > div.panel.themeable > header .panel-name {
-  max-width: 320px;
+.panel-name-max-width {
+  @include expansionpanel-panel-name-max-width(320px);
+  //max-width: 50px;
 }
 
-.no-border ::ng-deep div.panel.themeable {
-  border: 0;
-  box-shadow: none;
+.no-border {
+  @include expansionpanel-no-border();
 }
 
-.flat-on-collapse-theme ::ng-deep div.panel.themeable:not(.open) {
-  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.12);
+.flat-on-collapse-theme {
+  @include expansionpanel-flat-on-collapse-theme();
 }
 
-.shadow ::ng-deep div.panel.themeable {
-  box-shadow: 2px;
-}
-.shadow ::ng-deep div.panel.themeable.open {
-  box-shadow: 2px;
+
+.shadow {
+  @include expansionpanel-shadow(2px);
 }
 
-.no-header-contents-padding ::ng-deep > div.panel.themeable > header .panel-name,
-.no-header-contents-padding ::ng-deep > div.panel.themeable > header .panel-description {
-  padding: 0;
+.no-header-contents-padding {
+  @include expansionpanel-no-header-contents-padding();
 }
