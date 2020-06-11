@@ -7,7 +7,6 @@ import 'package:angular_components/focus/keyboard_only_focus_indicator.dart';
 import 'package:angular_components/laminate/enums/alignment.dart';
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
 
-import 'package:auge_shared/domain/work/work.dart';
 import 'package:auge_shared/domain/work/work_stage.dart';
 
 import 'package:auge_web/src/work/work_service.dart';
@@ -47,7 +46,6 @@ class WorkSummaryComponent {
   @Input()
   Map<WorkStage, int> stageWorkItemsCount = {};
 
-
   // Define messages and labels
   static final String workItemsOverDueLabel =  WorkMsg.label(WorkMsg.workItemsOverDueLabel);
 
@@ -64,8 +62,8 @@ class WorkSummaryComponent {
     return color;
   }
 
-  String widthState(int workItemsCount, int stateWorkItemsCount, int widthTotal) {
-    return (stateWorkItemsCount / workItemsCount * widthTotal).toString();
+  String widthState(int stateWorkItemsCount) {
+    return (stateWorkItemsCount / workItemsCount * progressBarWidth).toString();
   }
 
   String stateHslColor(State state) => WorkService.getStateHslColor(state);

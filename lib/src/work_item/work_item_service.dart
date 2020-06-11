@@ -234,7 +234,9 @@ class WorkItemsFilterOrder {
   bool archived = false;
 
   // Filtered Items
-  int filteredItems;
+  int get filteredItems {
+    return assignedToUserIds.length + (archived ? 1 : 0);
+  }
 
   //Ordered by
   String orderedBy;

@@ -29,12 +29,12 @@ import 'package:auge_web/src/app_layout/app_layout_component.template.dart' as a
 class AppComponent with CanReuse  {
 
   final List<RouteDefinition> routes = [
-    new RouteDefinition(
+    RouteDefinition(
       routePath: AppRoutes.authRoute,
       component: auth_component.AuthComponentNgFactory,
       useAsDefault: true
     ),
-    new RouteDefinition(
+    RouteDefinition(
       routePath: AppRoutes.appLayoutRoute,
       component: app_layout_component.AppLayoutComponentNgFactory,
     ),

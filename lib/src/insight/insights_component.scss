@@ -1,4 +1,5 @@
 @import 'package:angular_components/css/material/shadow';
+@import 'package:angular_components/scorecard/mixins';
 /*
 .container-insights {
   max-width: 1200px;
@@ -6,13 +7,26 @@
  // padding-bottom: 8px;
 }
 */
+
+
 .center {
   display: flex;
   justify-content: center;
-  align-items: center;
+  margin-bottom: 8px;
+  //flex-direction: row;
+  //align-content: center;
+  //self-align: center;
+  //align-items: center;
 }
 
 .card {
   @include material-shadow();
   margin: 4px;
+  text-align: left;
+}
+
+.acx-scorecard-value-size {
+  @include acx-scorecard-value() {
+    font-size: large;
+  }
 }

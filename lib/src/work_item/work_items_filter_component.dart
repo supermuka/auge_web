@@ -92,7 +92,6 @@ class WorkItemsFilterComponent with CanReuse implements OnActivate, OnDeactivate
   static final String archivedLabel = WorkItemDomainMsg.fieldLabel(WorkItem.archivedField);
   static final String assignedToLabel = WorkItemDomainMsg.fieldLabel(WorkItem.assignedToField);
 
-
   final workItemsOrderedByOptions = [dueDateLabel, nameLabel];
 
   String orderedBy = dueDateLabel;
@@ -131,12 +130,12 @@ class WorkItemsFilterComponent with CanReuse implements OnActivate, OnDeactivate
 
   void applyFilter() async {
 
-    _workItemService.workItemsFilterOrder.filteredItems = 0;
+    //_workItemService.workItemsFilterOrder.filteredItems = 0;
 
     _workItemService.workItemsFilterOrder.assignedToUserIds = assignedToMultiSelectModel.selectedValues.map((f) => f.id).toSet().cast();
-    _workItemService.workItemsFilterOrder.filteredItems += _workItemService.workItemsFilterOrder.assignedToUserIds.length;
+    //_workItemService.workItemsFilterOrder.filteredItems += _workItemService.workItemsFilterOrder.assignedToUserIds.length;
     _workItemService.workItemsFilterOrder.archived = archived;
-    _workItemService.workItemsFilterOrder.filteredItems += (archived) ? 1 : 0;
+    //_workItemService.workItemsFilterOrder.filteredItems += (archived) ? 1 : 0;
     _workItemService.workItemsFilterOrder.orderedBy = orderedBy;
 
     closeFilter();

@@ -119,6 +119,9 @@ class WorkItemsComponent with CanReuse implements OnActivate /*, OnDestroy */ {
 
         _workItemService.workItemsFilterOrder.assignedToUserIds = {userId};
 
+        //TODO encontrar outra forma de retirar o queryparam.
+        _router.navigateByUrl(routerStateCurrent.path, replace: true);
+
       }
 
       _appLayoutService.headerTitle = headerTitle;

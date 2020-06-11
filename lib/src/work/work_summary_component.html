@@ -6,7 +6,7 @@
               size="medium"
               #clickableRef="tooltipTarget">
             <span *ngFor="let iState of stateWorkItemsCount.keys">
-                <span [style.background-color]="'hsl(' + stateHslColor(iState) + ')'" [style.width]="widthState(workItemsCount, stateWorkItemsCount[iState], progressBarWidth) + 'px'">&nbsp;</span>
+                <span [style.background-color]="'hsl(' + stateHslColor(iState) + ')'" [style.width]="widthState(stateWorkItemsCount[iState]) + 'px'">&nbsp;</span>
             </span>
             <material-tooltip-card [for]="clickableRef" [preferredPositions]="preferredTooltipPositions">
                 <div *ngFor="let iState of stateWorkItemsCount.keys">
@@ -14,10 +14,13 @@
                     <div class="tooltip-card-bar" [style.background-color]="'hsl(' + stateHslColor(iState) + ')'"></div>
                     &nbsp;
                     <strong>{{stateName(iState)}}</strong><br/>
-                    <div  *ngFor="let iStage of stageWorkItemsCount.keys">
+                    <div *ngFor="let iStage of stageWorkItemsCount.keys">
                         <div *ngIf="iStage.state.index == iState.index">
                         <b>{{stageWorkItemsCount[iStage]}}</b>&nbsp;{{iStage.name}}
                         </div>
+                    </div>
+                    <div *ngIf="stageWorkItemsCount.isEmpty">
+                        <b>{{stateWorkItemsCount[iState]}}</b>
                     </div>
                 </div>
                 <!-- div *ngFor="let istage of stageWorkItemsCount.keys; let iee = index">

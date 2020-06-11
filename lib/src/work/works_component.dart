@@ -204,7 +204,6 @@ class WorksComponent with CanReuse implements OnActivate /*, OnDestroy */ {
 
       _orderWorks(_works, _workService.worksFilterOrder.orderedBy);
 
-
       _works = worksAux;
 
    //   workItemSelectionView.selected = workItemSelectionView.selected ?? 'list';

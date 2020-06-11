@@ -1,7 +1,7 @@
 <div class="container-list">
-    <div class="w3-row">
-        <h4 style="margin: 0">
-            {{objectivesMeasuresLabel}}
+    <div class="w3-row w3-margin-bottom">
+        <h4  style="margin: 0">
+            {{objectivesLabel}}
             <material-button icon (trigger)="goToObjectives()">
                 <material-icon baseline icon="launch"></material-icon>
             </material-button>
@@ -13,98 +13,159 @@
                 <div class="fill"></div>
             </div>
         </div>
-        <acx-scoreboard scrollable @deferred>
-            <acx-scorecard class="card" elevation="1"
-                           [label]="objectivesLabel"
-                           [value]="objectivesNumber"
-                           [description]="objectivesDescriptionLabel"
-                           changeType="POSITIVE">
-            </acx-scorecard>
-            <acx-scorecard class="card" elevation="1"
-                           [label]="objectivesAchievedLabel"
-                           [value]="achievedObjectivesNumber"
-                           [description]="objectivesAchievedDescriptionLabel"
-                           changeType="POSITIVE">
-            </acx-scorecard>
-            <acx-scorecard class="card" elevation="1"
-                           [label]="objectivesRequiringAttentionLabel"
-                           [value]="requiringAttentionObjectivesNumber"
-                           [description]="objectivesRequiringAttentionDescriptionLabel"
-                           changeType="NEGATIVE">
-            </acx-scorecard>
-            <acx-scorecard class="card" elevation="1"
-                           [label]="measuresLabel"
-                           [value]="measuresNumber"
-                           [description]="measuresDescriptionLabel"
-                           changeType="POSITIVE">
-            </acx-scorecard>
-            <acx-scorecard class="card" elevation="1"
-                           [label]="measuresAchievedLabel"
-                           [value]="achievedMeasuresNumber"
-                           [description]="measuresAchievedDescriptionLabel"
-                           changeType="POSITIVE">
-            </acx-scorecard>
-            <acx-scorecard class="card" elevation="1"
-                           [label]="measuresRequiringAttentionLabel"
-                           [value]="requiringAttentionMeasuresNumber"
-                           [description]="measuresRequiringAttentionDescriptionLabel"
-                           changeType="NEGATIVE">
-            </acx-scorecard>
-        </acx-scoreboard>
+        <div class="w3-center">
+            <acx-scoreboard class="acx-scorecard-value-size" scrollable @deferred>
+                <acx-scorecard class="card" elevation="1"
+                               [label]="objectivesLabel"
+                               [value]="objectivesNumber"
+                               [description]="objectivesDescriptionLabel"
+                               changeType="POSITIVE">
+                </acx-scorecard>
+                <acx-scorecard class="card" elevation="1"
+                               [label]="objectivesAchievedLabel"
+                               [value]="achievedObjectivesNumber"
+                               [description]="objectivesAchievedDescriptionLabel"
+                               changeType="POSITIVE">
+                </acx-scorecard>
+                <acx-scorecard class="card" elevation="1"
+                               [label]="objectivesRequiringAttentionLabel"
+                               [value]="requiringAttentionObjectivesNumber"
+                               [description]="objectivesRequiringAttentionDescriptionLabel"
+                               changeType="NEGATIVE">
+                </acx-scorecard>
+                <!-- acx-scorecard class="card" elevation="1"
+                               [label]="measuresLabel"
+                               [value]="measuresNumber"
+                               [description]="measuresDescriptionLabel"
+                               changeType="POSITIVE">
+                </acx-scorecard>
+                <acx-scorecard class="card" elevation="1"
+                               [label]="measuresAchievedLabel"
+                               [value]="achievedMeasuresNumber"
+                               [description]="measuresAchievedDescriptionLabel"
+                               changeType="POSITIVE">
+                </acx-scorecard>
+                <acx-scorecard class="card" elevation="1"
+                               [label]="measuresRequiringAttentionLabel"
+                               [value]="requiringAttentionMeasuresNumber"
+                               [description]="measuresRequiringAttentionDescriptionLabel"
+                               changeType="NEGATIVE">
+                </acx-scorecard -->
+            </acx-scoreboard>
+        </div>
+    </div>
+    <div class="w3-row w3-margin-bottom">
         <h4 style="margin: 0">
-            {{worksWorkItemsLabel}}
+            {{worksLabel}}
             <material-button icon  (trigger)="goToWorks()">
                 <material-icon baseline icon="launch"></material-icon>
             </material-button>
         </h4>
-        <auge-work-summary class="center"
-                           [workItemsCount]="workItemsCount"
-                           [workItemsOverDueCount]="workItemsOverDueCount"
-                           [stateWorkItemsCount]="stateWorkItemsCount" @deferred></auge-work-summary>
-        <acx-scoreboard scrollable @deferred>
-            <acx-scorecard class="card" elevation="1"
-                           [label]="worksLabel"
-                           [value]="worksNumber"
-                           [description]="worksDescriptionLabel"
-                           changeType="POSITIVE">
-            </acx-scorecard>
-            <acx-scorecard class="card" elevation="1"
-                           [label]="worksCompletedLabel"
-                           [value]="completedWorksNumber"
-                           [description]="worksCompletedDescriptionLabel"
-                           changeType="POSITIVE">
-            </acx-scorecard>
-            <acx-scorecard class="card" elevation="1"
-                           [label]="worksRequiringAttentionLabel"
-                           [value]="overDueWorksNumber"
-                           [description]="worksRequiringAttentionDescriptionLabel"
-                           changeType="NEGATIVE">
-            </acx-scorecard>
-            <acx-scorecard class="card" elevation="1"
-                           [label]="workItemsLabel"
-                           [value]="workItemsNumber"
-                           [description]="workItemsDescriptionLabel"
-                           changeType="POSITIVE">
-            </acx-scorecard>
-            <acx-scorecard class="card" elevation="1"
-                           [label]="workItemsCompletedLabel"
-                           [value]="completedWorkItemsNumber"
-                           [description]="workItemsCompletedDescriptionLabel"
-                           changeType="POSITIVE">
-            </acx-scorecard>
-            <acx-scorecard class="card" elevation="1"
-                           [label]="workItemsRequiringAttentionLabel"
-                           [value]="overDueWorkItemsNumber"
-                           [description]="workItemsRequiringAttentionDescriptionLabel"
-                           changeType="NEGATIVE">
-            </acx-scorecard>
-        </acx-scoreboard>
-        <h4 style="margin: 0">
-            Meus Itens de Trabalho
-            <material-button icon>
+        <div class="center">
+            <auge-work-summary [workItemsCount]="workItemsCount"
+                               [workItemsOverDueCount]="workItemsOverDueCount"
+                               [stateWorkItemsCount]="stateWorkItemsCount" @deferred></auge-work-summary>
+        </div>
+        <div class="w3-center">
+            <acx-scoreboard class="acx-scorecard-value-size" scrollable @deferred>
+                <acx-scorecard class="card" elevation="1"
+                               [label]="worksLabel"
+                               [value]="worksNumber"
+                               [description]="worksDescriptionLabel"
+                               changeType="POSITIVE">
+                </acx-scorecard>
+                <acx-scorecard class="card" elevation="1"
+                               [label]="worksCompletedLabel"
+                               [value]="completedWorksNumber"
+                               [description]="worksCompletedDescriptionLabel"
+                               changeType="POSITIVE">
+                </acx-scorecard>
+                <acx-scorecard class="card" elevation="1"
+                               [label]="worksRequiringAttentionLabel"
+                               [value]="overDueWorksNumber"
+                               [description]="worksRequiringAttentionDescriptionLabel"
+                               changeType="NEGATIVE">
+                </acx-scorecard>
+                <acx-scorecard class="card" elevation="1"
+                               [label]="workItemsLabel"
+                               [value]="workItemsNumber"
+                               [description]="workItemsDescriptionLabel"
+                               changeType="POSITIVE">
+                </acx-scorecard>
+                <acx-scorecard class="card" elevation="1"
+                               [label]="workItemsNotStartedLabel"
+                               [value]="notStartedWorkItemsNumber"
+                               [description]="workItemsNotStartedDescriptionLabel"
+                               changeType="POSITIVE">
+                </acx-scorecard>
+                <acx-scorecard class="card" elevation="1"
+                               [label]="workItemsInProgressLabel"
+                               [value]="inProgressWorkItemsNumber"
+                               [description]="workItemsInProgressDescriptionLabel"
+                               changeType="POSITIVE">
+                </acx-scorecard>
+                <acx-scorecard class="card" elevation="1"
+                               [label]="workItemsCompletedLabel"
+                               [value]="completedWorkItemsNumber"
+                               [description]="workItemsCompletedDescriptionLabel"
+                               changeType="POSITIVE">
+                </acx-scorecard>
+                <acx-scorecard class="card" elevation="1"
+                               [label]="workItemsRequiringAttentionLabel"
+                               [value]="overDueWorkItemsNumber"
+                               [description]="workItemsRequiringAttentionDescriptionLabel"
+                               changeType="NEGATIVE">
+                </acx-scorecard>
+            </acx-scoreboard>
+        </div>
+    </div>
+    <div class="w3-row w3-margin-bottom">
+        <h4 class="w3-margin-top" style="margin: 0">
+            {{worksMyWorkItemsLabel}}
+            <material-button icon (trigger)="goToWorkItems()">
                 <material-icon baseline icon="launch"></material-icon>
             </material-button>
         </h4>
+        <div class="center" >
+            <auge-work-summary
+                               [workItemsCount]="myWorkItemsCount"
+                               [workItemsOverDueCount]="myWorkItemsOverDueCount"
+                               [stateWorkItemsCount]="myStateWorkItemsCount" @deferred></auge-work-summary>
+        </div>
+        <div class="w3-center">
+            <acx-scoreboard class="acx-scorecard-value-size" scrollable @deferred>
+                <acx-scorecard class="card" elevation="1"
+                               [label]="workItemsLabel"
+                               [value]="myWorkItemsNumber"
+                               [description]="workItemsDescriptionLabel"
+                               changeType="POSITIVE">
+                </acx-scorecard>
+                <acx-scorecard class="card" elevation="1"
+                               [label]="workItemsNotStartedLabel"
+                               [value]="myNotStartedWorkItemsNumber"
+                               [description]="workItemsNotStartedDescriptionLabel"
+                               changeType="POSITIVE">
+                </acx-scorecard>
+                <acx-scorecard class="card" elevation="1"
+                               [label]="workItemsInProgressLabel"
+                               [value]="myInProgressWorkItemsNumber"
+                               [description]="workItemsInProgressDescriptionLabel"
+                               changeType="POSITIVE">
+                </acx-scorecard>
+                <acx-scorecard class="card" elevation="1"
+                               [label]="workItemsCompletedLabel"
+                               [value]="myCompletedWorkItemsNumber"
+                               [description]="workItemsCompletedDescriptionLabel"
+                               changeType="POSITIVE">
+                </acx-scorecard>
+                <acx-scorecard class="card" elevation="1"
+                               [label]="workItemsRequiringAttentionLabel"
+                               [value]="myOverDueWorkItemsNumber"
+                               [description]="workItemsRequiringAttentionDescriptionLabel"
+                               changeType="NEGATIVE">
+                </acx-scorecard>
+            </acx-scoreboard>
+        </div>
     </div>
 </div>
 <router-outlet [routes]="routes"></router-outlet>

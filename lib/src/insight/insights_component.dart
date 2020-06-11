@@ -89,13 +89,13 @@ class InsightsComponent with CanReuse implements OnActivate  {
   String requiringAttentionObjectivesNumber;
 
   /// Return a total number of measures
-  String measuresNumber;
+ // String measuresNumber;
 
   /// Return a total number of achieved measures with progress over 70%
-  String achievedMeasuresNumber;
+ // String achievedMeasuresNumber;
 
   /// Return a total number of measures with progress less that 30%
-  String requiringAttentionMeasuresNumber;
+  //String requiringAttentionMeasuresNumber;
 
   /// Return a total number of works
   String worksNumber;
@@ -108,12 +108,23 @@ class InsightsComponent with CanReuse implements OnActivate  {
 
   /// Return a total number of measures
   String workItemsNumber;
+  String myWorkItemsNumber;
+
+  /// Return a total number of not started work items with progress equal 100%
+  String notStartedWorkItemsNumber;
+  String myNotStartedWorkItemsNumber;
+
+  /// Return a total number of in progress work items with progress equal 100%
+  String inProgressWorkItemsNumber;
+  String myInProgressWorkItemsNumber;
 
   /// Return a total number of completed work items with progress equal 100%
   String completedWorkItemsNumber;
+  String myCompletedWorkItemsNumber;
 
   /// Return a total number of over due work items
   String overDueWorkItemsNumber;
+  String myOverDueWorkItemsNumber;
 
   List<Objective> objectives = [];
   List<Work> works = [];
@@ -126,8 +137,11 @@ class InsightsComponent with CanReuse implements OnActivate  {
   List<String> initialFilterOptionsIdsSelected = [];
 
   int workItemsCount = 0;
+  int myWorkItemsCount = 0;
   int workItemsOverDueCount = 0;
-  Map<State, int> stateWorkItemsCount = {};
+  int myWorkItemsOverDueCount = 0;
+  Map<State, int> stateWorkItemsCount;
+  Map<State, int> myStateWorkItemsCount;
 
   InsightsComponent(this._authService, this._appLayoutService, this._insightService, this._objectiveService, this._workService, this._searchFilterService, this._router);
 
@@ -136,8 +150,6 @@ class InsightsComponent with CanReuse implements OnActivate  {
   static final String groupLabel = InsightMsg.label(InsightMsg.groupLabel);
 
   static final String objectivesOverallLabel = InsightMsg.label(InsightMsg.objectivesOverallLabel);
-  static final String objectivesMeasuresLabel = InsightMsg.label(InsightMsg.objectivesMeasuresLabel);
-  static final String worksWorkItemsLabel = InsightMsg.label(InsightMsg.worksWorkItemsLabel);
 
   static final String objectivesLabel =  InsightMsg.label(InsightMsg.objectivesLabel);
   static final String objectivesDescriptionLabel =  InsightMsg.label(InsightMsg.objectivesDescriptionLabel);
@@ -148,16 +160,8 @@ class InsightsComponent with CanReuse implements OnActivate  {
   static final String objectivesRequiringAttentionLabel =  InsightMsg.label(InsightMsg.objectivesRequiringAttentionLabel);
   static final String objectivesRequiringAttentionDescriptionLabel =  InsightMsg.label(InsightMsg.objectivesRequiringAttentionDescriptionLabel);
 
-  static final String measuresLabel =  InsightMsg.label(InsightMsg.measuresLabel);
-  static final String measuresDescriptionLabel =  InsightMsg.label(InsightMsg.measuresDescriptionLabel);
-
-  static final String measuresAchievedLabel =  InsightMsg.label(InsightMsg.measuresAchievedLabel);
-  static final String measuresAchievedDescriptionLabel =  InsightMsg.label(InsightMsg.measuresAchievedDescriptionLabel);
-
-  static final String measuresRequiringAttentionLabel =  InsightMsg.label(InsightMsg.measuresRequiringAttentionLabel);
-  static final String measuresRequiringAttentionDescriptionLabel =  InsightMsg.label(InsightMsg.measuresRequiringAttentionDescriptionLabel);
-
   static final String worksLabel =  InsightMsg.label(InsightMsg.worksLabel);
+
   static final String worksDescriptionLabel =  InsightMsg.label(InsightMsg.worksDescriptionLabel);
 
   static final String worksCompletedLabel =  InsightMsg.label(InsightMsg.worksCompletedLabel);
@@ -169,11 +173,19 @@ class InsightsComponent with CanReuse implements OnActivate  {
   static final String workItemsLabel =  InsightMsg.label(InsightMsg.workItemsLabel);
   static final String workItemsDescriptionLabel =  InsightMsg.label(InsightMsg.workItemsDescriptionLabel);
 
+  static final String workItemsNotStartedLabel =  InsightMsg.label(InsightMsg.workItemsNotStartedLabel);
+  static final String workItemsNotStartedDescriptionLabel =  InsightMsg.label(InsightMsg.workItemsNotStartedDescriptionLabel);
+
+  static final String workItemsInProgressLabel =  InsightMsg.label(InsightMsg.workItemsInProgressLabel);
+  static final String workItemsInProgressDescriptionLabel =  InsightMsg.label(InsightMsg.workItemsInProgressDescriptionLabel);
+
   static final String workItemsCompletedLabel =  InsightMsg.label(InsightMsg.workItemsCompletedLabel);
   static final String workItemsCompletedDescriptionLabel =  InsightMsg.label(InsightMsg.workItemsDescriptionLabel);
 
   static final String workItemsRequiringAttentionLabel =  InsightMsg.label(InsightMsg.workItemsRequiringAttentionLabel);
   static final String workItemsRequiringAttentionDescriptionLabel =  InsightMsg.label(InsightMsg.workItemsRequiringAttentionDescriptionLabel);
+
+  static final String worksMyWorkItemsLabel = InsightMsg.label(InsightMsg.worksMyWorkItemsLabel);
 
   @override
   void onActivate(RouterState previous, RouterState current) async {
@@ -232,12 +244,12 @@ class InsightsComponent with CanReuse implements OnActivate  {
       int _sumOverallProgress = 0;
       int _achievedObjectivesNumber = 0;
       int _requiringAttentionObjectivesNumber = 0;
-      int _measuresNumber = 0;
-      int _achievedMeasuresNumber = 0;
-      int _requiringAttentionMeasuresNumber = 0;
+      //int _measuresNumber = 0;
+      //int _achievedMeasuresNumber = 0;
+      //int _requiringAttentionMeasuresNumber = 0;
 
       for (int i=0;i<_objectivesNumber;i++) {
-        _sumOverallProgress = _sumOverallProgress + objectives[i].progress ?? 0;
+        _sumOverallProgress = _sumOverallProgress + objectives[i].progress;
 
         if (objectives[i].progress > 70) {
           _achievedObjectivesNumber++;
@@ -246,7 +258,7 @@ class InsightsComponent with CanReuse implements OnActivate  {
         if (objectives[i].progress < 30) {
           _requiringAttentionObjectivesNumber++;
         }
-
+/*
         _measuresNumber = _measuresNumber + objectives[i].measures.length;
 
         for (int ii=0;ii<objectives[i].measures.length;ii++) {
@@ -262,20 +274,22 @@ class InsightsComponent with CanReuse implements OnActivate  {
             _requiringAttentionMeasuresNumber++;
           }
         }
+
+ */
       }
 
       /// Return overall progress
       overallProgress =  _objectivesNumber > 0 && _sumOverallProgress > 0 ? (_sumOverallProgress ~/ _objectivesNumber).toString() : '0';
 
       /// Return a total number of objectives
-      objectivesNumber =  _objectivesNumber?.toString() ?? '0';
+      objectivesNumber =  _objectivesNumber.toString();
 
       /// Return a total number of achieved objectives with progress over 70%
-      achievedObjectivesNumber = _achievedObjectivesNumber?.toString() ?? '0';
+      achievedObjectivesNumber = _achievedObjectivesNumber.toString();
 
       /// Return a total number of objectives with progress less that 30%
-      requiringAttentionObjectivesNumber = _requiringAttentionObjectivesNumber?.toString() ?? '0';
-
+      requiringAttentionObjectivesNumber = _requiringAttentionObjectivesNumber.toString();
+/*
       /// Return a total number of measures
       measuresNumber = _measuresNumber?.toString() ?? '0';
 
@@ -288,6 +302,8 @@ class InsightsComponent with CanReuse implements OnActivate  {
       /// Return a total number of measures with progress less that 30%
       requiringAttentionMeasuresNumber =  _requiringAttentionMeasuresNumber?.toString() ?? '0';
 
+ */
+
   }
 
   aggregateWorksMeasurement() async {
@@ -295,59 +311,98 @@ class InsightsComponent with CanReuse implements OnActivate  {
     int _worksNumber = works.length;
     int _completedWorksNumber = 0;
     int _overDueWorksNumber = 0;
+    /*
     int _workItemsNumber = 0;
+    int _myWorkItemsNumber = 0;
+    int _notStartedWorkWorkItemsNumber = 0;
+    int _myNotStartedWorkWorkItemsNumber = 0;
+    int _inProgressWorkWorkItemsNumber = 0;
+    int _myInProgressWorkWorkItemsNumber = 0;
     int _completedWorkWorkItemsNumber = 0;
+    int _myCompletedWorkWorkItemsNumber = 0;
+     */
     int _overDueWorkItemsNumber = 0;
+    int _myOverDueWorkItemsNumber = 0;
 
-    stateWorkItemsCount.clear();
+    State.values.map((e) => {e,0});
 
+    stateWorkItemsCount = {State.notStarted: 0, State.inProgress: 0, State.completed: 0};
+    myStateWorkItemsCount = {State.notStarted: 0, State.inProgress: 0, State.completed: 0};
+
+    bool hasUserAuthenticated;
     for (int i=0;i<_worksNumber;i++) {
-      int _completedWorkWorkItemsNumber = 0;
-
-      _workItemsNumber = _workItemsNumber + works[i].workItems.length;
+      // int _completedWorkWorkItemsNumber = 0;
+      //  _workItemsNumber = _workItemsNumber + works[i].workItems.length;
 
       for (int ii=0;ii<works[i].workItems.length;ii++) {
 
-        if (works[i].workItems[ii].workStage.index == State.completed.index) {
-          _completedWorkWorkItemsNumber++;
-        }
+        hasUserAuthenticated = (works[i].workItems[ii].assignedTo.indexWhere((test) => test.id == _authService.authenticatedUser.id) != -1);
+/*
+        if (hasUserAuthenticated) _myWorkItemsNumber++;
 
+        if (works[i].workItems[ii].workStage.index == State.notStarted.index) {
+          _notStartedWorkWorkItemsNumber++;
+          if (hasUserAuthenticated) _myNotStartedWorkWorkItemsNumber++;
+        } else if (works[i].workItems[ii].workStage.index == State.inProgress.index) {
+          _inProgressWorkWorkItemsNumber++;
+          if (hasUserAuthenticated) _myInProgressWorkWorkItemsNumber++;
+        } else if (works[i].workItems[ii].workStage.index == State.completed.index) {
+          _completedWorkWorkItemsNumber++;
+          if (hasUserAuthenticated) _myCompletedWorkWorkItemsNumber++;
+        }
+*/
         if (works[i].workItems[ii].isOverdue) {
           _overDueWorkItemsNumber++;
+          if (hasUserAuthenticated) _myOverDueWorkItemsNumber++;
         }
-        stateWorkItemsCount.update(State.values[works[i].workItems[ii].workStage.state.index], (v) => v = v + 1, ifAbsent: () => 1);
+
+        stateWorkItemsCount[State.values[works[i].workItems[ii].workStage.state.index]]++;
+        if (hasUserAuthenticated) myStateWorkItemsCount[State.values[works[i].workItems[ii].workStage.state.index]]++;
+        // stateWorkItemsCount.update(State.values[works[i].workItems[ii].workStage.state.index], (v) => v = v + 1, ifAbsent: () => 1);
+        //if (hasUserAuthenticated) myStateWorkItemsCount.update(State.values[works[i].workItems[ii].workStage.state.index], (v) => v = v + 1, ifAbsent: () => 1);
       }
 
-      if (works[i].workItems.length != 0 && works[i].workItems.length == _completedWorkWorkItemsNumber) {
+      if (works[i].workItems.length != 0 && works[i].workItems.length == stateWorkItemsCount[State.completed]) {
         _completedWorksNumber++;
       } else if (works[i].workItemsOverDueCount > 0) {
         _overDueWorksNumber++;
       }
-
     }
 
     // used on view
-    workItemsCount = _workItemsNumber;
+    workItemsCount = stateWorkItemsCount[State.notStarted] + stateWorkItemsCount[State.inProgress] + stateWorkItemsCount[State.completed];
     workItemsOverDueCount = _overDueWorkItemsNumber;
+    myWorkItemsCount = myStateWorkItemsCount[State.notStarted] + myStateWorkItemsCount[State.inProgress] + myStateWorkItemsCount[State.completed];
+    myWorkItemsOverDueCount = _myOverDueWorkItemsNumber;
 
     /// Return a total number of works
-    worksNumber = _worksNumber?.toString() ?? '0';
+    worksNumber = _worksNumber.toString();
 
     /// Return a total number of works completed = all work items completed
-    completedWorksNumber = _completedWorksNumber?.toString() ?? '0';
+    completedWorksNumber = _completedWorksNumber.toString();
 
     /// Return a total number of works with over due work items
-    overDueWorksNumber = _overDueWorksNumber?.toString() ?? '0';
+    overDueWorksNumber = _overDueWorksNumber.toString();
 
-    /// Return a total number of measures
-    workItemsNumber = _workItemsNumber?.toString() ?? '0';
+    /// Return a total number of work items
+    workItemsNumber = workItemsCount.toString();
+    myWorkItemsNumber = myWorkItemsCount.toString();
 
-    /// Return a total number of completed work items with progress equal 100%
-    completedWorkItemsNumber = _completedWorkWorkItemsNumber?.toString() ?? '0';
+    /// Return a total number of not start work items
+    notStartedWorkItemsNumber = stateWorkItemsCount[State.notStarted].toString(); //_notStartedWorkWorkItemsNumber.toString();
+    myNotStartedWorkItemsNumber = myStateWorkItemsCount[State.notStarted].toString(); //_myNotStartedWorkWorkItemsNumber.toString();
+
+    /// Return a total number of in progress work items
+    inProgressWorkItemsNumber = stateWorkItemsCount[State.inProgress].toString(); // _inProgressWorkWorkItemsNumber.toString();
+    myInProgressWorkItemsNumber = myStateWorkItemsCount[State.inProgress].toString(); //_myInProgressWorkWorkItemsNumber.toString();
+
+    /// Return a total number of completed work items
+    completedWorkItemsNumber = stateWorkItemsCount[State.completed].toString(); //_completedWorkWorkItemsNumber.toString();
+    myCompletedWorkItemsNumber = myStateWorkItemsCount[State.completed].toString(); //_myCompletedWorkWorkItemsNumber.toString();
 
     /// Return a total number of over due work items
-    overDueWorkItemsNumber = _overDueWorkItemsNumber?.toString() ?? '0';
-
+    overDueWorkItemsNumber = _overDueWorkItemsNumber.toString();
+    myOverDueWorkItemsNumber = _myOverDueWorkItemsNumber.toString();
   }
 
   goToObjectives() {
@@ -356,5 +411,9 @@ class InsightsComponent with CanReuse implements OnActivate  {
 
   goToWorks() {
     _router.navigate(AppRoutes.worksRoute.toUrl());
+  }
+
+  goToWorkItems() {
+    _router.navigateByUrl(AppRoutes.workItemsRoute.toUrl( queryParameters: {AppRoutesQueryParam.assignedToUserIdQueryParameter: _authService.authenticatedUser.id}), reload: true);
   }
 }
