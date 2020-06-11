@@ -47,9 +47,14 @@
                         <material-expansionpanel-set>
                             <span *ngFor="let iColumnWorkItem of kanbanColumn.columnWorkItems">
                                 <div class="column-stage" draggable="true" (dragstart)="drag($event, kanbanColumn, iColumnWorkItem)" >
+                                                                        <!-- material-expansionpanel class="panel-name-max-width shadow"
+                                                                                                 [disabled]="true"
+                                                                                                 [expanded]="true"
+                                                                                                 [hideExpandedHeader]="false"
+                                                                                                 [alwaysHideExpandIcon]="true"
+                                                                                                 [showSaveCancel]="false" -->
                                     <material-expansionpanel class="panel-name-max-width shadow"
-                                                             [disabled]="true"
-                                                             [expanded]="true"
+                                                             [(expanded)]="expandedControl[iColumnWorkItem.id]"
                                                              [hideExpandedHeader]="false"
                                                              [alwaysHideExpandIcon]="true"
                                                              [showSaveCancel]="false">

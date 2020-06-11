@@ -1,5 +1,5 @@
 <div class="container-list">
-    <div class="w3-row w3-margin-bottom">
+    <div class="w3-row">
         <h4  style="margin: 0">
             {{objectivesLabel}}
             <material-button icon (trigger)="goToObjectives()">
@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="w3-center">
-            <acx-scoreboard class="acx-scorecard-value-size" scrollable @deferred>
+            <acx-scoreboard class="acx-scorecard-value-size acx-scorecard-padding-custom" scrollable @deferred>
                 <acx-scorecard class="card" elevation="1"
                                [label]="objectivesLabel"
                                [value]="objectivesNumber"
@@ -54,20 +54,15 @@
             </acx-scoreboard>
         </div>
     </div>
-    <div class="w3-row w3-margin-bottom">
+    <div class="w3-row">
         <h4 style="margin: 0">
             {{worksLabel}}
             <material-button icon  (trigger)="goToWorks()">
                 <material-icon baseline icon="launch"></material-icon>
             </material-button>
         </h4>
-        <div class="center">
-            <auge-work-summary [workItemsCount]="workItemsCount"
-                               [workItemsOverDueCount]="workItemsOverDueCount"
-                               [stateWorkItemsCount]="stateWorkItemsCount" @deferred></auge-work-summary>
-        </div>
         <div class="w3-center">
-            <acx-scoreboard class="acx-scorecard-value-size" scrollable @deferred>
+            <acx-scoreboard class="acx-scorecard-value-size acx-scorecard-padding-custom" scrollable @deferred>
                 <acx-scorecard class="card" elevation="1"
                                [label]="worksLabel"
                                [value]="worksNumber"
@@ -86,6 +81,15 @@
                                [description]="worksRequiringAttentionDescriptionLabel"
                                changeType="NEGATIVE">
                 </acx-scorecard>
+            </acx-scoreboard>
+        </div>
+        <div class="center">
+            <auge-work-summary [workItemsCount]="workItemsCount"
+                               [workItemsOverDueCount]="workItemsOverDueCount"
+                               [stateWorkItemsCount]="stateWorkItemsCount" @deferred></auge-work-summary>
+        </div>
+        <div  class="w3-center">
+            <acx-scoreboard class="acx-scorecard-value-size acx-scorecard-padding-custom" scrollable @deferred>
                 <acx-scorecard class="card" elevation="1"
                                [label]="workItemsLabel"
                                [value]="workItemsNumber"
@@ -119,7 +123,7 @@
             </acx-scoreboard>
         </div>
     </div>
-    <div class="w3-row w3-margin-bottom">
+    <div class="w3-row">
         <h4 class="w3-margin-top" style="margin: 0">
             {{worksMyWorkItemsLabel}}
             <material-button icon (trigger)="goToWorkItems()">
@@ -133,7 +137,7 @@
                                [stateWorkItemsCount]="myStateWorkItemsCount" @deferred></auge-work-summary>
         </div>
         <div class="w3-center">
-            <acx-scoreboard class="acx-scorecard-value-size" scrollable @deferred>
+            <acx-scoreboard class="acx-scorecard-value-size acx-scorecard-padding-custom" scrollable @deferred>
                 <acx-scorecard class="card" elevation="1"
                                [label]="workItemsLabel"
                                [value]="myWorkItemsNumber"

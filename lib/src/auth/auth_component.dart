@@ -164,6 +164,7 @@ class AuthComponent implements OnActivate {
       if (identification.isEmpty || passwordStr.isEmpty) {
         //dialogError = AuthMsg.informIdentificationPasswordCorrectlyMsg();
         dialogError = AuthMsg.informIdentificationPasswordCorrectlyMsg();
+        return true;
       } else {
         try {
           _authService.authUserAccess.user =

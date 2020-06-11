@@ -12,6 +12,7 @@
 .center {
   display: flex;
   justify-content: center;
+  margin-top: 8px;
   margin-bottom: 8px;
   //flex-direction: row;
   //align-content: center;
@@ -29,4 +30,8 @@
   @include acx-scorecard-value() {
     font-size: large;
   }
+}
+
+.acx-scorecard-padding-custom {
+   @include acx-scorecard-padding(8px, 8px, 8px, 8px);
 }

@@ -94,6 +94,7 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
 
   MenuModel<MenuItem> menuModel;
 
+  Map<String, bool> expandedControl = {};
   Map<String, bool> checkItensExpandedControl = {};
 
   bool whileUpdatingDisabled = false;
@@ -161,6 +162,17 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
 
       } else {
         throw Exception('Work Id does not informed.');
+      }
+
+      if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.workItemIdQueryParameter)) {
+        String workItemId = routerStateCurrent.queryParameters[AppRoutesQueryParam
+            .workItemIdQueryParameter];
+
+        expandedControl[workItemId] = true;
+        
+        //TODO encontrar outra forma de retirar o queryparam.
+        _router.navigateByUrl(routerStateCurrent.path, replace: true);
+
       }
 
       _appLayoutService.headerTitle = headerTitle;
