@@ -185,11 +185,8 @@ class WorkItemsComponent with CanReuse implements OnActivate /*, OnDestroy */ {
   }
 
   void goToKanban(WorkItem workItem) {
-     _router.navigate(AppRoutes.workItemsKanbanRoute.toUrl(parameters: {
+     _router.navigateByUrl(AppRoutes.workItemsKanbanRoute.toUrl(parameters: {
        AppRoutesParam.workIdParameter: workItem.work.id}, queryParameters: {AppRoutesQueryParam.workItemIdQueryParameter: workItem.id}));
-   // _router.navigate(AppRoutes.workItemsKanbanViaWorkItemsRoute.toUrl(parameters: {
-   //   AppRoutesParam.workIdParameter: workItem.work.id}));
   }
-
 }
 

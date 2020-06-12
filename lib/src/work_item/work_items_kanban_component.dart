@@ -47,6 +47,7 @@ import 'package:auge_web/route/app_routes.dart';
 import 'package:auge_web/src/work_item/work_items_filter_component.template.dart' as work_items_filter_component;
 import 'package:auge_web/src/work_item/work_item_detail_component.template.dart' as work_item_detail_component;
 import 'package:auge_web/src/work_item/work_item_values_component.template.dart' as work_item_values_component;
+import 'package:auge_web/src/work/work_stages_component.template.dart' as work_stages_component;
 
 @Component(
     selector: 'auge-work-items-kanban',
@@ -128,6 +129,10 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
     RouteDefinition(
       routePath: AppRoutes.workItemsKanbanFilterRoute,
       component: work_items_filter_component.WorkItemsFilterComponentNgFactory,
+    ),
+    RouteDefinition(
+      routePath: AppRoutes.workStagesRouteViaKanbanRoute,
+      component: work_stages_component.WorkStagesComponentNgFactory,
     ),
   ];
 
@@ -330,6 +335,12 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
     if (!hasPlannedOrActual(workItem)) return;
     _router.navigate(AppRoutes.workItemKanbanValuesRoute.toUrl(parameters: {
       AppRoutesParam.workIdParameter: work.id, AppRoutesParam.workItemIdParameter: workItem.id }) /*, NavigationParams(replace:  true) */);
+  }
+
+  void goToStages() {
+
+    _router.navigate(AppRoutes.workStagesRouteViaKanbanRoute.toUrl(parameters: {
+      AppRoutesParam.workIdParameter: work.id}) /*, NavigationParams(replace:  true) */);
   }
 
   String stateHslColor(State state) => WorkService.getStateHslColor(state);

@@ -119,6 +119,7 @@ class WorkStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
     if (current.parameters.containsKey(AppRoutesParam.workIdParameter)) {
       workId = current.parameters[AppRoutesParam.workIdParameter];
     }
+
     if (workId != null) {
       workStages = await _workService.getWorkStages(workId);
     } else {

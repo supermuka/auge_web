@@ -133,7 +133,6 @@ class WorksComponent with CanReuse implements OnActivate /*, OnDestroy */ {
   static final String workLabel =  WorkMsg.label(WorkMsg.workLabel);
   static final String worksLabel =  WorkMsg.label(WorkMsg.worksLabel);
 
-
   static final String nameLabel = WorkDomainMsg.fieldLabel(Work.nameField);
   static final String groupLabel = WorkDomainMsg.fieldLabel(Work.groupField);
   static final String leaderLabel = WorkDomainMsg.fieldLabel(Work.leaderField);

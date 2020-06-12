@@ -12,7 +12,7 @@
                 <div class="truncate-ellipsed">{{work.description}}</div>
             </span>
         </div>
-        <div class="w3-row" value>
+        <div value class="w3-row" >
             <div class="w3-col m9">
                 <div class="custom-grid-vertical">
                     <auge-work-summary [workItemsCount]="work.workItemsCount"
@@ -33,6 +33,11 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div action>
+            <material-button icon (trigger)="goToStages()">
+                <material-icon icon="view_week"></material-icon>
+            </material-button>
         </div>
         <div class="container-flex-row">
             <div *ngFor="let kanbanColumn of kanbanColumns" class="column-divider">
