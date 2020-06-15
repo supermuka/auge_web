@@ -11,7 +11,7 @@
 
 .pie, .c100 .bar, .c100.p51 .fill, .c100.p52 .fill, .c100.p53 .fill, .c100.p54 .fill, .c100.p55 .fill, .c100.p56 .fill, .c100.p57 .fill, .c100.p58 .fill, .c100.p59 .fill, .c100.p60 .fill, .c100.p61 .fill, .c100.p62 .fill, .c100.p63 .fill, .c100.p64 .fill, .c100.p65 .fill, .c100.p66 .fill, .c100.p67 .fill, .c100.p68 .fill, .c100.p69 .fill, .c100.p70 .fill, .c100.p71 .fill, .c100.p72 .fill, .c100.p73 .fill, .c100.p74 .fill, .c100.p75 .fill, .c100.p76 .fill, .c100.p77 .fill, .c100.p78 .fill, .c100.p79 .fill, .c100.p80 .fill, .c100.p81 .fill, .c100.p82 .fill, .c100.p83 .fill, .c100.p84 .fill, .c100.p85 .fill, .c100.p86 .fill, .c100.p87 .fill, .c100.p88 .fill, .c100.p89 .fill, .c100.p90 .fill, .c100.p91 .fill, .c100.p92 .fill, .c100.p93 .fill, .c100.p94 .fill, .c100.p95 .fill, .c100.p96 .fill, .c100.p97 .fill, .c100.p98 .fill, .c100.p99 .fill, .c100.p100 .fill {
   position: absolute;
-  border: 0.08em solid #3367d6;  /* #0000ff; #307bbb; */
+  border: 0.08em solid #4fc3f7;   /* #81d4fa; #03a9f4; #3367d6 #0000ff; #307bbb; */
   width: 0.84em;
   height: 0.84em;
   clip: rect(0em, 0.5em, 1em, 0em);
@@ -48,7 +48,7 @@
   /* float: left; --- original */
   display: block;
   margin: 0.1em 0.1em 0.1em 0.1em;/* 0 0.1em 0.1em 0; */
-  background-color: #cccccc;
+  background-color: #e0e0e0;   /* #eeeeee; #9e9e9e; #cccccc; */
 }
 .c100 *, .c100 *:before, .c100 *:after {
   -webkit-box-sizing: content-box;
@@ -85,7 +85,7 @@
   line-height: 5em;
   font-size: 0.2em;
   */
-  color: #cccccc;
+  color: #e0e0e0;  /* #eeeeee; #9e9e9e;  #cccccc; */
   display: block;
   text-align: center;
   white-space: nowrap;
@@ -113,7 +113,7 @@
   -ms-border-radius: 50%;
   -o-border-radius: 50%;
   border-radius: 50%;
-  background-color: whitesmoke;
+  background-color: #fafafa; /* whitesmoke; */
   width: 0.84em;
   height: 0.84em;
   -webkit-transition-property: all;
@@ -847,7 +847,7 @@
   line-height: 3.33em;
   font-size: 0.3em;
   */
-  color: #3367d6; /* #0000ff;  #307bbb; */
+  color: #4fc3f7;   /* #81d4fa; #03a9f4; #3367d6 #0000ff;  #307bbb; */
 }
 .c100:hover:after {
   top: 0.04em;

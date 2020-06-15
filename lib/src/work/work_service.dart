@@ -192,11 +192,14 @@ class WorkService {
   static String getStateHslColor(State state) {
     String hslColor;
     if (state == State.notStarted) {
-      hslColor = '0, 0%, 90%';
+      // hslColor = '0, 0%, 90%';
+      hslColor = '0, 0%, 88%'; //$mat-gray-300
     } else if (state == State.inProgress) {
-      hslColor = '90, 100%, 90%';
+      //hslColor = '90, 100%, 90%';
+      hslColor = '88, 50%, 67%'; //$mat-light-green-300
     } else if (state == State.completed) {
-      hslColor = '200, 100%, 90%';
+     // hslColor = '200, 100%, 90%';
+      hslColor = '199, 91%, 64%'; //$mat-light-blue-300
     }
     return hslColor;
   }

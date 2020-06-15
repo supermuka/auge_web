@@ -4,6 +4,7 @@
 import 'dart:html' as html;
 
 import 'package:angular/angular.dart';
+import 'package:angular_components/angular_components.dart';
 import 'package:angular_router/angular_router.dart';
 
 import 'package:angular_components/material_icon/material_icon.dart';
@@ -41,6 +42,7 @@ import 'package:angular_components/material_tooltip/module.dart';
   directives: const [
     coreDirectives,
     routerDirectives,
+    MaterialButtonComponent,
     MaterialIconComponent,
     MaterialTooltipDirective,
     ClickableTooltipTargetDirective,

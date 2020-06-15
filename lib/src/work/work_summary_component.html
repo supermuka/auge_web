@@ -9,6 +9,7 @@
                 <span [style.background-color]="'hsl(' + stateHslColor(iState) + ')'" [style.width]="widthState(stateWorkItemsCount[iState]) + 'px'">&nbsp;</span>
             </span>
             <material-tooltip-card [for]="clickableRef" [preferredPositions]="preferredTooltipPositions">
+                <strong>{{workItemsLabel}}</strong>
                 <div *ngFor="let iState of stateWorkItemsCount.keys">
                     <br/>
                     <div class="tooltip-card-bar" [style.background-color]="'hsl(' + stateHslColor(iState) + ')'"></div>

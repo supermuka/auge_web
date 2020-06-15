@@ -197,7 +197,9 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
       _objectives = objectivesAux;
 
       if (search && initialObjectiveId != null) {
-        _searchFilterService.searchTerm = _objectives.firstWhere((t) => t.id == initialObjectiveId)?.name;
+        Map keySearch = {};
+        keySearch[Objective.className + '.' + Objective.idField] = initialObjectiveId;
+        _searchFilterService.searchTerm = _objectives.firstWhere((t) => t.id == initialObjectiveId)?.name + ' ' + keySearch.toString();
       }
 
     } catch (e) {
@@ -231,8 +233,37 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
 
 
   List<Objective> get objectives {
-    return (_searchFilterService.searchTerm == null || _searchFilterService.searchTerm.isEmpty) ? _objectives : _objectives.where((test) => test.name.contains(_searchFilterService.searchTerm)).toList();
 
+    if (_searchFilterService.searchTerm == null || _searchFilterService.searchTerm.isEmpty) {
+      return _objectives;
+    } else {
+      int indexFirst = _searchFilterService.searchTerm.indexOf('{');
+      int indexLast = _searchFilterService.searchTerm.indexOf('}');
+
+      String descriptiveSearch;
+      String objectiveIdSearch;
+      if (indexFirst != -1 && indexLast != -1) {
+        String keySearch;
+        keySearch = _searchFilterService.searchTerm.substring(indexFirst, indexLast + 1);
+
+        String key = Objective.className + '.' + Objective.idField + ':';
+        int indexKey = keySearch.indexOf(key);
+
+        if (indexKey != -1) {
+          objectiveIdSearch = keySearch.substring(indexKey + key.length + 1, keySearch.length -1).trim();
+        } else {
+          objectiveIdSearch = '';
+        }
+
+        descriptiveSearch = _searchFilterService.searchTerm.substring(0, indexFirst).trim();
+
+      } else {
+        descriptiveSearch = _searchFilterService.searchTerm;
+      }
+
+      return  _objectives.where((test) => test.name.contains(descriptiveSearch) && (objectiveIdSearch == null || test.id == objectiveIdSearch)).toList();
+
+    }
   }
 
   void selectObjective(Objective objective) {
