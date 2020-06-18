@@ -4,6 +4,7 @@ import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
 
 import 'package:angular_components/material_button/material_button.dart';
+import 'package:angular_components/material_icon/material_icon.dart';
 import 'package:angular_components/material_tooltip/material_tooltip.dart';
 import 'package:angular_components/focus/keyboard_only_focus_indicator.dart';
 import 'package:angular_components/laminate/enums/alignment.dart';
@@ -29,6 +30,7 @@ import 'package:auge_web/route/app_routes.dart';
     coreDirectives,
     routerDirectives,
     MaterialButtonComponent,
+    MaterialIconComponent,
     MaterialTooltipDirective,
     ClickableTooltipTargetDirective,
     KeyboardOnlyFocusIndicatorDirective,
@@ -57,8 +59,11 @@ class GanttComponent with CanReuse implements OnActivate {
   }
 
   // Define messages and labels
+  static final String notInformedMsg = MapMsg.notInformedMsg();
+
   static final String leaderLabel = ObjectiveDomainMsg.fieldLabel(Objective.leaderField); // FieldMsg.label('${Objective.className}.${Objective.leaderField}');
-  static final String groupLabel =  ObjectiveDomainMsg.fieldLabel(Objective.groupField); //FieldMsg.label('${Objective.className}.${Objective.groupField}');
+  static final String groupLabel = ObjectiveDomainMsg.fieldLabel(Objective.groupField);
+  static final String objectiveLabel =  ObjectiveMsg.label(ObjectiveMsg.objectiveLabel); //FieldMsg.label('${Objective.className}.${Objective.groupField}');
   static final String startDateLabel = ObjectiveDomainMsg.fieldLabel(Objective.startDateField); // FieldMsg.label('${Objective.className}.${Objective.startDateField}');
   static final String endDateLabel =  ObjectiveDomainMsg.fieldLabel(Objective.endDateField); //FieldMsg.label('${Objective.className}.${Objective.endDateField}');
 
@@ -89,7 +94,7 @@ class GanttComponent with CanReuse implements OnActivate {
     return common_service.userUrlImage(userMember?.userProfile?.image);
   }
 
-  void goToObjectives(Objective objective) async {
+  void goToObjective(Objective objective) async {
     _router.navigateByUrl(AppRoutes.objectivesRoute.toUrl(queryParameters: { AppRoutesParam.objectiveIdParameter: objective.id }) /*, reload: true, replace: true */);
   }
 
@@ -160,6 +165,8 @@ class GanttComponent with CanReuse implements OnActivate {
           yearsMonthsInterval.first.month;
 
       startMonth = startYearDiff * 12 + startMonthDiff;
+    } else {
+      startMonth = null;
     }
 
     int endMonth = startMonth;
@@ -173,6 +180,16 @@ class GanttComponent with CanReuse implements OnActivate {
 
     const int initOffset = 1;
     const int finalOffset = 2;
+
+    if (startMonth == null && endMonth == null) {
+      startMonth = 0;
+      int endYearDiff = yearsMonthsInterval.last.year - yearsMonthsInterval.first.year;
+      int endMonthDiff = yearsMonthsInterval.last.month -
+          yearsMonthsInterval.first.month;
+
+      endMonth = endYearDiff * 12 + endMonthDiff;
+    }
+
 
     return '${startMonth+initOffset}/${endMonth+finalOffset}';
   }
@@ -215,6 +232,11 @@ class GanttComponent with CanReuse implements OnActivate {
   String firstLetter(String name) {
     return common_service.firstLetter(name);
   }
+
+  String groupName(String name) {
+    return name ?? notInformedMsg;
+  }
+
 
 }
 

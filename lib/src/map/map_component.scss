@@ -268,11 +268,10 @@ $reverse: false;
   overflow: auto;
 }
 
-.item-progress { grid-area: progress; }
-.item-name { grid-area: name; }
-.item-collapse-expand { grid-area: collapse-expand; }
-.item-group { grid-area: group; }
-.item-button { grid-area: item-button; }
+.item-progress { grid-area: progress; align-self: center; }
+.item-name { grid-area: name; align-self: center;}
+.item-group { grid-area: group; align-self: center;}
+.item-button { grid-area: item-button; align-self: start;}
 
 
 .grid-container {
@@ -280,6 +279,7 @@ $reverse: false;
     'progress name name name group item-button'
     'progress collapse-expand collapse-expand collapse-expand group item-button'
 }
+
 
 .grid-container > span {
   display: inline-block;

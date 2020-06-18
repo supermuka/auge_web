@@ -6,23 +6,28 @@
 
 $red: #ff6252;
 
+$min-width: 48px;
+
 .wrapper {
-	display: grid;
-	max-width: 1600px;
+	display: flex;
+	/*max-width: 1600px; */
 	min-width: 700px;
 	margin: 0 auto;
-	padding: 40px;
+	padding: 8px;
+	/*    overflow-x: scroll; */
 
 }
 .gantt {
-	display: grid;
+	/* display: flex; */
 	border: 0;
 	border-radius: 5px; /* 12px; */
 	position: relative;
 	/* overflow: hidden; */
-	max-height: calc(100vh - 20%);
-	height: 100%;
-	width: 100%;
+
+	/* height: 100%;
+	width: 100%; */
+	max-height: calc(100vh - 96px);
+	height: calc(100vh - 96px);
     overflow: auto;
 
 	@include material-shadow();
@@ -31,7 +36,7 @@ $red: #ff6252;
 
 	&__row {
 		display: grid;
-		grid-template-columns: 150px 1fr;
+		grid-template-columns: 240px 1fr;
 		background-color: #fff;
 		&--center {
 		   text-align: center;
@@ -63,7 +68,7 @@ $red: #ff6252;
 			height: 100%;
 			width: 100%;
 			background-color: transparent !important;
-			grid-template-columns: 150px repeat(24, 1fr);
+			/* grid-template-columns: 240px repeat(24, 1fr); */
 			span {
 				display: block;
                 &:not(:last-child) {
@@ -106,7 +111,7 @@ $red: #ff6252;
 			color: #fff;
 			background-color: #0a3444 !important; /* #3367d6 */
 			border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-			grid-template-columns: 150px repeat(24, 1fr);
+		/*	grid-template-columns: 240px repeat(24, 1fr); */
 			.gantt__row-first {
 				border-top: 0 !important;
 			  background-color: #0a3444 !important;
@@ -126,8 +131,8 @@ $red: #ff6252;
 			border-style: solid;
 			padding: 15px 0;
 			font-size: 13px;
-			font-weight: bold;
-			text-align: center;
+			/* font-weight: bold; */
+			/*text-align: center;*/
 		}
 		&-bars {
 			list-style: none;
@@ -135,122 +140,211 @@ $red: #ff6252;
 			padding: 9px 0;
 			margin: 0;
 			/* grid-template-columns: repeat(12, 1fr); */
-			grid-template-columns: repeat(24, 1fr);
+		/*	grid-template-columns: repeat(24, 1fr); */
 			grid-gap: 8px 0;
 			border-top: 1px solid rgba(221, 221, 221, 0.8);
-			li {
-			    /*start*/
-                display: grid;
-                grid-template-columns: min-content auto;
-                /*end*/
-				font-weight: 500;
-				text-align: left;
-				font-size: 14px;
-				min-height: 15px;
-				background-color: #55de84;
-				padding: 5px 5px; /* 5px 12px; */
-				color: #fff;
-				overflow: hidden;
-				position: relative;
-				cursor: pointer;
-				border-radius: 5px; /* 20px; */
-
-				&.stripes {
-					background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,.1) 5px, rgba(255,255,255,.1) 12px);
-				}
-
-				&:before,
-				&:after {
-					content: "";
-					height: 100%;
-					top: 0;
-					z-index: 4;
-					position: absolute;
-					background-color: rgba(0, 0, 0, 0.3);
-				}
-				&:before {
-					left: 0;
-				}
-				&:after {
-					right: 0;
-				}
-			}
 		}
+        &-bars-li {
+            /*start*/
+           /* display: grid;
+            grid-template-columns: max-content auto;
+            */
+            /*end*/
+            font-weight: 500;
+            text-align: left;
+            font-size: 14px;
+            min-height: 15px;
+            background-color: #55de84;
+            padding: 5px 5px; /* 5px 12px; */
+            color: #fff;
+         /*   overflow: hidden; */
+            position: relative;
+            cursor: pointer;
+            border-radius: 5px; /* 20px; */
+
+            &.stripes {
+                background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,.1) 5px, rgba(255,255,255,.1) 12px);
+            }
+
+            &:before,
+            &:after {
+                content: "";
+                height: 100%;
+                top: 0;
+                z-index: 4;
+                position: absolute;
+                background-color: rgba(0, 0, 0, 0.3);
+            }
+            &:before {
+                left: 0;
+            }
+            &:after {
+                right: 0;
+            }
+        }
 		&--years-number {
 		   &-1 {
-		      grid-template-columns: 150px repeat(1, 1fr);
+		      grid-template-columns: 240px repeat(1, minmax($min-width * 12, 1fr));
 		   }
            &-2 {
-              grid-template-columns: 150px repeat(2, 1fr);
+              grid-template-columns: 240px repeat(2, minmax($min-width * 12, 1fr));
            }
            &-3 {
-              grid-template-columns: 150px repeat(3, 1fr);
+              grid-template-columns: 240px repeat(3, minmax($min-width * 12, 1fr));
            }
 		   &-4 {
-		      grid-template-columns: 150px repeat(4, 1fr);
+		      grid-template-columns: 240px repeat(4, minmax($min-width * 12, 1fr));
 		   }
            &-5 {
-              grid-template-columns: 150px repeat(5, 1fr);
+              grid-template-columns: 240px repeat(5, minmax($min-width * 12, 1fr));
            }
            &-6 {
-              grid-template-columns: 150px repeat(6, 1fr);
+              grid-template-columns: 240px repeat(6, minmax($min-width * 12, 1fr));
            }
 		   &-7 {
-		      grid-template-columns: 150px repeat(7, 1fr);
+		      grid-template-columns: 240px repeat(7, minmax($min-width * 12, 1fr));
 		   }
            &-8 {
-              grid-template-columns: 150px repeat(8, 1fr);
+              grid-template-columns: 240px repeat(8, minmax($min-width * 12, 1fr));
            }
            &-9 {
-              grid-template-columns: 150px repeat(9, 1fr);
+              grid-template-columns: 240px repeat(9, minmax($min-width * 12, 1fr));
            }
 		   &-10 {
-		      grid-template-columns: 150px repeat(10, 1fr);
+		      grid-template-columns: 240px repeat(10, minmax($min-width * 12, 1fr));
 		   }
 		}
 		&--months-number {
            &-12 {
-              grid-template-columns: 150px repeat(12, 1fr);
+              grid-template-columns: 240px repeat(12, minmax($min-width, 1fr));
            }
            &-24 {
-              grid-template-columns: 150px repeat(24, 1fr);
+              grid-template-columns: 240px repeat(24, minmax($min-width, 1fr));
            }
            &-36 {
-              grid-template-columns: 150px repeat(36, 1fr);
+              grid-template-columns: 240px repeat(36, minmax($min-width, 1fr));
            }
            &-48 {
-              grid-template-columns: 150px repeat(48, 1fr);
+              grid-template-columns: 240px repeat(48, minmax($min-width, 1fr));
            }
            &-60 {
-              grid-template-columns: 150px repeat(60, 1fr);
+              grid-template-columns: 240px repeat(60, minmax($min-width, 1fr));
            }
            &-72 {
-              grid-template-columns: 150px repeat(72, 1fr);
+              grid-template-columns: 240px repeat(72, minmax($min-width, 1fr));
            }
            &-84 {
-              grid-template-columns: 150px repeat(84, 1fr);
+              grid-template-columns: 240px repeat(84, minmax($min-width, 1fr));
            }
            &-96 {
-              grid-template-columns: 150px repeat(96, 1fr);
+              grid-template-columns: 240px repeat(96, minmax($min-width, 1fr));
            }
            &-108 {
-              grid-template-columns: 150px repeat(108, 1fr);
+              grid-template-columns: 240px repeat(108, minmax($min-width, 1fr));
            }
            &-120 {
-              grid-template-columns: 150px repeat(120, 1fr);
+              grid-template-columns: 240px repeat(120, minmax($min-width, 1fr));
            }
         }
 	}
 }
 
-div.sticky {
-    position: -webkit-sticky;
-    position: sticky;
-    z-index: 3;
-    top: 0;
+.sticky-top {
+   position: -webkit-sticky;
+   position: sticky;
+   z-index: 4;
+   top: 0;
+  /* height: 100vh;  */ // make the height equal to 100 view height
 /*
     background-color: yellow;
     padding: 50px;
     font-size: 20px;
     */
+}
+
+.sticky-left {
+   position: -webkit-sticky;
+   position: sticky;
+   z-index: 3;
+   left: 0;
+  /* height: 100vh;  */ // make the height equal to 100 view height
+/*
+    background-color: yellow;
+    padding: 50px;
+    font-size: 20px;
+    */
+}
+
+.sticky-top-left {
+   position: -webkit-sticky;
+   position: sticky;
+   z-index: 3;
+   top: 0;
+   left: 0;
+
+  /* height: 100vh;  */ // make the height equal to 100 view height
+/*
+    background-color: yellow;
+    padding: 50px;
+    font-size: 20px;
+    */
+}
+
+.item-progress { grid-area: progress; align-self: center;}
+.item-name { grid-area: name; align-self: center;}
+.item-group { grid-area: group; align-self: center;}
+.item-button { grid-area: item-button; align-self: start;}
+
+
+.grid-container {
+  display: grid;
+  grid-template-areas:
+    'progress name name name group item-button'
+}
+
+.grid-container > span {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.name-ellipse {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.custom-size-align-name {
+/*   width: 100%; */
+   min-width: 120px;
+   max-width: 240px;
+   /* width: 240px; */
+   width: fit-content;
+   white-space: normal;
+   text-align: left;
+  /* width: 400px; */
+  /* text-align: left; */
+  /* height: 100%; */
+}
+
+.right-top {
+  vertical-align: top;
+}
+
+.fixed {
+  position: fixed;
+  top: 64px;
+  z-index: 3;
+    position: fixed;
+      left:0;
+      right:0;
+      top:0;
+}
+
+.scrollable-content {
+  flex-grow: 1;
+  overflow: auto;
+  /* for Firefox */
+  min-height: 0;
 }

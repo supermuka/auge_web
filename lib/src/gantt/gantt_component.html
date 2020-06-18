@@ -1,39 +1,54 @@
-<div class="wrapper">
+<div class="w3-row-padding- wrapper">
     <div class="gantt" elevation="2">
-        <div class="sticky">
+        <header class="sticky-top">
             <div class="gantt__row gantt__row--years gantt__row--years-number-{{yearsInterval.length}}">
-                <div class="gantt__row-first"></div>
+                <div class="gantt__row-first sticky-left"></div>
                 <div *ngFor="let iYear of yearsInterval">
                     <span>{{iYear}}</span>
                 </div>
             </div>
             <div class="gantt__row gantt__row--months gantt__row--months-number-{{yearsMonthsInterval.length}}">
-                <div><span>{{groupLabel}}</span></div>
+                <div class="gantt__row-first sticky-left"><span>{{objectiveLabel}}</span></div>
                 <div *ngFor="let iYearMonth of yearsMonthsInterval">
                     <span>{{iYearMonth.monthName}}</span>
                 </div>
             </div>
-        </div>
-        <div class="gantt__row gantt__row--lines  gantt__row--months-number-{{yearsMonthsInterval.length}}">
-            <span></span>
+        </header>
+        <div class="gantt__row gantt__row--lines gantt__row--months-number-{{yearsMonthsInterval.length}}">
+            <span class="gantt__row-first sticky-left"></span>
             <span class="marker-{{iYearMonth.isCurrent}}" *ngFor="let iYearMonth of yearsMonthsInterval"></span>
         </div>
-        <div class="gantt__row" *ngFor="let iObjectivesGroupKey of objectivesByGroup?.keys">
-            <div class="gantt__row-first">
-                <span class="avatar avatar-border" [style.background-color]="colorFromUuid(objectivesByGroup[iObjectivesGroupKey].first.group?.id)">
-                    <span class="text-group-letter">{{firstLetter(objectivesByGroup[iObjectivesGroupKey].first.group?.name)}}</span>
-                </span>
-                <span class="truncate-ellipsed-parent">
-                    <span class="truncate-ellipsed">{{objectivesByGroup[iObjectivesGroupKey].first.group?.name}}</span>
-                </span>
+        <div class="gantt__row" *ngFor="let iObjective of objectives">
+            <div class="gantt__row-first sticky-left">
+                <div class="grid-container">
+                     <span class="item-progress c100 p{{iObjective.progress}} tiny">
+                        <span>{{iObjective.progress}}%</span>
+                        <div class="slice">
+                            <div class="bar"></div>
+                            <div class="fill"></div>
+                        </div>
+                    </span>
+                    <span class="item-name custom-size-align-name">
+                          <span class="name-ellipse">{{iObjective.name}}</span>
+                     </span>
+                    <span class="item-group avatar avatar-border" [style.background-color]="colorFromUuid(iObjective?.group?.id)">
+                          <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjective?.group?.name)">{{firstLetter(iObjective?.group?.name)}}</span>
+                     </span>
+                    <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjective)">
+                        <material-icon class="right-top" icon="launch" size="medium"></material-icon>
+                    </material-button>
+                </div>
             </div>
-            <ul class="gantt__row-bars gantt__row--months-number-{{yearsMonthsInterval.length}}">
-               <li clickableTooltipTarget
+            <ul class="gantt__row-bars gantt__row--months-number-{{yearsMonthsInterval.length}}" >
+               <li class="gantt__row-bars-li" clickableTooltipTarget
                    keyboardOnlyFocusIndicator
                    tabindex="0"
                    size="medium"
-                   #clickableRef="tooltipTarget" *ngFor="let iObjective of objectivesByGroup[iObjectivesGroupKey]" [style.grid-column]="gridColumnFromStartAndEndDate(iObjective)" [style.background-color]="barColor(iObjective)" (click)="goToObjectives(iObjective)">
-                   <span class="c100 p{{iObjective.progress}} tiny">
+                   #clickableRef="tooltipTarget"  [style.grid-column]="gridColumnFromStartAndEndDate(iObjective)"  [style.background-color]="barColor(iObjective)">
+
+
+
+                   <!-- span class="c100 p{{iObjective.progress}} tiny">
                         <span>{{iObjective.progress}}%</span>
                         <div class="slice">
                             <div class="bar"></div>
@@ -50,7 +65,7 @@
                        <div><strong>{{iObjective.endDate | date}}</strong></div>
                        <div>{{leaderLabel}}</div>
                        <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjective?.leader) + ')'"></div><span> <strong>{{iObjective?.leader?.name}}</strong></span>
-                   </material-tooltip-card>
+                   </material-tooltip-card -->
                </li>
             </ul>
         </div>
