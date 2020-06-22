@@ -273,7 +273,6 @@ $reverse: false;
 .item-group { grid-area: group; align-self: center;}
 .item-button { grid-area: item-button; align-self: start;}
 
-
 .grid-container {
   grid-template-areas:
     'progress name name name group item-button'

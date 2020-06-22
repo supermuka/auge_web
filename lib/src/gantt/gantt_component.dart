@@ -165,11 +165,9 @@ class GanttComponent with CanReuse implements OnActivate {
           yearsMonthsInterval.first.month;
 
       startMonth = startYearDiff * 12 + startMonthDiff;
-    } else {
-      startMonth = null;
     }
 
-    int endMonth = startMonth;
+    int endMonth = yearsMonthsInterval.length - 1;
     if (objective.endDate != null) {
       int endYearDiff = objective.endDate.year - yearsMonthsInterval.first.year;
       int endMonthDiff = objective.endDate.month -
@@ -180,16 +178,6 @@ class GanttComponent with CanReuse implements OnActivate {
 
     const int initOffset = 1;
     const int finalOffset = 2;
-
-    if (startMonth == null && endMonth == null) {
-      startMonth = 0;
-      int endYearDiff = yearsMonthsInterval.last.year - yearsMonthsInterval.first.year;
-      int endMonthDiff = yearsMonthsInterval.last.month -
-          yearsMonthsInterval.first.month;
-
-      endMonth = endYearDiff * 12 + endMonthDiff;
-    }
-
 
     return '${startMonth+initOffset}/${endMonth+finalOffset}';
   }
@@ -237,6 +225,9 @@ class GanttComponent with CanReuse implements OnActivate {
     return name ?? notInformedMsg;
   }
 
+  bool hasStarOrEndDate(Objective objective) {
+    return (objective.startDate != null || objective.endDate != null);
+  }
 
 }
 

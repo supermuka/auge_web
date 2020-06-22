@@ -1,47 +1,58 @@
 // Original from https://codepen.io/ph1p/pen/JBBjNy
 
-@import url("https://fonts.googleapis.com/css?family=Roboto:100,400,700");
 @import 'package:angular_components/css/material/material';
 @import 'package:angular_components/css/material/shadow';
 
 $red: #ff6252;
 
-$min-width: 48px;
+$col-width: 48px;
+$first-width: 320px;
 
 .wrapper {
-	display: flex;
-	/*max-width: 1600px; */
-	min-width: 700px;
-	margin: 0 auto;
-	padding: 8px;
-	/*    overflow-x: scroll; */
-
+  display: block;
 }
+
 .gantt {
-	/* display: flex; */
-	border: 0;
-	border-radius: 5px; /* 12px; */
+  /*  display: grid; */
+/*	display: flex; */
+   /* display: block; */
+	/*border: 0;
+	border-radius: 5px; */ /* 12px; */
+ /* overflow-x: scroll; */
+	display: grid;
 	position: relative;
-	/* overflow: hidden; */
+/*	overflow: hidden; */
+    height: 100%;
+    width: 100%;
 
-	/* height: 100%;
-	width: 100%; */
-	max-height: calc(100vh - 96px);
-	height: calc(100vh - 96px);
-    overflow: auto;
+	 //    	max-height: calc(100vh - 80px);
+          /*	height: calc(100vh - 80px); */
+    // overflow: auto;
+//	max-height: calc(100vh - 80px);
+ /*	height: calc(100vh - 80px); */
+//    overflow: auto;
 
-	@include material-shadow();
-	/* box-sizing: border-box; */
+	//@include material-shadow();
+    box-sizing: border-box;
 /*	box-shadow: 0 75px 125px -57px #7e8f94; */
 
+    &__sticky-top {
+       position: sticky;
+       z-index: 4;
+       top: 64px;
+    }
+
+    &__sticky-left {
+
+       position: sticky;
+       z-index: 3;
+       left: 0;
+    }
 	&__row {
 		display: grid;
-		grid-template-columns: 240px 1fr;
+		grid-template-columns: $first-width 1fr;
 		background-color: #fff;
-		&--center {
-		   text-align: center;
-
-		}
+		/*border: 1px solid #fff;*/
 		&:nth-child(odd) {
 			background-color: #f5f5f5;
 			.gantt__row-first {
@@ -56,7 +67,7 @@ $min-width: 48px;
 				border-top: 0;
 			}
 		}
-		&--empty {
+		&--empty-true {
 			background-color: lighten($red, 25%) !important;
 			z-index: 1;
 			.gantt__row-first {
@@ -65,63 +76,78 @@ $min-width: 48px;
 		}
 		&--lines {
 			position: absolute;
+			/* height: 100%;
+			width: 100%; */
+			top: 0;
 			height: 100%;
 			width: 100%;
+            /* bottom: 0; */
+			/* height: calc(100vh - 0%); */
+		/*	margin-bottom: 100% !important; */
+
+        /*    bottom: 0; */
+        /*    left: 0;
+            right: 0;*/
 			background-color: transparent !important;
-			/* grid-template-columns: 240px repeat(24, 1fr); */
-			span {
+			/* grid-template-columns: 150px repeat(12, 1fr); */
+			span * {
 				display: block;
-                &:not(:last-child) {
-                              border-right: 1px solid rgba(0, 0, 0, 0.1);
-                            }
+				border-right: 1px solid rgba(0, 0, 0, 0.1);
 				&.marker-true {
 					background-color: rgba(10, 52, 68, 0.13);
 					z-index: 2;
 				}
 			}
-			&:after {
+		/*	&:after {
 				grid-row: 1;
 				grid-column: 0;
 				background-color: #1688b345;
 				z-index: 2;
 				height: 100%;
 			}
+			*/
 		}
         &--years {
             color: #fff;
-            background-color: #0a3444 !important;
+            background-color: #0a3444 !important;  /* #3367d6 */
             border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      /*      color: #fff;
+            background-color: #0a3444 !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1); */
         	/* grid-template-columns: 150px repeat(2, 1fr); */
-        	justify-items: center;
-        	align-items: center;
+        /*	justify-items: center;
+        	align-items: center; */
             .gantt__row-first {
               border-top: 0 !important;
               background-color: #0a3444 !important;
             }
             span {
                 text-align: center;
-                font-size: 13px;
+          /*      font-size: 13px; */
                 align-self: center;
-                justify-self: center;
+               /* justify-self: center; */
                 font-weight: bold;
-                padding: 20px 0;
+         /*       padding: 20px 0; */
             }
         }
 		&--months {
-			color: #fff;
-			background-color: #0a3444 !important; /* #3367d6 */
-			border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            color: #fff;
+            background-color: #0a3444 !important;  /* #3367d6 */
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+		/*	color: #fff;
+			background-color: #0a3444 !important;
+			border-bottom: 1px solid rgba(0, 0, 0, 0.1); */
 		/*	grid-template-columns: 240px repeat(24, 1fr); */
 			.gantt__row-first {
 				border-top: 0 !important;
-			  background-color: #0a3444 !important;
+			    background-color: #0a3444 !important;
 			}
 			span {
 				text-align: center;
-				font-size: 13px;
+			/*	font-size: 13px; */
 				align-self: center;
 				font-weight: bold;
-				padding: 20px 0;
+		/*		padding: 20px 0;*/
 			}
 		}
 		&-first {
@@ -129,44 +155,49 @@ $min-width: 48px;
 			border-width: 1px 0 0 0;
 			border-color: rgba(0, 0, 0, 0.1);
 			border-style: solid;
-			padding: 15px 0;
-			font-size: 13px;
+		/*	padding: 15px 0;*/
+		/*	font-size: 13px; */
+		/* 	place-items: start; */
 			/* font-weight: bold; */
 			/*text-align: center;*/
 		}
+		/*
 		&-bars {
 			list-style: none;
-			display: grid;
-			padding: 9px 0;
 			margin: 0;
-			/* grid-template-columns: repeat(12, 1fr); */
-		/*	grid-template-columns: repeat(24, 1fr); */
-			grid-gap: 8px 0;
-			border-top: 1px solid rgba(221, 221, 221, 0.8);
+
 		}
-        &-bars-li {
+		*/
+        &-bars {
+          margin: 0;
+          padding: 0;
+          grid-gap: 8px 0;
+          border-top: 1px solid rgba(221, 221, 221, 0.8);
             /*start*/
            /* display: grid;
             grid-template-columns: max-content auto;
             */
             /*end*/
-            font-weight: 500;
+          /*  font-weight: 500; */
+          span {
+
+         /*   font-size: 14px; */
+            min-height: 24px;
+            align-self: center;
             text-align: left;
-            font-size: 14px;
-            min-height: 15px;
-            background-color: #55de84;
-            padding: 5px 5px; /* 5px 12px; */
+            vertical-align: center;
+         /*   background-color: #55de84; */
+         /*   padding: 5px 5px;  */ /* 5px 12px; */
             color: #fff;
          /*   overflow: hidden; */
             position: relative;
-            cursor: pointer;
+         /*   cursor: pointer; */
             border-radius: 5px; /* 20px; */
 
             &.stripes {
                 background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,.1) 5px, rgba(255,255,255,.1) 12px);
             }
-
-            &:before,
+       /*     &:before,
             &:after {
                 content: "";
                 height: 100%;
@@ -180,114 +211,137 @@ $min-width: 48px;
             }
             &:after {
                 right: 0;
-            }
+            } */
+          }
         }
 		&--years-number {
+          display: grid;
 		   &-1 {
-		      grid-template-columns: 240px repeat(1, minmax($min-width * 12, 1fr));
+		      grid-template-columns: repeat(1, $col-width * 12);
 		   }
            &-2 {
-              grid-template-columns: 240px repeat(2, minmax($min-width * 12, 1fr));
+              grid-template-columns: repeat(2, $col-width * 12);
            }
            &-3 {
-              grid-template-columns: 240px repeat(3, minmax($min-width * 12, 1fr));
+
+              grid-template-columns: repeat(3, $col-width * 12);
            }
 		   &-4 {
-		      grid-template-columns: 240px repeat(4, minmax($min-width * 12, 1fr));
+		      grid-template-columns: repeat(4, $col-width * 12);
 		   }
            &-5 {
-              grid-template-columns: 240px repeat(5, minmax($min-width * 12, 1fr));
+              grid-template-columns: repeat(5, $col-width * 12);
            }
            &-6 {
-              grid-template-columns: 240px repeat(6, minmax($min-width * 12, 1fr));
+              grid-template-columns: repeat(6, $col-width * 12);
            }
 		   &-7 {
-		      grid-template-columns: 240px repeat(7, minmax($min-width * 12, 1fr));
+		      grid-template-columns: repeat(7, $col-width * 12);
 		   }
            &-8 {
-              grid-template-columns: 240px repeat(8, minmax($min-width * 12, 1fr));
+              grid-template-columns: repeat(8, $col-width * 12);
            }
            &-9 {
-              grid-template-columns: 240px repeat(9, minmax($min-width * 12, 1fr));
+              grid-template-columns: repeat(9, $col-width * 12);
            }
 		   &-10 {
-		      grid-template-columns: 240px repeat(10, minmax($min-width * 12, 1fr));
+		      grid-template-columns: repeat(10, $col-width * 12);
+		   }
+		   &-11 {
+		      grid-template-columns: repeat(11, $col-width * 12);
+		   }
+           &-12 {
+              grid-template-columns: repeat(12, $col-width * 12);
+           }
+           &-13 {
+              grid-template-columns: repeat(13, $col-width * 12);
+           }
+		   &-14 {
+		      grid-template-columns: repeat(14, $col-width * 12);
+		   }
+           &-15 {
+              grid-template-columns: repeat(15, $col-width * 12);
+           }
+           &-16 {
+              grid-template-columns: repeat(16, $col-width * 12);
+           }
+		   &-17 {
+		      grid-template-columns: repeat(17, $col-width * 12);
+		   }
+           &-18 {
+              grid-template-columns: repeat(18, $col-width * 12);
+           }
+           &-19 {
+              grid-template-columns: repeat(19, $col-width * 12);
+           }
+		   &-20 {
+		      grid-template-columns: repeat(20, $col-width * 12);
 		   }
 		}
 		&--months-number {
+           display: grid;
            &-12 {
-              grid-template-columns: 240px repeat(12, minmax($min-width, 1fr));
+              grid-template-columns: repeat(12, $col-width);
            }
            &-24 {
-              grid-template-columns: 240px repeat(24, minmax($min-width, 1fr));
+              grid-template-columns: repeat(24, $col-width);
            }
            &-36 {
-              grid-template-columns: 240px repeat(36, minmax($min-width, 1fr));
+              grid-template-columns: repeat(36, $col-width);
            }
            &-48 {
-              grid-template-columns: 240px repeat(48, minmax($min-width, 1fr));
+              grid-template-columns: repeat(48, $col-width);
            }
            &-60 {
-              grid-template-columns: 240px repeat(60, minmax($min-width, 1fr));
+              grid-template-columns: repeat(60, $col-width);
            }
            &-72 {
-              grid-template-columns: 240px repeat(72, minmax($min-width, 1fr));
+              grid-template-columns: repeat(72, $col-width);
            }
            &-84 {
-              grid-template-columns: 240px repeat(84, minmax($min-width, 1fr));
+              grid-template-columns: repeat(84, $col-width);
            }
            &-96 {
-              grid-template-columns: 240px repeat(96, minmax($min-width, 1fr));
+              grid-template-columns: repeat(96, $col-width);
            }
            &-108 {
-              grid-template-columns: 240px repeat(108, minmax($min-width, 1fr));
+              grid-template-columns: repeat(108, $col-width);
            }
            &-120 {
-              grid-template-columns: 240px repeat(120, minmax($min-width, 1fr));
+              grid-template-columns: repeat(120, $col-width);
+           }
+           &-132 {
+              grid-template-columns: repeat(132, $col-width);
+           }
+           &-144 {
+              grid-template-columns: repeat(144, $col-width);
+           }
+           &-156 {
+              grid-template-columns: repeat(156, $col-width);
+           }
+           &-168 {
+              grid-template-columns: repeat(168, $col-width);
+           }
+           &-180 {
+              grid-template-columns: repeat(180, $col-width);
+           }
+           &-192 {
+              grid-template-columns: repeat(192, $col-width);
+           }
+           &-204 {
+              grid-template-columns: repeat(204, $col-width);
+           }
+           &-216 {
+              grid-template-columns: repeat(216, $col-width);
+           }
+           &-228 {
+              grid-template-columns: repeat(228, $col-width);
+           }
+           &-240 {
+              grid-template-columns: repeat(240, $col-width);
            }
         }
 	}
-}
-
-.sticky-top {
-   position: -webkit-sticky;
-   position: sticky;
-   z-index: 4;
-   top: 0;
-  /* height: 100vh;  */ // make the height equal to 100 view height
-/*
-    background-color: yellow;
-    padding: 50px;
-    font-size: 20px;
-    */
-}
-
-.sticky-left {
-   position: -webkit-sticky;
-   position: sticky;
-   z-index: 3;
-   left: 0;
-  /* height: 100vh;  */ // make the height equal to 100 view height
-/*
-    background-color: yellow;
-    padding: 50px;
-    font-size: 20px;
-    */
-}
-
-.sticky-top-left {
-   position: -webkit-sticky;
-   position: sticky;
-   z-index: 3;
-   top: 0;
-   left: 0;
-
-  /* height: 100vh;  */ // make the height equal to 100 view height
-/*
-    background-color: yellow;
-    padding: 50px;
-    font-size: 20px;
-    */
 }
 
 .item-progress { grid-area: progress; align-self: center;}
@@ -299,7 +353,7 @@ $min-width: 48px;
 .grid-container {
   display: grid;
   grid-template-areas:
-    'progress name name name group item-button'
+    'progress name group item-button'
 }
 
 .grid-container > span {
@@ -317,10 +371,10 @@ $min-width: 48px;
 
 .custom-size-align-name {
 /*   width: 100%; */
-   min-width: 120px;
-   max-width: 240px;
+   min-width: 200px;
+   max-width: 240px;;
    /* width: 240px; */
-   width: fit-content;
+   width: 100%;
    white-space: normal;
    text-align: left;
   /* width: 400px; */
@@ -330,21 +384,4 @@ $min-width: 48px;
 
 .right-top {
   vertical-align: top;
-}
-
-.fixed {
-  position: fixed;
-  top: 64px;
-  z-index: 3;
-    position: fixed;
-      left:0;
-      right:0;
-      top:0;
-}
-
-.scrollable-content {
-  flex-grow: 1;
-  overflow: auto;
-  /* for Firefox */
-  min-height: 0;
 }

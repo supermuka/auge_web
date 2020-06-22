@@ -58,7 +58,7 @@ material-drawer {
   position: fixed;
   top: 64px;
   height: 600px;
-  z-index: 2;
+  z-index: 5; //2;
 }
 
 .material-content {
@@ -68,7 +68,7 @@ material-drawer {
     overflow: hidden;
     top: 0;
     width: 100%;
-    z-index: 2;
+    z-index: 5; //2;
   }
 }
 
@@ -88,8 +88,8 @@ material-list {
 
 .main {
   margin-top: 64px; // $mat-header-height: 64px; needs because was used position: fixed on header panel
-  margin-left: 2px;
-  margin-right: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
 }
 
 

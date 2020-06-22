@@ -12,7 +12,6 @@ import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/auth/auth_component.template.dart' as auth_component;
 import 'package:auge_web/src/app_layout/app_layout_component.template.dart' as app_layout_component;
 
-
 @Component(
     selector: 'auge-app-component',
     templateUrl: 'app_component.html',
