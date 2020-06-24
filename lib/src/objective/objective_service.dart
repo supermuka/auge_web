@@ -30,11 +30,12 @@ class ObjectiveService {
 
 
   /// Return a list of [Objective]
-  Future<List<Objective>> getObjectives(String organizationId, {String objectiveId, bool withMeasures = false, bool withProfile = false, bool withArchived = false, List<String> groupIds, List<String> leaderUserIds}) async {
+  Future<List<Objective>> getObjectives(String organizationId, {String objectiveId, treeAlignedWithChildren = false, bool withMeasures = false, bool withProfile = false, bool withArchived = false, List<String> groupIds, List<String> leaderUserIds}) async {
 
     objective_measure_pbgrpc.ObjectiveGetRequest objectiveGetRequest = objective_measure_pbgrpc.ObjectiveGetRequest();
     objectiveGetRequest.organizationId = organizationId;
     if (objectiveId != null)  objectiveGetRequest.id = objectiveId;
+    objectiveGetRequest.treeAlignedWithChildren = treeAlignedWithChildren;
     objectiveGetRequest.withMeasures = withMeasures;
     objectiveGetRequest.withUserProfile = withProfile;
     if (withArchived != null) objectiveGetRequest.withArchived = withArchived;

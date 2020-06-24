@@ -1,114 +1,117 @@
-<div class="w3-row-padding">
-    <material-expansionpanel
+<!-- div class="w3-row-padding-" -->
+    <!-- material-expansionpanel
             [alwaysHideExpandIcon]="true"
             [hideExpandedHeader]="false"
             [showSaveCancel]="false"
             [expanded]="true"
-            [disabled]="true">
+            [disabled]="true" -->
         <!-- div name and value are the same to WorksComponent -->
-        <div name class="custom-expansionpanel-panel-specific-name-width">
-            <span class="truncate-ellipsed-parent">
-                <span class="truncate-ellipsed"><strong>{{work.name}}</strong></span>
-                <div class="truncate-ellipsed">{{work.description}}</div>
-            </span>
+<div class="w3-row w3-padding">
+    <div class="w3-col m4">
+        <div class="custom-expansionpanel-panel-specific-name-width">
+        <span class="truncate-ellipsed-parent">
+            <span class="truncate-ellipsed"><strong>{{work.name}}</strong></span>
+            <div class="truncate-ellipsed">{{work.description}}</div>
+        </span>
         </div>
-        <div value class="w3-row" >
-            <div class="w3-col m9">
-                <div class="custom-grid-vertical">
-                    <auge-work-summary [workItemsCount]="work.workItemsCount"
-                                       [workItemsOverDueCount]="work.workItemsOverDueCount"
-                                       [stateWorkItemsCount]="work.stateWorkItemsCount"
-                                       [stageWorkItemsCount]="work.stageWorkItemsCount"></auge-work-summary>
+    </div>
+    <!-- div value class="w3-row" -->
+    <div class="w3-col m6">
+        <div class="custom-grid-vertical">
+            <auge-work-summary [workItemsCount]="work.workItemsCount"
+                               [workItemsOverDueCount]="work.workItemsOverDueCount"
+                               [stateWorkItemsCount]="work.stateWorkItemsCount"
+                               [stageWorkItemsCount]="work.stageWorkItemsCount"></auge-work-summary>
+        </div>
+    </div>
+    <div class="w3-col m1">
+        <div class="custom-grid w3-right">
+            <div class="truncate-parent">
+                <div *ngIf="work.group != null" class="avatar avatar-border margin-bottom" [style.background-color]="colorFromUuid(work.group?.id)" [materialTooltip]="composeTooltip(groupLabel, work.group?.name)">
+                    <span class="text-group-letter">{{firstLetter(work.group?.name)}}</span>
                 </div>
-            </div>
-            <div class="w3-col m3">
-                <div class="custom-grid w3-right">
-                    <div class="truncate-parent">
-                        <div *ngIf="work.group != null" class="avatar avatar-border margin-bottom" [style.background-color]="colorFromUuid(work.group?.id)" [materialTooltip]="composeTooltip(groupLabel, work.group?.name)">
-                            <span class="text-group-letter">{{firstLetter(work.group?.name)}}</span>
-                        </div>
-                        <div *ngIf="work.group == null" class="avatar margin-bottom"></div>
-                        <div *ngIf="work.leader != null" class="avatar margin-top" [style.background-image]="'url(' +  userUrlImage(work.leader) + ')'" [materialTooltip]="composeTooltip(leaderLabel, work.leader?.name)"></div>
-                        <div *ngIf="work.leader == null" class="avatar margin-top"></div>
-                    </div>
-                </div>
+                <div *ngIf="work.group == null" class="avatar margin-bottom"></div>
+                <div *ngIf="work.leader != null" class="avatar margin-top" [style.background-image]="'url(' +  userUrlImage(work.leader) + ')'" [materialTooltip]="composeTooltip(leaderLabel, work.leader?.name)"></div>
+                <div *ngIf="work.leader == null" class="avatar margin-top"></div>
             </div>
         </div>
-        <div action>
-            <material-button icon (trigger)="goToStages()">
-                <material-icon icon="view_week"></material-icon>
-            </material-button>
-        </div>
-        <div class="container-flex-row">
-            <div *ngFor="let kanbanColumn of kanbanColumns" class="column-divider">
-                <div (drop)="drop($event, kanbanColumn)" (dragover)="allowDrop($event)" class="items-column">
-                    <div class="header-custom" [style.background-color]="'hsl(' + stateHslColor(kanbanColumn.workStage.state) + ')'">
-                        <span><strong>{{kanbanColumn.workStage.name}}</strong></span>
-                        <material-button class="w3-right" icon (trigger)="selectWorkItem(null);goToDetail(kanbanColumn.workStage.id)">
-                            <material-icon baseline icon="add"></material-icon>
-                        </material-button>
-                    </div>
-                    <material-expansionpanel-set class="scrollable-content">
-                          <div *ngFor="let iColumnWorkItem of kanbanColumn.columnWorkItems">
-                            <div class="column-stage" draggable="true" (dragstart)="drag($event, kanbanColumn, iColumnWorkItem)" >
-                                <material-expansionpanel class="panel-name-max-width shadow"
-                                                         [(expanded)]="expandedControl[iColumnWorkItem.id]"
-                                                         [hideExpandedHeader]="false"
-                                                         [alwaysHideExpandIcon]="true"
-                                                         [showSaveCancel]="false">
-                                    <div name>
-                                        <span class="name-ellipse text-decoration-line-through-{{iColumnWorkItem.archived}}">
-                                            {{iColumnWorkItem.name}}
+    </div>
+    <!-- /div -->
+    <div class="w3-rest w3-right">
+        <material-button icon (trigger)="goToStages()">
+            <material-icon icon="view_week"></material-icon>
+        </material-button>
+    </div>
+</div>
+<div class="row-stage row-divider"></div>
+<div class="container-flex-row">
+    <div *ngFor="let kanbanColumn of kanbanColumns" class="column-divider">
+        <div (drop)="drop($event, kanbanColumn)" (dragover)="allowDrop($event)" class="items-column">
+            <div class="header-custom" [style.background-color]="'hsl(' + stateHslColor(kanbanColumn.workStage.state) + ')'">
+                <span><strong>{{kanbanColumn.workStage.name}}</strong></span>
+                <material-button class="w3-right" icon (trigger)="selectWorkItem(null);goToDetail(kanbanColumn.workStage.id)">
+                    <material-icon baseline icon="add"></material-icon>
+                </material-button>
+            </div>
+            <material-expansionpanel-set class="scrollable-content">
+                  <div *ngFor="let iColumnWorkItem of kanbanColumn.columnWorkItems">
+                    <div class="column-stage" draggable="true" (dragstart)="drag($event, kanbanColumn, iColumnWorkItem)" >
+                        <material-expansionpanel class="panel-name-max-width shadow"
+                                                 [(expanded)]="expandedControl[iColumnWorkItem.id]"
+                                                 [hideExpandedHeader]="false"
+                                                 [alwaysHideExpandIcon]="true"
+                                                 [showSaveCancel]="false">
+                            <div name>
+                                <span class="name-ellipse text-decoration-line-through-{{iColumnWorkItem.archived}}">
+                                    {{iColumnWorkItem.name}}
+                                </span>
+                            </div>
+                            <div value class="w3-right-align">
+                                <span *ngFor="let member of iColumnWorkItem.assignedTo">
+                                    <span class="avatar-icon" [style.background-image]="'url(' +  userUrlImage(member)  + ')'" [materialTooltip]="member.name"></span>
+                                </span>
+                                <div>
+                                    <span class="text-decoration-line-through-{{iColumnWorkItem.archived}}" materialTooltip="{{dueDateLabel}}" [style.color]="dueDateColor(iColumnWorkItem)">{{iColumnWorkItem.dueDate | date:'shortDate'}}</span>
+                                </div>
+                            </div>
+                            <div action>
+                                <material-menu [menu]="menuModel" (click)="selectWorkItem(iColumnWorkItem);disEnableItemMenuActual()">
+                                </material-menu>
+                            </div>
+                            <div>
+                                <div *ngIf="hasPlannedOrActual(iColumnWorkItem)">
+                                    <div class="w3-center">
+                                        <span class="w3-left">
+                                            {{iColumnWorkItem.plannedValue ?? 0}}
+                                        </span>
+                                        <span class="w3-center">
+                                            {{iColumnWorkItem.actualValue ?? 0}}
+                                        </span>
+                                        <span class="w3-right">
+                                            {{remainingValue(iColumnWorkItem.plannedValue, iColumnWorkItem.actualValue) ?? 0}}
                                         </span>
                                     </div>
-                                    <div value class="w3-right-align">
-                                        <span *ngFor="let member of iColumnWorkItem.assignedTo">
-                                            <span class="avatar-icon" [style.background-image]="'url(' +  userUrlImage(member)  + ')'" [materialTooltip]="member.name"></span>
-                                        </span>
-                                        <div>
-                                            <span class="text-decoration-line-through-{{iColumnWorkItem.archived}}" materialTooltip="{{dueDateLabel}}" [style.color]="dueDateColor(iColumnWorkItem)">{{iColumnWorkItem.dueDate | date:'shortDate'}}</span>
-                                        </div>
+                                    <div class="w3-row-padding">
+                                        <material-slider [disabled]="whileUpdatingDisabled || iColumnWorkItem.archived" [(value)]="iColumnWorkItem.actualValue"
+                                                         [min]="0"
+                                                         [max]="100"
+                                                         materialTooltip="{{actualValueLabel}}" (click)="goToValues(iColumnWorkItem)">
+                                        </material-slider>
                                     </div>
-                                    <div action>
-                                        <material-menu [menu]="menuModel" (click)="selectWorkItem(iColumnWorkItem);disEnableItemMenuActual()">
-                                        </material-menu>
-                                    </div>
+                                </div>
+                                <material-expansionpanel *ngIf="iColumnWorkItem.checkItems.length > 0" name="{{checkItemsLabel}}" [(expanded)]="checkItensExpandedControl[iColumnWorkItem.id]"  [showSaveCancel]="false" class="no-border">
                                     <div>
-                                        <div *ngIf="hasPlannedOrActual(iColumnWorkItem)">
-                                            <div class="w3-center">
-                                                <span class="w3-left">
-                                                    {{iColumnWorkItem.plannedValue}}
-                                                </span>
-                                                <span class="w3-center">
-                                                    {{iColumnWorkItem.actualValue}}
-                                                </span>
-                                                <span class="w3-right">
-                                                    {{remainingValue(iColumnWorkItem.plannedValue, iColumnWorkItem.actualValue)}}
-                                                </span>
-                                            </div>
-                                            <div>
-                                                <material-slider [disabled]="whileUpdatingDisabled || iColumnWorkItem.archived" [(value)]="iColumnWorkItem.actualValue"
-                                                                 [min]="0"
-                                                                 [max]="100"
-                                                                 materialTooltip="{{actualValueLabel}}" (click)="goToValues(iColumnWorkItem)">
-                                                </material-slider>
-                                            </div>
+                                        <div *ngFor="let iCheckItem of iColumnWorkItem.checkItems">
+                                            <material-checkbox [disabled]="whileUpdatingDisabled || iColumnWorkItem.archived" [(ngModel)]="iCheckItem.finished" [label]="iCheckItem.name" (click)="updateWorkItem(iColumnWorkItem)"></material-checkbox>
                                         </div>
-                                        <material-expansionpanel *ngIf="iColumnWorkItem.checkItems.length > 0" name="{{checkItemsLabel}}" [(expanded)]="checkItensExpandedControl[iColumnWorkItem.id]"  [showSaveCancel]="false" class="no-border">
-                                            <div>
-                                                <div *ngFor="let iCheckItem of iColumnWorkItem.checkItems">
-                                                    <material-checkbox [disabled]="whileUpdatingDisabled || iColumnWorkItem.archived" [(ngModel)]="iCheckItem.finished" [label]="iCheckItem.name" (click)="updateWorkItem(iColumnWorkItem)"></material-checkbox>
-                                                </div>
-                                            </div>
-                                        </material-expansionpanel>
                                     </div>
                                 </material-expansionpanel>
                             </div>
-                        </div>
-                    </material-expansionpanel-set>
+                        </material-expansionpanel>
+                    </div>
                 </div>
-            </div>
+            </material-expansionpanel-set>
         </div>
-    </material-expansionpanel>
+    </div>
 </div>
 <router-outlet [routes]="routes"></router-outlet>

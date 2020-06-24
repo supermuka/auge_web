@@ -19,6 +19,7 @@ import 'package:auge_shared/domain/general/group.dart';
 import 'package:auge_shared/message/messages.dart';
 import 'package:auge_web/src/group/group_service.dart';
 //import 'package:auge_web/src/search/search_service.dart';
+import 'package:auge_web/src/search_filter/search_filter_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 //import 'package:auge_web/src/history_timeline/history_timeline_component.dart';
 
@@ -49,6 +50,7 @@ import 'package:auge_web/src/group/group_detail_component.template.dart' as grou
 class GroupsComponent with CanReuse implements OnActivate /*, OnDeactivate, OnDestroy */ {
 //  final AuthService _authService;
   final AppLayoutService _appLayoutService;
+  final SearchFilterService _searchFilterService;
   final GroupService _groupService;
   //final SearchService _searchService;
   final Router _router;
@@ -76,7 +78,7 @@ class GroupsComponent with CanReuse implements OnActivate /*, OnDeactivate, OnDe
   static final inactiveLabel = GroupMsg.label(GroupMsg.inactiveLabel);
   static final headerTitle = GroupMsg.label(GroupMsg.groupsLabel);
 
-  GroupsComponent(/* this._authService, */ this._appLayoutService, this._groupService, /*this._searchService,*/ this._router) {
+  GroupsComponent(this._appLayoutService, this._searchFilterService, this._groupService, /*this._searchService,*/ this._router) {
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(buttonEditLabel, icon: new Icon('edit') , actionWithContext: (_) => goToDetail()), new MenuItem(buttonDeleteLabel, icon: new Icon('delete'), actionWithContext: (_) => delete())])], icon: new Icon('menu'));
   }
 
@@ -106,6 +108,9 @@ class GroupsComponent with CanReuse implements OnActivate /*, OnDeactivate, OnDe
 //    _appLayoutService.enabledSearch = true;
     _appLayoutService.systemModuleIndex = SystemModule.groups.index;
 
+    _searchFilterService.enableSearch = true;
+    _searchFilterService.enableFilter = false;
+
     try {
       _groups = await _groupService.getGroups(_groupService.authService.authorizedOrganization.id);
 
@@ -116,8 +121,8 @@ class GroupsComponent with CanReuse implements OnActivate /*, OnDeactivate, OnDe
   }
 
   List<Group> get groups {
-   // return _searchService?.searchTerm.toString().isEmpty ? _groups : _groups.where((t) => t.name.toLowerCase().contains(_searchService.searchTerm.toLowerCase())).toList();
-    return _groups;
+    return _searchFilterService?.searchTerm.toString().isEmpty ? _groups : _groups.where((t) => t.name.toLowerCase().contains(_searchFilterService.searchTerm.toLowerCase())).toList();
+   // return _groups;
   }
 /*
   @override

@@ -20,19 +20,22 @@ import 'package:auge_shared/message/domain_messages.dart';
 
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
+import 'package:auge_web/src/search_filter/search_filter_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
-import 'package:auge_web/src/map/map_service.dart';
 
 import 'package:auge_web/route/app_routes.dart';
 
 import 'package:angular_components/laminate/popup/module.dart';
 import 'package:angular_components/material_tooltip/module.dart';
 
+// ignore_for_file: uri_has_not_been_generated
+import 'package:auge_web/src/objective/objectives_filter_component.template.dart' as objectives_filter_component;
+
 @Component(
   selector: 'auge-map',
-  providers: const [MapService, ObjectiveService,
+  providers: const [ObjectiveService,
     popupBindings,
     materialTooltipBindings],
   templateUrl: 'map_component.html',
@@ -51,20 +54,29 @@ import 'package:angular_components/material_tooltip/module.dart';
   ],
 )
 
-class MapComponent /* with CanReuse   COMENTADO POIS SE USAR, O TOOLTIP NÃO DESAPARECE QUANDO SE NAVEGA PARA OUTRA PÁGINA */ implements OnActivate {
+class MapComponent with CanReuse /*  COMENTADO POIS SE USAR, O TOOLTIP NÃO DESAPARECE QUANDO SE NAVEGA PARA OUTRA PÁGINA */ implements OnActivate {
 
   final preferredTooltipPositions = const [RelativePosition.OffsetBottomLeft, RelativePosition.OffsetBottomRight];
 
   final AuthService _authService;
   final AppLayoutService _appLayoutService;
-  final MapService _mapService;
+  final SearchFilterService _searchFilterService;
+  //final MapService _mapService;
+  final ObjectiveService _objectiveService;
   final Router _router;
-
+/*
+  final List<RouteDefinition> routes = [
+    RouteDefinition(
+    routePath: AppRoutes.objectivesMapFilterRoute,
+    component: objectives_filter_component.ObjectivesFilterComponentNgFactory,
+    ),
+  ];
+*/
   List<Objective> objectivesMap = List();
 
   Set<Objective> objectivesCollapesed = Set();
 
-  MapComponent(this._authService, this._appLayoutService, this._mapService, this._router);
+  MapComponent(this._authService, this._appLayoutService, this._searchFilterService, this._objectiveService, /* this._mapService, */ this._router);
 
   // Define messages and labels
   static final String notInformedMsg = MapMsg.notInformedMsg();
@@ -86,16 +98,22 @@ class MapComponent /* with CanReuse   COMENTADO POIS SE USAR, O TOOLTIP NÃO DES
 //    _appLayoutService.enabledSearch = false;
     _appLayoutService.systemModuleIndex =  null;
 
-    try {
-      objectivesMap = await _mapService.getObjectivesMap(_authService.authorizedOrganization.id);
-/*
-      objectivesMap.forEach((o) {
-;
-        o.alignedWithChildren.forEach((f) {
-
-        });
-      });
+    // Enabled search and filter
+    _searchFilterService.enableSearch = false;
+    _searchFilterService.enableFilter = false;
+    /*
+    _searchFilterService.filterRouteUrl = AppRoutes.objectivesMapFilterRoute.toUrl();
+    _searchFilterService.filteredItems = _objectiveService.objectivesFilterOrder.filteredItems;
 */
+
+    try {
+      objectivesMap = await _objectiveService.getObjectives(_authService.authorizedOrganization.id,
+          treeAlignedWithChildren: true,
+          withProfile: true,
+          withMeasures: true, /*
+          withArchived: _objectiveService.objectivesFilterOrder.archived,
+          groupIds: _objectiveService.objectivesFilterOrder.groupIds?.toList(),
+          leaderUserIds: _objectiveService.objectivesFilterOrder.leaderUserIds?.toList() */);
 
     } catch (e) {
       _appLayoutService.error = e.toString();

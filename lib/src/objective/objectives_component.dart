@@ -216,21 +216,6 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
   void getData() async {
 
   }
-/*
-  Future<List<Objective>> getObjetives({String objectiveId, bool withArchived, Set<String> groupIds, Set<String> leaderUserIds}) async {
-    List<Objective> objectivesAux =  await _objectiveService.getObjectives(
-        _objectiveService.authService.authorizedOrganization.id,
-        objectiveId: objectiveId,
-        withMeasures: true,
-        withProfile: true,
-        withArchived: withArchived,
-        groupIds: groupIds?.toList(),
-        leaderUserIds: leaderUserIds?.toList());
-
-    return objectivesAux;
-  }
-*/
-
 
   List<Objective> get objectives {
 

@@ -18,12 +18,15 @@ import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
-import 'package:auge_web/src/gantt/gantt_service.dart';
 import 'package:auge_web/route/app_routes.dart';
+import 'package:auge_web/src/search_filter/search_filter_service.dart';
+
+// ignore_for_file: uri_has_not_been_generated
+import 'package:auge_web/src/objective/objectives_filter_component.template.dart' as objectives_filter_component;
 
 @Component(
   selector: 'auge-gantt',
-  providers: const [GanttService, ObjectiveService],
+  providers: const [ObjectiveService],
   templateUrl: 'gantt_component.html',
   styleUrls: const ['gantt_component.css'],
   directives: const [
@@ -44,17 +47,24 @@ class GanttComponent with CanReuse implements OnActivate {
 
   final AuthService _authService;
   final AppLayoutService _appLayoutService;
-  final GanttService _ganttService;
+  final ObjectiveService _objectiveService;
+  final SearchFilterService _searchFilterService;
   final Router _router;
 
-  List<Objective> objectives = [];
+  List<Objective> _objectives = [];
   List<int> yearsInterval = [];
   List<YearMonth> yearsMonthsInterval = [];
   Map<String, List<Objective>> objectivesByGroup;
 
   String selectedYear;
 
-  GanttComponent(this._authService, this._appLayoutService, this._ganttService, this._router) {
+  final List<RouteDefinition> routes = [
+  RouteDefinition(
+    routePath: AppRoutes.objectivesGanttFilterRoute,
+    component: objectives_filter_component.ObjectivesFilterComponentNgFactory,
+  )];
+
+  GanttComponent(this._authService, this._appLayoutService, this._objectiveService, this._searchFilterService, this._router) {
     // initializeDateFormatting(Intl.defaultLocale , null);
   }
 
@@ -77,12 +87,25 @@ class GanttComponent with CanReuse implements OnActivate {
  //   _appLayoutService.enabledSearch = false;
     _appLayoutService.systemModuleIndex =  null;
 
+    // Enabled search and filter
+    _searchFilterService.enableSearch = true;
+    _searchFilterService.enableFilter = true;
+    _searchFilterService.filterRouteUrl = AppRoutes.objectivesGanttFilterRoute.toUrl();
+
+    _searchFilterService.filteredItems = _objectiveService.objectivesFilterOrder.filteredItems;
+
     try {
-       objectives = await _ganttService.getObjectivesGantt(_authService.authorizedOrganization.id);
+       _objectives = await _objectiveService.getObjectives(
+           _objectiveService.authService.authorizedOrganization.id,
+           /* objectiveId: initialObjectiveId, */
+           withMeasures: true,
+           withProfile: true,
+           withArchived: _objectiveService.objectivesFilterOrder.archived,
+           groupIds: _objectiveService.objectivesFilterOrder.groupIds?.toList(),
+           leaderUserIds: _objectiveService.objectivesFilterOrder.leaderUserIds?.toList());
 
        yearsInterval = getYearsInterval();
        yearsMonthsInterval = getYearsMonthsInterval();
-       objectivesByGroup = getObjectivesByGroup();
 
     } catch (e) {
       _appLayoutService.error = e.toString();
@@ -145,17 +168,6 @@ class GanttComponent with CanReuse implements OnActivate {
     return _yearsMonthsInterval;
   }
 
-  Map<String, List<Objective>> getObjectivesByGroup() {
-    Map<String, List<Objective>> _objectivesByGroup = {};
-    for (int i = 0;i<objectives.length;i++) {
-      if (!_objectivesByGroup.containsKey(objectives[i].group?.id)) {
-        _objectivesByGroup[objectives[i].group?.id] = List();
-      }
-      _objectivesByGroup[objectives[i].group?.id].add(objectives[i]);
-    }
-    return _objectivesByGroup;
-  }
-
   String gridColumnFromStartAndEndDate(Objective objective) {
     int startMonth = 0;
     if (objective.startDate != null) {
@@ -203,12 +215,12 @@ class GanttComponent with CanReuse implements OnActivate {
     String color;
     if (expectedProgressInTime == null)
       color = '#9e9e9e';
-    else if ( objective.progress > expectedProgressInTime * 0.7)
+    else if ( objective.progress / expectedProgressInTime >= 0.7)
       color =  '#0f9d58'; // $mat-green-500: #0f9d58; // 'hsl(120, 100%, 50%)';
-    else if (objective.progress < expectedProgressInTime * 0.3)
-      color = '#db4437'; // $mat-red-500: #db4437; // 'hsl(0, 100%, 50%)';
-     else
+    else if (objective.progress / expectedProgressInTime >= 0.3)
       color = '#ffc107'; // $mat-amber-500: #ffc107; // 'hsl(45, 100%, 50%)';
+     else
+      color = '#db4437'; // $mat-red-500: #db4437; // 'hsl(0, 100%, 50%)';
 
     return color;
   }
@@ -227,6 +239,15 @@ class GanttComponent with CanReuse implements OnActivate {
 
   bool hasStarOrEndDate(Objective objective) {
     return (objective.startDate != null || objective.endDate != null);
+  }
+
+  List<Objective> get objectives {
+    if (_searchFilterService.searchTerm == null || _searchFilterService.searchTerm.isEmpty) {
+      return _objectives;
+    }
+    else {
+      return  _objectives.where((test) => test.name.contains(_searchFilterService.searchTerm)).toList();
+    }
   }
 
 }

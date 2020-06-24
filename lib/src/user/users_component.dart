@@ -21,6 +21,7 @@ import 'package:auge_shared/domain/general/user.dart';
 
 import 'package:auge_shared/message/messages.dart';
 import 'package:auge_web/src/user/user_service.dart';
+import 'package:auge_web/src/search_filter/search_filter_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 //import 'package:auge_web/src/search/search_service.dart';
 
@@ -52,6 +53,7 @@ class UsersComponent with CanReuse implements OnActivate {
 
   final AppLayoutService _appLayoutService;
  // final SearchService _searchService;
+  final SearchFilterService _searchFilterService;
   final UserService _userService;
   final Router _router;
 
@@ -81,7 +83,7 @@ class UsersComponent with CanReuse implements OnActivate {
 
   static final String headerTitle = UserMsg.label(UserMsg.userLabel);
 
-  UsersComponent(this._appLayoutService, /*this._searchService, */this._userService, this._router) {
+  UsersComponent(this._appLayoutService, this._searchFilterService, this._userService, this._router) {
     menuModel = MenuModel([MenuItemGroup([MenuItem(editButtonLabel, icon: Icon('edit') , actionWithContext: (_) => goToDetail()), MenuItem(deleteButtonlabel, icon: Icon('delete'), actionWithContext: (_) => delete())])], icon: Icon('menu'));
   }
 
@@ -94,6 +96,9 @@ class UsersComponent with CanReuse implements OnActivate {
 //    _appLayoutService.enabledSearch = true;
     _appLayoutService.systemModuleIndex = SystemModule.users.index;
 
+    _searchFilterService.enableSearch = true;
+    _searchFilterService.enableFilter = false;
+
     try {
       // _users = await _userService.getUsers(_userService.authService.selectedOrganization?.id, withProfile: true);
       _users = await _userService.getUsers(_userService.authService.authorizedOrganization?.id, withUserProfile: true);
@@ -105,8 +110,8 @@ class UsersComponent with CanReuse implements OnActivate {
   }
 
   List<User> get users {
-    //return _searchService?.searchTerm.toString().isEmpty ? _users : _users.where((t) => t.name.toLowerCase().contains(_searchService.searchTerm.toLowerCase())).toList();
-    return _users;
+    return _searchFilterService?.searchTerm.toString().isEmpty ? _users : _users.where((t) => t.name.toLowerCase().contains(_searchFilterService.searchTerm.toLowerCase())).toList();
+    //return _users;
   }
 
   void delete() async {

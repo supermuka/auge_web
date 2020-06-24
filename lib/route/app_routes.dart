@@ -89,6 +89,11 @@ class AppRoutes {
       path: AppRoutesPath.objectivesFilterRoutePath,
       parent: objectivesRoute
   );
+  static final objectivesGanttFilterRoute = RoutePath(
+      path: AppRoutesPath.objectivesFilterRoutePath,
+      parent: ganttRoute
+  );
+
   static final measuresRoute = RoutePath(
       path: AppRoutesPath.objectivesRoutePath, // 'objectives/:${AppRoutesParam.objectiveIdParameter}/measures',
       parent: objectivesRoute

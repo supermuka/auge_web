@@ -30,6 +30,7 @@
   align-items: stretch;
   overflow-x: auto;
   height: 100%;
+
 }
 
 
@@ -55,7 +56,7 @@
   top: 200px;
   bottom: 0;
   */
-  height: calc(100vh - 192px);
+  height: calc(100vh - 163px);
   //max-height: 90vh;
 }
 
@@ -95,19 +96,24 @@
 .margin-top {
   margin-top: 2px;
 }
+.row-stage {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  margin: 0px;
+}
 
 .column-stage {
   padding-left: 2px;
   padding-right: 2px;
-  /*
-  padding-top: 1px;
-  padding-bottom: 1px;
-  */
   margin: 0px;
 }
 
+.row-divider:not(:last-child) {
+  border-top: 1px solid $mat-gray-200;
+}
+
 .column-divider:not(:last-child) {
-   border-right: 1px solid $mat-gray;
+   border-right: 1px solid $mat-gray-200;
 }
 
 .name-ellipse {

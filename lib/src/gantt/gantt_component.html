@@ -25,46 +25,43 @@
             </span>
         </div>
         <div class="gantt__row gantt__row--empty-{{!hasStarOrEndDate(iObjective)}}" *ngFor="let iObjective of objectives">
-            <!-- div class="gantt__row gantt__row--empty-{{!hasStarOrEndDate(iObjective)}}" -->
-                <div class="gantt__row-first gantt__sticky-left">
-                    <div class="grid-container">
-                        <span class="item-progress c100 p{{iObjective.progress}} tiny">
-                            <span>{{iObjective.progress}}%</span>
-                            <div class="slice">
-                                <div class="bar"></div>
-                                <div class="fill"></div>
-                            </div>
-                        </span>
-                        <span class="item-name custom-size-align-name">
-                            <span class="name-ellipse">{{iObjective.name}}</span>
-                        </span>
-                        <span class="item-group avatar avatar-border" [style.background-color]="colorFromUuid(iObjective?.group?.id)">
-                            <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjective?.group?.name)">{{firstLetter(iObjective?.group?.name)}}</span>
-                        </span>
-                        <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjective)">
-                            <material-icon class="right-top" icon="launch" size="medium"></material-icon>
-                        </material-button>
-                    </div>
-                </div>
-                <div class="gantt__row--months-number gantt__row--months-number-{{yearsMonthsInterval.length}} gantt__row-bars">
-                    <span *ngIf="hasStarOrEndDate(iObjective)" clickableTooltipTarget
-                       keyboardOnlyFocusIndicator
-                       #clickableRef="tooltipTarget" [style.grid-column]="gridColumnFromStartAndEndDate(iObjective)" [style.background-color]="barColor(iObjective)">
-
-                        <material-tooltip-card [for]="clickableRef" [preferredPositions]="preferredTooltipPositions">
-                            <div>{{startDateLabel}}</div>
-                            <div><strong>{{iObjective.startDate | date}}</strong></div>
-                            <div>{{endDateLabel}}</div>
-                            <div><strong>{{iObjective.endDate | date}}</strong></div>
-                            <div>{{leaderLabel}}</div>
-                            <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjective?.leader) + ')'"></div><span> <strong>{{iObjective?.leader?.name}}</strong></span>
-                           </material-tooltip-card>
+            <div class="gantt__row-first gantt__sticky-left">
+                <div class="grid-container">
+                    <span class="item-progress c100 p{{iObjective.progress}} tiny">
+                        <span>{{iObjective.progress}}%</span>
+                        <div class="slice">
+                            <div class="bar"></div>
+                            <div class="fill"></div>
+                        </div>
                     </span>
-
+                    <span class="item-name custom-size-align-name">
+                        <span class="name-ellipse">{{iObjective.name}}</span>
+                    </span>
+                    <span class="item-group avatar avatar-border" [style.background-color]="colorFromUuid(iObjective?.group?.id)">
+                        <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjective?.group?.name)">{{firstLetter(iObjective?.group?.name)}}</span>
+                    </span>
+                    <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjective)">
+                        <material-icon class="right-top" icon="launch" size="medium"></material-icon>
+                    </material-button>
                 </div>
-            <!-- /div -->
-        </div>
-        <!-- position absolute to do grid -->
 
+            </div>
+            <div class="gantt__row--months-number gantt__row--months-number-{{yearsMonthsInterval.length}} gantt__row-bars">
+                <span *ngIf="hasStarOrEndDate(iObjective)" clickableTooltipTarget
+                   keyboardOnlyFocusIndicator
+                   #clickableRef="tooltipTarget" [style.grid-column]="gridColumnFromStartAndEndDate(iObjective)" [style.background-color]="barColor(iObjective)">
+
+                    <material-tooltip-card [for]="clickableRef" [preferredPositions]="preferredTooltipPositions">
+                        <div>{{startDateLabel}}</div>
+                        <div><strong>{{iObjective.startDate | date}}</strong></div>
+                        <div>{{endDateLabel}}</div>
+                        <div><strong>{{iObjective.endDate | date}}</strong></div>
+                        <div>{{leaderLabel}}</div>
+                        <div class="avatar" [style.background-image]="'url(' +  userUrlImage(iObjective?.leader) + ')'"></div><span> <strong>{{iObjective?.leader?.name}}</strong></span>
+                       </material-tooltip-card>
+                </span>
+            </div>
+        </div>
     </div>
 </div>
+<router-outlet [routes]="routes"></router-outlet>

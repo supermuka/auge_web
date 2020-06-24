@@ -3,7 +3,7 @@
 @import 'package:angular_components/css/material/material';
 @import 'package:angular_components/css/material/shadow';
 
-$red: #ff6252;
+// $red: #ff6252;
 
 $col-width: 48px;
 $first-width: 320px;
@@ -53,6 +53,7 @@ $first-width: 320px;
 		grid-template-columns: $first-width 1fr;
 		background-color: #fff;
 		/*border: 1px solid #fff;*/
+
 		&:nth-child(odd) {
 			background-color: #f5f5f5;
 			.gantt__row-first {
@@ -68,7 +69,8 @@ $first-width: 320px;
 			}
 		}
 		&--empty-true {
-			background-color: lighten($red, 25%) !important;
+			background-color: rgba(237, 162, 155, 0.30) !important; // lighten($mat-red-50, 30%) !important;
+			/* opacity: 0.3; */
 			z-index: 1;
 			.gantt__row-first {
 				border-width: 1px 1px 0 0;
@@ -98,14 +100,14 @@ $first-width: 320px;
 					z-index: 2;
 				}
 			}
-		/*	&:after {
+			&:after {
 				grid-row: 1;
 				grid-column: 0;
 				background-color: #1688b345;
 				z-index: 2;
 				height: 100%;
 			}
-			*/
+
 		}
         &--years {
             color: #fff;
@@ -152,9 +154,12 @@ $first-width: 320px;
 		}
 		&-first {
 			background-color: #fff;
-			border-width: 1px 0 0 0;
+
+			border-width: 1px 1px 0 0;
 			border-color: rgba(0, 0, 0, 0.1);
 			border-style: solid;
+
+			padding: 0;
 		/*	padding: 15px 0;*/
 		/*	font-size: 13px; */
 		/* 	place-items: start; */
@@ -197,7 +202,7 @@ $first-width: 320px;
             &.stripes {
                 background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,.1) 5px, rgba(255,255,255,.1) 12px);
             }
-       /*     &:before,
+            &:before,
             &:after {
                 content: "";
                 height: 100%;
@@ -211,7 +216,7 @@ $first-width: 320px;
             }
             &:after {
                 right: 0;
-            } */
+            }
           }
         }
 		&--years-number {
