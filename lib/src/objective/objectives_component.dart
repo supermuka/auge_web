@@ -199,7 +199,8 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
       if (search && initialObjectiveId != null) {
         Map keySearch = {};
         keySearch[Objective.className + '.' + Objective.idField] = initialObjectiveId;
-        _searchFilterService.searchTerm = _objectives.firstWhere((t) => t.id == initialObjectiveId)?.name + ' ' + keySearch.toString();
+        Objective objective = _objectives.firstWhere((t) => t.id == initialObjectiveId);
+        _searchFilterService.searchTerm = (objective != null ? objective.name + ' ' : '') + keySearch.toString();
       }
 
     } catch (e) {

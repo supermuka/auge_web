@@ -60,7 +60,7 @@ class AuthService  {
 
       // Create model from protobuf equivalent
       Map<String, dynamic> cache = {};
-      userAccesses = userAccessesResponse.userAccesses.map((upo) => UserAccess()..readFromProtoBuf(upo, cache)).toList();
+      userAccesses = userAccessesResponse.userAccesses.map((upo) => UserAccessHelper.readFromProtoBuf(upo, cache)).toList();
 
       //this.measureProgress = measurePb.measureProgress.map((u) => MeasureProgress()..readFromProtoBuf(u)).toList();
     }
@@ -83,8 +83,7 @@ class AuthService  {
 
         if (userIdentity != null) {
           Map<String, dynamic> cache = {};
-          user = User()
-            ..readFromProtoBuf(userIdentity.user, cache);
+          user = UserHelper.readFromProtoBuf(userIdentity.user, cache);
         }
 
       } on GrpcError catch (e) {

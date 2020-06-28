@@ -39,8 +39,6 @@ import 'package:auge_web/route/app_routes.dart';
 
 // ignore_for_file: uri_has_not_been_generated
 import 'package:auge_web/src/work_item/work_items_filter_component.template.dart' as work_items_filter_component;
-import 'package:auge_web/src/work_item/work_items_component.template.dart' as work_items_component;
-
 
 @Component(
     selector: 'auge-work-items',

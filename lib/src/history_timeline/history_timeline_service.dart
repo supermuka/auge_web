@@ -65,8 +65,7 @@ class HistoryTimelineService {
 
     return (await _historyItemServiceClient.getHistory(historyItemGetRequest))
         .history.map((m) =>
-    HistoryItem()
-      ..readFromProtoBuf(m, cache)).toList();
+    HistoryItemHelper.readFromProtoBuf(m, cache)).toList();
   }
 
   Future<DateTime> getDateTime() async {

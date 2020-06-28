@@ -38,8 +38,7 @@ class MeasureService {
     return (await _measureServiceClient.getMeasures(
         objective_measure_pbgrpc.MeasureGetRequest()
           ..objectiveId = objectiveId)).measures.map((m) =>
-    Measure()
-    ..readFromProtoBuf(m, cache)).toList();
+    MeasureHelper.readFromProtoBuf(m, cache)).toList();
   }
 
   /// Return an [Measure] by Id
@@ -51,7 +50,7 @@ class MeasureService {
           objective_measure_pbgrpc.MeasureGetRequest()
             ..id = id);
 
-      return Measure()..readFromProtoBuf(measure, {});
+      return MeasureHelper.readFromProtoBuf(measure, {});
 
     } on GrpcError catch (e) {
       /*--
@@ -75,8 +74,7 @@ class MeasureService {
         .getUnitsOfMeasurement(empty_pb.Empty());
 
     List<UnitOfMeasurement> unitsOfMeasurement =  unitsOfMeasurementResponsePb.unitsOfMeasurement.map((m) =>
-    UnitOfMeasurement()
-      ..readFromProtoBuf(m)).toList();
+    UnitOfMeasurementHelper.readFromProtoBuf(m)).toList();
 
       //List<MeasureUnit> measureUnits =  await _augeApiService.objectiveAugeApi.getMeasureUnits();
 
@@ -93,7 +91,7 @@ class MeasureService {
     try {
 
       objective_measure_pbgrpc.MeasureRequest measureRequest = objective_measure_pbgrpc.MeasureRequest()
-        ..measure = measure.writeToProtoBuf()
+        ..measure = MeasureHelper.writeToProtoBuf(measure)
         ..objectiveId = objectiveId
         ..authOrganizationId = _authService.authorizedOrganization.id
         ..authUserId = _authService.authenticatedUser.id;
@@ -138,8 +136,7 @@ class MeasureService {
       ..measureId = measureId..withMeasure = withMeasure);
     Map<String, dynamic> cache = {};
     return measureProgressesResponsePb.measureProgresses.map((m) =>
-    MeasureProgress()
-      ..readFromProtoBuf(m, cache)).toList();
+    MeasureProgressHelper.readFromProtoBuf(m, cache)).toList();
   }
 
   /// Return an [MeasureProgress] by id [MeasureProgress.id]
@@ -160,14 +157,14 @@ class MeasureService {
 
          */
     }
-    return MeasureProgress()..readFromProtoBuf(measureProgressPb, {});
+    return MeasureProgressHelper.readFromProtoBuf(measureProgressPb, {});
   }
 
   /// Save (create) a [MeasureProgress]
   Future<String> saveMeasureProgress(String measureId, MeasureProgress measureProgress) async {
 
     objective_measure_pbgrpc.MeasureProgressRequest measureProgressRequest = objective_measure_pbgrpc.MeasureProgressRequest()
-      ..measureProgress = measureProgress.writeToProtoBuf()
+      ..measureProgress = MeasureProgressHelper.writeToProtoBuf(measureProgress)
       ..measureId = measureId
       ..authOrganizationId = _authService.authorizedOrganization.id
       ..authUserId = _authService.authenticatedUser.id;
@@ -197,7 +194,7 @@ class MeasureService {
   void updateMeasureProgress(String measureId, MeasureProgress measureProgress) async {
 
     objective_measure_pbgrpc.MeasureProgressRequest measureProgressRequest = objective_measure_pbgrpc.MeasureProgressRequest()
-      ..measureProgress = measureProgress.writeToProtoBuf()
+      ..measureProgress = MeasureProgressHelper.writeToProtoBuf(measureProgress)
       ..measureId = measureId
       ..authOrganizationId = _authService.authorizedOrganization.id
       ..authUserId = _authService.authenticatedUser.id;

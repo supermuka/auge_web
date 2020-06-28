@@ -37,7 +37,7 @@ class OrganizationService {
   /// Return an [Organization]
   Future<Organization> getOrganization(String organizationId) async {
     //return _augeApiService.augeApi.getOrganizations();
-    return (Organization()..readFromProtoBuf(await _organizationServiceClient.getOrganization(
+    return (OrganizationHelper.readFromProtoBuf(await _organizationServiceClient.getOrganization(
         organization_pbgrpc.OrganizationGetRequest()..id = organizationId)));
   }
 
@@ -46,15 +46,14 @@ class OrganizationService {
     //return _augeApiService.augeApi.getOrganizations();
     return (await _organizationServiceClient.getOrganizations(
         organization_pbgrpc.OrganizationGetRequest())).organizations.map((m) =>
-    Organization()
-      ..readFromProtoBuf(m)).toList();
+    OrganizationHelper.readFromProtoBuf(m)).toList();
   }
 
   /// Save (create or update)an [Organization]
   void saveOrganization(Organization organization) async {
 
     organization_pbgrpc.OrganizationRequest organizationRequest = organization_pbgrpc.OrganizationRequest()
-      ..organization = organization.writeToProtoBuf()
+      ..organization = OrganizationHelper.writeToProtoBuf(organization)
       ..authOrganizationId = _authService.authorizedOrganization.id
       ..authUserId = _authService.authenticatedUser.id;
 
@@ -99,7 +98,6 @@ class OrganizationService {
     OrganizationConfiguration organizationConfiguration;
     try {
 
-
       organization_configuration_pbgrpc
           .OrganizationConfigurationGetRequest organizationConfigurationGetRequest = organization_configuration_pbgrpc
           .OrganizationConfigurationGetRequest();
@@ -109,8 +107,7 @@ class OrganizationService {
       if (organizationId != null)
          organizationConfigurationGetRequest.organizationId = organizationId;
 
-      organizationConfiguration = OrganizationConfiguration()
-        ..readFromProtoBuf(await _organizationConfigurationServiceClient
+      organizationConfiguration = OrganizationConfigurationHelper.readFromProtoBuf(await _organizationConfigurationServiceClient
             .getOrganizationConfiguration(organizationConfigurationGetRequest));
 
     } on GrpcError catch (e) {
@@ -132,7 +129,7 @@ class OrganizationService {
   void saveOrganizationConfiguration(OrganizationConfiguration organizationConfiguration) async {
 
     organization_configuration_pbgrpc.OrganizationConfigurationRequest organizationConfigurationRequest = organization_configuration_pbgrpc.OrganizationConfigurationRequest()
-      ..organizationConfiguration = organizationConfiguration.writeToProtoBuf()
+      ..organizationConfiguration = OrganizationConfigurationHelper.writeToProtoBuf(organizationConfiguration)
       ..authOrganizationId = _authService.authorizedOrganization.id
       ..authUserId = _authService.authenticatedUser.id;
 
@@ -171,8 +168,7 @@ class OrganizationService {
       if (organizationId != null)
         organizationDirectoryServiceGetRequest.organizationId = organizationId;
 
-      organizationDirectoryService = OrganizationDirectoryService()
-        ..readFromProtoBuf(await _organizationDirectoryServiceServiceClient
+      organizationDirectoryService = OrganizationDirectoryServiceHelper.readFromProtoBuf(await _organizationDirectoryServiceServiceClient
             .getOrganizationDirectoryService(organizationDirectoryServiceGetRequest));
 
     } on GrpcError catch (e) {
@@ -194,7 +190,7 @@ class OrganizationService {
   void saveOrganizationDirectoryService(OrganizationDirectoryService organizationDirectoryService) async {
 
     organization_directory_service_pbgrpc.OrganizationDirectoryServiceRequest organizationDirectoryServiceRequest = organization_directory_service_pbgrpc.OrganizationDirectoryServiceRequest()
-      ..organizationDirectoryService = organizationDirectoryService.writeToProtoBuf()
+      ..organizationDirectoryService = OrganizationDirectoryServiceHelper.writeToProtoBuf(organizationDirectoryService)
       ..authOrganizationId = _authService.authorizedOrganization.id
       ..authUserId = _authService.authenticatedUser.id;
 
@@ -219,7 +215,7 @@ class OrganizationService {
     try {
 
       organization_directory_service_pbgrpc.OrganizationDirectoryServiceRequest organizationDirectoryServiceRequest = organization_directory_service_pbgrpc.OrganizationDirectoryServiceRequest()
-        ..organizationDirectoryService = organizationDirectoryService.writeToProtoBuf();
+        ..organizationDirectoryService = OrganizationDirectoryServiceHelper.writeToProtoBuf(organizationDirectoryService);
 
       organizationDirectoryServiceRequest.authOrganizationId = _authService.authorizedOrganization.id;
       organizationDirectoryServiceRequest.authUserId = _authService.authenticatedUser.id;
@@ -236,7 +232,7 @@ class OrganizationService {
     try {
 
       organization_directory_service_pbgrpc.OrganizationDirectoryServiceRequest organizationDirectoryServiceRequest = organization_directory_service_pbgrpc.OrganizationDirectoryServiceRequest()
-        ..organizationDirectoryService = organizationDirectoryService.writeToProtoBuf();
+        ..organizationDirectoryService = OrganizationDirectoryServiceHelper.writeToProtoBuf(organizationDirectoryService);
 
       organizationDirectoryServiceRequest.authOrganizationId = _authService.authorizedOrganization.id;
       organizationDirectoryServiceRequest.authUserId = _authService.authenticatedUser.id;

@@ -204,8 +204,6 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
     organizationConfiguration = await _organizationService.getOrganizationConfiguration(organizationId: _userService.authService.authorizedOrganization.id);
 
-
-
   }
 
   @override
@@ -370,7 +368,9 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
         event.cancel();
       } else {
         try {
-          await _userService.saveUserIdentity(ui);
+          String id = await _userService.saveUserIdentity(ui);
+
+          userIdentities[userIdentities.indexOf(userIdentity)] = await _userService.getUserIdentity(id);
 
           // turn null (not selected)
           userIdentity = null;
@@ -400,7 +400,11 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
   void saveUserAccess(UserAccess uoa, AsyncAction event) async {
     try {
 
-      await _userService.saveUserAccess(uoa);
+      String id = await _userService.saveUserAccess(uoa);
+
+      int i = userAccesses.indexOf(uoa);
+
+      userAccesses[i] = await _userService.getUserAccess(id);
 
       // turn null (not selected)
       userAccess = null;

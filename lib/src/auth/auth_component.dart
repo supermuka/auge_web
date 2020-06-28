@@ -189,7 +189,7 @@ class AuthComponent implements OnActivate {
 
         } catch (e) {
           //dialogError = AuthMsg.serverApiErrorMsg();
-          dialogError = AuthMsg.serverApiErrorMsg();
+          dialogError = AuthMsg.serverApiErrorMsg() + ' - ' + e.toString();
           return true;
           //rethrow;
         }

@@ -37,20 +37,21 @@ class UserService {
   AuthService get authService => _authService;
 
   /// Return [User] list by Organization [id]
-  Future<List<User>> getUsers(String organizationId, {bool withUserProfile = false}) async {
+  Future<List<User>> getUsers(String organizationId, {bool onlyIdAndName = false, bool withUserProfile = false}) async {
     // return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
     Map<String, dynamic> cache = {};
     return (await _userServiceClient.getUsers(
-        user_pbgrpc.UserGetRequest()..managedByOrganizationIdOrAccessedByOrganizationId = organizationId..withUserProfile = withUserProfile)).users.map((m) =>
-    User()
-      ..readFromProtoBuf(m,cache)).toList();
+        user_pbgrpc.UserGetRequest()..managedByOrganizationIdOrAccessedByOrganizationId = organizationId
+          ..onlyIdAndName = onlyIdAndName
+          ..withUserProfile = withUserProfile)).users.map((m) =>
+    UserHelper.readFromProtoBuf(m,cache)).toList();
   }
 
   /// Return [User] list by Organization [id]
   Future<User> getUser(String id, {bool withUserProfile = false}) async {
     // return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
     Map<String, dynamic> cache = {};
-    return User()..readFromProtoBuf((await _userServiceClient.getUser(
+    return UserHelper.readFromProtoBuf((await _userServiceClient.getUser(
         user_pbgrpc.UserGetRequest()..id = id..withUserProfile = withUserProfile)), cache);
   }
 
@@ -61,7 +62,7 @@ class UserService {
       user_identity_pbgrpc.UserIdentityGetRequest userIdentityGetRequest =  user_identity_pbgrpc.UserIdentityGetRequest();
       if (id != null) userIdentityGetRequest.id = id;
       Map<String, dynamic> cache = {};
-      return UserIdentity()..readFromProtoBuf((await _userIdentityServiceClient.getUserIdentity(userIdentityGetRequest)), cache);
+      return UserIdentityHelper.readFromProtoBuf((await _userIdentityServiceClient.getUserIdentity(userIdentityGetRequest)), cache);
     } catch (e) {
       rethrow;
     }
@@ -75,8 +76,7 @@ class UserService {
       if (userId != null) userIdentityGetRequest.userId = userId;
       Map<String, dynamic> cache = {};
       return (await _userIdentityServiceClient.getUserIdentities(userIdentityGetRequest)).userIdentities.map((m) =>
-      UserIdentity()
-        ..readFromProtoBuf(m, cache)).toList();
+      UserIdentityHelper.readFromProtoBuf(m, cache)).toList();
     } catch (e) {
       rethrow;
     }
@@ -89,7 +89,7 @@ class UserService {
       user_access_pbgrpc.UserAccessGetRequest userAccessGetRequest =  user_access_pbgrpc.UserAccessGetRequest();
       if (id != null) userAccessGetRequest.id = id;
       Map<String, dynamic> cache = {};
-      return UserAccess()..readFromProtoBuf((await _userAccessServiceClient.getUserAccess(userAccessGetRequest)), cache);
+      return UserAccessHelper.readFromProtoBuf((await _userAccessServiceClient.getUserAccess(userAccessGetRequest)), cache);
     } catch (e) {
       rethrow;
     }
@@ -103,8 +103,7 @@ class UserService {
       if (userId != null) userAccessGetRequest.userId = userId;
       Map<String, dynamic> cache = {};
       return (await _userAccessServiceClient.getUserAccesses(userAccessGetRequest)).userAccesses.map((m) =>
-      UserAccess()
-        ..readFromProtoBuf(m, cache)).toList();
+      UserAccessHelper.readFromProtoBuf(m, cache)).toList();
 
     } catch (e) {
       rethrow;
@@ -115,7 +114,7 @@ class UserService {
   void saveUser(User user) async {
 
     user_pbgrpc.UserRequest userRequest = (user_pbgrpc.UserRequest()
-      ..user = user.writeToProtoBuf()
+      ..user = UserHelper.writeToProtoBuf(user)
       ..authOrganizationId = _authService.authorizedOrganization.id
       ..authUserId = _authService.authenticatedUser.id);
     try {
@@ -135,19 +134,20 @@ class UserService {
   }
 
   /// Save (create or update) an [UserIdentity]
-  void saveUserIdentity(UserIdentity userIdentity) async {
+  Future<String> saveUserIdentity(UserIdentity userIdentity) async {
 
     user_identity_pbgrpc.UserIdentityRequest userIdentityRequest = (user_identity_pbgrpc.UserIdentityRequest()
-      ..userIdentity = userIdentity.writeToProtoBuf()
+      ..userIdentity = UserIdentityHelper.writeToProtoBuf(userIdentity)
       ..authOrganizationId = _authService.authorizedOrganization.id
       ..authUserId = _authService.authenticatedUser.id);
 
+    String id = userIdentity.id;
     try {
-      if (userIdentity.id == null) {
+      if (id == null) {
         wrappers_pb.StringValue responseId = await _userIdentityServiceClient
             .createUserIdentity(userIdentityRequest);
 
-        userIdentity.id = responseId.value;
+        id = responseId.value;
       } else {
         await _userIdentityServiceClient.updateUserIdentity(
             userIdentityRequest);
@@ -156,21 +156,24 @@ class UserService {
       print(e);
       rethrow;
     }
+    return id;
   }
 
   /// Save (create or update) an [UserAccess]
-  void saveUserAccess(UserAccess userAccess) async {
+  Future<String> saveUserAccess(UserAccess userAccess) async {
 
     user_access_pbgrpc.UserAccessRequest userAccessRequest = (user_access_pbgrpc.UserAccessRequest()
-      ..userAccess = userAccess.writeToProtoBuf()
+      ..userAccess = UserAccessHelper.writeToProtoBuf(userAccess)
       ..authOrganizationId = _authService.authorizedOrganization.id
       ..authUserId = _authService.authenticatedUser.id);
+
+    String id = userAccess.id;
     try {
       if (userAccess.id == null) {
         wrappers_pb.StringValue responseId = await _userAccessServiceClient
             .createUserAccess(userAccessRequest);
 
-        userAccess.id = responseId.value;
+        id = responseId.value;
       } else {
         await _userAccessServiceClient.updateUserAccess(
             userAccessRequest);
@@ -179,6 +182,7 @@ class UserService {
       print(e);
       rethrow;
     }
+    return id;
   }
 
   /// Delete (create or update) an [User]
@@ -246,7 +250,7 @@ class UserService {
       user_control_pbgrpc.UserControlGetRequest userControlGetRequest =  user_control_pbgrpc.UserControlGetRequest();
       if (userId != null) userControlGetRequest.userId = userId;
       Map<String, dynamic> cache = {};
-      return UserControl()..readFromProtoBuf((await _userControlServiceClient.getUserControl(
+      return UserControlHelper.readFromProtoBuf((await _userControlServiceClient.getUserControl(
           user_control_pbgrpc.UserControlGetRequest()..userId = userId)), cache);
 
     } catch (e) {
@@ -257,7 +261,7 @@ class UserService {
   /// Save (create or update) an [UserControl]
   void saveUserControl(UserControl userControl) async {
     user_control_pbgrpc.UserControlRequest userControlRequest = (user_control_pbgrpc.UserControlRequest()
-      ..userControl = userControl.writeToProtoBuf()
+      ..userControl = UserControlHelper.writeToProtoBuf(userControl)
       ..authOrganizationId = _authService.authorizedOrganization.id
       ..authUserId = _authService.authenticatedUser.id);
     try {

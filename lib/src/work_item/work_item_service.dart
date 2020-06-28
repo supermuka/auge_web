@@ -29,12 +29,9 @@ class WorkItemService {
     _unitOfMeasurementServiceClient = unit_of_measurement_pbgrpc.UnitOfMeasurementServiceClient(_augeApiService.channel);
 
     workItemsFilterOrder = WorkItemsFilterOrder();
-
   }
 
   AuthService get authService => _authService;
-
-
 
   /// Delete a [WorkItem]
   void deleteWorkItem(WorkItem workItem) async {
@@ -57,7 +54,7 @@ class WorkItemService {
   Future<String> saveWorkItem(String workId, WorkItem workItem) async {
 
     work_work_item_pbgrpc.WorkItemRequest workItemRequest = work_work_item_pbgrpc.WorkItemRequest()
-      ..workItem = workItem.writeToProtoBuf()
+      ..workItem = WorkItemHelper.writeToProtoBuf(workItem)
       ..workId = workId
       ..authOrganizationId = _authService.authorizedOrganization.id
       ..authUserId = _authService.authenticatedUser.id;
@@ -82,7 +79,7 @@ class WorkItemService {
   Future<WorkItem> getWorkItem(String id) async {
     // return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
 
-    return WorkItem()..readFromProtoBuf((await _workItemServiceClient.getWorkItem(work_work_item_pbgrpc.WorkItemGetRequest()..id = id)), {});
+    return WorkItemHelper.readFromProtoBuf((await _workItemServiceClient.getWorkItem(work_work_item_pbgrpc.WorkItemGetRequest()..id = id)), {});
   }
 
   /// Return a list of [WorkItem]
@@ -96,14 +93,13 @@ class WorkItemService {
     if (withWork != null) workItemGetRequest.withWork = withWork;
     Map<String, dynamic> cache = {};
     return (await _workItemServiceClient.getWorkItems(workItemGetRequest)).workItems.map((i) =>
-    WorkItem()
-      ..readFromProtoBuf(i, cache)).toList();
+    WorkItemHelper.readFromProtoBuf(i, cache)).toList();
   }
 
   /// Return [WorkItemAttachment] by id
   Future<WorkItemAttachment> getWorkItemAttachment(String id) async {
     // return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
-    return WorkItemAttachment()..readFromProtoBuf((await _workItemServiceClient.getWorkItemAttachment(
+    return WorkItemAttachmentHelper.readFromProtoBuf((await _workItemServiceClient.getWorkItemAttachment(
         work_work_item_pbgrpc.WorkItemAttachmentGetRequest()..id = id..withContent = true)));
   }
 
@@ -115,8 +111,7 @@ class WorkItemService {
         .getUnitsOfMeasurement(empty_pb.Empty());
 
     List<UnitOfMeasurement> unitsOfMeasurement =  unitsOfMeasurementResponsePb.unitsOfMeasurement.map((m) =>
-    UnitOfMeasurement()
-      ..readFromProtoBuf(m)).toList();
+    UnitOfMeasurementHelper.readFromProtoBuf(m)).toList();
 
     //List<MeasureUnit> measureUnits =  await _augeApiService.objectiveAugeApi.getMeasureUnits();
 
@@ -137,8 +132,7 @@ class WorkItemService {
       ..workItemId = workItemId..withWorkItem = withWorkItem);
     Map<String, dynamic> cache = {};
     return workItemValuesResponsePb.workItemValues.map((m) =>
-    WorkItemValue()
-      ..readFromProtoBuf(m, cache)).toList();
+    WorkItemValueHelper.readFromProtoBuf(m, cache)).toList();
   }
 
   /// Return an [WorkItemValue] by id [WorkItemValue.id]
@@ -159,14 +153,14 @@ class WorkItemService {
 
          */
     }
-    return WorkItemValue()..readFromProtoBuf(workItemValuePb, {});
+    return WorkItemValueHelper.readFromProtoBuf(workItemValuePb, {});
   }
 
   /// Save (create) a [WorkItemValue]
   Future<String> saveWorkItemValue(String workItemId, WorkItemValue workItemValue) async {
 
     work_work_item_pbgrpc.WorkItemValueRequest workItemValueRequest = work_work_item_pbgrpc.WorkItemValueRequest()
-      ..workItemValue = workItemValue.writeToProtoBuf()
+      ..workItemValue = WorkItemValueHelper.writeToProtoBuf(workItemValue)
       ..workItemId = workItemId
       ..authOrganizationId = _authService.authorizedOrganization.id
       ..authUserId = _authService.authenticatedUser.id;
@@ -196,7 +190,7 @@ class WorkItemService {
   void updateWorkItemValue(String workItemId, WorkItemValue workItemValue) async {
 
     work_work_item_pbgrpc.WorkItemValueRequest workItemValueRequest = work_work_item_pbgrpc.WorkItemValueRequest()
-      ..workItemValue = workItemValue.writeToProtoBuf()
+      ..workItemValue = WorkItemValueHelper.writeToProtoBuf(workItemValue)
       ..workItemId = workItemId
       ..authOrganizationId = _authService.authorizedOrganization.id
       ..authUserId = _authService.authenticatedUser.id;

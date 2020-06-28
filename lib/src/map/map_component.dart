@@ -30,9 +30,6 @@ import 'package:auge_web/route/app_routes.dart';
 import 'package:angular_components/laminate/popup/module.dart';
 import 'package:angular_components/material_tooltip/module.dart';
 
-// ignore_for_file: uri_has_not_been_generated
-import 'package:auge_web/src/objective/objectives_filter_component.template.dart' as objectives_filter_component;
-
 @Component(
   selector: 'auge-map',
   providers: const [ObjectiveService,

@@ -41,11 +41,11 @@ class GroupService {
 
     // Create model from protobuf equivalent
     Map<String, dynamic> cache = {};
-    return Group()..readFromProtoBuf(groupPb, cache);
+    return GroupHelper.readFromProtoBuf(groupPb, cache);
   }
 
   /// Return a list of [Group]
-  Future<List<Group>> getGroups(String organizationId) async {
+  Future<List<Group>> getGroups(String organizationId, {bool onlyIdAndName = false}) async {
    //--return _augeApiService.augeApi.getGroups(organizationId);
 
     // Return a protobuf via grpc
@@ -53,11 +53,12 @@ class GroupService {
         .GroupsResponse groupsResponse = await _groupServiceClient
         .getGroups(
         group_pbgrpc.GroupGetRequest()
-          ..organizationId = organizationId);
+          ..organizationId = organizationId
+          ..onlyIdAndName = onlyIdAndName);
 
     // Create model from protobuf equivalent
     Map<String, dynamic> cache = {};
-    return groupsResponse.groups.map((g) => Group()..readFromProtoBuf(g, cache)).toList();
+    return groupsResponse.groups.map((g) => GroupHelper.readFromProtoBuf(g, cache)).toList();
   }
 
   /// Delete an [Group]
@@ -80,7 +81,7 @@ class GroupService {
   void saveGroup(Group group) async {
     try {
       group_pbgrpc.GroupRequest groupRequest = group_pbgrpc.GroupRequest()
-        ..group = group.writeToProtoBuf()
+        ..group = GroupHelper.writeToProtoBuf(group)
         ..authOrganizationId = _authService.authorizedOrganization.id
         ..authUserId = _authService.authenticatedUser.id;
 

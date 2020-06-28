@@ -47,8 +47,7 @@ class ObjectiveService {
 
     Map<String, dynamic> cache = {};
     List<Objective> o = or.objectives.map((m) =>
-    Objective()
-      ..readFromProtoBuf(m, cache)).toList();
+    ObjectiveHelper.readFromProtoBuf(m, cache)).toList();
 
     return o;
   }
@@ -65,7 +64,7 @@ class ObjectiveService {
             ..withMeasures = withMeasures
             ..withUserProfile = withUserProfile);
 
-      return Objective()..readFromProtoBuf(objective, {});
+      return ObjectiveHelper.readFromProtoBuf(objective, {});
 
      // currentDateTime ??= await getDateTime();
 
@@ -89,7 +88,7 @@ class ObjectiveService {
   Future<String> saveObjective(Objective objective) async {
 
     objective_measure_pbgrpc.ObjectiveRequest objectiveRequest = (objective_measure_pbgrpc.ObjectiveRequest()
-      ..objective = objective.writeToProtoBuf()
+      ..objective = ObjectiveHelper.writeToProtoBuf(objective)
       ..authOrganizationId = _authService.authorizedOrganization.id
       ..authUserId = _authService.authenticatedUser.id);
 

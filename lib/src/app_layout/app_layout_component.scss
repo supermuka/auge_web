@@ -57,7 +57,7 @@ material-drawer {
   @extend material-drawer;
   position: fixed;
   top: 64px;
-  height: 600px;
+  height: 512px;
   z-index: 5; //2;
 }
 
@@ -85,14 +85,12 @@ material-list {
 */
 ////
 
-
 .main {
 //  margin-top: 0px; // 64px; // $mat-header-height: 64px; needs because was used position: fixed on header panel
   padding-top: 64px;
   margin-left: 0px;
   margin-right: 0px;
 }
-
 
 .hide-title-small {
     @media (max-width: 800px) {

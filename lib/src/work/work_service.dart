@@ -50,8 +50,7 @@ class WorkService {
 
     Map<String, dynamic> cache = {};
     return (await _workServiceClient.getWorks(workGetRequest)).works.map((i) =>
-    Work()
-      ..readFromProtoBuf(i, cache)).toList();
+    WorkHelper.readFromProtoBuf(i, cache)).toList();
   }
 
   /// Return [User] list by Organization [id]
@@ -74,22 +73,21 @@ class WorkService {
     workGetRequest.workItemWithArchived = workItemWithArchived;
     if (workItemAssignedToIds != null && workItemAssignedToIds.isNotEmpty) workGetRequest.workItemAssignedToIds.addAll(workItemAssignedToIds);
 
-    return Work()..readFromProtoBuf(await _workServiceClient.getWork(workGetRequest), {});
+    return WorkHelper.readFromProtoBuf(await _workServiceClient.getWork(workGetRequest), {});
   }
 
   /// Return a list of [Stage]
   Future<List<WorkStage>> getWorkStages(String workId) async {
     Map<String, dynamic> cache = {};
     return (await _workStageServiceClient.getWorkStages(work_work_item_pbgrpc.WorkStageGetRequest()..workId = workId)).workStages.map((s) =>
-    WorkStage()
-      ..readFromProtoBuf(s, cache)).toList();
+    WorkStageHelper.readFromProtoBuf(s, cache)).toList();
   }
 
   /// Return [WorkStage] by Work [id]
   Future<WorkStage> getWorkStage(String id) async {
     // return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
     Map<String, dynamic> cache = {};
-    return WorkStage()..readFromProtoBuf((await _workStageServiceClient.getWorkStage(
+    return WorkStageHelper.readFromProtoBuf((await _workStageServiceClient.getWorkStage(
         work_work_item_pbgrpc.WorkStageGetRequest()
           ..id = id)), cache);
   }
@@ -107,7 +105,7 @@ class WorkService {
     try {
 
       work_work_item_pbgrpc.WorkRequest workRequest = work_work_item_pbgrpc.WorkRequest()
-        ..work = work.writeToProtoBuf()
+        ..work = WorkHelper.writeToProtoBuf(work)
         ..authUserId = _authService.authenticatedUser.id
         ..authOrganizationId = _authService.authorizedOrganization.id;
 
@@ -151,7 +149,7 @@ class WorkService {
 
       work_work_item_pbgrpc.WorkStageRequest workStageRequest = work_work_item_pbgrpc.WorkStageRequest()
         ..workId = workId
-        ..workStage = workStage.writeToProtoBuf()
+        ..workStage = WorkStageHelper.writeToProtoBuf(workStage)
         ..authUserId = _authService.authenticatedUser.id
         ..authOrganizationId = _authService.authorizedOrganization.id;
 
