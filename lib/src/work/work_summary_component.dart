@@ -67,8 +67,8 @@ class WorkSummaryComponent {
     return (stateWorkItemsCount / workItemsCount * progressBarWidth).toString();
   }
 
-  String stateHslColor(State state) => WorkService.getStateHslColor(state);
+  String stateHslColor(int stateIndex) => WorkService.getStateHslColor(stateIndex);
 
-  String stateName(State state) => StateMsg.label(state.toString());
+  String stateName(int stateIndex) => StateMsg.label(State.values[stateIndex].toString());
 
 }

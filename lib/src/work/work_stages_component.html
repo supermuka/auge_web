@@ -16,8 +16,8 @@
                 </material-button>
             </div>
             <div *ngFor="let iWorkStage of workStages;let i = index">
-                <div class="group" *ngIf="i == 0 || workStages[i-1].state != null && workStages[i].state != null && workStages[i-1].state.index != workStages[i].state.index">
-                    <label><span [style.background-color]="'hsl(' + stateHslColor(iWorkStage.state) + ')'">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;{{stateName(iWorkStage.state)}}</label>&nbsp;
+                <div class="group" *ngIf="i == 0 || workStages[i-1].stateIndex != null && workStages[i].stateIndex != null && workStages[i-1].stateIndex != workStages[i].stateIndex">
+                    <label><span [style.background-color]="'hsl(' + stateHslColor(iWorkStage.stateIndex) + ')'">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;{{stateName(iWorkStage.stateIndex)}}</label>&nbsp;
                 </div>
                 <material-expansionpanel disabled
                                          flat

@@ -150,7 +150,7 @@ class WorkItemsComponent with CanReuse implements OnActivate /*, OnDestroy */ {
   }
 
 
-  String stateHslColor(State state) => WorkService.getStateHslColor(state);
+ // String stateHslColor(int stateIndex) => WorkService.getStateHslColor(stateIndex);
 
   String composeTooltip(String label, String name) {
     return  '${label} ${name}';

@@ -47,7 +47,7 @@
 <div class="container-flex-row">
     <div *ngFor="let kanbanColumn of kanbanColumns" class="column-divider">
         <div (drop)="drop($event, kanbanColumn)" (dragover)="allowDrop($event)" class="items-column">
-            <div class="header-custom" [style.background-color]="'hsl(' + stateHslColor(kanbanColumn.workStage.state) + ')'">
+            <div class="header-custom" [style.background-color]="'hsl(' + stateHslColor(kanbanColumn.workStage.stateIndex) + ')'">
                 <span><strong>{{kanbanColumn.workStage.name}}</strong></span>
                 <material-button class="w3-right" icon (trigger)="selectWorkItem(null);goToDetail(kanbanColumn.workStage.id)">
                     <material-icon baseline icon="add"></material-icon>

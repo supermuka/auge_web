@@ -93,7 +93,7 @@ class WorkStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
       ..selectionChanges.listen((es) {
         if (selectedWorkStage != null && es.isNotEmpty && es.first.added != null &&
             es.first.added.length != 0 && es.first.added.first != null) {
-          selectedWorkStage.state = es.first.added.first;
+          selectedWorkStage.stateIndex = es.first.added.first.index;
         }
       });
   }
@@ -108,7 +108,7 @@ class WorkStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
   static final String selectLabel =  CommonMsg.label(CommonMsg.selectLabel);
 
   static final String nameLabel =  WorkStageDomainMsg.fieldLabel(WorkStage.nameField);
-  static final String stateLabel =  WorkStageDomainMsg.fieldLabel(WorkStage.stateField);
+  static final String stateLabel =  WorkStageDomainMsg.fieldLabel(WorkStage.stateIndexField);
 
   static final String stateNotInfomedMsg =  StageMsg.stateNotInfomedMsg();
 
@@ -178,7 +178,7 @@ class WorkStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
 
   void saveWorkStage(WorkStage workStage, AsyncAction event) async {
 
-    if (workStage.state == null) {
+    if (workStage.stateIndex == null) {
       dialogError = stateNotInfomedMsg;
       event.cancel();
     } else {
@@ -187,7 +187,7 @@ class WorkStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
         if (workStage.index == null) {
           int lastIndexIntoStage = 0;
           for (int i = 0;i < workStages.length;i++) {
-            if (workStage.state.index == workStages[i].state.index && workStages[i].index != null && lastIndexIntoStage < workStages[i].index) {
+            if (workStage.stateIndex == workStages[i].stateIndex && workStages[i].index != null && lastIndexIntoStage < workStages[i].index) {
               lastIndexIntoStage = workStages[i].index;
             }
           }
@@ -219,7 +219,7 @@ class WorkStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
 
   void selectWorkStage(WorkStage workStage) async {
     if (workStage == null) {
-      workStages.insert(0, WorkStage()..state = State.notStarted);
+      workStages.insert(0, WorkStage()..stateIndex = State.notStarted.index);
       selectedWorkStage = workStages.first;
   //    selectedStage.index = stages.length;
    //   selectedMeasureProgress.date = DateTime.now();
@@ -257,18 +257,18 @@ class WorkStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
   void _sortStages() {
     // measureProgresses.sort((a, b) => a?.date == null || b?.date == null ? -1 : a.date.compareTo(b.date));
     workStages.sort((a, b) => a.index.compareTo(b.index));
-    workStages.sort((a, b) => a.state.index.compareTo(b.state.index));
+    workStages.sort((a, b) => a.stateIndex.compareTo(b.stateIndex));
   }
 
-
+/*
   bool get validStageInput {
     return (selectedWorkStage.name.isNotEmpty && stateSingleSelectModel != null && stateSingleSelectModel.selectedValues.isNotEmpty && stateSingleSelectModel.selectedValues.first.index != null);
   }
-
+*/
   void moveUpWorkStage(WorkStage workStage) async {
     int i = workStages.indexOf(workStage);
 
-    if (i > 0 && workStage.state.index == workStages[i-1].state.index ) {
+    if (i > 0 && workStage.stateIndex == workStages[i-1].stateIndex ) {
       // Receive state equals previous stage, because can be different that the actual
    //   stage.state = stages[i-1].state;
 
@@ -288,7 +288,7 @@ class WorkStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
 
   void moveDownWorkStage(WorkStage workStage) async {
     int i = workStages.indexOf(workStage);
-    if (i < workStages.length-1 && workStage.state.index == workStages[i+1].state.index) {
+    if (i < workStages.length-1 && workStage.stateIndex == workStages[i+1].stateIndex) {
 
       // Receive state equals previous stage, because can be different that the actual
       --workStages[i+1].index;
@@ -306,7 +306,7 @@ class WorkStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
   bool disableUpWorkStage(WorkStage workStage) {
     int firstIndexIntoWorkStage = -1;
     for (int i = 0;i < workStages.length;i++) {
-      if (workStage.state != null && workStage.state.index == workStages[i].state.index && workStages[i].index != null && ( firstIndexIntoWorkStage == -1 || firstIndexIntoWorkStage > workStages[i].index )) {
+      if (workStage.stateIndex != null && workStage.stateIndex == workStages[i].stateIndex && workStages[i].index != null && ( firstIndexIntoWorkStage == -1 || firstIndexIntoWorkStage > workStages[i].index )) {
         firstIndexIntoWorkStage = workStages[i].index;
       }
     }
@@ -316,7 +316,7 @@ class WorkStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
   bool disableDownWorkStage(WorkStage workStage) {
     int lastIndexIntoStage = 0;
     for (int i = 0;i < workStages.length;i++) {
-      if (workStage.state != null && workStage.state.index == workStages[i].state.index && workStages[i].index != null && ( lastIndexIntoStage < workStages[i].index )) {
+      if (workStage.stateIndex != null && workStage.stateIndex == workStages[i].stateIndex && workStages[i].index != null && ( lastIndexIntoStage < workStages[i].index )) {
         lastIndexIntoStage = workStages[i].index;
       }
     }
@@ -331,9 +331,9 @@ class WorkStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
 
   FactoryRenderer get stateFactoryRenderer => (_) => work_stages_component.StateRendererComponentNgFactory;
 
-  String stateHslColor(State state) => WorkService.getStateHslColor(state);
+  String stateHslColor(int stateIndex) => WorkService.getStateHslColor(stateIndex);
 
-  String stateName(State state) => StateMsg.label(state.toString());
+  String stateName(int stateIndex) => StateMsg.label(State.values[stateIndex].toString());
 
 }
 

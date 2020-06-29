@@ -187,15 +187,15 @@ class WorkService {
   }
 
 
-  static String getStateHslColor(State state) {
+  static String getStateHslColor(int stateIndex) {
     String hslColor;
-    if (state == State.notStarted) {
+    if (stateIndex == State.notStarted.index) {
       // hslColor = '0, 0%, 90%';
       hslColor = '0, 0%, 88%'; //$mat-gray-300
-    } else if (state == State.inProgress) {
+    } else if (stateIndex == State.inProgress.index) {
       //hslColor = '90, 100%, 90%';
       hslColor = '88, 50%, 67%'; //$mat-light-green-300
-    } else if (state == State.completed) {
+    } else if (stateIndex == State.completed.index) {
      // hslColor = '200, 100%, 90%';
       hslColor = '199, 91%, 64%'; //$mat-light-blue-300
     }

@@ -356,8 +356,8 @@ class InsightsComponent with CanReuse implements OnActivate  {
           if (hasUserAuthenticated) _myOverDueWorkItemsNumber++;
         }
 
-        stateWorkItemsCount[State.values[works[i].workItems[ii].workStage.state.index]]++;
-        if (hasUserAuthenticated) myStateWorkItemsCount[State.values[works[i].workItems[ii].workStage.state.index]]++;
+        stateWorkItemsCount[State.values[works[i].workItems[ii].workStage.stateIndex]]++;
+        if (hasUserAuthenticated) myStateWorkItemsCount[State.values[works[i].workItems[ii].workStage.stateIndex]]++;
         // stateWorkItemsCount.update(State.values[works[i].workItems[ii].workStage.state.index], (v) => v = v + 1, ifAbsent: () => 1);
         //if (hasUserAuthenticated) myStateWorkItemsCount.update(State.values[works[i].workItems[ii].workStage.state.index], (v) => v = v + 1, ifAbsent: () => 1);
       }

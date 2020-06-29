@@ -107,7 +107,7 @@ class GroupDetailComponent implements OnInit, OnActivate, OnDeactivate {
   // Define labels from fields.
   static final String nameLabel =  GroupDomainMsg.fieldLabel(Group.nameField); // FieldMsg.label('${Group.className}.${Group.nameField}');
   static final String superGroupLabel =  GroupDomainMsg.fieldLabel(Group.superGroupField); // FieldMsg.label('${Group.className}.${Group.superGroupField}');
-  static final String groupTypeLabel = GroupDomainMsg.fieldLabel(Group.groupTypeField);  // FieldMsg.label('${Group.className}.${Group.groupTypeField}');
+  static final String groupTypeLabel = GroupDomainMsg.fieldLabel(Group.groupTypeIndexField);  // FieldMsg.label('${Group.className}.${Group.groupTypeField}');
   static final String leaderLabel = GroupDomainMsg.fieldLabel(Group.leaderField);  // FieldMsg.label('${Group.className}.${Group.leaderField}');
   static final String inactiveLabel = GroupDomainMsg.fieldLabel(Group.inactiveField); // FieldMsg.label('${Group.className}.${Group.inactiveField}');
   static final String membersLabel = GroupDomainMsg.fieldLabel(Group.membersField); // FieldMsg.label('${Group.className}.${Group.membersField}');
@@ -207,8 +207,8 @@ class GroupDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
     // groupTypes = await _groupService.getGroupTypes();
 
-    if (group.groupType == null) {
-      group.groupType = groupTypes?.last;
+    if (group.groupTypeIndex == null) {
+      group.groupTypeIndex = groupTypes.last.index;
     }
   }
 

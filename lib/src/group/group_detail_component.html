@@ -11,10 +11,10 @@
           <label class="w3-col l12">{{groupTypeLabel}}</label>
         </div>
         <div class="w3-row">
-            <material-radio-group  class="w3-col l12" [(ngModel)]="group.groupType">
+            <material-radio-group  class="w3-col l12" [(ngModel)]="group.groupTypeIndex">
                 <material-radio *ngFor="let iGroupType of groupTypes"
-                                [checked]="group.groupType?.index == iGroupType?.index"
-                                [value]="iGroupType">{{groupTypeName(iGroupType.toString())}}
+                                [checked]="group.groupTypeIndex == iGroupType?.index"
+                                [value]="iGroupType.index">{{groupTypeName(iGroupType.toString())}}
                 </material-radio>
             </material-radio-group>
         </div>

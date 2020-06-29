@@ -343,7 +343,7 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
       AppRoutesParam.workIdParameter: work.id}) /*, NavigationParams(replace:  true) */);
   }
 
-  String stateHslColor(State state) => WorkService.getStateHslColor(state);
+  String stateHslColor(int stateIndex) => WorkService.getStateHslColor(stateIndex);
 
   String composeTooltip(String label, String name) {
     return  '${label} ${name}';
