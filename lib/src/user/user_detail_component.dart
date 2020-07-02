@@ -218,7 +218,7 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
     if (id != null) {
 
       try {
-        user = await _userService.getUser(id, withUserProfile: true);
+        user = await _userService.getUser(id);
 
         userIdentities = await _userService.getUserIdentities(id);
 

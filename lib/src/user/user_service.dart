@@ -13,9 +13,15 @@ import 'package:auge_shared/domain/general/user_control.dart';
 import 'package:auge_web/services/auge_api_service.dart';
 import 'package:auge_shared/protos/generated/google/protobuf/wrappers.pb.dart' as wrappers_pb;
 import 'package:auge_shared/protos/generated/general/user.pbgrpc.dart' as user_pbgrpc;
+import 'package:auge_shared/protos/generated/general/user.pbenum.dart' as user_pbenum;
 import 'package:auge_shared/protos/generated/general/user_identity.pbgrpc.dart' as user_identity_pbgrpc;
 import 'package:auge_shared/protos/generated/general/user_access.pbgrpc.dart' as user_access_pbgrpc;
 import 'package:auge_shared/protos/generated/general/user_control.pbgrpc.dart' as user_control_pbgrpc;
+
+
+// Correspond to protobuf
+enum RestrictUser {none, idName}
+enum RestrictUserProfile {none, image, notificationEMailIdiom}
 
 @Injectable()
 class UserService {
@@ -37,22 +43,41 @@ class UserService {
   AuthService get authService => _authService;
 
   /// Return [User] list by Organization [id]
-  Future<List<User>> getUsers(String organizationId, {bool onlyIdAndName = false, bool withUserProfile = false}) async {
+  Future<List<User>> getUsers(String organizationId, {RestrictUser restrictUser, RestrictUserProfile restrictUserProfile}) async {
     // return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
     Map<String, dynamic> cache = {};
-    return (await _userServiceClient.getUsers(
-        user_pbgrpc.UserGetRequest()..managedByOrganizationIdOrAccessedByOrganizationId = organizationId
-          ..onlyIdAndName = onlyIdAndName
-          ..withUserProfile = withUserProfile)).users.map((m) =>
+
+    user_pbgrpc.UserGetRequest userGetRequest = user_pbgrpc.UserGetRequest();
+
+    userGetRequest.managedByOrganizationIdOrAccessedByOrganizationId = organizationId;
+    if (restrictUser != null) {
+      userGetRequest.restrictUser = user_pbenum.RestrictUser.values[restrictUser.index];
+    }
+    if (restrictUserProfile != null) {
+      userGetRequest.restrictUserProfile = user_pbenum.RestrictUserProfile.values[restrictUserProfile.index];
+    }
+
+
+    return (await _userServiceClient.getUsers(userGetRequest)).users.map((m) =>
     UserHelper.readFromProtoBuf(m,cache)).toList();
   }
 
   /// Return [User] list by Organization [id]
-  Future<User> getUser(String id, {bool withUserProfile = false}) async {
+  Future<User> getUser(String id, {RestrictUser restrictUser, RestrictUserProfile restrictUserProfile}) async {
     // return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
     Map<String, dynamic> cache = {};
-    return UserHelper.readFromProtoBuf((await _userServiceClient.getUser(
-        user_pbgrpc.UserGetRequest()..id = id..withUserProfile = withUserProfile)), cache);
+
+    user_pbgrpc.UserGetRequest userGetRequest = user_pbgrpc.UserGetRequest();
+
+    userGetRequest.id = id;
+    if (restrictUser != null) {
+      userGetRequest.restrictUser = user_pbenum.RestrictUser.values[restrictUser.index];
+    }
+    if (restrictUserProfile != null) {
+      userGetRequest.restrictUserProfile = user_pbenum.RestrictUserProfile.values[restrictUserProfile.index];
+    }
+
+    return UserHelper.readFromProtoBuf((await _userServiceClient.getUsers(userGetRequest)).users.first, cache);
   }
 
   Future<UserIdentity> getUserIdentity(String id) async {
@@ -62,7 +87,7 @@ class UserService {
       user_identity_pbgrpc.UserIdentityGetRequest userIdentityGetRequest =  user_identity_pbgrpc.UserIdentityGetRequest();
       if (id != null) userIdentityGetRequest.id = id;
       Map<String, dynamic> cache = {};
-      return UserIdentityHelper.readFromProtoBuf((await _userIdentityServiceClient.getUserIdentity(userIdentityGetRequest)), cache);
+      return UserIdentityHelper.readFromProtoBuf((await _userIdentityServiceClient.getUserIdentities(userIdentityGetRequest)).userIdentities.first, cache);
     } catch (e) {
       rethrow;
     }
@@ -89,7 +114,7 @@ class UserService {
       user_access_pbgrpc.UserAccessGetRequest userAccessGetRequest =  user_access_pbgrpc.UserAccessGetRequest();
       if (id != null) userAccessGetRequest.id = id;
       Map<String, dynamic> cache = {};
-      return UserAccessHelper.readFromProtoBuf((await _userAccessServiceClient.getUserAccess(userAccessGetRequest)), cache);
+      return UserAccessHelper.readFromProtoBuf((await _userAccessServiceClient.getUserAccesses(userAccessGetRequest)).userAccesses.first, cache);
     } catch (e) {
       rethrow;
     }

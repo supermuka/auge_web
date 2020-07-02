@@ -22,6 +22,7 @@ import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/src/search_filter/search_filter_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
+import 'package:auge_web/src/user/user_service.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
 
@@ -106,8 +107,7 @@ class MapComponent with CanReuse /*  COMENTADO POIS SE USAR, O TOOLTIP NÃO DESA
     try {
       objectivesMap = await _objectiveService.getObjectives(_authService.authorizedOrganization.id,
           treeAlignedWithChildren: true,
-          withProfile: true,
-          withMeasures: true, /*
+          restrictUserProfile: RestrictUserProfile.image, /*
           withArchived: _objectiveService.objectivesFilterOrder.archived,
           groupIds: _objectiveService.objectivesFilterOrder.groupIds?.toList(),
           leaderUserIds: _objectiveService.objectivesFilterOrder.leaderUserIds?.toList() */);

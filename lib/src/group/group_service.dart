@@ -14,6 +14,10 @@ import 'package:auge_shared/domain/general/group.dart';
 import 'package:auge_shared/protos/generated/google/protobuf/wrappers.pb.dart' as wrappers_pb;
 
 import 'package:auge_shared/protos/generated/general/group.pbgrpc.dart' as group_pbgrpc;
+import 'package:auge_shared/protos/generated/general/group.pbenum.dart' as group_pbenum;
+
+// Correspond to protobuf
+enum RestrictGroup {none, IdName}
 
 @Injectable()
 class GroupService {
@@ -33,28 +37,32 @@ class GroupService {
     //--return _augeApiService.augeApi.getGroups(organizationId);
 
     // Return a protobuf via grpc
-    group_pbgrpc
-        .Group groupPb = await _groupServiceClient
-        .getGroup(
+    List<group_pbgrpc
+        .Group> groupsPb = (await _groupServiceClient
+        .getGroups(
         group_pbgrpc.GroupGetRequest()
-          ..id = groupId);
+          ..id = groupId)).groups;
 
     // Create model from protobuf equivalent
     Map<String, dynamic> cache = {};
-    return GroupHelper.readFromProtoBuf(groupPb, cache);
+    return GroupHelper.readFromProtoBuf(groupsPb.first, cache);
   }
 
   /// Return a list of [Group]
-  Future<List<Group>> getGroups(String organizationId, {bool onlyIdAndName = false}) async {
+  Future<List<Group>> getGroups(String organizationId, {RestrictGroup restrictGroup}) async {
    //--return _augeApiService.augeApi.getGroups(organizationId);
+
+    group_pbgrpc.GroupGetRequest groupGetRequest = group_pbgrpc.GroupGetRequest();
+
+    groupGetRequest.organizationId = organizationId;
+    if (restrictGroup != null) {
+      groupGetRequest.restrictGroup = group_pbenum.RestrictGroup.values[restrictGroup.index];
+    }
 
     // Return a protobuf via grpc
     group_pbgrpc
         .GroupsResponse groupsResponse = await _groupServiceClient
-        .getGroups(
-        group_pbgrpc.GroupGetRequest()
-          ..organizationId = organizationId
-          ..onlyIdAndName = onlyIdAndName);
+        .getGroups(groupGetRequest);
 
     // Create model from protobuf equivalent
     Map<String, dynamic> cache = {};

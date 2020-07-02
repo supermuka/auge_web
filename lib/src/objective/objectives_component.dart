@@ -29,6 +29,7 @@ import 'package:auge_shared/message/messages.dart';
 import 'package:auge_shared/message/domain_messages.dart';
 
 import 'package:auge_web/src/measure/measures_component.dart';
+import 'package:auge_web/src/user/user_service.dart';
 import 'package:auge_web/src/work/works_summary_component.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/objective/objective_service.dart';
@@ -182,8 +183,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
       objectivesAux = await _objectiveService.getObjectives(
           _objectiveService.authService.authorizedOrganization.id,
           /* objectiveId: initialObjectiveId, */
-          withMeasures: true,
-          withProfile: true,
+          restrictUserProfile: RestrictUserProfile.image,
           withArchived: _objectiveService.objectivesFilterOrder.archived,
           groupIds: _objectiveService.objectivesFilterOrder.groupIds?.toList(),
           leaderUserIds: _objectiveService.objectivesFilterOrder.leaderUserIds?.toList());

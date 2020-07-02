@@ -8,6 +8,11 @@ import 'package:auge_web/services/auge_api_service.dart';
 
 import 'package:auge_shared/protos/generated/google/protobuf/wrappers.pb.dart' as wrappers_pb;
 import 'package:auge_shared/protos/generated/objective/objective_measure.pbgrpc.dart' as objective_measure_pbgrpc;
+import 'package:auge_shared/protos/generated/objective/objective_measure.pbenum.dart' as objective_measure_pbenum;
+import 'package:auge_shared/protos/generated/general/user.pbenum.dart' as user_pbenum;
+
+import 'package:auge_web/src/measure/measure_service.dart';
+import 'package:auge_web/src/user/user_service.dart';
 
 import 'package:grpc/grpc_web.dart';
 
@@ -30,14 +35,19 @@ class ObjectiveService {
 
 
   /// Return a list of [Objective]
-  Future<List<Objective>> getObjectives(String organizationId, {String objectiveId, treeAlignedWithChildren = false, bool withMeasures = false, bool withProfile = false, bool withArchived = false, List<String> groupIds, List<String> leaderUserIds}) async {
+  Future<List<Objective>> getObjectives(String organizationId, {String objectiveId, treeAlignedWithChildren = false, RestrictMeasure restrictMeasure, RestrictUserProfile restrictUserProfile, bool withArchived = false, List<String> groupIds, List<String> leaderUserIds}) async {
 
     objective_measure_pbgrpc.ObjectiveGetRequest objectiveGetRequest = objective_measure_pbgrpc.ObjectiveGetRequest();
     objectiveGetRequest.organizationId = organizationId;
     if (objectiveId != null)  objectiveGetRequest.id = objectiveId;
     objectiveGetRequest.treeAlignedWithChildren = treeAlignedWithChildren;
-    objectiveGetRequest.withMeasures = withMeasures;
-    objectiveGetRequest.withUserProfile = withProfile;
+    if (restrictMeasure != null) {
+      objectiveGetRequest.restrictMeasure =  objective_measure_pbenum.RestrictMeasure.values[restrictMeasure.index];
+    }
+    if (restrictUserProfile != null) {
+      objectiveGetRequest.restrictUserProfile = user_pbenum.RestrictUserProfile.values[restrictUserProfile.index];
+    }
+
     if (withArchived != null) objectiveGetRequest.withArchived = withArchived;
     if (groupIds != null && groupIds.isNotEmpty) objectiveGetRequest.groupIds.addAll(groupIds);
     if (leaderUserIds != null && leaderUserIds.isNotEmpty) objectiveGetRequest.leaderUserIds.addAll(leaderUserIds);
@@ -53,16 +63,21 @@ class ObjectiveService {
   }
 
   /// Return an [Objective] by Id
-  Future<Objective> getObjective(String id, {bool withMeasures = false, bool withUserProfile = false}) async {
+  Future<Objective> getObjective(String id, {RestrictMeasure restrictMeasure, RestrictUser restrictUser, RestrictUserProfile restrictUserProfile}) async {
     try {
 
       // Objective objective = await _augeApiService.objectiveAugeApi.getObjectiveById(id, withMeasures: withMeasures, withProfile: withProfile, withHistory: withHistory);
 
-      objective_measure_pbgrpc.Objective objective = await _objectiveServiceClient.getObjective(
-          objective_measure_pbgrpc.ObjectiveGetRequest()
-            ..id = id
-            ..withMeasures = withMeasures
-            ..withUserProfile = withUserProfile);
+      objective_measure_pbgrpc.ObjectiveGetRequest objectiveGetRequest = objective_measure_pbgrpc.ObjectiveGetRequest();
+      objectiveGetRequest.id = id;
+      if (restrictMeasure != null) {
+        objectiveGetRequest.restrictMeasure = objective_measure_pbenum.RestrictMeasure.values[restrictMeasure.index];
+      }
+      if (restrictUserProfile != null) {
+        objectiveGetRequest.restrictUserProfile = user_pbenum.RestrictUserProfile.values[restrictUserProfile.index];
+      }
+      
+      objective_measure_pbgrpc.Objective objective = (await _objectiveServiceClient.getObjectives(objectiveGetRequest)).objectives.first;
 
       return ObjectiveHelper.readFromProtoBuf(objective, {});
 

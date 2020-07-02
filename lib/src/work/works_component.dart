@@ -28,6 +28,7 @@ import 'package:auge_shared/message/messages.dart';
 import 'package:auge_shared/message/domain_messages.dart';
 
 import 'package:auge_web/src/search_filter/search_filter_service.dart';
+import 'package:auge_web/src/user/user_service.dart';
 import 'package:auge_web/src/work/work_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
@@ -195,8 +196,9 @@ class WorksComponent with CanReuse implements OnActivate /*, OnDestroy */ {
     try {
 
       List<Work> worksAux = await _workService.getWorks(_workService.authService.authorizedOrganization.id,
-          withWorkItems: true,
-          withProfile: true,
+         restrictUserProfile: RestrictUserProfile.image,
+         /* withWorkItems: true, */
+        /*  withProfile: true, */
           withArchived: _workService.worksFilterOrder.archived,
           groupIds: _workService.worksFilterOrder.groupIds?.toList(),
           leaderUserIds: _workService.worksFilterOrder.leaderUserIds?.toList());
@@ -235,7 +237,9 @@ class WorksComponent with CanReuse implements OnActivate /*, OnDestroy */ {
   }
 
   Future<List<Work>> getWorks() async {
-    List<Work> worksAux = await _workService.getWorks(_workService.authService.authorizedOrganization.id, withWorkItems: true, withProfile: true);
+
+
+    List<Work> worksAux = await _workService.getWorks(_workService.authService.authorizedOrganization.id, restrictUserProfile: RestrictUserProfile.image /*, withProfile: true */);
 
     return worksAux;
   }

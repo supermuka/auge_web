@@ -112,8 +112,8 @@ class WorksFilterComponent with CanReuse implements OnActivate, OnDeactivate {
     List<Group> _groups;
     List<User> _users;
     try {
-      _groups = await _groupService.getGroups(_groupService.authService.authorizedOrganization.id);
-      _users = await _userService.getUsers(_groupService.authService.authorizedOrganization.id, withUserProfile: true);
+      _groups = await _groupService.getGroups(_groupService.authService.authorizedOrganization.id, restrictGroup: RestrictGroup.IdName);
+      _users = await _userService.getUsers(_groupService.authService.authorizedOrganization.id, restrictUser: RestrictUser.idName, restrictUserProfile: RestrictUserProfile.image);
     //  groupTypes = await _groupService.getGroupTypes();
     } catch (e) {
       dialogError = e.toString();

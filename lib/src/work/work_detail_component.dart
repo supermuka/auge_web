@@ -31,6 +31,7 @@ import 'package:auge_shared/message/messages.dart';
 import 'package:auge_shared/message/domain_messages.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
+import 'package:auge_web/src/measure/measure_service.dart';
 //import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
 import 'package:auge_web/src/work/work_service.dart';
@@ -155,8 +156,8 @@ class WorkDetailComponent implements OnInit, OnActivate, OnDeactivate {
     try {
     //  _states =  await _workService.getStates();
      // _states = State.values;
-          _users = await _userService.getUsers(_workService.authService.authorizedOrganization.id, withUserProfile: true);
-      _objectives = await _objectiveService.getObjectives(_workService.authService.authorizedOrganization.id, withMeasures: false);
+      _users = await _userService.getUsers(_workService.authService.authorizedOrganization.id, restrictUser: RestrictUser.idName, restrictUserProfile: RestrictUserProfile.image);
+      _objectives = await _objectiveService.getObjectives(_workService.authService.authorizedOrganization.id, restrictMeasure: RestrictMeasure.none);
       _groups = await _groupService.getGroups(_workService.authService.authorizedOrganization.id);
 
 

@@ -12,8 +12,11 @@ import 'package:auge_shared/protos/generated/google/protobuf/empty.pb.dart' as e
 import 'package:auge_shared/protos/generated/google/protobuf/wrappers.pb.dart' as wrappers_pb;
 import 'package:auge_shared/protos/generated/work/work_work_item.pbgrpc.dart' as work_work_item_pbgrpc;
 import 'package:auge_shared/protos/generated/general/unit_of_measurement.pbgrpc.dart' as unit_of_measurement_pbgrpc;
+import 'package:auge_web/src/work/work_service.dart';
 
 import 'package:grpc/grpc_web.dart';
+
+enum RestrictWorkItem {none}
 
 @Injectable()
 class WorkItemService {
@@ -79,18 +82,21 @@ class WorkItemService {
   Future<WorkItem> getWorkItem(String id) async {
     // return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
 
-    return WorkItemHelper.readFromProtoBuf((await _workItemServiceClient.getWorkItem(work_work_item_pbgrpc.WorkItemGetRequest()..id = id)), {});
+    return WorkItemHelper.readFromProtoBuf((await _workItemServiceClient.getWorkItems(work_work_item_pbgrpc.WorkItemGetRequest()..id = id)).workItems.first, {});
   }
 
   /// Return a list of [WorkItem]
-  Future<List<WorkItem>> getWorkItems({Set<String> assignedToIds, bool withWork, bool withArchived = false}) async {
+  Future<List<WorkItem>> getWorkItems({Set<String> assignedToIds, RestrictWork restrictWork, bool withArchived = false}) async {
     // return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
     work_work_item_pbgrpc.WorkItemGetRequest workItemGetRequest = work_work_item_pbgrpc.WorkItemGetRequest();
     workItemGetRequest.organizationId = _authService.authorizedOrganization.id;
     workItemGetRequest.withArchived = withArchived;
     if (assignedToIds != null) workItemGetRequest.assignedToIds.addAll(assignedToIds);
     // return WorkItem()..readFromProtoBuf((await _workItemServiceClient.getWorkItems(workItemGetRequest)), {});
-    if (withWork != null) workItemGetRequest.withWork = withWork;
+    if (restrictWork != null) {
+      workItemGetRequest.restrictWork = work_work_item_pbgrpc.RestrictWork.values[restrictWork.index];
+    }
+
     Map<String, dynamic> cache = {};
     return (await _workItemServiceClient.getWorkItems(workItemGetRequest)).workItems.map((i) =>
     WorkItemHelper.readFromProtoBuf(i, cache)).toList();
@@ -124,12 +130,20 @@ class WorkItemService {
   }
 
   /// Return an [WorkItemValue]
-  Future<List<WorkItemValue>> getWorkItemValues(String workItemId, {bool withWorkItem = false}) async {
+  Future<List<WorkItemValue>> getWorkItemValues(String workItemId, {RestrictWorkItem restrictWorkItem}) async {
+
+    work_work_item_pbgrpc.WorkItemValueGetRequest workItemValueGetRequest = work_work_item_pbgrpc.WorkItemValueGetRequest();
+
+    workItemValueGetRequest.workItemId = workItemId;
+
+    if (restrictWorkItem != null) {
+      workItemValueGetRequest.restrictWorkItem = work_work_item_pbgrpc.RestrictWorkItem.values[restrictWorkItem.index];
+    }
 
     work_work_item_pbgrpc
         .WorkItemValuesResponse workItemValuesResponsePb = await _workItemServiceClient
-        .getWorkItemValues(work_work_item_pbgrpc.WorkItemValueGetRequest()
-      ..workItemId = workItemId..withWorkItem = withWorkItem);
+        .getWorkItemValues(workItemValueGetRequest);
+
     Map<String, dynamic> cache = {};
     return workItemValuesResponsePb.workItemValues.map((m) =>
     WorkItemValueHelper.readFromProtoBuf(m, cache)).toList();

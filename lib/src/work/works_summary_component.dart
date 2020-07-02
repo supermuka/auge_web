@@ -18,6 +18,7 @@ import 'package:auge_shared/message/domain_messages.dart';
 import 'package:auge_shared/message/messages.dart';
 // import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
+import 'package:auge_web/src/user/user_service.dart';
 import 'package:auge_web/src/work/work_service.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/work/work_summary_component.dart';
@@ -68,7 +69,7 @@ class WorksSummaryComponent /* with CanReuse */ implements OnInit {
           works = await _workService.getWorks(
                 this._workService.authService.authorizedOrganization.id,
                 objectiveId: objectiveId,
-                withWorkItems: true, withProfile: true);
+                restrictUserProfile: RestrictUserProfile.image);
         } catch (e) {
           _appLayoutService.error = e.toString();
           rethrow;

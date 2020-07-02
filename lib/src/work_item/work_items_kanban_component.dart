@@ -161,7 +161,7 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
       if (routerStateCurrent.parameters.containsKey(AppRoutesParam.workIdParameter)) {
         String workId = routerStateCurrent.parameters[AppRoutesParam
             .workIdParameter];
-          work = await _workService.getWork(workId, withWorkItems: true, workItemAssignedToIds: _workItemService.workItemsFilterOrder.assignedToUserIds, workItemWithArchived: _workItemService.workItemsFilterOrder.archived,  );
+          work = await _workService.getWork(workId, workItemAssignedToIds: _workItemService.workItemsFilterOrder.assignedToUserIds, workItemWithArchived: _workItemService.workItemsFilterOrder.archived,  );
 
         _orderWorkItems(work.workItems, _workItemService.workItemsFilterOrder.orderedBy);
 

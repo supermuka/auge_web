@@ -24,7 +24,7 @@ import 'package:auge_shared/domain/general/authorization.dart';
 import 'package:auge_shared/domain/general/user.dart';
 import 'package:auge_shared/domain/work/work.dart';
 import 'package:auge_shared/domain/work/work_item.dart';
-import 'package:auge_shared/domain/work/work_stage.dart';
+// import 'package:auge_shared/domain/work/work_stage.dart';
 
 import 'package:auge_shared/message/messages.dart';
 import 'package:auge_shared/message/domain_messages.dart';
@@ -132,7 +132,7 @@ class WorkItemsComponent with CanReuse implements OnActivate /*, OnDestroy */ {
 
       _searchFilterService.filteredItems = _workItemService.workItemsFilterOrder.filteredItems;
 
-      workItems = await _workItemService.getWorkItems(assignedToIds: _workItemService.workItemsFilterOrder.assignedToUserIds, withWork: true, withArchived: _workItemService.workItemsFilterOrder.archived);
+      workItems = await _workItemService.getWorkItems(assignedToIds: _workItemService.workItemsFilterOrder.assignedToUserIds, restrictWork: RestrictWork.idName, withArchived: _workItemService.workItemsFilterOrder.archived);
       if (workItems != null) _orderWorkItems(workItems, _workItemService.workItemsFilterOrder.orderedBy);
 
     } catch (e) {

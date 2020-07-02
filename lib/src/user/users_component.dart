@@ -101,7 +101,7 @@ class UsersComponent with CanReuse implements OnActivate {
 
     try {
       // _users = await _userService.getUsers(_userService.authService.selectedOrganization?.id, withProfile: true);
-      _users = await _userService.getUsers(_userService.authService.authorizedOrganization?.id, withUserProfile: true);
+      _users = await _userService.getUsers(_userService.authService.authorizedOrganization.id);
 
     } catch (e) {
       _appLayoutService.error = e.toString();

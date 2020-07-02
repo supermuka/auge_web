@@ -74,24 +74,16 @@ class AuthService  {
     if (!identification.isEmpty || !password.isEmpty) {
       try {
 
-        user_identity_pbgrpc
-            .UserIdentity userIdentity = await _userIdentityServiceClient
-            .getUserIdentity(
+        List<user_identity_pbgrpc
+            .UserIdentity> userIdentitiesPb = (await _userIdentityServiceClient
+            .getUserIdentities(
             user_identity_pbgrpc.UserIdentityGetRequest()
               ..identification = identification
-              ..password = password);
+              ..password = password)).userIdentities;
 
-        if (userIdentity != null) {
+        if (userIdentitiesPb.isNotEmpty) {
           Map<String, dynamic> cache = {};
-          user = UserHelper.readFromProtoBuf(userIdentity.user, cache);
-        }
-
-      } on GrpcError catch (e) {
-        if (e.code == StatusCode.notFound) {
-          return null;
-        } else {
-          print(e);
-          rethrow;
+          user = UserHelper.readFromProtoBuf(userIdentitiesPb.first.user, cache);
         }
       } catch (e) {
         print(e);

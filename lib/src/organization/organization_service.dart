@@ -37,8 +37,8 @@ class OrganizationService {
   /// Return an [Organization]
   Future<Organization> getOrganization(String organizationId) async {
     //return _augeApiService.augeApi.getOrganizations();
-    return (OrganizationHelper.readFromProtoBuf(await _organizationServiceClient.getOrganization(
-        organization_pbgrpc.OrganizationGetRequest()..id = organizationId)));
+    return (OrganizationHelper.readFromProtoBuf((await _organizationServiceClient.getOrganizations(
+        organization_pbgrpc.OrganizationGetRequest()..id = organizationId)).organizations.first));
   }
 
   /// Return a list of [Organization]

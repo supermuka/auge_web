@@ -15,8 +15,8 @@ import 'package:auge_shared/protos/generated/google/protobuf/wrappers.pb.dart' a
 import 'package:auge_shared/protos/generated/objective/objective_measure.pbgrpc.dart' as objective_measure_pbgrpc;
 import 'package:auge_shared/protos/generated/general/unit_of_measurement.pbgrpc.dart' as unit_of_measurement_pbgrpc;
 
-import 'package:grpc/grpc_web.dart';
 
+enum RestrictMeasure {none}
 
 @Injectable()
 class MeasureService {
@@ -46,21 +46,13 @@ class MeasureService {
     try {
       //--Measure measure = await _augeApiService.objectiveAugeApi.getMeasureById(id);
 
-      objective_measure_pbgrpc.Measure measure = await _measureServiceClient.getMeasure(
+      List<objective_measure_pbgrpc.Measure> measures = (await _measureServiceClient.getMeasures(
           objective_measure_pbgrpc.MeasureGetRequest()
-            ..id = id);
+            ..id = id)).measures;
 
-      return MeasureHelper.readFromProtoBuf(measure, {});
+      return MeasureHelper.readFromProtoBuf(measures.first, {});
 
-    } on GrpcError catch (e) {
-      /*--
-      if (e.status == 204 && e.errors.firstWhere((ed) => ed.reason == RpcErrorDetailMessage.measureDataNotFoundReason, orElse: null ) != null)
-        return null;
-      else {
-        rethrow;
-      }
-      */
-
+    } catch (e) {
         print(e);
         rethrow;
       }
@@ -128,12 +120,18 @@ class MeasureService {
   }
 
   /// Return an [MeasureProgress] by [Measure.id]
-  Future<List<MeasureProgress>> getMeasureProgresses(String measureId, {bool withMeasure = false}) async {
+  Future<List<MeasureProgress>> getMeasureProgresses(String measureId, {RestrictMeasure restrictMeasure}) async {
+
+    objective_measure_pbgrpc.MeasureProgressGetRequest measureProgressGetRequest = objective_measure_pbgrpc.MeasureProgressGetRequest();
+
+    measureProgressGetRequest.measureId = measureId;
+    if (restrictMeasure != null) {
+      measureProgressGetRequest.restrictMeasure = objective_measure_pbgrpc.RestrictMeasure.values[restrictMeasure.index];
+    }
 
     objective_measure_pbgrpc
         .MeasureProgressesResponse measureProgressesResponsePb = await _measureServiceClient
-        .getMeasureProgresses(objective_measure_pbgrpc.MeasureProgressGetRequest()
-      ..measureId = measureId..withMeasure = withMeasure);
+        .getMeasureProgresses(measureProgressGetRequest);
     Map<String, dynamic> cache = {};
     return measureProgressesResponsePb.measureProgresses.map((m) =>
     MeasureProgressHelper.readFromProtoBuf(m, cache)).toList();
@@ -141,23 +139,12 @@ class MeasureService {
 
   /// Return an [MeasureProgress] by id [MeasureProgress.id]
   Future<MeasureProgress> getMeasureProgressById(String measureProgressId) async {
-    objective_measure_pbgrpc.MeasureProgress measureProgressPb;
-    try {
-      measureProgressPb = await _measureServiceClient
-          .getMeasureProgress(objective_measure_pbgrpc.MeasureProgressGetRequest()..id = measureProgressId);
+    List<objective_measure_pbgrpc.MeasureProgress> measureProgressesPb;
 
-    } on GrpcError {
-      /*--
-      } on DetailedApiRequestError catch (e) {
-        if (e.status == 204 && e.errors.firstWhere((ed) => ed.reason == RpcErrorDetailMessage.unitOfMeasurementsDataNotFoundReason, orElse: null ) != null)
-          return null;
-        else {
-          rethrow;
-        }
+      measureProgressesPb = (await _measureServiceClient
+          .getMeasureProgresses(objective_measure_pbgrpc.MeasureProgressGetRequest()..id = measureProgressId)).measureProgresses;
 
-         */
-    }
-    return MeasureProgressHelper.readFromProtoBuf(measureProgressPb, {});
+    return MeasureProgressHelper.readFromProtoBuf(measureProgressesPb.first, {});
   }
 
   /// Save (create) a [MeasureProgress]

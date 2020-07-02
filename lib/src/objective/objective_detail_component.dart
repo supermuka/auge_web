@@ -144,7 +144,7 @@ class ObjectiveDetailComponent implements OnInit, OnActivate, OnDeactivate {
     if (id != null) {
       // Clone objective
      // objective = selectedObjective.clone();
-       objective = await _objectiveService.getObjective(id, withUserProfile: true);
+       objective = await _objectiveService.getObjective(id, restrictUserProfile: RestrictUserProfile.image);
       //objective = selectedObjective.clone();
 
     } else {
@@ -154,7 +154,7 @@ class ObjectiveDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
     try {
       _alignedToObjectives = await _objectiveService.getObjectives(_objectiveService.authService.authorizedOrganization.id);
-      _users = await _userService.getUsers(_objectiveService.authService.authorizedOrganization.id, withUserProfile: true);
+      _users = await _userService.getUsers(_objectiveService.authService.authorizedOrganization.id, restrictUser: RestrictUser.idName, restrictUserProfile: RestrictUserProfile.image);
       _groups = await _groupService.getGroups(_objectiveService.authService.authorizedOrganization.id);
 
     } catch (e) {

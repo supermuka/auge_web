@@ -116,8 +116,8 @@ class ObjectivesFilterComponent with CanReuse implements OnActivate, OnDeactivat
     List<Group> _groups;
     List<User> _users;
     try {
-      _groups = await _groupService.getGroups(_groupService.authService.authorizedOrganization.id, onlyIdAndName: true);
-      _users = await _userService.getUsers(_groupService.authService.authorizedOrganization.id, onlyIdAndName: true, withUserProfile: true);
+      _groups = await _groupService.getGroups(_groupService.authService.authorizedOrganization.id, restrictGroup: RestrictGroup.IdName);
+      _users = await _userService.getUsers(_groupService.authService.authorizedOrganization.id, restrictUser: RestrictUser.idName, restrictUserProfile: RestrictUserProfile.image);
     //  groupTypes = await _groupService.getGroupTypes();
     } catch (e) {
       dialogError = e.toString();

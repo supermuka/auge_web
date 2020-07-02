@@ -8,11 +8,20 @@ import 'package:angular/core.dart';
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/services/auge_api_service.dart';
 
+import 'package:auge_web/src/user/user_service.dart';
+import 'package:auge_web/src/work_item/work_item_service.dart';
+
 import 'package:auge_shared/domain/work/work.dart';
 import 'package:auge_shared/domain/work/work_stage.dart';
 
+
 import 'package:auge_shared/protos/generated/google/protobuf/wrappers.pb.dart' as wrappers_pb;
+
 import 'package:auge_shared/protos/generated/work/work_work_item.pbgrpc.dart' as work_work_item_pbgrpc;
+import 'package:auge_shared/protos/generated/work/work_work_item.pbenum.dart' as work_work_item_pbenum;
+import 'package:auge_shared/protos/generated/general/user.pbenum.dart' as user_pbenum;
+
+enum RestrictWork {none, idName}
 
 @Injectable()
 class WorkService {
@@ -35,15 +44,26 @@ class WorkService {
   get authService => _authService;
 
   /// Return a list of [Work]
-  Future<List<Work>> getWorks(String organizationId, {String objectiveId, bool withWorkItems = false, bool withProfile = false, bool withArchived = false, List<String> groupIds, List<String> leaderUserIds}) async {
+  Future<List<Work>> getWorks(String organizationId, {String objectiveId,
+    RestrictWork restrictWork,
+    RestrictWorkItem restrictWorkItem,
+    RestrictUserProfile restrictUserProfile,/* bool withProfile = false, */ bool withArchived = false, List<String> groupIds, List<String> leaderUserIds}) async {
     //-- return await _augeApiService.workAugeApi.getWorks(organizationId, objectiveId: objectiveId, withWorkItems: withWorkItems);
     work_work_item_pbgrpc.WorkGetRequest workGetRequest = work_work_item_pbgrpc.WorkGetRequest();
     workGetRequest.organizationId = organizationId;
     if (objectiveId != null) {
       workGetRequest.objectiveId = objectiveId;
     }
-    workGetRequest.withWorkItems = withWorkItems;
-    workGetRequest.withUserProfile = withProfile;
+    if (restrictWork != null) {
+      workGetRequest.restrictWork =  work_work_item_pbenum.RestrictWork.values[restrictWork.index];
+    }
+    if (restrictWorkItem != null) {
+      workGetRequest.restrictWorkItem =  work_work_item_pbenum.RestrictWorkItem.values[restrictWorkItem.index];
+    }
+    if (restrictUserProfile != null) {
+      workGetRequest.restrictUserProfile =  user_pbenum.RestrictUserProfile.values[restrictUserProfile.index];
+    }
+   /* workGetRequest.withUserProfile = withProfile; */
     if (withArchived != null) workGetRequest.withArchived = withArchived;
     if (groupIds != null && groupIds.isNotEmpty) workGetRequest.groupIds.addAll(groupIds);
     if (leaderUserIds != null && leaderUserIds.isNotEmpty) workGetRequest.leaderUserIds.addAll(leaderUserIds);
@@ -54,8 +74,12 @@ class WorkService {
   }
 
   /// Return [User] list by Organization [id]
-  Future<Work> getWork(String id, {bool withWorkItems = false,
-    bool withUserProfile = false,
+  Future<Work> getWork(String id,
+      {RestrictUserProfile restrictUserProfile,
+       RestrictWork restrictWork,
+       RestrictWorkItem restrictWorkItem,
+   /* bool withUserProfile = false, */
+
     bool withArchived = false,
     Set<String> leaderUserIds,
     Set<String> groupIds,
@@ -65,15 +89,23 @@ class WorkService {
     work_work_item_pbgrpc.WorkGetRequest workGetRequest = work_work_item_pbgrpc.WorkGetRequest();
 
     workGetRequest.id = id;
-    workGetRequest.withWorkItems = withWorkItems;
-    workGetRequest.withUserProfile = withUserProfile;
+    if (restrictWork != null) {
+      workGetRequest.restrictWork =  work_work_item_pbenum.RestrictWork.values[restrictWork.index];
+    }
+    if (restrictWorkItem != null) {
+      workGetRequest.restrictWorkItem =  work_work_item_pbenum.RestrictWorkItem.values[restrictWorkItem.index];
+    }
+    if (restrictUserProfile != null) {
+      workGetRequest.restrictUserProfile =  user_pbenum.RestrictUserProfile.values[restrictUserProfile.index];
+    }
+    /* workGetRequest.withUserProfile = withUserProfile; */
     workGetRequest.withArchived = withArchived;
     if (leaderUserIds != null && leaderUserIds.isNotEmpty) workGetRequest.leaderUserIds.addAll(leaderUserIds);
     if (groupIds != null && groupIds.isNotEmpty) workGetRequest.groupIds.addAll(groupIds);
     workGetRequest.workItemWithArchived = workItemWithArchived;
     if (workItemAssignedToIds != null && workItemAssignedToIds.isNotEmpty) workGetRequest.workItemAssignedToIds.addAll(workItemAssignedToIds);
 
-    return WorkHelper.readFromProtoBuf(await _workServiceClient.getWork(workGetRequest), {});
+    return WorkHelper.readFromProtoBuf((await _workServiceClient.getWorks(workGetRequest)).works.first, {});
   }
 
   /// Return a list of [Stage]
@@ -87,9 +119,9 @@ class WorkService {
   Future<WorkStage> getWorkStage(String id) async {
     // return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
     Map<String, dynamic> cache = {};
-    return WorkStageHelper.readFromProtoBuf((await _workStageServiceClient.getWorkStage(
+    return WorkStageHelper.readFromProtoBuf((await _workStageServiceClient.getWorkStages(
         work_work_item_pbgrpc.WorkStageGetRequest()
-          ..id = id)), cache);
+          ..id = id)).workStages.first, cache);
   }
 /*
   /// Return a list of [State]
@@ -148,7 +180,7 @@ class WorkService {
     try {
 
       work_work_item_pbgrpc.WorkStageRequest workStageRequest = work_work_item_pbgrpc.WorkStageRequest()
-        ..workId = workId
+      //  ..workId = workId
         ..workStage = WorkStageHelper.writeToProtoBuf(workStage)
         ..authUserId = _authService.authenticatedUser.id
         ..authOrganizationId = _authService.authorizedOrganization.id;
