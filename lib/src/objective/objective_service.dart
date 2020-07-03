@@ -8,13 +8,16 @@ import 'package:auge_web/services/auge_api_service.dart';
 
 import 'package:auge_shared/protos/generated/google/protobuf/wrappers.pb.dart' as wrappers_pb;
 import 'package:auge_shared/protos/generated/objective/objective_measure.pbgrpc.dart' as objective_measure_pbgrpc;
-import 'package:auge_shared/protos/generated/objective/objective_measure.pbenum.dart' as objective_measure_pbenum;
+// import 'package:auge_shared/protos/generated/objective/objective_measure.pbenum.dart' as objective_measure_pbenum;
 import 'package:auge_shared/protos/generated/general/user.pbenum.dart' as user_pbenum;
 
+import 'package:auge_web/src/organization/organization_service.dart';
 import 'package:auge_web/src/measure/measure_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
 
 import 'package:grpc/grpc_web.dart';
+
+enum RestrictOrganization {none, idName}
 
 @Injectable()
 class ObjectiveService {
@@ -35,14 +38,14 @@ class ObjectiveService {
 
 
   /// Return a list of [Objective]
-  Future<List<Objective>> getObjectives(String organizationId, {String objectiveId, treeAlignedWithChildren = false, RestrictMeasure restrictMeasure, RestrictUserProfile restrictUserProfile, bool withArchived = false, List<String> groupIds, List<String> leaderUserIds}) async {
+  Future<List<Objective>> getObjectives(String organizationId, {String objectiveId, treeAlignedWithChildren = false, RestrictOrganization restrictOrganization, RestrictMeasure restrictMeasure, RestrictUserProfile restrictUserProfile, bool withArchived = false, List<String> groupIds, List<String> leaderUserIds}) async {
 
     objective_measure_pbgrpc.ObjectiveGetRequest objectiveGetRequest = objective_measure_pbgrpc.ObjectiveGetRequest();
     objectiveGetRequest.organizationId = organizationId;
     if (objectiveId != null)  objectiveGetRequest.id = objectiveId;
     objectiveGetRequest.treeAlignedWithChildren = treeAlignedWithChildren;
     if (restrictMeasure != null) {
-      objectiveGetRequest.restrictMeasure =  objective_measure_pbenum.RestrictMeasure.values[restrictMeasure.index];
+      objectiveGetRequest.restrictMeasure =  objective_measure_pbgrpc.RestrictMeasure.values[restrictMeasure.index];
     }
     if (restrictUserProfile != null) {
       objectiveGetRequest.restrictUserProfile = user_pbenum.RestrictUserProfile.values[restrictUserProfile.index];
@@ -71,7 +74,7 @@ class ObjectiveService {
       objective_measure_pbgrpc.ObjectiveGetRequest objectiveGetRequest = objective_measure_pbgrpc.ObjectiveGetRequest();
       objectiveGetRequest.id = id;
       if (restrictMeasure != null) {
-        objectiveGetRequest.restrictMeasure = objective_measure_pbenum.RestrictMeasure.values[restrictMeasure.index];
+        objectiveGetRequest.restrictMeasure = objective_measure_pbgrpc.RestrictMeasure.values[restrictMeasure.index];
       }
       if (restrictUserProfile != null) {
         objectiveGetRequest.restrictUserProfile = user_pbenum.RestrictUserProfile.values[restrictUserProfile.index];

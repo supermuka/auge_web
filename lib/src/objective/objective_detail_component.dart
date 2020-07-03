@@ -35,6 +35,7 @@ import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/user/user_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/group/group_service.dart';
+import 'package:auge_web/src/measure/measure_service.dart';
 
 // ignore_for_file: uri_has_not_been_generated
 import 'objective_detail_component.template.dart' as objective_detail_component;
@@ -153,7 +154,9 @@ class ObjectiveDetailComponent implements OnInit, OnActivate, OnDeactivate {
     }
 
     try {
-      _alignedToObjectives = await _objectiveService.getObjectives(_objectiveService.authService.authorizedOrganization.id);
+      _alignedToObjectives = await _objectiveService.getObjectives(_objectiveService.authService.authorizedOrganization.id,
+        restrictOrganization: RestrictOrganization.none,
+        restrictMeasure: RestrictMeasure.none);
       _users = await _userService.getUsers(_objectiveService.authService.authorizedOrganization.id, restrictUser: RestrictUser.idName, restrictUserProfile: RestrictUserProfile.image);
       _groups = await _groupService.getGroups(_objectiveService.authService.authorizedOrganization.id);
 

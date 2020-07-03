@@ -214,6 +214,8 @@ class InsightsComponent with CanReuse implements OnActivate  {
 
         objectives = await _objectiveService.getObjectives(
             _objectiveService.authService.authorizedOrganization.id,
+            restrictOrganization: RestrictOrganization.none,
+            restrictUserProfile: RestrictUserProfile.none,
             groupIds:  _insightService.insightsFilterOrder.groupIds?.toList(),
             leaderUserIds: _insightService.insightsFilterOrder.leaderUserIds?.toList());
 

@@ -15,7 +15,6 @@ import 'package:auge_shared/protos/generated/google/protobuf/wrappers.pb.dart' a
 import 'package:auge_shared/protos/generated/objective/objective_measure.pbgrpc.dart' as objective_measure_pbgrpc;
 import 'package:auge_shared/protos/generated/general/unit_of_measurement.pbgrpc.dart' as unit_of_measurement_pbgrpc;
 
-
 enum RestrictMeasure {none}
 
 @Injectable()

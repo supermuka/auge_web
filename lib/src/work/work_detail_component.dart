@@ -157,7 +157,9 @@ class WorkDetailComponent implements OnInit, OnActivate, OnDeactivate {
     //  _states =  await _workService.getStates();
      // _states = State.values;
       _users = await _userService.getUsers(_workService.authService.authorizedOrganization.id, restrictUser: RestrictUser.idName, restrictUserProfile: RestrictUserProfile.image);
-      _objectives = await _objectiveService.getObjectives(_workService.authService.authorizedOrganization.id, restrictMeasure: RestrictMeasure.none);
+      _objectives = await _objectiveService.getObjectives(_workService.authService.authorizedOrganization.id,
+          restrictOrganization: RestrictOrganization.none,
+          restrictMeasure: RestrictMeasure.none);
       _groups = await _groupService.getGroups(_workService.authService.authorizedOrganization.id);
 
 

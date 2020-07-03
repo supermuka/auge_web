@@ -1,7 +1,6 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
-
 import 'package:angular/angular.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
 import 'package:angular_components/material_button/material_button.dart';
@@ -9,7 +8,9 @@ import 'package:angular_components/material_icon/material_icon.dart';
 import 'package:angular_components/content/deferred_content.dart';
 import 'package:auge_shared/domain/general/unit_of_measurement.dart';
 
+import 'package:auge_shared/domain/general/organization.dart';
 import 'package:auge_shared/domain/general/user.dart';
+import 'package:auge_shared/domain/general/user_identity.dart';
 import 'package:auge_shared/domain/general/user_access.dart';
 import 'package:auge_shared/domain/general/group.dart';
 import 'package:auge_shared/domain/objective/objective.dart';
@@ -93,8 +94,16 @@ class HistoryItemTimelineDetailComponent /* extends Object */ implements OnInit 
   Map<String, Map<dynamic, dynamic>> getViewToChangedValues(String objectClassName, Map<String, dynamic> changedValues) {
 
     Map<String, Map<dynamic, dynamic>> fieldsChangedValues = {};
-    if (objectClassName == UserAccess.className) {
+    if (objectClassName == User.className)
+      UserChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues, changedValues);
+    else if (objectClassName == UserIdentity.className) {
+      UserIdentityChangedValues.constructViewToFieldsChangedValues(
+          fieldsChangedValues, changedValues);
+    }
+    else if (objectClassName == UserAccess.className) {
       UserAccessChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues, changedValues);
+    } else if (objectClassName == Organization.className) {
+      OrganizationChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues, changedValues);
     } else if (objectClassName == Group.className) {
       GroupChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues, changedValues);
     } else if (objectClassName == Objective.className) {
@@ -127,6 +136,31 @@ class BaseChangedValues {
   void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {}
 }
 */
+
+/// ORGANIZATION
+class OrganizationChangedValues {
+
+  static void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
+    changedValues?.forEach((k, v) {
+      if (k != Organization.idField && k != Organization.versionField) {
+        if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
+          fieldsChangedValues.putIfAbsent('${Organization.className}.${k}', () =>
+          {
+            _typeToViewKey: _typeToViewText,
+            _fieldDescriptionKey: OrganizationDomainMsg.fieldLabel(k)});
+          if (v.containsKey(_pKey)) {
+            fieldsChangedValues['${Organization.className}.${k}'][_pKey] =
+            v[_pKey];
+          }
+          if (v.containsKey(_cKey)) {
+            fieldsChangedValues['${Organization.className}.${k}'][_cKey] =
+            v[_cKey];
+          }
+        }
+      }
+    });
+  }
+}
 
 /// USERS
 class UserChangedValues {
@@ -199,6 +233,32 @@ class UserProfileChangedValues  {
         if (v.containsKey(_cKey))
           fieldsChangedValues['${UserProfile.className}.${k}'][_cKey] =
           v[_cKey];
+      }
+    });
+  }
+}
+
+class UserIdentityChangedValues  {
+
+  static void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
+    changedValues?.forEach((k, v) {
+      if (k != UserIdentity.idField && k != UserIdentity.versionField) {
+        if (k == UserIdentity.userField) {
+          UserChangedValues.constructViewToFieldsChangedValues(
+              fieldsChangedValues, v);
+        } else if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
+          fieldsChangedValues.putIfAbsent('${UserIdentity.className}.${k}', () =>
+          {
+          _typeToViewKey: _typeToViewText,
+          _fieldDescriptionKey: UserIdentityDomainMsg.fieldLabel(k)});
+
+          if (v.containsKey(_pKey))
+            fieldsChangedValues['${UserIdentity.className}.${k}'][_pKey] =
+            v[_pKey];
+          if (v.containsKey(_cKey))
+            fieldsChangedValues['${UserIdentity.className}.${k}'][_cKey] =
+            v[_cKey];
+        }
       }
     });
   }
@@ -312,6 +372,18 @@ class GroupChangedValues {
             });
             fieldsChangedValues['${Group.className}.${k}'][_cKey] = sb.toString();
           }
+
+        } else if (k == Group.groupTypeIndexField) {
+          fieldsChangedValues.putIfAbsent('${Group.className}.${k}', () =>
+          {
+            _typeToViewKey: _typeToViewText,
+            _fieldDescriptionKey: GroupDomainMsg.fieldLabel(k)});
+          if (v.containsKey(_pKey))
+            fieldsChangedValues['${Group.className}.${k}'][_pKey] =
+                GroupMsg.groupTypeLabel(GroupType.values[v[_pKey]].toString());
+          if (v.containsKey(_cKey))
+            fieldsChangedValues['${Group.className}.${k}'][_cKey] =
+                GroupMsg.groupTypeLabel(GroupType.values[v[_cKey]].toString());
         }
         else if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
 

@@ -250,7 +250,7 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
   void selectUserIdentity(UserIdentity ui) async {
     if (ui == null) {
-      userIdentities.insert(0, UserIdentity()..user = user..identification = '<id>@' + organizationConfiguration.domain ?? '<domain.com>' );
+      userIdentities.insert(0, UserIdentity()..user = (User()..id = user.id..name = user.name /* only id and name - specification pattern */)..identification = '<id>@' + organizationConfiguration.domain ?? '<domain.com>' );
       userIdentity = userIdentities.first;
       userIdentity.provider = UserIdentityProvider.internal.index;
     } else {
@@ -265,7 +265,7 @@ class UserDetailComponent implements OnInit, OnActivate, OnDeactivate {
       userAccess = userAccesses.first;
 
       userAccess.organization = _userService.authService.authorizedOrganization;
-      userAccess.user = user;
+      userAccess.user = User()..id = user.id..name = user.name; // Only id and name - specifciation pattern */
 
     } else {
       userAccess = uoa;

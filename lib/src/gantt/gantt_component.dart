@@ -100,6 +100,7 @@ class GanttComponent with CanReuse implements OnActivate {
            _objectiveService.authService.authorizedOrganization.id,
            /* objectiveId: initialObjectiveId, */
            /* withMeasures: true, */
+           restrictOrganization: RestrictOrganization.none,
            restrictUserProfile: RestrictUserProfile.image,
            withArchived: _objectiveService.objectivesFilterOrder.archived,
            groupIds: _objectiveService.objectivesFilterOrder.groupIds?.toList(),

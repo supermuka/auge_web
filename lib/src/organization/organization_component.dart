@@ -89,6 +89,7 @@ class OrganizationComponent implements OnInit, OnActivate, OnDeactivate {
   String syncDirectoryServiceStatus;
 
   List<int> _listSearchScope = [0, 1, 2, 3]; // 'BASE_LEVEL', 'ONE_LEVEL', 'SUB_LEVEL', 'SUBORDINATE_SUBTREE'
+  List<String> _listSearchScopeName = [ConfigurationMsg.baseLevel, ConfigurationMsg.oneLevel, ConfigurationMsg.subLevel, ConfigurationMsg.subordinateSubtree];
 
   SelectionOptions passwordFormatSelectionOptions;
   SelectionModel passwordFormatSelectionModel;
@@ -242,7 +243,7 @@ class OrganizationComponent implements OnInit, OnActivate, OnDeactivate {
         (groupSearchScopeSelectionModel.selectedValues != null) &&
         (groupSearchScopeSelectionModel.selectedValues.length > 0)) {
 
-      nameLabel = ConfigurationMsg.searchScopeLabel(groupSearchScopeSelectionModel.selectedValues.first);
+      nameLabel = ConfigurationMsg.searchScopeLabel(_listSearchScopeName[groupSearchScopeSelectionModel.selectedValues.first]);
     }
     return nameLabel ;
   }
@@ -289,7 +290,7 @@ class OrganizationComponent implements OnInit, OnActivate, OnDeactivate {
         (userSearchScopeSelectionModel.selectedValues != null) &&
         (userSearchScopeSelectionModel.selectedValues.length > 0)) {
 
-      nameLabel = ConfigurationMsg.searchScopeLabel(userSearchScopeSelectionModel.selectedValues.first);
+      nameLabel = ConfigurationMsg.searchScopeLabel(_listSearchScopeName[userSearchScopeSelectionModel.selectedValues.first]);
     }
     return nameLabel ;
   }

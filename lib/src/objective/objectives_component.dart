@@ -183,6 +183,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
       objectivesAux = await _objectiveService.getObjectives(
           _objectiveService.authService.authorizedOrganization.id,
           /* objectiveId: initialObjectiveId, */
+          restrictOrganization: RestrictOrganization.none,
           restrictUserProfile: RestrictUserProfile.image,
           withArchived: _objectiveService.objectivesFilterOrder.archived,
           groupIds: _objectiveService.objectivesFilterOrder.groupIds?.toList(),
