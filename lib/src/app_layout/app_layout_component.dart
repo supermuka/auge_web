@@ -46,13 +46,14 @@ import 'package:auge_web/src/insight/insights_component.template.dart' as insigh
 import 'package:auge_web/src/user/user_detail_component.template.dart' as user_detail_component;
 import 'package:auge_web/src/user/users_component.template.dart' as users_component;
 import 'package:auge_web/src/work/works_component.template.dart' as works_component;
-import 'package:auge_web/src/map/map_component.template.dart' as map_component;
-import 'package:auge_web/src/gantt/gantt_component.template.dart' as gantt_component;
+import 'package:auge_web/src/objective_map/objectives_map_component.template.dart' as objectives_map_component;
+import 'package:auge_web/src/objective_gantt/objectives_gantt_component.template.dart' as objectives_gantt_component;
 import 'package:auge_web/src/objective/objectives_component.template.dart' as objectives_component;
 import 'package:auge_web/src/group/groups_component.template.dart' as groups_component;
 import 'package:auge_web/src/organization/organization_component.template.dart' as organization_component;
 import 'package:auge_web/src/work_item/work_items_kanban_component.template.dart' as work_items_kanban_component;
 import 'package:auge_web/src/work_item/work_items_component.template.dart' as work_items_component;
+import 'package:auge_web/src/work_item_gantt/work_items_gantt_component.template.dart' as work_items_gantt_component;
 import 'package:auge_web/src/history_timeline/history_timeline_component.template.dart' as history_timeline_component;
 
 @Component(
@@ -91,10 +92,11 @@ class AppLayoutComponent with CanReuse implements OnActivate {
   final Router _router;
 
   String insightsRouteUrl;
-  String mapRouteUrl;
-  String ganttRouteUrl;
+  String objectivesMapRouteUrl;
+  String objectivesGanttRouteUrl;
   String objectivesRouteUrl;
   String worksRouteUrl;
+  String workItemsGanttRouteUrl;
   String workItemsRouteUrl;
   String usersRouteUrl;
   String groupsRouteUrl;
@@ -126,12 +128,12 @@ class AppLayoutComponent with CanReuse implements OnActivate {
       component: works_component.WorksComponentNgFactory,
     ),
     RouteDefinition(
-      routePath: AppRoutes.mapRoute,
-      component: map_component.MapComponentNgFactory,
+      routePath: AppRoutes.objectivesMapRoute,
+      component: objectives_map_component.ObjectivesMapComponentNgFactory,
     ),
     RouteDefinition(
-      routePath: AppRoutes.ganttRoute,
-      component: gantt_component.GanttComponentNgFactory,
+      routePath: AppRoutes.objectivesGanttRoute,
+      component: objectives_gantt_component.ObjectivesGanttComponentNgFactory,
     ),
     RouteDefinition(
       routePath: AppRoutes.objectivesRoute,
@@ -156,6 +158,10 @@ class AppLayoutComponent with CanReuse implements OnActivate {
     RouteDefinition(
       routePath: AppRoutes.workItemsRoute,
       component: work_items_component.WorkItemsComponentNgFactory,
+    ),
+    RouteDefinition(
+      routePath: AppRoutes.workItemsGanttRoute,
+      component: work_items_gantt_component.WorkItemsGanttComponentNgFactory,
     ),
     RouteDefinition(
       routePath: AppRoutes.historyTimelineRoute,
@@ -185,7 +191,6 @@ class AppLayoutComponent with CanReuse implements OnActivate {
 
   }
 
-
   /// Messages and labels
   static final String insightsLabel =  AppLayoutMsg.label(AppLayoutMsg.ingightsLabel);
   static final String objectivesMapLabel = AppLayoutMsg.label(AppLayoutMsg.objectivesMapLabel);
@@ -199,6 +204,7 @@ class AppLayoutComponent with CanReuse implements OnActivate {
   static final String superAdminLabel = AppLayoutMsg.label(AppLayoutMsg.superAdminLabel);
   static final String groupsLabel = AppLayoutMsg.label(AppLayoutMsg.groupsLabel);
   static final String workItemsLabel = AppLayoutMsg.label(AppLayoutMsg.workItemsLabel);
+  static final String workItemsGanttLabel = AppLayoutMsg.label(AppLayoutMsg.workItemsGanttLabel);
 
   void onActivate(RouterState previous, RouterState current) async {
 
@@ -207,13 +213,13 @@ class AppLayoutComponent with CanReuse implements OnActivate {
       return;
     }
 
-
     insightsRouteUrl = AppRoutes.insightsRoute.toUrl();
-    mapRouteUrl = AppRoutes.mapRoute.toUrl();
-    ganttRouteUrl = AppRoutes.ganttRoute.toUrl();
+    objectivesMapRouteUrl = AppRoutes.objectivesMapRoute.toUrl();
+    objectivesGanttRouteUrl = AppRoutes.objectivesGanttRoute.toUrl();
     objectivesRouteUrl = AppRoutes.objectivesRoute.toUrl();
     worksRouteUrl = AppRoutes.worksRoute.toUrl();
     workItemsRouteUrl = AppRoutes.workItemsRoute.toUrl();
+    workItemsGanttRouteUrl = AppRoutes.workItemsGanttRoute.toUrl();
     usersRouteUrl = AppRoutes.usersRoute.toUrl();
     groupsRouteUrl = AppRoutes.groupsRoute.toUrl();
     organizationRouteUrl =  AppRoutes.organizationRoute.toUrl(parameters: { AppRoutesParam.organizationIdParameter: _authService.authorizedOrganization.id });
@@ -320,7 +326,6 @@ class AppLayoutComponent with CanReuse implements OnActivate {
   Organization get authorizedOrganization {
     return _authService.authorizedOrganization;
   }
-
 }
 
 class AppLayoutSettingSelectOption {

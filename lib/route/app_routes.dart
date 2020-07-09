@@ -25,12 +25,12 @@ class AppRoutes {
       path: AppRoutesPath.usersRoutePath,
       parent: appLayoutRoute
   );
-  static final mapRoute = RoutePath(
-      path: AppRoutesPath.mapRoutePath,
+  static final objectivesMapRoute = RoutePath(
+      path: AppRoutesPath.objectivesMapRoutePath,
       parent: appLayoutRoute
   );
-  static final ganttRoute = RoutePath(
-      path: AppRoutesPath.ganttRoutePath,
+  static final objectivesGanttRoute = RoutePath(
+      path: AppRoutesPath.objectivesGanttRoutePath,
       parent: appLayoutRoute
   );
   static final worksRoute = RoutePath(
@@ -69,6 +69,10 @@ class AppRoutes {
       path:  AppRoutesPath.workItemsRoutePath,
       parent: appLayoutRoute
   );
+  static final workItemsGanttRoute = RoutePath(
+      path: AppRoutesPath.workItemsGanttRoutePath,
+      parent: appLayoutRoute
+  );
   static final workStagesRoute = RoutePath(
       path: AppRoutesPath.workStagesRoutePath, // ':${AppRoutesParam.workIdParameter}/stages',
       parent: worksRoute
@@ -91,7 +95,7 @@ class AppRoutes {
   );
   static final objectivesGanttFilterRoute = RoutePath(
       path: AppRoutesPath.objectivesFilterRoutePath,
-      parent: ganttRoute
+      parent: objectivesGanttRoute
   );
 
   static final measuresRoute = RoutePath(

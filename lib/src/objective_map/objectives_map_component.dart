@@ -32,12 +32,12 @@ import 'package:angular_components/laminate/popup/module.dart';
 import 'package:angular_components/material_tooltip/module.dart';
 
 @Component(
-  selector: 'auge-map',
+  selector: 'auge-objectives-map',
   providers: const [ObjectiveService,
     popupBindings,
     materialTooltipBindings],
-  templateUrl: 'map_component.html',
-  styleUrls: const ['map_component.css'],
+  templateUrl: 'objectives_map_component.html',
+  styleUrls: const ['objectives_map_component.css'],
   pipes: [commonPipes],
 
   directives: const [
@@ -52,7 +52,7 @@ import 'package:angular_components/material_tooltip/module.dart';
   ],
 )
 
-class MapComponent with CanReuse /*  COMENTADO POIS SE USAR, O TOOLTIP NÃO DESAPARECE QUANDO SE NAVEGA PARA OUTRA PÁGINA */ implements OnActivate {
+class ObjectivesMapComponent with CanReuse /*  COMENTADO POIS SE USAR, O TOOLTIP NÃO DESAPARECE QUANDO SE NAVEGA PARA OUTRA PÁGINA */ implements OnActivate {
 
   final preferredTooltipPositions = const [RelativePosition.OffsetBottomLeft, RelativePosition.OffsetBottomRight];
 
@@ -74,7 +74,7 @@ class MapComponent with CanReuse /*  COMENTADO POIS SE USAR, O TOOLTIP NÃO DESA
 
   Set<Objective> objectivesCollapesed = Set();
 
-  MapComponent(this._authService, this._appLayoutService, this._searchFilterService, this._objectiveService, /* this._mapService, */ this._router);
+  ObjectivesMapComponent(this._authService, this._appLayoutService, this._searchFilterService, this._objectiveService, /* this._mapService, */ this._router);
 
   // Define messages and labels
   static final String notInformedMsg = MapMsg.notInformedMsg();

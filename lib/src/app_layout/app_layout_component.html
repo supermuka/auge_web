@@ -7,11 +7,14 @@
             <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(insightsRouteUrl)">
                 <material-icon icon="home"></material-icon>{{insightsLabel}}
             </material-list-item>
-            <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(mapRouteUrl)">
+            <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(objectivesMapRouteUrl)">
                 <material-icon icon="map"></material-icon>{{objectivesMapLabel}}
             </material-list-item>
-            <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(ganttRouteUrl)">
+            <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(objectivesGanttRouteUrl)">
                 <material-icon icon="schedule"></material-icon>{{objectivesGanttLabel}}
+            </material-list-item>
+            <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(workItemsGanttRouteUrl)">
+                <material-icon icon="schedule"></material-icon>{{workItemsGanttLabel}}
             </material-list-item>
         </div>
         <div group>

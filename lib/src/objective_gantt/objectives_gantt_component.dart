@@ -26,10 +26,10 @@ import 'package:auge_web/src/search_filter/search_filter_service.dart';
 import 'package:auge_web/src/objective/objectives_filter_component.template.dart' as objectives_filter_component;
 
 @Component(
-  selector: 'auge-gantt',
+  selector: 'auge-objectives-gantt',
   providers: const [ObjectiveService],
-  templateUrl: 'gantt_component.html',
-  styleUrls: const ['gantt_component.css'],
+  templateUrl: 'objectives_gantt_component.html',
+  styleUrls: const ['objectives_gantt_component.css'],
   directives: const [
     coreDirectives,
     routerDirectives,
@@ -43,7 +43,7 @@ import 'package:auge_web/src/objective/objectives_filter_component.template.dart
   pipes: const [commonPipes],
 )
 
-class GanttComponent with CanReuse implements OnActivate {
+class ObjectivesGanttComponent with CanReuse implements OnActivate {
   final preferredTooltipPositions = const [RelativePosition.OffsetBottomLeft, RelativePosition.OffsetBottomRight];
 
   final AuthService _authService;
@@ -56,6 +56,7 @@ class GanttComponent with CanReuse implements OnActivate {
   List<int> yearsInterval = [];
   List<YearMonth> yearsMonthsInterval = [];
   Map<String, List<Objective>> objectivesByGroup;
+  DateTime currentDateTime;
 
   String selectedYear;
 
@@ -65,7 +66,7 @@ class GanttComponent with CanReuse implements OnActivate {
     component: objectives_filter_component.ObjectivesFilterComponentNgFactory,
   )];
 
-  GanttComponent(this._authService, this._appLayoutService, this._objectiveService, this._searchFilterService, this._router) {
+  ObjectivesGanttComponent(this._authService, this._appLayoutService, this._objectiveService, this._searchFilterService, this._router) {
     // initializeDateFormatting(Intl.defaultLocale , null);
   }
 
@@ -94,6 +95,8 @@ class GanttComponent with CanReuse implements OnActivate {
     _searchFilterService.filterRouteUrl = AppRoutes.objectivesGanttFilterRoute.toUrl();
 
     _searchFilterService.filteredItems = _objectiveService.objectivesFilterOrder.filteredItems;
+
+    currentDateTime = DateTime.now();
 
     try {
        _objectives = await _objectiveService.getObjectives(
@@ -198,7 +201,6 @@ class GanttComponent with CanReuse implements OnActivate {
 
   String barColor(Objective objective) {
    // return objective.progress < 30 ? '#db4437' : '#0f9d58'; // Material Color - $mat-red / $mat-green
-    DateTime currentDateTime = DateTime.now();
 
     currentDateTime.millisecondsSinceEpoch;
     int expectedProgressInTime;
