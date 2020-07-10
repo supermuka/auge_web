@@ -1,0 +1,59 @@
+<div class="wrapper">
+    <div class="gantt">
+         <div class="gantt__sticky-top">
+            <div class="gantt__row gantt__row--years">
+                <span class="gantt__row-first gantt__sticky-left">&nbsp;</span>
+                <span class="gantt__row--years-number gantt__row--years-number-{{yearsInterval.length}}">
+                    <span *ngFor="let iYear of yearsInterval">
+                        <span>{{iYear}}</span>
+                    </span>
+                </span>
+            </div>
+            <div class="gantt__row gantt__row--months">
+                <span class="gantt__row-first gantt__sticky-left">{{workItemLabel}}</span>
+                <span class="gantt__row--months-number gantt__row--months-number-{{yearsMonthsInterval.length}}">
+                    <span  *ngFor="let iYearMonth of yearsMonthsInterval">
+                        <span>{{iYearMonth.monthName}}</span>
+                    </span>
+                </span>
+            </div>
+        </div>
+        <div class="gantt__row gantt__row--lines">
+            <span></span>
+            <span class="gantt__row--months-number gantt__row--months-number-{{yearsMonthsInterval.length}}">
+              <span class="marker-{{iYearMonth.isCurrent}}" *ngFor="let iYearMonth of yearsMonthsInterval"></span>
+            </span>
+        </div>
+        <div class="gantt__row gantt__row--empty-{{!hasDueDate(iWorkItem)}}" *ngFor="let iWorkItem of workItems">
+            <div class="gantt__row-first gantt__sticky-left">
+                <div class="grid-container">
+                    <span class="item-name custom-size-align-name">
+                        <span class="name-ellipse">{{iWorkItem.name}}</span>
+                    </span>
+                    <span class="assigned-to right-top">
+                        <span *ngFor="let member of iWorkItem.assignedTo">
+                           <span class="avatar-icon" [style.background-image]="'url(' +  userUrlImage(member)  + ')'" [materialTooltip]="member.name"></span>
+                        </span>
+                    </span>
+                    <material-button class="item-button right-top" dense icon (trigger)="goToWorkItemsKanban(iWorkItem)">
+                        <material-icon class="right-top" icon="launch" size="medium"></material-icon>
+                    </material-button>
+                </div>
+
+            </div>
+            <div class="gantt__row--months-number gantt__row--months-number-{{yearsMonthsInterval.length}} gantt__row-diamond">
+                <span *ngIf="hasDueDate(iWorkItem)" clickableTooltipTarget
+                   keyboardOnlyFocusIndicator
+                   #clickableRef="tooltipTarget" [style.grid-column]="gridColumnFromStartAndEndDate(iWorkItem)" [style.background-color]="barColor(iWorkItem)">
+                    <material-tooltip-card [for]="clickableRef" [preferredPositions]="preferredTooltipPositions">
+                        <div>{{dueDateLabel}}</div>
+                        <div><strong>{{iWorkItem.dueDate | date}}</strong></div>
+                        <div>{{workLabel}}</div>
+                        <div><strong>{{iWorkItem.work.name}}</strong></div>
+                       </material-tooltip-card>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<router-outlet [routes]="routes"></router-outlet>

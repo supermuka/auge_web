@@ -1,5 +1,5 @@
 // Original from https://codepen.io/ph1p/pen/JBBjNy
-
+@import 'package:auge_web/scss/common.scss';
 @import 'package:angular_components/css/material/material';
 @import 'package:angular_components/css/material/shadow';
 
@@ -199,6 +199,57 @@ $first-width: 320px;
          /*   cursor: pointer; */
             border-radius: 5px; /* 20px; */
 
+            &.stripes {
+                background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,.1) 5px, rgba(255,255,255,.1) 12px);
+            }
+            &:before,
+            &:after {
+                content: "";
+                height: 100%;
+                top: 0;
+                z-index: 4;
+                position: absolute;
+                background-color: rgba(0, 0, 0, 0.3);
+            }
+            &:before {
+                left: 0;
+            }
+            &:after {
+                right: 0;
+            }
+          }
+        }
+        &-diamond {
+        //  margin: 0;
+          margin: 0;
+          padding: 0;
+          grid-gap: 2px 0px;
+
+          border-top: 1px solid rgba(221, 221, 221, 0.8);
+            /*start*/
+           /* display: grid;
+            grid-template-columns: max-content auto;
+            */
+            /*end*/
+          /*  font-weight: 500; */
+          span {
+
+         /*   font-size: 14px; */
+         /*   min-height: 24px; */
+            height: 16px;
+            width: 16px;
+            align-self: center;
+            justify-self: center;
+          /*  text-align: center;
+            vertical-align: center;*/
+         /*   background-color: #55de84; */
+         /*   padding: 5px 5px;  */ /* 5px 12px; */
+            color: #fff;
+         /*   overflow: hidden; */
+            position: relative;
+         /*   cursor: pointer; */
+          /*  border-radius: 5px; */
+            transform: rotate(45deg);
             &.stripes {
                 background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,.1) 5px, rgba(255,255,255,.1) 12px);
             }

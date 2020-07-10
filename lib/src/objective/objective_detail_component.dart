@@ -157,7 +157,7 @@ class ObjectiveDetailComponent implements OnInit, OnActivate, OnDeactivate {
       _alignedToObjectives = await _objectiveService.getObjectives(_objectiveService.authService.authorizedOrganization.id,
         restrictOrganization: RestrictOrganization.none,
         restrictMeasure: RestrictMeasure.none);
-      _users = await _userService.getUsers(_objectiveService.authService.authorizedOrganization.id, restrictUser: RestrictUser.idName, restrictUserProfile: RestrictUserProfile.image);
+      _users = await _userService.getUsers(_objectiveService.authService.authorizedOrganization.id, restrictUser: RestrictUser.specification, restrictUserProfile: RestrictUserProfile.image);
       _groups = await _groupService.getGroups(_objectiveService.authService.authorizedOrganization.id);
 
     } catch (e) {

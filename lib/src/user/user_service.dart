@@ -20,7 +20,7 @@ import 'package:auge_shared/protos/generated/general/user_control.pbgrpc.dart' a
 
 
 // Correspond to protobuf
-enum RestrictUser {none, idName}
+enum RestrictUser {none, specification}
 enum RestrictUserProfile {none, image, notificationEMailIdiom}
 
 @Injectable()

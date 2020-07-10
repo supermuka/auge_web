@@ -46,14 +46,14 @@ import 'package:auge_web/src/insight/insights_component.template.dart' as insigh
 import 'package:auge_web/src/user/user_detail_component.template.dart' as user_detail_component;
 import 'package:auge_web/src/user/users_component.template.dart' as users_component;
 import 'package:auge_web/src/work/works_component.template.dart' as works_component;
-import 'package:auge_web/src/objective_map/objectives_map_component.template.dart' as objectives_map_component;
-import 'package:auge_web/src/objective_gantt/objectives_gantt_component.template.dart' as objectives_gantt_component;
+import 'package:auge_web/src/map/objectives_map_component.template.dart' as objectives_map_component;
+import 'package:auge_web/src/gantt/objectives_gantt_component.template.dart' as objectives_gantt_component;
 import 'package:auge_web/src/objective/objectives_component.template.dart' as objectives_component;
 import 'package:auge_web/src/group/groups_component.template.dart' as groups_component;
 import 'package:auge_web/src/organization/organization_component.template.dart' as organization_component;
 import 'package:auge_web/src/work_item/work_items_kanban_component.template.dart' as work_items_kanban_component;
 import 'package:auge_web/src/work_item/work_items_component.template.dart' as work_items_component;
-import 'package:auge_web/src/work_item_gantt/work_items_gantt_component.template.dart' as work_items_gantt_component;
+import 'package:auge_web/src/gantt/work_items_gantt_component.template.dart' as work_items_gantt_component;
 import 'package:auge_web/src/history_timeline/history_timeline_component.template.dart' as history_timeline_component;
 
 @Component(

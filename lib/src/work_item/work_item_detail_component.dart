@@ -222,7 +222,7 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
         workItem = await _workItemService.getWorkItem(workItemId);
       }
 
-      _users = await _userService.getUsers(_userService.authService.authorizedOrganization.id, restrictUser: RestrictUser.idName, restrictUserProfile: RestrictUserProfile.image);
+      _users = await _userService.getUsers(_userService.authService.authorizedOrganization.id, restrictUser: RestrictUser.specification, restrictUserProfile: RestrictUserProfile.image);
     } catch (e) {
       dialogError = e.toString();
       rethrow;

@@ -226,7 +226,7 @@ class InsightsComponent with CanReuse implements OnActivate  {
 
         works = await _workService.getWorks(
             _authService.authorizedOrganization.id,
-            restrictWork: RestrictWork.idName, // TODO, identify a way to return just work items without works columns. Issue to performance.
+            restrictWork: RestrictWork.specification, // TODO, identify a way to return just work items without works columns. Issue to performance.
             restrictUserProfile: RestrictUserProfile.none,
             groupIds:  _insightService.insightsFilterOrder.groupIds?.toList(),
             leaderUserIds: _insightService.insightsFilterOrder.leaderUserIds?.toList());

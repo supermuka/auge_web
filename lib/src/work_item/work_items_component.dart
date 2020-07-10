@@ -68,25 +68,32 @@ import 'package:auge_web/src/work_item/work_items_filter_component.template.dart
 class WorkItemsComponent with CanReuse implements OnActivate /*, OnDestroy */ {
 
   final AppLayoutService _appLayoutService;
+
 //  final WorkService _workService;
   final WorkItemService _workItemService;
   final SearchFilterService _searchFilterService;
   final Router _router;
 
-  List<WorkItem> workItems;
+  List<WorkItem> _workItems;
 
   Map<String, bool> checkItensExpandedControl = {};
 
   static final String groupLabel = WorkDomainMsg.fieldLabel(Work.groupField);
-  static final String leaderLabel =  WorkDomainMsg.fieldLabel(Work.leaderField);
+  static final String leaderLabel = WorkDomainMsg.fieldLabel(Work.leaderField);
 
-  static final String workLabel = WorkItemDomainMsg.fieldLabel(WorkItem.workField);
-  static final String nameLabel = WorkItemDomainMsg.fieldLabel(WorkItem.nameField);
-  static final String dueDateLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.dueDateField);
-  static final String actualValueLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.actualValueField);
-  static final String checkItemsLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.checkItemsField);
+  static final String workLabel = WorkItemDomainMsg.fieldLabel(
+      WorkItem.workField);
+  static final String nameLabel = WorkItemDomainMsg.fieldLabel(
+      WorkItem.nameField);
+  static final String dueDateLabel = WorkItemDomainMsg.fieldLabel(
+      WorkItem.dueDateField);
+  static final String actualValueLabel = WorkItemDomainMsg.fieldLabel(
+      WorkItem.actualValueField);
+  static final String checkItemsLabel = WorkItemDomainMsg.fieldLabel(
+      WorkItem.checkItemsField);
 
-  static final String headerTitle = WorkItemMsg.label(WorkItemMsg.workItemsLabel);
+  static final String headerTitle = WorkItemMsg.label(
+      WorkItemMsg.workItemsLabel);
 
   final List<RouteDefinition> routes = [
     RouteDefinition(
@@ -96,13 +103,15 @@ class WorkItemsComponent with CanReuse implements OnActivate /*, OnDestroy */ {
   ];
 
 
-  WorkItemsComponent(this._appLayoutService, this._searchFilterService, this._workItemService, this._router) {
+  WorkItemsComponent(this._appLayoutService, this._searchFilterService,
+      this._workItemService, this._router) {
     // initializeDateFormatting(Intl.defaultLocale);
-   }
+  }
 
 
   @override
-  void onActivate(RouterState routerStatePrevious, RouterState routerStateCurrent) async {
+  void onActivate(RouterState routerStatePrevious,
+      RouterState routerStateCurrent) async {
     if (_workItemService.authService.authorizedOrganization == null ||
         _workItemService.authService.authenticatedUser == null) {
       _router.navigate(AppRoutes.authRoute.toUrl());
@@ -110,8 +119,8 @@ class WorkItemsComponent with CanReuse implements OnActivate /*, OnDestroy */ {
     }
 
     try {
-
-      if (routerStateCurrent.queryParameters.containsKey(AppRoutesQueryParam.assignedToUserIdQueryParameter)) {
+      if (routerStateCurrent.queryParameters.containsKey(
+          AppRoutesQueryParam.assignedToUserIdQueryParameter)) {
         String userId = routerStateCurrent.queryParameters[AppRoutesQueryParam
             .assignedToUserIdQueryParameter];
 
@@ -119,7 +128,6 @@ class WorkItemsComponent with CanReuse implements OnActivate /*, OnDestroy */ {
 
         //TODO encontrar outra forma de retirar o queryparam.
         _router.navigateByUrl(routerStateCurrent.path, replace: true);
-
       }
 
       _appLayoutService.headerTitle = headerTitle;
@@ -128,13 +136,19 @@ class WorkItemsComponent with CanReuse implements OnActivate /*, OnDestroy */ {
       _searchFilterService.enableSearch = true;
       _searchFilterService.enableFilter = true;
 
-      _searchFilterService.filterRouteUrl = AppRoutes.workItemsFilterRoute.toUrl();
+      _searchFilterService.filterRouteUrl =
+          AppRoutes.workItemsFilterRoute.toUrl();
 
-      _searchFilterService.filteredItems = _workItemService.workItemsFilterOrder.filteredItems;
+      _searchFilterService.filteredItems =
+          _workItemService.workItemsFilterOrder.filteredItems;
 
-      workItems = await _workItemService.getWorkItems(assignedToIds: _workItemService.workItemsFilterOrder.assignedToUserIds, restrictWork: RestrictWork.idName, withArchived: _workItemService.workItemsFilterOrder.archived);
-      if (workItems != null) _orderWorkItems(workItems, _workItemService.workItemsFilterOrder.orderedBy);
-
+      _workItems = await _workItemService.getWorkItems(
+          assignedToIds: _workItemService.workItemsFilterOrder
+              .assignedToUserIds,
+          restrictWork: RestrictWork.specification,
+          withArchived: _workItemService.workItemsFilterOrder.archived);
+      if (_workItems != null) _orderWorkItems(
+          _workItems, _workItemService.workItemsFilterOrder.orderedBy);
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;
@@ -150,10 +164,10 @@ class WorkItemsComponent with CanReuse implements OnActivate /*, OnDestroy */ {
   }
 
 
- // String stateHslColor(int stateIndex) => WorkService.getStateHslColor(stateIndex);
+  // String stateHslColor(int stateIndex) => WorkService.getStateHslColor(stateIndex);
 
   String composeTooltip(String label, String name) {
-    return  '${label} ${name}';
+    return '${label} ${name}';
   }
 
   String colorFromUuid(String id) {
@@ -169,22 +183,38 @@ class WorkItemsComponent with CanReuse implements OnActivate /*, OnDestroy */ {
   }
 
   bool hasPlannedOrActual(WorkItem workItem) {
-    return workItem != null && (workItem.plannedValue != null ||  workItem.actualValue != null);
+    return workItem != null &&
+        (workItem.plannedValue != null || workItem.actualValue != null);
   }
 
   // Order by
   void _orderWorkItems(List<WorkItem> workItemsToOrder, String orderBy) {
     if (orderBy == nameLabel) {
-      workItemsToOrder.sort((a, b) => a?.name == null || b?.name == null ? -1 : a.name.compareTo(b.name));
+      workItemsToOrder.sort((a, b) =>
+      a?.name == null || b?.name == null
+          ? -1
+          : a.name.compareTo(b.name));
       // if orderBy == null, default order.
     } else if (orderBy == null || orderBy == dueDateLabel) {
-      workItemsToOrder.sort((a, b) => a?.dueDate == null || b?.dueDate == null ? -1 : a.dueDate.compareTo(b.dueDate));
+      workItemsToOrder.sort((a, b) =>
+      a?.dueDate == null || b?.dueDate == null
+          ? -1
+          : a.dueDate.compareTo(b.dueDate));
     }
   }
 
   void goToKanban(WorkItem workItem) {
-     _router.navigateByUrl(AppRoutes.workItemsKanbanRoute.toUrl(parameters: {
-       AppRoutesParam.workIdParameter: workItem.work.id}, queryParameters: {AppRoutesQueryParam.workItemIdQueryParameter: workItem.id}));
+    _router.navigateByUrl(AppRoutes.workItemsKanbanRoute.toUrl(parameters: {
+      AppRoutesParam.workIdParameter: workItem.work.id},
+        queryParameters: {
+          AppRoutesQueryParam.workItemIdQueryParameter: workItem.id
+        }));
+  }
+
+  List<WorkItem> get workItems {
+    return (_searchFilterService.searchTerm == null ||
+        _searchFilterService.searchTerm.isEmpty) ? _workItems : _workItems.where((
+        test) => test.name.contains(_searchFilterService.searchTerm)).toList();
   }
 }
 

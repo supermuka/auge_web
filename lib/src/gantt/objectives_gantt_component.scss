@@ -1,0 +1,45 @@
+// Original from https://codepen.io/ph1p/pen/JBBjNy
+
+@import 'package:angular_components/css/material/material';
+@import 'package:angular_components/css/material/shadow';
+
+.item-progress { grid-area: progress; align-self: center;}
+.item-name { grid-area: name; align-self: center;}
+.item-group { grid-area: group; align-self: center;}
+.item-button { grid-area: item-button; align-self: start;}
+
+.grid-container {
+  display: grid;
+  grid-template-areas:
+    'progress name group item-button'
+}
+
+.grid-container > span {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.name-ellipse {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.custom-size-align-name {
+/*   width: 100%; */
+   min-width: 200px;
+   max-width: 240px;;
+   /* width: 240px; */
+   width: 100%;
+   white-space: normal;
+   text-align: left;
+  /* width: 400px; */
+  /* text-align: left; */
+  /* height: 100%; */
+}
+
+.right-top {
+  vertical-align: top;
+}

@@ -17,7 +17,7 @@ import 'package:auge_shared/protos/generated/general/group.pbgrpc.dart' as group
 import 'package:auge_shared/protos/generated/general/group.pbenum.dart' as group_pbenum;
 
 // Correspond to protobuf
-enum RestrictGroup {none, IdName}
+enum RestrictGroup {none, specification}
 
 @Injectable()
 class GroupService {

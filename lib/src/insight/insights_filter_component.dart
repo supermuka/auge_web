@@ -109,7 +109,7 @@ class InsightsFilterComponent with CanReuse implements OnActivate, OnDeactivate 
 
     try {
       _groups = await _groupService.getGroups(_groupService.authService.authorizedOrganization.id);
-      _users = await _userService.getUsers(_groupService.authService.authorizedOrganization.id, restrictUser: RestrictUser.idName, restrictUserProfile:  RestrictUserProfile.image);
+      _users = await _userService.getUsers(_groupService.authService.authorizedOrganization.id, restrictUser: RestrictUser.specification, restrictUserProfile:  RestrictUserProfile.image);
     //  groupTypes = await _groupService.getGroupTypes();
     } catch (e) {
       dialogError = e.toString();

@@ -1,0 +1,47 @@
+// Original from https://codepen.io/ph1p/pen/JBBjNy
+@import 'package:auge_web/scss/common.scss';
+@import 'package:angular_components/css/material/material';
+@import 'package:angular_components/css/material/shadow';
+
+.item-name { grid-area: name; align-self: center;}
+.item-assign-to { grid-area: assigned-to; align-self: end;}
+.item-button { grid-area: item-button; align-self: start;}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 4fr 2fr 1fr;
+  grid-template-areas:
+    'name assigned-to item-button';
+
+}
+
+.grid-container > span {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.name-ellipse {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.custom-size-align-name {
+/*   width: 100%; */
+   min-width: 200px;
+   max-width: 200px;
+   /* width: 240px; */
+   width: 100%;
+   white-space: normal;
+   text-align: left;
+  /* width: 400px; */
+  /* text-align: left; */
+  /* height: 100%; */
+}
+
+.right-top {
+  vertical-align: top;
+  margin-left: auto;
+}

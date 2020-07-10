@@ -21,7 +21,7 @@ import 'package:auge_shared/protos/generated/work/work_work_item.pbgrpc.dart' as
 import 'package:auge_shared/protos/generated/work/work_work_item.pbenum.dart' as work_work_item_pbenum;
 import 'package:auge_shared/protos/generated/general/user.pbenum.dart' as user_pbenum;
 
-enum RestrictWork {none, idName}
+enum RestrictWork {none, specification}
 
 @Injectable()
 class WorkService {

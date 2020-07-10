@@ -29,7 +29,7 @@ import 'package:auge_web/src/objective/objectives_filter_component.template.dart
   selector: 'auge-objectives-gantt',
   providers: const [ObjectiveService],
   templateUrl: 'objectives_gantt_component.html',
-  styleUrls: const ['objectives_gantt_component.css'],
+  styleUrls: const ['gantt_component.css', 'objectives_gantt_component.css'],
   directives: const [
     coreDirectives,
     routerDirectives,
@@ -55,7 +55,7 @@ class ObjectivesGanttComponent with CanReuse implements OnActivate {
   List<Objective> _objectives = [];
   List<int> yearsInterval = [];
   List<YearMonth> yearsMonthsInterval = [];
-  Map<String, List<Objective>> objectivesByGroup;
+ // Map<String, List<Objective>> objectivesByGroup;
   DateTime currentDateTime;
 
   String selectedYear;
