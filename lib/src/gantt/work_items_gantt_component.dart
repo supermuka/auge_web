@@ -75,7 +75,7 @@ class WorkItemsGanttComponent with CanReuse implements OnActivate {
   // Define messages and labels
   static final String notInformedMsg = MapMsg.notInformedMsg();
 
-  static final String headerTitle = WorkItemMsg.label(WorkItemMsg.workItemsLabel);
+  static final String headerTitle = WorkItemMsg.label(WorkItemMsg.workItemsGanttLabel);
   static final String nameLabel = WorkItemDomainMsg.fieldLabel(WorkItem.nameField);
   static final String assignedToLabel = WorkItemDomainMsg.fieldLabel(WorkItem.assignedToField);
   static final String workItemLabel =  WorkItemMsg.label(WorkItemMsg.workItemsLabel);

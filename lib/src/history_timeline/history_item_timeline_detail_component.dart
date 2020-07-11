@@ -9,6 +9,8 @@ import 'package:angular_components/content/deferred_content.dart';
 import 'package:auge_shared/domain/general/unit_of_measurement.dart';
 
 import 'package:auge_shared/domain/general/organization.dart';
+import 'package:auge_shared/domain/general/organization_configuration.dart';
+import 'package:auge_shared/domain/general/organization_directory_service.dart';
 import 'package:auge_shared/domain/general/user.dart';
 import 'package:auge_shared/domain/general/user_identity.dart';
 import 'package:auge_shared/domain/general/user_access.dart';
@@ -104,6 +106,10 @@ class HistoryItemTimelineDetailComponent /* extends Object */ implements OnInit 
       UserAccessChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues, changedValues);
     } else if (objectClassName == Organization.className) {
       OrganizationChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues, changedValues);
+    } else if (objectClassName == OrganizationConfiguration.className) {
+      OrganizationConfigurationChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues, changedValues);
+    } else if (objectClassName == OrganizationDirectoryService.className) {
+      OrganizationDirectoryServiceChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues, changedValues);
     } else if (objectClassName == Group.className) {
       GroupChangedValues.constructViewToFieldsChangedValues(fieldsChangedValues, changedValues);
     } else if (objectClassName == Objective.className) {
@@ -161,6 +167,58 @@ class OrganizationChangedValues {
     });
   }
 }
+
+/// ORGANIZATION CONFIGURATION
+class OrganizationConfigurationChangedValues {
+
+  static void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
+    changedValues?.forEach((k, v) {
+      if (k != OrganizationConfiguration.idField && k != OrganizationConfiguration.versionField) {
+        if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
+          fieldsChangedValues.putIfAbsent('${OrganizationConfiguration.className}.${k}', () =>
+          {
+            _typeToViewKey: _typeToViewText,
+            _fieldDescriptionKey: OrganizationConfigurationDomainMsg.fieldLabel(k)});
+          if (v.containsKey(_pKey)) {
+            fieldsChangedValues['${OrganizationConfiguration.className}.${k}'][_pKey] =
+            v[_pKey];
+          }
+          if (v.containsKey(_cKey)) {
+            fieldsChangedValues['${OrganizationConfiguration.className}.${k}'][_cKey] =
+            v[_cKey];
+          }
+        }
+      }
+    });
+  }
+}
+
+/// ORGANIZATION DIRECTORY SERVICE
+// TODO: Show description instead index to enumeration, etc.
+class OrganizationDirectoryServiceChangedValues {
+
+  static void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
+    changedValues?.forEach((k, v) {
+      if (k != OrganizationDirectoryService.idField && k != OrganizationDirectoryService.versionField) {
+        if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
+          fieldsChangedValues.putIfAbsent('${OrganizationDirectoryService.className}.${k}', () =>
+          {
+            _typeToViewKey: _typeToViewText,
+            _fieldDescriptionKey: OrganizationDirectoryServiceDomainMsg.fieldLabel(k)});
+          if (v.containsKey(_pKey)) {
+            fieldsChangedValues['${OrganizationDirectoryService.className}.${k}'][_pKey] =
+            v[_pKey];
+          }
+          if (v.containsKey(_cKey)) {
+            fieldsChangedValues['${OrganizationDirectoryService.className}.${k}'][_cKey] =
+            v[_cKey];
+          }
+        }
+      }
+    });
+  }
+}
+
 
 /// USERS
 class UserChangedValues {

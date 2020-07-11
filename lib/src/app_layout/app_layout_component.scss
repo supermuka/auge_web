@@ -57,7 +57,7 @@ material-drawer {
   @extend material-drawer;
   position: fixed;
   top: 64px;
-  height: 512px;
+  height: 424px; //512px;
   z-index: 5; //2;
 }
 

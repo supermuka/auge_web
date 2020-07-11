@@ -73,6 +73,7 @@ class ObjectivesGanttComponent with CanReuse implements OnActivate {
   // Define messages and labels
   static final String notInformedMsg = MapMsg.notInformedMsg();
 
+  static final String headerTitle = ObjectiveMsg.label(ObjectiveMsg.objectivesGanttLabel);
   static final String leaderLabel = ObjectiveDomainMsg.fieldLabel(Objective.leaderField); // FieldMsg.label('${Objective.className}.${Objective.leaderField}');
   static final String groupLabel = ObjectiveDomainMsg.fieldLabel(Objective.groupField);
   static final String objectiveLabel =  ObjectiveMsg.label(ObjectiveMsg.objectiveLabel); //FieldMsg.label('${Objective.className}.${Objective.groupField}');
@@ -85,7 +86,7 @@ class ObjectivesGanttComponent with CanReuse implements OnActivate {
       return;
     }
 
-    _appLayoutService.headerTitle = GanttMsg.label(GanttMsg.objectivesGanttLabel);
+    _appLayoutService.headerTitle = headerTitle;
  //   _appLayoutService.enabledSearch = false;
     _appLayoutService.systemModuleIndex =  null;
 

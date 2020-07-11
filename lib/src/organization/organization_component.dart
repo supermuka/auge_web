@@ -253,8 +253,8 @@ class OrganizationComponent implements OnInit, OnActivate, OnDeactivate {
     try {
       await _organizationService.saveOrganization(organization);
 
-      organization = await _organizationService.getOrganization(organization.id);
-     // closeDetail();
+      //organization = await _organizationService.getOrganization(organization.id);
+      closeDetail();
     } catch (e) {
       dialogError = e.toString();
       rethrow;
@@ -272,7 +272,7 @@ class OrganizationComponent implements OnInit, OnActivate, OnDeactivate {
       await _organizationService.saveOrganizationConfiguration(organizationConfiguration);
 
       organizationConfiguration = await _organizationService.getOrganizationConfiguration(organizationConfigurationId: organizationConfiguration.id);
-     // closeDetail();
+      closeDetail();
     } catch (e) {
       dialogError = e.toString();
       rethrow;
@@ -301,11 +301,11 @@ class OrganizationComponent implements OnInit, OnActivate, OnDeactivate {
     try {
       await _organizationService.saveOrganizationDirectoryService(organizationDirectoryService);
       //_configurationService.authService.authUserProfileOrganization.organization = await _configurationService.getConfiguration(configuration.id);
-      // closeDetail();
+      //
 
-      organizationDirectoryService =
-      await _organizationService.getOrganizationDirectoryService(organizationDirectoryServiceId: organizationDirectoryService.id);
-
+    //  organizationDirectoryService =
+    //  await _organizationService.getOrganizationDirectoryService(organizationDirectoryServiceId: organizationDirectoryService.id);
+      closeDetail();
     } catch (e) {
       dialogError = e.toString();
       rethrow;
