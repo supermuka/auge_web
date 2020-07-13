@@ -49,14 +49,15 @@ class GroupService {
   }
 
   /// Return a list of [Group]
-  Future<List<Group>> getGroups(String organizationId, {RestrictGroup restrictGroup}) async {
+  Future<List<Group>> getGroups(String organizationId, {int customGroupIndex}) async {
    //--return _augeApiService.augeApi.getGroups(organizationId);
 
     group_pbgrpc.GroupGetRequest groupGetRequest = group_pbgrpc.GroupGetRequest();
 
     groupGetRequest.organizationId = organizationId;
-    if (restrictGroup != null) {
-      groupGetRequest.restrictGroup = group_pbenum.RestrictGroup.values[restrictGroup.index];
+
+    if (customGroupIndex != null) {
+      groupGetRequest.customGroup = group_pbenum.CustomGroup.valueOf(customGroupIndex);
     }
 
     // Return a protobuf via grpc
@@ -67,6 +68,18 @@ class GroupService {
     // Create model from protobuf equivalent
     Map<String, dynamic> cache = {};
     return groupsResponse.groups.map((g) => GroupHelper.readFromProtoBuf(g, cache)).toList();
+  }
+
+  /// Return a list of [Group] only with specification
+  Future<List<Group>> getGroupsOnlySpecification(String organizationId) async {
+    return getGroups(organizationId, customGroupIndex: group_pbenum.CustomGroup.groupOnlySpecification.value);
+
+  }
+
+  /// Return a list of [Group] only with specifications
+  Future<List<Group>> getGroupsWithMembers(String organizationId) async {
+    return getGroups(organizationId, customGroupIndex: group_pbenum.CustomGroup.groupWithMembers.value);
+
   }
 
   /// Delete an [Group]

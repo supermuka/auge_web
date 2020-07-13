@@ -21,7 +21,6 @@ import 'package:auge_web/src/work_item/work_item_service.dart';
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/route/app_routes.dart';
 import 'package:auge_web/src/search_filter/search_filter_service.dart';
-import 'package:auge_web/src/work/work_service.dart';
 
 // ignore_for_file: uri_has_not_been_generated
 import 'package:auge_web/src/work_item/work_items_filter_component.template.dart' as work_items_filter_component;
@@ -104,7 +103,7 @@ class WorkItemsGanttComponent with CanReuse implements OnActivate {
 
     try {
 
-      _workItems = await _workItemService.getWorkItems(assignedToIds: _workItemService.workItemsFilterOrder.assignedToUserIds, restrictWork: RestrictWork.specification, withArchived: _workItemService.workItemsFilterOrder.archived);
+      _workItems = await _workItemService.getWorkItems(assignedToIds: _workItemService.workItemsFilterOrder.assignedToUserIds, withArchived: _workItemService.workItemsFilterOrder.archived);
       if (_workItems != null) _orderWorkItems(_workItems, _workItemService.workItemsFilterOrder.orderedBy);
 
        yearsInterval = getYearsInterval();

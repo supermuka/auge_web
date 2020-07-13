@@ -1,4 +1,3 @@
-import 'package:auge_web/src/user/user_service.dart';
 import 'package:intl/intl.dart';
 
 import 'package:angular/angular.dart';
@@ -104,8 +103,6 @@ class ObjectivesGanttComponent with CanReuse implements OnActivate {
            _objectiveService.authService.authorizedOrganization.id,
            /* objectiveId: initialObjectiveId, */
            /* withMeasures: true, */
-           restrictOrganization: RestrictOrganization.none,
-           restrictUserProfile: RestrictUserProfile.image,
            withArchived: _objectiveService.objectivesFilterOrder.archived,
            groupIds: _objectiveService.objectivesFilterOrder.groupIds?.toList(),
            leaderUserIds: _objectiveService.objectivesFilterOrder.leaderUserIds?.toList());

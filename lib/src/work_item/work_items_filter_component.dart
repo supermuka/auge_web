@@ -104,7 +104,7 @@ class WorkItemsFilterComponent with CanReuse implements OnActivate, OnDeactivate
 
     List<User> _users;
     try {
-      _users = await _userService.getUsers(_workItemService.authService.authorizedOrganization.id, restrictUser: RestrictUser.specification, restrictUserProfile: RestrictUserProfile.image);
+      _users = await _userService.getUsersOnlySpecificationAndImage(_workItemService.authService.authorizedOrganization.id);
     } catch (e) {
       dialogError = e.toString();
       rethrow;

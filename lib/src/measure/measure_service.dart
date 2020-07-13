@@ -119,21 +119,23 @@ class MeasureService {
   }
 
   /// Return an [MeasureProgress] by [Measure.id]
-  Future<List<MeasureProgress>> getMeasureProgresses(String measureId, {RestrictMeasure restrictMeasure}) async {
+  Future<List<MeasureProgress>> getMeasureProgresses(String measureId, {int customMeasureProgressIndex}) async {
 
     objective_measure_pbgrpc.MeasureProgressGetRequest measureProgressGetRequest = objective_measure_pbgrpc.MeasureProgressGetRequest();
 
     measureProgressGetRequest.measureId = measureId;
-    if (restrictMeasure != null) {
-      measureProgressGetRequest.restrictMeasure = objective_measure_pbgrpc.RestrictMeasure.values[restrictMeasure.index];
+    if (customMeasureProgressIndex != null) {
+      measureProgressGetRequest.customMeasureProgress = objective_measure_pbgrpc.CustomMeasureProgress.values[customMeasureProgressIndex];
     }
 
     objective_measure_pbgrpc
         .MeasureProgressesResponse measureProgressesResponsePb = await _measureServiceClient
         .getMeasureProgresses(measureProgressGetRequest);
     Map<String, dynamic> cache = {};
+
     return measureProgressesResponsePb.measureProgresses.map((m) =>
     MeasureProgressHelper.readFromProtoBuf(m, cache)).toList();
+
   }
 
   /// Return an [MeasureProgress] by id [MeasureProgress.id]

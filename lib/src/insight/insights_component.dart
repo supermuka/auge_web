@@ -205,17 +205,13 @@ class InsightsComponent with CanReuse implements OnActivate  {
 
     _searchFilterService.filteredItems = _insightService.insightsFilterOrder.filteredItems;
 
-
     try {
       if (_authService.authorizedOrganization != null) {
 
         // Objectives
        // List<Objective> objectivesAux;
-
-        objectives = await _objectiveService.getObjectives(
+        objectives = await _objectiveService.getObjectivesOnlyWithMeasure(
             _objectiveService.authService.authorizedOrganization.id,
-            restrictOrganization: RestrictOrganization.none,
-            restrictUserProfile: RestrictUserProfile.none,
             groupIds:  _insightService.insightsFilterOrder.groupIds?.toList(),
             leaderUserIds: _insightService.insightsFilterOrder.leaderUserIds?.toList());
 
@@ -224,15 +220,11 @@ class InsightsComponent with CanReuse implements OnActivate  {
         // Works
         //TODO include groups and leaders
 
-        works = await _workService.getWorks(
+        works = await _workService.getWorksOnlyWithWorkItems(
             _authService.authorizedOrganization.id,
-            restrictWork: RestrictWork.specification, // TODO, identify a way to return just work items without works columns. Issue to performance.
-            restrictUserProfile: RestrictUserProfile.none,
             groupIds:  _insightService.insightsFilterOrder.groupIds?.toList(),
             leaderUserIds: _insightService.insightsFilterOrder.leaderUserIds?.toList());
-
         aggregateWorksMeasurement();
-
       }
     } catch (e) {
       _appLayoutService.error = e.toString();

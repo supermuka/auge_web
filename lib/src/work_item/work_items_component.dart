@@ -145,7 +145,6 @@ class WorkItemsComponent with CanReuse implements OnActivate /*, OnDestroy */ {
       _workItems = await _workItemService.getWorkItems(
           assignedToIds: _workItemService.workItemsFilterOrder
               .assignedToUserIds,
-          restrictWork: RestrictWork.specification,
           withArchived: _workItemService.workItemsFilterOrder.archived);
       if (_workItems != null) _orderWorkItems(
           _workItems, _workItemService.workItemsFilterOrder.orderedBy);

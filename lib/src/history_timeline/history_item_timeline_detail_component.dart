@@ -243,12 +243,12 @@ class UserChangedValues {
 
           if (v.containsKey(_pKey)) {
             fieldsChangedValues['${User.className}.${k}'][_pKey] =
-            v[_pKey];
+            v[_pKey] is bool ? CommonFieldAndValuesMsg.labelAndValue(v[_pKey]) : v[_pKey];
           }
 
           if (v.containsKey(_cKey)) {
             fieldsChangedValues['${User.className}.${k}'][_cKey] =
-            v[_cKey];
+            v[_cKey] is bool ? CommonFieldAndValuesMsg.labelAndValue(v[_cKey]) : v[_cKey];
           }
         }
       }
@@ -285,12 +285,25 @@ class UserProfileChangedValues  {
         {
           _typeToViewKey: _typeToViewText,
           _fieldDescriptionKey: UserProfileDomainMsg.fieldLabel(k)});
+
+      /*
         if (v.containsKey(_pKey))
           fieldsChangedValues['${UserProfile.className}.${k}'][_pKey] =
           v[_pKey];
         if (v.containsKey(_cKey))
           fieldsChangedValues['${UserProfile.className}.${k}'][_cKey] =
           v[_cKey];
+*/
+        if (v.containsKey(_pKey)) {
+          fieldsChangedValues['${UserProfile.className}.${k}'][_pKey] =
+          v[_pKey] is bool ? CommonFieldAndValuesMsg.labelAndValue(v[_pKey]) : v[_pKey];
+        }
+
+        if (v.containsKey(_cKey)) {
+          fieldsChangedValues['${UserProfile.className}.${k}'][_cKey] =
+          v[_cKey] is bool ? CommonFieldAndValuesMsg.labelAndValue(v[_cKey]) : v[_cKey];
+        }
+
       }
     });
   }
@@ -536,12 +549,24 @@ class ObjectiveChangedValues {
           {
             _typeToViewKey: _typeToViewText,
             _fieldDescriptionKey: ObjectiveDomainMsg.fieldLabel(k)});
+          /*
           if (v.containsKey(_pKey))
             fieldsChangedValues['${Objective.className}.${k}'][_pKey] =
             v[_pKey];
           if (v.containsKey(_cKey))
             fieldsChangedValues['${Objective.className}.${k}'][_cKey] =
             v[_cKey];
+*/
+          if (v.containsKey(_pKey)) {
+            fieldsChangedValues['${Objective.className}.${k}'][_pKey] =
+            v[_pKey] is bool ? CommonFieldAndValuesMsg.labelAndValue(v[_pKey]) : v[_pKey];
+          }
+
+          if (v.containsKey(_cKey)) {
+            fieldsChangedValues['${Objective.className}.${k}'][_cKey] =
+            v[_cKey] is bool ? CommonFieldAndValuesMsg.labelAndValue(v[_cKey]) : v[_cKey];
+          }
+
         }
       }
     });

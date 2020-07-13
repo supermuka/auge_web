@@ -31,7 +31,6 @@ import 'package:auge_shared/message/messages.dart';
 import 'package:auge_shared/message/domain_messages.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
-import 'package:auge_web/src/measure/measure_service.dart';
 //import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/user/user_service.dart';
 import 'package:auge_web/src/work/work_service.dart';
@@ -156,12 +155,9 @@ class WorkDetailComponent implements OnInit, OnActivate, OnDeactivate {
     try {
     //  _states =  await _workService.getStates();
      // _states = State.values;
-      _users = await _userService.getUsers(_workService.authService.authorizedOrganization.id, restrictUser: RestrictUser.specification, restrictUserProfile: RestrictUserProfile.image);
-      _objectives = await _objectiveService.getObjectives(_workService.authService.authorizedOrganization.id,
-          restrictOrganization: RestrictOrganization.none,
-          restrictMeasure: RestrictMeasure.none);
-      _groups = await _groupService.getGroups(_workService.authService.authorizedOrganization.id);
-
+      _users = await _userService.getUsersOnlySpecificationAndImage(_workService.authService.authorizedOrganization.id);
+      _objectives = await _objectiveService.getObjectivesOnlySpecification(_workService.authService.authorizedOrganization.id);
+      _groups = await _groupService.getGroupsOnlySpecification(_workService.authService.authorizedOrganization.id);
 
     } catch (e) {
       dialogError = e.toString();

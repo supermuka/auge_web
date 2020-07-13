@@ -43,39 +43,33 @@ class UserService {
   AuthService get authService => _authService;
 
   /// Return [User] list by Organization [id]
-  Future<List<User>> getUsers(String organizationId, {RestrictUser restrictUser, RestrictUserProfile restrictUserProfile}) async {
+  Future<List<User>> getUsers(String organizationId, {int customUserIndex}) async {
     // return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
     Map<String, dynamic> cache = {};
 
     user_pbgrpc.UserGetRequest userGetRequest = user_pbgrpc.UserGetRequest();
 
     userGetRequest.managedByOrganizationIdOrAccessedByOrganizationId = organizationId;
-    if (restrictUser != null) {
-      userGetRequest.restrictUser = user_pbenum.RestrictUser.values[restrictUser.index];
+    if (customUserIndex != null) {
+      userGetRequest.customUser = user_pbenum.CustomUser.values[customUserIndex];
     }
-    if (restrictUserProfile != null) {
-      userGetRequest.restrictUserProfile = user_pbenum.RestrictUserProfile.values[restrictUserProfile.index];
-    }
-
 
     return (await _userServiceClient.getUsers(userGetRequest)).users.map((m) =>
     UserHelper.readFromProtoBuf(m,cache)).toList();
   }
 
+  Future<List<User>> getUsersOnlySpecificationAndImage(String organizationId) async {
+    return getUsers(organizationId, customUserIndex: user_pbenum.CustomUser.userOnlySpecificationProfileImage.value);
+  }
+
   /// Return [User] list by Organization [id]
-  Future<User> getUser(String id, {RestrictUser restrictUser, RestrictUserProfile restrictUserProfile}) async {
+  Future<User> getUser(String id) async {
     // return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
     Map<String, dynamic> cache = {};
 
     user_pbgrpc.UserGetRequest userGetRequest = user_pbgrpc.UserGetRequest();
 
     userGetRequest.id = id;
-    if (restrictUser != null) {
-      userGetRequest.restrictUser = user_pbenum.RestrictUser.values[restrictUser.index];
-    }
-    if (restrictUserProfile != null) {
-      userGetRequest.restrictUserProfile = user_pbenum.RestrictUserProfile.values[restrictUserProfile.index];
-    }
 
     return UserHelper.readFromProtoBuf((await _userServiceClient.getUsers(userGetRequest)).users.first, cache);
   }

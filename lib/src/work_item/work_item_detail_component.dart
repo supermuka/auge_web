@@ -106,7 +106,6 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
   final DomSanitizationService _domSanitizationService;
   //final Location _location;
 
-
   String workId;
   String stageIdOrigin;
   WorkItem workItem;
@@ -222,7 +221,7 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
         workItem = await _workItemService.getWorkItem(workItemId);
       }
 
-      _users = await _userService.getUsers(_userService.authService.authorizedOrganization.id, restrictUser: RestrictUser.specification, restrictUserProfile: RestrictUserProfile.image);
+      _users = await _userService.getUsersOnlySpecificationAndImage(_userService.authService.authorizedOrganization.id);
     } catch (e) {
       dialogError = e.toString();
       rethrow;
@@ -235,8 +234,6 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
     if (current.queryParameters.containsKey(AppRoutesQueryParam.stageIdQueryParameter)) {
       stageIdOrigin = current.queryParameters[AppRoutesQueryParam.stageIdQueryParameter];
     }
-
-
 
     memberOptions = new StringSelectionOptions<User>(
         _users, toFilterableString: (User user) => user.name);

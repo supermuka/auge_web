@@ -22,7 +22,6 @@ import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 import 'package:auge_web/src/search_filter/search_filter_service.dart';
 import 'package:auge_web/src/objective/objective_service.dart';
-import 'package:auge_web/src/user/user_service.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
 
@@ -105,12 +104,9 @@ class ObjectivesMapComponent with CanReuse /*  COMENTADO POIS SE USAR, O TOOLTIP
 */
 
     try {
-      objectivesMap = await _objectiveService.getObjectives(_authService.authorizedOrganization.id,
-          treeAlignedWithChildren: true,
-          restrictUserProfile: RestrictUserProfile.image, /*
-          withArchived: _objectiveService.objectivesFilterOrder.archived,
+      objectivesMap = await _objectiveService.getObjectivesTree(_authService.authorizedOrganization.id,
           groupIds: _objectiveService.objectivesFilterOrder.groupIds?.toList(),
-          leaderUserIds: _objectiveService.objectivesFilterOrder.leaderUserIds?.toList() */);
+          leaderUserIds: _objectiveService.objectivesFilterOrder.leaderUserIds?.toList());
 
     } catch (e) {
       _appLayoutService.error = e.toString();

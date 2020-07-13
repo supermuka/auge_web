@@ -8,9 +8,6 @@ import 'package:angular/core.dart';
 import 'package:auge_web/src/auth/auth_service.dart';
 import 'package:auge_web/services/auge_api_service.dart';
 
-import 'package:auge_web/src/user/user_service.dart';
-import 'package:auge_web/src/work_item/work_item_service.dart';
-
 import 'package:auge_shared/domain/work/work.dart';
 import 'package:auge_shared/domain/work/work_stage.dart';
 
@@ -18,10 +15,6 @@ import 'package:auge_shared/domain/work/work_stage.dart';
 import 'package:auge_shared/protos/generated/google/protobuf/wrappers.pb.dart' as wrappers_pb;
 
 import 'package:auge_shared/protos/generated/work/work_work_item.pbgrpc.dart' as work_work_item_pbgrpc;
-import 'package:auge_shared/protos/generated/work/work_work_item.pbenum.dart' as work_work_item_pbenum;
-import 'package:auge_shared/protos/generated/general/user.pbenum.dart' as user_pbenum;
-
-enum RestrictWork {none, specification}
 
 @Injectable()
 class WorkService {
@@ -45,24 +38,17 @@ class WorkService {
 
   /// Return a list of [Work]
   Future<List<Work>> getWorks(String organizationId, {String objectiveId,
-    RestrictWork restrictWork,
-    RestrictWorkItem restrictWorkItem,
-    RestrictUserProfile restrictUserProfile,/* bool withProfile = false, */ bool withArchived = false, List<String> groupIds, List<String> leaderUserIds}) async {
-    //-- return await _augeApiService.workAugeApi.getWorks(organizationId, objectiveId: objectiveId, withWorkItems: withWorkItems);
+    int customWorkIndex, bool withArchived = false, List<String> groupIds, List<String> leaderUserIds}) async {
+
     work_work_item_pbgrpc.WorkGetRequest workGetRequest = work_work_item_pbgrpc.WorkGetRequest();
     workGetRequest.organizationId = organizationId;
     if (objectiveId != null) {
       workGetRequest.objectiveId = objectiveId;
     }
-    if (restrictWork != null) {
-      workGetRequest.restrictWork =  work_work_item_pbenum.RestrictWork.values[restrictWork.index];
+    if (customWorkIndex != null) {
+      workGetRequest.customWork = work_work_item_pbgrpc.CustomWork.valueOf(customWorkIndex);
     }
-    if (restrictWorkItem != null) {
-      workGetRequest.restrictWorkItem =  work_work_item_pbenum.RestrictWorkItem.values[restrictWorkItem.index];
-    }
-    if (restrictUserProfile != null) {
-      workGetRequest.restrictUserProfile =  user_pbenum.RestrictUserProfile.values[restrictUserProfile.index];
-    }
+
    /* workGetRequest.withUserProfile = withProfile; */
     if (withArchived != null) workGetRequest.withArchived = withArchived;
     if (groupIds != null && groupIds.isNotEmpty) workGetRequest.groupIds.addAll(groupIds);
@@ -73,31 +59,32 @@ class WorkService {
     WorkHelper.readFromProtoBuf(i, cache)).toList();
   }
 
+  /// Return a list of [Work]
+  Future<List<Work>> getWorksOnlyWithWorkItems(String organizationId, {String objectiveId,
+    int customWorkIndex,/* bool withProfile = false, */ bool withArchived = false, List<String> groupIds, List<String> leaderUserIds}) async {
+
+    return getWorks(organizationId,
+    objectiveId: objectiveId,
+    customWorkIndex: work_work_item_pbgrpc.CustomWork.workOnlyWithWorkItems.value,
+    withArchived: withArchived,
+    groupIds: groupIds,
+    leaderUserIds: leaderUserIds);
+
+  }
+
   /// Return [User] list by Organization [id]
   Future<Work> getWork(String id,
-      {RestrictUserProfile restrictUserProfile,
-       RestrictWork restrictWork,
-       RestrictWorkItem restrictWorkItem,
    /* bool withUserProfile = false, */
-
-    bool withArchived = false,
-    Set<String> leaderUserIds,
-    Set<String> groupIds,
-    bool workItemWithArchived = false,
-    Set<String> workItemAssignedToIds}) async {
+      {bool withArchived = false,
+      Set<String> leaderUserIds,
+      Set<String> groupIds,
+      bool workItemWithArchived = false,
+      Set<String> workItemAssignedToIds}) async {
     // return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
     work_work_item_pbgrpc.WorkGetRequest workGetRequest = work_work_item_pbgrpc.WorkGetRequest();
 
     workGetRequest.id = id;
-    if (restrictWork != null) {
-      workGetRequest.restrictWork =  work_work_item_pbenum.RestrictWork.values[restrictWork.index];
-    }
-    if (restrictWorkItem != null) {
-      workGetRequest.restrictWorkItem =  work_work_item_pbenum.RestrictWorkItem.values[restrictWorkItem.index];
-    }
-    if (restrictUserProfile != null) {
-      workGetRequest.restrictUserProfile =  user_pbenum.RestrictUserProfile.values[restrictUserProfile.index];
-    }
+
     /* workGetRequest.withUserProfile = withUserProfile; */
     workGetRequest.withArchived = withArchived;
     if (leaderUserIds != null && leaderUserIds.isNotEmpty) workGetRequest.leaderUserIds.addAll(leaderUserIds);

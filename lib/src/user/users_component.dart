@@ -119,7 +119,9 @@ class UsersComponent with CanReuse implements OnActivate {
       // Delete user
       await _userService.deleteUser(selectedUser);
 
-      users.remove(selectedUser);
+      //users.remove(selectedUser);
+
+      _router.navigateByUrl(_router.current.toUrl(), reload: true);
 
     } catch (e) {
      // print('${e.runtimeType}, ${e}');

@@ -139,7 +139,8 @@ class GroupsComponent with CanReuse implements OnActivate /*, OnDeactivate, OnDe
   void delete() async {
     try {
       await _groupService.deleteGroup(selectedGroup);
-      groups.remove(selectedGroup);
+      // groups.remove(selectedGroup);
+      _router.navigateByUrl(_router.current.toUrl(), reload: true);
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;
