@@ -179,7 +179,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
     try {
 
       List<Objective> objectivesAux = [];
-      objectivesAux = await _objectiveService.getObjectives(
+      objectivesAux = await _objectiveService.getObjectivesWithMeasure(
           _objectiveService.authService.authorizedOrganization.id,
           withArchived: _objectiveService.objectivesFilterOrder.archived,
           groupIds: _objectiveService.objectivesFilterOrder.groupIds?.toList(),

@@ -58,10 +58,19 @@ class ObjectiveService {
     return o;
   }
 
-  Future<List<Objective>> getObjectivesTree(String organizationId, {String objectiveId, bool withArchived = false, List<String> groupIds, List<String> leaderUserIds}) async {
+  Future<List<Objective>> getObjectivesWithMeasure(String organizationId, {String objectiveId, bool withArchived = false, List<String> groupIds, List<String> leaderUserIds}) async {
     return getObjectives(organizationId,
         objectiveId: objectiveId,
-        customObjectiveIndex: objective_measure_pbgrpc.CustomObjective.objectiveTreeAlignedTo.value,
+        customObjectiveIndex: objective_measure_pbgrpc.CustomObjective.objectiveWithMeasure.value,
+        withArchived: withArchived,
+        groupIds: groupIds,
+        leaderUserIds: leaderUserIds);
+  }
+
+  Future<List<Objective>> getObjectivesWithMeasureAndTree(String organizationId, {String objectiveId, bool withArchived = false, List<String> groupIds, List<String> leaderUserIds}) async {
+    return getObjectives(organizationId,
+        objectiveId: objectiveId,
+        customObjectiveIndex: objective_measure_pbgrpc.CustomObjective.objectiveWithMeasureAndTree.value,
         withArchived: withArchived,
         groupIds: groupIds,
         leaderUserIds: leaderUserIds);
@@ -75,7 +84,6 @@ class ObjectiveService {
         groupIds: groupIds,
         leaderUserIds: leaderUserIds);
   }
-
 
   Future<List<Objective>> getObjectivesOnlySpecification(String organizationId, {String objectiveId, bool withArchived = false, List<String> groupIds, List<String> leaderUserIds}) async {
     return getObjectives(organizationId,

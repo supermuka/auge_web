@@ -104,7 +104,7 @@ class ObjectivesMapComponent with CanReuse /*  COMENTADO POIS SE USAR, O TOOLTIP
 */
 
     try {
-      objectivesMap = await _objectiveService.getObjectivesTree(_authService.authorizedOrganization.id,
+      objectivesMap = await _objectiveService.getObjectivesWithMeasureAndTree(_authService.authorizedOrganization.id,
           groupIds: _objectiveService.objectivesFilterOrder.groupIds?.toList(),
           leaderUserIds: _objectiveService.objectivesFilterOrder.leaderUserIds?.toList());
 
