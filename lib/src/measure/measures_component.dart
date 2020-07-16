@@ -92,7 +92,10 @@ class MeasuresComponent with CanReuse {
     try {
 
       await _measureService.deleteMeasure(selectedMeasure);
-      objective.measures.remove(selectedMeasure);
+
+      _router.navigateByUrl(_router.current.toUrl(), reload: true);
+
+      //objective.measures.remove(selectedMeasure);
 
     } catch (e) {
       _appLayoutService.error = e.toString();

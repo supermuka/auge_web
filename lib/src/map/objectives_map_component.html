@@ -3,8 +3,7 @@
         <ul *ngIf="objectivesMap.length > 0 ">
             <li *ngFor="let iObjectiveMapLevel1 of objectivesMap">
                 <a  clickableTooltipTarget
-                   keyboardOnlyFocusIndicator
-                   #clickableRef="tooltipTarget">
+                   #tooltipRef="tooltipTarget">
                     <div class="grid-container">
                        <span class="item-progress c100 p{{iObjectiveMapLevel1.progress}} tiny">
                           <span>{{iObjectiveMapLevel1.progress}}%</span>
@@ -19,14 +18,14 @@
                        <span class="item-group avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel1?.group?.id)">
                           <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjectiveMapLevel1?.group?.name)">{{firstLetter(iObjectiveMapLevel1?.group?.name)}}</span>
                        </span>
-                       <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel1)">
+                       <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel1, $event)">
                           <material-icon class="right-top" icon="launch" size="medium"></material-icon>
                        </material-button>
                        <div class="item-collapse-expand thin">
                           <material-icon *ngIf="iObjectiveMapLevel1.alignedWithChildren.length > 0" class="pointer" size="medium"  baseline icon="{{objectivesCollapesed.contains(iObjectiveMapLevel1) ? 'expand_more' : 'expand_less'}}" (click)="collapseExpand($event, iObjectiveMapLevel1)"></material-icon>
                        </div>
                     </div>
-                    <material-tooltip-card [for]="clickableRef" [preferredPositions]="preferredTooltipPositions">
+                    <material-tooltip-card #xx [for]="tooltipRef" [preferredPositions]="preferredTooltipPositions">
                         <div>{{startDateLabel}}</div>
                         <div><strong>{{iObjectiveMapLevel1.startDate | date}}</strong></div>
                         <div>{{endDateLabel}}</div>
@@ -38,8 +37,8 @@
                 <ul *ngIf="iObjectiveMapLevel1.alignedWithChildren.length > 0 && !objectivesCollapesed.contains(iObjectiveMapLevel1)">
                      <li *ngFor="let iObjectiveMapLevel2 of iObjectiveMapLevel1.alignedWithChildren">
                         <a clickableTooltipTarget
-                           keyboardOnlyFocusIndicator
-                           #clickableRef="tooltipTarget">
+
+                           #tooltipRef="tooltipTarget">
                             <div class="grid-container">
                                <span class="item-progress c100 p{{iObjectiveMapLevel2.progress}} tiny">
                                   <span>{{iObjectiveMapLevel2.progress}}%</span>
@@ -54,14 +53,14 @@
                                         <span class="item-group avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel2?.group?.id)">
                                   <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjectiveMapLevel2?.group?.name)">{{firstLetter(iObjectiveMapLevel2?.group?.name)}}</span>
                                </span>
-                                <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel2)">
+                                <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel2, $event)">
                                     <material-icon class="right-top" icon="launch" size="medium"></material-icon>
                                 </material-button>
                                 <div class="item-collapse-expand thin">
                                     <material-icon *ngIf="iObjectiveMapLevel2.alignedWithChildren.length > 0" class="pointer" size="medium"  baseline icon="{{objectivesCollapesed.contains(iObjectiveMapLevel2) ? 'expand_more' : 'expand_less'}}" (click)="collapseExpand($event, iObjectiveMapLevel2)"></material-icon>
                                 </div>
                             </div>
-                            <material-tooltip-card [for]="clickableRef" [preferredPositions]="preferredTooltipPositions">
+                            <material-tooltip-card [for]="tooltipRef" [preferredPositions]="preferredTooltipPositions">
                                 <div>{{startDateLabel}}</div>
                                 <div><strong>{{iObjectiveMapLevel2.startDate | date}}</strong></div>
                                 <div>{{endDateLabel}}</div>
@@ -73,8 +72,8 @@
                         <ul *ngIf="iObjectiveMapLevel2.alignedWithChildren.length > 0 && !objectivesCollapesed.contains(iObjectiveMapLevel2)">
                             <li *ngFor="let iObjectiveMapLevel3 of iObjectiveMapLevel2.alignedWithChildren">
                                 <a clickableTooltipTarget
-                                   keyboardOnlyFocusIndicator
-                                   #clickableRef="tooltipTarget">
+
+                                   #tooltipRef="tooltipTarget">
                                     <div class="grid-container">
                                        <span class="item-progress c100 p{{iObjectiveMapLevel3.progress}} tiny">
                                           <span>{{iObjectiveMapLevel3.progress}}%</span>
@@ -89,14 +88,14 @@
                                         <span class="item-group avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel3?.group?.id)">
                                           <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjectiveMapLevel3?.group?.name)">{{firstLetter(iObjectiveMapLevel3?.group?.name)}}</span>
                                        </span>
-                                        <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel3)">
+                                        <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel3, $event)">
                                             <material-icon class="right-top" icon="launch" size="medium"></material-icon>
                                         </material-button>
                                         <div class="item-collapse-expand thin">
                                             <material-icon *ngIf="iObjectiveMapLevel3.alignedWithChildren.length > 0" class="pointer" size="medium"  baseline icon="{{objectivesCollapesed.contains(iObjectiveMapLevel3) ? 'expand_more' : 'expand_less'}}" (click)="collapseExpand($event, iObjectiveMapLevel3)"></material-icon>
                                         </div>
                                     </div>
-                                    <material-tooltip-card [for]="clickableRef" [preferredPositions]="preferredTooltipPositions">
+                                    <material-tooltip-card [for]="tooltipRef" [preferredPositions]="preferredTooltipPositions">
                                         <div>{{startDateLabel}}</div>
                                         <div><strong>{{iObjectiveMapLevel3.startDate | date}}</strong></div>
                                         <div>{{endDateLabel}}</div>
@@ -108,8 +107,8 @@
                                 <ul *ngIf="iObjectiveMapLevel3.alignedWithChildren.length > 0 && !objectivesCollapesed.contains(iObjectiveMapLevel3)">
                                     <li *ngFor="let iObjectiveMapLevel4 of iObjectiveMapLevel3.alignedWithChildren">
                                         <a clickableTooltipTarget
-                                           keyboardOnlyFocusIndicator
-                                           #clickableRef="tooltipTarget">
+
+                                           #tooltipRef="tooltipTarget">
                                             <div class="grid-container">
                                                <span class="item-progress c100 p{{iObjectiveMapLevel4.progress}} tiny">
                                                   <span>{{iObjectiveMapLevel4.progress}}%</span>
@@ -124,14 +123,14 @@
                                                         <span class="item-group avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel4?.group?.id)">
                                                   <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjectiveMapLevel4?.group?.name)">{{firstLetter(iObjectiveMapLevel4?.group?.name)}}</span>
                                                </span>
-                                                <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel4)">
+                                                <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel4, $event)">
                                                     <material-icon class="right-top" icon="launch" size="medium"></material-icon>
                                                 </material-button>
                                                 <div class="item-collapse-expand thin">
                                                     <material-icon *ngIf="iObjectiveMapLevel4.alignedWithChildren.length > 0" class="pointer" size="medium"  baseline icon="{{objectivesCollapesed.contains(iObjectiveMapLevel4) ? 'expand_more' : 'expand_less'}}" (click)="collapseExpand($event, iObjectiveMapLevel4)"></material-icon>
                                                 </div>
                                             </div>
-                                            <material-tooltip-card [for]="clickableRef" [preferredPositions]="preferredTooltipPositions">
+                                            <material-tooltip-card [for]="tooltipRef" [preferredPositions]="preferredTooltipPositions">
                                                 <div>{{startDateLabel}}</div>
                                                 <div><strong>{{iObjectiveMapLevel4.startDate | date}}</strong></div>
                                                 <div>{{endDateLabel}}</div>
@@ -143,8 +142,8 @@
                                         <ul *ngIf="iObjectiveMapLevel4.alignedWithChildren.length > 0 && !objectivesCollapesed.contains(iObjectiveMapLevel4)">
                                             <li *ngFor="let iObjectiveMapLevel5 of iObjectiveMapLevel4.alignedWithChildren">
                                                 <a clickableTooltipTarget
-                                                   keyboardOnlyFocusIndicator
-                                                   #clickableRef="tooltipTarget">
+
+                                                   #tooltipRef="tooltipTarget">
                                                     <div class="grid-container">
                                                        <span class="item-progress c100 p{{iObjectiveMapLevel5.progress}} tiny">
                                                           <span>{{iObjectiveMapLevel5.progress}}%</span>
@@ -159,14 +158,14 @@
                                                           <span class="item-group avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel5?.group?.id)">
                                                           <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjectiveMapLevel5?.group?.name)">{{firstLetter(iObjectiveMapLevel5?.group?.name)}}</span>
                                                        </span>
-                                                        <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel5)">
+                                                        <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel5, $event)">
                                                             <material-icon class="right-top" icon="launch" size="medium"></material-icon>
                                                         </material-button>
                                                         <div class="item-collapse-expand thin">
                                                             <material-icon *ngIf="iObjectiveMapLevel5.alignedWithChildren.length > 0" class="pointer" size="medium"  baseline icon="{{objectivesCollapesed.contains(iObjectiveMapLevel5) ? 'expand_more' : 'expand_less'}}" (click)="collapseExpand($event, iObjectiveMapLevel5)"></material-icon>
                                                         </div>
                                                     </div>
-                                                    <material-tooltip-card [for]="clickableRef" [preferredPositions]="preferredTooltipPositions">
+                                                    <material-tooltip-card [for]="tooltipRef" [preferredPositions]="preferredTooltipPositions">
                                                         <div>{{startDateLabel}}</div>
                                                         <div><strong>{{iObjectiveMapLevel5.startDate | date}}</strong></div>
                                                         <div>{{endDateLabel}}</div>
@@ -178,8 +177,8 @@
                                                 <ul *ngIf="iObjectiveMapLevel5.alignedWithChildren.length > 0 && !objectivesCollapesed.contains(iObjectiveMapLevel5)">
                                                     <li *ngFor="let iObjectiveMapLevel6 of iObjectiveMapLevel5.alignedWithChildren">
                                                         <a clickableTooltipTarget
-                                                           keyboardOnlyFocusIndicator
-                                                           #clickableRef="tooltipTarget">
+
+                                                           #tooltipRef="tooltipTarget">
                                                             <div class="grid-container">
                                                                <span class="item-progress c100 p{{iObjectiveMapLevel6.progress}} tiny">
                                                                   <span>{{iObjectiveMapLevel6.progress}}%</span>
@@ -194,14 +193,14 @@
                                                                         <span class="item-group avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel6?.group?.id)">
                                                                   <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjectiveMapLevel6?.group?.name)">{{firstLetter(iObjectiveMapLevel6?.group?.name)}}</span>
                                                                </span>
-                                                                <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel6)">
+                                                                <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel6, $event)">
                                                                     <material-icon class="right-top" icon="launch" size="medium"></material-icon>
                                                                 </material-button>
                                                                 <div class="item-collapse-expand thin">
                                                                     <material-icon *ngIf="iObjectiveMapLevel6.alignedWithChildren.length > 0" class="pointer" size="medium"  baseline icon="{{objectivesCollapesed.contains(iObjectiveMapLevel6) ? 'expand_more' : 'expand_less'}}" (click)="collapseExpand($event, iObjectiveMapLevel6)"></material-icon>
                                                                 </div>
                                                             </div>
-                                                            <material-tooltip-card [for]="clickableRef" [preferredPositions]="preferredTooltipPositions">
+                                                            <material-tooltip-card [for]="tooltipRef" [preferredPositions]="preferredTooltipPositions">
                                                                 <div>{{startDateLabel}}</div>
                                                                 <div><strong>{{iObjectiveMapLevel6.startDate | date}}</strong></div>
                                                                 <div>{{endDateLabel}}</div>
@@ -213,8 +212,8 @@
                                                         <ul *ngIf="iObjectiveMapLevel6.alignedWithChildren.length > 0 && !objectivesCollapesed.contains(iObjectiveMapLevel6)">
                                                             <li *ngFor="let iObjectiveMapLevel7 of iObjectiveMapLevel6.alignedWithChildren">
                                                                 <a clickableTooltipTarget
-                                                                   keyboardOnlyFocusIndicator
-                                                                   #clickableRef="tooltipTarget">
+
+                                                                   #tooltipRef="tooltipTarget">
                                                                     <div class="grid-container">
                                                                        <span class="item-progress c100 p{{iObjectiveMapLevel7.progress}} tiny">
                                                                           <span>{{iObjectiveMapLevel7.progress}}%</span>
@@ -229,14 +228,14 @@
                                                                                 <span class="item-group avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel7?.group?.id)">
                                                                           <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjectiveMapLevel7?.group?.name)">{{firstLetter(iObjectiveMapLevel7?.group?.name)}}</span>
                                                                        </span>
-                                                                        <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel7)">
+                                                                        <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel7, $event)">
                                                                             <material-icon class="right-top" icon="launch" size="medium"></material-icon>
                                                                         </material-button>
                                                                         <div class="item-collapse-expand thin">
                                                                             <material-icon *ngIf="iObjectiveMapLevel7.alignedWithChildren.length > 0" class="pointer" size="medium"  baseline icon="{{objectivesCollapesed.contains(iObjectiveMapLevel7) ? 'expand_more' : 'expand_less'}}" (click)="collapseExpand($event, iObjectiveMapLevel7)"></material-icon>
                                                                         </div>
                                                                     </div>
-                                                                    <material-tooltip-card [for]="clickableRef" [preferredPositions]="preferredTooltipPositions">
+                                                                    <material-tooltip-card [for]="tooltipRef" [preferredPositions]="preferredTooltipPositions">
                                                                         <div>{{startDateLabel}}</div>
                                                                         <div><strong>{{iObjectiveMapLevel7.startDate | date}}</strong></div>
                                                                         <div>{{endDateLabel}}</div>
@@ -248,8 +247,8 @@
                                                                 <ul *ngIf="iObjectiveMapLevel7.alignedWithChildren.length > 0 && !objectivesCollapesed.contains(iObjectiveMapLevel7)">
                                                                     <li *ngFor="let iObjectiveMapLevel8 of iObjectiveMapLevel7.alignedWithChildren">
                                                                         <a clickableTooltipTarget
-                                                                           keyboardOnlyFocusIndicator
-                                                                           #clickableRef="tooltipTarget">
+
+                                                                           #tooltipRef="tooltipTarget">
                                                                             <div class="grid-container">
                                                                                <span class="item-progress c100 p{{iObjectiveMapLevel8.progress}} tiny">
                                                                                   <span>{{iObjectiveMapLevel8.progress}}%</span>
@@ -264,14 +263,14 @@
                                                                                         <span class="item-group avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel8?.group?.id)">
                                                                                   <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjectiveMapLevel8?.group?.name)">{{firstLetter(iObjectiveMapLevel8?.group?.name)}}</span>
                                                                                </span>
-                                                                                <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel8)">
+                                                                                <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel8, $event)">
                                                                                     <material-icon class="right-top" icon="launch" size="medium"></material-icon>
                                                                                 </material-button>
                                                                                 <div class="item-collapse-expand thin">
                                                                                     <material-icon *ngIf="iObjectiveMapLevel8.alignedWithChildren.length > 0" class="pointer" size="medium"  baseline icon="{{objectivesCollapesed.contains(iObjectiveMapLevel8) ? 'expand_more' : 'expand_less'}}" (click)="collapseExpand($event, iObjectiveMapLevel8)"></material-icon>
                                                                                 </div>
                                                                             </div>
-                                                                            <material-tooltip-card [for]="clickableRef" [preferredPositions]="preferredTooltipPositions">
+                                                                            <material-tooltip-card [for]="tooltipRef" [preferredPositions]="preferredTooltipPositions">
                                                                                 <div>{{startDateLabel}}</div>
                                                                                 <div><strong>{{iObjectiveMapLevel8.startDate | date}}</strong></div>
                                                                                 <div>{{endDateLabel}}</div>
@@ -283,8 +282,8 @@
                                                                         <ul *ngIf="iObjectiveMapLevel8.alignedWithChildren.length > 0 && !objectivesCollapesed.contains(iObjectiveMapLevel8)">
                                                                             <li *ngFor="let iObjectiveMapLevel9 of iObjectiveMapLevel8.alignedWithChildren">
                                                                                 <a clickableTooltipTarget
-                                                                                   keyboardOnlyFocusIndicator
-                                                                                   #clickableRef="tooltipTarget">
+
+                                                                                   #tooltipRef="tooltipTarget">
                                                                                     <div class="grid-container">
                                                                                        <span class="item-progress c100 p{{iObjectiveMapLevel9.progress}} tiny">
                                                                                           <span>{{iObjectiveMapLevel9.progress}}%</span>
@@ -299,14 +298,14 @@
                                                                                                 <span class="item-group avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel9?.group?.id)">
                                                                                           <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjectiveMapLevel9?.group?.name)">{{firstLetter(iObjectiveMapLevel9?.group?.name)}}</span>
                                                                                        </span>
-                                                                                        <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel9)">
+                                                                                        <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel9, $event)">
                                                                                             <material-icon class="right-top" icon="launch" size="medium"></material-icon>
                                                                                         </material-button>
                                                                                         <div class="item-collapse-expand thin">
                                                                                             <material-icon *ngIf="iObjectiveMapLevel9.alignedWithChildren.length > 0" class="pointer" size="medium"  baseline icon="{{objectivesCollapesed.contains(iObjectiveMapLevel9) ? 'expand_more' : 'expand_less'}}" (click)="collapseExpand($event, iObjectiveMapLevel9)"></material-icon>
                                                                                         </div>
                                                                                     </div>
-                                                                                    <material-tooltip-card [for]="clickableRef" [preferredPositions]="preferredTooltipPositions">
+                                                                                    <material-tooltip-card [for]="tooltipRef" [preferredPositions]="preferredTooltipPositions">
                                                                                         <div>{{startDateLabel}}</div>
                                                                                         <div><strong>{{iObjectiveMapLevel9.startDate | date}}</strong></div>
                                                                                         <div>{{endDateLabel}}</div>
@@ -318,8 +317,8 @@
                                                                                 <ul *ngIf="iObjectiveMapLevel9.alignedWithChildren.length > 0 && !objectivesCollapesed.contains(iObjectiveMapLevel9)">
                                                                                     <li *ngFor="let iObjectiveMapLevel10 of iObjectiveMapLevel9.alignedWithChildren">
                                                                                         <a clickableTooltipTarget
-                                                                                           keyboardOnlyFocusIndicator
-                                                                                           #clickableRef="tooltipTarget">
+
+                                                                                           #tooltipRef="tooltipTarget">
                                                                                             <div class="grid-container">
                                                                                                <span class="item-progress c100 p{{iObjectiveMapLevel10.progress}} tiny">
                                                                                                   <span>{{iObjectiveMapLevel10.progress}}%</span>
@@ -334,14 +333,14 @@
                                                                                                         <span class="item-group avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel10?.group?.id)">
                                                                                                   <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjectiveMapLevel10?.group?.name)">{{firstLetter(iObjectiveMapLevel10?.group?.name)}}</span>
                                                                                                </span>
-                                                                                                <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel10)">
+                                                                                                <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel10, $event)">
                                                                                                     <material-icon class="right-top" icon="launch" size="medium"></material-icon>
                                                                                                 </material-button>
                                                                                                 <div class="item-collapse-expand thin">
                                                                                                     <material-icon *ngIf="iObjectiveMapLevel10.alignedWithChildren.length > 0" class="pointer" size="medium"  baseline icon="{{objectivesCollapesed.contains(iObjectiveMapLevel10) ? 'expand_more' : 'expand_less'}}" (click)="collapseExpand($event, iObjectiveMapLevel10)"></material-icon>
                                                                                                 </div>
                                                                                             </div>
-                                                                                            <material-tooltip-card [for]="clickableRef" [preferredPositions]="preferredTooltipPositions">
+                                                                                            <material-tooltip-card [for]="tooltipRef" [preferredPositions]="preferredTooltipPositions">
                                                                                                 <div>{{startDateLabel}}</div>
                                                                                                 <div><strong>{{iObjectiveMapLevel10.startDate | date}}</strong></div>
                                                                                                 <div>{{endDateLabel}}</div>

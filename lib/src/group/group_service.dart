@@ -33,28 +33,25 @@ class GroupService {
   get authService => _authService;
 
   /// Return a list of [Group]
-  Future<Group> getGroup(String groupId) async {
+  Future<Group> getGroupWithMembers(String groupId) async {
     //--return _augeApiService.augeApi.getGroups(organizationId);
 
-    // Return a protobuf via grpc
-    List<group_pbgrpc
-        .Group> groupsPb = (await _groupServiceClient
-        .getGroups(
-        group_pbgrpc.GroupGetRequest()
-          ..id = groupId)).groups;
-
-    // Create model from protobuf equivalent
-    Map<String, dynamic> cache = {};
-    return GroupHelper.readFromProtoBuf(groupsPb.first, cache);
+    List<Group> groups = await getGroups(groupId: groupId, customGroupIndex: group_pbenum.CustomGroup.groupWithMembers.value);
+    if (groups.isNotEmpty) {
+      return groups.first;
+    } else {
+      return null;
+    }
   }
 
   /// Return a list of [Group]
-  Future<List<Group>> getGroups(String organizationId, {int customGroupIndex}) async {
+  Future<List<Group>> getGroups({String organizationId, String groupId, int customGroupIndex}) async {
    //--return _augeApiService.augeApi.getGroups(organizationId);
 
     group_pbgrpc.GroupGetRequest groupGetRequest = group_pbgrpc.GroupGetRequest();
 
-    groupGetRequest.organizationId = organizationId;
+    if (organizationId != null) groupGetRequest.organizationId = organizationId;
+    if (groupId != null) groupGetRequest.id = groupId;
 
     if (customGroupIndex != null) {
       groupGetRequest.customGroup = group_pbenum.CustomGroup.valueOf(customGroupIndex);
@@ -72,13 +69,13 @@ class GroupService {
 
   /// Return a list of [Group] only with specification
   Future<List<Group>> getGroupsOnlySpecification(String organizationId) async {
-    return getGroups(organizationId, customGroupIndex: group_pbenum.CustomGroup.groupOnlySpecification.value);
+    return getGroups(organizationId: organizationId, customGroupIndex: group_pbenum.CustomGroup.groupOnlySpecification.value);
 
   }
 
   /// Return a list of [Group] only with specifications
   Future<List<Group>> getGroupsWithMembers(String organizationId) async {
-    return getGroups(organizationId, customGroupIndex: group_pbenum.CustomGroup.groupWithMembers.value);
+    return getGroups(organizationId: organizationId, customGroupIndex: group_pbenum.CustomGroup.groupWithMembers.value);
 
   }
 

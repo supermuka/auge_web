@@ -1,5 +1,6 @@
 @import 'package:angular_components/css/material/material';
 @import 'package:angular_components/material_select/mixins';
+//@import 'package:angular_components/material_list/mixins';
 //@import 'package:angular_components/css/material/shadow';
 
 //@import 'package:angular_components/material_button/mixins';
@@ -126,4 +127,13 @@ material-list {
 .size-subscript {
   font-size: x-small;
   vertical-align: sub;
+}
+/*
+.material-list-padding-custom {
+   @include material-list-padding(0px);
+}
+*/
+
+.icon-margin {
+  margin: 8px !important;
 }

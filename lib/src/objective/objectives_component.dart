@@ -258,7 +258,9 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
     try {
 
       await _objectiveService.deleteObjective(selectedObjective);
-      _objectives.remove(selectedObjective);
+     // _objectives.remove(selectedObjective);
+
+      _router.navigateByUrl(_router.current.toUrl(), reload: true);
 
     } catch (e) {
       _appLayoutService.error = e.toString();
@@ -288,7 +290,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
 
         Future.delayed(Duration.zero, () {
 
-            element.scrollIntoView(html.ScrollAlignment.TOP);
+            element.scrollIntoView(html.ScrollAlignment.CENTER /* html.ScrollAlignment.TOP */);
             initialObjectiveId = null;
 
         });

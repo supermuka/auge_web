@@ -194,7 +194,7 @@ class WorksComponent with CanReuse implements OnActivate /*, OnDestroy */ {
 
     try {
 
-      List<Work> worksAux = await _workService.getWorks(_workService.authService.authorizedOrganization.id,
+      List<Work> worksAux = await _workService.getWorks(organizationId: _workService.authService.authorizedOrganization.id,
           withArchived: _workService.worksFilterOrder.archived,
           groupIds: _workService.worksFilterOrder.groupIds?.toList(),
           leaderUserIds: _workService.worksFilterOrder.leaderUserIds?.toList());
@@ -232,13 +232,16 @@ class WorksComponent with CanReuse implements OnActivate /*, OnDestroy */ {
 
   }
 
+  /*
   Future<List<Work>> getWorks() async {
 
 
-    List<Work> worksAux = await _workService.getWorks(_workService.authService.authorizedOrganization.id);
+    List<Work> worksAux = await _workService.getWorks(organizationId: _workService.authService.authorizedOrganization.id);
 
     return worksAux;
   }
+  */
+
 /*
   @override
   ngOnDestroy() async {
@@ -276,7 +279,9 @@ class WorksComponent with CanReuse implements OnActivate /*, OnDestroy */ {
     try {
 
       await _workService.deleteWork(selectedWork);
-      _works.remove(selectedWork);
+
+      //_works.remove(selectedWork);
+      _router.navigateByUrl(_router.current.toUrl(), reload: true);
 
     } catch (e) {
       _appLayoutService.error = e.toString();

@@ -1,6 +1,7 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
+import 'dart:async';
 import 'dart:html' as html;
 
 import 'package:angular/angular.dart';
@@ -83,6 +84,20 @@ class ObjectivesMapComponent with CanReuse /*  COMENTADO POIS SE USAR, O TOOLTIP
   static final String startDateLabel =  ObjectiveDomainMsg.fieldLabel(Objective.startDateField);
   static final String endDateLabel =  ObjectiveDomainMsg.fieldLabel(Objective.endDateField);
 
+  // Just workaround  to force paper tooltip close.
+ // @ViewChild('tooltipRef')
+ // ClickableTooltipTargetDirective aTooltipRef;
+
+  @ViewChild('tooltipRef')
+  ClickableTooltipTargetDirective onlyFocus;
+
+ @ViewChild('xx')
+ MaterialPaperTooltipComponent mtc;
+
+  @ViewChildren(ClickableTooltipTargetDirective)
+  List<ClickableTooltipTargetDirective> children;
+
+
   @override
   void onActivate(RouterState previous, RouterState current) async {
 
@@ -118,9 +133,37 @@ class ObjectivesMapComponent with CanReuse /*  COMENTADO POIS SE USAR, O TOOLTIP
     return common_service.userUrlImage(userMember?.userProfile?.image);
   }
 
-  void goToObjective(Objective objective) async {
+  void goToObjective(Objective objective, [html.Event event]) async {
 
-    _router.navigateByUrl(AppRoutes.objectivesRoute.toUrl(queryParameters: { AppRoutesQueryParam.objectiveIdQueryParameter: objective.id, AppRoutesQueryParam.search: 'true'}));
+    event.stopPropagation();
+   // event.stopImmediatePropagation();
+
+    children.forEach((f) {
+      // f.hideTooltip(immediate: true);
+      f.hideTooltip(immediate: true);
+    });
+
+  //  x.hideTooltip(immediate: true);
+
+    // Just workaround  to force paper tooltip close.
+/*
+    Timer.run(() {
+    print('DEBUG ${onlyFocus.toString()}');
+   // onlyFocus.focus();
+
+    onlyFocus.hideTooltip(immediate: true);
+
+    mtc.deactivate(immediate: true);
+
+*/
+
+    // Workaround need to a time to close tool tip.
+    Timer.run(() {
+      _router.navigateByUrl(AppRoutes.objectivesRoute.toUrl(queryParameters: {
+        AppRoutesQueryParam.objectiveIdQueryParameter: objective.id,
+        AppRoutesQueryParam.search: 'true'
+      }));
+    });
   }
 
   String colorFromUuid(String id) {

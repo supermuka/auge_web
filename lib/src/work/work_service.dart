@@ -37,11 +37,16 @@ class WorkService {
   get authService => _authService;
 
   /// Return a list of [Work]
-  Future<List<Work>> getWorks(String organizationId, {String objectiveId,
-    int customWorkIndex, bool withArchived = false, List<String> groupIds, List<String> leaderUserIds}) async {
+  Future<List<Work>> getWorks({String organizationId, String workId, String objectiveId,
+    int customWorkIndex, bool withArchived = false, List<String> groupIds, List<String> leaderUserIds, bool workItemWithArchived = false, Set<String> workItemAssignedToIds}) async {
 
     work_work_item_pbgrpc.WorkGetRequest workGetRequest = work_work_item_pbgrpc.WorkGetRequest();
-    workGetRequest.organizationId = organizationId;
+    if (organizationId != null) {
+      workGetRequest.organizationId = organizationId;
+    }
+    if (workId != null) {
+      workGetRequest.id = workId;
+    }
     if (objectiveId != null) {
       workGetRequest.objectiveId = objectiveId;
     }
@@ -54,6 +59,9 @@ class WorkService {
     if (groupIds != null && groupIds.isNotEmpty) workGetRequest.groupIds.addAll(groupIds);
     if (leaderUserIds != null && leaderUserIds.isNotEmpty) workGetRequest.leaderUserIds.addAll(leaderUserIds);
 
+    if (workItemWithArchived != null) workGetRequest.workItemWithArchived = workItemWithArchived;
+    if (workItemAssignedToIds != null && workItemAssignedToIds.isNotEmpty) workGetRequest.workItemAssignedToIds.addAll(workItemAssignedToIds);
+
     Map<String, dynamic> cache = {};
     return (await _workServiceClient.getWorks(workGetRequest)).works.map((i) =>
     WorkHelper.readFromProtoBuf(i, cache)).toList();
@@ -63,7 +71,7 @@ class WorkService {
   Future<List<Work>> getWorksOnlyWithWorkItems(String organizationId, {String objectiveId,
     int customWorkIndex,/* bool withProfile = false, */ bool withArchived = false, List<String> groupIds, List<String> leaderUserIds}) async {
 
-    return getWorks(organizationId,
+    return getWorks(organizationId: organizationId,
     objectiveId: objectiveId,
     customWorkIndex: work_work_item_pbgrpc.CustomWork.workOnlyWithWorkItems.value,
     withArchived: withArchived,
@@ -72,15 +80,32 @@ class WorkService {
 
   }
 
+  /// Return a list of [Work] with stages and workteims
+  Future<Work> getWorkWithWorkItemsAndStages(String workId, {String objectiveId,
+    int customWorkIndex,/* bool withProfile = false, */ bool withArchived = false, List<String> groupIds, List<String> leaderUserIds, bool workItemWithArchived = false,
+    Set<String> workItemAssignedToIds}) async {
+
+    List<Work> works = await getWorks(workId: workId,
+        objectiveId: objectiveId,
+        customWorkIndex: work_work_item_pbgrpc.CustomWork.workWithWorkItemsAndStages.value,
+        withArchived: withArchived,
+        groupIds: groupIds,
+        leaderUserIds: leaderUserIds,
+        workItemWithArchived: workItemWithArchived,
+        workItemAssignedToIds: workItemAssignedToIds);
+
+    return works.isEmpty ? null : works.first;
+
+  }
+
   /// Return [User] list by Organization [id]
+
   Future<Work> getWork(String id,
-   /* bool withUserProfile = false, */
       {bool withArchived = false,
       Set<String> leaderUserIds,
       Set<String> groupIds,
       bool workItemWithArchived = false,
       Set<String> workItemAssignedToIds}) async {
-    // return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
     work_work_item_pbgrpc.WorkGetRequest workGetRequest = work_work_item_pbgrpc.WorkGetRequest();
 
     workGetRequest.id = id;

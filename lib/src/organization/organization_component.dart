@@ -88,8 +88,8 @@ class OrganizationComponent implements OnInit, OnActivate, OnDeactivate {
   String testDirectoryServiceStatus;
   String syncDirectoryServiceStatus;
 
-  List<int> _listSearchScope = [0, 1, 2, 3]; // 'BASE_LEVEL', 'ONE_LEVEL', 'SUB_LEVEL', 'SUBORDINATE_SUBTREE'
-  List<String> _listSearchScopeName = [ConfigurationMsg.baseLevel, ConfigurationMsg.oneLevel, ConfigurationMsg.subLevel, ConfigurationMsg.subordinateSubtree];
+ //  _listSearchScope = [0, 1, 2, 3]; // 'BASE_LEVEL', 'ONE_LEVEL', 'SUB_LEVEL', 'SUBORDINATE_SUBTREE'
+//  List<String> _listSearchScopeName = [ConfigurationMsg.baseLevel, ConfigurationMsg.oneLevel, ConfigurationMsg.subLevel, ConfigurationMsg.subordinateSubtree];
 
   SelectionOptions passwordFormatSelectionOptions;
   SelectionModel passwordFormatSelectionModel;
@@ -179,8 +179,8 @@ class OrganizationComponent implements OnInit, OnActivate, OnDeactivate {
     organizationDirectoryService.directoryServiceEnabled = false;
     organizationDirectoryService.sslTls = false;
 
-    groupSearchScopeSelectionOptions = SelectionOptions.fromList(_listSearchScope);
-    userSearchScopeSelectionOptions = SelectionOptions.fromList(_listSearchScope);
+    groupSearchScopeSelectionOptions = SelectionOptions.fromList(ListSearchScope.values.map((f) => f.index).toList());
+    userSearchScopeSelectionOptions = SelectionOptions.fromList(ListSearchScope.values.map((f) => f.index).toList());
 
     groupSearchScopeSelectionModel.selectionChanges.listen((s) {
       if (s.isNotEmpty && s.first.added != null && s.first.added.length != 0 && s.first.added?.first != null) {
@@ -243,7 +243,7 @@ class OrganizationComponent implements OnInit, OnActivate, OnDeactivate {
         (groupSearchScopeSelectionModel.selectedValues != null) &&
         (groupSearchScopeSelectionModel.selectedValues.length > 0)) {
 
-      nameLabel = ConfigurationMsg.searchScopeLabel(_listSearchScopeName[groupSearchScopeSelectionModel.selectedValues.first]);
+      nameLabel = ConfigurationMsg.searchScopeLabel(ListSearchScope.values[groupSearchScopeSelectionModel.selectedValues.first].toString());
     }
     return nameLabel ;
   }
@@ -290,7 +290,7 @@ class OrganizationComponent implements OnInit, OnActivate, OnDeactivate {
         (userSearchScopeSelectionModel.selectedValues != null) &&
         (userSearchScopeSelectionModel.selectedValues.length > 0)) {
 
-      nameLabel = ConfigurationMsg.searchScopeLabel(_listSearchScopeName[userSearchScopeSelectionModel.selectedValues.first]);
+      nameLabel = ConfigurationMsg.searchScopeLabel(ListSearchScope.values[userSearchScopeSelectionModel.selectedValues.first].toString());
     }
     return nameLabel ;
   }

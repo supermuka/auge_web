@@ -121,7 +121,11 @@ class ObjectivesGanttComponent with CanReuse implements OnActivate {
   }
 
   void goToObjective(Objective objective) async {
-    _router.navigateByUrl(AppRoutes.objectivesRoute.toUrl(queryParameters: { AppRoutesParam.objectiveIdParameter: objective.id }) /*, reload: true, replace: true */);
+    _router.navigateByUrl(AppRoutes.objectivesRoute.toUrl(queryParameters: {
+      AppRoutesQueryParam.objectiveIdQueryParameter: objective.id,
+      AppRoutesQueryParam.search: 'true'
+    }));
+  //  _router.navigateByUrl(AppRoutes.objectivesRoute.toUrl(queryParameters: { AppRoutesParam.objectiveIdParameter: objective.id }) /*, reload: true, replace: true */);
   }
 
   getYearsInterval() {

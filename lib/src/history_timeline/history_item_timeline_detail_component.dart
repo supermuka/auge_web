@@ -200,18 +200,45 @@ class OrganizationDirectoryServiceChangedValues {
   static void constructViewToFieldsChangedValues(Map<String, Map<dynamic, dynamic>> fieldsChangedValues, Map<String, dynamic> changedValues) {
     changedValues?.forEach((k, v) {
       if (k != OrganizationDirectoryService.idField && k != OrganizationDirectoryService.versionField) {
-        if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
-          fieldsChangedValues.putIfAbsent('${OrganizationDirectoryService.className}.${k}', () =>
+        if (k == OrganizationDirectoryService.groupSearchScopeField ||
+            k == OrganizationDirectoryService.userSearchScopeField) {
+
+          fieldsChangedValues.putIfAbsent(
+              '${OrganizationDirectoryService.className}.${k}', () =>
           {
             _typeToViewKey: _typeToViewText,
-            _fieldDescriptionKey: OrganizationDirectoryServiceDomainMsg.fieldLabel(k)});
+            _fieldDescriptionKey: OrganizationDirectoryServiceDomainMsg
+                .fieldLabel(k)});
           if (v.containsKey(_pKey)) {
-            fieldsChangedValues['${OrganizationDirectoryService.className}.${k}'][_pKey] =
-            v[_pKey];
+            fieldsChangedValues['${OrganizationDirectoryService
+                .className}.${k}'][_pKey] =
+            ConfigurationMsg.searchScopeLabel(ListSearchScope.values[v[_pKey]].toString());
           }
           if (v.containsKey(_cKey)) {
-            fieldsChangedValues['${OrganizationDirectoryService.className}.${k}'][_cKey] =
-            v[_cKey];
+            fieldsChangedValues['${OrganizationDirectoryService
+                .className}.${k}'][_cKey] =
+                ConfigurationMsg.searchScopeLabel(ListSearchScope.values[v[_cKey]].toString());
+          }
+        } else if (v is Map && (v.containsKey(_pKey) || v.containsKey(_cKey))) {
+          fieldsChangedValues.putIfAbsent(
+              '${OrganizationDirectoryService.className}.${k}', () =>
+          {
+            _typeToViewKey: _typeToViewText,
+            _fieldDescriptionKey: OrganizationDirectoryServiceDomainMsg
+                .fieldLabel(k)});
+          if (v.containsKey(_pKey)) {
+            fieldsChangedValues['${OrganizationDirectoryService
+                .className}.${k}'][_pKey] =
+            v[_pKey] is bool
+                ? CommonFieldAndValuesMsg.labelAndValue(v[_pKey])
+                : v[_pKey];
+          }
+          if (v.containsKey(_cKey)) {
+            fieldsChangedValues['${OrganizationDirectoryService
+                .className}.${k}'][_cKey] =
+            v[_cKey] is bool
+                ? CommonFieldAndValuesMsg.labelAndValue(v[_cKey])
+                : v[_cKey];
           }
         }
       }
@@ -428,7 +455,7 @@ class GroupChangedValues {
           });
 
           if (v.containsKey(_pKey) && v[_pKey] is List) {
-            StringBuffer sb = new StringBuffer();
+            StringBuffer sb = StringBuffer();
             v[_pKey].forEach((l) {
               if (sb.isNotEmpty) sb.write(', ');
               sb.write(l[User.nameField]);
@@ -436,7 +463,7 @@ class GroupChangedValues {
             fieldsChangedValues['${Group.className}.${k}'][_pKey] = sb.toString();
           }
           if (v.containsKey(_cKey) && v[_cKey] is List) {
-            StringBuffer sb = new StringBuffer();
+            StringBuffer sb = StringBuffer();
             v[_cKey].forEach((l) {
               if (sb.isNotEmpty) sb.write(', ');;
               sb.write(l[User.nameField]);
@@ -689,7 +716,7 @@ class WorkChangedValues {
         });
 
         if (v.containsKey(_pKey) && v[_pKey] is List) {
-          StringBuffer sb = new StringBuffer();
+          StringBuffer sb = StringBuffer();
           v[_pKey].forEach((l) {
             if (sb.isNotEmpty) sb.write(', ');
             sb.write(l[WorkStage.nameField]);
@@ -698,7 +725,7 @@ class WorkChangedValues {
               sb.toString();
         }
         if (v.containsKey(_cKey) && v[_cKey] is List) {
-          StringBuffer sb = new StringBuffer();
+          StringBuffer sb = StringBuffer();
           v[_cKey].forEach((l) {
             if (sb.isNotEmpty) sb.write(', ');;
             sb.write(l[WorkStage.nameField]);
@@ -815,7 +842,7 @@ class WorkItemChangedValues {
           });
 
           if (v.containsKey(_pKey) && v[_pKey] is List) {
-            StringBuffer sb = new StringBuffer();
+            StringBuffer sb = StringBuffer();
             v[_pKey].forEach((l) {
               if (sb.isNotEmpty) sb.write(', ');
               sb.write(l[User.nameField]);
@@ -823,7 +850,7 @@ class WorkItemChangedValues {
             fieldsChangedValues['${WorkItem.className}.${k}'][_pKey] = sb.toString();
           }
           if (v.containsKey(_cKey) && v[_cKey] is List) {
-            StringBuffer sb = new StringBuffer();
+            StringBuffer sb = StringBuffer();
             v[_cKey].forEach((l) {
               if (sb.isNotEmpty) sb.write(', ');;
               sb.write(l[User.nameField]);
@@ -839,7 +866,7 @@ class WorkItemChangedValues {
           });
 
           if (v.containsKey(_pKey) && v[_pKey] is List) {
-            StringBuffer sb = new StringBuffer();
+            StringBuffer sb = StringBuffer();
             v[_pKey].forEach((l) {
               if (sb.isNotEmpty) sb.write(', ');
               sb.write(l[WorkItemCheckItem.nameField]);
@@ -847,7 +874,7 @@ class WorkItemChangedValues {
             fieldsChangedValues['${WorkItem.className}.${k}'][_pKey] = sb.toString();
           }
           if (v.containsKey(_cKey) && v[_cKey] is List) {
-            StringBuffer sb = new StringBuffer();
+            StringBuffer sb = StringBuffer();
             v[_cKey].forEach((l) {
               if (sb.isNotEmpty) sb.write(', ');;
               sb.write(l[WorkItemCheckItem.nameField]);

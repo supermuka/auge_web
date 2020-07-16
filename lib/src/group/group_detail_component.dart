@@ -89,7 +89,7 @@ class GroupDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
   List<Group> _superGroups;
   List<User> _users;
-  List<User> memberUsers = new List();
+  List<User> memberUsers = List();
 
   /// When it exists, the error/exception message presented into dialog view.
   String dialogError;
@@ -118,8 +118,6 @@ class GroupDetailComponent implements OnInit, OnActivate, OnDeactivate {
     memberSingleSelectModel = SelectionModel.single();
   }
 
-
-
   @override
   void ngOnInit() async {
     //created as new here, even if it is later replaced by a query, because the query may take a while and the Angular will continue to process, causing an exception if the object does not exist
@@ -138,16 +136,15 @@ class GroupDetailComponent implements OnInit, OnActivate, OnDeactivate {
     if (id != null) {
       // Clone objective
       // group = selectedGroup.clone();
-      group = await _groupService.getGroup(id);
+      group = await _groupService.getGroupWithMembers(id);
     } else {
       group.organization = _userService.authService.authorizedOrganization;
       group.inactive = false;
     }
 
     try {
-      _superGroups = await _groupService.getGroupsWithMembers(_groupService.authService.authorizedOrganization.id);
-
-      _users = await _userService.getUsers(_groupService.authService.authorizedOrganization.id);
+      _superGroups = await _groupService.getGroupsOnlySpecification(_groupService.authService.authorizedOrganization.id);
+      _users = await _userService.getUsersOnlySpecificationAndImage(_groupService.authService.authorizedOrganization.id);
     //  groupTypes = await _groupService.getGroupTypes();
     } catch (e) {
       dialogError = e.toString();
