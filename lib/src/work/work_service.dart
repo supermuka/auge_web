@@ -80,6 +80,26 @@ class WorkService {
 
   }
 
+  /// Return a list of [Work] with workteims
+  Future<List<Work>> getWorksWithWorkItems({String organizationId, String workId, String objectiveId,
+    int customWorkIndex,/* bool withProfile = false, */ bool withArchived = false, List<String> groupIds, List<String> leaderUserIds, bool workItemWithArchived = false,
+    Set<String> workItemAssignedToIds}) async {
+
+    List<Work> works = await getWorks(
+        organizationId: organizationId,
+        workId: workId,
+        objectiveId: objectiveId,
+        customWorkIndex: work_work_item_pbgrpc.CustomWork.workWithWorkItems.value,
+        withArchived: withArchived,
+        groupIds: groupIds,
+        leaderUserIds: leaderUserIds,
+        workItemWithArchived: workItemWithArchived,
+        workItemAssignedToIds: workItemAssignedToIds);
+
+    return works.isEmpty ? null : works;
+
+  }
+
   /// Return a list of [Work] with stages and workteims
   Future<Work> getWorkWithWorkItemsAndStages(String workId, {String objectiveId,
     int customWorkIndex,/* bool withProfile = false, */ bool withArchived = false, List<String> groupIds, List<String> leaderUserIds, bool workItemWithArchived = false,
@@ -100,17 +120,27 @@ class WorkService {
 
   /// Return [User] list by Organization [id]
 
-  Future<Work> getWork(String id,
+  Future<Work> getWorkOnlySpecification(String workId,
       {bool withArchived = false,
       Set<String> leaderUserIds,
       Set<String> groupIds,
       bool workItemWithArchived = false,
       Set<String> workItemAssignedToIds}) async {
-    work_work_item_pbgrpc.WorkGetRequest workGetRequest = work_work_item_pbgrpc.WorkGetRequest();
+  //  work_work_item_pbgrpc.WorkGetRequest workGetRequest = work_work_item_pbgrpc.WorkGetRequest();
 
+
+    List<Work> works = await getWorks(workId: workId,
+        customWorkIndex: work_work_item_pbgrpc.CustomWork.workOnlySpecification.value,
+        withArchived: withArchived,
+        workItemWithArchived: workItemWithArchived,
+        workItemAssignedToIds: workItemAssignedToIds);
+
+    return works.isEmpty ? null : works.first;
+
+
+ /*
     workGetRequest.id = id;
 
-    /* workGetRequest.withUserProfile = withUserProfile; */
     workGetRequest.withArchived = withArchived;
     if (leaderUserIds != null && leaderUserIds.isNotEmpty) workGetRequest.leaderUserIds.addAll(leaderUserIds);
     if (groupIds != null && groupIds.isNotEmpty) workGetRequest.groupIds.addAll(groupIds);
@@ -118,9 +148,20 @@ class WorkService {
     if (workItemAssignedToIds != null && workItemAssignedToIds.isNotEmpty) workGetRequest.workItemAssignedToIds.addAll(workItemAssignedToIds);
 
     return WorkHelper.readFromProtoBuf((await _workServiceClient.getWorks(workGetRequest)).works.first, {});
+
+  */
   }
 
-  /// Return a list of [Stage]
+  Future<Work> getWork(String workId) async {
+   // work_work_item_pbgrpc.WorkGetRequest workGetRequest = work_work_item_pbgrpc
+    //    .WorkGetRequest();
+
+    List<Work> works = await getWorks(workId: workId);
+
+    return works.isEmpty ? null : works.first;
+  }
+
+    /// Return a list of [Stage]
   Future<List<WorkStage>> getWorkStages(String workId) async {
     Map<String, dynamic> cache = {};
     return (await _workStageServiceClient.getWorkStages(work_work_item_pbgrpc.WorkStageGetRequest()..workId = workId)).workStages.map((s) =>
@@ -133,7 +174,7 @@ class WorkService {
     Map<String, dynamic> cache = {};
     return WorkStageHelper.readFromProtoBuf((await _workStageServiceClient.getWorkStages(
         work_work_item_pbgrpc.WorkStageGetRequest()
-          ..id = id)).workStages.first, cache);
+          ..id = id..customWorkStage)).workStages.first, cache);
   }
 /*
   /// Return a list of [State]
@@ -188,15 +229,15 @@ class WorkService {
   }
 
   /// Save (create or update)an [Stage]
-  Future<String> saveStage(String workId, WorkStage workStage) async {
+  Future<String> saveStage(Work work, WorkStage workStage) async {
     try {
-
       work_work_item_pbgrpc.WorkStageRequest workStageRequest = work_work_item_pbgrpc.WorkStageRequest()
       //  ..workId = workId
         ..workStage = WorkStageHelper.writeToProtoBuf(workStage)
+      // By default, the this fiels isn't associate to the object. It made in protobuf, to not change the default object.
+      //  ..workStage.work = WorkHelper.writeToProtoBuf(work)
         ..authUserId = _authService.authenticatedUser.id
         ..authOrganizationId = _authService.authorizedOrganization.id;
-
 
       if (workStage.id == null) {
         wrappers_pb.StringValue idResponse = await _workStageServiceClient

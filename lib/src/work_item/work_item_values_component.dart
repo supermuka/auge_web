@@ -124,11 +124,14 @@ class WorkItemValuesComponent implements OnInit, OnActivate, OnDeactivate  {
 
       workItem =  await _workItemService.getWorkItem(workItemId);
 
-      workItemValues = await _workItemService.getWorkItemValues(workItemId);
+      workItemValues = await _workItemService.getWorkItemValues(workItemId: workItemId);
     }
 
     if (current.queryParameters.containsKey(AppRoutesQueryParam.workItemActualValueQueryParameter) && current.queryParameters[AppRoutesQueryParam.workItemActualValueQueryParameter] != null) {
-      workItemValues.insert(0, WorkItemValue()..date = DateTime.now()..actualValue = double.tryParse(current.queryParameters[AppRoutesQueryParam.workItemActualValueQueryParameter]));
+      workItemValues.insert(0, WorkItemValue()
+        ..date = DateTime.now()
+        ..actualValue = double.tryParse(current.queryParameters[AppRoutesQueryParam.workItemActualValueQueryParameter])
+        ..workItem = (WorkItem()..id = workItem.id..name = workItem.name));
       selectedWorkItemValue = workItemValues.first;
     }
   }
@@ -151,7 +154,8 @@ class WorkItemValuesComponent implements OnInit, OnActivate, OnDeactivate  {
       } else {
         workItemValues[workItemValues.indexOf(workItemValue)] = await _workItemService.getWorkItemValue(workItemValue.id);
       }
-    } on Exception {
+    } catch (e) {
+      dialogError = e.toString();
       event.cancel();
       rethrow;
     }
@@ -165,17 +169,16 @@ class WorkItemValuesComponent implements OnInit, OnActivate, OnDeactivate  {
     } else {
       try {
 
-          String workItemValueId = await _workItemService.saveWorkItemValue(
-              workItem.id, workItemValue);
+          /*String workItemValueId = */ await _workItemService.saveWorkItemValue(
+              workItemValue);
           // Returns a new instance to get the generated data on the server side as well as having the last update.
-          workItemValue =
-          await _workItemService.getWorkItemValue(workItemValueId);
-
+        //  workItemValue =
+        //  (await _workItemService.getWorkItemValues(workItemValueId: workItemValueId)).first;
 
         workItemValues =
-        await _workItemService.getWorkItemValues(workItem.id);
+        await _workItemService.getWorkItemValues(workItemId: workItem.id);
 
-        workItem = await _workItemService.getWorkItem(workItem.id);
+       // workItem = await _workItemService.getWorkItem(workItem.id);
 
       } catch (e) {
         dialogError = e.toString();
@@ -187,7 +190,7 @@ class WorkItemValuesComponent implements OnInit, OnActivate, OnDeactivate  {
 
   void selectWorkItemValue(WorkItemValue workItemValue) async {
     if (workItemValue == null) {
-      workItemValues.insert(0, WorkItemValue());
+      workItemValues.insert(0, WorkItemValue()..workItem = (WorkItem()..id = workItem.id..name = workItem.name));
       selectedWorkItemValue = workItemValues.first;
       selectedWorkItemValue.date = DateTime.now();
     } else {
@@ -200,7 +203,7 @@ class WorkItemValuesComponent implements OnInit, OnActivate, OnDeactivate  {
 
     try {
       await _workItemService.deleteWorkItemValue(workItemValue);
-      workItemValues = await _workItemService.getWorkItemValues(workItemValue.id);
+      workItemValues = await _workItemService.getWorkItemValues(workItemId: workItem.id);
     } catch (e) {
       dialogError = e.toString();
       rethrow;

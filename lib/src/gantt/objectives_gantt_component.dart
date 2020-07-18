@@ -100,9 +100,7 @@ class ObjectivesGanttComponent with CanReuse implements OnActivate {
 
     try {
        _objectives = await _objectiveService.getObjectives(
-           _objectiveService.authService.authorizedOrganization.id,
-           /* objectiveId: initialObjectiveId, */
-           /* withMeasures: true, */
+           organizationId: _objectiveService.authService.authorizedOrganization.id,
            withArchived: _objectiveService.objectivesFilterOrder.archived,
            groupIds: _objectiveService.objectivesFilterOrder.groupIds?.toList(),
            leaderUserIds: _objectiveService.objectivesFilterOrder.leaderUserIds?.toList());

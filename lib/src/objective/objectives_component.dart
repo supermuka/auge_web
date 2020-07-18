@@ -22,7 +22,6 @@ import 'package:angular_components/material_tooltip/material_tooltip.dart';
 import 'package:angular_components/scorecard/scoreboard.dart';
 import 'package:angular_components/material_checkbox/material_checkbox.dart';
 
-import 'package:auge_shared/domain/general/authorization.dart';
 import 'package:auge_shared/domain/objective/objective.dart';
 
 import 'package:auge_shared/message/messages.dart';
@@ -167,7 +166,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
     }
 
     _appLayoutService.headerTitle = headerTitle;
-    _appLayoutService.systemModuleIndex = SystemModule.objectives.index;
+   // _appLayoutService.systemModuleIndex = SystemModule.objectives.index;
 
     // Enabled search and filter
     _searchFilterService.enableSearch = true;
@@ -180,7 +179,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
 
       List<Objective> objectivesAux = [];
       objectivesAux = await _objectiveService.getObjectivesWithMeasure(
-          _objectiveService.authService.authorizedOrganization.id,
+          organizationId: _objectiveService.authService.authorizedOrganization.id,
           withArchived: _objectiveService.objectivesFilterOrder.archived,
           groupIds: _objectiveService.objectivesFilterOrder.groupIds?.toList(),
           leaderUserIds: _objectiveService.objectivesFilterOrder.leaderUserIds?.toList());

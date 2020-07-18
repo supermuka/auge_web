@@ -26,6 +26,7 @@ import 'package:angular_components/model/selection/selection_options.dart';
 import 'package:angular_components/model/selection/string_selection_options.dart';
 import 'package:angular_components/model/ui/has_factory.dart';
 
+import 'package:auge_shared/domain/work/work.dart';
 import 'package:auge_shared/domain/work/work_stage.dart';
 
 import 'package:auge_web/services/common_service.dart';
@@ -69,7 +70,7 @@ class WorkStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
 
   bool modalVisible = false;
 
-  String workId;
+  Work work;
   List<WorkStage> workStages;
 
   bool editable;
@@ -116,11 +117,13 @@ class WorkStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
   void onActivate(RouterState previous, RouterState current) async {
     modalVisible = true;
 
+    String workId;
     if (current.parameters.containsKey(AppRoutesParam.workIdParameter)) {
       workId = current.parameters[AppRoutesParam.workIdParameter];
     }
 
     if (workId != null) {
+      work = await _workService.getWorkOnlySpecification(workId);
       workStages = await _workService.getWorkStages(workId);
     } else {
       throw Exception('Work Id not found.');
@@ -195,7 +198,7 @@ class WorkStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
         }
 
         String stageId = await _workService.saveStage(
-            workId, workStage);
+            work, workStage);
         // Returns a new instance to get the generated data on the server side as well as having the last update.
         WorkStage newWorkStage = await _workService.getWorkStage(stageId);
         //  }
@@ -235,7 +238,7 @@ class WorkStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
     try {
       await _workService.deleteWorkStage(workStage);
 
-      workStages = await _workService.getWorkStages(workId);
+      workStages = await _workService.getWorkStages(work.id);
 
       // stages.remove(stage);
 
@@ -273,12 +276,12 @@ class WorkStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
    //   stage.state = stages[i-1].state;
 
       ++workStages[i-1].index;
-      await _workService.saveStage(workId, workStages[i-1]);
+      await _workService.saveStage(work, workStages[i-1]);
 
       --workStages[i].index;
-      await _workService.saveStage(workId, workStages[i]);
+      await _workService.saveStage(work, workStages[i]);
 
-      workStages = await _workService.getWorkStages(workId);
+      workStages = await _workService.getWorkStages(work.id);
       //stages.removeAt(i);
       //stages.insert(i-1, stage);
       //_sortStages();
@@ -292,12 +295,12 @@ class WorkStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
 
       // Receive state equals previous stage, because can be different that the actual
       --workStages[i+1].index;
-      await _workService.saveStage(workId, workStages[i+1]);
+      await _workService.saveStage(work, workStages[i+1]);
 
       ++workStages[i].index;
-      await _workService.saveStage(workId, workStages[i]);
+      await _workService.saveStage(work, workStages[i]);
 
-      workStages = await _workService.getWorkStages(workId);
+      workStages = await _workService.getWorkStages(work.id);
       //stages.removeAt(i);
       //stages.insert(i+1, stage);
     }
@@ -354,6 +357,6 @@ class StateRendererComponent implements RendersValue {
   @override
   set value(newValue) {
     disPlayName = StateMsg.label((newValue as State).toString());
-    disPlayCor = 'hsl(${WorkService.getStateHslColor(newValue)})';
+    disPlayCor = 'hsl(${WorkService.getStateHslColor((newValue as State).index)})';
   }
 }

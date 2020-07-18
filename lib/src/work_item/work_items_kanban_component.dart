@@ -20,13 +20,14 @@ import 'package:angular_components/material_icon/material_icon.dart';
 import 'package:angular_components/material_menu/material_menu.dart';
 import 'package:angular_components/model/menu/menu.dart';
 import 'package:angular_components/model/ui/icon.dart';
+import 'package:angular_components/model/action/async_action.dart';
 
 import 'package:angular_components/content/deferred_content.dart';
 
 
 import 'package:auge_web/src/work/work_summary_component.dart';
 
-import 'package:auge_shared/domain/general/authorization.dart';
+//import 'package:auge_shared/domain/general/authorization.dart';
 import 'package:auge_shared/domain/general/user.dart';
 import 'package:auge_shared/domain/work/work.dart';
 import 'package:auge_shared/domain/work/work_item.dart';
@@ -96,12 +97,15 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
   MenuModel<MenuItem> menuModel;
 
   Map<String, bool> expandedControl = {};
-  Map<String, bool> checkItensExpandedControl = {};
+  Map<String, bool> checkItemsExpandedControl = {};
 
   bool whileUpdatingDisabled = false;
 
   static final String editButtonLabel = CommonMsg.buttonLabel(CommonMsg.editButtonLabel);
   static final String deleteButtonLabel = CommonMsg.buttonLabel(CommonMsg.deleteButtonLabel);
+
+  static final String cancelButtonLabel = CommonMsg.buttonLabel(CommonMsg.cancelButtonLabel);
+  static final String saveButtonLabel = CommonMsg.buttonLabel(CommonMsg.saveButtonLabel);
 
   static final String groupLabel = WorkDomainMsg.fieldLabel(Work.groupField);
   static final String leaderLabel =  WorkDomainMsg.fieldLabel(Work.leaderField);
@@ -159,13 +163,15 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
     try {
 
       if (routerStateCurrent.parameters.containsKey(AppRoutesParam.workIdParameter)) {
+
+
+
         String workId = routerStateCurrent.parameters[AppRoutesParam
             .workIdParameter];
+
           // work = await _workService.getWork(workId, workItemAssignedToIds: _workItemService.workItemsFilterOrder.assignedToUserIds, workItemWithArchived: _workItemService.workItemsFilterOrder.archived,  );
         work = await _workService.getWorkWithWorkItemsAndStages(workId, workItemAssignedToIds: _workItemService.workItemsFilterOrder.assignedToUserIds, workItemWithArchived: _workItemService.workItemsFilterOrder.archived,  );
-        print('DEBUG work.name ${work.name}');
-        print('DEBUG work.workStages.first.stateIndex ${work.workStages.first.stateIndex}');
-        print('DEBUG work.workItems.first.workStage.stateIndex ${work.workItems.first.workStage.stateIndex}');
+
         _orderWorkItems(work.workItems, _workItemService.workItemsFilterOrder.orderedBy);
 
       } else {
@@ -184,7 +190,7 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
       }
 
       _appLayoutService.headerTitle = headerTitle;
-      _appLayoutService.systemModuleIndex = SystemModule.works.index;
+   //   _appLayoutService.systemModuleIndex = SystemModule.works.index;
 
       _searchFilterService.enableSearch = true;
       _searchFilterService.enableFilter = true;
@@ -201,7 +207,8 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
     kanbanColumns = List();
 
     // Define os estados com base no que está na iniciativa
-    work.workStages.forEach((es) { kanbanColumns.add(KanbanColumn(_searchFilterService)..workStage = es);
+    work.workStages.forEach((es) {
+      kanbanColumns.add(KanbanColumn(_searchFilterService)..workStage = es);
     } );
 
     // Distribui os itens de trabalho para cada coluna (estágio)
@@ -227,8 +234,11 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
     kanbanColumnDnD.columnWorkItems.remove(workItemDnD);
     workItemDnD.workStage = kanbanColumnDrop.workStage;
 
-    await _workItemService.saveWorkItem(work.id, workItemDnD);
+    await _workItemService.saveWorkItem(workItemDnD);
 
+    _router.navigateByUrl(_router.current.toUrl(), reload: true);
+
+    /*
     //TODO, por causa de performance, talvez o save precisaria retornar o ID + Version
     WorkItem workItemUpdated = await _workItemService.getWorkItem(workItemDnD.id);
     if (workItemUpdated != null) kanbanColumnDrop.columnWorkItems.add(workItemUpdated);
@@ -237,14 +247,17 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
     workItemDnD = null;
 
     _orderWorkItems(kanbanColumnDrop.columnWorkItems, _workItemService.workItemsFilterOrder.orderedBy);
+  */
   }
+
 
   void delete() async {
     try {
       await _workItemService.deleteWorkItem(selectedWorkItem);
 
-      work.workItems.remove(selectedWorkItem);
-
+     // work.workItems.remove(selectedWorkItem);
+      _router.navigateByUrl(_router.current.toUrl(), reload: true);
+      /*
       KanbanColumn kanbanColumnDelete;
       WorkItem workItemKanban;
       for (var kcStage in kanbanColumns) {
@@ -259,7 +272,7 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
       }
 
       kanbanColumnDelete.columnWorkItems.remove(workItemKanban);
-
+*/
     } catch (e) {
       _appLayoutService.error = e.toString();
       rethrow;
@@ -280,47 +293,7 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
     return common_service.userUrlImage(userMember?.userProfile?.image);
   }
 
-  void updateWorkItem(WorkItem workItem) async {
 
-    if (whileUpdatingDisabled) return;
-
-    whileUpdatingDisabled = true;
-
-    try {
-
-      await _workItemService.saveWorkItem(work.id, workItem);
-
-      //TODO maybe this needs to be updated with parent onActivate.
-      workItem = await _workItemService.getWorkItem(workItem.id);
-
-      int i = work.workItems.indexWhere((it) => it.id == workItem.id);
-
-      if (i != -1) {
-        work.workItems[i] = workItem;
-
-        KanbanColumn kanbanColumnUpdate;
-        int indexWorkItemKanban;
-        for (var kcStage in kanbanColumns) {
-          for (indexWorkItemKanban = 0;indexWorkItemKanban<kcStage.columnWorkItems.length;indexWorkItemKanban++) {
-            if (kcStage.columnWorkItems[indexWorkItemKanban].id == workItem.id) {
-              kanbanColumnUpdate = kcStage;
-              break;
-            }
-          }
-          if (kanbanColumnUpdate != null) break;
-        }
-
-        if (kanbanColumnUpdate != null && indexWorkItemKanban != null) kanbanColumnUpdate.columnWorkItems[indexWorkItemKanban] = workItem;
-
-        _orderWorkItems(kanbanColumnUpdate.columnWorkItems, _workItemService.workItemsFilterOrder.orderedBy);
-      }
-    } catch (e) {
-      _appLayoutService.error = e.toString();
-      rethrow;
-    } finally {
-      whileUpdatingDisabled = false;
-    }
-  }
 
   void goToDetail([String stageId]) {
     if (selectedWorkItem == null) {
@@ -333,11 +306,12 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
     }
   }
 
-  void goToValues([WorkItem workItem]) {
+  void goToValues([WorkItem workItem, num value]) {
+    print('goToValues ${value}');
     if (workItem == null) workItem = selectedWorkItem;
     if (!hasPlannedOrActual(workItem)) return;
-    _router.navigate(AppRoutes.workItemKanbanValuesRoute.toUrl(parameters: {
-      AppRoutesParam.workIdParameter: work.id, AppRoutesParam.workItemIdParameter: workItem.id }) /*, NavigationParams(replace:  true) */);
+    _router.navigateByUrl(AppRoutes.workItemKanbanValuesRoute.toUrl(parameters: {
+      AppRoutesParam.workIdParameter: work.id, AppRoutesParam.workItemIdParameter: workItem.id }, queryParameters: {AppRoutesQueryParam.workItemActualValueQueryParameter: value != null ? value.toString() : null} ) /*, NavigationParams(replace:  true) */);
   }
 
   void goToStages() {
@@ -383,6 +357,61 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
   }
 
   bool isUpdatingOrArchived(bool archived)  => (whileUpdatingDisabled || archived) ?? true;
+
+
+
+/*
+  void updateWorkItem(WorkItem workItem) async {
+
+    if (whileUpdatingDisabled) return;
+
+    whileUpdatingDisabled = true;
+
+    try {
+
+      await _workItemService.saveWorkItem(work.id, workItem);
+
+      _router.navigateByUrl(_router.current.toUrl(), reload: true);
+
+    } catch (e) {
+      _appLayoutService.error = e.toString();
+      rethrow;
+    } finally {
+      whileUpdatingDisabled = false;
+    }
+  }
+
+*/
+
+  void cancelWorkItem(WorkItem workItem, AsyncAction event) async {
+    try {
+      _router.navigateByUrl(_router.current.toUrl(), reload: true);
+    } catch (e) {
+      event.cancel();
+      rethrow;
+    }
+  }
+
+  void saveWorkItem(WorkItem workItem, AsyncAction event) async {
+
+    if (whileUpdatingDisabled) return;
+
+    whileUpdatingDisabled = true;
+
+    try {
+
+      await _workItemService.saveWorkItem(workItem);
+
+      _router.navigateByUrl(_router.current.toUrl(), reload: true);
+
+    } catch (e) {
+      _appLayoutService.error = e.toString();
+      event.cancel();
+      rethrow;
+    } finally {
+      whileUpdatingDisabled = false;
+    }
+  }
 
 }
 

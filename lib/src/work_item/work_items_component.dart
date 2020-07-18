@@ -20,7 +20,6 @@ import 'package:angular_components/content/deferred_content.dart';
 
 import 'package:auge_web/src/work/work_summary_component.dart';
 
-import 'package:auge_shared/domain/general/authorization.dart';
 import 'package:auge_shared/domain/general/user.dart';
 import 'package:auge_shared/domain/work/work.dart';
 import 'package:auge_shared/domain/work/work_item.dart';
@@ -131,7 +130,7 @@ class WorkItemsComponent with CanReuse implements OnActivate /*, OnDestroy */ {
       }
 
       _appLayoutService.headerTitle = headerTitle;
-      _appLayoutService.systemModuleIndex = SystemModule.works.index;
+   //   _appLayoutService.systemModuleIndex = SystemModule.works.index;
 
       _searchFilterService.enableSearch = true;
       _searchFilterService.enableFilter = true;

@@ -25,6 +25,7 @@ import 'package:auge_shared/domain/objective/measure.dart';
 import 'package:auge_shared/message/messages.dart';
 import 'package:auge_shared/message/domain_messages.dart';
 
+import 'package:auge_web/src/objective/objective_service.dart';
 import 'package:auge_web/src/measure/measure_service.dart';
 
 import 'package:auge_web/route/app_routes.dart';
@@ -51,12 +52,14 @@ import 'package:auge_web/route/app_routes.dart';
 
 class MeasureDetailComponent implements OnInit, OnActivate, OnDeactivate  {
 
+  final ObjectiveService _objectiveService;
   final MeasureService _measureService;
   final Location _location;
 
   bool modalVisible = false;
 
-  String objectiveId;
+ //String objectiveId;
+ // Objective objective;
   Measure measure;
 
   List<UnitOfMeasurement> _unitsOfMeasurement = [];
@@ -73,7 +76,7 @@ class MeasureDetailComponent implements OnInit, OnActivate, OnDeactivate  {
  // List errorControl = [];
  // bool validInput = false;
 
-  MeasureDetailComponent(this._measureService, this._location) {
+  MeasureDetailComponent(this._objectiveService, this._measureService, this._location) {
     unitOfMeasurementSingleSelectModel = SelectionModel.single();
   }
 
@@ -107,8 +110,9 @@ class MeasureDetailComponent implements OnInit, OnActivate, OnDeactivate  {
   void onActivate(RouterState previous, RouterState current) async {
     modalVisible = true;
 
+    String objectiveId;
     if (current.parameters.containsKey(AppRoutesParam.objectiveIdParameter)) {
-      objectiveId= current.parameters[AppRoutesParam.objectiveIdParameter];
+      objectiveId = current.parameters[AppRoutesParam.objectiveIdParameter];
     } else {
       throw Exception('Objective Id not found.');
     }
@@ -118,11 +122,16 @@ class MeasureDetailComponent implements OnInit, OnActivate, OnDeactivate  {
       id = current.parameters[AppRoutesParam.measureIdParameter];
     }
 
+
+
     if (id != null) {
       measure = await _measureService.getMeasure(id);
     } else {
       measure.decimalsNumber = 0;
+     // objective = await _objectiveService.getObjectiveOnlySpecification(objectiveId);
+      measure.objective = await _objectiveService.getObjectiveOnlySpecification(objectiveId);
     }
+
 
     try {
       _unitsOfMeasurement = await _measureService.getUnitsOfMeasurement();
@@ -156,7 +165,8 @@ class MeasureDetailComponent implements OnInit, OnActivate, OnDeactivate  {
 
       //--measure.lastHistoryItem.setClientSideValues(user: _authService.authenticatedUser, description: measure.name, changedValues: MeasureFacilities.differenceToJson(measure, selectedMeasure));
 
-      await _measureService.saveMeasure(objectiveId, measure);
+      print('DEBUG SAVE MEASURE ${measure.objective.id}');
+      await _measureService.saveMeasure(/* objective, */ measure);
 
       //_saveController.add(measure.id);
       closeDetail();

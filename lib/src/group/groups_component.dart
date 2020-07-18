@@ -13,7 +13,6 @@ import 'package:angular_components/material_toggle/material_toggle.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel.dart';
 import 'package:angular_components/material_expansionpanel/material_expansionpanel_set.dart';
 
-import 'package:auge_shared/domain/general/authorization.dart';
 import 'package:auge_shared/domain/general/group.dart';
 
 import 'package:auge_shared/message/messages.dart';
@@ -106,7 +105,7 @@ class GroupsComponent with CanReuse implements OnActivate /*, OnDeactivate, OnDe
 
     _appLayoutService.headerTitle = headerTitle;
 //    _appLayoutService.enabledSearch = true;
-    _appLayoutService.systemModuleIndex = SystemModule.groups.index;
+   // _appLayoutService.systemModuleIndex = SystemModule.groups.index;
 
     _searchFilterService.enableSearch = true;
     _searchFilterService.enableFilter = false;

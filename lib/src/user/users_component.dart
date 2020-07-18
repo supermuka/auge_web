@@ -16,7 +16,6 @@ import 'package:angular_components/material_expansionpanel/material_expansionpan
 
 // import 'package:angular_components/content/deferred_content.dart';
 
-import 'package:auge_shared/domain/general/authorization.dart';
 import 'package:auge_shared/domain/general/user.dart';
 
 import 'package:auge_shared/message/messages.dart';
@@ -94,7 +93,7 @@ class UsersComponent with CanReuse implements OnActivate {
     }
     _appLayoutService.headerTitle = headerTitle;
 //    _appLayoutService.enabledSearch = true;
-    _appLayoutService.systemModuleIndex = SystemModule.users.index;
+  //  _appLayoutService.systemModuleIndex = SystemModule.users.index;
 
     _searchFilterService.enableSearch = true;
     _searchFilterService.enableFilter = false;

@@ -177,14 +177,17 @@ class MeasureProgressComponent implements OnInit, OnActivate, OnDeactivate  {
     }
 
     if (measureId != null) {
-      measure =  await _measureService.getMeasure(measureId);
+      measure =  await _measureService.getMeasureOnlySpecification(measureId);
 
       measureProgresses = await _measureService.getMeasureProgresses(measureId);
       // _sortMeasurePregressesOrderByDate(measureProgresses);
     }
 
     if (current.queryParameters.containsKey(AppRoutesQueryParam.measureCurrentValueQueryParameter) && current.queryParameters[AppRoutesQueryParam.measureCurrentValueQueryParameter] != null) {
-      measureProgresses.insert(0, MeasureProgress()..date = DateTime.now()..currentValue = double.tryParse(current.queryParameters[AppRoutesQueryParam.measureCurrentValueQueryParameter]));
+      measureProgresses.insert(0, MeasureProgress()
+        ..date = DateTime.now()
+        ..currentValue = double.tryParse(current.queryParameters[AppRoutesQueryParam.measureCurrentValueQueryParameter])
+        ..measure = measure);
       selectedMeasureProgress = measureProgresses.first;
     }
 
@@ -336,8 +339,8 @@ class MeasureProgressComponent implements OnInit, OnActivate, OnDeactivate  {
               measure.startValue + measure.endValue -
                   measureProgress.currentValue;
 
-          String measureProgressId = await _measureService.saveMeasureProgress(
-              measure.id, measureProgress);
+          String measureProgressId = await _measureService.saveMeasureProgress(/*
+              measure,*/ measureProgress);
           // Returns a new instance to get the generated data on the server side as well as having the last update.
           measureProgress =
           await _measureService.getMeasureProgressById(measureProgressId);

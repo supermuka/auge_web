@@ -65,7 +65,7 @@ class WorksSummaryComponent /* with CanReuse */ implements OnInit {
 
       if (objectiveId != null) {
         try {
-          works = await _workService.getWorks(organizationId:
+          works = await _workService.getWorksWithWorkItems(organizationId:
                 this._workService.authService.authorizedOrganization.id,
                 objectiveId: objectiveId);
         } catch (e) {

@@ -2,6 +2,7 @@ import 'package:angular/core.dart';
 
 import 'package:auge_web/src/auth/auth_service.dart';
 
+import 'package:auge_shared/domain/work/work.dart';
 import 'package:auge_shared/domain/work/work_item.dart';
 import 'package:auge_shared/domain/general/unit_of_measurement.dart';
 
@@ -13,7 +14,7 @@ import 'package:auge_shared/protos/generated/google/protobuf/wrappers.pb.dart' a
 import 'package:auge_shared/protos/generated/work/work_work_item.pbgrpc.dart' as work_work_item_pbgrpc;
 import 'package:auge_shared/protos/generated/general/unit_of_measurement.pbgrpc.dart' as unit_of_measurement_pbgrpc;
 
-import 'package:grpc/grpc_web.dart';
+//import 'package:grpc/grpc_web.dart';
 
 enum RestrictWorkItem {none}
 
@@ -53,11 +54,12 @@ class WorkItemService {
   }
 
   /// Save (create or update) a [WorkItem]
-  Future<String> saveWorkItem(String workId, WorkItem workItem) async {
+  Future<String> saveWorkItem(WorkItem workItem) async {
 
+    print('DEBUG SAVEWORKITEM ${workItem.work.id}');
     work_work_item_pbgrpc.WorkItemRequest workItemRequest = work_work_item_pbgrpc.WorkItemRequest()
       ..workItem = WorkItemHelper.writeToProtoBuf(workItem)
-      ..workId = workId
+      //..workItem.work = WorkHelper.writeToProtoBuf(work)
       ..authOrganizationId = _authService.authorizedOrganization.id
       ..authUserId = _authService.authenticatedUser.id;
 
@@ -126,11 +128,20 @@ class WorkItemService {
   }
 
   /// Return an [WorkItemValue]
-  Future<List<WorkItemValue>> getWorkItemValues(String workItemId) async {
+  Future<List<WorkItemValue>> getWorkItemValues({String workItemId, String workItemValueId, int customWorkItemValue}) async {
 
     work_work_item_pbgrpc.WorkItemValueGetRequest workItemValueGetRequest = work_work_item_pbgrpc.WorkItemValueGetRequest();
 
-    workItemValueGetRequest.workItemId = workItemId;
+    if (workItemValueId != null) {
+      workItemValueGetRequest.id = workItemValueId;
+    }
+    if (workItemId != null) {
+      workItemValueGetRequest.workItemId = workItemId;
+    }
+
+    if (customWorkItemValue != null) {
+      workItemValueGetRequest.customWorkItemValue = work_work_item_pbgrpc.CustomWorkItemValue.valueOf(customWorkItemValue);
+    }
 
     work_work_item_pbgrpc
         .WorkItemValuesResponse workItemValuesResponsePb = await _workItemServiceClient
@@ -141,33 +152,53 @@ class WorkItemService {
     WorkItemValueHelper.readFromProtoBuf(m, cache)).toList();
   }
 
+  /// Return an [WorkItemValue]
+  Future<List<WorkItemValue>> getWorkItemValuesWithoutWorkItem(String workItemId) async {
+
+    return getWorkItemValues(workItemId: workItemId, customWorkItemValue: work_work_item_pbgrpc.CustomWorkItemValue.workItemValueWithoutWorkItem.value);
+  }
+
   /// Return an [WorkItemValue] by id [WorkItemValue.id]
-  Future<WorkItemValue> getWorkItemValue(String workItemValueId) async {
+  Future<WorkItemValue> getWorkItemValueWithoutWorkItem(String workItemValueId) async {
+    return (await getWorkItemValues(workItemValueId: workItemValueId, customWorkItemValue: work_work_item_pbgrpc.CustomWorkItemValue.workItemValueWithoutWorkItem.value)).first;
+    /*
     work_work_item_pbgrpc.WorkItemValue workItemValuePb;
     try {
       workItemValuePb = await _workItemServiceClient
-          .getWorkItemValue(work_work_item_pbgrpc.WorkItemValueGetRequest()..id = workItemValueId);
+          .getWorkItemValue(work_work_item_pbgrpc.WorkItemValueGetRequest()..id = workItemValueId..customWorkItemValue = );
 
     } on GrpcError {
-      /*--
-      } on DetailedApiRequestError catch (e) {
-        if (e.status == 204 && e.errors.firstWhere((ed) => ed.reason == RpcErrorDetailMessage.unitOfMeasurementsDataNotFoundReason, orElse: null ) != null)
-          return null;
-        else {
-          rethrow;
-        }
 
-         */
     }
     return WorkItemValueHelper.readFromProtoBuf(workItemValuePb, {});
+
+     */
+  }
+
+  Future<WorkItemValue> getWorkItemValue(String workItemValueId) async {
+    return (await getWorkItemValues(workItemValueId: workItemValueId)).first;
+    /*
+    work_work_item_pbgrpc.WorkItemValue workItemValuePb;
+    try {
+      workItemValuePb = await _workItemServiceClient
+          .getWorkItemValue(work_work_item_pbgrpc.WorkItemValueGetRequest()..id = workItemValueId..customWorkItemValue = );
+
+    } on GrpcError {
+
+    }
+    return WorkItemValueHelper.readFromProtoBuf(workItemValuePb, {});
+
+     */
   }
 
   /// Save (create) a [WorkItemValue]
-  Future<String> saveWorkItemValue(String workItemId, WorkItemValue workItemValue) async {
+  Future<String> saveWorkItemValue(/*String workItemId*/ WorkItemValue workItemValue) async {
 
     work_work_item_pbgrpc.WorkItemValueRequest workItemValueRequest = work_work_item_pbgrpc.WorkItemValueRequest()
       ..workItemValue = WorkItemValueHelper.writeToProtoBuf(workItemValue)
-      ..workItemId = workItemId
+      // By default, the workitem isn't associate to the workItemValue. It made in protobuf, to not change the default object.
+      //..workItemValue.workItem = WorkItemHelper.writeToProtoBuf(workItem)
+      //..workItemId = workItemId
       ..authOrganizationId = _authService.authorizedOrganization.id
       ..authUserId = _authService.authenticatedUser.id;
 
@@ -192,6 +223,7 @@ class WorkItemService {
     }
   }
 
+  /*
   /// Save (update) a [WorkItemValue]
   void updateWorkItemValue(String workItemId, WorkItemValue workItemValue) async {
 
@@ -209,6 +241,7 @@ class WorkItemService {
       rethrow;
     }
   }
+*/
 
   /// Delete a [WorkItemValue]
   void deleteWorkItemValue(WorkItemValue workItemValue) async {

@@ -88,7 +88,7 @@ class WorkItemsGanttComponent with CanReuse implements OnActivate {
     }
 
     _appLayoutService.headerTitle = headerTitle;
-    _appLayoutService.systemModuleIndex = SystemModule.works.index;
+   // _appLayoutService.systemModuleIndex = SystemModule.works.index;
 
     _searchFilterService.enableSearch = true;
     _searchFilterService.enableFilter = true;
@@ -120,7 +120,9 @@ class WorkItemsGanttComponent with CanReuse implements OnActivate {
   }
 
   void goToWorkItemsKanban(WorkItem workItem) {
-    _router.navigate(AppRoutes.workItemsKanbanRoute.toUrl(parameters: { AppRoutesParam.workIdParameter: workItem.id }));
+    print('DEBUG ${workItem.work.id }');
+
+    _router.navigateByUrl(AppRoutes.workItemsKanbanRoute.toUrl(parameters: { AppRoutesParam.workIdParameter: workItem.work.id }, queryParameters: { AppRoutesQueryParam.workItemIdQueryParameter: workItem.id }));
   }
 
   getYearsInterval() {

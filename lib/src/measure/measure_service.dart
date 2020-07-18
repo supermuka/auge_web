@@ -57,6 +57,24 @@ class MeasureService {
       }
   }
 
+  /// Return an [Measure] specification by Id
+  Future<Measure> getMeasureOnlySpecification(String id) async {
+    try {
+      //--Measure measure = await _augeApiService.objectiveAugeApi.getMeasureById(id);
+
+      List<objective_measure_pbgrpc.Measure> measures = (await _measureServiceClient.getMeasures(
+          objective_measure_pbgrpc.MeasureGetRequest()
+            ..id = id
+      ..customMeasure = objective_measure_pbgrpc.CustomMeasure.measureOnlySpecification)).measures;
+
+      return MeasureHelper.readFromProtoBuf(measures.first, {});
+
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
   /// Return [unitOfMeasurement] list
   Future<List<UnitOfMeasurement>> getUnitsOfMeasurement() async {
 
@@ -78,12 +96,14 @@ class MeasureService {
   }
 
   /// Save (create or update) an [Measure]
-  void saveMeasure(String objectiveId, Measure measure) async {
+  void saveMeasure(/*Objective objective, */ Measure measure) async {
     try {
 
       objective_measure_pbgrpc.MeasureRequest measureRequest = objective_measure_pbgrpc.MeasureRequest()
         ..measure = MeasureHelper.writeToProtoBuf(measure)
-        ..objectiveId = objectiveId
+      // By default, the this fiels isn't associate to the object. It made in protobuf, to not change the default object.
+      /*  ..measure.objective = ObjectiveHelper.writeToProtoBuf(objective) */
+       // ..objectiveId = objectiveId
         ..authOrganizationId = _authService.authorizedOrganization.id
         ..authUserId = _authService.authenticatedUser.id;
 
@@ -149,11 +169,13 @@ class MeasureService {
   }
 
   /// Save (create) a [MeasureProgress]
-  Future<String> saveMeasureProgress(String measureId, MeasureProgress measureProgress) async {
+  Future<String> saveMeasureProgress(/*Measure measure, */ MeasureProgress measureProgress) async {
 
     objective_measure_pbgrpc.MeasureProgressRequest measureProgressRequest = objective_measure_pbgrpc.MeasureProgressRequest()
       ..measureProgress = MeasureProgressHelper.writeToProtoBuf(measureProgress)
-      ..measureId = measureId
+    // By default, the this fiels isn't associate to the object. It made in protobuf, to not change the default object.
+    //  ..measureProgress.measure = MeasureHelper.writeToProtoBuf(measure)
+      //..measureId = measureId
       ..authOrganizationId = _authService.authorizedOrganization.id
       ..authUserId = _authService.authenticatedUser.id;
 
@@ -177,7 +199,7 @@ class MeasureService {
       rethrow;
     }
   }
-
+/*
   /// Save (update) a [MeasureProgress]
   void updateMeasureProgress(String measureId, MeasureProgress measureProgress) async {
 
@@ -195,7 +217,7 @@ class MeasureService {
       rethrow;
     }
   }
-
+*/
 
 
   /// Delete a [MeasureProgress]

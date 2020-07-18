@@ -1,7 +1,6 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
-import 'dart:async';
 import 'dart:html';
 
 import 'package:angular/angular.dart';
@@ -22,7 +21,6 @@ import 'package:angular_components/material_select/material_dropdown_select.dart
 import 'package:angular_components/scorecard/scoreboard.dart';
 
 import 'package:auge_shared/domain/work/work.dart';
-import 'package:auge_shared/domain/general/authorization.dart';
 
 import 'package:auge_shared/message/messages.dart';
 import 'package:auge_shared/message/domain_messages.dart';
@@ -183,7 +181,7 @@ class WorksComponent with CanReuse implements OnActivate /*, OnDestroy */ {
     }
 
     _appLayoutService.headerTitle = headerTitle;
-    _appLayoutService.systemModuleIndex = SystemModule.works.index;
+ //   _appLayoutService.systemModuleIndex = SystemModule.works.index;
 
     // Enabled search and filter
     _searchFilterService.enableSearch = true;

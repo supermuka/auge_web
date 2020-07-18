@@ -45,6 +45,7 @@ import 'package:angular_components/material_tooltip/material_tooltip.dart';
 
 import 'package:auge_shared/domain/general/unit_of_measurement.dart';
 import 'package:auge_shared/domain/work/work_stage.dart';
+import 'package:auge_shared/domain/work/work.dart';
 import 'package:auge_shared/domain/work/work_item.dart';
 import 'package:auge_shared/domain/general/user.dart';
 
@@ -106,8 +107,9 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
   final DomSanitizationService _domSanitizationService;
   //final Location _location;
 
-  String workId;
+ // String workId;
   String stageIdOrigin;
+ // Work work;
   WorkItem workItem;
 
   List<UnitOfMeasurement> _unitsOfMeasurement = [];
@@ -205,8 +207,11 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
 
     previousPath = previous.path;
 
+    String workId;
     if (current.parameters.containsKey(AppRoutesParam.workIdParameter)) {
       workId = current.parameters[AppRoutesParam.workIdParameter];
+    } else {
+      throw Exception('work id not informed.');
     }
 
     String workItemId;
@@ -217,8 +222,11 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
     //List<User> users = await _userService.getUsers(_authService.selectedOrganization?.id, withProfile: true);
     try {
 
+
       if (workItemId != null) {
         workItem = await _workItemService.getWorkItem(workItemId);
+      } else {
+        workItem.work = await _workService.getWorkOnlySpecification(workId);
       }
 
       _users = await _userService.getUsersOnlySpecificationAndImage(_userService.authService.authorizedOrganization.id);
@@ -276,7 +284,7 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
 
 
     try {
-      _unitsOfMeasurement = await _workItemService.getUnitsOfMeasurement();
+      if (_unitsOfMeasurement.isEmpty) _unitsOfMeasurement = await _workItemService.getUnitsOfMeasurement();
     } catch (e) {
       dialogError = e.toString();
       rethrow;
@@ -292,11 +300,9 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
 
     if (workItem.unitOfMeasurement != null) {
       unitOfMeasurementSingleSelectModel.select(workItem.unitOfMeasurement);
-    } else if (unitOfMeasurementOptions.optionsList.isNotEmpty) {
-      unitOfMeasurementSingleSelectModel.select(unitOfMeasurementOptions.optionsList.first);
+  //  } else if (unitOfMeasurementOptions.optionsList.isNotEmpty) {
+//      unitOfMeasurementSingleSelectModel.select(unitOfMeasurementOptions.optionsList.first);
     }
-
-
 
   }
 
@@ -315,7 +321,7 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
 
   void saveWorkItem() async {
     try {
-      workItem.id = await _workItemService.saveWorkItem(workId, workItem);
+      workItem.id = await _workItemService.saveWorkItem(workItem);
       closeDetail(workItem.id);
     } catch (e) {
       dialogError = e.toString();
@@ -541,6 +547,8 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
         (unitOfMeasurementSingleSelectModel.selectedValues.length > 0)) {
 
       nameLabel = unitOfMeasurementSingleSelectModel.selectedValues.first.name;
+    } else {
+      nameLabel = CommonMsg.label(CommonMsg.selectLabel);
     }
     return nameLabel ;
   }

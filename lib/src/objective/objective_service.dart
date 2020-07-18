@@ -10,8 +10,6 @@ import 'package:auge_shared/protos/generated/google/protobuf/wrappers.pb.dart' a
 import 'package:auge_shared/protos/generated/objective/objective_measure.pbgrpc.dart' as objective_measure_pbgrpc;
 // import 'package:auge_shared/protos/generated/objective/objective_measure.pbenum.dart' as objective_measure_pbenum;
 
-import 'package:grpc/grpc_web.dart';
-
 enum RestrictOrganization {none, idName}
 
 @Injectable()
@@ -33,10 +31,12 @@ class ObjectiveService {
 
 
   /// Return a list of [Objective]
-  Future<List<Objective>> getObjectives(String organizationId, {String objectiveId, int customObjectiveIndex, bool withArchived = false, List<String> groupIds, List<String> leaderUserIds}) async {
+  Future<List<Objective>> getObjectives({String organizationId, String objectiveId, int customObjectiveIndex, bool withArchived = false, List<String> groupIds, List<String> leaderUserIds}) async {
 
     objective_measure_pbgrpc.ObjectiveGetRequest objectiveGetRequest = objective_measure_pbgrpc.ObjectiveGetRequest();
-    objectiveGetRequest.organizationId = organizationId;
+  //  objectiveGetRequest.organizationId = organizationId;
+
+    if (organizationId != null)  objectiveGetRequest.organizationId = organizationId;
     if (objectiveId != null)  objectiveGetRequest.id = objectiveId;
 
     if (customObjectiveIndex != null) {
@@ -58,8 +58,8 @@ class ObjectiveService {
     return o;
   }
 
-  Future<List<Objective>> getObjectivesWithMeasure(String organizationId, {String objectiveId, bool withArchived = false, List<String> groupIds, List<String> leaderUserIds}) async {
-    return getObjectives(organizationId,
+  Future<List<Objective>> getObjectivesWithMeasure( {String organizationId, String objectiveId, bool withArchived = false, List<String> groupIds, List<String> leaderUserIds}) async {
+    return getObjectives(organizationId: organizationId,
         objectiveId: objectiveId,
         customObjectiveIndex: objective_measure_pbgrpc.CustomObjective.objectiveWithMeasure.value,
         withArchived: withArchived,
@@ -68,7 +68,7 @@ class ObjectiveService {
   }
 
   Future<List<Objective>> getObjectivesWithMeasureAndTree(String organizationId, {String objectiveId, bool withArchived = false, List<String> groupIds, List<String> leaderUserIds}) async {
-    return getObjectives(organizationId,
+    return getObjectives(organizationId: organizationId,
         objectiveId: objectiveId,
         customObjectiveIndex: objective_measure_pbgrpc.CustomObjective.objectiveWithMeasureAndTree.value,
         withArchived: withArchived,
@@ -77,7 +77,7 @@ class ObjectiveService {
   }
 
   Future<List<Objective>> getObjectivesOnlyWithMeasure(String organizationId, {String objectiveId, bool withArchived = false, List<String> groupIds, List<String> leaderUserIds}) async {
-    return getObjectives(organizationId,
+    return getObjectives(organizationId: organizationId,
         objectiveId: objectiveId,
         customObjectiveIndex: objective_measure_pbgrpc.CustomObjective.objectiveOnlyWithMeasure.value,
         withArchived: withArchived,
@@ -86,7 +86,7 @@ class ObjectiveService {
   }
 
   Future<List<Objective>> getObjectivesOnlySpecification(String organizationId, {String objectiveId, bool withArchived = false, List<String> groupIds, List<String> leaderUserIds}) async {
-    return getObjectives(organizationId,
+    return getObjectives(organizationId: organizationId,
         objectiveId: objectiveId,
         customObjectiveIndex: objective_measure_pbgrpc.CustomObjective.objectiveOnlySpecification.value,
         withArchived: withArchived,
@@ -96,33 +96,12 @@ class ObjectiveService {
 
   /// Return an [Objective] by Id
   Future<Objective> getObjective(String id) async {
-    try {
+     return (await getObjectives(objectiveId: id)).first;
+  }
 
-      // Objective objective = await _augeApiService.objectiveAugeApi.getObjectiveById(id, withMeasures: withMeasures, withProfile: withProfile, withHistory: withHistory);
-
-      objective_measure_pbgrpc.ObjectiveGetRequest objectiveGetRequest = objective_measure_pbgrpc.ObjectiveGetRequest();
-      objectiveGetRequest.id = id;
-      
-      objective_measure_pbgrpc.Objective objective = (await _objectiveServiceClient.getObjectives(objectiveGetRequest)).objectives.first;
-
-      return ObjectiveHelper.readFromProtoBuf(objective, {});
-
-     // currentDateTime ??= await getDateTime();
-
-      // return objective;
-
-    } on GrpcError catch (e) {
-      /*TODO melhorar tratamento, se necessário
-      if (e.status == 204 && e.errors.firstWhere((ed) => ed.reason == RpcErrorDetailMessage.objectiveDataNotFoundReason, orElse: null ) != null)
-        return null;
-      else {
-        rethrow;
-      }
-
-       */
-      print(e);
-      rethrow;
-    }
+  /// Return an [Objective] by Id
+  Future<Objective> getObjectiveOnlySpecification(String id) async {
+    return (await getObjectives(objectiveId: id, customObjectiveIndex: objective_measure_pbgrpc.CustomObjective.objectiveOnlySpecification.value)).first;
   }
 
   /// Save (create or update) an [Objective]

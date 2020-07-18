@@ -99,10 +99,16 @@
                                         </material-slider>
                                     </div>
                                 </div>
-                                <material-expansionpanel *ngIf="iColumnWorkItem.checkItems.length > 0" name="{{checkItemsLabel}}" [(expanded)]="checkItensExpandedControl[iColumnWorkItem.id]"  [showSaveCancel]="false" class="no-border">
+                                <material-expansionpanel *ngIf="iColumnWorkItem.checkItems.length > 0" name="{{checkItemsLabel}}" [(expanded)]="checkItemsExpandedControl[iColumnWorkItem.id]"
+                                                         [showSaveCancel]="true"
+                                                         [cancelText]="cancelButtonLabel"
+                                                         [saveText]="saveButtonLabel"
+                                                         class="no-border"
+                                                         (save)="saveWorkItem(iColumnWorkItem, $event)"
+                                                         (cancel)="cancelWorkItem(iColumnWorkItem, $event)">
                                     <div>
                                         <div *ngFor="let iCheckItem of iColumnWorkItem.checkItems">
-                                            <material-checkbox [disabled]="whileUpdatingDisabled || iColumnWorkItem.archived" [(ngModel)]="iCheckItem.finished" [label]="iCheckItem.name" (click)="updateWorkItem(iColumnWorkItem)"></material-checkbox>
+                                            <material-checkbox [disabled]="whileUpdatingDisabled || iColumnWorkItem.archived" [(ngModel)]="iCheckItem.finished" [label]="iCheckItem.name"></material-checkbox>
                                         </div>
                                     </div>
                                 </material-expansionpanel>
