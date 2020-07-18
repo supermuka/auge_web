@@ -95,7 +95,7 @@
                                         <material-slider [disabled]="whileUpdatingDisabled || iColumnWorkItem.archived" [(value)]="iColumnWorkItem.actualValue"
                                                          [min]="0"
                                                          [max]="100"
-                                                         materialTooltip="{{actualValueLabel}}" (click)="goToValues(iColumnWorkItem)">
+                                                         materialTooltip="{{actualValueLabel}}" (click)="selectWorkItem(iColumnWorkItem);goToValues()">
                                         </material-slider>
                                     </div>
                                 </div>

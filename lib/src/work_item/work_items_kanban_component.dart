@@ -306,12 +306,12 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
     }
   }
 
-  void goToValues([WorkItem workItem, num value]) {
-    print('goToValues ${value}');
-    if (workItem == null) workItem = selectedWorkItem;
-    if (!hasPlannedOrActual(workItem)) return;
+  void goToValues() {
+
+    //if (workItem == null) workItem = selectedWorkItem;
+    if (!hasPlannedOrActual(selectedWorkItem)) return;
     _router.navigateByUrl(AppRoutes.workItemKanbanValuesRoute.toUrl(parameters: {
-      AppRoutesParam.workIdParameter: work.id, AppRoutesParam.workItemIdParameter: workItem.id }, queryParameters: {AppRoutesQueryParam.workItemActualValueQueryParameter: value != null ? value.toString() : null} ) /*, NavigationParams(replace:  true) */);
+      AppRoutesParam.workIdParameter: work.id, AppRoutesParam.workItemIdParameter: selectedWorkItem.id }, queryParameters: {AppRoutesQueryParam.workItemActualValueQueryParameter: selectedWorkItem.actualValue.toString()} ) /*, NavigationParams(replace:  true) */);
   }
 
   void goToStages() {
