@@ -56,7 +56,6 @@ class WorkItemService {
   /// Save (create or update) a [WorkItem]
   Future<String> saveWorkItem(WorkItem workItem) async {
 
-    print('DEBUG SAVEWORKITEM ${workItem.work.id}');
     work_work_item_pbgrpc.WorkItemRequest workItemRequest = work_work_item_pbgrpc.WorkItemRequest()
       ..workItem = WorkItemHelper.writeToProtoBuf(workItem)
       //..workItem.work = WorkHelper.writeToProtoBuf(work)

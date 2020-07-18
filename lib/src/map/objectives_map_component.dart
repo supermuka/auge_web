@@ -84,16 +84,9 @@ class ObjectivesMapComponent with CanReuse /*  COMENTADO POIS SE USAR, O TOOLTIP
   static final String startDateLabel =  ObjectiveDomainMsg.fieldLabel(Objective.startDateField);
   static final String endDateLabel =  ObjectiveDomainMsg.fieldLabel(Objective.endDateField);
 
+  static final String objectivesLabel =  ObjectiveMsg.label(ObjectiveMsg.objectivesLabel);
+
   // Just workaround  to force paper tooltip close.
- // @ViewChild('tooltipRef')
- // ClickableTooltipTargetDirective aTooltipRef;
-
-  @ViewChild('tooltipRef')
-  ClickableTooltipTargetDirective onlyFocus;
-
- @ViewChild('xx')
- MaterialPaperTooltipComponent mtc;
-
   @ViewChildren(ClickableTooltipTargetDirective)
   List<ClickableTooltipTargetDirective> children;
 
@@ -157,13 +150,14 @@ class ObjectivesMapComponent with CanReuse /*  COMENTADO POIS SE USAR, O TOOLTIP
 
 */
 
-    // Workaround need to a time to close tool tip.
+    // Workaround need to a time to close tool tip. The problem occurs when is used CanReuse
     Timer.run(() {
       _router.navigateByUrl(AppRoutes.objectivesRoute.toUrl(queryParameters: {
         AppRoutesQueryParam.objectiveIdQueryParameter: objective.id,
         AppRoutesQueryParam.search: 'true'
       }));
     });
+
   }
 
   String colorFromUuid(String id) {

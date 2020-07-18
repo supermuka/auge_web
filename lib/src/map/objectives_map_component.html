@@ -18,7 +18,7 @@
                        <span class="item-group avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel1?.group?.id)">
                           <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjectiveMapLevel1?.group?.name)">{{firstLetter(iObjectiveMapLevel1?.group?.name)}}</span>
                        </span>
-                       <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel1, $event)">
+                       <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel1, $event)" [materialTooltip]="objectivesLabel">
                           <material-icon class="right-top" icon="launch" size="medium"></material-icon>
                        </material-button>
                        <div class="item-collapse-expand thin">
@@ -53,7 +53,7 @@
                                         <span class="item-group avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel2?.group?.id)">
                                   <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjectiveMapLevel2?.group?.name)">{{firstLetter(iObjectiveMapLevel2?.group?.name)}}</span>
                                </span>
-                                <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel2, $event)">
+                                <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel2, $event)" [materialTooltip]="objectivesLabel">
                                     <material-icon class="right-top" icon="launch" size="medium"></material-icon>
                                 </material-button>
                                 <div class="item-collapse-expand thin">
@@ -88,7 +88,7 @@
                                         <span class="item-group avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel3?.group?.id)">
                                           <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjectiveMapLevel3?.group?.name)">{{firstLetter(iObjectiveMapLevel3?.group?.name)}}</span>
                                        </span>
-                                        <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel3, $event)">
+                                        <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel3, $event)" [materialTooltip]="objectivesLabel">
                                             <material-icon class="right-top" icon="launch" size="medium"></material-icon>
                                         </material-button>
                                         <div class="item-collapse-expand thin">
@@ -123,7 +123,7 @@
                                                         <span class="item-group avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel4?.group?.id)">
                                                   <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjectiveMapLevel4?.group?.name)">{{firstLetter(iObjectiveMapLevel4?.group?.name)}}</span>
                                                </span>
-                                                <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel4, $event)">
+                                                <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel4, $event)" [materialTooltip]="objectivesLabel">
                                                     <material-icon class="right-top" icon="launch" size="medium"></material-icon>
                                                 </material-button>
                                                 <div class="item-collapse-expand thin">
@@ -158,7 +158,7 @@
                                                           <span class="item-group avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel5?.group?.id)">
                                                           <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjectiveMapLevel5?.group?.name)">{{firstLetter(iObjectiveMapLevel5?.group?.name)}}</span>
                                                        </span>
-                                                        <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel5, $event)">
+                                                        <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel5, $event)" [materialTooltip]="objectivesLabel">
                                                             <material-icon class="right-top" icon="launch" size="medium"></material-icon>
                                                         </material-button>
                                                         <div class="item-collapse-expand thin">
@@ -193,7 +193,7 @@
                                                                         <span class="item-group avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel6?.group?.id)">
                                                                   <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjectiveMapLevel6?.group?.name)">{{firstLetter(iObjectiveMapLevel6?.group?.name)}}</span>
                                                                </span>
-                                                                <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel6, $event)">
+                                                                <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel6, $event)" [materialTooltip]="objectivesLabel">
                                                                     <material-icon class="right-top" icon="launch" size="medium"></material-icon>
                                                                 </material-button>
                                                                 <div class="item-collapse-expand thin">
@@ -228,7 +228,7 @@
                                                                                 <span class="item-group avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel7?.group?.id)">
                                                                           <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjectiveMapLevel7?.group?.name)">{{firstLetter(iObjectiveMapLevel7?.group?.name)}}</span>
                                                                        </span>
-                                                                        <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel7, $event)">
+                                                                        <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel7, $event)" [materialTooltip]="objectivesLabel">
                                                                             <material-icon class="right-top" icon="launch" size="medium"></material-icon>
                                                                         </material-button>
                                                                         <div class="item-collapse-expand thin">
@@ -263,7 +263,7 @@
                                                                                         <span class="item-group avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel8?.group?.id)">
                                                                                   <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjectiveMapLevel8?.group?.name)">{{firstLetter(iObjectiveMapLevel8?.group?.name)}}</span>
                                                                                </span>
-                                                                                <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel8, $event)">
+                                                                                <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel8, $event)" [materialTooltip]="objectivesLabel">
                                                                                     <material-icon class="right-top" icon="launch" size="medium"></material-icon>
                                                                                 </material-button>
                                                                                 <div class="item-collapse-expand thin">
@@ -298,7 +298,7 @@
                                                                                                 <span class="item-group avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel9?.group?.id)">
                                                                                           <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjectiveMapLevel9?.group?.name)">{{firstLetter(iObjectiveMapLevel9?.group?.name)}}</span>
                                                                                        </span>
-                                                                                        <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel9, $event)">
+                                                                                        <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel9, $event)" [materialTooltip]="objectivesLabel">
                                                                                             <material-icon class="right-top" icon="launch" size="medium"></material-icon>
                                                                                         </material-button>
                                                                                         <div class="item-collapse-expand thin">
@@ -333,7 +333,7 @@
                                                                                                         <span class="item-group avatar avatar-border" [style.background-color]="colorFromUuid(iObjectiveMapLevel10?.group?.id)">
                                                                                                   <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjectiveMapLevel10?.group?.name)">{{firstLetter(iObjectiveMapLevel10?.group?.name)}}</span>
                                                                                                </span>
-                                                                                                <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel10, $event)">
+                                                                                                <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjectiveMapLevel10, $event)" [materialTooltip]="objectivesLabel">
                                                                                                     <material-icon class="right-top" icon="launch" size="medium"></material-icon>
                                                                                                 </material-button>
                                                                                                 <div class="item-collapse-expand thin">

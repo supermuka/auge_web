@@ -116,6 +116,8 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
   static final String checkItemsLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.checkItemsField);
 
   static final String headerTitle = WorkItemMsg.label(WorkItemMsg.workKanbanLabel);
+  static final String workStagesLabel = StageMsg.label(StageMsg.workStagesLabel);
+  static final String addWorkItemLabel =  WorkItemMsg.label(WorkItemMsg.addWorkItemLabel);
 
   final List<RouteDefinition> routes = [
     RouteDefinition(

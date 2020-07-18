@@ -1,6 +1,7 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
+import 'dart:async';
 import 'dart:html';
 
 import 'package:angular/angular.dart';
@@ -138,6 +139,8 @@ class WorksComponent with CanReuse implements OnActivate /*, OnDestroy */ {
 
   static final String headerTitle = WorkMsg.label( WorkMsg.worksLabel);
 
+  static final String workKanbanLabel = WorkItemMsg.label(WorkItemMsg.workKanbanLabel);
+
   final worksSortedByOptions = [nameLabel, groupLabel, leaderLabel];
 
 
@@ -262,7 +265,12 @@ class WorksComponent with CanReuse implements OnActivate /*, OnDestroy */ {
   }
 
   goToWorkKanban(Work work) {
-    _router.navigate(AppRoutes.workItemsKanbanRoute.toUrl(parameters: { AppRoutesParam.workIdParameter: work.id }));
+
+    // Workaround need to a time to close tool tip.
+    Timer.run(() {
+      _router.navigate(AppRoutes.workItemsKanbanRoute.toUrl(parameters: { AppRoutesParam.workIdParameter: work.id }));
+    });
+
   }
 
   void stopPropagation(MouseEvent me) {

@@ -40,7 +40,7 @@
                     <span class="item-group avatar avatar-border" [style.background-color]="colorFromUuid(iObjective?.group?.id)">
                         <span class="text-group-letter" [materialTooltip]="groupLabel + ' ' + groupName(iObjective?.group?.name)">{{firstLetter(iObjective?.group?.name)}}</span>
                     </span>
-                    <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjective)">
+                    <material-button class="item-button right-top" dense icon (trigger)="goToObjective(iObjective)" [materialTooltip]="objectivesLabel">
                         <material-icon class="right-top" icon="launch" size="medium"></material-icon>
                     </material-button>
                 </div>

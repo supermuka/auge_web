@@ -38,7 +38,7 @@
                         <div action>
                             <material-menu [menu]="menuModel" (click)="selectWork(iWork)">
                             </material-menu>
-                            <material-button icon (trigger)="goToWorkKanban(iWork)">
+                            <material-button icon (trigger)="goToWorkKanban(iWork)" [materialTooltip]="workKanbanLabel">
                                 <material-icon icon="launch"></material-icon>
                             </material-button>
                         </div>

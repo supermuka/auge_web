@@ -166,12 +166,10 @@ class FilterComponent /* implements  implements AfterChanges */ {
   }
 
   void apply() {
-    print('DEBUG ${materialDropdownSelectComponent.toString()}');
     materialDropdownSelectComponent.close();
   }
 
   void close() {
-    print('DEBUG ${materialDropdownSelectComponent.toString()}');
     materialDropdownSelectComponent.close();
   }
 

@@ -7,6 +7,9 @@ import 'package:auge_web/route/app_routes.dart';
 
 import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
+import 'package:angular_components/material_tooltip/material_tooltip.dart';
+
+import 'package:auge_shared/message/messages.dart';
 
 import 'history_timeline_service.dart';
 
@@ -20,12 +23,15 @@ import 'history_timeline_service.dart';
     routerDirectives,
     MaterialButtonComponent,
     MaterialIconComponent,
+    MaterialTooltipDirective,
   ],
 )
 class HistoryComponent extends CanReuse  {
 
   final HistoryTimelineService _historyTimelineService;
   final Router _router;
+
+  static final String timelineLabel = TimelineMsg.label(TimelineMsg.timelineLabel);
 
   HistoryComponent(this._historyTimelineService, this._router);
 

@@ -1,6 +1,8 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
+import 'dart:async';
+
 import 'package:auge_web/src/app_layout/app_layout_service.dart';
 
 import 'package:angular/angular.dart';
@@ -93,6 +95,7 @@ class WorkItemsComponent with CanReuse implements OnActivate /*, OnDestroy */ {
 
   static final String headerTitle = WorkItemMsg.label(
       WorkItemMsg.workItemsLabel);
+  static final String workKanbanLabel = WorkItemMsg.label(WorkItemMsg.workKanbanLabel);
 
   final List<RouteDefinition> routes = [
     RouteDefinition(
@@ -202,11 +205,14 @@ class WorkItemsComponent with CanReuse implements OnActivate /*, OnDestroy */ {
   }
 
   void goToKanban(WorkItem workItem) {
-    _router.navigateByUrl(AppRoutes.workItemsKanbanRoute.toUrl(parameters: {
-      AppRoutesParam.workIdParameter: workItem.work.id},
-        queryParameters: {
-          AppRoutesQueryParam.workItemIdQueryParameter: workItem.id
-        }));
+    // Workaround need to a time to close tool tip. The problem occurs when is used CanReuse
+    Timer.run(() {
+      _router.navigateByUrl(AppRoutes.workItemsKanbanRoute.toUrl(parameters: {
+        AppRoutesParam.workIdParameter: workItem.work.id},
+          queryParameters: {
+            AppRoutesQueryParam.workItemIdQueryParameter: workItem.id
+          }));
+    });
   }
 
   List<WorkItem> get workItems {

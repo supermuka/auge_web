@@ -9,6 +9,7 @@ import 'package:angular_components/model/selection/selection_model.dart';
 import 'package:angular_components/model/selection/selection_options.dart';
 import 'package:angular_components/material_button/material_button.dart';
 import 'package:angular_components/material_icon/material_icon.dart';
+import 'package:angular_components/material_tooltip/material_tooltip.dart';
 
 import 'package:auge_shared/message/messages.dart';
 
@@ -22,6 +23,7 @@ import 'search_filter_service.dart';
   directives: const [
     coreDirectives,
     routerDirectives,
+    MaterialTooltipDirective,
     MaterialButtonComponent,
     MaterialIconComponent,
     MaterialAutoSuggestInputComponent,
@@ -35,8 +37,9 @@ class SearchFilterComponent with CanReuse {
   SelectionOptions searchOptions = SelectionOptions.fromList([]);
   SelectionModel searchSingleSelectModel = SelectionModel.single();
 
-  String searchLeadingGlyph = 'search';
-  String searchLabel = '${CommonMsg.label(CommonMsg.searchLabel)}...';
+  final String searchLeadingGlyph = 'search';
+  final String searchLabel = '${CommonMsg.label(CommonMsg.searchLabel)}...';
+  final String filterLabel = CommonMsg.label(CommonMsg.filterLabel);
 
   SearchFilterComponent(this._searchFilterService, this._router);
 

@@ -10,7 +10,7 @@
                                 [selectionOptions]="searchOptions">
    </material-auto-suggest-input>
    <div *ngIf="enableFilter()">
-      <material-button icon (trigger)="goToFilter()">
+      <material-button icon (trigger)="goToFilter()" [materialTooltip]="filterLabel">
          <div class="fixed-width"></div>
          <material-icon icon="filter_list"></material-icon>
          <div class="fixed-width">

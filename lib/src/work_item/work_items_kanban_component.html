@@ -38,7 +38,7 @@
     </div>
     <!-- /div -->
     <div class="w3-rest w3-right">
-        <material-button icon (trigger)="goToStages()">
+        <material-button icon (trigger)="goToStages()" [materialTooltip]="workStagesLabel">
             <material-icon icon="view_week"></material-icon>
         </material-button>
     </div>
@@ -49,7 +49,7 @@
         <div (drop)="drop($event, kanbanColumn)" (dragover)="allowDrop($event)" class="items-column">
             <div class="header-custom" [style.background-color]="'hsl(' + stateHslColor(kanbanColumn.workStage.stateIndex) + ')'">
                 <span><strong>{{kanbanColumn.workStage.name}}</strong></span>
-                <material-button class="w3-right" icon (trigger)="selectWorkItem(null);goToDetail(kanbanColumn.workStage.id)">
+                <material-button class="w3-right" icon (trigger)="selectWorkItem(null);goToDetail(kanbanColumn.workStage.id)" [materialTooltip]="addWorkItemLabel">
                     <material-icon baseline icon="add"></material-icon>
                 </material-button>
             </div>

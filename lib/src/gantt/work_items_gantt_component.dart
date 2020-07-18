@@ -1,4 +1,6 @@
 
+import 'dart:async';
+
 import 'package:intl/intl.dart';
 
 import 'package:angular/angular.dart';
@@ -75,6 +77,8 @@ class WorkItemsGanttComponent with CanReuse implements OnActivate {
   static final String notInformedMsg = MapMsg.notInformedMsg();
 
   static final String headerTitle = WorkItemMsg.label(WorkItemMsg.workItemsGanttLabel);
+  static final String workKanbanLabel = WorkItemMsg.label(WorkItemMsg.workKanbanLabel);
+
   static final String nameLabel = WorkItemDomainMsg.fieldLabel(WorkItem.nameField);
   static final String assignedToLabel = WorkItemDomainMsg.fieldLabel(WorkItem.assignedToField);
   static final String workItemLabel =  WorkItemMsg.label(WorkItemMsg.workItemsLabel);
@@ -91,6 +95,7 @@ class WorkItemsGanttComponent with CanReuse implements OnActivate {
    // _appLayoutService.systemModuleIndex = SystemModule.works.index;
 
     _searchFilterService.enableSearch = true;
+    _searchFilterService.searchTerm = '';
     _searchFilterService.enableFilter = true;
 
     _searchFilterService.filterRouteUrl = AppRoutes.workItemsGanttFilterRoute.toUrl();
@@ -120,9 +125,10 @@ class WorkItemsGanttComponent with CanReuse implements OnActivate {
   }
 
   void goToWorkItemsKanban(WorkItem workItem) {
-    print('DEBUG ${workItem.work.id }');
-
+    // Workaround need to a time to close tool tip. The problem occurs when is used CanReuse
+    Timer.run(() {
     _router.navigateByUrl(AppRoutes.workItemsKanbanRoute.toUrl(parameters: { AppRoutesParam.workIdParameter: workItem.work.id }, queryParameters: { AppRoutesQueryParam.workItemIdQueryParameter: workItem.id }));
+    });
   }
 
   getYearsInterval() {

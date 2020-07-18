@@ -35,7 +35,7 @@
                            <span class="avatar-icon" [style.background-image]="'url(' +  userUrlImage(member)  + ')'" [materialTooltip]="member.name"></span>
                         </span>
                     </span>
-                    <material-button class="item-button right-top" dense icon (trigger)="goToWorkItemsKanban(iWorkItem)">
+                    <material-button class="item-button right-top" dense icon (trigger)="goToWorkItemsKanban(iWorkItem)" [materialTooltip]="workKanbanLabel">
                         <material-icon class="right-top" icon="launch" size="medium"></material-icon>
                     </material-button>
                 </div>

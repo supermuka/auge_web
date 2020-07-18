@@ -1,3 +1,6 @@
+
+import 'dart:async';
+
 import 'package:intl/intl.dart';
 
 import 'package:angular/angular.dart';
@@ -73,6 +76,8 @@ class ObjectivesGanttComponent with CanReuse implements OnActivate {
   static final String notInformedMsg = MapMsg.notInformedMsg();
 
   static final String headerTitle = ObjectiveMsg.label(ObjectiveMsg.objectivesGanttLabel);
+  static final String objectivesLabel = ObjectiveMsg.label(ObjectiveMsg.objectivesLabel);
+
   static final String leaderLabel = ObjectiveDomainMsg.fieldLabel(Objective.leaderField); // FieldMsg.label('${Objective.className}.${Objective.leaderField}');
   static final String groupLabel = ObjectiveDomainMsg.fieldLabel(Objective.groupField);
   static final String objectiveLabel =  ObjectiveMsg.label(ObjectiveMsg.objectiveLabel); //FieldMsg.label('${Objective.className}.${Objective.groupField}');
@@ -91,6 +96,7 @@ class ObjectivesGanttComponent with CanReuse implements OnActivate {
 
     // Enabled search and filter
     _searchFilterService.enableSearch = true;
+    _searchFilterService.searchTerm = '';
     _searchFilterService.enableFilter = true;
     _searchFilterService.filterRouteUrl = AppRoutes.objectivesGanttFilterRoute.toUrl();
 
@@ -119,10 +125,15 @@ class ObjectivesGanttComponent with CanReuse implements OnActivate {
   }
 
   void goToObjective(Objective objective) async {
-    _router.navigateByUrl(AppRoutes.objectivesRoute.toUrl(queryParameters: {
-      AppRoutesQueryParam.objectiveIdQueryParameter: objective.id,
-      AppRoutesQueryParam.search: 'true'
-    }));
+
+    // Workaround need to a time to close tool tip. The problem occurs when is used CanReuse
+    Timer.run(() {
+      _router.navigateByUrl(AppRoutes.objectivesRoute.toUrl(queryParameters: {
+        AppRoutesQueryParam.objectiveIdQueryParameter: objective.id,
+        AppRoutesQueryParam.search: 'true'
+      }));
+    });
+
   //  _router.navigateByUrl(AppRoutes.objectivesRoute.toUrl(queryParameters: { AppRoutesParam.objectiveIdParameter: objective.id }) /*, reload: true, replace: true */);
   }
 

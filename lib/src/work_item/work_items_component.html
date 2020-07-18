@@ -20,7 +20,7 @@
                             </div>
                         </div>
                         <div action>
-                            <material-button icon (trigger)="goToKanban(iWorkItem)">
+                            <material-button icon (trigger)="goToKanban(iWorkItem)" [materialTooltip]="workKanbanLabel">
                                 <material-icon icon="launch"></material-icon>
                             </material-button>
                         </div>
@@ -32,16 +32,16 @@
                             <div *ngIf="hasPlannedOrActual(iWorkItem)">
                                 <div class="w3-center">
                                     <span class="w3-left">
-                                        {{iWorkItem.plannedValue}}
+                                        {{iWorkItem.plannedValue ?? 0}}
                                     </span>
                                     <span class="w3-center">
-                                        {{iWorkItem.actualValue}}
+                                        {{iWorkItem.actualValue ?? 0}}
                                     </span>
                                     <span class="w3-right">
-                                        {{remainingValue(iWorkItem.plannedValue, iWorkItem.actualValue)}}
+                                        {{remainingValue(iWorkItem.plannedValue, iWorkItem.actualValue) ?? 0}}
                                     </span>
                                 </div>
-                                <div>
+                                <div class="w3-row-padding">
                                     <material-slider [disabled]="true" [(value)]="iWorkItem.actualValue"
                                                      [min]="0"
                                                      [max]="100"
