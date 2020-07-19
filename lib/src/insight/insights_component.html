@@ -83,7 +83,7 @@
                 </acx-scorecard>
             </acx-scoreboard>
         </div>
-        <div class="center">
+        <div *ngIf="workItemsCount > 0" class="center">
             <auge-work-summary [workItemsCount]="workItemsCount"
                                [workItemsOverDueCount]="workItemsOverDueCount"
                                [stateWorkItemsCount]="stateWorkItemsCount" @deferred></auge-work-summary>
@@ -130,7 +130,7 @@
                 <material-icon baseline icon="launch"></material-icon>
             </material-button>
         </h4>
-        <div class="center" >
+        <div *ngIf="myWorkItemsCount > 0" class="center" >
             <auge-work-summary
                                [workItemsCount]="myWorkItemsCount"
                                [workItemsOverDueCount]="myWorkItemsOverDueCount"
