@@ -197,8 +197,8 @@ class WorkStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
           workStage.index = lastIndexIntoStage + 1;
         }
 
-        String stageId = await _workService.saveStage(
-            work, workStage);
+        String stageId = await _workService.saveStage(/*
+            work, */ workStage);
         // Returns a new instance to get the generated data on the server side as well as having the last update.
         WorkStage newWorkStage = await _workService.getWorkStage(stageId);
         //  }
@@ -222,7 +222,7 @@ class WorkStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
 
   void selectWorkStage(WorkStage workStage) async {
     if (workStage == null) {
-      workStages.insert(0, WorkStage()..stateIndex = State.notStarted.index);
+      workStages.insert(0, WorkStage()..stateIndex = State.notStarted.index..work = Work()..work.id = work.id);
       selectedWorkStage = workStages.first;
   //    selectedStage.index = stages.length;
    //   selectedMeasureProgress.date = DateTime.now();
@@ -276,10 +276,10 @@ class WorkStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
    //   stage.state = stages[i-1].state;
 
       ++workStages[i-1].index;
-      await _workService.saveStage(work, workStages[i-1]);
+      await _workService.saveStage(/* work, */workStages[i-1]);
 
       --workStages[i].index;
-      await _workService.saveStage(work, workStages[i]);
+      await _workService.saveStage(/* work, */ workStages[i]);
 
       workStages = await _workService.getWorkStages(work.id);
       //stages.removeAt(i);
@@ -295,10 +295,10 @@ class WorkStagesComponent implements /* OnInit, */ OnActivate, OnDeactivate {
 
       // Receive state equals previous stage, because can be different that the actual
       --workStages[i+1].index;
-      await _workService.saveStage(work, workStages[i+1]);
+      await _workService.saveStage(/* work, */ workStages[i+1]);
 
       ++workStages[i].index;
-      await _workService.saveStage(work, workStages[i]);
+      await _workService.saveStage(/* work, */ workStages[i]);
 
       workStages = await _workService.getWorkStages(work.id);
       //stages.removeAt(i);
