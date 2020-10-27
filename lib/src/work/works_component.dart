@@ -249,8 +249,8 @@ class WorksComponent with CanReuse implements OnActivate /*, OnDestroy */ {
 //    _appLayoutService.enabledSearch = false;
   }
 */
-  void goToDetail() {
-    if (selectedWork == null) {
+  void goToDetail([bool withSelectedWork = true]) {
+    if (!withSelectedWork || selectedWork == null) {
       _router.navigate(AppRoutes.workAddRoute.toUrl(), NavigationParams(replace:  true));
 
     } else {

@@ -254,6 +254,13 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
 
   /// Call delete
   void delete() async {
+
+    // Verify if there are data related that needs to be deleted before.
+    if (selectedObjective.measures.isNotEmpty) {
+      _appLayoutService.error = ObjectiveMsg.measuresNeedToBeDeletedMsg();
+      return;
+    }
+
     try {
 
       await _objectiveService.deleteObjective(selectedObjective);
@@ -279,8 +286,8 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
     return common_service.firstLetter(name);
   }
 
-  void scrollInit(bool event, html.HtmlElement element) {
-    if (event &&  initialObjectiveId != null) {
+  void scrollInit(html.HtmlElement element) {
+    if (initialObjectiveId != null) {
 
       if (element != null) {
 
@@ -297,8 +304,10 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
     }
   }
 
-  setExpandedObjectiveId(String objectiveId, bool expanded) {
+  setExpandedObjectiveId(String objectiveId, bool expanded, [html.HtmlElement element]) {
+
     if (expanded) {
+      if (initialObjectiveId != null && element != null) scrollInit(element);
       expandedObjectiveId = objectiveId;
     } else {
       expandedObjectiveId = null;
@@ -309,8 +318,8 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
     return '${label} ${name}';
   }
 
-  void goToDetail() {
-    if (selectedObjective == null) {
+  void goToDetail([bool withSelectedObjective = true]) {
+    if (!withSelectedObjective || selectedObjective == null) {
       _router.navigate(AppRoutes.objectiveAddRoute.toUrl(), NavigationParams(replace:  true));
 
     } else {

@@ -137,8 +137,8 @@ class UsersComponent with CanReuse implements OnActivate {
     return common_service.userUrlImage(user?.userProfile?.image);
   }
 
-  void goToDetail() {
-    if (selectedUser == null) {
+  void goToDetail([bool withSelectedUser = true]) {
+    if (!withSelectedUser || selectedUser == null) {
       _router.navigate(AppRoutes.userAddRoute.toUrl());
     } else {
       _router.navigate(AppRoutes.userEditRoute.toUrl(parameters: { AppRoutesParam.userIdParameter: selectedUser.id }));

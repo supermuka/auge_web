@@ -285,6 +285,7 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
 
     this.selectedWorkItem = workItem;
 
+    disEnableItemMenuActual();
   }
 
   String dueDateColor(WorkItem workItem) {
@@ -297,8 +298,8 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
 
 
 
-  void goToDetail([String stageId]) {
-    if (selectedWorkItem == null) {
+  void goToDetail([String stageId, bool withselectedWorkItem = true]) {
+    if (!withselectedWorkItem || selectedWorkItem == null) {
       _router.navigate(AppRoutes.workItemKanbanAddRoute.toUrl(parameters: {
         AppRoutesParam.workIdParameter: work.id }), NavigationParams(replace:  true));
 
@@ -308,7 +309,9 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
     }
   }
 
-  void goToValues() {
+  void goToValues([WorkItem workItem]) {
+
+    selectWorkItem(workItem);
 
     //if (workItem == null) workItem = selectedWorkItem;
     if (!hasPlannedOrActual(selectedWorkItem)) return;

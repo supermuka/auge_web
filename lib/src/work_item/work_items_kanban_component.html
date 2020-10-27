@@ -49,7 +49,7 @@
         <div (drop)="drop($event, kanbanColumn)" (dragover)="allowDrop($event)" class="items-column">
             <div class="header-custom" [style.background-color]="'hsl(' + stateHslColor(kanbanColumn.workStage.stateIndex) + ')'">
                 <span><strong>{{kanbanColumn.workStage.name}}</strong></span>
-                <material-button class="w3-right" icon (trigger)="selectWorkItem(null);goToDetail(kanbanColumn.workStage.id)" [materialTooltip]="addWorkItemLabel">
+                <material-button class="w3-right" icon (trigger)="goToDetail(kanbanColumn.workStage.id, false)" [materialTooltip]="addWorkItemLabel">
                     <material-icon baseline icon="add"></material-icon>
                 </material-button>
             </div>
@@ -75,7 +75,7 @@
                                 </div>
                             </div>
                             <div action>
-                                <material-menu [menu]="menuModel" (click)="selectWorkItem(iColumnWorkItem);disEnableItemMenuActual()">
+                                <material-menu [menu]="menuModel" (click)="selectWorkItem(iColumnWorkItem)">
                                 </material-menu>
                             </div>
                             <div>
@@ -95,7 +95,7 @@
                                         <material-slider [disabled]="whileUpdatingDisabled || iColumnWorkItem.archived" [(value)]="iColumnWorkItem.actualValue"
                                                          [min]="0"
                                                          [max]="100"
-                                                         materialTooltip="{{actualValueLabel}}" (click)="selectWorkItem(iColumnWorkItem);goToValues()">
+                                                         materialTooltip="{{actualValueLabel}}" (click)="goToValues(iColumnWorkItem)">
                                         </material-slider>
                                     </div>
                                 </div>

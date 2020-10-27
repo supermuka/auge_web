@@ -1,6 +1,8 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
+import 'dart:html' as html;
+
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
 import 'package:angular_forms/angular_forms.dart';
@@ -169,6 +171,9 @@ class AppLayoutComponent with CanReuse implements OnActivate {
     ),
   ];
 
+  @ViewChild(MaterialTemporaryDrawerComponent)
+  MaterialTemporaryDrawerComponent materialTemporaryDrawerComponent;
+
   // Dropdown Select to User Profile and Logout
   List<OptionGroup<AppLayoutSettingSelectOption>> userProfileLogoutGroupOptions = new List();
   SelectionOptions userProfileLogoutOptions;
@@ -294,7 +299,9 @@ class AppLayoutComponent with CanReuse implements OnActivate {
     return (_authService.authenticatedUser != null);
   }
 
-  void goTo(String url, {bool reload = false}) {
+  void goTo(String url, {bool toggle = false, bool reload = false}) {
+    if (toggle) drawerToggle();
+
     if (url != null) {
       if (reload) {
         _router.navigate(url, NavigationParams(reload: reload));
@@ -325,6 +332,10 @@ class AppLayoutComponent with CanReuse implements OnActivate {
 
   Organization get authorizedOrganization {
     return _authService.authorizedOrganization;
+  }
+
+  void drawerToggle() {
+    materialTemporaryDrawerComponent.toggle();
   }
 }
 

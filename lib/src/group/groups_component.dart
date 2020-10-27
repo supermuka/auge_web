@@ -158,8 +158,8 @@ class GroupsComponent with CanReuse implements OnActivate /*, OnDeactivate, OnDe
     return group.inactive ?  inactiveLabel : activeLabel;
   }
 
-  void goToDetail() {
-    if (selectedGroup == null) {
+  void goToDetail([bool withSelectedGroup = true]) {
+    if (!withSelectedGroup || selectedGroup == null) {
       _router.navigate(AppRoutes.groupAddRoute.toUrl());
 
     } else {

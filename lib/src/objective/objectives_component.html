@@ -9,7 +9,7 @@
                             [hideExpandedHeader]="false"
                             [showSaveCancel]="false"
                             [expanded]="iObjective.id == expandedObjectiveId"
-                            (expandedChange)="scrollInit($event, refMatExp);setExpandedObjectiveId(iObjective.id, $event)">
+                            (expandedChange)="setExpandedObjectiveId(iObjective.id, $event, refMatExp)">
                         <div name class="custom-grid">
                             <span class="c100 p{{iObjective.progress}} small">
                                 <span>{{iObjective.progress}}%</span>
@@ -52,7 +52,7 @@
             </material-expansionpanel-set>
         </div>
     </div>
-    <material-fab class="material-fab-add" raised (trigger)="selectObjective(null);goToDetail()">
+    <material-fab class="material-fab-add" raised (trigger)="goToDetail(false)">
         <material-icon icon="add"></material-icon>
     </material-fab>
 </div>

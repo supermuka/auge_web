@@ -1,47 +1,48 @@
-<material-drawer id="drawer" temporary #drawer="drawer">
+<!-- material-drawer id="drawer" temporary #drawer="drawer"-->
+<material-drawer id="drawer" temporary>
     <material-list elevation="2" class="menu-drawer" *deferredContent>
         <div group class="centralized">
             <h4 class="truncate-ellipsed"><strong>{{authorizedOrganization.name}}</strong></h4>
         </div>
         <div group>
-            <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(insightsRouteUrl)">
+            <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="goTo(insightsRouteUrl, toggle: true)">
                 <material-icon class="icon-margin" icon="home"></material-icon>{{insightsLabel}}
             </material-list-item>
         </div>
         <div group>
-            <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(objectivesRouteUrl)">
+            <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="goTo(objectivesRouteUrl, toggle: true)">
                 <material-icon  class="icon-margin" icon="visibility"></material-icon>{{objectivesLabel}}
             </material-list-item>
-            <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(objectivesMapRouteUrl)">
+            <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="goTo(objectivesMapRouteUrl, toggle: true)">
                 <material-icon  class="icon-margin" icon="map"></material-icon>{{objectivesMapLabel}}
             </material-list-item>
-            <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(objectivesGanttRouteUrl)">
+            <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="goTo(objectivesGanttRouteUrl, toggle: true)">
                 <material-icon  class="icon-margin" icon="schedule"></material-icon>{{objectivesGanttLabel}}
             </material-list-item>
         </div>
         <div group>
-            <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(worksRouteUrl)">
+            <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="goTo(worksRouteUrl, toggle: true)">
                 <material-icon  class="icon-margin" icon="work"></material-icon>{{worksLabel}}
             </material-list-item>
-            <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(workItemsRouteUrl)">
+            <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="goTo(workItemsRouteUrl, toggle: true)">
                 <material-icon  class="icon-margin" icon="list"></material-icon>{{workItemsLabel}}
             </material-list-item>
-            <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(workItemsGanttRouteUrl)">
+            <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="goTo(workItemsGanttRouteUrl, toggle: true)">
                 <material-icon  class="icon-margin" icon="schedule"></material-icon>{{workItemsGanttLabel}}
             </material-list-item>
         </div>
         <div *ngIf="isAdmin || isSuperAdmin" group>
             <div label>{{adminLabel}}</div>
-            <material-list-item *ngIf="isAuthorizedToAccessUsers" [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(usersRouteUrl)">
+            <material-list-item *ngIf="isAuthorizedToAccessUsers" [disabled]="!hasAuthorizedOrganization" (click)="goTo(usersRouteUrl, toggle: true)">
                 <material-icon  class="icon-margin" icon="account_circle"></material-icon>{{usersLabel}}
             </material-list-item>
-            <material-list-item *ngIf="isAuthorizedToAccessGroups" [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(groupsRouteUrl)">
+            <material-list-item *ngIf="isAuthorizedToAccessGroups" [disabled]="!hasAuthorizedOrganization" (click)="goTo(groupsRouteUrl, toggle: true)">
                 <material-icon  class="icon-margin" icon="group"></material-icon>{{groupsLabel}}
             </material-list-item>
         </div>
         <div *ngIf="isSuperAdmin" group>
             <div label>{{superAdminLabel}}</div>
-            <material-list-item *ngIf="isAuthorizedToAccessOrganization" [disabled]="!hasAuthorizedOrganization" (click)="drawer.toggle();goTo(organizationRouteUrl)">
+            <material-list-item *ngIf="isAuthorizedToAccessOrganization" [disabled]="!hasAuthorizedOrganization" (click)="goTo(organizationRouteUrl, toggle: true)">
                 <material-icon  class="icon-margin" icon="account_balance"></material-icon>{{organizationLabel}}
             </material-list-item>
         </div>
@@ -51,7 +52,7 @@
     <header class="material-header">
         <div class="material-header-row">
             <material-button icon
-                             class="material-drawer-button" (trigger)="drawer.toggle()">
+                             class="material-drawer-button" (trigger)="drawerToggle()">
                 <material-icon icon="menu"></material-icon>
             </material-button>
             <span class="material-header-title w3-hide-small">{{headerTitle}}</span>

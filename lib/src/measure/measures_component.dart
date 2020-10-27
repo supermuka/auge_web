@@ -137,15 +137,17 @@ class MeasuresComponent with CanReuse {
     }
   }
 
-  void goToDetail() {
-    if (selectedMeasure == null) {
+  void goToDetail([bool withSelectedMeasure = true]) {
+    if (!withSelectedMeasure || selectedMeasure == null) {
       _router.navigate(AppRoutes.measureAddRoute.toUrl(parameters: { AppRoutesParam.objectiveIdParameter: objective.id }));
     } else {
       _router.navigate(AppRoutes.measureEditRoute.toUrl(parameters: { AppRoutesParam.objectiveIdParameter: objective.id, AppRoutesParam.measureIdParameter: selectedMeasure.id }));
     }
   }
 
-  void goToProgress(bool addCurrentValue) {
+  void goToProgress(bool addCurrentValue, [Measure measure, var event]) {
+
+    if (measure != null) selectMeasure(measure);
 
     _router.navigate(AppRoutes.measureProgressesAddRoute.toUrl(parameters: {
         AppRoutesParam.objectiveIdParameter: objective.id,
@@ -155,6 +157,9 @@ class MeasuresComponent with CanReuse {
 
         if (objective.startDate != null) AppRoutesQueryParam.objectiveStartDateQueryParameter: objective.startDate.toIso8601String(),
         if (objective.endDate != null) AppRoutesQueryParam.objectiveEndDateQueryParameter: objective.endDate.toIso8601String()}));
+
+    event.preventDefault();
+    event.stopPropagation();
 
   }
 
