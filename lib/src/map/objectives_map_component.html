@@ -1,5 +1,13 @@
+<div class="fixed-zoom">
+    <material-button dense icon (trigger)="zoomIn()">
+        <material-icon icon="zoom_in"></material-icon>
+    </material-button>
+    <material-button dense icon (trigger)="zoomOut()">
+        <material-icon icon="zoom_out"></material-icon>
+    </material-button>
+</div>
 <div class="tree-container">
-    <div class="tree">
+    <div class="tree zoom-{{zoomInOut}}">
         <ul *ngIf="objectivesMap.length > 0 ">
             <li *ngFor="let iObjectiveMapLevel1 of objectivesMap">
                 <a  clickableTooltipTarget

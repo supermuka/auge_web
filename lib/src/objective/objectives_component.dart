@@ -256,10 +256,12 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
   void delete() async {
 
     // Verify if there are data related that needs to be deleted before.
+/*
     if (selectedObjective.measures.isNotEmpty) {
       _appLayoutService.error = ObjectiveMsg.measuresNeedToBeDeletedMsg();
       return;
     }
+*/
 
     try {
 

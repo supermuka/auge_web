@@ -1,4 +1,5 @@
 // Original from https://codepen.io/philippkuehn/pen/QbrOaN
+@import 'package:angular_components/css/material/material';
 
 /*
 $border-width: 1px;
@@ -266,6 +267,7 @@ $reverse: false;
   // Include here to put scrollbar at bottom
   height: calc(100vh - 64px);
   overflow: auto;
+
 }
 
 .item-progress { grid-area: progress; align-self: center; }
@@ -283,4 +285,47 @@ $reverse: false;
 .grid-container > span {
   display: inline-block;
   vertical-align: middle;
+}
+
+.zoom- {
+  &10 {
+    zoom: 10%;
+  }
+  &20 {
+    zoom: 20%;
+  }
+  &30 {
+    zoom: 30%;
+  }
+  &40 {
+    zoom: 40%;
+  }
+  &50 {
+    zoom: 50%;
+  }
+  &60 {
+    zoom: 60%;
+  }
+  &70 {
+    zoom: 70%;
+  }
+  &80 {
+    zoom: 80%;
+  }
+  &90 {
+    zoom: 90%;
+  }
+  &100 {
+    zoom: 100%;
+  }
+}
+
+
+.fixed-zoom {
+  position: fixed;
+  top: 72px;
+  right: 0px;
+  margin-right: 8px;
+  z-index: 99;
+  background-color: $mat-gray-100;
 }

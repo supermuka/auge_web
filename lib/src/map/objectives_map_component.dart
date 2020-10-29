@@ -54,6 +54,8 @@ import 'package:angular_components/material_tooltip/module.dart';
 
 class ObjectivesMapComponent with CanReuse /*  COMENTADO POIS SE USAR, O TOOLTIP NÃO DESAPARECE QUANDO SE NAVEGA PARA OUTRA PÁGINA */ implements OnActivate {
 
+  int zoomInOut = 100;
+
   final preferredTooltipPositions = const [RelativePosition.OffsetBottomLeft, RelativePosition.OffsetBottomRight];
 
   final AuthService _authService;
@@ -179,5 +181,13 @@ class ObjectivesMapComponent with CanReuse /*  COMENTADO POIS SE USAR, O TOOLTIP
       objectivesCollapesed.remove(objective);
     else
       objectivesCollapesed.add(objective);
+  }
+
+  void zoomIn() {
+    if (zoomInOut < 100) zoomInOut = zoomInOut + 10;
+  }
+
+  void zoomOut() {
+    if (zoomInOut > 10) zoomInOut = zoomInOut - 10;
   }
 }
