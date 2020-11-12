@@ -97,6 +97,7 @@ class UsersComponent with CanReuse implements OnActivate {
 
     _searchFilterService.enableSearch = true;
     _searchFilterService.enableFilter = false;
+    _searchFilterService.enableExport = false;
 
     try {
       // _users = await _userService.getUsers(_userService.authService.selectedOrganization?.id, withProfile: true);

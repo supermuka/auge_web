@@ -1,1 +1,0 @@
-{"isEntrypoint":false,"deps":["kernel|lib/ast.dart","front_end|lib/src/testing/id.dart"],"parts":[],"conditionalDeps":[],"sdkDeps":[],"hasMain":false}

@@ -23,6 +23,7 @@ import 'package:angular_components/scorecard/scoreboard.dart';
 import 'package:angular_components/material_checkbox/material_checkbox.dart';
 
 import 'package:auge_shared/domain/objective/objective.dart';
+import 'package:auge_shared/domain/objective/measure.dart';
 
 import 'package:auge_shared/message/messages.dart';
 import 'package:auge_shared/message/domain_messages.dart';
@@ -119,10 +120,11 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
 
     // Define messages and labels
   static final String objectiveLabel = ObjectiveMsg.label(ObjectiveMsg.objectiveLabel);
-
+  static final String objectivesLabel = ObjectiveMsg.label(ObjectiveMsg.objectivesLabel);
 
   static final String editButtonLabel = CommonMsg.buttonLabel(CommonMsg.editButtonLabel);
   static final String deleteButtonLabel = CommonMsg.buttonLabel(CommonMsg.deleteButtonLabel);
+  static final String exportButtonLabel = CommonMsg.buttonLabel(CommonMsg.exportButtonLabel);
 
   static final String ultimateObjectiveLabel = ObjectiveMsg.label(ObjectiveMsg.ultimateObjectiveLabel);
 
@@ -132,13 +134,24 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
   static final String groupLabel =  ObjectiveDomainMsg.fieldLabel(Objective.groupField); //FieldMsg.label('${Objective.className}.${Objective.groupField}');
   static final String startDateLabel = ObjectiveDomainMsg.fieldLabel(Objective.startDateField); // FieldMsg.label('${Objective.className}.${Objective.startDateField}');
   static final String endDateLabel =  ObjectiveDomainMsg.fieldLabel(Objective.endDateField); // FieldMsg.label('${Objective.className}.${Objective.endDateField}');
-  static final String headerTitle = ObjectiveMsg.label(ObjectiveMsg.objectivesLabel);
+
   static final String archivedLabel = ObjectiveDomainMsg.fieldLabel(Objective.archivedField); // FieldMsg.label('${Objective.className}.${Objective.archivedField}');
+  static final String headerTitle = ObjectiveMsg.label(ObjectiveMsg.objectivesLabel);
+  static final String progressLabel = ObjectiveMsg.label(ObjectiveMsg.progressLabel);
+
+  static final String measuresLabel = MeasureMsg.label(MeasureMsg.measuresLabel);
+  static final String measureNameLabel = MeasureDomainMsg.fieldLabel(Measure.nameField);
+  static final String measureUnitLabel = MeasureDomainMsg.fieldLabel(Measure.unitOfMeasurementField); // FieldMsg.label('${Measure.className}.${Measure.unitOfMeasurementField}');
+  static final String measureStartValueLabel =  MeasureDomainMsg.fieldLabel(Measure.startValueField); // FieldMsg.label('${Measure.className}.${Measure.startValueField}');
+  static final String measureCurrentValueLabel =  MeasureDomainMsg.fieldLabel(Measure.currentValueField); //FieldMsg.label('${Measure.className}.${Measure.currentValueField}');
+  static final String measureEndValueLabel =  MeasureDomainMsg.fieldLabel(Measure.endValueField); // FieldMsg.label('${Measure.className}.${Measure.endValueField}');
 
   final preferredTooltipPositions = const [RelativePosition.AdjacentLeft, RelativePosition.OffsetBottomLeft, /* RelativePosition.OffsetBottomRight */];
 
   ObjectivesComponent(this._appLayoutService, this._objectiveService, this._searchFilterService, this._router) {
-    menuModel = new MenuModel([new MenuItemGroup([new MenuItem(editButtonLabel, icon: new Icon('edit') , actionWithContext: (_) => goToDetail()), new MenuItem(deleteButtonLabel, icon: new Icon('delete'), actionWithContext: (_) => delete())])], icon: new Icon('menu'));
+    menuModel = MenuModel([MenuItemGroup([
+      MenuItem(editButtonLabel, icon: Icon('edit') , actionWithContext: (_) => goToDetail()),
+      MenuItem(deleteButtonLabel, icon: Icon('delete'), actionWithContext: (_) => delete()),])], icon: Icon('menu'));
   }
 
   @override
@@ -174,6 +187,9 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
     _searchFilterService.filterRouteUrl = AppRoutes.objectivesFilterRoute.toUrl();
 
     _searchFilterService.filteredItems = _objectiveService.objectivesFilterOrder.filteredItems;
+
+    _searchFilterService.enableExport = true;
+    _searchFilterService.listExport = exportToCsv;
 
     try {
 
@@ -345,6 +361,72 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
           ? -1
           : a.endDate.compareTo(b.endDate));
     }
+  }
+
+  List<List<dynamic>> exportToCsv() {
+
+    List<List<dynamic>> exportation;
+
+    // Trick for Excel open CSV in Columns
+    exportation = [['SEP=,']];
+
+    exportation.add([objectivesLabel.toUpperCase(),'','','',measuresLabel.toUpperCase()]);
+    exportation.add([
+      groupLabel,
+      leaderLabel,
+      objectiveLabel,
+      progressLabel,
+      measureNameLabel,
+      measureUnitLabel,
+      measureStartValueLabel,
+      measureCurrentValueLabel,
+      measureEndValueLabel,
+    ]);
+
+    for (int i = 0; i<objectives.length; i++) {
+
+      exportation.add([objectives[i].group?.name,
+                       objectives[i].leader?.name,
+                       objectives[i].name,
+                       objectives[i].progress]);
+
+      for (int im = 0; im<objectives[i].measures.length; im++) {
+
+        if (im > 0) {
+          exportation.add(['','','','']);
+        }
+        exportation.last = exportation.last + [objectives[i].measures[im].name,
+                                             objectives[i].measures[im].unitOfMeasurement.symbol,
+                                             objectives[i].measures[im].startValue ?? '',
+                                             objectives[i].measures[im].currentValue ?? '',
+                                             objectives[i].measures[im].endValue ?? ''];
+      }
+    }
+
+    return exportation;
+/*
+    String csv = const ListToCsvConverter().convert(exportation);
+
+// prepare
+
+    //final bytes = utf8.encode(csv);
+    final bytes = latin1.encode(csv);
+
+    final blob = html.Blob([bytes], "text/csv");
+    final url = html.Url.createObjectUrlFromBlob(blob);
+    final anchor = html.document.createElement('a') as html.AnchorElement
+      ..href = url
+      ..style.display = 'none'
+      ..download = 'auge_objectives.csv';
+    html.document.body.children.add(anchor);
+
+// download
+    anchor.click();
+
+// cleanup
+    html.document.body.children.remove(anchor);
+    html.Url.revokeObjectUrl(url);
+*/
   }
 
 }

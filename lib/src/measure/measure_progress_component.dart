@@ -120,9 +120,6 @@ class MeasureProgressComponent implements OnInit, OnActivate, OnDeactivate  {
 
   int tabIndex = 0;
 
-
-
-
   MeasureProgressComponent(/*this._objectiveService, */ this._measureService, this._location) {
     // initializeDateFormatting(Intl.defaultLocale , null);
   }
@@ -158,17 +155,6 @@ class MeasureProgressComponent implements OnInit, OnActivate, OnDeactivate  {
   @override
   void onActivate(RouterState previous, RouterState current) async {
 
-    modalVisible = true;
-/*oo
-    String objectiveId;
-
-    if (current.parameters.containsKey(AppRoutesParam.objectiveIdParameter)) {
-      objectiveId = current.parameters[AppRoutesParam.objectiveIdParameter];
-    } else {
-      throw Exception('Objective Id not found.');
-    }
-*/
-
     String measureId;
     if (current.parameters.containsKey(AppRoutesParam.measureIdParameter)) {
       measureId = current.parameters[AppRoutesParam.measureIdParameter];
@@ -177,7 +163,7 @@ class MeasureProgressComponent implements OnInit, OnActivate, OnDeactivate  {
     }
 
     if (measureId != null) {
-      measure =  await _measureService.getMeasureOnlySpecification(measureId);
+      measure =  await _measureService.getMeasure(measureId); // .getMeasureOnlySpecification(measureId);
 
       measureProgresses = await _measureService.getMeasureProgresses(measureId);
       // _sortMeasurePregressesOrderByDate(measureProgresses);
@@ -202,8 +188,8 @@ class MeasureProgressComponent implements OnInit, OnActivate, OnDeactivate  {
       objectiveEndDate = null;
     }
 
+    modalVisible = true;
     //buildChart();
-
   }
 
  Future<void> buildChart() async {
@@ -423,10 +409,10 @@ class MeasureProgressComponent implements OnInit, OnActivate, OnDeactivate  {
   }
 
   // String get unitLeadingText => measure?.unitOfMeasurement == null ? null : measure.unitOfMeasurement.symbol;
-  String get unitLeadingText => measure.unitOfMeasurement.symbol == null ? null : measure.unitOfMeasurement.symbol.contains(r'$') ? measure.unitOfMeasurement.symbol : null;
+  String get unitLeadingText => measure.unitOfMeasurement?.symbol == null ? null : measure.unitOfMeasurement.symbol.contains(r'$') ? measure.unitOfMeasurement.symbol : null;
 
   //String get unitTrailingText => measure?.unitOfMeasurement == null ? null :  measure.unitOfMeasurement.symbol;
-  String get unitTrailingText => measure.unitOfMeasurement.symbol == null ? null : measure.unitOfMeasurement.symbol.contains(r'$') ? measure.unitOfMeasurement.symbol : null;
+  String get unitTrailingText => measure.unitOfMeasurement?.symbol == null ? null : !measure.unitOfMeasurement.symbol.contains(r'$') ? measure.unitOfMeasurement.symbol : null;
 
   Date getDate(MeasureProgress measureProgress) {
     Date _date;

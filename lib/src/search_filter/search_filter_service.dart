@@ -9,10 +9,15 @@ class SearchFilterService {
   // If true, it  appear the input search
   bool enableSearch = false;
   String searchTerm = '';
+
   // If true, it  appear the filter button.
   bool enableFilter = false;
   String filterRouteUrl;
   int filteredItems;
- // bool visibleFilter = false;
+
+  // If true, it  appear the export button.
+  bool enableExport = false;
+  Function listExport;
+
 
 }

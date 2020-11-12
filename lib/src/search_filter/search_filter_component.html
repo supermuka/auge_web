@@ -18,4 +18,9 @@
          </div>
       </material-button>
    </div>
+   <div *ngIf="enableExport()">
+      <material-button icon (trigger)="exportToCsv()" [materialTooltip]="exportLabel">
+         <material-icon icon="save_alt"></material-icon>
+      </material-button>
+   </div>
 </div>

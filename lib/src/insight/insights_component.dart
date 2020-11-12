@@ -201,6 +201,7 @@ class InsightsComponent with CanReuse implements OnActivate  {
 
     _searchFilterService.enableSearch = false;
     _searchFilterService.enableFilter = true;
+    _searchFilterService.enableExport = false;
     _searchFilterService.filterRouteUrl = AppRoutes.insightsFilterRoute.toUrl();
 
     _searchFilterService.filteredItems = _insightService.insightsFilterOrder.filteredItems;

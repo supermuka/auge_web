@@ -1,1 +1,0 @@
-final List<dynamic> styles = ['.segment-highlight._ngcontent-%ID%{font-weight:700}'];

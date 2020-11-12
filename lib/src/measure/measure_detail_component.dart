@@ -132,7 +132,6 @@ class MeasureDetailComponent implements OnInit, OnActivate, OnDeactivate  {
       measure.objective = await _objectiveService.getObjectiveOnlySpecification(objectiveId);
     }
 
-
     try {
       _unitsOfMeasurement = await _measureService.getUnitsOfMeasurement();
     } catch (e) {
@@ -145,11 +144,12 @@ class MeasureDetailComponent implements OnInit, OnActivate, OnDeactivate  {
     unitOfMeasurementSingleSelectModel.selectionChanges.listen((unit) {
         if (unit.isNotEmpty && unit.first.added != null && unit.first.added.length != 0 && unit.first.added?.first != null) {
           measure.unitOfMeasurement = unit.first.added.first;
+          print('selectionChanges');
         }
       });
 
     if (measure.unitOfMeasurement != null) {
-      unitOfMeasurementSingleSelectModel.select(measure.unitOfMeasurement);
+      unitOfMeasurementSingleSelectModel.select(unitOfMeasurementOptions.optionsList.firstWhere((element) => element.id == measure.unitOfMeasurement.id));
     } else if (unitOfMeasurementOptions.optionsList.isNotEmpty) {
       unitOfMeasurementSingleSelectModel.select(unitOfMeasurementOptions.optionsList.first);
     }
@@ -164,8 +164,6 @@ class MeasureDetailComponent implements OnInit, OnActivate, OnDeactivate  {
     try {
 
       //--measure.lastHistoryItem.setClientSideValues(user: _authService.authenticatedUser, description: measure.name, changedValues: MeasureFacilities.differenceToJson(measure, selectedMeasure));
-
-      print('DEBUG SAVE MEASURE ${measure.objective.id}');
       await _measureService.saveMeasure(/* objective, */ measure);
 
       //_saveController.add(measure.id);

@@ -98,6 +98,7 @@ class ObjectivesGanttComponent with CanReuse implements OnActivate {
     _searchFilterService.enableSearch = true;
     _searchFilterService.searchTerm = '';
     _searchFilterService.enableFilter = true;
+    _searchFilterService.enableExport = false;
     _searchFilterService.filterRouteUrl = AppRoutes.objectivesGanttFilterRoute.toUrl();
 
     _searchFilterService.filteredItems = _objectiveService.objectivesFilterOrder.filteredItems;

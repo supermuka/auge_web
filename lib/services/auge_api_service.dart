@@ -22,7 +22,9 @@ class AugeApiService {
   GrpcWebClientChannel _channel;
 
   AugeApiService(this._channel) {
+
     _channel = GrpcWebClientChannel.xhr(Uri.parse('$_protocol//$_urlChannel:$_port'));
+
   }
 
   GrpcWebClientChannel get channel {

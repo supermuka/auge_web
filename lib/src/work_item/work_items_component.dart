@@ -137,6 +137,7 @@ class WorkItemsComponent with CanReuse implements OnActivate /*, OnDestroy */ {
 
       _searchFilterService.enableSearch = true;
       _searchFilterService.enableFilter = true;
+      _searchFilterService.enableExport = false;
 
       _searchFilterService.filterRouteUrl =
           AppRoutes.workItemsFilterRoute.toUrl();

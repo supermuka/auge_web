@@ -197,6 +197,7 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
       _searchFilterService.enableSearch = true;
       _searchFilterService.enableFilter = true;
       _searchFilterService.filterRouteUrl = AppRoutes.workItemsKanbanFilterRoute.toUrl(parameters: {AppRoutesParam.workIdParameter: work.id});
+      _searchFilterService.enableExport = false;
 
       _searchFilterService.filteredItems = _workItemService.workItemsFilterOrder.filteredItems;
 //      _appLayoutService.enabledSearch = true;

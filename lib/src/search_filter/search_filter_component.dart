@@ -1,6 +1,12 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
+
+import 'dart:html' as html;
+import 'dart:convert';
+
+import 'package:csv/csv.dart';
+
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
 
@@ -40,6 +46,7 @@ class SearchFilterComponent with CanReuse {
   final String searchLeadingGlyph = 'search';
   final String searchLabel = '${CommonMsg.label(CommonMsg.searchLabel)}...';
   final String filterLabel = CommonMsg.label(CommonMsg.filterLabel);
+  final String exportLabel = CommonMsg.label(CommonMsg.exportLabel);
 
   SearchFilterComponent(this._searchFilterService, this._router);
 
@@ -57,7 +64,31 @@ class SearchFilterComponent with CanReuse {
 
   bool enableFilter() => (_searchFilterService.enableFilter);
 
+  bool enableExport() => (_searchFilterService.enableExport);
+
   void goToFilter() async {
     await _router.navigate(_searchFilterService.filterRouteUrl /*, NavigationParams(replace:  true)*/);
+  }
+
+  void exportToCsv() async {
+
+    final exportation = await _searchFilterService.listExport();
+
+    String csv = const ListToCsvConverter().convert(exportation);
+
+     final bytes = latin1.encode(csv);
+
+    final blob = html.Blob([bytes], "text/csv");
+    final url = html.Url.createObjectUrlFromBlob(blob);
+    final anchor = html.document.createElement('a') as html.AnchorElement
+      ..href = url
+      ..style.display = 'none'
+      ..download = 'auge_objectives.csv';
+    html.document.body.children.add(anchor);
+
+    anchor.click();
+
+    html.document.body.children.remove(anchor);
+    html.Url.revokeObjectUrl(url);
   }
 }

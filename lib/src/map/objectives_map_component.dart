@@ -108,6 +108,7 @@ class ObjectivesMapComponent with CanReuse /*  COMENTADO POIS SE USAR, O TOOLTIP
     // Enabled search and filter
     _searchFilterService.enableSearch = false;
     _searchFilterService.enableFilter = false;
+    _searchFilterService.enableExport = false;
     /*
     _searchFilterService.filterRouteUrl = AppRoutes.objectivesMapFilterRoute.toUrl();
     _searchFilterService.filteredItems = _objectiveService.objectivesFilterOrder.filteredItems;

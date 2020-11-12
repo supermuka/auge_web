@@ -38,8 +38,9 @@ dependencies:
   auge_shared:
     path: ../auge_shared/
   #protobuf: ^1.0.0
-  grpc: ^2.3.0
+  grpc: 2.3.0
   quiver: ^2.1.3
+  csv: ^4.1.0
   #grpc:
   #  git:
   #    url: git://github.com/grpc/grpc-dart.git

@@ -1,1 +1,0 @@
-{"isEntrypoint":false,"deps":["front_end|lib/src/testing/annotated_code_helper.dart","front_end|lib/src/testing/id.dart","front_end|lib/src/fasta/colors.dart"],"parts":[],"conditionalDeps":[],"sdkDeps":["io"],"hasMain":false}

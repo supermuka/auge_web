@@ -109,6 +109,7 @@ class GroupsComponent with CanReuse implements OnActivate /*, OnDeactivate, OnDe
 
     _searchFilterService.enableSearch = true;
     _searchFilterService.enableFilter = false;
+    _searchFilterService.enableExport = false;
 
     try {
       _groups = await _groupService.getGroups(organizationId: _groupService.authService.authorizedOrganization.id);

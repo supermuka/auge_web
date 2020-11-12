@@ -192,6 +192,8 @@ class ObjectiveDetailComponent implements OnInit, OnActivate, OnDeactivate {
 
     if (leader.isNotEmpty && leader.first.added != null && leader.first.added.length != 0 && leader.first.added?.first != null) {
       objective.leader = leader.first.added.first;
+    } else {
+      objective.leader = null;
     }
     });
 
