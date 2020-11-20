@@ -91,6 +91,17 @@ class WorkItemsGanttComponent with CanReuse implements OnActivate {
       return;
     }
 
+    if (routerStateCurrent.queryParameters.containsKey(
+        AppRoutesQueryParam.assignedToUserIdQueryParameter)) {
+      String userId = routerStateCurrent.queryParameters[AppRoutesQueryParam
+          .assignedToUserIdQueryParameter];
+
+      _workItemService.workItemsFilterOrder.assignedToUserIds = {userId};
+
+      //TODO encontrar outra forma de retirar o queryparam.
+      _router.navigateByUrl(routerStateCurrent.path, replace: true);
+    }
+
     _appLayoutService.headerTitle = headerTitle;
    // _appLayoutService.systemModuleIndex = SystemModule.works.index;
 
@@ -108,7 +119,7 @@ class WorkItemsGanttComponent with CanReuse implements OnActivate {
 
     try {
 
-      _workItems = await _workItemService.getWorkItems(assignedToIds: _workItemService.workItemsFilterOrder.assignedToUserIds, withArchived: _workItemService.workItemsFilterOrder.archived);
+      _workItems = await _workItemService.getWorkItems(workId: _workItemService.workItemsFilterOrder.workId, assignedToIds: _workItemService.workItemsFilterOrder.assignedToUserIds,  withArchived: _workItemService.workItemsFilterOrder.archived);
       if (_workItems != null) _orderWorkItems(_workItems, _workItemService.workItemsFilterOrder.orderedBy);
 
        yearsInterval = getYearsInterval();

@@ -118,8 +118,7 @@ class WorkService {
 
   }
 
-  /// Return [User] list by Organization [id]
-
+  /// Return [Work]  by Organization [id]
   Future<Work> getWorkOnlySpecification(String workId,
       {bool withArchived = false,
       Set<String> leaderUserIds,
@@ -138,18 +137,25 @@ class WorkService {
     return works.isEmpty ? null : works.first;
 
 
- /*
-    workGetRequest.id = id;
+  }
 
-    workGetRequest.withArchived = withArchived;
-    if (leaderUserIds != null && leaderUserIds.isNotEmpty) workGetRequest.leaderUserIds.addAll(leaderUserIds);
-    if (groupIds != null && groupIds.isNotEmpty) workGetRequest.groupIds.addAll(groupIds);
-    workGetRequest.workItemWithArchived = workItemWithArchived;
-    if (workItemAssignedToIds != null && workItemAssignedToIds.isNotEmpty) workGetRequest.workItemAssignedToIds.addAll(workItemAssignedToIds);
+  /// Return [Work] list by Organization [id]
+  Future<List<Work>> getWorksOnlySpecification(String organizationId,
+      {bool withArchived = false,
+        bool workItemWithArchived = false,
+        Set<String> workItemAssignedToIds}) async {
+    //  work_work_item_pbgrpc.WorkGetRequest workGetRequest = work_work_item_pbgrpc.WorkGetRequest();
 
-    return WorkHelper.readFromProtoBuf((await _workServiceClient.getWorks(workGetRequest)).works.first, {});
 
-  */
+    List<Work> works = await getWorks(
+        organizationId: organizationId,
+        customWorkIndex: work_work_item_pbgrpc.CustomWork.workOnlySpecification.value,
+        withArchived: withArchived,
+        workItemWithArchived: workItemWithArchived,
+        workItemAssignedToIds: workItemAssignedToIds);
+
+    return works;
+
   }
 
   Future<Work> getWork(String workId) async {

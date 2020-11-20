@@ -409,6 +409,6 @@ class InsightsComponent with CanReuse implements OnActivate  {
   }
 
   goToWorkItems() {
-    _router.navigateByUrl(AppRoutes.workItemsRoute.toUrl( queryParameters: {AppRoutesQueryParam.assignedToUserIdQueryParameter: _authService.authenticatedUser.id}), reload: true);
+    _router.navigateByUrl(AppRoutes.workItemsGanttRoute.toUrl( queryParameters: {AppRoutesQueryParam.assignedToUserIdQueryParameter: _authService.authenticatedUser.id}), reload: true);
   }
 }

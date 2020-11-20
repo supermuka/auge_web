@@ -86,10 +86,11 @@ class WorkItemService {
   }
 
   /// Return a list of [WorkItem]
-  Future<List<WorkItem>> getWorkItems({Set<String> assignedToIds, bool withArchived = false}) async {
+  Future<List<WorkItem>> getWorkItems({String workId, Set<String> assignedToIds,  bool withArchived = false}) async {
     // return _augeApiService.augeApi.getUsers(organizationId, withProfile: withProfile);
     work_work_item_pbgrpc.WorkItemGetRequest workItemGetRequest = work_work_item_pbgrpc.WorkItemGetRequest();
     workItemGetRequest.organizationId = _authService.authorizedOrganization.id;
+    if (workId != null) workItemGetRequest.workId = workId;
     workItemGetRequest.withArchived = withArchived;
     if (assignedToIds != null) workItemGetRequest.assignedToIds.addAll(assignedToIds);
     // return WorkItem()..readFromProtoBuf((await _workItemServiceClient.getWorkItems(workItemGetRequest)), {});
@@ -263,11 +264,12 @@ class WorkItemsFilterOrder {
 
   // Filter
   Set<String> assignedToUserIds = {};
+  String workId;
   bool archived = false;
 
   // Filtered Items
   int get filteredItems {
-    return assignedToUserIds.length + (archived ? 1 : 0);
+    return assignedToUserIds.length + (workId != null ? 1 : 0) + (archived ? 1 : 0);
   }
 
   //Ordered by

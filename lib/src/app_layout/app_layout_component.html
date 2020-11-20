@@ -24,9 +24,9 @@
             <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="goTo(worksRouteUrl, toggle: true)">
                 <material-icon  class="icon-margin" icon="work"></material-icon>{{worksLabel}}
             </material-list-item>
-            <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="goTo(workItemsRouteUrl, toggle: true)">
+            <!-- material-list-item [disabled]="!hasAuthorizedOrganization" (click)="goTo(workItemsRouteUrl, toggle: true)">
                 <material-icon  class="icon-margin" icon="list"></material-icon>{{workItemsLabel}}
-            </material-list-item>
+            </material-list-item -->
             <material-list-item [disabled]="!hasAuthorizedOrganization" (click)="goTo(workItemsGanttRouteUrl, toggle: true)">
                 <material-icon  class="icon-margin" icon="schedule"></material-icon>{{workItemsGanttLabel}}
             </material-list-item>

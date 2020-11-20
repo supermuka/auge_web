@@ -20,6 +20,7 @@ import 'package:angular_components/model/ui/has_factory.dart';
 import 'package:angular_components/material_select/material_dropdown_select.dart';
 
 import 'package:auge_shared/domain/general/user.dart';
+import 'package:auge_shared/domain/work/work.dart';
 import 'package:auge_shared/domain/work/work_item.dart';
 
 import 'package:auge_shared/message/messages.dart';
@@ -27,6 +28,7 @@ import 'package:auge_shared/message/domain_messages.dart';
 
 import 'package:auge_web/services/common_service.dart' as common_service;
 import 'package:auge_web/src/user/user_service.dart';
+import 'package:auge_web/src/work/work_service.dart';
 import 'package:auge_web/src/work_item/work_item_service.dart';
 
 // ignore_for_file: uri_has_not_been_generated
@@ -34,7 +36,7 @@ import 'work_items_filter_component.template.dart' as work_items_filter_componen
 
 @Component(
     selector: 'auge-work-items-filter',
-    providers: const [overlayBindings, UserService],
+    providers: const [overlayBindings, UserService, WorkService],
     templateUrl: 'work_items_filter_component.html',
     styleUrls: const [
       'work_items_filter_component.css'
@@ -54,6 +56,7 @@ import 'work_items_filter_component.template.dart' as work_items_filter_componen
     ])
 class WorkItemsFilterComponent with CanReuse implements OnActivate, OnDeactivate {
 
+  final WorkService _workService;
   final WorkItemService _workItemService;
   final UserService _userService;
  // final Router _router;
@@ -66,7 +69,10 @@ class WorkItemsFilterComponent with CanReuse implements OnActivate, OnDeactivate
   SelectionOptions assignedToOptions;
   SelectionModel assignedToMultiSelectModel;
 
+  String workInputText = '';
 
+  SelectionOptions workOptions;
+  SelectionModel workSingleSelectModel;
 
   bool archived = false;
 
@@ -91,20 +97,24 @@ class WorkItemsFilterComponent with CanReuse implements OnActivate, OnDeactivate
   static final String dueDateLabel = WorkItemDomainMsg.fieldLabel(WorkItem.dueDateField);
   static final String archivedLabel = WorkItemDomainMsg.fieldLabel(WorkItem.archivedField);
   static final String assignedToLabel = WorkItemDomainMsg.fieldLabel(WorkItem.assignedToField);
+  static final String workLabel = WorkItemDomainMsg.fieldLabel(WorkItem.workField);
 
   final workItemsOrderedByOptions = [dueDateLabel, nameLabel];
 
   String orderedBy = dueDateLabel;
 
-  WorkItemsFilterComponent(this._workItemService, this._userService, this._location);
+  WorkItemsFilterComponent(this._workService, this._workItemService, this._userService, this._location);
 
   @override
   void onActivate(RouterState previous, RouterState current) async {
     modalVisible = true;
 
     List<User> _users;
+    List<Work> _works;
     try {
       _users = await _userService.getUsersOnlySpecificationAndImage(_workItemService.authService.authorizedOrganization.id);
+
+      _works = await _workService.getWorksOnlySpecification(_workItemService.authService.authorizedOrganization.id);
     } catch (e) {
       dialogError = e.toString();
       rethrow;
@@ -121,6 +131,24 @@ class WorkItemsFilterComponent with CanReuse implements OnActivate, OnDeactivate
       i = assignedToOptions.optionsList.indexWhere((item) => item.id == id);
       if (i != -1) assignedToMultiSelectModel.select(assignedToOptions.optionsList[i]);
     }
+
+    // Show content on field
+    showPopupChangeAssignedTo(false);
+
+    workOptions = StringSelectionOptions<Work>(
+        _works, toFilterableString: (Work work) => work.name);
+
+    workSingleSelectModel = SelectionModel.single();
+
+
+    if (_workItemService.workItemsFilterOrder.workId != null) {
+      i = workOptions.optionsList.indexWhere((item) => item.id == _workItemService.workItemsFilterOrder.workId);
+      if (i != -1) workSingleSelectModel.select(workOptions.optionsList[i]);
+    }
+
+    // Show content on field
+    //showPopupChangeWork(false);
+
   }
 
   @override
@@ -130,12 +158,12 @@ class WorkItemsFilterComponent with CanReuse implements OnActivate, OnDeactivate
 
   void applyFilter() async {
 
-    //_workItemService.workItemsFilterOrder.filteredItems = 0;
-
     _workItemService.workItemsFilterOrder.assignedToUserIds = assignedToMultiSelectModel.selectedValues.map((f) => f.id).toSet().cast();
-    //_workItemService.workItemsFilterOrder.filteredItems += _workItemService.workItemsFilterOrder.assignedToUserIds.length;
+
+    _workItemService.workItemsFilterOrder.workId = workSingleSelectModel.selectedValues.isEmpty ? null : workSingleSelectModel.selectedValues.first.id;
+
     _workItemService.workItemsFilterOrder.archived = archived;
-    //_workItemService.workItemsFilterOrder.filteredItems += (archived) ? 1 : 0;
+
     _workItemService.workItemsFilterOrder.orderedBy = orderedBy;
 
     closeFilter();
@@ -169,23 +197,35 @@ class WorkItemsFilterComponent with CanReuse implements OnActivate, OnDeactivate
 
   }
 
-  ItemRenderer get groupItemRenderer => (dynamic gru) => gru.name;
-
-  String get assignedToLabelRenderer {
-    String nameLabel;
-    if ((assignedToMultiSelectModel != null &&
-        assignedToMultiSelectModel.selectedValues != null &&
-        assignedToMultiSelectModel.selectedValues.length != null)) {
-
-      nameLabel = assignedToMultiSelectModel.selectedValues.first.name;
-    }
-
-    return nameLabel;
-  }
-
   ItemRenderer get assignedToItemRenderer => (dynamic user) => user.name;
 
   FactoryRenderer get assignedToFactoryRenderer => (_) => work_items_filter_component.UserRendererComponentNgFactory;
+
+  ItemRenderer get workItemRenderer => (dynamic work) => work.name;
+/*
+  void showPopupChangeWork(bool event) {
+    if (event == false) {
+      var selectedValues = assignedToMultiSelectModel?.selectedValues;
+      if (selectedValues != null && selectedValues.isNotEmpty) {
+        if (selectedValues.length == 1) {
+          assignedToInputText = assignedToItemRenderer(selectedValues.first);
+        } else {
+          assignedToInputText =
+          "${assignedToItemRenderer(selectedValues.first)} + ${selectedValues
+              .length - 1} ${moreLabel}";
+        }
+      }
+    }
+  }
+*/
+  void clearWork() {
+
+    List<dynamic> workSelected = workSingleSelectModel.selectedValues.toList();
+
+    workSelected.forEach((item) => workSingleSelectModel.deselect(item));
+    workInputText = '';
+
+  }
 
 }
 

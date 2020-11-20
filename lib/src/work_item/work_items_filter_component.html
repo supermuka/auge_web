@@ -24,6 +24,24 @@
             </material-auto-suggest-input>
         </div>
         <div class="w3-row">
+            <material-auto-suggest-input
+                    [(inputText)]="workInputText"
+                    [filterSuggestions]="true"
+                    [popupMatchInputWidth]="true"
+                    [showClearIcon]="true"
+                    [trailingGlyph]="'search'"
+                    [label]="workLabel"
+                    [floatingLabel]="true"
+                    [selection]="workSingleSelectModel"
+                    [selectionOptions]="workOptions"
+                    [itemRenderer]="workItemRenderer"
+                    [limit]="10"
+                    (clear)="clearWork()">
+            </material-auto-suggest-input>
+        </div>
+
+
+        <div class="w3-row">
             <material-checkbox class="checkbox-no-margin" [(ngModel)]="archived" [label]="archivedLabel"></material-checkbox>
         </div>
         <div class="w3-row">

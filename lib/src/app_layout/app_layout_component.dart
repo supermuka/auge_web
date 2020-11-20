@@ -54,7 +54,7 @@ import 'package:auge_web/src/objective/objectives_component.template.dart' as ob
 import 'package:auge_web/src/group/groups_component.template.dart' as groups_component;
 import 'package:auge_web/src/organization/organization_component.template.dart' as organization_component;
 import 'package:auge_web/src/work_item/work_items_kanban_component.template.dart' as work_items_kanban_component;
-import 'package:auge_web/src/work_item/work_items_component.template.dart' as work_items_component;
+//import 'package:auge_web/src/work_item/work_items_component.template.dart' as work_items_component;
 import 'package:auge_web/src/gantt/work_items_gantt_component.template.dart' as work_items_gantt_component;
 import 'package:auge_web/src/history_timeline/history_timeline_component.template.dart' as history_timeline_component;
 
@@ -157,10 +157,12 @@ class AppLayoutComponent with CanReuse implements OnActivate {
       routePath: AppRoutes.workItemsKanbanViaObjectiveRoute,
       component: work_items_kanban_component.WorkItemsKanbanComponentNgFactory,
     ),
+/*
     RouteDefinition(
       routePath: AppRoutes.workItemsRoute,
       component: work_items_component.WorkItemsComponentNgFactory,
     ),
+ */
     RouteDefinition(
       routePath: AppRoutes.workItemsGanttRoute,
       component: work_items_gantt_component.WorkItemsGanttComponentNgFactory,
