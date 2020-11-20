@@ -4,6 +4,7 @@
 import 'dart:html' as html;
 import 'dart:convert' show base64;
 import 'dart:typed_data' show Uint8List;
+import 'package:intl/intl.dart';
 
 import 'package:angular/angular.dart';
 import 'package:angular/security.dart';
@@ -145,6 +146,8 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
 
   bool valuePanelExpanded = false;
   bool checkItemPanelExpanded = false;
+
+  final DateFormat dateFormat = DateFormat.yMd();
 
   WorkItemDetailComponent(this._userService, this._workService, this._workItemService, this._router, this._domSanitizationService /*, this._location*/)  {
 

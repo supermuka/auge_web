@@ -1,9 +1,9 @@
 // Copyright (c) 2017, Levius.
+import 'package:intl/intl.dart';
 
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
 import 'package:auge_web/route/app_routes.dart';
-
 import 'package:angular_components/focus/focus.dart';
 import 'package:angular_components/laminate/components/modal/modal.dart';
 import 'package:angular_components/laminate/overlay/module.dart';
@@ -98,6 +98,8 @@ class ObjectiveDetailComponent implements OnInit, OnActivate, OnDeactivate {
   String dialogError;
 
   String previousPath;
+
+  final DateFormat dateFormat = DateFormat.yMd();
 
   // Define messages and labels
   static final String requiredValueMsg = CommonMsg.requiredValueMsg();
@@ -320,6 +322,19 @@ class ObjectiveDetailComponent implements OnInit, OnActivate, OnDeactivate {
   bool get validInput {
     return objective.name?.trim()?.isNotEmpty ?? false;
   }
+
+  /*
+  void popupVisibleChange(bool visible, MaterialDatepickerComponent materialDatepickerComponent) {
+    if (visible == true && materialDatepickerComponent != null) {
+      if (materialDatepickerComponent.textInput != null && materialDatepickerComponent.textInput.hasVisibleText)
+      materialDatepickerComponent.textInput.selectAll();
+    }
+  }
+
+   */
+
+
+
 }
 
 @Component(

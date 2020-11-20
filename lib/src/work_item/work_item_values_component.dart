@@ -1,6 +1,9 @@
 // Copyright (c) 2018, Levius Tecnologia Ltda. All rights reserved.
 // Author: Samuel C. Schwebel.
 
+
+import 'package:intl/intl.dart';
+
 import 'package:angular/angular.dart';
 import 'package:angular_router/angular_router.dart';
 
@@ -78,6 +81,8 @@ class WorkItemValuesComponent implements OnInit, OnActivate, OnDeactivate  {
 
   DateRange limitToDateRange =
   DateRange(Date.today().add(years: -1), Date.today().add(years: 10));
+
+  final DateFormat dateFormat = DateFormat.yMd();
 
   WorkItemValuesComponent(/*this._objectiveService, */ this._workItemService, this._location) {
     // initializeDateFormatting(Intl.defaultLocale , null);

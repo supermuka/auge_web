@@ -368,7 +368,8 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
     List<List<dynamic>> exportation;
 
     // Trick for Excel open CSV in Columns
-    exportation = [['SEP=,']];
+    //exportation = [['SEP=,']];
+    exportation = [];
 
     exportation.add([objectivesLabel.toUpperCase(),'','','',measuresLabel.toUpperCase()]);
     exportation.add([

@@ -74,7 +74,7 @@ class SearchFilterComponent with CanReuse {
 
     final exportation = await _searchFilterService.listExport();
 
-    String csv = const ListToCsvConverter().convert(exportation);
+    String csv = const ListToCsvConverter().convert(exportation, fieldDelimiter: ';', );
 
      final bytes = latin1.encode(csv);
 

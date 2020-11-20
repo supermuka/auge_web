@@ -120,6 +120,8 @@ class MeasureProgressComponent implements OnInit, OnActivate, OnDeactivate  {
 
   int tabIndex = 0;
 
+  final DateFormat dateFormat = DateFormat.yMd();
+
   MeasureProgressComponent(/*this._objectiveService, */ this._measureService, this._location) {
     // initializeDateFormatting(Intl.defaultLocale , null);
   }

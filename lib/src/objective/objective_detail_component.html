@@ -31,10 +31,19 @@
             <div class="w3-col m6">
                 <label class="input-container">
                     <span>{{startDateLabel}}</span>
-                    <material-datepicker [(date)]="startDate"
+                    <!-- material-datepicker #xx [(date)]="startDate"
+                                         [compact]="true"
                                          [minDate]="limitToDateRange.start"
                                          [maxDate]="limitToDateRange.end"
-                                         [required]="false">
+                                         [required]="false"
+                                         (popupVisibleChange)="popupVisibleChange($event, xx)">
+                    </material-datepicker -->
+                    <material-datepicker [(date)]="startDate"
+                         [compact]="true"
+                         [minDate]="limitToDateRange.start"
+                         [maxDate]="limitToDateRange.end"
+                         [required]="false"
+                         [outputFormat]="dateFormat">
                     </material-datepicker>
                 </label>
             </div>
@@ -44,7 +53,8 @@
                     <material-datepicker [(date)]="endDate"
                                          [minDate]="limitToDateRange.start"
                                          [maxDate]="limitToDateRange.end"
-                                         [required]="false">
+                                         [required]="false"
+                                         [outputFormat]="dateFormat">
                     </material-datepicker>
                 </label>
             </div>
