@@ -356,7 +356,7 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
 
   Date get dueDate {
     if (_dueDate == null && workItem.dueDate != null) {
-      _dueDate = Date.fromTime(workItem.dueDate.toLocal());
+      _dueDate = Date.fromTime(workItem.dueDate);
     }
 
     return _dueDate;
@@ -366,8 +366,9 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
     if (dueDate == null) {
       workItem.dueDate = null;
     } else {
-      workItem.dueDate = DateTime(dueDate.year, dueDate.month, dueDate.day).toUtc(); //_dueDate.asUtcTime();
-      _dueDate = dueDate;
+      //workItem.dueDate = DateTime(dueDate.year, dueDate.month, dueDate.day).toUtc(); //_dueDate.asUtcTime();
+      //_dueDate = dueDate;
+      workItem.dueDate = _dueDate.asUtcTime();
     }
   }
 

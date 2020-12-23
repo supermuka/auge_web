@@ -119,7 +119,7 @@
                         </div>
                         <div class="w3-row-padding">
                             <material-input class="w3-col l6" [(ngModel)]="organizationDirectoryService.syncInterval" floatingLabel  [label]="syncIntervalLabel"></material-input>
-                            <material-input class="w3-col l6" disabled [ngModel]="organizationDirectoryService.syncLastDateTime?.toLocal()?.toString()" floatingLabel  [label]="syncLastDateTimeLabel"></material-input>
+                            <material-input class="w3-col l6" disabled [ngModel]="organizationDirectoryService.syncLastDateTime?.toString()" floatingLabel  [label]="syncLastDateTimeLabel"></material-input>
                         </div>
                         <div class="w3-row-padding">
                             <material-input class="w3-col l12" disabled multiline rows="10" maxRows="10" [ngModel]="formatSyncLastResult(organizationDirectoryService.syncLastResult)" floatingLabel  [label]="syncLastResultLabel"></material-input>
