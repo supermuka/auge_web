@@ -76,7 +76,7 @@ import 'package:auge_web/src/work/work_stages_component.template.dart' as work_s
     ],
     pipes: const [commonPipes])
 
-class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, OnDestroy */ {
+class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDeactivate /*, OnDestroy */ {
 
   final AppLayoutService _appLayoutService;
   final WorkService _workService;
@@ -142,6 +142,7 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
     ),
   ];
 
+  String _searchTerm = '';
 
   WorkItemsKanbanComponent(this._appLayoutService, this._searchFilterService, this._workService, this._workItemService, this._router) {
     // initializeDateFormatting(Intl.defaultLocale);
@@ -165,8 +166,6 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
     try {
 
       if (routerStateCurrent.parameters.containsKey(AppRoutesParam.workIdParameter)) {
-
-
 
         String workId = routerStateCurrent.parameters[AppRoutesParam
             .workIdParameter];
@@ -193,7 +192,7 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
 
       _appLayoutService.headerTitle = headerTitle;
    //   _appLayoutService.systemModuleIndex = SystemModule.works.index;
-
+      _searchFilterService.searchTerm = _searchTerm;
       _searchFilterService.enableSearch = true;
       _searchFilterService.enableFilter = true;
       _searchFilterService.filterRouteUrl = AppRoutes.workItemsKanbanFilterRoute.toUrl(parameters: {AppRoutesParam.workIdParameter: work.id});
@@ -219,8 +218,14 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate /*, O
       if (it.workStage != null)
         kanbanColumns.singleWhere((ik) => ik.workStage.id == it.workStage.id).columnWorkItems.add(it);
     });
+  }
+
+  void onDeactivate(RouterState current, RouterState next) {
+
+    _searchTerm = _searchFilterService.searchTerm;
 
   }
+
 
   void drag(html.MouseEvent ev, KanbanColumn kanbanColumn, WorkItem workItem) {
     kanbanColumnDnD = kanbanColumn;

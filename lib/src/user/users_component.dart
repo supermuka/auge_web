@@ -48,7 +48,7 @@ import 'package:auge_web/src/user/user_detail_component.template.dart' as user_d
       MaterialToggleComponent,
     ])
 
-class UsersComponent with CanReuse implements OnActivate {
+class UsersComponent with CanReuse implements OnActivate, OnDeactivate {
 
   final AppLayoutService _appLayoutService;
  // final SearchService _searchService;
@@ -82,6 +82,8 @@ class UsersComponent with CanReuse implements OnActivate {
 
   static final String headerTitle = UserMsg.label(UserMsg.userLabel);
 
+  String _searchTerm = '';
+
   UsersComponent(this._appLayoutService, this._searchFilterService, this._userService, this._router) {
     menuModel = MenuModel([MenuItemGroup([MenuItem(editButtonLabel, icon: Icon('edit') , actionWithContext: (_) => goToDetail()), MenuItem(deleteButtonlabel, icon: Icon('delete'), actionWithContext: (_) => delete())])], icon: Icon('menu'));
   }
@@ -95,6 +97,7 @@ class UsersComponent with CanReuse implements OnActivate {
 //    _appLayoutService.enabledSearch = true;
   //  _appLayoutService.systemModuleIndex = SystemModule.users.index;
 
+    _searchFilterService.searchTerm = _searchTerm;
     _searchFilterService.enableSearch = true;
     _searchFilterService.enableFilter = false;
     _searchFilterService.enableExport = false;
@@ -107,6 +110,12 @@ class UsersComponent with CanReuse implements OnActivate {
       _appLayoutService.error = e.toString();
       rethrow;
     }
+  }
+
+  void onDeactivate(RouterState current, RouterState next) {
+
+    _searchTerm = _searchFilterService.searchTerm;
+
   }
 
   List<User> get users {

@@ -46,7 +46,7 @@ import 'package:auge_web/src/group/group_detail_component.template.dart' as grou
       MaterialMenuComponent,
     ])
 
-class GroupsComponent with CanReuse implements OnActivate /*, OnDeactivate, OnDestroy */ {
+class GroupsComponent with CanReuse implements OnActivate, OnDeactivate /*, OnDeactivate, OnDestroy */ {
 //  final AuthService _authService;
   final AppLayoutService _appLayoutService;
   final SearchFilterService _searchFilterService;
@@ -76,6 +76,8 @@ class GroupsComponent with CanReuse implements OnActivate /*, OnDeactivate, OnDe
   static final activeLabel = GroupMsg.label(GroupMsg.activeLabel);
   static final inactiveLabel = GroupMsg.label(GroupMsg.inactiveLabel);
   static final headerTitle = GroupMsg.label(GroupMsg.groupsLabel);
+
+  String _searchTerm = '';
 
   GroupsComponent(this._appLayoutService, this._searchFilterService, this._groupService, /*this._searchService,*/ this._router) {
     menuModel = new MenuModel([new MenuItemGroup([new MenuItem(buttonEditLabel, icon: new Icon('edit') , actionWithContext: (_) => goToDetail()), new MenuItem(buttonDeleteLabel, icon: new Icon('delete'), actionWithContext: (_) => delete())])], icon: new Icon('menu'));
@@ -107,6 +109,7 @@ class GroupsComponent with CanReuse implements OnActivate /*, OnDeactivate, OnDe
 //    _appLayoutService.enabledSearch = true;
    // _appLayoutService.systemModuleIndex = SystemModule.groups.index;
 
+    _searchFilterService.searchTerm = _searchTerm;
     _searchFilterService.enableSearch = true;
     _searchFilterService.enableFilter = false;
     _searchFilterService.enableExport = false;
@@ -118,6 +121,12 @@ class GroupsComponent with CanReuse implements OnActivate /*, OnDeactivate, OnDe
       _appLayoutService.error = e.toString();
       rethrow;
     }
+  }
+
+  void onDeactivate(RouterState current, RouterState next) {
+
+    _searchTerm = _searchFilterService.searchTerm;
+
   }
 
   List<Group> get groups {

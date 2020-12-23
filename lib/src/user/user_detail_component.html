@@ -74,7 +74,7 @@
                 <material-tab style="width: 100%;" [label]="tabLabels[1]">
                     <div class="w3-padding-small" style="width: 100%;">
                         <div class="w3-row">
-                            <material-button [disabled]="!isManagedByOrganization()" class="w3-right" (trigger)="selectUserIdentity(null)">
+                            <material-button [disabled]="!isManagedByOrganization() || user.id == null" class="w3-right" (trigger)="selectUserIdentity(null)">
                                 <material-icon icon="add"></material-icon>
                             </material-button>
                         </div>
@@ -156,7 +156,7 @@
                 <material-tab style="width: 100%;" [label]="tabLabels[2]">
                     <div class="w3-padding-small" style="width: 100%;">
                         <div class="w3-row">
-                            <material-button [disabled]="!isManagedByOrganization() || isUserAccessAdded()"  class="w3-right" (trigger)="selectUserAccess(null)">
+                            <material-button [disabled]="!isManagedByOrganization() || isUserAccessAdded()  || user.id == null"  class="w3-right" (trigger)="selectUserAccess(null)">
                                 <material-icon icon="add"></material-icon>
                             </material-button>
                         </div>

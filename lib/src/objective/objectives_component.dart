@@ -67,7 +67,7 @@ import 'package:auge_web/src/measure/measure_progress_component.template.dart' a
     ],
     pipes: const [commonPipes])
 
-class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActivate /*, OnDestroy */ {
+class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActivate, OnDeactivate /*, OnDestroy */ {
 
   final AppLayoutService _appLayoutService;
   final ObjectiveService _objectiveService;
@@ -148,6 +148,8 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
 
   final preferredTooltipPositions = const [RelativePosition.AdjacentLeft, RelativePosition.OffsetBottomLeft, /* RelativePosition.OffsetBottomRight */];
 
+  String _searchTerm = '';
+
   ObjectivesComponent(this._appLayoutService, this._objectiveService, this._searchFilterService, this._router) {
     menuModel = MenuModel([MenuItemGroup([
       MenuItem(editButtonLabel, icon: Icon('edit') , actionWithContext: (_) => goToDetail()),
@@ -182,6 +184,7 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
    // _appLayoutService.systemModuleIndex = SystemModule.objectives.index;
 
     // Enabled search and filter
+    _searchFilterService.searchTerm = _searchTerm;
     _searchFilterService.enableSearch = true;
     _searchFilterService.enableFilter = true;
     _searchFilterService.filterRouteUrl = AppRoutes.objectivesFilterRoute.toUrl();
@@ -223,6 +226,12 @@ class ObjectivesComponent with CanReuse implements /*  AfterViewInit, */ OnActiv
     if (initialObjectiveId != null) {
       setExpandedObjectiveId(initialObjectiveId, true);
     }
+
+  }
+
+  void onDeactivate(RouterState current, RouterState next) {
+
+    _searchTerm = _searchFilterService.searchTerm;
 
   }
 

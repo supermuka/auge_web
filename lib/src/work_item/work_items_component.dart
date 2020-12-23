@@ -66,7 +66,7 @@ import 'package:auge_web/src/work_item/work_items_filter_component.template.dart
     ],
     pipes: const [commonPipes])
 
-class WorkItemsComponent with CanReuse implements OnActivate /*, OnDestroy */ {
+class WorkItemsComponent with CanReuse implements OnActivate, OnDeactivate /*, OnDestroy */ {
 
   final AppLayoutService _appLayoutService;
 
@@ -104,6 +104,7 @@ class WorkItemsComponent with CanReuse implements OnActivate /*, OnDestroy */ {
     ),
   ];
 
+  String _searchTerm = '';
 
   WorkItemsComponent(this._appLayoutService, this._searchFilterService,
       this._workItemService, this._router) {
@@ -135,6 +136,7 @@ class WorkItemsComponent with CanReuse implements OnActivate /*, OnDestroy */ {
       _appLayoutService.headerTitle = headerTitle;
    //   _appLayoutService.systemModuleIndex = SystemModule.works.index;
 
+      _searchFilterService.searchTerm = _searchTerm;
       _searchFilterService.enableSearch = true;
       _searchFilterService.enableFilter = true;
       _searchFilterService.enableExport = false;
@@ -155,6 +157,12 @@ class WorkItemsComponent with CanReuse implements OnActivate /*, OnDestroy */ {
       _appLayoutService.error = e.toString();
       rethrow;
     }
+  }
+
+  void onDeactivate(RouterState current, RouterState next) {
+
+    _searchTerm = _searchFilterService.searchTerm;
+
   }
 
   String dueDateColor(WorkItem workItem) {

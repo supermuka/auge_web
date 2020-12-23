@@ -52,7 +52,7 @@ import 'package:angular_components/material_tooltip/module.dart';
   ],
 )
 
-class ObjectivesMapComponent with CanReuse /*  COMENTADO POIS SE USAR, O TOOLTIP NÃO DESAPARECE QUANDO SE NAVEGA PARA OUTRA PÁGINA */ implements OnActivate {
+class ObjectivesMapComponent with CanReuse /*  COMENTADO POIS SE USAR, O TOOLTIP NÃO DESAPARECE QUANDO SE NAVEGA PARA OUTRA PÁGINA */ implements OnActivate, OnDeactivate {
 
   int zoomInOut = 100;
 
@@ -75,6 +75,8 @@ class ObjectivesMapComponent with CanReuse /*  COMENTADO POIS SE USAR, O TOOLTIP
   List<Objective> objectivesMap = List();
 
   Set<Objective> objectivesCollapesed = Set();
+
+  String _searchTerm = '';
 
   ObjectivesMapComponent(this._authService, this._appLayoutService, this._searchFilterService, this._objectiveService, /* this._mapService, */ this._router);
 
@@ -106,6 +108,7 @@ class ObjectivesMapComponent with CanReuse /*  COMENTADO POIS SE USAR, O TOOLTIP
     _appLayoutService.systemModuleIndex =  null;
 
     // Enabled search and filter
+    _searchFilterService.searchTerm = _searchTerm;
     _searchFilterService.enableSearch = false;
     _searchFilterService.enableFilter = false;
     _searchFilterService.enableExport = false;
@@ -123,6 +126,12 @@ class ObjectivesMapComponent with CanReuse /*  COMENTADO POIS SE USAR, O TOOLTIP
       _appLayoutService.error = e.toString();
       rethrow;
     }
+  }
+
+  void onDeactivate(RouterState current, RouterState next) {
+
+    _searchTerm = _searchFilterService.searchTerm;
+
   }
 
   String userUrlImage(User userMember) {

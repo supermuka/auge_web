@@ -68,7 +68,7 @@ import 'package:auge_web/src/work_item/work_item_detail_component.template.dart'
       //WorkStagesComponent,
     ])
 
-class WorksComponent with CanReuse implements OnActivate /*, OnDestroy */ {
+class WorksComponent with CanReuse implements OnActivate, OnDeactivate /*, OnDestroy */ {
 
   final AppLayoutService _appLayoutService;
   final WorkService _workService;
@@ -143,6 +143,7 @@ class WorksComponent with CanReuse implements OnActivate /*, OnDestroy */ {
 
   final worksSortedByOptions = [nameLabel, groupLabel, leaderLabel];
 
+  String _searchTerm = '';
 
   WorksComponent(this._appLayoutService, this._searchFilterService, this._workService, this._router) {
 
@@ -187,6 +188,7 @@ class WorksComponent with CanReuse implements OnActivate /*, OnDestroy */ {
  //   _appLayoutService.systemModuleIndex = SystemModule.works.index;
 
     // Enabled search and filter
+    _searchFilterService.searchTerm = _searchTerm;
     _searchFilterService.enableSearch = true;
     _searchFilterService.enableFilter = true;
     _searchFilterService.filterRouteUrl = AppRoutes.worksFilterRoute.toUrl();
@@ -214,6 +216,11 @@ class WorksComponent with CanReuse implements OnActivate /*, OnDestroy */ {
     }
   }
 
+  void onDeactivate(RouterState current, RouterState next) {
+
+    _searchTerm = _searchFilterService.searchTerm;
+
+  }
 
   List<Work> get works {
 

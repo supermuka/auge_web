@@ -45,7 +45,7 @@ import 'package:auge_web/src/objective/objectives_filter_component.template.dart
   pipes: const [commonPipes],
 )
 
-class ObjectivesGanttComponent with CanReuse implements OnActivate {
+class ObjectivesGanttComponent with CanReuse implements OnActivate, OnDeactivate {
   final preferredTooltipPositions = const [RelativePosition.OffsetBottomLeft, RelativePosition.OffsetBottomRight];
 
   final AuthService _authService;
@@ -67,6 +67,8 @@ class ObjectivesGanttComponent with CanReuse implements OnActivate {
     routePath: AppRoutes.objectivesGanttFilterRoute,
     component: objectives_filter_component.ObjectivesFilterComponentNgFactory,
   )];
+
+  String _searchTerm;
 
   ObjectivesGanttComponent(this._authService, this._appLayoutService, this._objectiveService, this._searchFilterService, this._router) {
     // initializeDateFormatting(Intl.defaultLocale , null);
@@ -96,7 +98,7 @@ class ObjectivesGanttComponent with CanReuse implements OnActivate {
 
     // Enabled search and filter
     _searchFilterService.enableSearch = true;
-    _searchFilterService.searchTerm = '';
+    _searchFilterService.searchTerm = _searchTerm;
     _searchFilterService.enableFilter = true;
     _searchFilterService.enableExport = false;
     _searchFilterService.filterRouteUrl = AppRoutes.objectivesGanttFilterRoute.toUrl();
@@ -119,6 +121,12 @@ class ObjectivesGanttComponent with CanReuse implements OnActivate {
       _appLayoutService.error = e.toString();
       rethrow;
     }
+  }
+
+  void onDeactivate(RouterState current, RouterState next) {
+
+    _searchTerm = _searchFilterService.searchTerm;
+
   }
 
   String userUrlImage(User userMember) {
