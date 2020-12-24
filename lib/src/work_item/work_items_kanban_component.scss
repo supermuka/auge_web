@@ -1,6 +1,14 @@
 @import 'package:auge_web/scss/common.scss';
 @import 'package:angular_components/css/material/material';
 @import 'package:angular_components/material_expansionpanel/mixins';
+@import 'package:angular_components/material_slider/mixins';
+
+
+:host {
+  @include slider-thumb-color('material-slider.custom-colors-true', $mat-red);
+  @include slider-track-color(
+    'material-slider.custom-colors-true', $mat-red-700, $mat-red-200);
+}
 
 .header-custom {
   display: inline-block;
@@ -32,7 +40,6 @@
   height: 100%;
 
 }
-
 
 .items-column {
   /* position: absolute; */
@@ -147,9 +154,6 @@
   @include expansionpanel-no-header-contents-padding();
 }
 
-
-
 body {
   font-family: arial;
 }
-

@@ -144,7 +144,6 @@ class MeasureDetailComponent implements OnInit, OnActivate, OnDeactivate  {
     unitOfMeasurementSingleSelectModel.selectionChanges.listen((unit) {
         if (unit.isNotEmpty && unit.first.added != null && unit.first.added.length != 0 && unit.first.added?.first != null) {
           measure.unitOfMeasurement = unit.first.added.first;
-          print('selectionChanges');
         }
       });
 

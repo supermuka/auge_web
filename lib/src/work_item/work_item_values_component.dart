@@ -62,6 +62,7 @@ class WorkItemValuesComponent implements OnInit, OnActivate, OnDeactivate  {
  // final ObjectiveService _objectiveService;
   final WorkItemService _workItemService;
   final Location _location;
+  final Router _router;
 
   bool modalVisible = false;
 
@@ -84,8 +85,8 @@ class WorkItemValuesComponent implements OnInit, OnActivate, OnDeactivate  {
 
   final DateFormat dateFormat = DateFormat.yMd();
 
-  WorkItemValuesComponent(/*this._objectiveService, */ this._workItemService, this._location) {
-    // initializeDateFormatting(Intl.defaultLocale , null);
+  WorkItemValuesComponent(/*this._objectiveService, */ this._workItemService, this._location, this._router) {
+     // initializeDateFormatting(Intl.defaultLocale , null);
   }
 
   // Define messages and labels
@@ -139,6 +140,8 @@ class WorkItemValuesComponent implements OnInit, OnActivate, OnDeactivate  {
         ..workItem = (WorkItem()..id = workItem.id..name = workItem.name));
       selectedWorkItemValue = workItemValues.first;
     }
+
+
   }
 
   @override
@@ -183,6 +186,10 @@ class WorkItemValuesComponent implements OnInit, OnActivate, OnDeactivate  {
         workItemValues =
         await _workItemService.getWorkItemValues(workItemId: workItem.id);
 
+       // _router.navigateByUrl(_router.current.toUrl(), reload: true);
+        //TODO encontrar outra forma de retirar o queryparam.
+        _router.navigateByUrl(_router.current.path, replace: true);
+
        // workItem = await _workItemService.getWorkItem(workItem.id);
 
       } catch (e) {
@@ -208,7 +215,11 @@ class WorkItemValuesComponent implements OnInit, OnActivate, OnDeactivate  {
 
     try {
       await _workItemService.deleteWorkItemValue(workItemValue);
-      workItemValues = await _workItemService.getWorkItemValues(workItemId: workItem.id);
+     // workItemValues = await _workItemService.getWorkItemValues(workItemId: workItem.id);
+
+      //TODO encontrar outra forma de retirar o queryparam.
+      _router.navigateByUrl(_router.current.path, replace: true);
+
     } catch (e) {
       dialogError = e.toString();
       rethrow;
@@ -270,4 +281,6 @@ class WorkItemValuesComponent implements OnInit, OnActivate, OnDeactivate  {
     return plannedValue == null || actualValue == null ? null : plannedValue-actualValue;
 
   }
+
+
 }

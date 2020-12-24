@@ -4,6 +4,7 @@
 import 'dart:html' as html;
 import 'dart:convert' show base64;
 import 'dart:typed_data' show Uint8List;
+
 import 'package:intl/intl.dart';
 
 import 'package:angular/angular.dart';
@@ -156,8 +157,6 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
     unitOfMeasurementSingleSelectModel = SelectionModel.single();
 
    // _uploadFile = html.querySelector("#upload_file");
-
-
   }
 
   @ViewChild('upload_image', read: html.HtmlElement)
@@ -285,7 +284,6 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
 
    // _uploadFile = html.querySelector("#upload_file");
 
-
     try {
       if (_unitsOfMeasurement.isEmpty) _unitsOfMeasurement = await _workItemService.getUnitsOfMeasurement();
     } catch (e) {
@@ -302,11 +300,11 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
     });
 
     if (workItem.unitOfMeasurement != null) {
-      unitOfMeasurementSingleSelectModel.select(workItem.unitOfMeasurement);
-  //  } else if (unitOfMeasurementOptions.optionsList.isNotEmpty) {
-//      unitOfMeasurementSingleSelectModel.select(unitOfMeasurementOptions.optionsList.first);
+     // unitOfMeasurementSingleSelectModel.select(workItem.unitOfMeasurement);
+      unitOfMeasurementSingleSelectModel.select(unitOfMeasurementOptions.optionsList.firstWhere((element) => element.id == workItem.unitOfMeasurement.id));
+    } else if (unitOfMeasurementOptions.optionsList.isNotEmpty) {
+      unitOfMeasurementSingleSelectModel.select(unitOfMeasurementOptions.optionsList.first);
     }
-
   }
 
   @override
@@ -331,7 +329,6 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
       rethrow;
     }
   }
-
 
   void closeDetail([String workItemId]) {
     //_location.back();
@@ -559,7 +556,6 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
   }
 
   ItemRenderer get unitOfMeasurementItemRenderer => (dynamic unit) => unit.name + (unit.symbol == null || unit.symbol.trim().length == 0 ? '' : ' (' + unit.symbol + ')');
-
 
 }
 

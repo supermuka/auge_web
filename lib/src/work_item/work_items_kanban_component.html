@@ -81,18 +81,18 @@
                             <div>
                                 <div *ngIf="hasPlannedOrActual(iColumnWorkItem)">
                                     <div class="w3-center">
-                                        <span class="w3-left" materialTooltip="{{plannedActualLabel}}">
+                                        <span class="w3-left" materialTooltip="{{plannedValueLabel}}">
                                             {{iColumnWorkItem.plannedValue ?? 0}}
                                         </span>
-                                        <span class="w3-center" materialTooltip="{{remainingValueLabel}}">
+                                        <span class="w3-center" materialTooltip="{{actualValueLabel}}">
                                             {{iColumnWorkItem.actualValue ?? 0}}
                                         </span>
-                                        <span class="w3-right" materialTooltip="{{actualValueLabel}}">
+                                        <span class="w3-right" materialTooltip="{{remainingValueLabel}}">
                                             {{remainingValue(iColumnWorkItem.plannedValue, iColumnWorkItem.actualValue) ?? 0}}
                                         </span>
                                     </div>
                                     <div class="w3-row-padding">
-                                        <material-slider [disabled]="whileUpdatingDisabled || iColumnWorkItem.archived" [value]="iColumnWorkItem.actualValue"
+                                        <material-slider class="custom-colors-{{actualValueLimitOverflow(iColumnWorkItem)}}" [disabled]="whileUpdatingDisabled || iColumnWorkItem.archived" [value]="actualValueCalculated(iColumnWorkItem)"
                                                          [min]="0"
                                                          [max]="iColumnWorkItem.plannedValue"
                                                          materialTooltip="{{actualValueLabel}}" (valueChange)="goToValues(iColumnWorkItem, $event)">

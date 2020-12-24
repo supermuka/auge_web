@@ -112,7 +112,8 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
 
   static final String nameLabel = WorkItemDomainMsg.fieldLabel(WorkItem.nameField);
   static final String dueDateLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.dueDateField);
-  static final String plannedActualLabel = WorkItemMsg.label(WorkItemMsg.plannedActualLabel);
+  static final String plannedValueLabel = WorkItemDomainMsg.fieldLabel(WorkItem.plannedValueField);
+ // static final String plannedActualLabel = WorkItemMsg.label(WorkItemMsg.plannedActualLabel);
   static final String remainingValueLabel = WorkItemMsg.label(WorkItemMsg.remainingValueLabel);
   static final String actualValueLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.actualValueField);
   static final String checkItemsLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.checkItemsField);
@@ -306,8 +307,6 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
     return common_service.userUrlImage(userMember?.userProfile?.image);
   }
 
-
-
   void goToDetail([String stageId, bool withselectedWorkItem = true]) {
     if (!withselectedWorkItem || selectedWorkItem == null) {
       _router.navigate(AppRoutes.workItemKanbanAddRoute.toUrl(parameters: {
@@ -319,14 +318,13 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
     }
   }
 
-  void goToValues([WorkItem workItem, num value]) {
+  void goToValues([workItem, num value]) {
 
-    selectWorkItem(workItem);
+    if (workItem != null) selectWorkItem(workItem);
 
-    //if (workItem == null) workItem = selectedWorkItem;
     if (!hasPlannedOrActual(selectedWorkItem)) return;
 
-    num incrementalValue = value - workItem.actualValue;
+    num incrementalValue = (value != null && selectedWorkItem.actualValue != null) ? value - selectedWorkItem.actualValue : 0;
 
    // if (incrementalValue < 0) incrementalValue = 0;
 
@@ -432,6 +430,15 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
       whileUpdatingDisabled = false;
     }
   }
+
+  bool actualValueLimitOverflow(WorkItem workItem) {
+    return (workItem != null && workItem.actualValue != null && workItem.plannedValue != null && (workItem.plannedValue - workItem.actualValue < 0) ) ? true : false;
+  }
+
+  num actualValueCalculated(WorkItem workItem)  {
+    return (workItem != null && workItem.actualValue != null && workItem.plannedValue != null && (workItem.plannedValue - workItem.actualValue < 0)) ? workItem.plannedValue : workItem.actualValue;
+  }
+
 }
 
 class KanbanColumn {
