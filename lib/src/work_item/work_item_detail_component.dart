@@ -175,7 +175,7 @@ class WorkItemDetailComponent implements OnInit, OnActivate, OnDeactivate  {
   static final String selectValueLabel = WorkItemMsg.label(WorkItemMsg.selectAValueLabel);
   static final String dropFileHereLabel = WorkItemMsg.label(WorkItemMsg.dropFileHereLabel);
   static final String checkItemNameLabel = WorkItemMsg.label(WorkItemMsg.checkItemNameLabel);
-  static final String plannedActualLabel = WorkItemMsg.label(WorkItemMsg.remainingValueLabel);
+  static final String plannedActualLabel = WorkItemMsg.label(WorkItemMsg.plannedActualLabel);
   static final String remainingValueLabel = WorkItemMsg.label(WorkItemMsg.remainingValueLabel);
 
 

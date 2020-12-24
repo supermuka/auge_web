@@ -112,12 +112,16 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
 
   static final String nameLabel = WorkItemDomainMsg.fieldLabel(WorkItem.nameField);
   static final String dueDateLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.dueDateField);
+  static final String plannedActualLabel = WorkItemMsg.label(WorkItemMsg.plannedActualLabel);
+  static final String remainingValueLabel = WorkItemMsg.label(WorkItemMsg.remainingValueLabel);
   static final String actualValueLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.actualValueField);
   static final String checkItemsLabel =  WorkItemDomainMsg.fieldLabel(WorkItem.checkItemsField);
 
   static final String headerTitle = WorkItemMsg.label(WorkItemMsg.workKanbanLabel);
   static final String workStagesLabel = StageMsg.label(StageMsg.workStagesLabel);
   static final String addWorkItemLabel =  WorkItemMsg.label(WorkItemMsg.addWorkItemLabel);
+
+
 
   final List<RouteDefinition> routes = [
     RouteDefinition(
@@ -315,14 +319,19 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
     }
   }
 
-  void goToValues([WorkItem workItem]) {
+  void goToValues([WorkItem workItem, num value]) {
 
     selectWorkItem(workItem);
 
     //if (workItem == null) workItem = selectedWorkItem;
     if (!hasPlannedOrActual(selectedWorkItem)) return;
+
+    num incrementalValue = value - workItem.actualValue;
+
+   // if (incrementalValue < 0) incrementalValue = 0;
+
     _router.navigateByUrl(AppRoutes.workItemKanbanValuesRoute.toUrl(parameters: {
-      AppRoutesParam.workIdParameter: work.id, AppRoutesParam.workItemIdParameter: selectedWorkItem.id }, queryParameters: {AppRoutesQueryParam.workItemActualValueQueryParameter: selectedWorkItem.actualValue.toString()} ) /*, NavigationParams(replace:  true) */);
+      AppRoutesParam.workIdParameter: work.id, AppRoutesParam.workItemIdParameter: selectedWorkItem.id }, queryParameters: {AppRoutesQueryParam.workItemActualValueQueryParameter: incrementalValue.toString()} ) /*, NavigationParams(replace:  true) */);
   }
 
   void goToStages() {
@@ -423,7 +432,6 @@ class WorkItemsKanbanComponent with CanReuse implements OnInit, OnActivate, OnDe
       whileUpdatingDisabled = false;
     }
   }
-
 }
 
 class KanbanColumn {

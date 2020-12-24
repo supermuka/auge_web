@@ -132,7 +132,7 @@ class WorkItemValuesComponent implements OnInit, OnActivate, OnDeactivate  {
       workItemValues = await _workItemService.getWorkItemValues(workItemId: workItemId);
     }
 
-    if (current.queryParameters.containsKey(AppRoutesQueryParam.workItemActualValueQueryParameter) && current.queryParameters[AppRoutesQueryParam.workItemActualValueQueryParameter] != null) {
+    if (current.queryParameters.containsKey(AppRoutesQueryParam.workItemActualValueQueryParameter) && current.queryParameters[AppRoutesQueryParam.workItemActualValueQueryParameter] != null && double.tryParse(current.queryParameters[AppRoutesQueryParam.workItemActualValueQueryParameter]) > 0) {
       workItemValues.insert(0, WorkItemValue()
         ..date = DateTime.now()
         ..actualValue = double.tryParse(current.queryParameters[AppRoutesQueryParam.workItemActualValueQueryParameter])

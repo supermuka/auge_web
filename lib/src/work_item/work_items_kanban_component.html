@@ -81,21 +81,21 @@
                             <div>
                                 <div *ngIf="hasPlannedOrActual(iColumnWorkItem)">
                                     <div class="w3-center">
-                                        <span class="w3-left">
+                                        <span class="w3-left" materialTooltip="{{plannedActualLabel}}">
                                             {{iColumnWorkItem.plannedValue ?? 0}}
                                         </span>
-                                        <span class="w3-center">
+                                        <span class="w3-center" materialTooltip="{{remainingValueLabel}}">
                                             {{iColumnWorkItem.actualValue ?? 0}}
                                         </span>
-                                        <span class="w3-right">
+                                        <span class="w3-right" materialTooltip="{{actualValueLabel}}">
                                             {{remainingValue(iColumnWorkItem.plannedValue, iColumnWorkItem.actualValue) ?? 0}}
                                         </span>
                                     </div>
                                     <div class="w3-row-padding">
-                                        <material-slider [disabled]="whileUpdatingDisabled || iColumnWorkItem.archived" [(value)]="iColumnWorkItem.actualValue"
+                                        <material-slider [disabled]="whileUpdatingDisabled || iColumnWorkItem.archived" [value]="iColumnWorkItem.actualValue"
                                                          [min]="0"
-                                                         [max]="100"
-                                                         materialTooltip="{{actualValueLabel}}" (click)="goToValues(iColumnWorkItem)">
+                                                         [max]="iColumnWorkItem.plannedValue"
+                                                         materialTooltip="{{actualValueLabel}}" (valueChange)="goToValues(iColumnWorkItem, $event)">
                                         </material-slider>
                                     </div>
                                 </div>

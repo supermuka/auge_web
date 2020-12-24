@@ -98,7 +98,8 @@ header {
 }
 
 .panel-name-max-width {
-  @include expansionpanel-panel-name-max-width(320px);
+  @include expansionpanel-panel-name-max-width(300px);
+  @include expansionpanel-panel-name-min-width(300px);
   //max-width: 50px;
 }
 
